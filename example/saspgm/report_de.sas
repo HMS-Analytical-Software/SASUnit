@@ -13,16 +13,16 @@
 
 OPTIONS 
    MPRINT MAUTOSOURCE 
-   SASAUTOS=(SASAUTOS "c:\projekte\sasunit\saspgm\sasunit") /* SASUnit macro library */
+   SASAUTOS=(SASAUTOS "c:/projekte/sasunit/saspgm/sasunit") /* SASUnit macro library */
 ;
 
 /* open test repository */
 %initSASUnit(
-   i_root       = c:\projekte\sasunit /* root path for convenience, following paths can be relative */
-  ,io_target    = example\doc\sasunit /* output of SASUnit: test repository, logs, results, reports */
+   i_root       = c:/projekte/sasunit /* root path for convenience, following paths can be relative */
+  ,io_target    = example/doc/sasunit /* output of SASUnit: test repository, logs, results, reports */
 )
 
-/* create report - always force compete creation */
+/* create report - always force complete creation */
 %reportSASUnit(i_language=DE, o_force=1, o_output=example\doc\sasunit.de)
 
 /** \endcond */

@@ -15,9 +15,9 @@
                parameter 'fuzz' has a different meaning in the context of PROC COMPARE)
 
    
-   \version    \$Revision: 56 $
+   \version    \$Revision: 57 $
    \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
+   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
    \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/assertcolumns.sas $
 
    \param   i_expected     data set with expected values
@@ -64,11 +64,6 @@
                (Achtung: heißt in PROC COMPARE criterion, fuzz bedeutet dort 
                etwas anderes.
    
-   \version    \$Revision: 56 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/assertcolumns.sas $
-
    \param   i_expected     Datei mit erwarteten Werten
    \param   i_actual       Datei mit tatsächlichen Werten
    \param   i_desc         Beschreibung der Prüfung

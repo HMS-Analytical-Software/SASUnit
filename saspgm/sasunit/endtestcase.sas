@@ -11,9 +11,10 @@
    \param      i_assertLog if 1 .. an assertLog (0,0) will be invoked for the test case to be determined, provided that
                            assertLog was not invoked yet
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
+   \version    \$Revision: 57 $
+   \author     \$Author: mangold $
+   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
+   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/endtestcase.sas $
 */
 
 /*DE
@@ -29,9 +30,6 @@
    \param      i_assertLog wenn 1 .. ein assertLog (0,0) für den zu beendenden Testfall absetzen, falls
                            noch keines abgesetzt wurde
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
 */ /** \cond */ 
 
 %MACRO endTestcase(i_assertLog=1);

@@ -16,10 +16,12 @@
                            kann leer sein, dann keine Kopie 
    \param   o_html         kompletter Pfad zur Ausgabedatei für das Frameset, falls zwei 
                            Reports verglichen werden sollen
+   \param   o_output       Ausgabeverzeichnis für Reports
 
 */ /** \cond */  
 
 /* change log
+   22.07.2009 AM  necessary modifications for LINUX
    19.08.2008 AM  national language support
    11.08.2008 AM  Frameseite erzeugen, wenn zwei Reports verglichen werden.
    05.02.2008 AM  Unterstrich zu Beginn der Kopierziele hinzugefügt, 
@@ -33,11 +35,12 @@
   ,i_extexp  = 
   ,i_extact  = 
   ,o_html    = 
+  ,o_output  = 
 );
 
 %local l_ifile l_ofile;
 %let l_ifile=&g_target/tst/_&i_scnid._&i_casid._&i_tstid._man_;
-%let l_ofile=&g_target/rep/_&i_scnid._&i_casid._&i_tstid._man_;
+%let l_ofile=&o_output/_&i_scnid._&i_casid._&i_tstid._man_;
 
 %if %sysfunc(fileexist(&l_ifile.exp&i_extexp)) %then %do;
    %_sasunit_copyFile (&l_ifile.exp&i_extexp, &l_ofile.exp&i_extexp);

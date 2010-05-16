@@ -11,17 +11,28 @@
 
  */ /** \cond */ 
 
+/* Änderungshistorie
+   02.10.2008 NA  Anpassung an Linux
+*/ 
+
 %macro _sasunit_xcmd(i_cmd);
-%local xwait xsync xmin;
-%let xwait=%sysfunc(getoption(xwait));
-%let xsync=%sysfunc(getoption(xsync));
-%let xmin =%sysfunc(getoption(xmin));
+%if &sysscp. = WIN %then %do; 
+	%local xwait xsync xmin;
+	%let xwait=%sysfunc(getoption(xwait));
+	%let xsync=%sysfunc(getoption(xsync));
+	%let xmin =%sysfunc(getoption(xmin));
 
-options noxwait xsync xmin;
+	options noxwait xsync xmin;
 
-%SYSEXEC &i_cmd;
+	%SYSEXEC &i_cmd;
 
-options &xwait &xsync &xmin;
+	options &xwait &xsync &xmin;
+%end;
+
+%else %if &sysscp. = LINUX %then %do;
+	%SYSEXEC &i_cmd;
+%end;
+
 %mend _sasunit_xcmd; 
 
 /** \endcond */

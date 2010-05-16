@@ -10,9 +10,9 @@
             - check error handling with assertLogMsg.sas
             - use test data in library testdata 
 
-\version    \$Revision: 38 $
+\version    \$Revision: 57 $
 \author     \$Author: mangold $
-\date       \$Date: 2008-08-19 16:57:17 +0200 (Di, 19 Aug 2008) $
+\date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
 \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/example/saspgm/boxplot_test.sas $
 */ /** \cond */ 
 
@@ -23,7 +23,7 @@
               i_desc=please compare chart with specification in source code)
 
 /*-- standard case with reference --------------------------------------------*/
-%initTestcase(i_object=boxplot.sas, i_desc=Standardfall mit Vergleichsstandard)
+%initTestcase(i_object=boxplot.sas, i_desc=standard case with reference)
 %boxplot(data=testdata.blood_pressure, x=visit, y=sbp, group=med, report=&g_work\report2.rtf)
 %assertReport(i_actual=&g_work\report2.rtf, i_expected=&g_refdata\boxplot1.rtf,
               i_desc=please compare the two charts)

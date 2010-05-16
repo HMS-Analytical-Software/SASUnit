@@ -19,11 +19,12 @@
 */ /** \cond */ 
 
 /* change log
+   22-07-2008 AM  modified infile statement for linux
    13-08-2008 AM  created
 */ 
 
 data nls (drop=mark);
-   infile "&g_sasunit/_sasunit_nls.txt" truncover;
+   infile "&g_sasunit/_sasunit_nls.txt" truncover termstr=crlf;
    input mark $3. @;
    if mark='---' then input @4 program $32.;
    retain program;  

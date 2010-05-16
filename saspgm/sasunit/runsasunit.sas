@@ -18,9 +18,9 @@
                      by _sasunit_scenario.sas .
                      All test results are gathered in the test repository. 
 
-   \version    \$Revision: 56 $
+   \version    \$Revision: 57 $
    \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
+   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
    \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/runsasunit.sas $
 
    \param   i_source       test scenario (path to SAS program) 
@@ -52,11 +52,6 @@
                      die über _sasunit_scenario.sas initialisiert wird.
                      Alle Testergebnisse werden in der Testdatenbank gesammelt 
 
-   \version    \$Revision: 56 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/runsasunit.sas $
-
    \param   i_source       Testszenario (Pfad zu SAS-Programm) 
                            bzw. Testszenarien (Suchmuster in der Form verzeichnis\dateimuster, 
                            z.B. test\*_test.sas für alle Dateien, die mit 
@@ -68,6 +63,7 @@
 */ /** \cond */ 
 
 /* Änderungshistorie
+   02.10.2008 NA  Modified for LINUX
    11.08.2008 AM  Fehler bereinigt für den Fall, dass in der aufrufenden Sitzung keine config-Option angegeben ist 
                   und die mit getoption abgefragte config-option dann Werte (mit Klammern) enthält, 
                   die nicht an die gestartete SAS-Sitzung übergeben werden können
@@ -84,6 +80,33 @@
 %LOCAL l_macname; %LET l_macname=&sysmacroname;
 %LOCAL d_dir l_source; 
 %_sasunit_tempFileName(d_dir);
+
+/*-- Betriebssystembefehle einstellen --------------------------------------*/
+%LOCAL l_removedir 
+       l_makedir
+       l_copydir
+       l_endcommand
+       l_sasstart
+       l_splash
+       ;
+%if &sysscp. = WIN %then %do; 
+        %let l_removedir = rd /S /Q;
+        %let l_makedir = md;
+        %let l_copydir = xcopy /E /I /Y;
+        %let l_endcommand =;
+        %let l_sasstart ="%sysget(sasroot)/sas.exe";
+        %let l_splash = -nosplash;
+%end;
+%else %if &sysscp. = LINUX %then %do;
+        %let l_removedir = rm -r;
+        %let l_makedir = mkdir;
+        %let l_copydir = cp -R;
+        %let l_endcommand =%str(;);
+        %_sasunit_xcmd(umask 0033);
+        %let l_sasstart =%sysfunc(pathname(sasroot))/sasexe/sas;
+        %let l_splash =;
+%end;
+
 
 /*-- prüfen, ob Testdatenbank zugewiesen -------------------------------------*/
 %IF %_sasunit_handleError(&l_macname, NoTestDB, 
@@ -193,12 +216,15 @@ RUN;
       /*-- sasuser vorbereiten -----------------------------------------------*/
       DATA _null_;
          FILE "%sysfunc(pathname(work))/x.cmd";
-         PUT "rd /S /Q ""%sysfunc(pathname(work))/sasuser""";
-         PUT "md ""%sysfunc(pathname(work))/sasuser""";
+         PUT "&l_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+         PUT "&l_makedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
       %IF %length(&g_sasuser) %THEN %DO;
-         PUT "xcopy ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser"" /E /I /Y";
+         PUT "&l_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
       %END;
       RUN;
+      %if &sysscp. = LINUX %then %do;
+          %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
+      %end;
       %_sasunit_xcmd("%sysfunc(pathname(work))/x.cmd")
       %LOCAL l_rc;
       %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
@@ -216,13 +242,13 @@ RUN;
          %LET l_parms=&l_parms -config "%sysfunc(getoption(config))";
       %END; 
       %sysexec 
-         "%sysget(sasroot)/sas.exe"
+            &l_sasstart
             &l_parms
             -sysin "&&l_scnfile&i"
             -initstmt "%nrstr(%_sasunit_scenario%(io_target=)&g_target%nrstr(%)%let g_scnid=)&l_scnid;"
             -log   "&g_log/%substr(00&l_scnid,%length(&l_scnid)).log"
             -print "&g_testout/%substr(00&l_scnid,%length(&l_scnid)).lst"
-            -nosplash
+            &l_splash
             -noovp
             -nosyntaxcheck
             -mautosource
@@ -232,12 +258,16 @@ RUN;
             -termstmt '%_sasunit_termScenario()'
          ;  
       %LET l_sysrc = &sysrc;
-
+%PUT --------------TEST1;
       /*-- SASUSER löschen ---------------------------------------------------*/
       DATA _null_;
          FILE "%sysfunc(pathname(work))/x.cmd";
-         PUT "rd /S /Q ""%sysfunc(pathname(work))/sasuser""";
+         PUT "&l_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
       RUN;
+      %if &sysscp. = LINUX %then %do;
+          %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
+      %end;
+
       %_sasunit_xcmd("%sysfunc(pathname(work))/x.cmd")
       %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
 

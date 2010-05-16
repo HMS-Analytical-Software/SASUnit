@@ -6,9 +6,10 @@
                
                The comparison report is created later, as PROC REPORT does not support ODS Document.
 
-   \version   1.2
-   \author    Klaus Landwich
-   \date      05.11.2008
+   \version    \$Revision: 57 $
+   \author     \$Author: mangold $
+   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
+   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/assertlibrary.sas $
 
    \param     i_actual       library with created files
    \param     i_expected     library with expected files
@@ -35,10 +36,6 @@
 
                Der Vergleichsreport wird erst später gemacht, da PROC REPORT keine Unterstützung von
                ODS Document hat!
-
-   \version   1.2
-   \author    Klaus Landwich
-   \date      05.11.2008
 
    \param     i_actual       Library mit den erzeugten Dateien
    \param     i_expected     Library mit den erwarteten Dateien

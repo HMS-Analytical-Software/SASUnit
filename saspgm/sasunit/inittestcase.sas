@@ -12,9 +12,11 @@
                - Redirection of SAS log
                - Setting of flag g_inTestcase
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    02.02.2006
+   \version    \$Revision: 57 $
+   \author     \$Author: mangold $
+   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
+   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/inittestcase.sas $
+
    \param   i_object          source code file of program under test, is searched in 
                               the AUTOCALL path in case only the name of the source code 
                               file is given, without path information
@@ -37,9 +39,6 @@
                - SASLOG umleiten
                - Flag g_inTestcase setzen 
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    02.02.2006
    \param   i_object          Programmdatei des Prüflings, wird im Autocall-Pfad gesucht, 
                               falls nur der Name der Programmdatei angegeben wurde
    \param   i_desc            Beschreibung des Testfalls 

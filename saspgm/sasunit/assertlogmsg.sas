@@ -11,9 +11,11 @@
                If i_not is set to 1, the check of the assertion will fail in case the 
                message is found in the log.
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
+   \version    \$Revision: 57 $
+   \author     \$Author: mangold $
+   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
+   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/assertlogmsg.sas $
+
    \param   i_logmsg       message of interest (Perl Regular Expression),non-case-sensitive log scan
                            special characters have to be quoted with a prefixed single backslash,
                            see http://support.sas.com/onlinedoc/913/getDoc/de/lrdict.hlp/a002288677.htm#a002405779
@@ -33,9 +35,6 @@
                Wenn i_not auf 1 gesetzt wird, schlägt der Test fehl, wenn die Meldung
                gefunden wird.
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
    \param   i_logmsg       zu suchende Meldung (Perl Regular Expression), Groß- und Kleinschrift 
                            wird beim Vergleich nicht beachtet. 
                            Sonderzeichen müssen durch einen vorangestellten Backslash 

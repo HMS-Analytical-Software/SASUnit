@@ -6,9 +6,9 @@
 
                Please refer to the description of the test tools in _sasunit_doc.sas.
 
-   \version \$Revision: 56 $
+   \version \$Revision: 57 $
    \author  \$Author: mangold $
-   \date    \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
+   \date    \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
    \sa      \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/reportsasunit.sas $
 
    \param   i_language     Language of the report (DE, EN) - refer to _sasunit_nls
@@ -29,11 +29,6 @@
 
                siehe Beschreibung der Testtools in _sasunit_doc.sas.
 
-   \version \$Revision: 56 $
-   \author  \$Author: mangold $
-   \date    \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
-   \sa      \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/reportsasunit.sas $
-
    \param   i_language     Sprache für Report (DE, EN) - siehe _sasunit_nls
    \param   o_html         Testbericht im HTML-Format erstellen?
    \param   o_force        0 .. (default) inkrementell, 1 .. kompletten Bericht erstellen
@@ -44,6 +39,7 @@
 */ /** \cond */ 
 
 /* Änderungshistorie
+   15.07.2009 AM  fixed copydir for Linux
    13.08.2008 AM  introduced o_force and o_output
    12.08.2008 AM  Reportingsprache umgestellt
    11.08.2008 AM  Dateiname der Frameseite an Reportgenerator für assertReport übergeben
@@ -243,7 +239,7 @@ DATA _null_;
       IF tsu_lastrep=0 OR &o_force THEN DO;
          /*-- Images und css-Dateien kopieren --------------------------------*/
          PUT '%_sasunit_copydir(' /
-             "    &g_sasunit/html" /
+             "    &g_sasunit" '/html/%str(*.*)' /
              "   ,&l_output" /
              ")";
          /*-- die Frameseite erstellen ---------------------------------------*/
@@ -353,6 +349,7 @@ DATA _null_;
              "   ,i_extexp= " tst_exp                           /
              "   ,i_extact= " tst_act                           /
              "   ,o_html  = &l_output/_" scn_id z3. "_" cas_id z3. "_" tst_id z3. "_rep.html"    /
+             "   ,o_output= &l_output"                          /
              ")";
       END;
 

@@ -13,19 +13,31 @@
    \date    10.08.2007
    \param   dir     kompletter Pfad des zu erstellenden Verzeichnis. 
 
- */ /** \cond */ 
+*/ /** \cond */
+
+/* Änderungshistorie
+   05.09.2008 NA  Anpassung an Linux
+*/ 
 
 %macro _sasunit_mkdir(dir);
-%local xwait xsync xmin;
-%let xwait=%sysfunc(getoption(xwait));
-%let xsync=%sysfunc(getoption(xsync));
-%let xmin =%sysfunc(getoption(xmin));
 
-options noxwait xsync xmin;
 
-%SYSEXEC(md "&dir");
+%if &sysscp. = WIN %then %do; 
+	%local xwait xsync xmin;
+	%let xwait=%sysfunc(getoption(xwait));
+	%let xsync=%sysfunc(getoption(xsync));
+	%let xmin =%sysfunc(getoption(xmin));
 
-options &xwait &xsync &xmin;
+	options noxwait xsync xmin;
+
+	%SYSEXEC(md "&dir");
+
+	options &xwait &xsync &xmin;
+%end;
+%else %if &sysscp. = LINUX %then %do;
+	%SYSEXEC(mkdir &dir.);
+%end;
+
 %mend _sasunit_mkdir; 
 
 /** \endcond */

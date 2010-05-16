@@ -12,33 +12,45 @@
    \return  automatische Makrovariable siehe &sysrc ist 0, wenn alles OK
 */ /** \cond */ 
 
+/* Änderungshistorie
+   02.10.2008 NA  Anpassung an Linux
+*/ 
+
 %macro _sasunit_copyDir(
    i_from
   ,i_to
 );
 
-%local xwait xsync xmin;
-%let xwait=%sysfunc(getoption(xwait));
-%let xsync=%sysfunc(getoption(xsync));
-%let xmin =%sysfunc(getoption(xmin));
+%if &sysscp. = WIN %then %do; 
 
-options noxwait xsync xmin;
+   /* save and modify os command options */
+   %local xwait xsync xmin;
+   %let xwait=%sysfunc(getoption(xwait));
+   %let xsync=%sysfunc(getoption(xsync));
+   %let xmin =%sysfunc(getoption(xmin));
+   options noxwait xsync xmin;
 
-/*-- XCOPY
-     /E Verzeichnisse (auch leere) und Dateien rekursiv kopieren
-     /I keine Nachfrage, ob Datei oder Verzeichnis erstellt werden soll
-     /Y keine Nachfrage bei Überschreiben
-  --*/
+   %let i_from = %qsysfunc(translate(&i_from,\,/));
+   %let i_to   = %qsysfunc(translate(&i_to  ,\,/));
 
-%sysexec 
-   xcopy
-      "&i_from"
-      "&i_to"
-      /E /I /Y
-;
-%put sysrc=&sysrc;
+   /*-- XCOPY
+        /E Verzeichnisse (auch leere) und Dateien rekursiv kopieren
+        /I keine Nachfrage, ob Datei oder Verzeichnis erstellt werden soll
+        /Y keine Nachfrage bei Überschreiben
+     --*/
+   %sysexec 
+      xcopy
+         "&i_from"
+         "&i_to"
+         /E /I /Y
+   ;
+   %put sysrc=&sysrc;
+   options &xwait &xsync &xmin;
+%end;
 
-options &xwait &xsync &xmin;
+%else %if &sysscp. = LINUX %then %do;
+   %SYSEXEC(cp -R &i_from. &i_to.);
+%end;
 
 %mend _sasunit_copyDir;
 /** \endcond */

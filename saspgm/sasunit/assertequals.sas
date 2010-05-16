@@ -7,9 +7,9 @@
 
                Please refer to the description of the test tools in _sasunit_doc.sas
 
-   \version    \$Revision: 56 $
+   \version    \$Revision: 57 $
    \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
+   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
    \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/assertequals.sas $
 
    \param   i_expected       expected value
@@ -28,11 +28,6 @@
                entspricht
 
                Siehe Beschreibung der Testtools in _sasunit_doc.sas
-
-   \version    \$Revision: 56 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/assertequals.sas $
 
    \param   i_expected       erwarteter Wert
    \param   i_actual         tatsächlicher Wert

@@ -10,9 +10,9 @@
             - omit endTestcall.sas and endTestcase.sas
             - check for special cases
 
-\version    \$Revision: 38 $
+\version    \$Revision: 57 $
 \author     \$Author: mangold $
-\date       \$Date: 2008-08-19 16:57:17 +0200 (Di, 19 Aug 2008) $
+\date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
 \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/example/saspgm/getvars_test.sas $
 */ /** \cond */ 
 
@@ -38,8 +38,13 @@ data test;
 run; 
 %let vars="%getvars(test,dlm=%str(","))";
 %assertEquals(i_actual=&vars, i_expected=%str("a b c","$6789",";6789"), i_desc=check variables)
-%assertLog(i_warnings=1,i_desc=%str(check log, one warning due to validvarname))
-%endTestcase(i_assertLog=0) /* no assertLog */
+%macro al;
+%if &sysver=9.1 %then %do;
+	%assertLog(i_warnings=1,i_desc=%str(check log, one warning due to validvarname))
+	%endTestcase(i_assertLog=0) /* no assertLog */
+%end;
+%mend al;
+%al;
 
 /*-- example with empty dataset ----------------------------------------------*/
 %initTestcase(i_object=getvars.sas, i_desc=example with empty dataset)

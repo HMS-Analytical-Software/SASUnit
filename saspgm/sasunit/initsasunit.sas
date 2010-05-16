@@ -9,9 +9,9 @@
                An existing test repository is opened or a new test repository is created..
 
 
-   \version    \$Revision: 56 $
+   \version    \$Revision: 57 $
    \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
+   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
    \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/initsasunit.sas $
 
    \param   i_root         optional: root path for all other paths, is used for paths that do not begin 
@@ -51,11 +51,6 @@
                Es wird eine vorhandene Testdatenbank geöffnet oder eine neue Testdatenbank erstellt.
 
 
-   \version    \$Revision: 56 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/initsasunit.sas $
-
    \param   i_root         optional: Rootpfad für alle weiterne Pfade, wird verwendet bei Pfaden, die nicht 
                            mit einem Laufwerksbuchstaben oder Slash bzw. Backslash beginnen
    \param   io_target      Pfad für Testdatenbank und generierte Dokumentation, muss existieren
@@ -86,6 +81,7 @@
 */ /** \cond */ 
 
 /* Änderungshistorie
+   02.10.2008 NA  Modified for LINUX
    27.06.2008 AM  Minimale Änderungen in den Kommentartexten
    15.02.2008 AM  Dokumentation ausgelagert nach _sasunit_doc.sas
    05.02.2008 AM  Dokumentation der asserts aktualisiert
@@ -122,6 +118,20 @@
 /*-- Fehlerbehandlung initialisieren -----------------------------------------*/
 %_sasunit_initErrorHandler;
 
+/*-- Betriebssystem prüfen ---------------------------------------------------*/
+%IF %_sasunit_handleError( &l_macname
+                         , WrongOS
+                         , (&sysscp. NE WIN) AND (&sysscp. NE LINUX)
+                         , Invalid operating system - only WIN and LINUX) 
+%THEN %GOTO errexit;
+
+/*-- Check SAS version -------------------------------------------------------*/
+%IF %_sasunit_handleError( &l_macname
+                         , WrongVer
+                         , (&sysver. NE 9.1) AND (&sysver. NE 9.2)
+                         , Invalid SAS version - only SAS 9.1 and 9.2) 
+%THEN %GOTO errexit;
+
 /*-- Zielverzeichnis prüfen --------------------------------------------------*/
 %LOCAL l_target_abs;
 %LET l_target_abs=%_sasunit_abspath(&i_root,&io_target);
@@ -130,10 +140,37 @@
    Fehler in Parameter io_target: Zielverzeichnis existiert nicht) 
    %THEN %GOTO errexit;
 
+/*-- Betriebssystembefehle einstellen --------------------------------------*/
+%LOCAL l_removedir 
+       l_makedir
+       l_copydir
+       l_endcommand
+       l_sasstart
+       l_splash
+       ;
+%if &sysscp. = WIN %then %do; 
+        %let l_removedir = rd /S /Q;
+        %let l_makedir = md;
+        %let l_copydir = xcopy /E /I /Y;
+        %let l_endcommand =;
+        %let l_sasstart ="%sysget(sasroot)/sas.exe";
+        %let l_splash = -nosplash;
+%end;
+%else %if &sysscp. = LINUX %then %do;
+        %let l_removedir = rm -r;
+        %let l_makedir = mkdir;
+        %let l_copydir = cp -R;
+        %let l_endcommand =%str(;);
+        %_sasunit_xcmd(umask 0033);
+        %let l_sasstart =%sysfunc(pathname(sasroot))/sasexe/sas;
+        %let l_splash =;
+%end;
+
+
 LIBNAME target "&l_target_abs";
 %IF %_sasunit_handleError(&l_macname, ErrorTargetLib, 
    %quote(&syslibrc) NE 0, 
-   Fehler in Parameter io_target: Zielverzeichnis kann nicht als SAS-Library geöffnet werden) 
+   Fehler in Parameter io_target: Zielverzeichnis &l_target_abs. kann nicht als SAS-Library geöffnet werden) 
    %THEN %GOTO errexit;
 data target._test;
 run;
@@ -212,16 +249,20 @@ QUIT;
    Fehler beim Anlegen der Testdatenbank) 
    %THEN %GOTO errexit;
 
+
 /*-- Verzeichnisse anlegen, vorher leeren ------------------------------------*/
 DATA _null_;
    FILE "%sysfunc(pathname(work))/x.cmd" encoding=pcoem850;/* wg. Umlauten in Pfaden */
-   PUT "rd /S /Q ""&l_target_abs/log""";
-   PUT "rd /S /Q ""&l_target_abs/tst""";
-   PUT "rd /S /Q ""&l_target_abs/rep""";
-   PUT "md ""&l_target_abs/log""";
-   PUT "md ""&l_target_abs/tst""";
-   PUT "md ""&l_target_abs/rep""";
+   PUT "&l_removedir ""&l_target_abs/log""&l_endcommand";
+   PUT "&l_removedir ""&l_target_abs/tst""&l_endcommand";
+   PUT "&l_removedir ""&l_target_abs/rep""&l_endcommand";
+   PUT "&l_makedir ""&l_target_abs/log""&l_endcommand";
+   PUT "&l_makedir ""&l_target_abs/tst""&l_endcommand";
+   PUT "&l_makedir ""&l_target_abs/rep""&l_endcommand";
 RUN;
+%if &sysscp. = LINUX %then %do;
+   %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
+%end;
 %_sasunit_xcmd("%sysfunc(pathname(work))/x.cmd")
 %LOCAL l_rc;
 %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
@@ -427,8 +468,10 @@ QUIT;
 )
 %IF "&g_error_code" NE "" %THEN %GOTO errexit;
 
-/*-- Optionen für OS-Kommandos setzen ----------------------------------------*/
-options noxwait xsync xmin;
+%if &sysscp. = WIN %then %do; 
+	/*-- Optionen für OS-Kommandos setzen ----------------------------------------*/
+	options noxwait xsync xmin;
+%end;
 
 /*-- SAS-Aufruf prüfen -------------------------------------------------------*/
 /* es wird hierfür von der aufgerufenen SAS-Sitzung in der Work-Library 
@@ -441,12 +484,15 @@ QUIT;
 
 DATA _null_;
    FILE "%sysfunc(pathname(work))/x.cmd";
-   PUT "rd /S /Q ""%sysfunc(pathname(work))/sasuser""";
-   PUT "md ""%sysfunc(pathname(work))/sasuser""";
+   PUT "&l_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+   PUT "&l_makedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
 %IF %length(&g_sasuser) %THEN %DO;
-   PUT "xcopy ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser"" /E /I /Y";
+   PUT "&l_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
 %END;
 RUN;
+%if &sysscp. = LINUX %then %do;
+   %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
+%end;
 %_sasunit_xcmd("%sysfunc(pathname(work))/x.cmd")
 %LOCAL l_rc;
 %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
@@ -463,14 +509,15 @@ RUN;
 %IF "&g_sascfg" NE "" %THEN %DO;
    %LET l_parms=&l_parms -config "&g_sascfg";
 %END;
+
 %sysexec 
-   "%sysget(sasroot)/sas.exe"
+      &l_sasstart
       &l_parms
       -sysin "&l_work/run.sas"
       -initstmt "%nrstr(%_sasunit_scenario%(io_target=)&g_target%str(%))"
       -log   "&g_log/000.log"
       -print "&g_log/000.lst"
-      -nosplash
+      &l_splash
       -noovp
       -nosyntaxcheck
       -mautosource
@@ -478,6 +525,22 @@ RUN;
       -sasautos "&g_sasunit"
       -sasuser "%sysfunc(pathname(work))/sasuser"
    ;
+
+%put  &l_sasstart
+      &l_parms
+      -sysin "&l_work/run.sas"
+      -initstmt "%nrstr(%_sasunit_scenario%(io_target=)&g_target%str(%))"
+      -log   "&g_log/000.log"
+      -print "&g_log/000.lst"
+      &l_splash
+      -noovp
+      -nosyntaxcheck
+      -mautosource
+      -mcompilenote all
+      -sasautos "&g_sasunit"
+      -sasuser "%sysfunc(pathname(work))/sasuser"
+   ;
+
 
 %IF %_sasunit_handleError(&l_macname, ErrorSASCall2, 
    NOT %sysfunc(exist(work.check)), 

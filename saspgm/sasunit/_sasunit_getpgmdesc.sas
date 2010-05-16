@@ -11,6 +11,10 @@
    \return  Beschreibungstext
 */ /** \cond */ 
 
+/* History
+   02.10.2008 NA  modified for LINUX
+*/ 
+
 %MACRO _sasunit_getPgmDesc (
     i_pgmfile =
    ,r_desc    = desc
@@ -28,7 +32,7 @@ data _null_;
       line = left (substr(line,7));
       inbrief=1;
    end;
-   if substr(line,1,1)='\' or line=' ' then inbrief=0;
+   if substr(line,1,1)='\' or line=' ' or line='0D'x then inbrief=0;
    if inbrief then do;
       if desc=' ' then desc = line;
       else desc = trim(desc) !! ' ' !! line;
