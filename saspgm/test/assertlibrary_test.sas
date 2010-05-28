@@ -37,7 +37,6 @@
 %initTestcase(i_object=assertLibrary.sas, i_desc=i_expected ist ein ungültiger Libref - muss rot sein!)
 %endTestcall()
 
-
 %assertLibrary (i_expected=CTEMP, i_actual=WORK, i_desc=muss rot sein!)
 
 %assertLog (i_errors=0, i_warnings=0);
