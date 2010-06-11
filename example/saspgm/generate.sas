@@ -8,10 +8,10 @@
 
             Example for the application of assertLibrary.sas, see generate_test.sas.
 
-\version    \$Revision: 38 $
-\author     \$Author: mangold $
-\date       \$Date: 2008-08-19 16:57:17 +0200 (Di, 19 Aug 2008) $
-\sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/example/saspgm/generate.sas $
+\version    \$Revision$
+\author     \$Author$
+\date       \$Date$
+\sa         \$HeadURL$
 
 \param      data   input data set
 \param      by     by variable(s) for partitioning

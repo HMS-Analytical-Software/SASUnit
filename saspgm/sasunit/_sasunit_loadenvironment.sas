@@ -11,6 +11,7 @@
 */ /** \cond */ 
 
 /* Änderungshistorie
+   12.06.2010 AM  neue Version 0.910
    16.07.2009 AM  neue Version 0.905
    14.07.2009 AM  neue Version 0.903L
    19.08.2008 AM  neue Version 0.904
@@ -33,8 +34,8 @@
 %LOCAL i;
         
 %LET g_target = %sysfunc(pathname(target));
-%LET g_version = 0.905;
-%LET g_revision = $Revision: 38 $;
+%LET g_version = 0.910;
+%LET g_revision = $Revision$;
 %LET g_revision = %scan(&g_revision,2,%str( $:));
 
 %IF %_sasunit_handleError(&l_macname, InvalidTsu, 

@@ -4,10 +4,10 @@
 
    \brief      Documentation of SASUnit, the unit testing framework for SAS(TM)-programs on Microsoft Windows (TM)
 
-               Version 0.904
+               Version 0.910 - beta for 1.0
 
                Copyright:\n
-               Copyright (C) 2008 HMS Analytical Software GmbH, Heidelberg, Deutschland (http://www.analytical-software.de).
+               Copyright (C) 2010 HMS Analytical Software GmbH, Heidelberg, Deutschland (http://www.analytical-software.de).
                You can use, copy, redistribute and/or modify this software under the terms of the GNU General Public License
                as published by the Free Software Foundation. This program is distributed WITHOUT ANY WARRANTY; without even 
                the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -15,25 +15,22 @@
                SASUnit contains parts of Doxygen, see http://www.doxygen.org
 
                System requirements:\n
-               SASUnit Version 0.904 runs on SAS(R) 9.1.3 Service Pack 4 for Microsoft Windows(R).\n
-               SAS is a product of SAS Institute, Cary, NC (http://www.sas.com).
+               SASUnit Version 0.910 runs on SAS(R) 9.1.3 Service Pack 4 and SAS 9.2 for Microsoft Windows(R) 
+               and on SAS 9.2 for Linux.\n
+               SAS is a product and registered trademark of SAS Institute, Cary, NC (http://www.sas.com).
 
-               Installation: \n
-               SASUnit is obtainable at http://www.redscope.org/sasunit/en
-               Unzip the contents of the ZIP-File at c:\\projekte\\sasunit or carry out the following changes
-               in order to be able to execute the examples:
-               - Adapt the link sasunit\\example\\bin\\SASUnit
-               - Adapt the paths in sasunit\\example\\saspgm\\run_all
-               - In case you want to use doxygen  (see http://www.redscope.org/artikel/doxygen)
-                 - Adapt the links "Doxygen ..." in sasunit\\example\\bin\\ 
-                 - Adapt the paths in "sasunit\example\bin\Doxygen GUI starten"
+               Installation und windows: \n
+               SASUnit is obtainable at http://sourceforge.net/projects/sasunit/
+               Unzip the contents of the ZIP-File to c:\\projects\\sasunit or to a directory of your choice. 
+               If you change the directory, you have to change two paths in example\\saspgm\\run_all.sas.
+               Check the sasunit.xxx.cmd-files in the examples\\bin directory for the correct path to the SAS executable.
 
-               Initial start-up:\n
-               - Invoke the documentation of SASUnit and the examples at sasunit\example\doc\doxygen. 
-               - Invoke the test report of the example programs at sasunit\\example\\doc\\sasunit.
-               - Write your own examples and test scenarios in sasunit\\example\\saspgm. Test scenarios have the postfix
-                 _test.sas. If applicable, save your test data at sasunit\\example\\dat.
-               - Start SASUnit using sasunit\\example\\bin\\SASUnit. 
+               Getting started:\n
+               - Have a look at the documentation of SASUnit and the examples at example\\doc\\doxygen\\html\\index.html. 
+               - Have a look at the SASUnit example output at example\\doc\\sasunit\\rep\\index.html.
+               - Write your own examples and test scenarios in example\\saspgm. Test scenarios have the postfix
+                 _test.sas. If applicable, save your test data in example\\dat.
+               - Start SASUnit using example\\bin\\sasunit.xxx.cmd (xxx is your SAS version). 
                  SASUnit is executed in a batch SAS session that invokes each test scenario in an own SAS session. 
 
                Structure of a test suite (see run_all.sas):

@@ -7,10 +7,10 @@
 
                Please refer to the description of the test tools in _sasunit_doc.sas
 
-   \version    \$Revision: 57 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/assertequals.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \param   i_expected       expected value
    \param   i_actual         actual value

@@ -6,10 +6,10 @@
 
             Example: \%put \%getvars(dataset);
 
-\version    \$Revision: 38 $
-\author     \$Author: mangold $
-\date       \$Date: 2008-08-19 16:57:17 +0200 (Di, 19 Aug 2008) $
-\sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/example/saspgm/getvars.sas $
+\version    \$Revision$
+\author     \$Author$
+\date       \$Date$
+\sa         \$HeadURL$
 
 \param      data SAS dataset to return variable names from
 \param      dlm  delimiter, default is a blank

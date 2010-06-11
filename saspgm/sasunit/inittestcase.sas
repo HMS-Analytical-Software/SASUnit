@@ -12,10 +12,10 @@
                - Redirection of SAS log
                - Setting of flag g_inTestcase
 
-   \version    \$Revision: 57 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/inittestcase.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \param   i_object          source code file of program under test, is searched in 
                               the AUTOCALL path in case only the name of the source code 

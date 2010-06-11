@@ -4,10 +4,10 @@
 
    \brief      Utility  macro for the tests of SASUNIT - check of values in the test repository
 
-   \version    \$Revision: 56 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/test/assertdbvalue.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \param   i_tab        tsu, scn, cas or tst
    \param   i_col        column name without prefix
@@ -21,10 +21,10 @@
 
    \brief      Hilfsmakro für die Tests von SASUNIT - prüfen von Werten in der Testdatenbank
 
-   \version    \$Revision: 56 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/test/assertdbvalue.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \param   i_tab        tsu, scn, cas oder tst
    \param   i_col        Spaltenname ohne Präfix

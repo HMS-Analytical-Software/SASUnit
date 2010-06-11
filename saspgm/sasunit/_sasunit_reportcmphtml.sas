@@ -3,10 +3,10 @@
 
    \brief      HTML-Seiten für assertColumns erstellen
 
-   \version    \$Revision: 57 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/_sasunit_reportcmphtml.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \param   i_scnid        Szenario-Id der Prüfung
    \param   i_casid        Case-Id der Prüfung

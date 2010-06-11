@@ -1,0 +1,1 @@
+C:\Programme\doxygen\bin\doxywizard.exe doxygen.cfg

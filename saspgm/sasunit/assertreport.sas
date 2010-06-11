@@ -12,10 +12,10 @@
                Writes an entry into the test repository indicating the need to perform a manual 
                check of the report and copies the report and a given report template (optional).
 
-   \version    \$Revision: 57 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/assertreport.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \param   i_expected     optional: file name for the expected file (full path or file in &g_refdata)
    \param   i_actual       file name for created report file (full path!)

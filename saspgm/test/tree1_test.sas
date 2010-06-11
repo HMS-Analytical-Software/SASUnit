@@ -4,10 +4,10 @@
 
    \brief      Test of the tree building and the functionality for program libraries
 
-   \version    \$Revision: 40 $
-   \author     \$Author: warnat $
-   \date       \$Date: 2008-08-20 16:04:44 +0200 (Mi, 20 Aug 2008) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/test/tree1_test.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
 */
 
@@ -17,10 +17,10 @@
 
    \brief      Test des Tree-Aufbaus und der Funktionalität für Programmbibliotheken
 
-   \version    \$Revision: 40 $
-   \author     \$Author: warnat $
-   \date       \$Date: 2008-08-20 16:04:44 +0200 (Mi, 20 Aug 2008) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/test/tree1_test.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
 */ /** \cond */ 
 

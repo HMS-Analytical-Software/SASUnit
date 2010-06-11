@@ -6,10 +6,10 @@
                
                The comparison report is created later, as PROC REPORT does not support ODS Document.
 
-   \version    \$Revision: 58 $
-   \author     \$Author: landwich $
-   \date       \$Date: 2010-05-28 09:01:15 +0200 (Fr, 28 Mai 2010) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/assertlibrary.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \param     i_actual       library with created files
    \param     i_expected     library with expected files

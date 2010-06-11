@@ -15,10 +15,10 @@
             - there shall be a legend for the group variable
             - report format ist RTF
             
-\version    \$Revision: 38 $
-\author     \$Author: mangold $
-\date       \$Date: 2008-08-19 16:57:17 +0200 (Di, 19 Aug 2008) $
-\sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/example/saspgm/boxplot.sas $
+\version    \$Revision$
+\author     \$Author$
+\date       \$Date$
+\sa         \$HeadURL$
 
 \param      data    input data sets
 \param      x       variable for x axis, must be numeric and equidistant und must have at least two values, 

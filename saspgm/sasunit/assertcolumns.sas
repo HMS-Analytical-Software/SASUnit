@@ -15,10 +15,10 @@
                parameter 'fuzz' has a different meaning in the context of PROC COMPARE)
 
    
-   \version    \$Revision: 57 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/assertcolumns.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \param   i_expected     data set with expected values
    \param   i_actual       data set with actual values

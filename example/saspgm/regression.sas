@@ -11,10 +11,10 @@
 
             This example contains no validation of macro parameters
             
-\version    \$Revision: 23 $
-\author     \$Author: mangold $
-\date       \$Date: 2008-06-30 15:07:27 +0200 (Mo, 30 Jun 2008) $
-\sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/example/saspgm/boxplot.sas $
+\version    \$Revision$
+\author     \$Author$
+\date       \$Date$
+\sa         \$HeadURL$
 
 \param      data    input dataset
 \param      x       variable for x axis, must be numeric

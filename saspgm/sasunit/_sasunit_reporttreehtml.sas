@@ -15,10 +15,10 @@
                    <Testfälle>
                     <Tests> 
 
-   \version    \$Revision: 56 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/_sasunit_reporttreehtml.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \param   i_repdata      Eingabedatei (wird in reportSASUnit.sas erstellt)
    \param   o_html         Testbericht im HTML-Format

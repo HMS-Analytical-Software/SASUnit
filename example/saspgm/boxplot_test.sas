@@ -10,10 +10,10 @@
             - check error handling with assertLogMsg.sas
             - use test data in library testdata 
 
-\version    \$Revision: 57 $
-\author     \$Author: mangold $
-\date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
-\sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/example/saspgm/boxplot_test.sas $
+\version    \$Revision$
+\author     \$Author$
+\date       \$Date$
+\sa         \$HeadURL$
 */ /** \cond */ 
 
 /*-- standard case without reference -----------------------------------------*/

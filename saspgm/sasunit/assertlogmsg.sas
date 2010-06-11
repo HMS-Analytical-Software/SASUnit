@@ -11,10 +11,10 @@
                If i_not is set to 1, the check of the assertion will fail in case the 
                message is found in the log.
 
-   \version    \$Revision: 57 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/assertlogmsg.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \param   i_logmsg       message of interest (Perl Regular Expression),non-case-sensitive log scan
                            special characters have to be quoted with a prefixed single backslash,

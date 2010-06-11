@@ -15,10 +15,10 @@
 
             Create or recreate necessary HTML pages in the test report with reportSASUnit.sas.
             
-\version    \$Revision: 57 $
-\author     \$Author: mangold $
-\date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
-\sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/example/saspgm/run_all.sas $
+\version    \$Revision$
+\author     \$Author$
+\date       \$Date$
+\sa         \$HeadURL$
 */ /** \cond */ 
 
 /* History
@@ -28,12 +28,12 @@
 
 OPTIONS 
    MPRINT MAUTOSOURCE NOMLOGIC NOSYMBOLGEN
-   SASAUTOS=(SASAUTOS "c:/projekte/sasunit/saspgm/sasunit") /* SASUnit macro library */
+   SASAUTOS=(SASAUTOS "c:/projects/sasunit/saspgm/sasunit") /* SASUnit macro library */
 ;
 
 /* open test repository or create when needed */
 %initSASUnit(
-   i_root       = c:/projekte/sasunit /* root path, all other paths can then be relative paths */
+   i_root       = c:/projects/sasunit /* root path, all other paths can then be relative paths */
   ,io_target    = example/doc/sasunit /* Output of SASUnit: test repository, logs, results, reports */
   ,i_overwrite  = 0                   /* set to 1 to force all test scenarios to be run, else only changed 
                                          scenarios or scenarios with changed unit under test will be run*/

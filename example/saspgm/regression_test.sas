@@ -9,10 +9,10 @@
             - compare results from Microsoft Excel with assertColumns.sas, using fuzz because of rounding errors 
             - use test data in library testdata
 
-\version    \$Revision: 23 $
-\author     \$Author: mangold $
-\date       \$Date: 2008-06-30 15:07:27 +0200 (Mo, 30 Jun 2008) $
-\sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/example/saspgm/boxplot_test.sas $
+\version    \$Revision$
+\author     \$Author$
+\date       \$Date$
+\sa         \$HeadURL$
 */ /** \cond */ 
 
 /*-- Compare linear regression between Excel and SAS -------------------------*/

@@ -14,10 +14,10 @@
                     2 ...  Fehler (ggfs. auch Warnungen) aufgetreten
                     3 ...  Fehler im Ablauf dieses Makros
 
-   \version    \$Revision: 56 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/_sasunit_reportloghtml.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
 */ /** \cond */ 
 

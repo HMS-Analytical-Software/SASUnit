@@ -9,10 +9,10 @@
                If number of errors and warnings does not appear in the log as expected, 
                the check of the assertion will fail.
 
-   \version    \$Revision: 57 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/assertlog.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \param   i_errors       number of errors, default 0
    \param   i_warnings     number of warnings, default 0

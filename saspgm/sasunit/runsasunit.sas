@@ -18,10 +18,10 @@
                      by _sasunit_scenario.sas .
                      All test results are gathered in the test repository. 
 
-   \version    \$Revision: 57 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/sasunit/runsasunit.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \param   i_source       test scenario (path to SAS program) 
                            resp. test scenarios (search pattern with structure directory\filenamepattern, 

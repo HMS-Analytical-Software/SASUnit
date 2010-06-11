@@ -4,10 +4,10 @@
 
    \brief      Invocation of the basic test scenarios
 
-   \version    \$Revision: 57 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2010-05-16 14:51:20 +0200 (So, 16 Mai 2010) $
-   \sa         \$HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/test/run_all.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
 */
 
@@ -19,11 +19,11 @@
 
 */ /** \cond */ 
 
-OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "c:/projekte/sasunit/saspgm/sasunit");
+OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "c:/projects/sasunit/saspgm/sasunit");
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root       = c:/projekte/sasunit
+   i_root       = c:/projects/sasunit
   ,io_target    = doc/sasunit
   ,i_overwrite  = 0
   ,i_project    = SASUnit

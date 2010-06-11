@@ -9,10 +9,10 @@
             without suffix HTML) 
             and zzz is the symbol number within the macro program
 
-\version    \$Revision: $
-\author     \$Author: $
-\date       \$Date: $
-\sa         \$HeadURL: $
+\version    \$Revision$
+\author     \$Author$
+\date       \$Date$
+\sa         \$HeadURL$
 
 \param      i_language EN or DE
 \return     macro symbols in global symbol table

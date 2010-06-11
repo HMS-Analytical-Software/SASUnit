@@ -4,9 +4,9 @@
 
    \brief      Tests for assertReport.sas, has to fail!
 
-   \version    \$Revision: 56 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
    \sa         \HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/test/assertReport_test.sas $
 
 */
@@ -17,9 +17,9 @@
 
    \brief      Tests für assertReport.sas, muss rot sein
 
-   \version    \$Revision: 56 $
-   \author     \$Author: mangold $
-   \date       \$Date: 2009-07-16 15:15:52 +0200 (Do, 16 Jul 2009) $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
    \sa         \HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/test/assertReport_test.sas $
 
 */ /** \cond */ 
