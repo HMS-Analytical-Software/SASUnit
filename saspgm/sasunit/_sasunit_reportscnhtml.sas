@@ -1,13 +1,15 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      Auflistung der Testszenarien in einem HTML-Bericht erstellen
+   \brief      create list of thest scenarios for HTML report
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    21.10.2007
-   \param   i_repdata      Eingabedatei (wird in reportSASUnit.sas erstellt)
-   \param   o_html         Ausgabedatei im HTML-Format
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param   i_repdata      input dataset (created in reportSASUnit.sas)
+   \param   o_html         output file in HTML format
 
 */ /** \cond */ 
 

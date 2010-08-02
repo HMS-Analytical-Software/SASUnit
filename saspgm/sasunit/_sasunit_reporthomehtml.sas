@@ -1,15 +1,15 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      die Startseite eines HTML-Berichts erstellen
+   \brief      create home page of HTML report
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
    \sa         \$HeadURL$
 
-   \param   i_repdata      Eingabedatei (wird in reportSASUnit.sas erstellt)
-   \param   o_html         Ausgabedatei im HTML-Format
+   \param   i_repdata      input dataset (created in reportSASUnit.sas)
+   \param   o_html         output file in HTML format
 
 */ /** \cond */ 
 

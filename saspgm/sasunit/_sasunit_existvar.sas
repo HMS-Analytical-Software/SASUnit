@@ -1,18 +1,21 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      ermittelt, ob eine bestimmte Variable, optional mit einem bestimmten 
-          Typ, in einer SAS-Datei existiert.
+   \brief      determines whether a certain variable, optionally of a certain type, 
+               exists in a SAS dataset
 
-   \%existVar (datei, variable, typ)
+   \%existVar (dataset, variable, type)
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   i_data     Eingabedatei
-   \param   i_var      Name der Variablen
-   \param   i_vartype  Typ der Variablen (N oder C oder leer für egal)
-   \return  1 ..  Variable existiert, 0 ... existiert nicht
+   \param   i_data     input dataset
+   \param   i_var      name of the variable
+   \param   i_vartype  type of variable (N for numeric or C for character or empty for don't care)
+   \return  1 ..  variable existst, 0 ... variable does not existst
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
 */ /** \cond */ 
 
 %MACRO _sasunit_existVar (

@@ -1,31 +1,35 @@
 /** \file
    \ingroup    SASUNIT_UTIL
 
-   \brief      Fehlerabfrage durchführen, Statuscodes setzen
+   \brief      check for errors and set status code and messages
 
-               Wenn die angegeben Bedingung i_condition wahr ist, wird eine Meldung in den SAS-Log ausgegeben 
-               und folgende drei globalen Variablen gesetzt:
-               - g_error_code ... Wert von i_errorcode (Fehlercode)
-               - g_error_msg ... Wert von i_text (Fehlermeldung)
-               - g_error_macro ... Wert von i_macroname (aufrufendes makro)
+               If the condition i_condition is true, a message is being issued to the SAS log
+               and the following three macro symbols are assigned:
+               - g_error_code ... value of i_errorcode (error code)
+               - g_error_msg ... value of i_text (error message)
+               - g_error_macro ... value of i_macroname (calling macro program)
 
-               Das aufrufende Programm sollte ganz oben den Makronamen ermitteln mit folgender Zeile:
+               The calling program should determine the name of the macro program currently running 
+               with the following line of code at the top of the program: 
                \%LOCAL l_macname; \%LET l_macname = &sysmacroname ;
-               Nicht &sysmacroname direkt in den Aufruf von handleError reinschreiben, sonst erhält sie 
-               den Wert handleError!
+               Do not use &sysmacroname as the value of macro parameter g_error_macro directly , 
+               because otherwise it will have a value of "handleError".
 
-               Wenn i_verbose den Wert 1 hat, wird auch dann, wenn kein Fehler auftritt, eine
-               Informationsmeldung in den SAS-Log ausgegeben.
+               If i_verbose has value 1, a message is being written to the SAS log 
+               even when i_errorcode is not a true condition.
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   i_macroname      Name des Makros, in dem der Fehler aufgetreten ist
-   \param   i_errorcode      innerhalb des aufrufenden Makros eindeutiger Fehlercode
-   \param   i_condition      Bedingung - logischer Ausdruck, wird ausgewertet und zurückgegeben
-   \param   i_text           Fehlermeldung, weitere Informationen, wird in den SASLOG geschrieben
-   \param   i_verbose        gib Logzeile auch dann aus, wenn kein Fehler gefunden wurde, Voreinstellung ist 0
-   \return                   ausgewerteter Makroausdruck i_condition
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param   i_macroname      name of macro where error condition occured
+   \param   i_errorcode      error code unique to the calling macro
+   \param   i_condition      condition - logical expression, will be evaluated and returned by the macro
+   \param   i_text           error message, further information will be issued to the SAS log
+   \param   i_verbose        issue message to the SAS log even if i_condition evaluates to false, 
+                             default is 0
+   \return                   evaluated i_condition
 */ /** \cond */
 
 %MACRO _sasunit_handleError (

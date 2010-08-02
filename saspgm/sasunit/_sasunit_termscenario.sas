@@ -1,8 +1,12 @@
 /** \file
    \ingroup    SASUNIT_UTIL
 
-   \brief      dies wird aufgerufen nach dem Ende eines Testszenarios, um gegebenenfalls
-               einen noch laufenden Testfall abzuschlieﬂen.
+   \brief      close the last test case at the end of a test scenario.
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
    \return
 */ /** \cond */ 

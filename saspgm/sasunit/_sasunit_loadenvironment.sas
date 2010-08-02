@@ -1,16 +1,18 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      Ausführungsumgebung (Makrovariablen und Librefs / Filerefs) herstellen.
+   \brief      Initialize runtime environment (macro symbols and librefs / / filerefs)
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   i_withlibrefs 1..es sollen auch die File- und Librefs hergestellt werden. 
-                          0..nur Makrovariablen. 
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param   i_withlibrefs 1..initialize also filerefs and librefs 
+                          0..initialize only macro symbols. 
 */ /** \cond */ 
 
-/* Änderungshistorie
+/* change history
    12.06.2010 AM  neue Version 0.910
    16.07.2009 AM  neue Version 0.905
    14.07.2009 AM  neue Version 0.903L
@@ -40,22 +42,22 @@
 
 %IF %_sasunit_handleError(&l_macname, InvalidTsu, 
    %_sasunit_nobs(target.tsu) NE 1, 
-   ungültige Testdatenbank: target.tsu) 
+   invalid test database: target.tsu) 
    %THEN %GOTO errexit;
 
 %IF %_sasunit_handleError(&l_macname, MissingCas, 
    NOT %sysfunc(exist(target.cas)), 
-   ungültige Testdatenbank: target.cas) 
+   invalid test database: target.cas) 
    %THEN %GOTO errexit;
 
 %IF %_sasunit_handleError(&l_macname, MissingScn, 
    NOT %sysfunc(exist(target.scn)), 
-   ungültige Testdatenbank: target.scn) 
+   invalid test database: target.scn) 
    %THEN %GOTO errexit;
 
 %IF %_sasunit_handleError(&l_macname, MissingTst, 
    NOT %sysfunc(exist(target.tst)), 
-   ungültige Testdatenbank: target.tst) 
+   invalid test database: target.tst) 
    %THEN %GOTO errexit;
 
 DATA _null_;

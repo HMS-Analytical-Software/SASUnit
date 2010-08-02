@@ -1,17 +1,19 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief     Dateinamenerweiterung einschlieﬂlich Punkt ermitteln 
+   \brief     get file extension including the separating dot
 
-   \%getExtension(dateiname)
+   \%getExtension(file name)
 
-              Beispiel: %getExtension(test.sas) ergibt .sas
+              Example: %getExtension(test.sas) yields .sas
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   i_file     Dateiname mit Dateinamenerweiterung
-   \return  letzter Namensbestandteil ab einem Punkt, leer, wenn kein Punkt enthalten
+   \param   i_file     file name with extension
+   \return  file name extension or empty if file name does not contain a dot
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 */ /** \cond */ 
 
 %MACRO _sasunit_getExtension (

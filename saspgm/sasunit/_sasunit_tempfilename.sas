@@ -1,41 +1,42 @@
 /** \file
    \ingroup    SASUNIT_UTIL
 
-   \brief      Erzeugen eines einzigartigen Namens einer temporären Datei in der 
-               Form WORK.DATAxxx, wobei xxx eine von SAS vergebene fortlaufende
-               Ganzzahl ist.
+   \brief      creates a unique name for a temporary dataset in the form 
+               WORK.DATAxxx, where xxx is a consecutive integer.
 
-               Alle diese von einem aufrufenden Makro lokal erzeugten Dateien können am Ende des aufrufenden Makros mit
-               \%delTempFiles (delTempFiles.sas) wieder gelöscht werden. 
+               The calling program will create a dataset with this name. 
+               All of these temporary datasets can be deleted at the end of the calling macro 
+               by a call like \%delTempFiles (see delTempFiles.sas). 
 
-               Wichtig: damit nur im aufrufenden Makro erzeugte temporäre Dateien gelöscht werden, 
-               muss vor dem ersten Aufruf von \%tempFileName die Makrovariable l_first_temp definiert werden:
+               Important: in order to delete only datasets created in the calling macro program, 
+               define the macro symbol l_first_temp before the first call to \%tempFileName: 
                \%LOCAL l_first_temp;
 
-   Aufruf: \%LOCAL macvar; \%tempFileName(&macvar);
+   CAll: \%LOCAL macvar; \%tempFileName(&macvar);
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    02.02.2006
-   \param   r_tempFile     Makrovariable für Rückgabe des Dateinamens
-   \sa      delTempFiles.sas
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param   r_tempFile     name of maro variable to contain the generated name 
 */ /** \cond */ 
 
 %MACRO _sasunit_tempFileName(r_TempFile);
 
-/* Datei leer anlegen */
+/* create empty dataset */
 DATA;STOP;RUN;
 
-/* Dateinamen zurückgeben */
+/* store to macro variable */
 %LET &r_TempFile=&syslast;
-%PUT Temporäre Datei %nrstr(&)&r_tempFile ist &&&r_tempFile;
+%PUT Temporary dataset %nrstr(&)&r_tempFile is &&&r_tempFile;
 
-/* Datei wieder löschen, nur Name benötigt */
+/* delete again, need only name */
 PROC SQL NOPRINT; 
    DROP TABLE &&&r_TempFile;
 QUIT;
 
-/* merke die erste Nummer für die lokale Umgebung */
+/* store number of first dataset to l_first_temp */
 %IF %symexist (l_first_temp) %THEN %DO;
    %IF &l_first_temp = %THEN %LET l_first_temp = %substr(&syslast,10);
 %END;

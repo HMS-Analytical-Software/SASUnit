@@ -1,19 +1,19 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      Auflistung der Testfälle in einem HTML-Berichts erstellen
+   \brief      create a list of test cases for HTML report
 
    \version \$Revision$
    \author  \$Author$
    \date    \$Date$
    \sa      \$HeadURL$
 
-   \param   i_repdata      Eingabedatei (wird in reportSASUnit.sas erstellt)
-   \param   o_html         Ausgabedatei im HTML-Format
+   \param   i_repdata      input dataset (created in reportSASUnit.sas)
+   \param   o_html         output dataset in HTML format
 
 */ /** \cond */ 
 
-/* Änderungshistorie
+/* change history
    12.08.2008 AM  Mehrsprachigkeit
    29.12.2007 AM  verbesserte Beschriftungen
 */ 
@@ -61,17 +61,7 @@ DATA _null_;
       PUT "   <td>&g_nls_reportCas_008</td>";
       PUT '   <td>' duration &g_nls_reportCas_009 's</td>';
       PUT '</tr><tr>';
-/*    PUT '   <td>Gesamtergebnis</td>';
-      PUT '   <td><img src=' @;
-      SELECT (scn_res);
-         WHEN (0) PUT '"ok.png" alt="OK"' @;
-         WHEN (1) PUT '"error.png" alt="Fehler"' @;
-         WHEN (2) PUT '"manual.png" alt="manuell"' @;
-         OTHERWISE PUT '"?????" alt="Fehler in der Testausführung, siehe Log"' @;
-      END;
-      PUT '></img></td>';
-      PUT '</tr><tr>';
-*/    PUT "   <td>&g_nls_reportCas_010</td>";
+      PUT "   <td>&g_nls_reportCas_010</td>";
       PUT '</tr></table>';
 
       PUT '<table>';
@@ -79,7 +69,6 @@ DATA _null_;
       PUT '   <td class="tabheader">' "&g_nls_reportCas_011" '</td>';
       PUT '   <td class="tabheader">' "&g_nls_reportCas_012" '</td>';
       PUT '   <td class="tabheader">' "&g_nls_reportCas_013" '</td>';
-     *PUT '   <td class="tabheader">Spezifikation</td>';
       PUT '   <td class="tabheader">' "&g_nls_reportCas_014" '</td>';
       PUT '   <td class="tabheader">' "&g_nls_reportCas_015" '</td>';
       PUT '   <td class="tabheader">' "&g_nls_reportCas_016" '</td>';
@@ -94,15 +83,7 @@ DATA _null_;
       ELSE hlp = '&g_sasautos' !! put (cas_auton,1.);
       abs_path = resolve ('%_sasunit_abspath(' !! trim(hlp) !! ',' !! trim(cas_pgm) !! ')');
       PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportCas_018 " '&#x0D;' abs_path +(-1) '" href="' abs_path +(-1) '">' cas_pgm +(-1) '</a></td>';
-  /*  PUT '   <td class="datacolumn">' @;
-      IF cas_spec NE ' ' THEN DO;
-         abs_path = resolve ('%_sasunit_abspath(&g_doc,' !! trim(cas_pgm) !! ')');
-         PUT '<a class="lightlink" title="Spezifikation öffnen" href="' abs_path +(-1) '">' cas_spec +(-1) '</a>' @;
-      END;
-      ELSE 
-         PUT '&nbsp;' @;
-      PUT '</td>';
-  */  PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportCas_006" '" href="' scn_id z3. '_' cas_id z3. '_log.html">' cas_start &g_nls_reportCas_007 '</a></td>';
+      PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportCas_006" '" href="' scn_id z3. '_' cas_id z3. '_log.html">' cas_start &g_nls_reportCas_007 '</a></td>';
       duration = cas_end - cas_start;
       PUT '   <td class="datacolumn">' duration &g_nls_reportCas_009 's</td>';
       PUT '   <td class="iconcolumn"><img src=' @;

@@ -1,11 +1,12 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      die Fuﬂzeile einer HTML-Seite erstellen
+   \brief      create footer area of an HTML page for reporting
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
 */ /** \cond */ 
 

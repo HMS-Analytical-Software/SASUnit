@@ -5,21 +5,11 @@
    \brief      Utility macro for the tests of SASUNIT - memorize the ids of the last assertions;
                the ids are output with three digits and leading zeros
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-*/
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
-/*DE
-   \file
-   \ingroup    SASUNIT_UTIL
-
-   \brief      Hilfsmakro für die Tests von SASUNIT - merken der Ids des letzten Asserts,
-               werden dreistellig mit führenden Nullen ausgegeben 
-
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
 */ /** \cond */
 
 %macro markTest();

@@ -30,39 +30,9 @@
                            \%initSASUnit will be used as prefix to the specified path
    \param   i_recursive    if a search pattern is specified: 1 .. subdirectories of &i_source are searched, too.
                            default 0 ... do not search subdirectories.
-*/
-
-/*DE 
-   \file
-   \ingroup    SASUNIT_CNTL
-
-   \brief      Führt ein Testszenario oder mehrere Testszenarien aus.
-
-               weitere Informationen siehe _sasunit_doc.sas
-
-               Ablauf:
-               - prüfen, ob Testdatenbank mit \%initSASUnit initialisiert wurde, wenn nein: Ende
-               - ermitteln der auszuführenden Testszenarien
-               - für jedes Testszenario:
-                 - prüfen, ob es schon in der Testdatenbank existiert
-                 - wenn ja: prüfen, ob das Testszenario seit dem letzten Aufruf geändert wurde
-                 - wenn nein: Anlegen des Testszenarios in der Testdatenbank
-                 - wenn Testszenario neu oder geändert:
-                   - Testszenario in einer eigenen SAS-Sitzung ausführen,
-                     die über _sasunit_scenario.sas initialisiert wird.
-                     Alle Testergebnisse werden in der Testdatenbank gesammelt 
-
-   \param   i_source       Testszenario (Pfad zu SAS-Programm) 
-                           bzw. Testszenarien (Suchmuster in der Form verzeichnis\dateimuster, 
-                           z.B. test\*_test.sas für alle Dateien, die mit 
-                           _test.sas aufhören)
-                           Wenn der angegebene Pfad nicht absolut ist, wird der im Parameter i_root von 
-                           \%initSASUnit angegebene Pfad vorangestellt
-   \param   i_recursive    wenn Suchmuster angegeben: 1 .. auch Unterverzeichnisse von &i_source durchsuchen, 
-                           Voreinstellung ist 0 ... keine Unterverzeichnisse durchsuchen
 */ /** \cond */ 
 
-/* Änderungshistorie
+/* change log
    02.10.2008 NA  Modified for LINUX
    11.08.2008 AM  Fehler bereinigt für den Fall, dass in der aufrufenden Sitzung keine config-Option angegeben ist 
                   und die mit getoption abgefragte config-option dann Werte (mit Klammern) enthält, 
@@ -81,7 +51,7 @@
 %LOCAL d_dir l_source; 
 %_sasunit_tempFileName(d_dir);
 
-/*-- Betriebssystembefehle einstellen --------------------------------------*/
+/*-- set OS commands -------------------------------------------------------*/
 %LOCAL l_removedir 
        l_makedir
        l_copydir
@@ -108,21 +78,21 @@
 %end;
 
 
-/*-- prüfen, ob Testdatenbank zugewiesen -------------------------------------*/
+/*-- check if testdatabase can be accessed -----------------------------------*/
 %IF %_sasunit_handleError(&l_macname, NoTestDB, 
    NOT %sysfunc(exist(target.tsu)) OR NOT %symexist(g_project), 
-   %nrstr(Testdatenbank nicht zugewiesen, %initSASUnit vor %runSASUnit aufrufen))
+   %nrstr(test database cannot be accessed, call %initSASUnit before %runSASUnit))
    %THEN %GOTO errexit;
 
-/*-- Parameter i_recursive ---------------------------------------------------*/
+/*-- parameter i_recursive ---------------------------------------------------*/
 %IF "&i_recursive" NE "1" %THEN %LET i_recursive=0;
 
-/*-- ermittle alle Testszenarien ---------------------------------------------*/
+/*-- find out all test scenarios ---------------------------------------------*/
 %LET l_source = %_sasunit_abspath(&g_root, &i_source);
 %_sasunit_dir(i_path=&l_source, i_recursive=&i_recursive, o_out=&d_dir)
 %IF %_sasunit_handleError(&l_macname, NoSourceFiles, 
    %_sasunit_nobs(&d_dir) EQ 0, 
-   Fehler in Parameter i_source: keine Testszenarien gefunden) 
+   Error in parameter i_source: no test scenarios found) 
    %THEN %GOTO errexit;
 
 %LOCAL l_nscn i;
@@ -136,7 +106,7 @@ DATA _null_;
    CALL symput ('l_nscn', compress(put(_n_,8.)));
 RUN;
 
-/*-- ermittle alle möglichen Prüflinge ---------------------------------------*/
+/*-- find out all possible units under test ----------------------------------*/
 %LOCAL l_auto l_autonr d_examinee;
 %LET l_auto=&g_sasautos;
 %LET l_autonr=0;
@@ -153,13 +123,13 @@ RUN;
    %IF %symexist(g_sasautos&l_autonr) %THEN %LET l_auto=&&g_sasautos&l_autonr;
 %END;
 
-/*-- Schleife über alle Testszenarien ----------------------------------------*/
+/*-- loop over all test scenarios --------------------------------------------*/
 %LOCAL l_scn l_scnid l_dorun l_scndesc l_sysrc;
 %DO i=1 %TO &l_nscn;
 
    %LET l_scn = %_sasunit_stdPath(&g_root, &&l_scnfile&i);
 
-   /* Prüfe, ob Szenario ausgeführt werden muss */
+   /* check if test scenario must be run */
    %_sasunit_checkScenario(
       i_scnfile = &&l_scnfile&i
      ,i_changed = &&l_scnchanged&i
@@ -168,7 +138,7 @@ RUN;
      ,r_run     = l_dorun
    )
 
-   /*-- wenn Szenario noch nicht vorhanden: neues Szenario erstellen ---------*/
+   /*-- if scenario not present in test database: create new scenario --------*/
    %IF &l_scnid = 0 %THEN %DO;
       PROC SQL NOPRINT;
          SELECT max(scn_id) INTO :l_scnid FROM target.scn;
@@ -181,7 +151,7 @@ RUN;
          );
       QUIT;
    %END;
-   /*-- Wenn Szenario schon vorhanden und geändert: Szenariodaten löschen ----*/
+   /*-- if scenario already exists and has been changed: delete scenario -----*/
    %ELSE %IF &l_dorun %THEN %DO;
       PROC SQL NOPRINT;
          DELETE FROM target.cas WHERE cas_scnid = &l_scnid;
@@ -190,20 +160,20 @@ RUN;
    %END;
 
    %IF &l_dorun %THEN %DO;
-      %PUT ======== Testszenario &l_scnid (&l_scn) wird ausgeführt ========;
+      %PUT ======== test scenario &l_scnid (&l_scn) will be run ========;
       %PUT;
       %PUT;
    %END;
    %ELSE %DO;
-      %PUT ======== Testszenario &l_scnid (&l_scn) wird nicht ausgeführt ==;
+      %PUT ======== test scenario &l_scnid (&l_scn) will not be run ==;
       %PUT;
       %PUT;
    %END;
 
-   /*-- das Testszenario gegebenenfalls starten ------------------------------*/
+   /*-- start test scenario if necessary -------------------------------------*/
    %IF &l_dorun %THEN %DO;
 
-      /*-- Beschreibung und Startzeit des Szenarios eintragen ----------------*/
+      /*-- save description and start date and time of scenario --------------*/
       %_sasunit_getPgmDesc (i_pgmfile=&&l_scnfile&i, r_desc=l_scndesc)
       PROC SQL NOPRINT;
          UPDATE target.scn SET
@@ -213,7 +183,7 @@ RUN;
          ;
       QUIT;
  
-      /*-- sasuser vorbereiten -----------------------------------------------*/
+      /*-- prepare sasuser ---------------------------------------------------*/
       DATA _null_;
          FILE "%sysfunc(pathname(work))/x.cmd";
          PUT "&l_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
@@ -229,7 +199,7 @@ RUN;
       %LOCAL l_rc;
       %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
          
-      /*-- das Testszenario im Batch aufrufen --------------------------------*/
+      /*-- run test scenario in a new process --------------------------------*/
       %LOCAL l_parms l_parenthesis;
       %LET l_parenthesis=(;
       %IF "&g_autoexec" NE "" %THEN %DO;
@@ -258,8 +228,8 @@ RUN;
             -termstmt '%_sasunit_termScenario()'
          ;  
       %LET l_sysrc = &sysrc;
-%PUT --------------TEST1;
-      /*-- SASUSER löschen ---------------------------------------------------*/
+
+      /*-- delete sasuser ----------------------------------------------------*/
       DATA _null_;
          FILE "%sysfunc(pathname(work))/x.cmd";
          PUT "&l_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
@@ -271,7 +241,7 @@ RUN;
       %_sasunit_xcmd("%sysfunc(pathname(work))/x.cmd")
       %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
 
-      /*-- Listing löschen, wenn leer ----------------------------------------*/
+      /*-- delete listing if empty -------------------------------------------*/
       %LOCAL l_filled l_lstfile; 
       %LET l_filled=0;
       %LET l_lstfile=&g_testout/%substr(00&l_scnid,%length(&l_scnid)).lst;
@@ -285,18 +255,18 @@ RUN;
          %LET l_filled=%_sasunit_delfile(&l_lstfile);
       %END;
 
-      /*-- Die Metadaten des Testszenarios aktualisieren ---------------------*/
+      /*-- save metadata of test scenario ------------------------------------*/
       PROC SQL NOPRINT;
          %LOCAL l_result0 l_result1 l_result2;
-         /* ermittle Ergebnisse der Testfälle */
+         /* determine results of the test cases */
          SELECT count(*) INTO :l_result0 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=0;
          SELECT count(*) INTO :l_result1 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=1;
          SELECT count(*) INTO :l_result2 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=2;
          
          %LOCAL l_result;
-         %IF &l_result1 GT 0 %THEN %LET l_result=1;        /* Fehler aufgetreten */
-         %ELSE %IF &l_result2 GT 0 %THEN %LET l_result=2;  /* manuell aufgetreten */
-         %ELSE %LET l_result=0;                            /* alles OK */
+         %IF &l_result1 GT 0 %THEN %LET l_result=1;        /* error occured */
+         %ELSE %IF &l_result2 GT 0 %THEN %LET l_result=2;  /* manual occured */
+         %ELSE %LET l_result=0;                            /* everything OK */
 
          UPDATE target.scn
             SET 
@@ -308,13 +278,13 @@ RUN;
             ;
       QUIT;
 
-   %END; /* Szenario ausführen */
-%END; /* über alle Testszenarien */
+   %END; /* run scenario */
+%END; /* loop for all scenarios */
 
 %GOTO exit;
 %errexit:
    %PUT;
-   %PUT =========================== Fehler! runSASUnit wird abgebrochen! ================================;
+   %PUT =========================== Error! runSASUnit aborted! ==========================================;
    %PUT;
    %PUT;
 %exit:

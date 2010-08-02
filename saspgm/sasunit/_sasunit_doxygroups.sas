@@ -1,22 +1,26 @@
 /**
-   \defgroup   SASUNIT        SASUnit Test-Utilities
+   \defgroup   SASUNIT        SASUnit Testing Framework
 
-   \defgroup   SASUNIT_CNTL   Makros für die Steuerung der Testausführung
+   \defgroup   SASUNIT_CNTL   Execution Control
    \ingroup    SASUNIT
 
-   \defgroup   SASUNIT_SCN    Makros für den Aufbau der Testszenarien
+   \defgroup   SASUNIT_SCN    Construction of Test Scenarios
    \ingroup    SASUNIT
 
-   \defgroup   SASUNIT_ASSERT Makros für Assertions 
+   \defgroup   SASUNIT_ASSERT Assertions 
    \ingroup    SASUNIT
 
-   \defgroup   SASUNIT_UTIL   Hilfsmakros
+   \defgroup   SASUNIT_UTIL   Utility Macros
    \ingroup    SASUNIT
 
-   \defgroup   SASUNIT_REPORT Reports
+   \defgroup   SASUNIT_REPORT Reporting 
    \ingroup    SASUNIT_UTIL
 
-
-   \defgroup   SASUNIT_TEST   Testszenarien
+   \defgroup   SASUNIT_TEST   Test Scenarios
    \ingroup    SASUNIT
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 */

@@ -1,17 +1,17 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      HTML-Seiten für assertColumns erstellen
+   \brief      create HTML report for assertColumns 
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
    \sa         \$HeadURL$
 
-   \param   i_scnid        Szenario-Id der Prüfung
-   \param   i_casid        Case-Id der Prüfung
-   \param   i_tstid        Id der Prüfung
-   \param   o_html         Ausgabe in diesen Ordner
+   \param   i_scnid        scenario id of the current test
+   \param   i_casid        test case id of the current test
+   \param   i_tstid        id of the current test
+   \param   o_html         output folder
 
 */ /** \cond */ 
 

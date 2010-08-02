@@ -26,34 +26,7 @@
    \param     i_ExcludeList  optional: Names of files to be exluded from the comparison.
 
    \return    ODS documents with the contents of the libraries and a SAS file with the comparison result.
-*/
-
-/*DE
-   \file
-   \ingroup    SASUNIT_ASSERT 
-
-   \brief      Prüfen, ob alle Dateien in den Bibliotheken i_expcected und i_actual identisch sind.
-
-               Der Vergleichsreport wird erst später gemacht, da PROC REPORT keine Unterstützung von
-               ODS Document hat!
-
-   \param     i_actual       Library mit den erzeugten Dateien
-   \param     i_expected     Library mit den erwarteten Dateien
-   \param     i_desc         Beschreibung der Prüfung, Voreinstellung "Bibliotheken prüfen"
-   \param     i_LibraryCheck Strenge der Libraryprüfung. STRICT (default) -> Libraryinhalte müssen identisch sein. \n
-                             MORETABLES -> Library i_actual darf mehr Tabellen enthalten als Library i_expected. 
-   \param     i_CompareCheck Strenge der Tabellenprüfung. STRICT (default) -> Tabellen müssen identisch sein. \n
-                             MORECOLUMNS -> Tabelle in Library i_actual darf mehr Spalten haben als die Tabelle in Library i_expected. \n
-                             MOREOBS -> Tabelle in Library i_actual darf mehr Zeilen haben als die Tabelle in Library i_expected. \n
-                             MORECOLSNOBS -> Tabelle in Library i_actual darf mehr Spalten und mehr Zeilen haben als die Tabelle in Library i_expected.
-   \param     i_fuzz         optional: maximale Abweichung von erwartetem und tatsächlichem Wert, 
-                             nur für numerische Werte 
-   \param     i_id           optional: Id-Spalten für das Matchen von Beobachtungen   
-   \param     i_ExcludeList  optional Namen von Dateien, die NICHT verglichem werden sollen 
-
-   \return    ODS-Dokumente mit den Inhalten der Bibliotheken und eine SAS Datei mit dem Vergleichsergebnis.
-*/ 
-/** \cond */ 
+*/ /** \cond */ 
 
 /* 
    28.05.2010 KL  Pfade mit Sonderzeichen machen unter SAS9.2 Probleme, deshalb Strings in Hochkommata
@@ -97,48 +70,44 @@
    %local l_actual_ok l_expected_ok l_result l_path_actual l_path_expected _sysinfo l_col_names l_id_col l_counter l_id;
 
    %*************************************************************;
-   %*** Prüfen der Vorbedingungen für den Test                ***;
+   %*** Check preconditions                                   ***;
    %*************************************************************;
 
-   %*** Ist der zu prüfende Libref gültig? ***;
+   %*** check for valid actual libref ***;
    %let l_actual_ok=%sysfunc (libref (&i_actual.));
    %if (&l_actual_ok. > 0) %then %do;
-       %put &g_error: Libref i_actual (&i_actual.) ist ungültig!;
+       %put &g_error: Libref i_actual (&i_actual.) is invalid!;
        %let l_rc=1;
        %goto Update;
    %end;
 
-   %*** Ist der Referenz-Libref gültig? ***;
+   %*** check for valid expected libref ***;
    %let l_expected_ok=%sysfunc (libref (&i_expected.));
    %if (&l_expected_ok. > 0) %then %do;
-       %put &g_error: Libref i_expected (&i_expected.) ist ungültig!;
+       %put &g_error: Libref i_expected (&i_expected.) is invalid!;
        %let l_rc=1;
        %goto Update;
    %end;
 
-   %*** Heißen die Librefs gleich? ***;
+   %*** check for equal librefs ***;
    %if (&i_actual. = &i_expected.) %then  %do;
-       %put &g_error: Beide Librefs sind identisch!;
+       %put &g_error: Librefs are identical!;
        %let l_rc=1;
        %goto Update;
    %end;
 
-   %*** Sind die Pfade der Librefs gleich? ***;
+   %*** check for identical paths ***;
    %let l_path_actual = %sysfunc (pathname (&i_actual.));
    %let l_path_expected = %sysfunc (pathname (&i_expected.));
    %if ("&l_path_actual."  = "&l_path_expected.") %then %do;
-       %put &g_error: Beide Pfade sind identisch!;
+       %put &g_error: paths are identical!;
        %let l_rc=1;
        %goto Update;
    %end;
 
-   %*************************************************************;
-   %*** Prüfen der Vorbedingungen für den Test                ***;
-   %*************************************************************;
-
    %let i_LibraryCheck = %upcase (%trim(&i_LibraryCheck.));
    %if (&i_LibraryCheck. ne STRICT AND &i_LibraryCheck. ne MORETABLES) %then %do;
-       %put &g_error: Der Wert von i_LibraryCheck (%trim(&i_LibraryCheck.)) ist ungültig!;
+       %put &g_error: Value of i_LibraryCheck (%trim(&i_LibraryCheck.)) is invalid!;
        %let l_rc=1;
        %goto Update;
    %end;
@@ -146,25 +115,20 @@
    %let i_CompareCheck = %upcase (%trim(&i_CompareCheck.));
    %if (&i_CompareCheck. ne STRICT AND &i_CompareCheck. ne MORECOLUMNS 
         AND &i_CompareCheck. ne MOREOBS AND &i_CompareCheck. ne MORECOLSNOBS) %then %do;
-       %put &g_error: Der Wert von i_CompareCheck (%trim(&i_CompareCheck.)) ist ungültig!;
+       %put &g_error: Value of i_CompareCheck (%trim(&i_CompareCheck.)) is invalid!;
        %let l_rc=1;
        %goto Update;
    %end;
-
-
-   %*************************************************************;
-   %*** Ende der Prüfung der Vorbedingungen für den Test      ***;
-   %*************************************************************;
 
    %let i_ExcludeList = %upcase (%trim(&i_ExcludeList.));
 
    %local AnzCompares;
 
    %*************************************************************;
-   %*** Starten des Tests                                     ***;
+   %*** start tests                                           ***;
    %*************************************************************;
 
-   %*** Auslesen der Tabellen in den beiden Libraries ***;
+   %*** get table names from the two libraries ***;
    proc sql noprint;
       create table WORK._assertLibraryActual as
          select libname as BaseLibname,
@@ -206,9 +170,7 @@
          order by memname;
    quit;
 
-   %*** Anhand der Prüfbedingungen werden die zu prüfenden Tabellen ***;
-   %*** gekennzeichnet. Das Flag CompareFailed wid mit 1 vorbelegt  ***;
-   %*** und später überschrieben.                                   ***;
+   %*** flag tables according to check results ***;
    data work._ergebnis;
       length DoCompare CompareFailed l_rc 8;
       merge WORK._assertLibraryActual (in=InAct rename=(BaseMemname=memname))
@@ -241,7 +203,7 @@
       end;
    run;
 
-   %*** Auslesen der zu prüfenden Tabellen ***;
+   %*** determine number of compared tables ***;
    proc sql noprint;
       select sum (DoCompare) into :AnzCompares
       from work._ergebnis;
@@ -258,12 +220,12 @@
          where DoCompare=1;
       quit;
 
-      %*** ID-Spalten in Großschreibweise umwandeln ***;
+      %*** upcase for id columsn ***;
       %if (&i_id. ne _NONE_) %then %do;
          %let i_id=%upcase (&i_id.);
       %end;
 
-      %*** Pro Tabelle den Compare starten ***;
+      %*** Compare each pair of tables ***;
       %do i=1 %to &AnzCompares.;
          %if (&i_id. ne _NONE_) %then %do;
             %let l_col_names=;
@@ -306,8 +268,7 @@
       %end;
    %end;
    
-   %*** In Abhängigkeit des ReturnCodes und der Prüfparaneter wird ***;
-   %*** der Test-Ergebniswert gesetzt.                             ***;
+   %*** set test result ***;
    data work._ergebnis;
       set work._ergebnis;
       select (l_rc);
@@ -332,7 +293,7 @@
       end;
    run;
 
-   %*** Aufhübschen des Ergebnisses für die Ausgabe ***;
+   %*** format resuts for report ***;
    data work._ergebnis;
       length icon_column $45 i_LibraryCheck i_CompareCheck $15 i_id i_ExcludeList $80;
       set work._ergebnis;
@@ -347,20 +308,20 @@
       i_ExcludeList="&i_ExcludeList.";
    run;
 
-   %*** Rückgabewert für den Test ermitteln ***;
+   %*** determine return value for test ***;
    proc sql noprint;
       select max (CompareFailed) into :l_rc
       from work._ergebnis;
    quit;
 
-   %*** Ausgabe der Bibliotheksübersichten ***;
+   %*** create library listing ***;
    ods document name=testout._%substr(00&g_scnid,%length(&g_scnid))_&l_casid._&l_tstid._Library_act(WRITE);
-      TITLE "Prüfbericht - Inhalt der aktuellen Bibliothek";
+      TITLE "Contents of the actual library";
       proc print data=WORK._assertLibraryActual label noobs;
       run;
    ods document close;
    ods document name=testout._%substr(00&g_scnid,%length(&g_scnid))_&l_casid._&l_tstid._Library_exp(WRITE);
-      TITLE "Prüfbericht - Inhalt der erwarteten Bibliothek";
+      TITLE "Contents of the expected library";
       proc print data=WORK._assertLibraryExpected label noobs;
       run;
    ods document close;
@@ -373,7 +334,7 @@
    quit;
 
 %Update:;
-   /* Ergebnis aktualisieren */
+   /* update result in test database */
    PROC SQL NOPRINT;
       UPDATE target.tst 
          SET tst_res = &l_rc 
@@ -384,3 +345,4 @@
          ;
    QUIT;
 %MEND;
+/** \endcond */

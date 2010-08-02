@@ -1,17 +1,18 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      löscht eine externe Datei, wenn sie existiert. 
+   \brief      delete an external file if it exists
 
-   \%delfile (datei)
+   \%delfile (file)
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
+   \param   i_file   full path and name of external file
 
-   \param   i_file   Pfad und voller Name der zu löschenden Datei
+   \return           0 if OK, system code otherwise
 
-   \return           gibt 0 zurück wenn OK, sonst SAS-Fehlercode
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 */ /** \cond */ 
 
 %MACRO _sasunit_delFile(

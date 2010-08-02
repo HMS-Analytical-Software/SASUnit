@@ -1,32 +1,32 @@
 /** \file
    \ingroup    SASUNIT_REPORT 
 
-   \brief      das Inhaltsverzeichnis des HTML-Testberichts erstellen
+   \brief      create the table of contents on the left side of the HTML report as a tree 
 
-               Aufbau:
+               structure:
                <project>
-                Testszenarien
-                 <Szenarien>
-                  <Testfälle>
-                   <Tests>
-                Prüflinge
-                 <Autocall-Pfade>
-                  <Prüflinge>
-                   <Testfälle>
-                    <Tests> 
+                Scenarios
+                 <each test scenario>
+                  <each test case>
+                   <each test>
+                Units under Test
+                 <each autocall path>
+                  <each units under test>
+                   <each test case>
+                    <each test> 
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
    \sa         \$HeadURL$
 
-   \param   i_repdata      Eingabedatei (wird in reportSASUnit.sas erstellt)
-   \param   o_html         Testbericht im HTML-Format
-   \return Ergebnisse werden im Unterverzeichnis &g_target/rep erstellt
+   \param   i_repdata      input dataset (created in reportSASUnit.sas)
+   \param   o_html         test report in HTML format
+   \return results will be written to folder &g_target/rep 
 */ /** \cond */ 
 
-/* Änderungshistorie
-   12.08.2008 AM  Reporttexte mehrsprachig
+/* change history
+   12.08.2008 AM  national language support
    29.12.2007 AM  Texte verbessert, Teilbaum Prüflinge fertiggestellt, 
                   temporäre Dateien aufgeräumt 
 */ 
@@ -45,7 +45,7 @@
 %_sasunit_tempFilename(d_tree2)
 %_sasunit_tempFilename(d_la)
 
-/*-- Aufbereiten nach Szenarien ----------------------------------------------*/
+/*-- generate tree structure 1 for test scenarios ----------------------------*/
 DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5);
    LENGTH label popup target $255 lvl term lst1-lst5 8;
    RETAIN lst1-lst5 0;
@@ -98,7 +98,7 @@ DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5);
 
 RUN;
 
-/*-- Aufbereiten nach Programmen ---------------------------------------------*/
+/*-- generate tree structure 2 for units under test --------------------------*/
 DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5);
    LENGTH label popup target $255 lvl term lst1-lst5 8;
    RETAIN lst1-lst5 0;
@@ -202,7 +202,7 @@ DATA &d_tree;
 RUN;
 
 
-/*-- HTML erzeugen -----------------------------------------------------------*/
+/*-- generate HTML and javascript code ---------------------------------------*/
 DATA _null_;
    SET &d_tree END=eof;
    FILE "&o_html" LRECL=1024;

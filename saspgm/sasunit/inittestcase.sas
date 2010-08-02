@@ -23,29 +23,11 @@
    \param   i_desc            description of the test case
    \param   i_specdoc         optional: path of specification document
    \return
-*/
-
-/*DE
-   \file
-   \ingroup    SASUNIT_SCN 
-
-   \brief      Beginnen eines neuen Testfalls, der aus einem Aufruf des 
-               Prüflings und aus einer oder mehreren Prüfungen besteht.
-
-               Siehe Beschreibung der Testtools in _sasunit_doc.sas
-
-               intern: 
-               - Einfügen der relevanten Daten in die Testdatenbank
-               - SASLOG umleiten
-               - Flag g_inTestcase setzen 
-
-   \param   i_object          Programmdatei des Prüflings, wird im Autocall-Pfad gesucht, 
-                              falls nur der Name der Programmdatei angegeben wurde
-   \param   i_desc            Beschreibung des Testfalls 
-   \param   i_specdoc         optional: Pfad auf Spezifikationsdokument
-   \return
 */ /** \cond */ 
 
+/* change log
+   xx-xx-20xx YY  <reason for change>
+*/ 
 
 %MACRO initTestcase(
    i_object   =  
@@ -63,7 +45,7 @@
 %END;
 %LET g_inTestcase=1;
 
-/* absolute und relative Programmnamen behandeln */
+/* handle absolute and relative paths for programs */
 %LOCAL l_pgm l_auton;
 %IF %index(%sysfunc(translate(&i_object,/,\)),/) %THEN %DO;
    %LET l_pgm = %_sasunit_stdPath(&g_root,&i_object);
@@ -74,14 +56,14 @@
    %LET l_auton = %_sasunit_getAutocallNumber(&i_object);
 %END;
 
-/* bestimme die nächste Caseid */
+/* determine next test case id */
 %LOCAL l_casid;%LET l_casid=0;
 PROC SQL NOPRINT;
    SELECT max(cas_id) INTO :l_casid FROM target.cas
    WHERE cas_scnid = &g_scnid;
 %IF &l_casid=. %THEN %LET l_casid=1;
 %ELSE                %LET l_casid=%eval(&l_casid+1);
-/* Metadaten für diesen Testfall eintragen */
+/* save metadata for this test case  */
    INSERT INTO target.cas VALUES (
        &g_scnid
       ,&l_casid
@@ -95,9 +77,9 @@ PROC SQL NOPRINT;
    );
 QUIT;
 
-%PUT ========================== Testfall &l_casid =======================================================;
+%PUT ========================== test case &l_casid ======================================================;
 
-/* SASLOG und SASLIST umleiten */
+/* reroute SASLOG and SASLIST */
 PROC PRINTTO 
    NEW 
    LOG="&g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log"

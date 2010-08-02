@@ -1,5 +1,5 @@
 /** \file
-   \ingroup    SASUNIT_UTIL
+   \ingroup    SASUNIT_REPORT
 
    \brief      log-File in HTML umwandeln
 

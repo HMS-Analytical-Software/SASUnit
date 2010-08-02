@@ -1,24 +1,26 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      Gibt alle Dateinamen eines Verzeichnisses, eines Verzeichnisbaums
-               oder einer Dateigruppe zurück
+   \brief      generates a dataset with the names of all files in a directory or directory tree.
+               Wildcards may be used to specify the files to be included
 
-               Ergebnisse werden in einer SAS-Datei mit den Spalten
-               filename (absoluter Pfad zur Datei, Backslashes in Slashes umgewandelt) und 
-               changed (Änderungsdatum als datetime) zurückgegeben. 
+               Resulting SAS dataset has the columns
+               filename (name of file with absolute path, path separator is slash) 
+               changed (last modification data as SAS datetime).
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   i_path       Verzeichnis oder Dateiname oder Dateigruppe mit Wildcards
-   \param   i_recursive  1 .. rekursive Suche auch in Unterverzeichnissen, 
-                         Voreinstellung ist 0
-   \param   o_out        Ausgabedatei, voreinstellung ist work.dir. Die datei enthält
-                         eine Spalte namens filename und eine namens changed 
+   \param   i_path       name of directory or file group (containing wildcards) with full path
+   \param   i_recursive  1 .. search recursively in subdirectories, default is 0
+   \param   o_out        output dataset, default is work.dir. This dataset contains two columns
+                         named filename and changed
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
 */ /** \cond */
 
-/* Änderungshistorie
+/* version history
    14.07.2009 AM  extended for english version of windows
    02.10.2008 NA  modified for LINUX
    10.02.2008 AM  Dokumentation verbessert

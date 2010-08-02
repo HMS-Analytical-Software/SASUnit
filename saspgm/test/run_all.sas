@@ -9,14 +9,6 @@
    \date       \$Date$
    \sa         \$HeadURL$
 
-*/
-
-/*DE
-   \file
-   \ingroup    SASUNIT_TESTS 
-
-   \brief      Aufruf der Basis-Testszenarien
-
 */ /** \cond */ 
 
 OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "c:/projects/sasunit/saspgm/sasunit");

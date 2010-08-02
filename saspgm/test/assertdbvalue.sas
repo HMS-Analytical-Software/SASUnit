@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_UTIL
 
-   \brief      Utility  macro for the tests of SASUNIT - check of values in the test repository
+   \brief      Utility  macro for the tests of SASUNIT - check  values in the test repository
 
    \version    \$Revision$
    \author     \$Author$
@@ -13,26 +13,9 @@
    \param   i_col        column name without prefix
    \param   i_val        value
    \param   i_desc       optional: description of the tests
-*/
-
-/*DE
-   \file
-   \ingroup    SASUNIT_UTIL
-
-   \brief      Hilfsmakro für die Tests von SASUNIT - prüfen von Werten in der Testdatenbank
-
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
-   \sa         \$HeadURL$
-
-   \param   i_tab        tsu, scn, cas oder tst
-   \param   i_col        Spaltenname ohne Präfix
-   \param   i_val        Wert
-   \param   i_desc       optional: Beschreibung des Tests
 */ /** \cond */
 
-/* Änderungshistorie
+/* change log
    30.06.2008 AM  führende Blanks abschneiden beim Holen des Werts aus der Datenbank
 */ 
 

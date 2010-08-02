@@ -1,20 +1,22 @@
 /** \file
    \ingroup    SASUNIT_UTIL
 
-   \brief      gibt formatierten Timestamp-String aus einem angegebenen datetime-Wert zurück 
-               oder aus dem aktuellen datetime-Wert.
+   \brief      return a formatted timestamp string from a specified datetime value
+               or from the current time.
 
-               Folgender Aufruf gibt einen Timestamp in den Log aus: 
+               For instance, to show the current time in the SAS log:: 
                \%PUT \%timestamp; 
-               Folgender Aufruf gibt den 1.1.2000, 0 Uhr in den Log aus: 
+               The following call writes a specific datetime to the SAS log: 
                \%PUT \%timestamp('01JAN2000:00:00:00'dt); 
 
-   \param      dt Positionsparameter, datetime-Wert der formatiert werden soll. Wenn leer wird 
-                  die aktuelle Systemzeit genommen
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \return  Timestamp in der Form yyyy-mm-dd-hh-ss.sss
+   \param      dt input datetime value or empty to use the current date and time. 
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \return  timestamp in the form yyyy-mm-dd-hh-ss.sss
 */ /** \cond */ 
 
 %MACRO _sasunit_timestamp(dt);

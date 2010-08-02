@@ -1,22 +1,24 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      Reports für assertReport kopieren und ggfs. Frameseite für Vergleich erstellen 
-               (falls zwei Dateien angegeben wurden)
+   \brief      copy reports for assertReport and create frame page for comparison where necessary
+               (if two reports have been specified)
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    21.10.2007
-   \param   i_scnid        Szenario-Id der Prüfung
-   \param   i_casid        Case-Id der Prüfung
-   \param   i_tstid        Id der Prüfung
-   \param   i_extexp       Namenerweiterung der erwarteten Reportdatei mit führendem Punkt, 
-                           kann leer sein, dann keine Kopie
-   \param   i_extact       Namenerweiterung der tatsächlichen Reportdatei mit führendem Punkt, 
-                           kann leer sein, dann keine Kopie 
-   \param   o_html         kompletter Pfad zur Ausgabedatei für das Frameset, falls zwei 
-                           Reports verglichen werden sollen
-   \param   o_output       Ausgabeverzeichnis für Reports
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param   i_scnid        scenario id of the current test
+   \param   i_casid        test case id of the current test
+   \param   i_tstid        id of the current test
+   \param   i_extexp       extension of the expected report file with leading dot (for instance .pdf), 
+                           may be empty, in which case report will not be copied
+   \param   i_extact       extension of the actual report file with leading dot (for instance .pdf), 
+                           may be empty, in which case report will not be copied
+   \param   o_html         complete path to output file for frameset, 
+                           if two reports should be compared
+   \param   o_output       output folder for reports 
 
 */ /** \cond */  
 

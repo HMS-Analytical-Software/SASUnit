@@ -1,13 +1,15 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      den HTML-Header, die benötigten Tabs und die Überschrift erstellen
+   \brief      create HTML header, tabs and title of an HTML page
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    18.10.2007
-   \param   i_title        Titel der Seite
-   \param   i_current      Nummer des aktiven Tabs, Voreinstellung ist 1
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param   i_title        Title line of HTML page
+   \param   i_current      number of the active tab, default is 1
 
 */ /** \cond */ 
 

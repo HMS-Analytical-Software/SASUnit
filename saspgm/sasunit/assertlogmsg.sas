@@ -21,26 +21,6 @@
                            see http://support.sas.com/onlinedoc/913/getDoc/de/lrdict.hlp/a002288677.htm#a002405779
    \param   i_desc         description of the assertion to be checked, default value: "Scan for log message"
    \param   i_not          negates the assertion, if set to 1
-*/ 
-
-/*DE
-   \file
-   \ingroup    SASUNIT_ASSERT 
-
-   \brief      Prüfen, ob im Log eine bestimmte Meldung vorkommt.
-
-                 Siehe Beschreibung der Testtools in _sasunit_doc.sas
-
-               Der Test schlägt fehl, wenn die Meldung nicht gefunden wird.
-               Wenn i_not auf 1 gesetzt wird, schlägt der Test fehl, wenn die Meldung
-               gefunden wird.
-
-   \param   i_logmsg       zu suchende Meldung (Perl Regular Expression), Groß- und Kleinschrift 
-                           wird beim Vergleich nicht beachtet. 
-                           Sonderzeichen müssen durch einen vorangestellten Backslash 
-                           maskiert werden, siehe http://support.sas.com/onlinedoc/913/getDoc/de/lrdict.hlp/a002288677.htm#a002405779
-   \param   i_desc         Beschreibung der Prüfung, Voreinstellung "Logmeldung prüfen"
-   \param   i_not          negiert die Prüfung, wenn 1
 */ /** \cond */ 
 
 /* change log
@@ -63,18 +43,18 @@
    %endTestcall;
 %END;
 %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-   %PUT &g_error: assert muss nach initTestcase aufgerufen werden;
+   %PUT &g_error: assert must be called after initTestcase;
    %RETURN;
 %END;
 
 PROC SQL NOPRINT;
 %LOCAL l_casid;
-/* Ermittle Nummer des aktuellen Testfalls */
+/* determine number of the current test case */
    SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid = &g_scnid;
 QUIT;
 
 %IF &l_casid = . OR &l_casid = %THEN %DO;
-   %PUT &g_error: Assert darf nicht vor initTestcase aufgerufen werden;
+   %PUT &g_error: assert must not be called before initTestcase;
    %RETURN;
 %END;
 

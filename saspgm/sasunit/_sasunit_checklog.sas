@@ -2,16 +2,19 @@
     \file
     \ingroup  SASUNIT_UTIL
 
-    \brief    Prüfen, ob Fehler oder Warnungen in einem SAS-Log.
+    \brief    check log for errors or warnings
 
-    \param    i_logfile  Kompletter Pfad zum Logfile
-    \param    i_error    Symbol für einen Fehler
-    \param    i_warning  Symbol für eine Warnung
-    \param    r_errors   Makrovariable, die nach dem Aufruf die Anzahl Fehler enthält (999, wenn Logfile nicht existiert)
-    \param    r_warnings Makrovariable, die nach dem Aufruf die Anzahl Warnings enthält (999, wenn Logfile nicht existiert)
-    \version  1.0
-    \author   Andreas Mangold
-    \date     10.08.2007
+    \param    i_logfile  complete path and name of logfile
+    \param    i_error    symbol for error (normally error, but might be language dependant)
+    \param    i_warning  symbol for warning (normally warning, but might be language dependant)
+    \param    r_errors   macro variable to return number of errors (999 if logfile does not exist)
+    \param    r_warnings macro variable to return number of warnings (999 if logfile does not exist)
+
+    \version    \$Revision$
+    \author     \$Author$
+    \date       \$Date$
+    \sa         \$HeadURL$
+
 */ /** \cond */ 
 
 %MACRO _sasunit_checkLog(

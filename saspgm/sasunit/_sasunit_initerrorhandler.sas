@@ -1,28 +1,28 @@
 /** \file
    \ingroup    SASUNIT_UTIL
 
-   \brief      Initialisierung der Fehlerbehandlungsroutinen.
+   \brief      initialize error handling, see _sasunit_handleError.sas.
 
-               Muss vor der ersten Verwendung von handleError aufgerufen werden.
-               Setzt alle globalen Variablen für die Fehlerbehandlung zurück
+               Must be called before first call to _sasunit_handleerror.
+               Resets global variables for error handling. 
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \sa      _sasunit_handleError.sas
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
 */ /** \cond */ 
 
 %MACRO _sasunit_initErrorHandler;
-/* globales Signal für die Rückgabe von Fehlerbedingungen 
-   an aufrufende Makros */
+/* global signal for return of error conditions to calling macros programs */
 %GLOBAL g_error_code; 
 %LET g_error_code=;
 
-/* letzte Fehlermeldung */
+/* most recent error message */
 %GLOBAL g_error_msg; 
 %LET g_error_msg=;
 
-/* letzter Makro, der Fehler erzeugt hat */
+/* macro program which generated the most recent error */
 %GLOBAL g_error_macro; 
 %LET g_error_macro=;
 

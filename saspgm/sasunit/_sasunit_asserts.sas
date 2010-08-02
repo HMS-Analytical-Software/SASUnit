@@ -1,22 +1,23 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      Wird von allen assertXxxxx-Makros aufgerufen, fügt die 
-               Informationen in die Tabelle tst ein.
+   \brief      Called by assert macros, fills table tst
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param  i_type           Typ der Prüfung / Name des aufrufenden assertXxxxx-Makros
-   \param  i_expected       erwarteter Wert
-   \param  i_actual         tatsächlicher Wert 
-   \param  i_desc           Beschreibung der Prüfung
-   \param  i_result         Testergebnis 0 .. OK, 1 .. nicht OK, 2 .. manuell
-   \param  r_casid          optional: Rückgabe Testfallnummer 
-   \param  r_tstid          optional: Rückgabe Testnummer 
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param  i_type           type of check, name of the calling assert macro
+   \param  i_expected       expected value
+   \param  i_actual         actual value
+   \param  i_desc           description of the check
+   \param  i_result         result 0 .. OK, 1 .. not OK, 2 .. manual check
+   \param  r_casid          optional: return number of current test case 
+   \param  r_tstid          optional: return number of this check within test case
 */ /** \cond */ 
 
-/* Änderungshistorie
+/* change history
    07.02.2008 AM  Quoting für Texte verbessert, die doppelte Hochkommata enthalten
 */ 
 
@@ -41,13 +42,13 @@
 %END;
 
 PROC SQL NOPRINT;
-   /* Ermittle Nummer des aktuellen Testfalls */
+   /* determine number of test case */
    SELECT max(cas_id) INTO :&r_casid FROM target.cas WHERE cas_scnid=&g_scnid;
    %IF &&&r_casid=. %THEN %DO;
       %PUT &g_error: _sasunit_asserts: Fehler beim Ermitteln der Testfall-Id;
       %RETURN;
    %END;
-   /* Ermittle neue Nummer für die aktuelle Prüfung */
+   /* generate a new check number */
    SELECT max(tst_id) INTO :&r_tstid 
    FROM target.tst 
    WHERE 
@@ -68,7 +69,7 @@ PROC SQL NOPRINT;
    );
 QUIT;
 
-%PUT ========================== Prüfung &&&r_casid...&&&r_tstid (&i_type) =====================================;
+%PUT ========================== Check &&&r_casid...&&&r_tstid (&i_type) =====================================;
 
 %LET &r_casid = %sysfunc(putn(&&&r_casid,z3.));
 %LET &r_tstid = %sysfunc(putn(&&&r_tstid,z3.));

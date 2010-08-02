@@ -1,16 +1,17 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      HTML-Seiten für assertLibrary erstellen
+   \brief      create HTML pages for assertLibrary 
 
-   \version 1.0
-   \author  Klaus Landwich
-   \date    14.12.2007
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
-   \param   i_scnid        Szenario-Id der Prüfung
-   \param   i_casid        Case-Id der Prüfung
-   \param   i_tstid        Id der Prüfung
-   \paramt  o_html         output folder
+   \param   i_scnid        scenario id of the current test
+   \param   i_casid        test case id of the current test
+   \param   i_tstid        id of the current test
+   \param   o_html         output folder
 
 */ /** \cond */ 
 

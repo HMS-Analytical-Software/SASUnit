@@ -1,17 +1,19 @@
 /** \file
    \ingroup    SASUNIT_UTIL
 
-   \brief      Ausführen eines Betriebssystemkommandos
+   \brief      run an operation system command
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   cmd     Betriebssystemkommandos, notwendige Quotes eingefügt
-   \return  setzt Fehlervariable &sysrc auf ungleich 0, wenn Fehler aufgetreten.
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param   cmd     OS command with quotes where necessary 
+   \return  error symbol &sysrc will be set to a value other than 0, if an error occurs.
 
  */ /** \cond */ 
 
-/* Änderungshistorie
+/* change history
    02.10.2008 NA  Anpassung an Linux
 */ 
 

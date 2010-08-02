@@ -1,15 +1,18 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      Prüft, ob ein Verzeichnis existiert. 
+   \brief      check whether directory exists 
 
-   \%existDir(verzeichnis)
+   \%existDir(directory)
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   i_dir     kompletter Pfad zu einem zu prüfenden Verzeichnis
-   \return  1 .. Verzeichnis existiert, 0 .. existiert nicht
+   \param   i_dir     complete path to directory to be checked
+   \return  1 .. directory exists, 0 .. directory does not exists
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
 */ /** \cond */ 
 
 %MACRO _sasunit_existDir(i_dir);

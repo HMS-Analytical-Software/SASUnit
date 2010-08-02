@@ -1,19 +1,19 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      Auflistung der Prüflinge in einem HTML-Bericht erstellen
+   \brief      create a list of units under test for HTML report
 
    \version \$Revision$
    \author  \$Author$
    \date    \$Date$
    \sa      \$HeadURL$
 
-   \param   i_repdata      Eingabedatei (wird in reportSASUnit.sas erstellt)
-   \param   o_html         Ausgabedatei im HTML-Format
+   \param   i_repdata      input data set (created in reportSASUnit.sas)
+   \param   o_html         output HTML file
 
 */ /** \cond */ 
 
-/* Änderungshistorie
+/* change history
    12.08.2008 AM  Mehrsprachigkeit
    29.12.2007 AM  Neuererstellung
 */ 
@@ -23,8 +23,8 @@
   ,o_html    =
 );
 
-/*-- ermittle Anzahl Szenarien pro Prüfling sowie 
-     Anzahl Testfälle pro Prüfling und Prüfergebnis --------------------------*/
+/*-- determine number of scenarios 
+     and number of test cases per unit under test ----------------------------*/
 %LOCAL d_rep1 d_rep2;
 %_sasunit_tempFileName(d_rep1)
 %_sasunit_tempFileName(d_rep2)

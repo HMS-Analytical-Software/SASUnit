@@ -1,17 +1,17 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      prüft, ob ein übergebener Pfad absolut oder leer ist. Wenn nicht, wird 
-               er mit dem Rootpfad verkettet
+   \brief      check whether &i_path is absolute or empty. If not, append to &i_root.
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
-   \param   i_root   optional: Rootpfad
-   \param   i_path   zu prüfender Pfad
+   \param   i_root   optional: root path
+   \param   i_path   path to be checked
 
-   \return           gibt den geänderten Pfad zurück
+   \return           modified path
 */ /** \cond */ 
 
 %MACRO _sasunit_abspath (

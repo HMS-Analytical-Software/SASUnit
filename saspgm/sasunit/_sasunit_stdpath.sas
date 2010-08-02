@@ -1,14 +1,16 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      standardisiert einen Pfad und macht ihn relativ zu einem Rootpfad
+   \brief      standardizes a path makes it relative to a root path
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   i_root       Rootpfad
-   \param   i_path       Name der Makrovariable mit dem zu standardisierenden Pfad
-   \return  standardisierter Pfad 
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param   i_root       root path
+   \param   i_path       path to be standardized
+   \return  standardized path
 */ /** \cond */ 
 
 %MACRO _sasunit_stdPath(

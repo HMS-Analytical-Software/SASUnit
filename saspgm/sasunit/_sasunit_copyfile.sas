@@ -1,22 +1,24 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      binäres Kopieren einer externen Datei
+   \brief      copy file byte by byte
 
-               keine Fehlerbehandlung
+               no error checking
 
-   \%copyfile (eingabe, ausgabe)
+   \%copyfile (input, output)
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   i_file   Eingabedatei mit komplettem Pfad
-   \param   o_file   Ausgabedatei mit komplettem Pfad
+   \param   i_file   input file with complete path
+   \param   o_file   output file with complete path
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 */ /** \cond */
 
 %MACRO _sasunit_copyFile (
-    i_file  /* Eingabedatei */
-   ,o_file  /* Ausgabedatei */
+    i_file  /* input file */
+   ,o_file  /* output file */
 );
 DATA _null_;
    INFILE "&i_file" RECFM=N LRECL=1048576 LENGTH=l SHAREBUFFERS BLKSIZE=32768;

@@ -1,11 +1,13 @@
 /** \file
    \ingroup    SASUNIT_TEST
 
-   \brief      Test von _sasunit_nobs.sas
+   \brief      Test of _sasunit_nobs.sas
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
 */ /** \cond */ 
       
 data test1;
@@ -14,9 +16,9 @@ data test1;
    end;
 run;
 
-%initTestcase(i_object=_sasunit_nobs.sas, i_desc=Standardfall mit 100 Obs)
+%initTestcase(i_object=_sasunit_nobs.sas, i_desc=standard case with 100 obs)
 %LET g_nobs = %_sasunit_nobs(test1);
-%assertEquals(i_expected=100, i_actual=&g_nobs, i_desc=Anzahl Obs muss 100 sein)
+%assertEquals(i_expected=100, i_actual=&g_nobs, i_desc=number of observations must be 100)
 %assertLog()
 %endTestcase()
 
@@ -24,14 +26,14 @@ data test2;
    stop;
 run;
 
-%initTestcase(i_object=_sasunit_nobs.sas, i_desc=Datei mit 0 Obs)
+%initTestcase(i_object=_sasunit_nobs.sas, i_desc=dataset with 0 obs)
 %LET g_nobs = %_sasunit_nobs(test2);
-%assertEquals(i_expected=0, i_actual=&g_nobs, i_desc=Anzahl Obs muss 0 sein)
+%assertEquals(i_expected=0, i_actual=&g_nobs, i_desc=number of observations must be 0)
 %assertLog()
 
-%initTestcase(i_object=_sasunit_nobs.sas, i_desc=Nicht vorhandene Datei)
+%initTestcase(i_object=_sasunit_nobs.sas, i_desc=dataset not existing)
 %LET g_nobs = %_sasunit_nobs(test3);
-%assertEquals(i_expected=0, i_actual=&g_nobs, i_desc=Anzahl Obs muss 0 sein)
+%assertEquals(i_expected=0, i_actual=&g_nobs, i_desc=number of observations must be 0)
 %assertLog()
 %endTestcase;
 /** \endcond */

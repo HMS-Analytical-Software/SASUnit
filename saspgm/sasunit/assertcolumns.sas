@@ -47,53 +47,9 @@
                                      data set. default setting is MAX
    \return  ODS-document containing a comparison report; moreover, if o_maxReportObs ne 0, the expected and 
             the actual data set are written to testout
-*/
-
-/*DE 
-   \file
-   \ingroup    SASUNIT_ASSERT
-
-   \brief      Prüfen, ob die Werte der Spalten zweier SAS-Dateien 
-               übereinstimmen (PROC COMPARE).
-
-               Siehe Beschreibung der Testtools in _sasunit_doc.sas
-
-               Damit eine Übereinstimmung signalisiert wird, müssen alle Spalten,
-               die in Datei i_expected enthalten sind, auch in Datei i_actual
-               enthalten sein und eine maximale Abweichung von i_fuzz haben
-               (Achtung: heißt in PROC COMPARE criterion, fuzz bedeutet dort 
-               etwas anderes.
-   
-   \param   i_expected     Datei mit erwarteten Werten
-   \param   i_actual       Datei mit tatsächlichen Werten
-   \param   i_desc         Beschreibung der Prüfung
-   \param   i_fuzz         optional: maximale Abweichung von erwartetem und tatsächlichem Wert, 
-                           nur für numerische Werte 
-   \param   i_allow        optional: erlaubte Abweichungen, Voreinstellung ist DSLABEL LABEL COMPVAR
-                           DSLABEL  Data set labels differ 
-                           DSTYPE   Data set types differ 
-                           INFORMAT Variable has different informat 
-                           FORMAT   Variable has different format 
-                           LENGTH   Variable has different length 
-                           LABEL    Variable has different label 
-                           BASEOBS  Base data set has observation not in comparison 
-                           COMPOBS  Comparison data set has observation not in base 
-                           BASEBY   Base data set has BY group not in comparison 
-                           COMPBY   Comparison data set has BY group not in base 
-                           BASEVAR  Base data set has variable not in comparison 
-                           COMPVAR  Comparison data set has variable not in base 
-                           VALUE    A value comparison was unequal 
-                           TYPE     Conflicting variable types 
-                           BYVAR    BY variables do not match 
-                           ERROR    Fatal error: comparison not done
-   \param   i_id           optional: Id-Spalten für das Matchen von Beobachtungen    
-   \param   o_maxReportObs optional: Anzahl der Observations, die von der erwarteten und tatsächlichen 
-                           Datei kopiert werden sollen. Voreinstellung ist MAX
-   \return  ODS-Dokument mit Vergleichsbericht sowie, falls o_maxReportObs ne 0, die erwartete und die 
-            tatsächliche Datei werden nach testout geschrieben
 */ /** \cond */ 
 
-/* Änderungshistorie
+/* change history
    01.07.2008 AM  umfangreiche Überarbeitung:
                   i_allow eingeführt, um erlaubte Unterschiede steuern zu können, 
                   i_maxReportObs durch o_maxReportObs ersetzt
@@ -109,10 +65,10 @@
    ,i_allow        = DSLABEL LABEL COMPVAR
    ,i_id           =       
    ,o_maxReportObs = max
-   ,i_maxReportObs =      /* veraltet */
+   ,i_maxReportObs =      /* obsolete */
 );
 
-/*-- zulässige Symbole für i_allow -------------------------------------------*/
+/*-- possible values for i_allow ---------------------------------------------*/
 %LET l_allowSymbols=
    DSLABEL 
    DSTYPE 
@@ -132,7 +88,7 @@
    ERROR
 ;
 
-/*-- Parameter i_allow prüfen ------------------------------------------------*/
+/*-- check parameter i_allow  ------------------------------------------------*/
 %LOCAL l_i l_j l_symboli l_symbolj l_potenz l_mask; 
 %LET l_mask=0;
 %LET l_i=0; 
@@ -147,26 +103,26 @@
       %IF &l_symboli = &l_symbolj %THEN %goto label1;
       %LET l_potenz = &l_potenz*2;
    %END;
-   %PUT &g_error: assertColumns: ungültiges Symbol &l_symboli in Parameter i_allow;
+   %PUT &g_error: assertColumns: invalid symbol &l_symboli in parameter i_allow;
    %RETURN;
 %label1:
    %LET l_mask = %sysfunc(bor(&l_mask, &l_potenz));
 %END;
 
-/*-- veralteten Parameter i_maxReportObs unterstützen ------------------------*/
+/*-- support obsolete parameter i_maxReportObs -------------------------------*/
 %IF %length(&i_maxReportObs) %then %LET o_maxReportObs = &i_maxReportObs;
 
-/*-- Aufrufsequenz sicherstellen ---------------------------------------------*/
+/*-- verify correct sequence of calls-----------------------------------------*/
 %GLOBAL g_inTestcase;
 %IF &g_inTestcase EQ 1 %THEN %DO;
    %endTestcall()
 %END;
 %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-   %PUT &g_error: assert muss nach initTestcase aufgerufen werden;
+   %PUT &g_error: assert can only be called after initTestcase;
    %RETURN;
 %END;
 
-/*-- aktuelle Testfall- und neue Prüfungsnummer holen ------------------------*/
+/*-- get current ids for test case and test --------- ------------------------*/
 %LOCAL l_casid l_tstid;
 %_sasunit_asserts(
     i_type     = assertColumns
@@ -178,20 +134,20 @@
    ,r_tstid    = l_tstid
 )
 
-/*-- Prüfen, ob Zieldatei existiert ------------------------------------------*/
+/*-- check if actual dataset exists ------------------------------------------*/
 %LOCAL l_rc l_actual; 
 %IF NOT %sysfunc(exist(&i_actual,DATA)) AND NOT %sysfunc(exist(&i_actual,VIEW)) %THEN %DO;
    %LET l_rc=1;
-   %LET l_actual=ERROR: tatsächlich erzeugte Tabelle nicht gefunden.;
+   %LET l_actual=ERROR: actual table not found.;
 %END;
 
-/*-- Prüfen, ob Datei mit den erwarteten Werten existiert --------------------*/
+/*-- check if expected dataset exists ----------------------------------------*/
 %ELSE %IF NOT %sysfunc(exist(&i_expected,DATA)) AND NOT %sysfunc(exist(&i_expected,VIEW))%THEN %DO;
    %LET l_rc=1;
-   %LET l_actual=&l_actual ERROR: erwartete Tabelle nicht gefunden.;
+   %LET l_actual=&l_actual ERROR: expected table not found.;
 %END;
 
-/*-- Dateien vergleichen -----------------------------------------------------*/
+/*-- compare tables ----------------------------------------------------------*/
 %ELSE %DO;
 
    %LOCAL l_formchar l_compResult;
@@ -214,10 +170,10 @@
    ODS DOCUMENT CLOSE;
    OPTIONS FORMCHAR="&l_formchar";
 
-/*-- Vergleichsergebnis prüfen -----------------------------------------------*/
+/*-- check proc compare result -----------------------------------------------*/
    %LET l_rc=%eval(%sysfunc(bxor(%sysfunc(bor(&l_mask,&l_compResult)),&l_mask)) NE 0);
 
-/*-- Vergleichsergebnis formatieren ------------------------------------------*/
+/*-- format compare result ---------------------------------------------------*/
    %LET l_j=0;
    %LET l_potenz=1;
    %DO %WHILE(%length(%scan(&l_allowSymbols,%eval(&l_j+1),%str( ))));
@@ -229,9 +185,9 @@
       %LET l_potenz = &l_potenz*2;
    %END;
 
-%END; /* i_expected und i_actual vorhanden */
+%END; /* i_expected and i_actual exist */
 
-/*-- Vergleichsergebnis in der Datenbank aktualisieren -----------------------*/
+/*-- update comparison result in test database -------------------------------*/
 PROC SQL NOPRINT;
    UPDATE target.tst 
       SET 
@@ -244,7 +200,7 @@ PROC SQL NOPRINT;
       ;
 QUIT;
 
-/*-- Daten in den Zielbereich schreiben --------------------------------------*/
+/*-- write dataset sto the target area ---------------------------------------*/
 %IF &o_maxreportobs NE 0 %THEN %DO;
    %IF %sysfunc(exist(&i_expected,DATA)) OR %sysfunc(exist(&i_expected,VIEW)) %THEN %DO;
       DATA testout._%substr(00&g_scnid,%length(&g_scnid))_&l_casid._&l_tstid._columns_exp;

@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_SCN 
 
-   \brief      Determines an invocation of a program under test
+   \brief      Ends an invocation of a program under test
 
                Please refer to the description of the test tools in _sasunit_doc.sas
 
@@ -15,19 +15,6 @@
    \author     \$Author$
    \date       \$Date$
    \sa         \$HeadURL$
-*/
-
-/*DE \file
-   \ingroup    SASUNIT_SCN 
-
-   \brief      Beendet den Aufruf des Prüflings
-
-               Siehe Beschreibung der Testtools in _sasunit_doc.sas
-
-               Sequenz sicherstellen
-               SASLOG-Umleitung beenden
-               ODS-Destinations rücksetzen
-
 */ /** \cond */ 
 
 
@@ -40,14 +27,14 @@
 %END;
 %LET g_inTestcase=2;
 
-/* Logdatei und Listingdatei des Testszenarios wieder einsetzen */
+/* restore log and listing of test scenario */
 PROC PRINTTO 
    LOG="&g_log/%substr(00&g_scnid,%length(&g_scnid)).log"
    PRINT="&g_testout/%substr(00&g_scnid,%length(&g_scnid)).lst"
 ;
 RUN;
 
-/* Endezeit des Testfalls ermitteln und eintragen */
+/* determine and store end time */
 PROC SQL NOPRINT;
 %LOCAL l_casid;
    SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid=&g_scnid;
@@ -61,7 +48,7 @@ PROC SQL NOPRINT;
       cas_id    = &l_casid;
 QUIT;
 
-/* Listing löschen, wenn leer */
+/* delete listing if empty */
 %LOCAL l_casid;
 PROC SQL NOPRINT;
    SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid=&g_scnid;

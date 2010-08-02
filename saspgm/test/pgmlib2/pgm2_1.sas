@@ -9,26 +9,13 @@
 \date       \$Date$
 \sa         \$HeadURL$
 
-*/
-
-/*DE
-\defgroup   SASUNIT_TEST
-\file
-
-\brief      Beispielprogramm für tree_test.sas
-
-\version    \$Revision$
-\author     \$Author$
-\date       \$Date$
-\sa         \$HeadURL$
-
 */ /** \cond */ 
 
-/* Änderungshistorie
+/* change log
    28.12.2007 AM  Neuerstellung
 */ 
 
 %MACRO pgm2_1();
-%PUT Aufruf von pgm2_1;
+%PUT Call of pgm2_1;
 %MEND pgm2_1;
 /** \endcond */

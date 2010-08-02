@@ -3,10 +3,16 @@
 
    \brief      Test of _sasunit_dir.sas
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    14.07.2009
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
 */ /** \cond */ 
+
+/* Change log 
+   xx.xx.xxxx YY  <reason>
+*/
 
 /*-- Prepare file to check for correct results -------------------------------*/
 data dircheck; 

@@ -2,41 +2,26 @@
    \file
    \ingroup    SASUNIT_SCN
 
-   \brief      Determines a test case
+   \brief      Ends a test case
 
                Please refer to the description of the test tools in _sasunit_doc.sas
 
                Result and finish time are added to the test repository.
 
-   \param      i_assertLog if 1 .. an assertLog (0,0) will be invoked for the test case to be determined, provided that
+   \param      i_assertLog if 1 .. an assertLog (0,0) will be invoked for the test case to be ended, provided that
                            assertLog was not invoked yet
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
    \sa         \$HeadURL$
-*/
-
-/*DE
-   \file
-   \ingroup    SASUNIT_SCN
-
-   \brief      einen Testfall beenden
-
-               Siehe Beschreibung der Testtools in _sasunit_doc.sas
-
-               Ergebnis und Endzeit in Testdatenbank einfügen.
-
-   \param      i_assertLog wenn 1 .. ein assertLog (0,0) für den zu beendenden Testfall absetzen, falls
-                           noch keines abgesetzt wurde
-
 */ /** \cond */ 
 
 %MACRO endTestcase(i_assertLog=1);
 
 PROC SQL NOPRINT;
 %LOCAL l_casid l_assertLog;
-/* Ermittle Nummer des aktuellen Testfalls */
+/* determine id of current test case */
    SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid=&g_scnid;
 %LET l_casid = &l_casid;
 %IF &l_casid=. %THEN %DO;
@@ -44,7 +29,7 @@ PROC SQL NOPRINT;
    %RETURN;
 %END;
 %IF &i_assertLog %THEN %DO;
-/* prüfe, ob bereits ein assertLog abgesetzt wurde, ggfs. dieses absetzen */
+/* call assertLog if not already coded by programmer */
    SELECT count(*) INTO :l_assertLog 
    FROM target.tst
    WHERE tst_scnid = &g_scnid AND tst_casid = &l_casid AND tst_type='assertLog';
@@ -66,17 +51,17 @@ QUIT;
 
 PROC SQL NOPRINT;
 %LOCAL l_result0 l_result1 l_result2;
-/* ermittle Ergebnisse der Tests */
+/* determine test results */
    SELECT count(*) INTO :l_result0 FROM target.tst WHERE tst_scnid=&g_scnid AND tst_casid=&l_casid AND tst_res=0;
    SELECT count(*) INTO :l_result1 FROM target.tst WHERE tst_scnid=&g_scnid AND tst_casid=&l_casid AND tst_res=1;
    SELECT count(*) INTO :l_result2 FROM target.tst WHERE tst_scnid=&g_scnid AND tst_casid=&l_casid AND tst_res=2;
 QUIT;
 
-/* bestimme Gesamtergebnis */
+/* determine overall result of testcase */
 %LOCAL l_result;
-%IF &l_result1 GT 0 %THEN %LET l_result=1;        /* Fehler aufgetreten */
-%ELSE %IF &l_result2 GT 0 %THEN %LET l_result=2;  /* manuell aufgetreten */
-%ELSE %LET l_result=0;                            /* alles OK */
+%IF &l_result1 GT 0 %THEN %LET l_result=1;        /* errors occured */
+%ELSE %IF &l_result2 GT 0 %THEN %LET l_result=2;  /* manual checks occured */
+%ELSE %LET l_result=0;                            /* not errors and no manual checks */
 
 PROC SQL NOPRINT;
    UPDATE target.cas

@@ -2,32 +2,37 @@
 \file
 \ingroup    SASUNIT_UTIL
 
-\brief      prüfe, ob ein Szenario ausgeführt werden muss:
+\brief      determine whether a test scenario has to be executed
 
-            Szenarien, für die eine der folgenden Bedingungen zutrifft, müssen ausgeführt werden:
-            - das Szenario ist bisher nicht bekannt
-            - das Szenario wurde seit dem letzten Lauf geändert 
-            - das Szenario enthält einen Testfall, dessen Prüfling 
-              (absoluter oder relativer Pfad) seit dem letzten Lauf geändert wurde
-            - das Szenario enthält einen Testfall, dessen Prüfling nicht gefunden wird
-              (Szenario muss ausgeführt werden, damit man hierauf aufmerksam wird)
+            conditions when test scenario has to be executed
+            - new test scenario
+            - test scenario has been changed since last run 
+            - test scenario contains a test case, where the unit under test (SAS program to 
+              be tested) has been changed since last execution of the scenario. 
+            - test scenario contains a unit under test which does not exist 
+              (scenario has to be executed so that this will be noticed)
 
-\param      i_scnfile Name des Testszenarioprogramms (absoluter Pfad)
-\param      i_changed Änderungszeitpunkt (Datetimewert)
-\param      i_dir SAS-Datei, in der alle Programme stehen, die in allen Autocall-Pfaden 
-                  gefunden wurden. Die Datei enthält folgende Variablen: 
-                  - filename Absoluter Pfad zu der Datei 
-                  - changed  Änderungsdatum
-                  - auton    Autocall-Nummer 0..9
-                  (erzeugt mit _sasunit_dir)
-\param      r_scnid Name der Makrovariable, in der die Szenario-Id zurückgegeben wird, 
-                    falls das Szenario bereits bekannt ist, andernfalls 0
-\param      r_run Name der Makrovariable, in der 1 (ausführen) oder 0 (nicht ausführen) 
-                  zurückgegeben wird
-\return     &r_scnid und &r_run
+\param      i_scnfile absolute path to test scenario program
+\param      i_changed last modification date and time of test scenario (SAS date time value)
+\param      i_dir SAS dataset with all programs in all autocall libraries.
+                  The data set contains the following variables: 
+                  - filename absolute path to program 
+                  - changed  datetime of last modification
+                  - auton    autocall number 0..9
+                  (dataset should be created with _sasunit_dir)
+\param      r_scnid name of macro variable to return scenario id, if scenario can be found, 
+                    0 otherwise
+\param      r_run name of macro variable to return 1 for execute or 0 for do not execute
+\return     &r_scnid and &r_run
+
+\version    \$Revision$
+\author     \$Author$
+\date       \$Date$
+\sa         \$HeadURL$
+
 */ /** \cond */ 
 
-/* Änderungshistorie
+/* change history
    15.12.2007 AM  Neuerstellung 
 */ 
 
@@ -42,15 +47,15 @@
 %local d_pgm;
 %_sasunit_tempFileName(d_pgm)
 
-/*-- Standardwert der Rückgabe setzen ----------------------------------------*/
+/*-- set default return value ------------------------------------------------*/
 %let &r_scnid=;
 %let &r_run=0; 
 
-/*-- absoluten Pfad standardisieren ------------------------------------------*/
+/*-- standardize absolute path -----------------------------------------------*/
 %local l_scnfile;
 %let l_scnfile = %_sasunit_stdPath (&g_root, &i_scnfile);
 
-/*-- Ausführungszeitpunkt Testszenario ermitteln -----------------------------*/
+/*-- determine time of last execution of test scenario -----------------------*/
 %local ll_scnid l_lastrun;
 %let l_lastrun=0;
 %let ll_scnid=0;
@@ -60,7 +65,7 @@ proc sql noprint;
    where upcase(scn_path) = "%upcase(&l_scnfile)";
 quit;
 
-/*-- Ausführen, wenn Szenario nicht gefunden oder gefunden und geändert ------*/
+/*-- execute, if scenario not found or found and changed ---------------------*/
 %if &l_lastrun<&i_changed %then %do;
    %put _sasunit_checkScenario <1>;
    %let &r_scnid = &ll_scnid;
@@ -68,7 +73,7 @@ quit;
    %goto exit;
 %end;
 
-/*-- ermittle Prüflinge in Autocallpfaden und deren Änderungsdatum -----------*/
+/*-- determine units under test in autocall libraries and their change dtime -*/
 %local l_pgmcount;
 %let l_pgmcount=0;
 proc sql noprint;
@@ -83,7 +88,7 @@ proc sql noprint;
    ;
 quit;
 
-/*-- Ausführen, wenn ein Programm neuer ist oder fehlt -----------------------*/
+/*-- execute, if at least one unit under test is newer or is missing ---------*/
 %if &l_pgmcount %then %do;
    %put _sasunit_checkScenario <2>;
    %let &r_scnid = &ll_scnid;
@@ -91,7 +96,7 @@ quit;
    %goto exit;
 %end;
 
-/*-- ermittle Prüflinge außerhalb Autocallpfaden -----------------------------*/
+/*-- look for units under test not in autocall libraries ---------------------*/
 proc sql noprint;
    create table &d_pgm as
       select cas.cas_pgm
@@ -101,7 +106,7 @@ proc sql noprint;
    ;
 quit;
 
-/*-- nicht ausführen, wenn kein Programm außerhalb Autocallpfaden gefunden ---*/
+/*-- do not execute if none found --------------------------------------------*/
 %if %_sasunit_nobs(&d_pgm) = 0 %then %do;
    %put _sasunit_checkScenario <3>;
    %let &r_scnid = &ll_scnid;
@@ -109,7 +114,7 @@ quit;
    %goto exit;
 %end;
 
-/*-- ermittle Änderungsdatum für diese Programme -----------------------------*/
+/*-- determine last modification dtime for those units under test ------------*/
 %local i;
 %do i=1 %to %_sasunit_nobs(&d_pgm);
    %local l_pgm&i;
@@ -132,7 +137,7 @@ run;
       ;
    quit;
 
-   /*-- Szenario ausführen, wenn Prüfling neuer oder nicht gefunden ----------*/
+   /*-- execute scenario, if unit under test newer or not found --------------*/
    %if &l_lastrun < &l_pgmchanged or &l_pgmchanged=0 %then %do;
       %put _sasunit_checkScenario <4>;
       %let &r_scnid = &ll_scnid;
@@ -142,13 +147,13 @@ run;
 
 %end;
 
-/*-- Szenario nicht ausführen ------------------------------------------------*/
+/*-- do not execute scenario -------------------------------------------------*/
 %put _sasunit_checkScenario <5>;
 %let &r_scnid = &ll_scnid;
 %let &r_run = 0;
 
 %exit:
-/*-- aufräumen ---------------------------------------------------------------*/
+/*-- tidy up -----------------------------------------------------------------*/
 proc datasets nolist nowarn;
    delete %scan(&d_pgm,2,.);
 quit;

@@ -1,21 +1,20 @@
 /** \file
    \ingroup    SASUNIT_UTIL
 
-   \brief      Löschen aller SAS-Dateien der Form WORK.DATAxxx, siehe tempFileName.sas
+   \brief      delete all SAS datasets in the form WORK.DATAxxx, see tempFileName.sas
 
-          Sollen die Dateien für das Debugging ausnahmsweise erhalten bleiben,
-          die globale Makrovariable g_deltempfiles_debug definieren.
+          define global symbol g_deltempfiles_debug if datasets should not be deleted
 
-          Falls die Makrovariable l_first_temp im aufrufenden Programm 
-          gesetzt ist (siehe Makro tempFileName) werden nur temporäre Dateien
-          ab dieser Nummer gelöscht. 
+          if l_first_temp has been set to a number by the calling program, (see macro tempFileName) 
+          only temporary datasets beginning with that number will be deleted. 
 
    \%delTempFiles;
    \sa    tempFileName.sas
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    02.02.2006
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 */ 
 /** \cond */ 
 

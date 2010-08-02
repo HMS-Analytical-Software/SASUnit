@@ -1,18 +1,21 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      kopiert einen kompletten Verzeichnisbaum
-               verwendet Windows XCOPY, daher nur unter Windows
+   \brief      copy a complete directory tree.
+               Uses Windows XCOPY or Unix cp
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   i_from       Einstiegspunkt des zu kopierenden Verzeichnisbaums
-   \param   i_to         Ziel des Kopiervorgangs
-   \return  automatische Makrovariable siehe &sysrc ist 0, wenn alles OK
+   \param   i_from       root of directory tree
+   \param   i_to         copy to 
+   \return  operation system return code or 0 if OK
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
 */ /** \cond */ 
 
-/* Änderungshistorie
+/* change history
    02.10.2008 NA  Anpassung an Linux
 */ 
 
@@ -34,9 +37,9 @@
    %let i_to   = %qsysfunc(translate(&i_to  ,\,/));
 
    /*-- XCOPY
-        /E Verzeichnisse (auch leere) und Dateien rekursiv kopieren
-        /I keine Nachfrage, ob Datei oder Verzeichnis erstellt werden soll
-        /Y keine Nachfrage bei Überschreiben
+        /E copy directories (even empty ones) and files recursively 
+        /I do not prompt before file or directory creation
+        /Y do not prompt before overwriting target
      --*/
    %sysexec 
       xcopy

@@ -1,12 +1,14 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      den HTML-Vorspann einer Seite des HTML-Testberichts erstellen
+   \brief      create HTML header for a page in the HTML report
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   i_title        Seitentitel
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param   i_title        page title (displayed in browser window)
 */ /** \cond */ 
 
 %MACRO _sasunit_reportHeaderHTML (

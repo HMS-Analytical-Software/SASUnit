@@ -1,17 +1,19 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      Gibt die Anzahl Datensätze in der Eingabedatei zurück 
+   \brief      Returns number of observations in a SAS dataset
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   i_data       SAS-Dateiname 
-   \return  Rückgabe Anzahl Datensätze oder 0, wenn Datei nicht gefunden wird
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param   i_data       SAS dataset (one or two level name) 
+   \return  number of observations or 0, if dataset cannot be found
 */ /** \cond */ 
 
-/* Änderungshistorie
-   07.02.2008 AM  Logische statt physische Observations zurückgeben
+/* change log
+   07.02.2008 AM  return logical instead of physical observations
 */ 
 
 %MACRO _sasunit_nobs(

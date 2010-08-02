@@ -2,18 +2,20 @@
     \file
     \ingroup  SASUNIT_UTIL
 
-    \brief    Ermitteln, welches Wort für NOTE verwendet wird, 
-              dadurch kann die Log-Sprache festgestellt werden.
-    \param    r_note_symbol Name der Makrovariable, die den Wert für NOTE zurückgibt 
-                            (Voreinstellung ist note_symbol)
-    \param    r_warning_symbol Name der Makrovariable, die den Wert für WARNING zurückgibt 
-                            (Voreinstellung ist warning_symbol)
-    \param    r_error_symbol Name der Makrovariable, die den Wert für ERROR zurückgibt 
-                            (Voreinstellung ist error_symbol)
-    \version  1.0
-    \author   Andreas Mangold
-    \date     10.08.2007
+    \brief    determine the language dependant symbols used for NOTE, ERROR, WARNING in the SAS log
+    \param    r_note_symbol name of macro variable used to return the symbol for NOTE 
+                            (default note_symbol)
+    \param    r_warning_symbol name of macro variable used to return the symbol for WARNING
+                            (default warning_symbol)
+    \param    r_error_symbol name of macro variable used to return the symbol for ERROR
+                            (default error_symbol)
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 */ /** \cond */ 
+
 %MACRO _sasunit_detectSymbols(
     r_note_symbol    = note_symbol
    ,r_warning_symbol = warning_symbol

@@ -17,22 +17,6 @@
    \param   i_errors       number of errors, default 0
    \param   i_warnings     number of warnings, default 0
    \param   i_desc         description of the assertion to be checked, default value: "Scan for log message"
-*/
-
-/*DE
-   \file
-   \ingroup    SASUNIT_ASSERT 
-
-   \brief      Prüfen, ob im Log Errors oder Warnings vorkommen.
-
-                 Siehe Beschreibung der Testtools in _sasunit_doc.sas
-
-               Der Test schlägt fehl, wenn nicht die angegebene Anzahl an Errors und Warnings
-               vorkommt.
-
-   \param   i_errors       Anzahl Errors, Voreinstellung 0
-   \param   i_warnings     Anzahl Warnings, Voreinstellung 0
-   \param   i_desc         Beschreibung der Prüfung, Voreinstellung "Log prüfen"
 */ /** \cond */ 
 
 /* change log
@@ -57,7 +41,7 @@
 
 PROC SQL NOPRINT;
 %LOCAL l_casid;
-/* Ermittle Nummer des aktuellen Testfalls */
+/* determine number of the current test case */
    SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid = &g_scnid;
 QUIT;
 
@@ -66,7 +50,7 @@ QUIT;
    %RETURN;
 %END;
 
-/* Scanne Log */
+/* Scan Log */
 %LOCAL l_error_count l_warning_count;
 %_sasunit_checklog (
     i_logfile = &g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log

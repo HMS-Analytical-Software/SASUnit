@@ -1,17 +1,18 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      sucht ein Programm im aktuellen Autocall-Pfad und gibt die Nummer des Pfads (0..9) zurück
-               oder 10, wenn des Programm nicht gefunden wurde
+   \brief      look for a specific program in all of the autocall libraries and return the 
+               number of the library (0..9) or 10 if not found.\n
+               For autocall library numbering see initsasunit.sas.
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
+   \param   i_object   program file name without path (for instance countobs.sas)
 
-   \param   i_root   optional: Rootpfad
-   \param   i_path   zu prüfender Pfad
+   \return           number of autocall library 0..9 or 10 if program file cannot be found
 
-   \return           gibt die Pfadnummer zurück
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 */ /** \cond */ 
 
 %MACRO _sasunit_getAutocallNumber (
@@ -39,7 +40,7 @@
 %MEND _sasunit_getAutocallNumber;
 /** \endcond */
 /*
-%LET g_sasautos=C:\Projekte\sasunit\saspgm\sasunit;
+%LET g_sasautos=c:\projects\sasunit\saspgm\sasunit;
 %LET g_sasautos1=c:\temp;
 
 %put %_sasunit_getAutocallNumber(deldir.sas);

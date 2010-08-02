@@ -1,17 +1,17 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      Detailinformationen eines Testfalls als HTML-Bericht erstellen
+   \brief      create page with detail information of a test case in HTML format
 
    \version \$Revision$
    \author  \$Author$
    \date    \$Date$
    \sa      \$HeadURL$
 
-   \param   i_repdata      Eingabedatei (wird in reportSASUnit.sas erstellt)
-   \param   i_scnid        Szenario-Id des Testfalls
-   \param   i_casid        Case-Id des Testfalls
-   \param   o_html         Ausgabedatei im HTML-Format
+   \param   i_repdata      input dataset (created in reportSASUnit.sas)
+   \param   i_scnid        scenario id of test case
+   \param   i_casid        id of test case
+   \param   o_html         output file in HTML format
 
 */ /** \cond */ 
 
@@ -138,7 +138,7 @@ DATA _null_;
                PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportDetail_023" '" href="_' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_man_act' tst_act +(-1) '">' hlp +(-1) '</a></td>';
             END;
             ELSE 
-               PUT '   <td class="datacolumnerror">fehlt</td>';
+               PUT '   <td class="datacolumnerror">' "&g_nls_reportDetail_048" '</td>';
          END;
       END;
       WHEN ('ASSERTLOG') DO;

@@ -4,65 +4,53 @@
 
    \brief      Tests for assertLibrary.sas, has to fail!
 
-   \version 1.1
-   \author  Klaus Landwich
-   \date    21.10.2008
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
-*/
-
-/*DE
-   \file
-   \ingroup    SASUNIT_TEST 
-
-   \brief      Tests für assertLibrary.sas, muss rot sein
-
-   \version 1.1
-   \author  Klaus Landwich
-   \date    21.10.2008
-
-*/
-/** \cond */ 
+*/ /** \cond */ 
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
-/* Testfall 1 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=i_actual ist ein ungültiger Libref - muss rot sein!)
+/* test case 1 ------------------------------------*/
+%initTestcase(i_object=assertLibrary.sas, i_desc=i_actual is an invalid libref - must be red!)
 %endTestcall()
 
-%assertLibrary (i_expected=WORK, i_actual=CTEMP, i_desc=muss rot sein!)
+%assertLibrary (i_expected=WORK, i_actual=CTEMP, i_desc=must be red!)
 
 %assertLog (i_errors=0, i_warnings=0)
 
-/* Testfall 2 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=i_expected ist ein ungültiger Libref - muss rot sein!)
+/* test case 2 ------------------------------------*/
+%initTestcase(i_object=assertLibrary.sas, i_desc=i_expected is an invalid libref - must be red!)
 %endTestcall()
 
-%assertLibrary (i_expected=CTEMP, i_actual=WORK, i_desc=muss rot sein!)
+%assertLibrary (i_expected=CTEMP, i_actual=WORK, i_desc=must be red!)
 
 %assertLog (i_errors=0, i_warnings=0);
 
 
-/* Testfall 3 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=Beide Librefs identisch - muss rot sein!)
+/* test case 3 ------------------------------------*/
+%initTestcase(i_object=assertLibrary.sas, i_desc=identical librefs - must be red!)
 %endTestcall()
 
-%assertLibrary (i_expected=WORK, i_actual=WORK, i_desc=muss rot sein!)
+%assertLibrary (i_expected=WORK, i_actual=WORK, i_desc=must be red!)
 
 %assertLog (i_errors=0, i_warnings=0)
 
-/* Testfall 4 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=Beide Pfade identisch - muss rot sein!)
+/* test case 4 ------------------------------------*/
+%initTestcase(i_object=assertLibrary.sas, i_desc=identical paths - must be red!)
 %endTestcall();
 
 libname a "%sysfunc (pathname (WORK))";
 libname b "%sysfunc (pathname (WORK))";
 
-%assertLibrary (i_expected=a, i_actual=b, i_desc=muss rot sein!)
+%assertLibrary (i_expected=a, i_actual=b, i_desc=must be red!)
 
 %assertLog (i_errors=0, i_warnings=0);
 
-/* Testfall 5 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=Beide Libs gefüllt - muss rot sein!)
+/* test case 5 ------------------------------------*/
+%initTestcase(i_object=assertLibrary.sas, i_desc=diverse differences - must be red!)
 %endTestcall();
 
 %_sasunit_mkdir (%sysfunc (pathname (WORK))\_refdata);
@@ -79,30 +67,30 @@ run;
 
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
-                i_desc=Strict/Strict NoID - muss rot sein! 
+                i_desc=Strict/Strict NoID - must be red! 
                 )
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
                 i_LibraryCheck=MoreTables, 
-                i_desc=MoreTables/Strict NoID - muss rot sein!  
+                i_desc=MoreTables/Strict NoID - must be red!  
                 )
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
                 i_LibraryCheck=MoreTables, 
                 i_CompareCheck=MoreColumns, 
-                i_desc=MoreTables/MoreCols NoID - muss rot sein!  
+                i_desc=MoreTables/MoreCols NoID - must be red!  
                 )
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
                 i_LibraryCheck=MoreTables, 
                 i_CompareCheck=MoreObs, 
-                i_desc=MoreTables/MoreObs NoID - muss rot sein!  
+                i_desc=MoreTables/MoreObs NoID - must be red!  
                 )
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
                 i_LibraryCheck=MoreTables, 
                 i_CompareCheck=MoreColsNObs, 
-                i_desc=MoreTables/MoreColsNObs NoID - muss rot sein!  
+                i_desc=MoreTables/MoreColsNObs NoID - must be red!  
                 )
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
@@ -123,8 +111,8 @@ run;
 
 %endTestcase()
 
-/* Testfall 6 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=Zwei identische Libs)
+/* test case 6 ------------------------------------*/
+%initTestcase(i_object=assertLibrary.sas, i_desc=libraries with identical contents)
 %endTestcall();
 
 %_sasunit_mkdir (%sysfunc (pathname (WORK))\_refdata1);
@@ -142,15 +130,15 @@ run;
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
                 i_id=name age,
-                i_desc=identische Libs 
+                i_desc=identical contents
 )
 
 %assertLog (i_errors=0, i_warnings=0)
 
 %endTestcase()
 
-/* Testfall 7 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=Test-Lib mit mehr Tabellen - sonst identisch!)
+/* test case 7 ------------------------------------*/
+%initTestcase(i_object=assertLibrary.sas, i_desc=more tables in one library - otherwise identical!)
 %endTestcall();
 
 %_sasunit_mkdir (%sysfunc (pathname (WORK))\_refdata2);
@@ -177,8 +165,8 @@ run;
 
 %endTestcase()
 
-/* Testfall 8 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=Test-Lib mit mehr Obs!)
+/* test case 8 ------------------------------------*/
+%initTestcase(i_object=assertLibrary.sas, i_desc=test library has more observations!)
 %endTestcall();
 
 %_sasunit_mkdir (%sysfunc (pathname (WORK))\_refdata3);
@@ -204,8 +192,8 @@ run;
 
 %endTestcase()
 
-/* Testfall 9 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=Test-Lib mit Cols!)
+/* test case 9 ------------------------------------*/
+%initTestcase(i_object=assertLibrary.sas, i_desc=test library has more columns!)
 %endTestcall();
 
 %_sasunit_mkdir (%sysfunc (pathname (WORK))\_refdata4);
@@ -231,8 +219,8 @@ run;
 
 %endTestcase()
 
-/* Testfall 10 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=Test-Lib mit mehr Obs und mehr Cols!)
+/* test case 10 ------------------------------------*/
+%initTestcase(i_object=assertLibrary.sas, i_desc=test library has more observations and more columns!)
 %endTestcall();
 
 %_sasunit_mkdir (%sysfunc (pathname (WORK))\_refdata5);

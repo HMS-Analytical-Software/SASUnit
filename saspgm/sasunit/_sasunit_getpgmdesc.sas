@@ -3,12 +3,15 @@
 
    \brief      Programmbeschreibung aus dem Doxygen-Brief-Tag ermitteln
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
    \param   i_pgmfile Pfad zur Programmdatei
    \param   r_desc Name der Makrovariable, in der die Beschreibung zurückgegeben wird
    \return  Beschreibungstext
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
 */ /** \cond */ 
 
 /* History

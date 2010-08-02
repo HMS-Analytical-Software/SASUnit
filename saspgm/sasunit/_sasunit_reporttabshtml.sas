@@ -1,16 +1,17 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      die Tabs auf einer HTML-Seite erstellen
+   \brief      create tabs on HTML page for report
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   i_tabnames     Bezeichnungen auf den Tabs, in Hochkommata und mit Leerzeichen getrennt
-   \param   i_pages        Verweise für die Tabs, in Hochkommata und mit Leerzeichen 
-                           getrennt, es muss sich die gleiche Anzahl wie in 
-                           i_tabnames ergeben
-   \param   i_current      Nummer des aktiven Tabs, Voreinstellung ist 1 (erster Tab)
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param   i_tabnames     tab labels, in quotes and separated by blanks
+   \param   i_pages        page names for hyperlinks for each tab, in quotes and separated by blanks,
+                           same number of entries as in i_tabnames
+   \param   i_current      number of the active tab, default is 1
 
 */ /** \cond */ 
 

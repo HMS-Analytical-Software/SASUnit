@@ -1,26 +1,25 @@
 /** \file
    \ingroup    SASUNIT_UTIL
 
-   \brief      Erzeugt ein Verzeichnis, falls es noch nicht existiert. 
-               Das übergeordnete Verzeichnis muss bereits existieren. 
+   \brief      create a directory, if it does not exist
+               The containing directory must exist. 
 
-               \%mkdir(dir=verzeichnis)
+               \%mkdir(dir=directory)
 
-               setzt Fehlervariable &sysrc auf ungleich 0, wenn Fehler aufgetreten.
+               sets &sysrc to a value other than 0, when errors occured.
 
-   \version 1.0
-   \author  Andreas Mangold
-   \date    10.08.2007
-   \param   dir     kompletter Pfad des zu erstellenden Verzeichnis. 
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
 */ /** \cond */
 
-/* Änderungshistorie
+/* change history
    05.09.2008 NA  Anpassung an Linux
 */ 
 
 %macro _sasunit_mkdir(dir);
-
 
 %if &sysscp. = WIN %then %do; 
 	%local xwait xsync xmin;

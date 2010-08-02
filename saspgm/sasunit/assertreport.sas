@@ -22,27 +22,6 @@
    \param   i_desc         description of the assertion to be checked 
    \param   i_manual       1 (default): in case of a positive check result einen Eintrag indicating a manual check (empty rectangle). 
                            0: in case of a positive check result, write an entry indicating OK (green hook).
- */
-
-/*DE \file
-   \ingroup    SASUNIT_ASSERT
-
-   \brief      prüfen, ob eine Reportdatei existiert 
-               und in der laufenden SAS-Sitzung neu erzeugt wurde 
-
-		Es kann auch eine Anweisung zum    
-               "manuellen" Prüfen in das Testprotokoll geschrieben werden
-
-               Siehe Beschreibung der Testtools in _sasunit_doc.sas
-
-          Schreibt einen Eintrag für die manuelle Überprüfung eines Ergebnisses
-          in die Testdatenbank und kopiert die angegebene Vorlage (optional) und den erzeugten Report
-
-   \param   i_expected     optional: Dateiname für erwartete Datei (voller Pfad oder Datei in &g_refdata)
-   \param   i_actual       Dateiname für erzeugte Reportdatei (voller Pfad!)
-   \param   i_desc         Beschreibung der Prüfung 
-   \param   i_manual       1 (Voreinstellung): bei positiver Prüfung einen Eintrag für manuelles Prüfen (leeres Rechteck) schreiben 
-                           0: bei positiver Prüfung einen Eintrag für OK (grüner Haken) schreiben.
  */ /** \cond */ 
 
 
@@ -64,17 +43,17 @@
    ,i_manual   = 1
 );
 
-/*-- Aufrufreihenfolge sicherstellen -----------------------------------------*/
+/*-- enforce sequence of calls ----- -----------------------------------------*/
 %GLOBAL g_inTestcase;
 %IF &g_inTestcase EQ 1 %THEN %DO;
    %endTestcall;
 %END;
 %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-   %PUT &g_error: assert muss nach initTestcase aufgerufen werden;
+   %PUT &g_error: assert must be called after initTestcase;
    %RETURN;
 %END;
 
-/*-- Existenz und Änderungsdatum prüfen --------------------------------------*/
+/*-- check for existence and check change date -------------------------------*/
 %LOCAL l_rep_ext l_result;
 %LET l_result=1;
 %IF "&i_actual" NE "" %THEN %DO;
@@ -115,12 +94,12 @@ quit;
    ,r_tstid    = l_tstid
 )
 
-/* kopiere ggfs. den Report */
+/* copy actual report if it exists */
 %IF &l_rep_ext NE %THEN %DO;
    %_sasunit_copyFile(&i_actual, &g_testout/_%substr(00&g_scnid,%length(&g_scnid))_&l_casid._&l_tstid._man_act&l_rep_ext);
 %END;
 
-/* kopiere ggfs. die Vorlage */
+/* copy expected report if it exists  */
 %IF &l_exp_ext NE %THEN %DO;
    %_sasunit_copyFile(&l_expected, &g_testout/_%substr(00&g_scnid,%length(&g_scnid))_&l_casid._&l_tstid._man_exp&l_exp_ext);
 %END;

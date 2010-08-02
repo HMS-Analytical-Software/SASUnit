@@ -216,6 +216,8 @@
  46 EN Message not found
  47 DE Logmeldung prüfen
  47 EN Scan for log message
+ 48 DE fehlt
+ 48 EN missing
 ---reportFooter
   1 DE Erzeugt am
   1 EN Generated on
