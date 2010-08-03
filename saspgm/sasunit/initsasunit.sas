@@ -187,12 +187,12 @@ QUIT;
 /*-- regenerate empty folders ------------------------------------------------*/
 DATA _null_;
    FILE "%sysfunc(pathname(work))/x.cmd" encoding=pcoem850;/* wg. Umlauten in Pfaden */
-   PUT "&g_removedir ""&l_target_abs/log""&l_endcommand";
-   PUT "&g_removedir ""&l_target_abs/tst""&l_endcommand";
-   PUT "&g_removedir ""&l_target_abs/rep""&l_endcommand";
-   PUT "&g_makedir ""&l_target_abs/log""&l_endcommand";
-   PUT "&g_makedir ""&l_target_abs/tst""&l_endcommand";
-   PUT "&g_makedir ""&l_target_abs/rep""&l_endcommand";
+   PUT "&g_removedir ""&l_target_abs/log""&g_endcommand";
+   PUT "&g_removedir ""&l_target_abs/tst""&g_endcommand";
+   PUT "&g_removedir ""&l_target_abs/rep""&g_endcommand";
+   PUT "&g_makedir ""&l_target_abs/log""&g_endcommand";
+   PUT "&g_makedir ""&l_target_abs/tst""&g_endcommand";
+   PUT "&g_makedir ""&l_target_abs/rep""&g_endcommand";
 RUN;
 %if &sysscp. = LINUX %then %do;
    %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
@@ -418,10 +418,10 @@ QUIT;
 
 DATA _null_;
    FILE "%sysfunc(pathname(work))/x.cmd";
-   PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
-   PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+   PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
+   PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
 %IF %length(&g_sasuser) %THEN %DO;
-   PUT "&g_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+   PUT "&g_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
 %END;
 RUN;
 %if &sysscp. = LINUX %then %do;

@@ -159,10 +159,10 @@ RUN;
       /*-- prepare sasuser ---------------------------------------------------*/
       DATA _null_;
          FILE "%sysfunc(pathname(work))/x.cmd";
-         PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
-         PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+         PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
+         PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       %IF %length(&g_sasuser) %THEN %DO;
-         PUT "&g_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+         PUT "&g_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       %END;
       RUN;
       %if &sysscp. = LINUX %then %do;
@@ -205,7 +205,7 @@ RUN;
       /*-- delete sasuser ----------------------------------------------------*/
       DATA _null_;
          FILE "%sysfunc(pathname(work))/x.cmd";
-         PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+         PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       RUN;
       %if &sysscp. = LINUX %then %do;
           %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
