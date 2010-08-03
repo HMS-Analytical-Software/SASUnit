@@ -40,7 +40,7 @@ run;
 
 /*-- Empty directory ---------------------------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir;
-%_sasunit_xcmd(md "&path")
+%_sasunit_xcmd(mkdir "&path")
 
 %initTestcase(i_object=_sasunit_dir.sas, i_desc=empty directory)
 %_sasunit_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
@@ -65,15 +65,15 @@ data dircheck1; set dircheck; run;
 
 /*-- recursive call with subdirectories --------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir/one;
-%_sasunit_xcmd(md "&path")
+%_sasunit_xcmd(mkdir "&path")
 %addentry(&path/file_one_1.dat)
 %addentry(&path/file_one_2.dat)
 %let path = %sysfunc(pathname(work))/testdir/one/one;
-%_sasunit_xcmd(md "&path")
+%_sasunit_xcmd(mkdir "&path")
 %addentry(&path/file_one_one_1.dat)
 %addentry(&path/file_one_one_2.dat)
 %let path = %sysfunc(pathname(work))/testdir/two;
-%_sasunit_xcmd(md "&path")
+%_sasunit_xcmd(mkdir "&path")
 %addentry(&path/file_two_1.dat)
 %addentry(&path/file_two_2.dat)
 

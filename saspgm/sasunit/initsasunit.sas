@@ -83,6 +83,9 @@
                          , Invalid operating system - only WIN and LINUX) 
 %THEN %GOTO errexit;
 
+/*-- set macro symbols for os commands ---------------------------------------*/
+%_sasunit_oscmds;
+
 /*-- check SAS version -------------------------------------------------------*/
 %IF %_sasunit_handleError( &l_macname
                          , WrongVer
@@ -97,33 +100,6 @@
    "&l_target_abs" EQ "" OR NOT %_sasunit_existDir(&l_target_abs), 
    Error in parameter io_target: target directory does not exist) 
    %THEN %GOTO errexit;
-
-/*-- set OS commands -------------------------------------------------------*/
-%LOCAL l_removedir 
-       l_makedir
-       l_copydir
-       l_endcommand
-       l_sasstart
-       l_splash
-       ;
-%if &sysscp. = WIN %then %do; 
-        %let l_removedir = rd /S /Q;
-        %let l_makedir = md;
-        %let l_copydir = xcopy /E /I /Y;
-        %let l_endcommand =;
-        %let l_sasstart ="%sysget(sasroot)/sas.exe";
-        %let l_splash = -nosplash;
-%end;
-%else %if &sysscp. = LINUX %then %do;
-        %let l_removedir = rm -r;
-        %let l_makedir = mkdir;
-        %let l_copydir = cp -R;
-        %let l_endcommand =%str(;);
-        %_sasunit_xcmd(umask 0033);
-        %let l_sasstart =%sysfunc(pathname(sasroot))/sasexe/sas;
-        %let l_splash =;
-%end;
-
 
 LIBNAME target "&l_target_abs";
 %IF %_sasunit_handleError(&l_macname, ErrorTargetLib, 
@@ -211,12 +187,12 @@ QUIT;
 /*-- regenerate empty folders ------------------------------------------------*/
 DATA _null_;
    FILE "%sysfunc(pathname(work))/x.cmd" encoding=pcoem850;/* wg. Umlauten in Pfaden */
-   PUT "&l_removedir ""&l_target_abs/log""&l_endcommand";
-   PUT "&l_removedir ""&l_target_abs/tst""&l_endcommand";
-   PUT "&l_removedir ""&l_target_abs/rep""&l_endcommand";
-   PUT "&l_makedir ""&l_target_abs/log""&l_endcommand";
-   PUT "&l_makedir ""&l_target_abs/tst""&l_endcommand";
-   PUT "&l_makedir ""&l_target_abs/rep""&l_endcommand";
+   PUT "&g_removedir ""&l_target_abs/log""&l_endcommand";
+   PUT "&g_removedir ""&l_target_abs/tst""&l_endcommand";
+   PUT "&g_removedir ""&l_target_abs/rep""&l_endcommand";
+   PUT "&g_makedir ""&l_target_abs/log""&l_endcommand";
+   PUT "&g_makedir ""&l_target_abs/tst""&l_endcommand";
+   PUT "&g_makedir ""&l_target_abs/rep""&l_endcommand";
 RUN;
 %if &sysscp. = LINUX %then %do;
    %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
@@ -442,10 +418,10 @@ QUIT;
 
 DATA _null_;
    FILE "%sysfunc(pathname(work))/x.cmd";
-   PUT "&l_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
-   PUT "&l_makedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+   PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+   PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
 %IF %length(&g_sasuser) %THEN %DO;
-   PUT "&l_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+   PUT "&g_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
 %END;
 RUN;
 %if &sysscp. = LINUX %then %do;
@@ -469,13 +445,13 @@ RUN;
 %END;
 
 %sysexec 
-      &l_sasstart
+      &g_sasstart
       &l_parms
       -sysin "&l_work/run.sas"
       -initstmt "%nrstr(%_sasunit_scenario%(io_target=)&g_target%str(%))"
       -log   "&g_log/000.log"
       -print "&g_log/000.lst"
-      &l_splash
+      &g_splash
       -noovp
       -nosyntaxcheck
       -mautosource
@@ -484,13 +460,13 @@ RUN;
       -sasuser "%sysfunc(pathname(work))/sasuser"
    ;
 
-%put  &l_sasstart
+%put  &g_sasstart
       &l_parms
       -sysin "&l_work/run.sas"
       -initstmt "%nrstr(%_sasunit_scenario%(io_target=)&g_target%str(%))"
       -log   "&g_log/000.log"
       -print "&g_log/000.lst"
-      &l_splash
+      &g_splash
       -noovp
       -nosyntaxcheck
       -mautosource

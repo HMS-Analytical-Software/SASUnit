@@ -51,33 +51,6 @@
 %LOCAL d_dir l_source; 
 %_sasunit_tempFileName(d_dir);
 
-/*-- set OS commands -------------------------------------------------------*/
-%LOCAL l_removedir 
-       l_makedir
-       l_copydir
-       l_endcommand
-       l_sasstart
-       l_splash
-       ;
-%if &sysscp. = WIN %then %do; 
-        %let l_removedir = rd /S /Q;
-        %let l_makedir = md;
-        %let l_copydir = xcopy /E /I /Y;
-        %let l_endcommand =;
-        %let l_sasstart ="%sysget(sasroot)/sas.exe";
-        %let l_splash = -nosplash;
-%end;
-%else %if &sysscp. = LINUX %then %do;
-        %let l_removedir = rm -r;
-        %let l_makedir = mkdir;
-        %let l_copydir = cp -R;
-        %let l_endcommand =%str(;);
-        %_sasunit_xcmd(umask 0033);
-        %let l_sasstart =%sysfunc(pathname(sasroot))/sasexe/sas;
-        %let l_splash =;
-%end;
-
-
 /*-- check if testdatabase can be accessed -----------------------------------*/
 %IF %_sasunit_handleError(&l_macname, NoTestDB, 
    NOT %sysfunc(exist(target.tsu)) OR NOT %symexist(g_project), 
@@ -186,10 +159,10 @@ RUN;
       /*-- prepare sasuser ---------------------------------------------------*/
       DATA _null_;
          FILE "%sysfunc(pathname(work))/x.cmd";
-         PUT "&l_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
-         PUT "&l_makedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+         PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+         PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
       %IF %length(&g_sasuser) %THEN %DO;
-         PUT "&l_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+         PUT "&g_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
       %END;
       RUN;
       %if &sysscp. = LINUX %then %do;
@@ -212,13 +185,13 @@ RUN;
          %LET l_parms=&l_parms -config "%sysfunc(getoption(config))";
       %END; 
       %sysexec 
-            &l_sasstart
+            &g_sasstart
             &l_parms
             -sysin "&&l_scnfile&i"
             -initstmt "%nrstr(%_sasunit_scenario%(io_target=)&g_target%nrstr(%)%let g_scnid=)&l_scnid;"
             -log   "&g_log/%substr(00&l_scnid,%length(&l_scnid)).log"
             -print "&g_testout/%substr(00&l_scnid,%length(&l_scnid)).lst"
-            &l_splash
+            &g_splash
             -noovp
             -nosyntaxcheck
             -mautosource
@@ -232,7 +205,7 @@ RUN;
       /*-- delete sasuser ----------------------------------------------------*/
       DATA _null_;
          FILE "%sysfunc(pathname(work))/x.cmd";
-         PUT "&l_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
+         PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&l_endcommand";
       RUN;
       %if &sysscp. = LINUX %then %do;
           %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
