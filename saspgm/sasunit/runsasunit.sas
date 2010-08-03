@@ -48,8 +48,9 @@
   ,i_recursive  = 0
 );
 %LOCAL l_macname; %LET l_macname=&sysmacroname;
-%LOCAL d_dir l_source; 
+%LOCAL d_dir  d_examinee l_source; 
 %_sasunit_tempFileName(d_dir);
+%_sasunit_tempFileName(d_examinee);
 
 /*-- check if testdatabase can be accessed -----------------------------------*/
 %IF %_sasunit_handleError(&l_macname, NoTestDB, 
@@ -80,10 +81,9 @@ DATA _null_;
 RUN;
 
 /*-- find out all possible units under test ----------------------------------*/
-%LOCAL l_auto l_autonr d_examinee;
+%LOCAL l_auto l_autonr;
 %LET l_auto=&g_sasautos;
 %LET l_autonr=0;
-%_sasunit_tempFileName(d_examinee);
 %DO %WHILE("&l_auto" ne "");  
    %LET l_auto=%quote(&l_auto/);
    %_sasunit_dir(i_path=&l_auto.*.sas, o_out=&d_dir)

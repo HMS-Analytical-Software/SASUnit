@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertReport.sas, has to fail!
+   \brief      Tests for assertreport.sas, has to fail!
 
    \version    \$Revision$
    \author     \$Author$
@@ -20,7 +20,7 @@
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
-%initTestcase(i_object=assertReport.sas, i_desc=i_actual as well as i_expected specified)
+%initTestcase(i_object=assertreport.sas, i_desc=i_actual as well as i_expected specified)
 
 ods listing close;
 ods pdf file="&g_work/report1.pdf";
@@ -48,7 +48,7 @@ i_desc=%str(expected=.pdf, actual=.pdf, result grey/empty, correct title 'Report
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual copied to testout)
 %endTestcase(i_assertLog=1)
 
-%initTestcase(i_object=assertReport.sas, i_desc=%str(only i_actual, not i_expected specified))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(only i_actual, not i_expected specified))
 ods pdf file="&g_work/report2.pdf";
 proc print data=sashelp.class;
 title 'Report2 - actual';
@@ -68,7 +68,7 @@ ods pdf close;
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual copied to testout)
 %endTestcase(i_assertLog=1)
 
-%initTestcase(i_object=assertReport.sas, i_desc=%str(only i_expected, not i_actual specified, must be red))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(only i_expected, not i_actual specified, must be red))
 %endTestcall()
 %assertReport(i_expected=&g_work/report1.pdf, i_actual=, i_desc=%str(expected=.pdf, actual=missing(red), result is red?))
 %markTest()
@@ -81,7 +81,7 @@ ods pdf close;
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual not in testout)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertReport.sas, i_desc=%str(neither i_expected nor i_actual specified, must be red))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(neither i_expected nor i_actual specified, must be red))
 %endTestcall()
 %assertReport(i_actual=, i_expected=, i_desc=%str(expected=, actual=missing(red), result is red?))
 %markTest()
@@ -94,7 +94,7 @@ ods pdf close;
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual not in testout)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertReport.sas, i_desc=%str(invalid file specified for i_actual, must be red))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(invalid file specified for i_actual, must be red))
 %endTestcall()
 %assertReport(i_expected=&g_work/report1.pdf, i_actual=&g_work/report3.pdf, i_desc=%str(expected=.pdf, actual=missing(red), result is red?))
 %markTest()
@@ -107,7 +107,7 @@ ods pdf close;
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual not in testout)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertReport.sas, i_desc=invalid file specidied for i_expected)
+%initTestcase(i_object=assertreport.sas, i_desc=invalid file specified for i_expected)
 ods pdf file="&g_work/report2.pdf";
 proc print data=sashelp.class;
 title 'Report2 - actual';
@@ -125,9 +125,9 @@ ods pdf close;
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual copied to testout)
 %endTestcase(i_assertLog=1)
 
-%initTestcase(i_object=assertReport.sas, i_desc=%str(i_actual older than current SAS session - must be red))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(i_actual older than current SAS session - must be red))
 %endTestcall()
-%assertReport(i_expected=, i_actual=%sysget(sasroot)/core/sashelp/class.sas7bdat, i_desc=
+%assertReport(i_expected=, i_actual=&g_sasunit/assertreport.sas, i_desc=
 %str(expected=empty, actual=.sas7bdat - not created anew, result red?))
 %markTest()
 %assertDBValue(tst,type,assertReport)
@@ -139,7 +139,7 @@ ods pdf close;
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.sas7bdat)), i_desc=actual copied to testout)
 %endTestcase(i_assertLog=1)
 
-%initTestcase(i_object=assertReport.sas, i_desc=%str(i_manual=0 - must be green))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(i_manual=0 - must be green))
 ods pdf file="&g_work/report2.pdf";
 proc print data=sashelp.class;
 title 'Report2 - actual';

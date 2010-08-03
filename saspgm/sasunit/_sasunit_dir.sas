@@ -117,10 +117,10 @@
    %local s;
    %IF &i_recursive=0 %then %let s=-maxdepth 1;
 
-   %SYSEXEC(find -P &i_path. &s. -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile.);
+   %SYSEXEC(find -P &i_path. &s. -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile.);
 
    data &o_out (keep=filename changed);
-      length filename $1024;
+      length filename $255;
       format changed datetime20.;
       infile _dirfile delimiter='09'x truncover;
       input filename $ d:mmddyy8. t:time8.; 

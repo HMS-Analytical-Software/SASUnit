@@ -45,7 +45,7 @@
 
    ODS HTML FILE="&o_html/&i_scnid._&i_casid._&i_tstid._library_rep.html" stylesheet=(url="SAS_SASUnit.css");
       %if (%sysfunc (exist (testout._&i_scnid._&i_casid._&i_tstid._library_rep, DATA))) %then %do;
-         %local l_LibraryCheck l_CompareCheck l_id i_ExcludeList;
+         %local l_LibraryCheck l_CompareCheck l_id l_ExcludeList;
          proc sql noprint;
             select    i_LibraryCheck,  i_CompareCheck,  i_id,  i_ExcludeList 
                 into :l_LibraryCheck, :l_CompareCheck, :l_id, :l_ExcludeList

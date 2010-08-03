@@ -28,12 +28,12 @@
 
 OPTIONS 
    MPRINT MAUTOSOURCE NOMLOGIC NOSYMBOLGEN
-   SASAUTOS=(SASAUTOS "c:/projects/sasunit/saspgm/sasunit") /* SASUnit macro library */
+   SASAUTOS=(SASAUTOS "/home/mangold/sasunit/saspgm/sasunit") /* SASUnit macro library */
 ;
 
 /* open test repository or create when needed */
 %initSASUnit(
-   i_root       = c:/projects/sasunit /* root path, all other paths can then be relative paths */
+   i_root       = /home/mangold/sasunit /* root path, all other paths can then be relative paths */
   ,io_target    = example/doc/sasunit /* Output of SASUnit: test repository, logs, results, reports */
   ,i_overwrite  = 0                   /* set to 1 to force all test scenarios to be run, else only changed 
                                          scenarios or scenarios with changed unit under test will be run*/

@@ -6,7 +6,7 @@
    \date       \$Date$
    \sa         \$HeadURL$
 
-   \brief      tests for _sasunit_checkScenario.sas
+   \brief      tests for _sasunit_checkscenario.sas
 
                check for many combinations where scenario and / or programs under test have been 
                changed or programs under test are missing, take into account programs 
@@ -19,8 +19,8 @@
 */ 
 
 /*-- create folders for example programs -------------------------------------*/
-%_sasunit_mkdir(&g_work\auto)
-%_sasunit_mkdir(&g_work\auto1)
+%_sasunit_mkdir(&g_work/auto)
+%_sasunit_mkdir(&g_work/auto1)
 
 /*-- change time for scenarios -----------------------------------------------*/
 %let schanged=%sysfunc(datetime());
@@ -128,7 +128,7 @@ libname target "&g_target";
 
 /*-- Case 1: scenario changed after last run --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = scenario changed after last run 
 )
 %switch()
@@ -149,7 +149,7 @@ libname target "&g_target";
 
 /*-- Case 2: scenario still unknown --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = scenario still unknown
 )
 %switch()
@@ -170,7 +170,7 @@ libname target "&g_target";
 
 /*-- Case 3: scenario not changed, but one of two autocall programs --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = %str(scenario not changed, but one of two autocall programs)
 )
 %switch()
@@ -191,7 +191,7 @@ libname target "&g_target";
 
 /*-- Case 4: scenario not changed, but one of two autocall programs is missing --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = %str(scenario not changed, but one of two autocall programs is missing)
 )
 %switch()
@@ -212,7 +212,7 @@ libname target "&g_target";
 
 /*-- Case 5: scenario not changed, but the only autocall program is missing --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = %str(scenario not changed, but the only autocall program is missing)
 )
 %switch()
@@ -233,7 +233,7 @@ libname target "&g_target";
 
 /*-- Case 6: scenario not changed, but one program without autocall --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = %str(scenario not changed, but one program without autocall)
 )
 %switch()
@@ -254,7 +254,7 @@ libname target "&g_target";
 
 /*-- Fall 7: scenario not changed, but one program without autocall (abs. path) --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = %str(scenario not changed, but one program without autocall (abs. path))
 )
 %switch()
@@ -275,7 +275,7 @@ libname target "&g_target";
 
 /*-- Case 8: scenario not changed, but the only program without autocall is missing --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = %str(scenario not changed, but the only program without autocall is missing)
 )
 %switch()
@@ -296,7 +296,7 @@ libname target "&g_target";
 
 /*-- Case 9: scenario not changed, none of two autocall programs changed --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = %str(scenario not changed, none of two autocall programs changed)
 )
 %switch()
@@ -317,7 +317,7 @@ libname target "&g_target";
 
 /*-- Case 10: scenario not changed,  none of the two programs changed, one with, one without autocall --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = %str(scenario not changed,  none of the two programs changed, one with, one without autocall)
 )
 %switch()
@@ -338,7 +338,7 @@ libname target "&g_target";
 
 /*-- Case 11: scenario not changed, one program without autocall not changed --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = %str(scenario not changed, one program without autocall not changed)
 )
 %switch()
@@ -359,7 +359,7 @@ libname target "&g_target";
 
 /*-- Case 12: scenario not changed, one program without autocall not changed (abs. path) --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = %str(scenario not changed, one program without autocall not changed (abs. path))
 )
 %switch()
@@ -380,7 +380,7 @@ libname target "&g_target";
 
 /*-- Case 13: scenario changed (abs. path) --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = %str(scenario changed (abs. path))
 )
 %switch()
@@ -401,7 +401,7 @@ libname target "&g_target";
 
 /*-- Case 14: scenario (abs path) not changed, but one of two autocall programs --*/
 %initTestcase(
-   i_object = _sasunit_checkScenario.sas
+   i_object = _sasunit_checkscenario.sas
   ,i_desc   = %str(scenario (abs path) not changed, but one of two autocall programs)
 )
 %switch()

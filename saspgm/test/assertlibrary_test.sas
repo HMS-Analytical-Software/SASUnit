@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertLibrary.sas, has to fail!
+   \brief      Tests for assertlibrary.sas, has to fail!
 
    \version    \$Revision$
    \author     \$Author$
@@ -14,7 +14,7 @@
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /* test case 1 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=i_actual is an invalid libref - must be red!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=i_actual is an invalid libref - must be red!)
 %endTestcall()
 
 %assertLibrary (i_expected=WORK, i_actual=CTEMP, i_desc=must be red!)
@@ -22,7 +22,7 @@
 %assertLog (i_errors=0, i_warnings=0)
 
 /* test case 2 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=i_expected is an invalid libref - must be red!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=i_expected is an invalid libref - must be red!)
 %endTestcall()
 
 %assertLibrary (i_expected=CTEMP, i_actual=WORK, i_desc=must be red!)
@@ -31,7 +31,7 @@
 
 
 /* test case 3 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=identical librefs - must be red!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=identical librefs - must be red!)
 %endTestcall()
 
 %assertLibrary (i_expected=WORK, i_actual=WORK, i_desc=must be red!)
@@ -39,7 +39,7 @@
 %assertLog (i_errors=0, i_warnings=0)
 
 /* test case 4 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=identical paths - must be red!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=identical paths - must be red!)
 %endTestcall();
 
 libname a "%sysfunc (pathname (WORK))";
@@ -50,13 +50,13 @@ libname b "%sysfunc (pathname (WORK))";
 %assertLog (i_errors=0, i_warnings=0);
 
 /* test case 5 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=diverse differences - must be red!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=diverse differences - must be red!)
 %endTestcall();
 
-%_sasunit_mkdir (%sysfunc (pathname (WORK))\_refdata);
-%_sasunit_mkdir (%sysfunc (pathname (WORK))\_tstdata);
-libname _ref  "%sysfunc (pathname (WORK))\_refdata";
-libname _tst "%sysfunc (pathname (WORK))\_tstdata";
+%_sasunit_mkdir (%sysfunc (pathname (WORK))/_refdata);
+%_sasunit_mkdir (%sysfunc (pathname (WORK))/_tstdata);
+libname _ref  "%sysfunc (pathname (WORK))/_refdata";
+libname _tst "%sysfunc (pathname (WORK))/_tstdata";
 data _ref.class1                              _tst.class1 
      _ref.class2(drop=height)                 _tst.class2 
      _ref.class3(where=(sex='F'))             _tst.class3 
@@ -112,13 +112,13 @@ run;
 %endTestcase()
 
 /* test case 6 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=libraries with identical contents)
+%initTestcase(i_object=assertlibrary.sas, i_desc=libraries with identical contents)
 %endTestcall();
 
-%_sasunit_mkdir (%sysfunc (pathname (WORK))\_refdata1);
-%_sasunit_mkdir (%sysfunc (pathname (WORK))\_tstdata1);
-libname _ref  "%sysfunc (pathname (WORK))\_refdata1";
-libname _tst "%sysfunc (pathname (WORK))\_tstdata1";
+%_sasunit_mkdir (%sysfunc (pathname (WORK))/_refdata1);
+%_sasunit_mkdir (%sysfunc (pathname (WORK))/_tstdata1);
+libname _ref  "%sysfunc (pathname (WORK))/_refdata1";
+libname _tst "%sysfunc (pathname (WORK))/_tstdata1";
 data _ref.class1 _tst.class1 
      _ref.class2 _tst.class2 
      _ref.class3 _tst.class3 
@@ -138,13 +138,13 @@ run;
 %endTestcase()
 
 /* test case 7 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=more tables in one library - otherwise identical!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=more tables in one library - otherwise identical!)
 %endTestcall();
 
-%_sasunit_mkdir (%sysfunc (pathname (WORK))\_refdata2);
-%_sasunit_mkdir (%sysfunc (pathname (WORK))\_tstdata2);
-libname _ref  "%sysfunc (pathname (WORK))\_refdata2";
-libname _tst "%sysfunc (pathname (WORK))\_tstdata2";
+%_sasunit_mkdir (%sysfunc (pathname (WORK))/_refdata2);
+%_sasunit_mkdir (%sysfunc (pathname (WORK))/_tstdata2);
+libname _ref  "%sysfunc (pathname (WORK))/_refdata2";
+libname _tst "%sysfunc (pathname (WORK))/_tstdata2";
 data _ref.class1 _tst.class1 
      _ref.class2 _tst.class2 
      _ref.class3 _tst.class3 
@@ -166,13 +166,13 @@ run;
 %endTestcase()
 
 /* test case 8 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=test library has more observations!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=test library has more observations!)
 %endTestcall();
 
-%_sasunit_mkdir (%sysfunc (pathname (WORK))\_refdata3);
-%_sasunit_mkdir (%sysfunc (pathname (WORK))\_tstdata3);
-libname _ref  "%sysfunc (pathname (WORK))\_refdata3";
-libname _tst "%sysfunc (pathname (WORK))\_tstdata3";
+%_sasunit_mkdir (%sysfunc (pathname (WORK))/_refdata3);
+%_sasunit_mkdir (%sysfunc (pathname (WORK))/_tstdata3);
+libname _ref  "%sysfunc (pathname (WORK))/_refdata3";
+libname _tst "%sysfunc (pathname (WORK))/_tstdata3";
 data _ref.class1 (where=(sex='F')) _tst.class1 
      _ref.class2 _tst.class2 
      _ref.class3 (where=(sex='M')) _tst.class3 
@@ -193,13 +193,13 @@ run;
 %endTestcase()
 
 /* test case 9 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=test library has more columns!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=test library has more columns!)
 %endTestcall();
 
-%_sasunit_mkdir (%sysfunc (pathname (WORK))\_refdata4);
-%_sasunit_mkdir (%sysfunc (pathname (WORK))\_tstdata4);
-libname _ref  "%sysfunc (pathname (WORK))\_refdata4";
-libname _tst "%sysfunc (pathname (WORK))\_tstdata4";
+%_sasunit_mkdir (%sysfunc (pathname (WORK))/_refdata4);
+%_sasunit_mkdir (%sysfunc (pathname (WORK))/_tstdata4);
+libname _ref  "%sysfunc (pathname (WORK))/_refdata4";
+libname _tst "%sysfunc (pathname (WORK))/_tstdata4";
 data _ref.class1               _tst.class1 
      _ref.class2 (drop=height) _tst.class2 
      _ref.class3 (drop=weight) _tst.class3 
@@ -220,13 +220,13 @@ run;
 %endTestcase()
 
 /* test case 10 ------------------------------------*/
-%initTestcase(i_object=assertLibrary.sas, i_desc=test library has more observations and more columns!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=test library has more observations and more columns!)
 %endTestcall();
 
-%_sasunit_mkdir (%sysfunc (pathname (WORK))\_refdata5);
-%_sasunit_mkdir (%sysfunc (pathname (WORK))\_tstdata5);
-libname _ref  "%sysfunc (pathname (WORK))\_refdata5";
-libname _tst "%sysfunc (pathname (WORK))\_tstdata5";
+%_sasunit_mkdir (%sysfunc (pathname (WORK))/_refdata5);
+%_sasunit_mkdir (%sysfunc (pathname (WORK))/_tstdata5);
+libname _ref  "%sysfunc (pathname (WORK))/_refdata5";
+libname _tst "%sysfunc (pathname (WORK))/_tstdata5";
 data _ref.class1 (where=(sex='F'))             _tst.class1 
      _ref.class2 (drop=height)                 _tst.class2 
      _ref.class3 (where=(sex='M') drop=weight) _tst.class3 

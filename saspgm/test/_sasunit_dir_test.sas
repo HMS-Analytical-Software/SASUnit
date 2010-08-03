@@ -52,12 +52,19 @@ run;
 /*-- Simple directory with two files -----------------------------------------*/
 %addentry(&path/file with blank.dat)
 %addentry(&path/file1.txt)
+%macro lx;
+%if &sysscp NE LINUX %then %do;
 %addentry(&path/filemitü.dat)
+%end;
+%mend lx;
+%lx;
 
 %initTestcase(i_object=_sasunit_dir.sas, i_desc=directory with two files)
 %_sasunit_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
 %endTestcall;
 
+proc sort data=dir; by filename; run;
+proc sort data=dircheck; by filename; run;  
 %assertColumns(i_expected=dircheck, i_actual=dir, i_desc=check for contents of dir file)
 %endTestcase;
 
@@ -81,6 +88,8 @@ data dircheck1; set dircheck; run;
 %_sasunit_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=1, o_out=dir);
 %endTestcall;
 
+proc sort data=dir; by filename; run;
+proc sort data=dircheck; by filename; run;  
 %assertColumns(i_expected=dircheck, i_actual=dir, i_desc=check for contents of dir file)
 %endTestcase;
 
@@ -89,6 +98,8 @@ data dircheck1; set dircheck; run;
 %_sasunit_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
 %endTestcall;
 
+proc sort data=dir; by filename; run;
+proc sort data=dircheck; by filename; run;  
 %assertColumns(i_expected=dircheck1, i_actual=dir, i_desc=check for contents of dir file)
 %endTestcase;
 

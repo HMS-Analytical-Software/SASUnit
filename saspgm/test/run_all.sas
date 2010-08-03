@@ -11,11 +11,11 @@
 
 */ /** \cond */ 
 
-OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "c:/projects/sasunit/saspgm/sasunit");
+OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "/home/mangold/sasunit/saspgm/sasunit");
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root       = c:/projects/sasunit
+   i_root       = /home/mangold/sasunit
   ,io_target    = doc/sasunit
   ,i_overwrite  = 0
   ,i_project    = SASUnit
