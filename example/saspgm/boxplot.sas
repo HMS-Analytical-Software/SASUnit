@@ -13,7 +13,7 @@
             - whiskers shall be drawn from maximum and minimum value
             - labels for variables &x und &y shall be written to the axes
             - there shall be a legend for the group variable
-            - report format ist RTF
+            - report format ist PDF
             
 \version    \$Revision$
 \author     \$Author$
@@ -26,8 +26,12 @@
 \param      y       variable for y axis, must be numeric
 \param      group   variable for grouping, must be dichotomous,
                     missing values are not allowed
-\param      report  output report file (file name extension must be rtf)
+\param      report  output report file (file name extension must be pdf)
 */ /** \cond */ 
+
+/* History
+   05.10.2010 AM  Changed output format to pdf in order to be able to run on linux
+*/ 
 
 %MACRO boxplot(
    data   =
@@ -175,19 +179,21 @@ RUN;
 %let d_plot=&syslast;
 
 /*-- create chart ------------------------------------------------------------*/
-GOPTIONS FTEXT="Arial" HTEXT=12pt DEVICE=actximg;
+GOPTIONS FTEXT="Helvetica" HTEXT=12pt hsize=16cm vsize=16cm;
 SYMBOL1 WIDTH = 3 BWIDTH = 3 COLOR = gray  LINE = 2 VALUE = none INTERPOL = BOXJT00 MODE = include;
 SYMBOL2 WIDTH = 3 BWIDTH = 3 COLOR = black LINE = 1 VALUE = none INTERPOL = BOXJT00 MODE = include;
 AXIS1 LABEL=(ANGLE=90) MINOR=none;
 AXIS2 ORDER=(&xmin &xvalues2 &xmax) VALUE=(" " "&xvalues" " ") MINOR=none;
 LEGEND1 FRAME;
 
-ODS RTF FILE="&report";
+ODS PDF FILE="&report";
+ODS LISTING CLOSE;
 PROC GPLOT DATA=&d_plot;
    PLOT &y * &x = &group / VAXIS=Axis1 HAXIS=Axis2 LEGEND=Legend1 NOFRAME;
 RUN;
 QUIT;
-ODS RTF CLOSE;
+ODS PDF CLOSE;
+ODS LISTING;
 
 proc sql noprint; 
    drop table &d_plot; 
