@@ -21,10 +21,9 @@
 %initTestcase(i_object=generate.sas, i_desc=Example with one by variable)
 
 /* assign two temporary librefs */
-options noxwait xsync xmin;
-x "md ""&g_work/test1""";
+%_sasunit_mkdir(&g_work/test1)
 libname test1 "&g_work/test1";
-x "md ""&g_work/test2""";
+%_sasunit_mkdir(&g_work/test2)
 libname test2 "&g_work/test2";
 
 proc sort data=sashelp.class out=test2.class1 (label="Dataset for sex=F (9 observations)");
