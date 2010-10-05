@@ -9,6 +9,8 @@
             - compare results from Microsoft Excel with assertColumns.sas, using fuzz because of rounding errors 
             - use test data in library testdata
 
+            This example test scenario runs only with SAS under SAS Microsoft Windows.
+
 \version    \$Revision$
 \author     \$Author$
 \date       \$Date$
