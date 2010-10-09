@@ -174,6 +174,7 @@ RUN;
          
       /*-- run test scenario in a new process --------------------------------*/
       %LOCAL l_parms l_parenthesis;
+      %LET l_parms=;
       %LET l_parenthesis=(;
       %IF "&g_autoexec" NE "" %THEN %DO;
          %LET l_parms=&l_parms -autoexec "&g_autoexec";

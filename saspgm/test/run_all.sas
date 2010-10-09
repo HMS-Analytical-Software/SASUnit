@@ -29,20 +29,7 @@ proc options option=logparm;run;
   ,i_doc        = doc/spec
 )
 
-/* Note: Due to an error in SAS 9.2 M0, scenario selection by wildcards is deactivated in this release */
-%*runSASUnit(i_source = %str(saspgm/test/%str(*)_test.sas));
-
-%runSASUnit(i_source = saspgm/test/_sasunit_abspath_test.sas);
-%runSASUnit(i_source = saspgm/test/_sasunit_checkszenario_test.sas);
-%runSASUnit(i_source = saspgm/test/_sasunit_dir_test.sas);
-%runSASUnit(i_source = saspgm/test/_sasunit_existdir_test.sas);
-%runSASUnit(i_source = saspgm/test/_sasunit_nobs_test.sas);
-%runSASUnit(i_source = saspgm/test/assertcolumns_test.sas);
-%runSASUnit(i_source = saspgm/test/assertequals_test.sas);
-%runSASUnit(i_source = saspgm/test/assertlibrary_test.sas);
-%runSASUnit(i_source = saspgm/test/assertreport_test.sas);
-%runSASUnit(i_source = saspgm/test/tree1_test.sas);
-%runSASUnit(i_source = saspgm/test/tree2_test.sas);
+%runSASUnit(i_source = %str(saspgm/test/%str(*)_test.sas));
 
 %reportSASUnit();
 
