@@ -1,0 +1,332 @@
+---reportSASUnit
+  1 DE SAS-Log aus initSASUnit
+  1 EN SAS log from initSASUnit
+  2 DE SAS-Log für Testszenario
+  2 EN SAS log for test scenario
+  3 DE SAS-Log für Testfall
+  3 EN SAS log for test case
+  4 DE in Testszenario
+  4 EN in test scenario
+  5 DE Fehler! reportSASUnit wird abgebrochen!
+  5 EN Error! reportSASUnit has been canceled
+---reportTree
+  1 DE Szenarien
+  1 EN Scenarios
+  2 DE alle Testszenarien
+  2 EN All test scenarios
+  3 DE Testfälle des Testszenarios
+  3 EN Test cases of the test scenario
+  4 DE Prüfungen zu Testfall
+  4 EN Assertions for test case
+  5 DE Prüfung
+  5 EN Assertion
+  6 DE Prüflinge
+  6 EN Units under Test
+  7 DE alle Prüflinge nach Suchpfaden
+  7 EN All units under test by program library 
+  8 DE sonstige
+  8 EN Others
+  9 DE Prüflinge in Programmbibliothek
+  9 EN Units under test in program library
+ 10 DE Prüflinge ohne Programmbibliothek
+ 10 EN Units under test without program library
+ 11 DE Testfälle für Prüfling
+ 11 EN Test cases for unit under test
+ 12 DE Prüfungen zu Szenario
+ 12 EN Assertions for test scenario
+ 13 DE Testfall
+ 13 EN test case
+ 14 DE Prüfung
+ 14 EN Assertion
+ 15 DE SASUnit - Hauptseite des Projekts
+ 15 EN SASUnit - main page of project
+---reportAuton
+  1 DE Prüflinge
+  1 EN Units under Test
+  2 DE Testdokumentation
+  2 EN Test Documentation
+  3 DE Programmbibliothek
+  3 EN Program Library
+  4 DE Programmbibliothek unter
+  4 EN Program library at
+  5 DE Prüfling
+  5 EN Unit under Test
+  6 DE Szenario
+  6 EN Test Scenario
+  7 DE Testfälle
+  7 EN Test Cases
+  8 DE Ergebnis
+  8 EN Result
+  9 DE zu prüfendes Programm unter
+  9 EN Unit under test at
+ 10 DE Details zu Testszenario
+ 10 EN Details for test scenario
+ 11 DE Fehler
+ 11 EN Error
+ 12 DE manuell
+ 12 EN manual
+ 13 DE Fehler in der Testausführung, siehe Log
+ 13 EN Error in execution of test scenario, see log
+---reportCas
+  1 DE Testfälle nach Szenarien
+  1 EN Test Cases by Scenario
+  2 DE SASUnit Testdokumentation
+  2 EN SASUnit Test Documentation
+  3 DE Szenario
+  3 EN Scenario
+  4 DE Programm
+  4 EN Program
+  5 DE Programm des Testszenarios unter
+  5 EN Program of test scenario at
+  6 DE SAS-Log für diesen Lauf des Testszenarios anzeigen
+  6 EN Show sas log for this run of the test scenario 
+  7 DE EURDFDT20.
+  7 EN DATETIME20.
+  8 DE Dauer
+  8 EN Duration
+  9 DE commax12.1
+  9 EN 12.1
+ 10 DE Testfälle
+ 10 EN Test Cases
+ 11 DE Nr.
+ 11 EN No.
+ 12 DE Testfall
+ 12 EN Test Case
+ 13 DE Prüfling
+ 13 EN Unit under Test
+ 14 DE letzter Lauf
+ 14 EN Last Run
+ 15 DE Dauer
+ 15 EN Duration
+ 16 DE Ergebnis
+ 16 EN Result
+ 17 DE Details zum Testfall
+ 17 EN Details for Test Case
+ 18 DE zu prüfendes Programm unter
+ 18 EN Unit under test at
+ 19 DE Fehler
+ 19 EN Error
+ 20 DE manuell
+ 20 EN manual
+ 21 DE Fehler in der Testausführung, siehe Log
+ 21 EN Error in execution of test scenario, see log
+ 22 DE Letzter Lauf
+ 22 EN Last Run
+---reportCmp
+  1 DE Tatsächlich erstellte SAS-Tabelle
+  1 EN SAS table actually created
+  2 DE Tatsächlich erzeugte SAS-Tabelle nicht gefunden
+  2 EN SAS table not created
+  3 DE Erwartete SAS-Tabelle
+  3 EN SAS table to be expected
+  4 DE Erwartete SAS-Tabelle nicht gefunden
+  4 EN expected SAS table not found
+  5 DE assertColumns - Vergleich zweier Dateien
+  5 EN assertColumns - Comparison Report
+---reportDetail
+  1 DE Details zu Testfall 
+  1 EN Details for Test Case
+  2 DE SASUnit Testdokumentation
+  2 EN SASUnit Test Documentation
+  3 DE Übersicht für Szenario
+  3 EN Overview for Test Scenario
+  4 DE Programm des Testszenarios unter
+  4 EN Program for Test Scenario at
+  5 DE SAS-Log für diesen Lauf des Testszenarios anzeigen
+  5 EN Show SAS-Log for this run of the test scenario
+  6 DE zu prüfendes Programm unter
+  6 EN Unit under test at
+  7 DE SAS-Log für diesen Lauf des Testfalls anzeigen
+  7 EN Show SAS-Log for this run of the test case
+  8 DE Prüfungen
+  8 EN Assertions
+  9 DE Nr.
+  9 EN No.
+ 10 DE Prüfart
+ 10 EN Assertion
+ 11 DE Prüfzweck
+ 11 EN Description
+ 12 DE erwartet
+ 12 EN Expected
+ 13 DE tatsächlich
+ 13 EN Actual
+ 14 DE Ergebnis
+ 14 EN Result
+ 15 DE erwartete Tabelle öffnen
+ 15 EN Show expected table
+ 16 DE tatsächlich erzeugte Tabelle öffnen
+ 16 EN Open actual table
+ 17 DE Vergleichsbericht öffnen
+ 17 EN Open comparison report
+ 18 DE erwartete Bibliothek öffnen
+ 18 EN Open expected Library
+ 19 DE tatsächlich erzeugte Bibliothek öffnen
+ 19 EN Open actual library
+ 20 DE erwarteten (oben) und tatsächlichen (unten) Bericht öffnen
+ 20 EN Open expected (above) and actual (below) report
+ 21 DE erwarteten Bericht öffnen
+ 21 EN Open expected report
+ 22 DE nicht neu erzeugt
+ 22 EN not generated anew
+ 23 DE tatsächlich erzeugten Bericht öffnen
+ 23 EN Open actual report
+ 25 DE Fehler
+ 25 EN Error
+ 26 DE manuell
+ 26 EN manual
+ 27 DE Fehler in der Testausführung, siehe Log
+ 27 EN Error in execution of test, see log
+ 28 DE Szenario Nr.
+ 28 EN Scenario No.
+ 29 DE Szenario
+ 29 EN Scenario
+ 30 DE Programm
+ 30 EN Program
+ 31 DE letzter Lauf
+ 31 EN Last Run
+ 32 DE Dauer
+ 32 EN Duration
+ 33 DE Testfall Nr.
+ 33 EN Test Case No.
+ 34 DE Testfall
+ 34 EN Test Case
+ 35 DE Prüfling
+ 35 EN Unit under Test
+ 36 DE Fehler
+ 36 EN Errors
+ 37 DE Warnungen
+ 37 EN Warnings
+ 38 DE Tabelle
+ 38 EN Table listing
+ 39 DE Vergleich
+ 39 EN Comparison
+ 40 DE Bibliothek
+ 40 EN Library
+ 41 DE Log prüfen
+ 41 EN Scan log
+ 42 DE vorhanden
+ 42 EN present
+ 43 DE nicht vorhanden
+ 43 EN not present
+ 44 DE Meldung
+ 44 EN Message
+ 45 DE Meldung gefunden
+ 45 EN Message found
+ 46 DE Meldung nicht gefunden
+ 46 EN Message not found
+ 47 DE Logmeldung prüfen
+ 47 EN Scan for log message
+ 48 DE fehlt
+ 48 EN missing
+---reportFooter
+  1 DE Erzeugt am
+  1 EN Generated on
+  2 DE eurdfdwn.
+  2 EN downame.
+  3 DE eurdfwdx.
+  3 EN worddatx.
+  4 DE von
+  4 EN by
+---reportFrame
+  1 DE SASUnit Testdokumentation
+  1 EN SASUnit Test Documentation
+  2 DE Frames sind deaktiviert. Klicken Sie hier, um zur Hauptseite zu gelangen.
+  2 EN Frames are disabled. Click here to go to the main page.
+---reportHome
+  1 DE SASUnit Testdokumentation
+  1 EN SASUnit Test Documentation
+  2 DE Eigenschaften dieser Testsuite
+  2 EN Properties of this test suite
+  3 DE Projektname
+  3 EN Name of project
+  4 DE Wurzelverzeichnis
+  4 EN Root directory
+  5 DE Pfad zur Testdatenbank
+  5 EN Path to test repository
+  6 DE Programmbibliotheken<br>(Makro-Autocall-Pfade)<br>
+  6 EN Program libraries<br>(macro autocall paths)<br>
+  7 DE Autoexec-Programm für Testszenarien
+  7 EN Autoexec-program for test scenarios
+  8 DE SAS-Konfigurationsdatei für Testszenarien
+  8 EN SAS configuration file for test scenarios
+  9 DE SASUSER-Verzeichnis für Testszenarien
+  9 EN SASUSER folder for test scenarios
+ 10 DE Verzeichnis mit Testdaten
+ 10 EN Folder for test data
+ 11 DE Verzeichnis mit Referenzdaten
+ 11 EN Folder for reference data
+ 12 DE Verzeichnis mit Spezifikationsdokumenten
+ 12 EN Folder for specification documents
+ 13 DE Pfad zu den SASUnit-Makros
+ 13 EN Path to SASUnit macros
+ 14 DE SAS-Log des Reporting-Jobs
+ 14 EN SAS log of reporting job
+ 15 DE Symbole
+ 15 EN Symbols
+ 16 DE Anzahl Testszenarien
+ 16 EN Number of test scenarios
+ 17 DE Anzahl Testfälle
+ 17 EN Number of test cases
+ 18 DE Anzahl Prüfungen
+ 18 EN Number of assertions
+---reportLibrary
+  1 DE Prüfbericht - Vergleich der beiden Bibliotheken
+  1 EN Test Report - Comparison of two Libraries
+  2 DE Nicht verglichene Dateien
+  2 EN Datasets not compared
+  3 DE erwartete Library
+  3 EN Expected library
+  4 DE tatsächliche Bibliothek
+  4 EN Actual library
+  5 DE Ergebnis
+  5 EN Result
+---reportLog
+  1 DE Fehler&#160;&#160;&#160;
+  1 EN Errors&#160;&#160;
+  2 DE Warnungen
+  2 EN Warnings
+---reportMan
+  1 DE Testszenario 
+  1 EN Test scenario
+  2 DE Testfall
+  2 EN Test case
+  3 DE Prüfung
+  3 EN Assertion
+  4 DE Vergleich der Berichte
+  4 EN Comparison of reports
+---reportPageTop
+  1 DE "Hauptseite" "Szenarien" "Testfälle" "Prüflinge"
+  1 EN "Main Page" "Test Scenarios" "Test Cases" "Units under Test"
+---reportScn
+  1 DE Szenarien
+  1 EN Test Scenarios
+  2 DE SASUnit Testdokumentation
+  2 EN SASUnit Test Documentation
+  3 DE Nr.
+  3 EN No.
+  4 DE Szenario
+  4 EN Test Scenario
+  5 DE Programm
+  5 EN Program
+  6 DE letzter Lauf
+  6 EN Last Run
+  7 DE Dauer
+  7 EN Duration
+  8 DE Ergebnis
+  8 EN Result
+  9 DE Details zu Testszenario
+  9 EN Details for test scenario
+ 10 DE Programm des Testszenarios unter
+ 10 EN Program of test scenario at
+ 11 DE SAS-Log für diesen Lauf anzeigen
+ 11 EN Show SAS log for this run
+ 12 DE EURDFDT20.
+ 12 EN DATETIME20.
+ 13 DE commax12.1
+ 13 EN comma12.1
+ 14 DE Fehler
+ 14 EN Error
+ 15 DE manuell
+ 15 EN manual
+ 16 DE Fehler in der Testausführung, siehe Log
+ 16 EN Error in execution of test scenario, see log

@@ -1,0 +1,50 @@
+/** \file
+   \ingroup    SASUNIT_REPORT
+
+   \brief      create frame page for HTML report
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+
+   \param   i_repdata      input dataset (created in reportSASUnit.sas)
+   \param   o_html         output file in HTML format
+
+*/ /** \cond */ 
+
+%MACRO _sasunit_reportFrameHTML (
+   i_repdata = 
+  ,o_html    =
+);
+
+/* change log
+   18.08.2008 AM  added national language support
+*/
+
+DATA _null_;
+   SET &i_repdata;
+   FILE "&o_html";
+
+   IF _n_=1 THEN DO;
+
+      %_sasunit_reportHeaderHTML(%str(&g_project - &g_nls_reportFrame_001))
+
+      PUT '<frameset cols="250,*">';
+      PUT '  <frame src="tree.html" name="treefrm">';
+      PUT '  <frame src="overview.html" name="basefrm">';
+      PUT '  <noframes>';
+      PUT '    <a href="home.html">' "&g_nls_reportFrame_002" '</a>';
+      PUT '  </noframes>';
+      PUT '</frameset>';
+   
+      PUT '</body>';
+      PUT '</html>';
+
+      STOP;
+   END;
+
+RUN; 
+   
+%MEND _sasunit_reportFrameHTML;
+/** \endcond */
