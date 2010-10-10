@@ -2,7 +2,7 @@
 \file
 \ingroup    SASUNIT_EXAMPLES_TEST
 
-\brief      Tests for regression.sas
+\brief      Tests for regression.sas (Windows only)
 
             Example for a test scenario with the following features:
             - check reports manually agains reference standard 
@@ -18,7 +18,17 @@
 */ /** \cond */ 
 
 /*-- Compare linear regression between Excel and SAS -------------------------*/
-%initTestcase(i_object=regression.sas, i_desc=Compare linear regression between Excel and SAS)
+
+%macro onlywin;
+%if &sysscp ne WIN %then %do;
+   %initTestcase(i_object=regression.sas, i_desc=This test scenario will only run under SAS for Windows)
+   endsas;
+%end;
+%else %do;
+   %initTestcase(i_object=regression.sas, i_desc=Compare linear regression between Excel and SAS)
+%end;
+%mend onlywin;
+%onlywin;
 
 libname testdata excel "&g_testdata/regression.xls";
 data refdata (rename=(yhat=est)) testdata(drop=yhat); 
