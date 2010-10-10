@@ -13,6 +13,7 @@
 */ /** \cond */ 
 
 /* change history
+   10.10.2010 AM  new Version 1.001
    05.10.2010 AM  new Version 1.000
    12.06.2010 AM  neue Version 0.910
    16.07.2009 AM  neue Version 0.905
@@ -37,7 +38,7 @@
 %LOCAL i;
         
 %LET g_target = %sysfunc(pathname(target));
-%LET g_version = 1.000;
+%LET g_version = 1.001;
 %LET g_revision = $Revision$;
 %LET g_revision = %scan(&g_revision,2,%str( $:));
 
