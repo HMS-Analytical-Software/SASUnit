@@ -1,4 +1,4 @@
-Documentation of SASUnit, the unit testing framework for SAS(TM)-programs
+Documentation of SASUnit, the unit testing framework for SAS(TM)-programs 
 
 Version 1.000 - first version with full support for SAS 9.2 under LINUX
 
