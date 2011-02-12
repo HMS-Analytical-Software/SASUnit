@@ -11,6 +11,7 @@
 */ /** \cond */ 
 
 /* change log
+   30.10.2010 AM  link to sourceforge project page
    18.08.2008 AM  added national language support
 */
 
@@ -25,7 +26,7 @@
       put(time(),time8.0) !! " &g_nls_reportFooter_004 "
    ;
    PUT _sasunit_reportFooterHTML +(-1);
-   PUT '<a href="http://www.analytical-software.de">';
+   PUT '<a href="http://sasunit.sourceforge.net">';
    PUT '<img src="sasunit.png" alt="SASUnit" align="middle" border="0"></a>';
    PUT "Version &g_version (&g_revision)</small></address>";
    PUT '</body>';
