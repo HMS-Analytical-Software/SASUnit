@@ -26,7 +26,7 @@
 */ /** \cond */ 
 
 /* change log
-   xx-xx-20xx YY  <reason for change>
+   09.02.2011 KL  added two macro variables for re-redirecting log- and printfile in testcases
 */ 
 
 %MACRO initTestcase(
@@ -80,10 +80,12 @@ QUIT;
 %PUT ========================== test case &l_casid ======================================================;
 
 /* reroute SASLOG and SASLIST */
+%LET g_logfile  =&g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log;
+%LET g_printfile=&g_testout/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).lst;
 PROC PRINTTO 
    NEW 
-   LOG="&g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log"
-   PRINT="&g_testout/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).lst"
+   LOG="&g_logfile."
+   PRINT="&g_printfile."
 ;
 RUN;
 

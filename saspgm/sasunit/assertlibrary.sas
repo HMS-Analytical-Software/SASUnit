@@ -316,12 +316,10 @@
 
    %*** create library listing ***;
    ods document name=testout._%substr(00&g_scnid,%length(&g_scnid))_&l_casid._&l_tstid._Library_act(WRITE);
-      TITLE "Contents of the actual library";
       proc print data=WORK._assertLibraryActual label noobs;
       run;
    ods document close;
    ods document name=testout._%substr(00&g_scnid,%length(&g_scnid))_&l_casid._&l_tstid._Library_exp(WRITE);
-      TITLE "Contents of the expected library";
       proc print data=WORK._assertLibraryExpected label noobs;
       run;
    ods document close;

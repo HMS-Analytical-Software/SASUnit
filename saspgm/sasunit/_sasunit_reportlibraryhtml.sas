@@ -32,14 +32,16 @@
    LIBNAME testout "&g_target/tst";
 
    ODS HTML FILE="&o_html/&i_scnid._&i_casid._&i_tstid._library_exp.html" stylesheet=(url="SAS_SASUnit.css");
+      TITLE "&g_nls_reportLibrary_006";
       PROC DOCUMENT NAME=testout._&i_scnid._&i_casid._&i_tstid._library_exp;
-         REPLAY;
+         REPLAY / ACTIVETITLE;
       RUN;
    ODS HTML CLOSE;
 
    ODS HTML FILE="&o_html/&i_scnid._&i_casid._&i_tstid._library_act.html" stylesheet=(url="SAS_SASUnit.css");
+      TITLE "&g_nls_reportLibrary_007";
       PROC DOCUMENT NAME=testout._&i_scnid._&i_casid._&i_tstid._library_act;
-         REPLAY;
+         REPLAY / ACTIVETITLE;
       RUN;
    ODS HTML CLOSE;
 

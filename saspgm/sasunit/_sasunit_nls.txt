@@ -280,6 +280,10 @@
   4 EN Actual library
   5 DE Ergebnis
   5 EN Result
+  6 DE Inhalt der erwarteten Bibliothek
+  6 EN Contents of the expected library
+  7 DE Inhalt der tatsächlichen Bibliothek
+  7 EN Contents of the actual library
 ---reportLog
   1 DE Fehler&#160;&#160;&#160;
   1 EN Errors&#160;&#160;

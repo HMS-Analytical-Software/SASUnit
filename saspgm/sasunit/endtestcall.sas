@@ -17,6 +17,9 @@
    \sa         \$HeadURL$
 */ /** \cond */ 
 
+/* change log
+   09.02.2011 KL  added two macro variables for re-redirecting log- and printfile in testcases
+*/ 
 
 %MACRO endTestcall();
 
@@ -28,9 +31,12 @@
 %LET g_inTestcase=2;
 
 /* restore log and listing of test scenario */
+%LET g_logfile  =&g_log/%substr(00&g_scnid,%length(&g_scnid)).log;
+%LET g_printfile=&&g_testout/%substr(00&g_scnid,%length(&g_scnid)).lst;
+
 PROC PRINTTO 
-   LOG="&g_log/%substr(00&g_scnid,%length(&g_scnid)).log"
-   PRINT="&g_testout/%substr(00&g_scnid,%length(&g_scnid)).lst"
+   LOG="&g_logfile."
+   PRINT="&g_printfile."
 ;
 RUN;
 

@@ -13,6 +13,8 @@
 */ /** \cond */ 
 
 /* change history
+   15.02.2011 KL  added support for testcases that need to redirect logfiles
+                  Two new macrovariables g_logfile and g_printfile are available
    10.10.2010 AM  new Version 1.001
    05.10.2010 AM  new Version 1.000
    12.06.2010 AM  neue Version 0.910
@@ -34,13 +36,18 @@
                    g_sasautos6 g_sasautos7 g_sasautos8 g_sasautos9 
         g_testdata g_refdata g_doc g_error g_warning
         g_work g_testout g_log
+        g_logfile g_printfile
         g_version g_revision;
 %LOCAL i;
         
-%LET g_target = %sysfunc(pathname(target));
-%LET g_version = 1.001;
-%LET g_revision = $Revision$;
-%LET g_revision = %scan(&g_revision,2,%str( $:));
+%LET g_target    = %sysfunc(pathname(target));
+%LET g_version   = 1.001;
+%LET g_revision  = $Revision$;
+%LET g_revision  = %scan(&g_revision,2,%str( $:));
+
+%*** Both macvars are dependent on scenario and testcase, values can only be assigned later ***;
+%LET g_logfile   = ;
+%LET g_printfile = ;
 
 %IF %_sasunit_handleError(&l_macname, InvalidTsu, 
    %_sasunit_nobs(target.tsu) NE 1, 
