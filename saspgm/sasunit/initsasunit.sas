@@ -89,8 +89,8 @@
 /*-- check SAS version -------------------------------------------------------*/
 %IF %_sasunit_handleError( &l_macname
                          , WrongVer
-                         , (&sysver. NE 9.1) AND (&sysver. NE 9.2)
-                         , Invalid SAS version - only SAS 9.1 and 9.2) 
+                         , (&sysver. NE 9.1) AND (&sysver. NE 9.2) AND (&sysver. NE 9.3)
+                         , Invalid SAS version - only SAS 9.1 to 9.3) 
 %THEN %GOTO errexit;
 
 /*-- check for target directory ----------------------------------------------*/
@@ -438,43 +438,49 @@ DATA _null_;
 RUN;
 %LOCAL l_parms;
 %IF "&g_autoexec" NE "" %THEN %DO;
-   %LET l_parms=&l_parms -autoexec "&g_autoexec";
+   %LET l_parms=&l_parms -autoexec ""&g_autoexec"";
 %END;
 %IF "&g_sascfg" NE "" %THEN %DO;
-   %LET l_parms=&l_parms -config "&g_sascfg";
+   %LET l_parms=&l_parms -config ""&g_sascfg"";
 %END;
 
-%sysexec 
-      &g_sasstart
-      &l_parms
-      -sysin "&l_work/run.sas"
-      -initstmt "%nrstr(%_sasunit_scenario%(io_target=)&g_target%str(%))"
-      -log   "&g_log/000.log"
-      -print "&g_log/000.lst"
-      &g_splash
-      -noovp
-      -nosyntaxcheck
-      -mautosource
-      -mcompilenote all
-      -sasautos "&g_sasunit"
-      -sasuser "%sysfunc(pathname(work))/sasuser"
-   ;
+   
+DATA _null_;
+ ATTRIB
+	_sCmdString LENGTH = $32000
+ ;
+ FILE 
+	"%sysfunc(pathname(work))/xxx.cmd"
+	LRECL=32000
+ ;
+ _sCmdString = 
+ """" !! &g_sasstart !! """"
+	!! " " 
+	!! "&l_parms.
+	-sysin ""&l_work./run.sas""
+	-initstmt ""%nrstr(%%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);)""
+	-log   ""&g_log./000.log""
+	-print ""&g_log./000.lst""
+	&g_splash
+	-noovp
+	-nosyntaxcheck
+	-mautosource
+	-mcompilenote all
+	-sasautos ""&g_sasunit""
+	-sasuser ""%sysfunc(pathname(work))/sasuser""
+ ";
+ PUT
+	_sCmdString
+ ;
+RUN;
 
-%put  &g_sasstart
-      &l_parms
-      -sysin "&l_work/run.sas"
-      -initstmt "%nrstr(%_sasunit_scenario%(io_target=)&g_target%str(%))"
-      -log   "&g_log/000.log"
-      -print "&g_log/000.lst"
-      &g_splash
-      -noovp
-      -nosyntaxcheck
-      -mautosource
-      -mcompilenote all
-      -sasautos "&g_sasunit"
-      -sasuser "%sysfunc(pathname(work))/sasuser"
-   ;
+%if &sysscp. = LINUX %then %do;
+  %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/xxx.cmd")
+%end;
 
+%_sasunit_xcmd("%sysfunc(pathname(work))/xxx.cmd")
+%LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/xxx.cmd);
+%LET l_sysrc = &sysrc;
 
 %IF %_sasunit_handleError(&l_macname, ErrorSASCall2, 
    NOT %sysfunc(exist(work.check)), 
