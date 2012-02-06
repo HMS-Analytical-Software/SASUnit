@@ -14,6 +14,7 @@
 */ /** \cond */ 
 
 /* change history
+   06.02.2012 OT minor bugfix
    12.08.2008 AM  Mehrsprachigkeit
    29.12.2007 AM  verbesserte Beschriftungen
 */ 
@@ -91,7 +92,7 @@ DATA _null_;
          WHEN (0) PUT '"ok.png" alt="OK"' @;
          WHEN (1) PUT '"error.png" alt="' "&g_nls_reportCas_019" '"' @;
          WHEN (2) PUT '"manual.png" alt="' "&g_nls_reportCas_020" '"' @;
-         OTHERWISE PUT '"?????" alt="' "g_nls_reportCas_021" '"' @;
+         OTHERWISE PUT '"?????" alt="' "&g_nls_reportCas_021" '"' @;
       END;
       PUT '></img></td>';
       PUT '</tr>';
