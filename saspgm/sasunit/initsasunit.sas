@@ -39,6 +39,7 @@
 */ /** \cond */ 
 
 /* change history
+   26.06.2012 LR  Testcase runtime is stored in target.cas (for assertPerformance), Ticket #39
    02.10.2008 NA  Modified for LINUX
    27.06.2008 AM  Minimale Änderungen in den Kommentartexten
    15.02.2008 AM  Dokumentation ausgelagert nach _sasunit_doc.sas
@@ -165,6 +166,7 @@ PROC SQL NOPRINT;
       ,cas_spec  CHAR(255)             /* optional: specification document, fully qualified path or only filename to be found in folder &g_doc */
       ,cas_start INT FORMAT=datetime21.2  /* starting date and time of the last run */
       ,cas_end   INT FORMAT=datetime21.2  /* ending date and time of the last run */
+	  ,cas_runt  INT                      /* runtime of the testcase */
       ,cas_res   INT                   /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
    );
    CREATE TABLE target.tst (        /* Test */
