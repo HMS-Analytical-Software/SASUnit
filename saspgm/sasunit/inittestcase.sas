@@ -74,6 +74,7 @@ PROC SQL NOPRINT;
       ,%sysfunc(datetime())
       ,.
       ,.
+	  ,.
    );
 QUIT;
 
