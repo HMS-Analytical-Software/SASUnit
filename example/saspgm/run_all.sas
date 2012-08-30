@@ -22,32 +22,37 @@
 */ /** \cond */ 
 
 /* History
+   30.08.2012 KL  Values for rootpath of SASUnit, language and overwrite are taken over from OS-Variables.
+                  So there is no need to change run_all for operating systems or languages
    05.09.2008 NA  Anpassungen Linux
    06.02.2008 AM  Neuerstellung 
 */ 
 
 OPTIONS 
    MPRINT MAUTOSOURCE NOMLOGIC NOSYMBOLGEN
-   SASAUTOS=(SASAUTOS "c:/projects/sasunit/saspgm/sasunit") /* SASUnit macro library */
+   SASAUTOS=(SASAUTOS "%sysget(SASUNIT_I_ROOT)/saspgm/sasunit") /* SASUnit macro library */
 ;
 
 /* open test repository or create when needed */
 %initSASUnit(
-   i_root       = c:/projects/sasunit /* root path, all other paths can then be relative paths */
-  ,io_target    = example/doc/sasunit /* Output of SASUnit: test repository, logs, results, reports */
-  ,i_overwrite  = 0                   /* set to 1 to force all test scenarios to be run, else only changed 
-                                         scenarios or scenarios with changed unit under test will be run*/
-  ,i_project    = SASUnit Examples    /* Name of project, for report */
-  ,i_sasunit    = saspgm/sasunit      /* SASUnit macro library */
-  ,i_sasautos   = example/saspgm      /* Search for units under test here */
-  ,i_testdata   = example/dat         /* test data, libref testdata */
-  ,i_refdata    = example/dat         /* reference data, libref refdata */
+   i_root       = %sysget(SASUNIT_I_ROOT)       /* root path, all other paths can then be relative paths */
+  ,io_target    = example/doc/sasunit           /* Output of SASUnit: test repository, logs, results, reports */
+  ,i_overwrite  = %sysget(SASUNIT_I_OVERWRITE)  /* set to 1 to force all test scenarios to be run, else only changed 
+                                                   scenarios or scenarios with changed unit under test will be run*/
+  ,i_project    = SASUnit Examples              /* Name of project, for report */
+  ,i_sasunit    = saspgm/sasunit                /* SASUnit macro library */
+  ,i_sasautos   = example/saspgm                /* Search for units under test here */
+  ,i_testdata   = example/dat                   /* test data, libref testdata */
+  ,i_refdata    = example/dat                   /* reference data, libref refdata */
+  ,i_sascfg     = example/bin/sasunit.9.3.%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_I_LANGUAGE)).cfg
 )
 
 /* Run specified test scenarios. There can be more than one call to runSASUnit */
 %runSASUnit(i_source = example/saspgm/%str(*)_test.sas)
 
 /* Create or recreate HTML pages for report where needed */
-%reportSASUnit()
+%reportSASUnit(
+   i_language=%upcase(%sysget(SASUNIT_I_LANGUAGE))
+);
 
 /** \endcond */

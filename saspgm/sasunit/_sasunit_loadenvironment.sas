@@ -13,6 +13,9 @@
 */ /** \cond */ 
 
 /* change history
+   28.08.2012 KL  Problems occured resolving paths like ..\.\example\dat later in the project 
+                  e.g. assertReport couldn't find expected pdfs. 
+				  Libname is successful, so the idea was to get the resolved path via pathname
    15.02.2011 KL  added support for testcases that need to redirect logfiles
                   Two new macrovariables g_logfile and g_printfile are available
    10.10.2010 AM  new Version 1.001
@@ -112,10 +115,12 @@ RUN;
    %IF %length(&g_testdata) %THEN %DO;
       LIBNAME testdata "&g_testdata";
       FILENAME testdata "&g_testdata";
+      %LET g_testdata = %sysfunc(pathname(testdata));
    %END;
    %IF %length(&g_refdata) %THEN %DO;
       LIBNAME refdata "&g_refdata";
       FILENAME refdata "&g_refdata";
+      %LET g_refdata = %sysfunc(pathname(refdata));
    %END;
    %IF %length(&g_doc) %THEN %DO;
       FILENAME doc "&g_doc";

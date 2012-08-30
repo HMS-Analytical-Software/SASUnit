@@ -11,13 +11,19 @@
 
 */ /** \cond */ 
 
-OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "c:/projects/sasunit/saspgm/sasunit");
+/* History
+   30.08.2012 KL  Values for rootpath of SASUnit, language and overwrite are taken over from OS-Variables.
+                  So there is no need to change run_all for operating systems or languages
+   10.10.2010 AM  Neuerstellung 
+*/ 
+
+OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "%sysget(SASUNIT_I_ROOT)/saspgm/sasunit");
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root       = c:/projects/sasunit
+   i_root       = %sysget(SASUNIT_I_ROOT)
   ,io_target    = doc/sasunit
-  ,i_overwrite  = 0
+  ,i_overwrite  = %sysget(SASUNIT_I_OVERWRITE)
   ,i_project    = SASUnit
   ,i_sasunit    = saspgm/sasunit
   ,i_sasautos   = saspgm/sasunit
@@ -27,11 +33,14 @@ proc options option=logparm;run;
   ,i_testdata   = dat
   ,i_refdata    = dat
   ,i_doc        = doc/spec
+  ,i_sascfg     = bin/sasunit.9.3.%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_I_LANGUAGE)).cfg
 )
 
 %runSASUnit(i_source = %str(saspgm/test/%str(*)_test.sas));
 
-%reportSASUnit();
+%reportSASUnit(
+   i_language=%upcase(%sysget(SASUNIT_I_LANGUAGE))
+);
 
 /** \endcond */
 
