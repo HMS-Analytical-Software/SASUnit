@@ -1,1 +1,2 @@
-C:\Programme\doxygen\bin\doxywizard.exe doxygen.cfg
+"C:\Program Files\doxygen\bin\doxywizard.exe" doxygen.cfg
+pause
