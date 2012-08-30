@@ -118,7 +118,7 @@ proc datasets lib=test2 nolist kill;
 quit; 
 %generate(data=sashelp.class, by=sex, out=test3.class)
 %endTestcall()
-%assertLogMsg(i_logMsg=ERROR: Libname TEST3 is not assigned)
+%assertLogMsg(i_logMsg=ERROR: Libname TEST3 is not assigned|ERROR: Libname TEST3 ist nicht zugewiesen)
 %endTestcase(i_assertLog=0)
 
 libname test1;
