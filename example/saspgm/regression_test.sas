@@ -30,7 +30,15 @@
 %mend onlywin;
 %onlywin;
 
-libname testdata excel "&g_testdata/regression.xls";
+%global _g_ExcelEngine;
+%let _g_ExcelEngine =excel;
+%macro CheckFor64Bits;
+   %if (&sysaddrbits=64) %then %do;
+      %let _g_ExcelEngine =%str(pcfiles type=excel path=);
+   %end;
+%mend;
+%CheckFor64Bits;
+libname testdata &_g_ExcelEngine. "&g_testdata/regression.xls";
 data refdata (rename=(yhat=est)) testdata(drop=yhat); 
    set testdata.data; 
 run; 
