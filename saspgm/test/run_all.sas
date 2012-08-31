@@ -17,13 +17,13 @@
    10.10.2010 AM  Neuerstellung 
 */ 
 
-OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "%sysget(SASUNIT_I_ROOT)/saspgm/sasunit");
+OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "%sysget(SASUNIT_ROOT)/saspgm/sasunit");
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root       = %sysget(SASUNIT_I_ROOT)
-  ,io_target    = doc/sasunit
-  ,i_overwrite  = %sysget(SASUNIT_I_OVERWRITE)
+   i_root       = %sysget(SASUNIT_ROOT)
+  ,io_target    = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
+  ,i_overwrite  = %sysget(SASUNIT_OVERWRITE)
   ,i_project    = SASUnit
   ,i_sasunit    = saspgm/sasunit
   ,i_sasautos   = saspgm/sasunit
@@ -33,13 +33,13 @@ proc options option=logparm;run;
   ,i_testdata   = dat
   ,i_refdata    = dat
   ,i_doc        = doc/spec
-  ,i_sascfg     = bin/sasunit.9.3.%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_I_LANGUAGE)).cfg
+  ,i_sascfg     = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
 )
 
 %runSASUnit(i_source = %str(saspgm/test/%str(*)_test.sas));
 
 %reportSASUnit(
-   i_language=%upcase(%sysget(SASUNIT_I_LANGUAGE))
+   i_language=%upcase(%sysget(SASUNIT_LANGUAGE))
 );
 
 /** \endcond */
