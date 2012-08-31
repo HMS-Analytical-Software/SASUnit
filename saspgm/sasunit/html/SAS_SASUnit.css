@@ -1,0 +1,948 @@
+.ContentTitle
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #002288;
+}
+.Output
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+  border-width: 1px;
+  border-color: #CCCCCC;
+}
+.HeaderEmphasis
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.NoteContent
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.Graph
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+  border-width: 1px;
+  border-color: #CCCCCC;
+}
+.WarnContentFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.NoteBanner
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.FatalContent
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.DataStrong
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+  background-color: #E8EEF2;
+  border-width: 1px;
+  border-color: #CCCCCC;
+}
+.Document
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+a:link {
+color:#0066AA
+}
+a:visited {
+color:#004488
+}
+a:active {
+color:#004488
+}
+.BeforeCaption
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+  background-color: #FFFFFF;
+}
+.ContentsDate
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #E8EEF2;
+  width: 100%;
+}
+.Pages
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #E8EEF2;
+  margin-left: 8px;
+  margin-right: 8px;
+  list-style-type: decimal;
+}
+.TitlesAndFooters
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: medium;
+  font-weight: bold;
+  font-style: italic;
+  color: #000000;
+  background-color: #FFFFFF;
+}
+.IndexProcName
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  list-style-type: decimal;
+}
+.ProcTitle
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: medium;
+  font-weight: bold;
+  font-style: italic;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.IndexAction
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  margin-left: 6pt;
+  list-style-type: NONE;
+}
+.Data
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #000080;
+  background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
+  padding-right  : 10px;
+  padding-top    : 2px;
+  padding-left   : 10px;
+  padding-bottom : 2px;
+  margin-left    : 0px;
+  margin-right   : 0px;
+  margin-top     : 2px;
+  margin-bottom  : 2px;
+}
+.Table
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+  border-width: 0;
+  border-color: #CCCCCC;
+}
+.top_stacked_value
+{
+  padding-bottom: 1px;
+}
+.middle_stacked_value
+{
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+.bottom_stacked_value
+{
+  padding-top: 1px;
+}
+.FooterEmpty
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.SysTitleAndFooterContainer
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+  border-width: 0;
+  width: 100%;
+}
+.RowFooterEmpty
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.ContentFolder
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  list-style-type: NONE;
+}
+.RowFooterEmphasis
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.RowFooterStrongFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.RowFooterFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.Index
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #E8EEF2;
+}
+.FooterFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.ExtendedPage
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #000000;
+  background-color: #FFFFFF;
+  border-width: 1pt;
+  text-align: center;
+}
+.Container
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.Date
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #E8EEF2;
+  width: 100%;
+}
+.Caption
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+  background-color: #FFFFFF;
+}
+.WarnBanner
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.Frame
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.HeaderStrongFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.IndexTitle
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #002288;
+}
+.NoteContentFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.DataEmphasisFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #000000;
+  background-color: #E8EEF2;
+  border-width: 1px;
+  border-color: #CCCCCC;
+}
+.Note
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.Byline
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #E8EEF2;
+}
+.FatalBanner
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.ProcTitleFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.ByContentFolder
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  list-style-type: NONE;
+}
+.PagesProcLabel
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  list-style-type: decimal;
+}
+.RowHeaderFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #000000;
+  background-color: #E8EEF2;
+}
+.RowFooterEmphasisFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.WarnContent
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.DataEmpty
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #000080;
+  background-color: #E8EEF2;
+  border-width: 1px;
+  border-color: #CCCCCC;
+}
+.Cell
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.Header
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+  background-color: #D7DDE1;
+  padding-right  : 10px;
+  padding-top    : 2px;
+  padding-left   : 10px;
+  padding-bottom : 2px;
+  margin-left    : 0px;
+  margin-right   : 0px;
+  margin-top     : 2px;
+  margin-bottom  : 2px;
+  border: 1px solid #CCCCCC;
+}
+.PageNo
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+  background-color: #FFFFFF;
+  text-align: right;
+  vertical-align: top;
+}
+.ContentProcLabel
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  list-style-type: decimal;
+}
+.HeaderFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #000000;
+  background-color: #D7DDE1;
+}
+.PagesTitle
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #002288;
+}
+.RowHeaderEmpty
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+  background-color: #E8EEF2;
+}
+.PagesProcName
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  list-style-type: decimal;
+}
+.Batch
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #000000;
+  background-color: #E8EEF2;
+  border-width: 1px;
+  border-color: #CCCCCC;
+}
+.ContentItem
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  list-style-type: NONE;
+}
+.Body
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.PagesDate
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #E8EEF2;
+  width: 100%;
+}
+.HeaderEmpty
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+  background-color: #D7DDE1;
+}
+.FooterStrong
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.FooterEmphasis
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.ErrorContent
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.DataFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #000080;
+  background-color: #E8EEF2;
+  border-width: 1px;
+  border-color: #CCCCCC;
+}
+.HeaderStrong
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.DataEmphasis
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #000000;
+  background-color: #E8EEF2;
+  border-width: 1px;
+  border-color: #CCCCCC;
+}
+.TitleAndNoteContainer
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+  border-width: 0;
+  width: 100%;
+}
+.RowFooter
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.IndexItem
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  margin-left: 6pt;
+  list-style-type: NONE;
+}
+.BylineContainer
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+  border-width: 0;
+  width: 100%;
+}
+.FatalContentFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.BodyDate
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+  width: 100%;
+  text-align: right;
+  vertical-align: top;
+}
+.Contents
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #E8EEF2;
+  margin-left: 8px;
+  margin-right: 8px;
+  list-style-type: decimal;
+}
+.RowFooterStrong
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.UserText
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.HeadersAndFooters
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.RowHeaderEmphasisFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #000000;
+  background-color: #E8EEF2;
+}
+.ErrorBanner
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.ContentProcName
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  list-style-type: decimal;
+}
+.RowHeaderStrong
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+  background-color: #E8EEF2;
+}
+.PagesItem
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  list-style-type: NONE;
+}
+.RowHeader
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+  background-color: #E8EEF2;
+  padding-right  : 10px;
+  padding-top    : 2px;
+  padding-left   : 10px;
+  padding-bottom : 2px;
+  margin-left    : 0px;
+  margin-right   : 0px;
+  margin-top     : 2px;
+  margin-bottom  : 2px;
+  border: 1px solid #CCCCCC;
+}
+.FooterStrongFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.AfterCaption
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+  background-color: #FFFFFF;
+}
+.RowHeaderStrongFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+  background-color: #E8EEF2;
+}
+.RowHeaderEmphasis
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #000000;
+  background-color: #E8EEF2;
+}
+.DataStrongFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+  background-color: #E8EEF2;
+  border-width: 1px;
+  border-color: #CCCCCC;
+}
+.Footer
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: bold;
+  font-style: normal;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.FolderAction
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #0033AA;
+  margin-left: 6pt;
+  list-style-type: NONE;
+}
+.HeaderEmphasisFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
+.SystemTitle
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: large;
+  font-weight: bold;
+  font-style: italic;
+  color: #000000;
+  background-color: #FFFFFF;
+}
+.ErrorContentFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: normal;
+  color: #002288;
+  background-color: #FFFFFF;
+}
+.SystemFooter
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: large;
+  font-weight: bold;
+  font-style: italic;
+  color: #000000;
+  background-color: #FFFFFF;
+}
+.FooterEmphasisFixed
+{
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight: normal;
+  font-style: italic;
+  color: #0033AA;
+  background-color: #D7DDE1;
+}
