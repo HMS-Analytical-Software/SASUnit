@@ -198,6 +198,8 @@ color:#004488
   background-color: #FFFFFF;
   border-width: 0;
   border-color: #CCCCCC;
+  border-collapse: separate;
+  border-spacing: 2px;
 }
 .top_stacked_value
 {
