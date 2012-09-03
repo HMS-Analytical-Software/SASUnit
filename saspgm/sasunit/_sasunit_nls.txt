@@ -233,8 +233,8 @@
   2 DE Frames sind deaktiviert. Klicken Sie hier, um zur Hauptseite zu gelangen.
   2 EN Frames are disabled. Click here to go to the main page.
 ---reportHome
-  1 DE SASUnit Testdokumentation
-  1 EN SASUnit Test Documentation
+  1 DE Testdokumentation
+  1 EN Test Documentation
   2 DE Eigenschaften dieser Testsuite
   2 EN Properties of this test suite
   3 DE Projektname

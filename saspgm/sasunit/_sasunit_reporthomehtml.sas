@@ -23,7 +23,10 @@
   ,o_html    =
 );
 
-%LOCAL i;
+%LOCAL i
+       HTML_Reference;
+
+%LET HTML_Reference=%nrbquote(<a href="http://sourceforge.net/projects/sasunit/" target="_parent">SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" width=30px height=30px align="top" border="0"></a>);
 
 DATA _null_;
    SET &i_repdata;
@@ -32,7 +35,7 @@ DATA _null_;
    IF _n_=1 THEN DO;
 
       %_sasunit_reportPageTopHTML(
-         i_title   = %str(&g_project - &g_nls_reportHome_001)
+         i_title   = %str(&g_project. - &HTML_Reference. &g_nls_reportHome_001.)
         ,i_current = 1
       )
 

@@ -11,6 +11,7 @@
 */ /** \cond */ 
 
 /* change log
+   03.09.2012 KL  New logo; updated link to new resource
    30.10.2010 AM  link to sourceforge project page
    18.08.2008 AM  added national language support
 */
@@ -26,11 +27,12 @@
       put(time(),time8.0) !! " &g_nls_reportFooter_004 "
    ;
    PUT _sasunit_reportFooterHTML +(-1);
-   PUT '<a href="http://sasunit.sourceforge.net">';
-   PUT '<img src="sasunit.png" alt="SASUnit" align="middle" border="0"></a>';
+   PUT '<a href="http://sourceforge.net/projects/sasunit/" target="_parent">';
+   PUT 'SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" width=20px height=20px align="top" border="0"></a>';
    PUT "Version &g_version (&g_revision)</small></address>";
    PUT '</body>';
    PUT '</html>';
    
 %MEND _sasunit_reportFooterHTML;
+
 /** \endcond */
