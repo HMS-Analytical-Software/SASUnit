@@ -10,6 +10,8 @@
    \sa         \$HeadURL$
 */ /** \cond */ 
 
+%Macro inittestcase_test;
+
 /* test case start ------------------------------------ */
 %initTestcase(
     i_object = inittestcase.sas,
@@ -57,4 +59,6 @@ QUIT;
 
 %endTestcase;
 
+%Mend inittestcase_test;
+%inittestcase_test;
 /** \endcond */
