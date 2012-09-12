@@ -52,7 +52,7 @@
       %endTestcall;
    %END;
    %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error: assert muss nach initTestcase aufgerufen werden;
+      %PUT &g_error: assert must be called after initTestcase;
       %RETURN;
    %END;
 
