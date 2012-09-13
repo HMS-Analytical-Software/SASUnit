@@ -191,10 +191,9 @@ RUN;
             _sCmdString LENGTH = $32000
          ;
          FILE 
-			"%sysfunc(pathname(work))/xx.cmd"
+         "%sysfunc(pathname(work))/xx.cmd"
             LRECL=32000
          ;
-         /* */
          _sCmdString = 
          """" !! &g_sasstart !! """"
             !! " " 
@@ -220,9 +219,9 @@ RUN;
       %if &sysscp. = LINUX %then %do;
           %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/xx.cmd")
       %end;
-	  %_sasunit_xcmd("%sysfunc(pathname(work))/xx.cmd")
-	  
-	  
+     %_sasunit_xcmd("%sysfunc(pathname(work))/xx.cmd")
+     
+     
       %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/xx.cmd);
       %LET l_sysrc = &sysrc;
 
@@ -261,9 +260,18 @@ RUN;
          SELECT count(*) INTO :l_result2 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=2;
          
          %LOCAL l_result;
-         %IF &l_result1 GT 0 %THEN %LET l_result=1;        /* error occured */
-         %ELSE %IF &l_result2 GT 0 %THEN %LET l_result=2;  /* manual occured */
-         %ELSE %LET l_result=0;                            /* everything OK */
+         %IF &l_result1 GT 0 %THEN %DO;
+            %LET l_result=1; /* error occured */
+         %END;   
+         %ELSE %IF &l_result2 GT 0 %THEN %DO;
+            %LET l_result=2; /* manual occured */
+         %END;   
+         %ELSE %IF %EVAL(%SYSFUNC(sum(&l_result0., &l_result1., &l_result2.)) EQ 0) %THEN %DO;
+            %LET l_result=1; /* no test cases -> show as error occurred */
+         %END;
+         %ELSE %DO;
+            %LET l_result=0; /* everything OK */
+         %END;
 
          UPDATE target.scn
             SET 

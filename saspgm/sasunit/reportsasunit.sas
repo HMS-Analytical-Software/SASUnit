@@ -63,13 +63,117 @@
    %THEN %GOTO errexit;
 
 /*-- generate temporary datasets ---------------------------------------------*/
-%LOCAL d_rep d_scn d_cas d_auton d_pgm d_pcs;
+%LOCAL 
+   d_rep 
+   d_scn 
+   d_cas01 
+   d_auton 
+   d_pgm 
+   d_pcs 
+   d_emptyscn 
+   d_cas
+   d_tst
+;
 %_sasunit_tempFilename(d_rep)
 %_sasunit_tempFilename(d_scn)
-%_sasunit_tempFilename(d_cas)
+%_sasunit_tempFilename(d_cas01)
 %_sasunit_tempFilename(d_auton)
 %_sasunit_tempFilename(d_pgm)
 %_sasunit_tempFilename(d_pcs)
+%_sasunit_tempFilename(d_emptyscn)
+%_sasunit_tempFilename(d_cas)
+%_sasunit_tempFilename(d_tst)
+
+
+/*-- check for empty scenarios and generate entries in temporary copies of cas and tst datasets,
+     in order to make scenario appear in report with a dummy test case --------------------------- */
+%LOCAL
+   l_sEmptyScnDummyCasDesc
+;
+%LET l_sEmptyScnDummyCasDesc = %STR(no valid test case found);
+
+PROC SQL NOPRINT;
+   CREATE TABLE &d_emptyscn. AS
+      SELECT
+         t1.scn_id
+         FROM target.scn t1
+         WHERE t1.scn_id NOT IN
+         (
+            SELECT
+               Distinct cas_scnid
+               FROM target.cas
+         )
+   ;
+QUIT;
+
+
+PROC SQL NOPRINT;
+   CREATE TABLE &d_cas. AS
+      SELECT
+        t1.*
+       FROM target.cas t1
+   ;
+   INSERT INTO &d_cas.
+   (
+      cas_scnid
+     ,cas_id
+     ,cas_auton
+     ,cas_pgm
+     ,cas_desc
+     ,cas_spec
+     ,cas_start
+     ,cas_end
+     ,cas_runt
+     ,cas_res
+   )
+   (
+      SELECT
+          scn_id
+         ,1
+         ,0
+         ,' '
+         ,"&l_sEmptyScnDummyCasDesc."
+         ,' '
+         ,.
+         ,.
+         ,.
+         ,1
+         FROM &d_emptyscn.
+   )
+   ;
+QUIT;
+
+PROC SQL NOPRINT;
+  CREATE TABLE &d_tst. AS
+    SELECT
+      t1.*
+      FROM target.tst t1
+  ;
+  INSERT INTO &d_tst.
+  (
+    tst_scnid
+   ,tst_casid
+   ,tst_id
+   ,tst_type
+   ,tst_desc
+   ,tst_exp
+   ,tst_act
+   ,tst_res
+  )
+  (
+    SELECT
+       scn_id
+      ,1
+      ,0
+      ,' '
+      ,' '
+      ,' '
+      ,' '
+      ,1
+      FROM &d_emptyscn.
+  )
+  ;  
+QUIT;
 
 /*-- generate a last-flag for treeview ---------------------------------------*/
 PROC SORT DATA=target.scn OUT=&d_scn;
@@ -80,17 +184,17 @@ DATA &d_scn;
    scn_last = eof;
 RUN;
 
-PROC SORT DATA=target.cas OUT=&d_cas;
+PROC SORT DATA=&d_cas OUT=&d_cas01;
    BY cas_scnid cas_id;
 RUN;
-DATA &d_cas;
-   SET &d_cas;
+DATA &d_cas01;
+   SET &d_cas01;
    BY cas_scnid;
    cas_last = last.cas_scnid;
    cas_pgmucase = upcase(cas_pgm);
 RUN;
 
-PROC SORT DATA=target.cas (KEEP=cas_auton RENAME=(cas_auton=auton_id)) 
+PROC SORT DATA=&d_cas (KEEP=cas_auton RENAME=(cas_auton=auton_id)) 
           OUT=&d_auton NODUPKEY;
    BY auton_id;
 RUN;
@@ -100,7 +204,7 @@ DATA &d_auton;
 RUN;
 
 data &d_pgm;
-   SET target.cas (KEEP=cas_auton cas_pgm RENAME=(cas_auton=pgm_auton cas_pgm=pgm_ucase));
+   SET &d_cas (KEEP=cas_auton cas_pgm RENAME=(cas_auton=pgm_auton cas_pgm=pgm_ucase));
    pgm_ucase = upcase(pgm_ucase);
 RUN;
 PROC SORT DATA=&d_pgm NODUPKEY;
@@ -115,7 +219,7 @@ DATA &d_pgm;
 RUN;
 
 DATA &d_pcs;
-   SET target.cas (KEEP=cas_auton cas_pgm cas_scnid cas_id RENAME=(cas_auton=pcs_auton cas_pgm=pcs_ucase cas_scnid=pcs_scnid cas_id=pcs_casid));
+   SET &d_cas (KEEP=cas_auton cas_pgm cas_scnid cas_id RENAME=(cas_auton=pcs_auton cas_pgm=pcs_ucase cas_scnid=pcs_scnid cas_id=pcs_casid));
    pcs_ucase = upcase(pcs_ucase);
 PROC SORT DATA=&d_pcs OUT=&d_pcs NODUPKEY;
    BY pcs_auton pcs_ucase pcs_scnid pcs_casid;
@@ -177,8 +281,8 @@ PROC SQL NOPRINT;
    FROM 
        target.tsu
       ,&d_scn
-      ,&d_cas
-      ,target.tst
+      ,&d_cas01.
+      ,&d_tst
       ,&d_auton
       ,&d_pgm
       ,&d_pcs
@@ -360,8 +464,8 @@ QUIT;
    %PUT;
 %exit:
 PROC DATASETS NOWARN NOLIST LIB=work;
-   DELETE %scan(&d_rep,2,.) %scan(&d_scn,2,.) %scan(&d_cas,2,.) %scan(&d_auton,2,.) 
-          %scan(&d_pgm,2,.) %scan(&d_pcs,2,.);
+   DELETE %scan(&d_rep,2,.) %scan(&d_scn,2,.) %scan(&d_cas01.,2,.) %scan(&d_cas.,2,.) %scan(&d_auton,2,.) 
+          %scan(&d_pgm,2,.) %scan(&d_pcs,2,.) %scan(&d_emptyscn.,2,.);
 QUIT;
 %MEND reportSASUnit;
 /** \endcond */
