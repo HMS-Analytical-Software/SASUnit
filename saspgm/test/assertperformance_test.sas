@@ -67,4 +67,28 @@ run;
 
 %assertLog (i_errors=0, i_warnings=0)
 
+/* test case 4 ------------------------------------ */
+%initTestcase(
+    i_object=assertlibrary.sas
+   ,i_desc=Runtime exceeds expected value by 1 billionth - must be red!
+)
+
+data _null_;
+   call sleep (4,1);
+run;
+
+%endTestcall()
+
+proc sql noprint;
+   select max(cas_id) INTO :_casid FROM target.cas WHERE cas_scnid=&g_scnid;
+   select cas_end - cas_start INTO :_RunTime FROM target.cas WHERE cas_scnid = &g_scnid. AND cas_id = &_casid.;
+quit;
+
+/* create artificial difference in expected and actual runtime */
+%let _RunTime=%sysevalf(&_RunTime-0.00000000000001);
+
+%assertPerformance (i_expected=&_RunTime., i_desc=Runtime exceeds expected value by 1 billionth - must be red);
+
+%assertLog (i_errors=0, i_warnings=0);
+
 /** \endcond */

@@ -123,7 +123,6 @@ PROC SQL NOPRINT;
      ,cas_spec
      ,cas_start
      ,cas_end
-     ,cas_runt
      ,cas_res
    )
    (
@@ -134,7 +133,6 @@ PROC SQL NOPRINT;
          ,' '
          ,"&l_sEmptyScnDummyCasDesc."
          ,' '
-         ,.
          ,.
          ,.
          ,1
