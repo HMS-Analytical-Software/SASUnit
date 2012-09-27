@@ -27,15 +27,47 @@
 
 %LET &r_errors   = 999;
 %LET &r_warnings = 999;
+
 DATA _null_;
+
    INFILE "&i_logfile" TRUNCOVER end=eof;
    INPUT logline $char255.;
-   IF index (logline, "&i_error")   = 1 THEN error_count+1;
-   IF index (logline, "&i_warning") = 1 THEN warning_count+1;
-   IF eof THEN DO;
-      CALL symput ("&r_errors"  , compress(put(error_count,8.)));
-      CALL symput ("&r_warnings", compress(put(warning_count,8.)));
+
+   ATTRIB
+      _errorPatternId      LENGTH = 8
+      _ignoreErrPatternId  LENGTH = 8
+      _warningPatternId    LENGTH = 8
+      error_count          LENGTH = 8
+      warning_count        LENGTH = 8
+   ;
+   RETAIN
+      _errorPatternId      0
+      _ignoreErrPatternId  0
+      _warningPatternId    0
+      error_count          0
+      warning_count        0
+   ;
+
+   IF _n_=1 THEN DO;
+      _errorPatternId = prxparse("/^&i_error.[: ]/");
+      _warningPatternId = prxparse("/^&i_warning.[: ]/");
+      _ignoreErrPatternId  = prxparse("/^ERROR: Errors printed on page/");
    END;
+
+   IF prxmatch (_errorPatternId, logline) THEN DO;
+      IF NOT prxmatch (_ignoreErrPatternId, logline) THEN DO;
+         error_count = error_count+1;
+      END;
+   END;
+   IF prxmatch (_warningPatternId, logline) THEN DO;
+      warning_count = warning_count+1;
+   END;
+
+   IF eof THEN DO;
+      CALL symputx ("&r_errors"  , put(error_count,8.));
+      CALL symputx ("&r_warnings", put(warning_count,8.));
+   END;
+
 RUN;
 
 %MEND _sasunit_checkLog;

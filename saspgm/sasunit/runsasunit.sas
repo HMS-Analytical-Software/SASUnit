@@ -120,7 +120,7 @@ RUN;
          INSERT INTO target.scn VALUES (
              &l_scnid
             ,"&l_scn"
-            ,"",.,.,.,.
+            ,"",.,.,.,.,.,.
          );
       QUIT;
    %END;
@@ -186,6 +186,11 @@ RUN;
          %LET l_parms=&l_parms -config ""%sysfunc(getoption(config))"";
       %END; 
 
+      %LOCAL
+         l_scnlogfullpath
+      ;
+      %LET l_scnlogfullpath = &g_log/%substr(00&l_scnid.,%length(&l_scnid)).log;
+
       DATA _null_;
          ATTRIB
             _sCmdString LENGTH = $32000
@@ -200,7 +205,7 @@ RUN;
             !! "&l_parms.
             -sysin ""&&l_scnfile&i""
             -initstmt ""%nrstr(%%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&l_scnid.;""
-            -log   ""&g_log/%substr(00&l_scnid.,%length(&l_scnid)).log""
+            -log   ""&l_scnlogfullpath.""
             -print ""&g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst""
             &g_splash
             -noovp
@@ -215,7 +220,7 @@ RUN;
             _sCmdString
          ;
       RUN;
-      /* */
+
       %if &sysscp. = LINUX %then %do;
           %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/xx.cmd")
       %end;
@@ -252,8 +257,25 @@ RUN;
       %END;
 
       /*-- save metadata of test scenario ------------------------------------*/
+      /* scan log for errors outside test cases */
+      %LOCAL 
+         l_error_count 
+         l_warning_count
+      ;
+      %_sasunit_checklog (
+          i_logfile = &l_scnlogfullpath.
+         ,i_error   = &g_error.
+         ,i_warning = &g_warning.
+         ,r_errors  = l_error_count
+         ,r_warnings= l_warning_count
+      )
+
       PROC SQL NOPRINT;
-         %LOCAL l_result0 l_result1 l_result2;
+         %LOCAL 
+            l_result0 
+            l_result1 
+            l_result2
+         ;
          /* determine results of the test cases */
          SELECT count(*) INTO :l_result0 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=0;
          SELECT count(*) INTO :l_result1 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=1;
@@ -269,15 +291,20 @@ RUN;
          %ELSE %IF %EVAL(%SYSFUNC(sum(&l_result0., &l_result1., &l_result2.)) EQ 0) %THEN %DO;
             %LET l_result=1; /* no test cases -> show as error occurred */
          %END;
+         %ELSE %IF &l_error_count. GT 0 %THEN %DO;
+            %LET l_result=1; /* error(s) in scenario log -> show as error occurred */
+         %END;
          %ELSE %DO;
             %LET l_result=0; /* everything OK */
          %END;
 
          UPDATE target.scn
             SET 
-                scn_end = %sysfunc(datetime())
-               ,scn_rc  = &l_sysrc
-               ,scn_res = &l_result
+                scn_end          = %sysfunc(datetime())
+               ,scn_rc           = &l_sysrc.
+               ,scn_errorcount   = &l_error_count.
+               ,scn_warningcount = &l_warning_count.
+               ,scn_res          = &l_result.
             WHERE 
                scn_id = &l_scnid
             ;

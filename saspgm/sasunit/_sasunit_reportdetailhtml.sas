@@ -32,6 +32,11 @@
   ,o_html    =
 );
 
+%LOCAL
+   l_nls_reportdetail_errors
+;
+%LET l_nls_reportdetail_errors   = %STR(error(s));
+
 DATA _null_;
    SET &i_repdata END=eof;
    WHERE scn_id = &i_scnid AND cas_id = &i_casid;
@@ -46,9 +51,15 @@ DATA _null_;
       )
    END;
 
-   LENGTH abs_path $256 hlp $200 hlp2 $200;
+   LENGTH 
+      abs_path    $  256 
+      hlp         $  200 
+      hlp2        $  200
+      errcountmsg $  50
+   ;
 
    IF _n_=1 THEN DO;
+
       PUT '<table><tr>';
       PUT "   <td>&g_nls_reportDetail_028</td>";
       PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_003 " scn_id z3. '" href="cas_overview.html#scn' scn_id z3. '">' scn_id z3. '</a></td>';
@@ -57,12 +68,24 @@ DATA _null_;
       PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_003 " scn_id z3. '" href="cas_overview.html#scn' scn_id z3. '">' scn_desc +(-1) '</a></td>';
       PUT '</tr><tr>';
       PUT "   <td>&g_nls_reportDetail_030</td>";
+
       abs_path = resolve ('%_sasunit_abspath(&g_root,' !! trim(scn_path) !! ')');
+
       PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_004 &#x0D;" abs_path +(-1) '" href="' abs_path +(-1) '">' scn_path +(-1) '</a></td>';
       PUT '</tr><tr>';
       PUT "   <td>&g_nls_reportDetail_031</td>";
-      PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_005" '" href="' scn_id z3. '_log.html">' scn_start EURDFDT20. '</a></td>';
+
+      IF scn_errorcount GT 0 THEN DO;
+         errcountmsg = '(' !! put(scn_errorcount, 3.) !! ' ' !! "&l_nls_reportdetail_errors." !! ')';
+      END;
+      ELSE DO;
+         errcountmsg = '';
+      END;
+
+      PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_005" '" href="' scn_id z3. '_log.html">' scn_start EURDFDT20. '</a>&nbsp;<span class="logerrcountmsg">' errcountmsg '</span> </td>';
+
       duration = scn_end - scn_start;
+
       PUT '</tr><tr>';
       PUT "   <td>&g_nls_reportDetail_032</td>";
       PUT '   <td>' duration commax12.1 's</td>';
@@ -72,9 +95,12 @@ DATA _null_;
       PUT '</tr><tr>';
       PUT "   <td>&g_nls_reportDetail_034</td>";
       PUT '   <td>' cas_desc +(-1) '</td>';
+
       IF cas_auton = '0' THEN hlp = '&g_sasautos';
       ELSE hlp = '&g_sasautos' !! put (cas_auton,1.);
+
       abs_path = resolve ('%_sasunit_abspath(' !! trim(hlp) !! ',' !! trim(cas_pgm) !! ')');
+
       PUT '</tr><tr>';
       PUT "   <td>&g_nls_reportDetail_035</td>";
       PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_006 &#x0D;" abs_path +(-1) '" href="' abs_path +(-1) '">' cas_pgm +(-1) '</a></td>';

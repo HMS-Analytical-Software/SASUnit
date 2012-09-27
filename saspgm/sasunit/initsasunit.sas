@@ -149,14 +149,16 @@ PROC SQL NOPRINT;
    "","","","","","","","","","","","","","","","","","","","",0,0
    );
 
-   CREATE TABLE target.scn (        /* test scenario */
-       scn_id     INT FORMAT=z3.       /* number of scenario */
-      ,scn_path   CHAR(255)            /* path to program file */ 
-      ,scn_desc   CHAR(255)            /* description of program (brief tag in comment header) */
-      ,scn_start  INT FORMAT=datetime21.2 /* starting date and time of the last run */
-      ,scn_end    INT FORMAT=datetime21.2 /* ending date and time of the last run */
-      ,scn_rc     INT                  /* return code of SAS session of last run */
-      ,scn_res    INT                  /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
+   CREATE TABLE target.scn (                    /* test scenario */
+       scn_id           INT FORMAT=z3.          /* number of scenario */
+      ,scn_path         CHAR(255)               /* path to program file */ 
+      ,scn_desc         CHAR(255)               /* description of program (brief tag in comment header) */
+      ,scn_start        INT FORMAT=datetime21.2 /* starting date and time of the last run */
+      ,scn_end          INT FORMAT=datetime21.2 /* ending date and time of the last run */
+      ,scn_rc           INT                     /* return code of SAS session of last run */
+      ,scn_errorcount   INT                     /* number of detected errors in the scenario log */
+      ,scn_warningcount INT                     /* number of detected warnings in the scenario log */
+      ,scn_res          INT                     /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
    );
    CREATE TABLE target.cas (        /* test case */
        cas_scnid INT FORMAT=z3.        /* reference to test scenario */
@@ -405,8 +407,8 @@ QUIT;
 %IF "&g_error_code" NE "" %THEN %GOTO errexit;
 
 %if &sysscp. = WIN %then %do; 
-	/*-- options for OS commands ----------------------------------------------*/
-	options noxwait xsync xmin;
+   /*-- options for OS commands ----------------------------------------------*/
+   options noxwait xsync xmin;
 %end;
 
 /*-- check spawning of a SAS process -----------------------------------------*/
@@ -449,30 +451,30 @@ RUN;
    
 DATA _null_;
  ATTRIB
-	_sCmdString LENGTH = $32000
+   _sCmdString LENGTH = $32000
  ;
  FILE 
-	"%sysfunc(pathname(work))/xxx.cmd"
-	LRECL=32000
+   "%sysfunc(pathname(work))/xxx.cmd"
+   LRECL=32000
  ;
  _sCmdString = 
  """" !! &g_sasstart !! """"
-	!! " " 
-	!! "&l_parms.
-	-sysin ""&l_work./run.sas""
-	-initstmt ""%nrstr(%%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);)""
-	-log   ""&g_log./000.log""
-	-print ""&g_log./000.lst""
-	&g_splash
-	-noovp
-	-nosyntaxcheck
-	-mautosource
-	-mcompilenote all
-	-sasautos ""&g_sasunit""
-	-sasuser ""%sysfunc(pathname(work))/sasuser""
+   !! " " 
+   !! "&l_parms.
+   -sysin ""&l_work./run.sas""
+   -initstmt ""%nrstr(%%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);)""
+   -log   ""&g_log./000.log""
+   -print ""&g_log./000.lst""
+   &g_splash
+   -noovp
+   -nosyntaxcheck
+   -mautosource
+   -mcompilenote all
+   -sasautos ""&g_sasunit""
+   -sasuser ""%sysfunc(pathname(work))/sasuser""
  ";
  PUT
-	_sCmdString
+   _sCmdString
  ;
 RUN;
 

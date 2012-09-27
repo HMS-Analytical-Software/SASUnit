@@ -24,6 +24,11 @@
   ,o_html    =
 );
 
+%LOCAL
+   l_nls_reportcas_errors
+;
+%LET l_nls_reportcas_errors   = %STR(error(s));
+
 DATA _null_;
    SET &i_repdata END=eof;
    BY scn_id cas_id;
@@ -38,12 +43,18 @@ DATA _null_;
       )
    END;
 
-   LENGTH abs_path $256 hlp $20;
+   LENGTH 
+      abs_path    $  256 
+      hlp         $  20
+      errcountmsg $ 50
+   ;
 
    IF first.scn_id THEN DO;
+
       IF _n_>1 THEN DO;
          PUT '<hr size="1">';
       END;
+
       PUT '<table id="scn' scn_id z3. '"><tr>';
       PUT "   <td>&g_nls_reportCas_011</td>";
       PUT '   <td>' scn_id z3. '</td>';
@@ -52,12 +63,24 @@ DATA _null_;
       PUT '   <td>' scn_desc +(-1) '</td>';
       PUT '</tr><tr>';
       PUT "   <td>&g_nls_reportCas_004</td>";
+
       abs_path = resolve ('%_sasunit_abspath(&g_root,' !! trim(scn_path) !! ')');
+
       PUT '   <td><a class="lightlink" title="' "&g_nls_reportCas_005 " '&#x0D;' abs_path +(-1) '" href="' abs_path +(-1) '">' scn_path +(-1) '</a></td>';
       PUT '</tr><tr>';
       PUT "   <td>&g_nls_reportCas_022</td>";
-      PUT '   <td><a class="lightlink" title="' "&g_nls_reportCas_006" '" href="' scn_id z3. '_log.html">' scn_start &g_nls_reportCas_007 '</a></td>';
+      
+      IF scn_errorcount GT 0 THEN DO;
+         errcountmsg = '(' !! put(scn_errorcount, 3.) !! ' ' !! "&l_nls_reportcas_errors." !! ')';
+      END;
+      ELSE DO;
+         errcountmsg = '';
+      END;
+
+      PUT '   <td><a class="lightlink" title="' "&g_nls_reportCas_006" '" href="' scn_id z3. '_log.html">' scn_start &g_nls_reportCas_007 '</a>&nbsp;<span class="logerrcountmsg">' errcountmsg '</span> </td>';
+
       duration = scn_end - scn_start;
+
       PUT '</tr><tr>';
       PUT "   <td>&g_nls_reportCas_008</td>";
       PUT '   <td>' duration &g_nls_reportCas_009 's</td>';

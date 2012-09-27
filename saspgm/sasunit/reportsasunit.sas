@@ -255,7 +255,9 @@ PROC SQL NOPRINT;
       ,scn_start  
       ,scn_end    
       ,scn_rc     
-      ,scn_res    
+      ,scn_res 
+      ,scn_errorcount
+      ,scn_warningcount 
       ,scn_last
       ,cas_id    
       ,cas_auton

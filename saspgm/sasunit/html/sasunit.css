@@ -219,6 +219,12 @@ SPAN.comment       { color: #800000 }
 SPAN.preprocessor  { color: #806020 }
 SPAN.stringliteral { color: #002080 }
 SPAN.charliteral   { color: #008080 }
+
+SPAN.logerrcountmsg {
+   font-weight: bold;
+   color: #ff0000;
+}
+
 .mdescLeft {
        padding: 0px 8px 4px 8px;
 	font-size: 80%;

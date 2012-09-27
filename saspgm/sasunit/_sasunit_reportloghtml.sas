@@ -43,7 +43,17 @@
 %LET &r_rc=3;
 
 /*erster Log-Durchlauf zur Bestimmung von Fehler- und Warnungsanzahl*/  
-%LOCAL l_error_count l_warning_count l_curError l_curWarning l_sym1 l_sym2;
+%LOCAL 
+   l_error_count 
+   l_warning_count 
+   l_curError 
+   l_curWarning 
+   l_sym1 
+   l_sym2
+;
+
+/* TODO consolidate logscan logic into datastep functions and use them throughout the project
+*/
 DATA _null_;
    INFILE "&l_log" END=eof TRUNCOVER;
    INPUT logline $char255.;
@@ -58,6 +68,8 @@ DATA _null_;
       CALL symput ("l_warning_count", compress(put(warning_count,8.)));
    END;
 RUN;
+
+
 %IF %_sasunit_handleError(&l_macname, LogNotFound, 
    &syserr NE 0, 
    Fehler beim Zugriff auf den Log) 
