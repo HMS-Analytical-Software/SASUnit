@@ -185,12 +185,12 @@
                   ,r_warnings = &l_warningcountvar.
                );
 
-%assertEquals ( i_expected = 0
+%assertEquals ( i_expected = 3
                ,i_actual   = &&&l_errorcountvar.
                ,i_desc     = %STR(number of detected errors must match)
                );
 
-%assertEquals ( i_expected = 0
+%assertEquals ( i_expected = 7
                ,i_actual   = &&&l_warningcountvar.
                ,i_desc     = %STR(number of detected warnings must match)
                );

@@ -5,8 +5,8 @@
     \brief    check log for errors or warnings
 
     \param    i_logfile  complete path and name of logfile
-    \param    i_error    symbol for error (normally error, but might be language dependant)
-    \param    i_warning  symbol for warning (normally warning, but might be language dependant)
+    \param    i_error    symbol for error (normally error, but might be language dependant). The value will be converted to uppercase.
+    \param    i_warning  symbol for warning (normally warning, but might be language dependant). The value will be converted to uppercase.
     \param    r_errors   macro variable to return number of errors (999 if logfile does not exist)
     \param    r_warnings macro variable to return number of warnings (999 if logfile does not exist)
 
@@ -49,17 +49,16 @@ DATA _null_;
    ;
 
    IF _n_=1 THEN DO;
-      _errorPatternId = prxparse("/^&i_error.[: ]/");
-      _warningPatternId = prxparse("/^&i_warning.[: ]/");
+      _errorPatternId = prxparse("/^%UPCASE(&i_error.)[: ]/");
+      _warningPatternId = prxparse("/^%UPCASE(&i_warning.)[: ]/");
       _ignoreErrPatternId  = prxparse("/^ERROR: Errors printed on page/");
    END;
 
-   IF prxmatch (_errorPatternId, logline) THEN DO;
-      IF NOT prxmatch (_ignoreErrPatternId, logline) THEN DO;
-         error_count = error_count+1;
-      END;
+   IF prxmatch (_errorPatternId, logline) 
+      AND (NOT prxmatch (_ignoreErrPatternId, logline)) THEN DO;
+      error_count = error_count+1;
    END;
-   IF prxmatch (_warningPatternId, logline) THEN DO;
+   ELSE IF prxmatch (_warningPatternId, logline) THEN DO;
       warning_count = warning_count+1;
    END;
 

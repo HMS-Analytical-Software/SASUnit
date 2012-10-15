@@ -21,12 +21,6 @@
 
 */ /** \cond */ 
 
-/* change log
-   19.08.2008 AM  national language support
-   06.07.2008 AM  Einfärbung nur, wenn hinter Error oder Warning ein Doppelpunkt steht
-   10.08.2007 PW  Erste Version 
-*/ 
-
 %MACRO _sasunit_reportLogHTML(
     i_path    =
    ,i_log     =
@@ -42,44 +36,60 @@
 
 %LET &r_rc=3;
 
-/*erster Log-Durchlauf zur Bestimmung von Fehler- und Warnungsanzahl*/  
 %LOCAL 
    l_error_count 
    l_warning_count 
    l_curError 
    l_curWarning 
-   l_sym1 
-   l_sym2
+   l_sIgnoreLogMessage01
 ;
 
-/* TODO consolidate logscan logic into datastep functions and use them throughout the project
-*/
-DATA _null_;
-   INFILE "&l_log" END=eof TRUNCOVER;
-   INPUT logline $char255.;
-%let l_sym1=%substr(&g_error,1,1);/* avoid occurences of error-symbol followed by colon */
-%let l_sym2=%substr(&g_error,2);
-   IF index (logline, "&l_sym1&l_sym2:") = 1 THEN error_count+1;
-%let l_sym1=%substr(&g_warning,1,1);
-%let l_sym2=%substr(&g_warning,2);
-   IF index (logline, "&l_sym1&l_sym2:") = 1 THEN warning_count+1;
-   IF eof THEN DO;
-      CALL symput ("l_error_count"  , compress(put(error_count,8.)));
-      CALL symput ("l_warning_count", compress(put(warning_count,8.)));
-   END;
-RUN;
-
+/*erster Log-Durchlauf zur Bestimmung von Fehler- und Warnungsanzahl*/  
+%_sasunit_checkLog(
+                   i_logfile  = &l_log
+                  ,i_error    = &g_error.
+                  ,i_warning  = &g_warning.
+                  ,r_errors   = l_error_count
+                  ,r_warnings = l_warning_count
+               );
 
 %IF %_sasunit_handleError(&l_macname, LogNotFound, 
    &syserr NE 0, 
    Fehler beim Zugriff auf den Log) 
    %THEN %GOTO errexit;
 
-DATA _null_;
+/* TODO consolidate all logscan logic into datastep functions and use them throughout the project.
+   The SAS option CMPLIB must then be set for all sessions to use these functions.
+*/
+%LET l_sIgnoreLogMessage01 = %STR(ERROR: Errors printed on page);
+
+DATA _NULL_;
+
    INFILE "&l_log" END=eof TRUNCOVER;
    FILE "&l_html";
    INPUT logline $char255.;
+
+   ATTRIB
+      _errorPatternId      LENGTH = 8
+      _ignoreErrPatternId  LENGTH = 8
+      _warningPatternId    LENGTH = 8
+      error_count          LENGTH = 8
+      warning_count        LENGTH = 8
+   ;
+   RETAIN
+      _errorPatternId      0
+      _ignoreErrPatternId  0
+      _warningPatternId    0
+      error_count          0
+      warning_count        0
+   ;
+
    IF _n_=1 THEN DO;
+
+      _errorPatternId = prxparse("/^%UPCASE(&g_error.)[: ]/");
+      _warningPatternId = prxparse("/^%UPCASE(&g_warning.)[: ]/");
+      _ignoreErrPatternId  = prxparse("/^&l_sIgnoreLogMessage01./");
+
       /*HTML-Header*/
       PUT '<html>';
       PUT '<head>';
@@ -107,10 +117,10 @@ DATA _null_;
       PUT '</p>';
       PUT '<pre>';
    END;
-   /*Ausgabe der Log-Zeilen. Fehler- und Warnmeldungen werden farbig markiert und verlinkt*/   
-%let l_sym1=%substr(&g_error,1,1);
-%let l_sym2=%substr(&g_error,2);
-   IF index (logline, "&l_sym1&l_sym2:")   = 1 THEN DO;
+
+   /*Ausgabe der Log-Zeilen. Fehler- und Warnmeldungen werden farbig markiert und verlinkt*/
+   IF prxmatch (_errorPatternId, logline) 
+      AND (NOT prxmatch (_ignoreErrPatternId, logline)) THEN DO;
       error_count+1;
       PUT '<span style="color:#FF0000">' @;
       PUT '<a name="error' error_count z3. '">' @;
@@ -119,9 +129,7 @@ DATA _null_;
       PUT '</a>'@;
       PUT '</span>';
    END;
-%let l_sym1=%substr(&g_warning,1,1);
-%let l_sym2=%substr(&g_warning,2);
-   ELSE IF index (logline, "&l_sym1&l_sym2:") = 1 THEN DO;
+   ELSE IF prxmatch (_warningPatternId, logline) THEN DO;
       warning_count+1;
       PUT '<span style="color:#FF8040">' @;
       PUT '<a name="warning' warning_count z3. '">' @;
@@ -160,6 +168,7 @@ DATA _null_;
       PUT '</html>';
    END;
 RUN;
+
 %IF %_sasunit_handleError(&l_macname, ErrorWriteHTML, 
    &syserr NE 0, 
    Fehler beim Schreiben der HTML-Datei) 
