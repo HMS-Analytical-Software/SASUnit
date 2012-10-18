@@ -75,6 +75,11 @@
 %LOCAL l_macname; %LET l_macname=&sysmacroname;
 %LOCAL l_first_temp;
 
+/*-- Resolve relative root path like .../. to an absolute root path ----------*/
+libname _tmp "&i_root.";
+%let i_root=%sysfunc (pathname(_tmp));
+libname _tmp clear;
+
 /*-- initialize error --------------------------------------------------------*/
 %_sasunit_initErrorHandler;
 
