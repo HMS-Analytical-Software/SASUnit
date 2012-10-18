@@ -21,6 +21,9 @@
 */ /** \cond */
 
 /* version history
+   17.10.2012 KL  extended for english version of windows. In English Windows7 x64 there is an additional AM/PM column in the directory listing.
+                  Therefore an new datastep variable is included to reflect this circumstances. SCAN CANNOT be used because there may be blanks
+                  in the filenames and blank is the delimiter between the columns. So we need to stick to specific character positions
    14.07.2009 AM  extended for english version of windows
    02.10.2008 NA  modified for LINUX
    10.02.2008 AM  Dokumentation verbessert
@@ -36,10 +39,9 @@
 
 %if &sysscp. = WIN %then %do; 
 
-   %local dirindicator_en dirindicator_de filepos encoding;
+   %local dirindicator_en dirindicator_de encoding;
    %let dirindicator_en=Directory of;
    %let dirindicator_de=Verzeichnis von;
-   %let filepos=37;
    %let encoding=pcoem850;
    %let i_path = %sysfunc(translate(&i_path,\,/));
 
@@ -60,25 +62,26 @@
    filename _dirfile "&dirfile" encoding=&encoding;
    %local s;
    %IF &i_recursive %then %let s=/S;
+   %put SYSEXEC(dir &s "&i_path" > "&dirfile");
    %SYSEXEC(dir &s /a-d "&i_path" > "&dirfile");
    
    options &xwait &xsync &xmin;
    
    data &o_out (keep=filename changed);
       length dir filename $255 language $2;
-      retain dir language;
+      retain dir language FilePos;
       infile _dirfile truncover;
       input line $char255. @;
       if index (line, "&dirindicator_en") or index (line, "&dirindicator_de") then do;
          if index (line, "&dirindicator_en") then do;
-            language='EN';
-            put language=;
-            dir = substr(line, index (line, "&dirindicator_en")+length("&dirindicator_en")+1);
+            language = 'EN';
+            dir      = substr(line, index (line, "&dirindicator_en")+length("&dirindicator_en")+1);
+            FilePos  = 40;
          end;
          else do;
-            language='DE';
-            put language=;
-            dir = substr(line, index (line, "&dirindicator_de")+length("&dirindicator_de")+1);
+            language = 'DE';
+            dir      = substr(line, index (line, "&dirindicator_de")+length("&dirindicator_de")+1);
+            FilePos  = 37;
          end;
       end;
       if substr(line,1,1) ne ' ' then do;
@@ -94,9 +97,9 @@
                t time6.
             ;
          end;
-         changed = dhms (d, hour(t), minute(t), 0);
+         changed  = dhms (d, hour(t), minute(t), 0);
          format changed datetime20.;
-         filename = translate(trim(dir) !! '/' !! substr(line,&filepos),'/','\');
+         filename = translate(trim(dir) !! '/' !! substr (line,FilePos),'/','\');
          output;
       end;
    run;

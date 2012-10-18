@@ -103,4 +103,14 @@ proc sort data=dircheck; by filename; run;
 %assertColumns(i_expected=dircheck1, i_actual=dir, i_desc=check for contents of dir file)
 %endTestcase;
 
+/*-- nonrecursive call with wildcards -----------------------------------*/
+%initTestcase(i_object=_sasunit_dir.sas, i_desc=nonrecursive call with wildcards)
+%_sasunit_dir(i_path=%sysfunc(pathname(work))/testdir/%str(*).txt, i_recursive=0, o_out=dir);
+%endTestcall;
+
+proc sort data=dir; by filename; run;
+proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains ".txt";run;  
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file)
+%endTestcase;
+
 /** \endcond */
