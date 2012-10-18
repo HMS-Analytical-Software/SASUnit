@@ -11,6 +11,7 @@
 */ /** \cond */ 
 
 /* change log
+   17.10.2012 KL Anpassung von i_object.
    29.08.2012 KL Neuerstellung
 */ 
 
@@ -18,7 +19,7 @@
 
 /* test case 1 ------------------------------------ */
 %initTestcase(
-    i_object=assertlibrary.sas
+    i_object=assertPerformance.sas
    ,i_desc=Runtime less than 4 seconds
 )
 
@@ -33,7 +34,7 @@ run;
 
 /* test case 2 ------------------------------------ */
 %initTestcase(
-    i_object=assertlibrary.sas
+    i_object=assertPerformance.sas
    ,i_desc=Runtime equals expected value
 )
 
@@ -54,7 +55,7 @@ quit;
 
 /* test case 3 ------------------------------------ */
 %initTestcase(
-    i_object=assertlibrary.sas
+    i_object=assertPerformance.sas
    ,i_desc=Runtime greater than 4 seconds - must be red!
 );
 
@@ -69,7 +70,7 @@ run;
 
 /* test case 4 ------------------------------------ */
 %initTestcase(
-    i_object=assertlibrary.sas
+    i_object=assertPerformance.sas
    ,i_desc=Runtime exceeds expected value by 1 billionth - must be red!
 )
 
