@@ -30,30 +30,24 @@
 %mend onlywin;
 %onlywin;
 
-%global _g_ExcelEngine;
-%let _g_ExcelEngine =excel;
-%macro CheckFor64Bits;
-   %if (&sysaddrbits=64) %then %do;
-      %let _g_ExcelEngine =%str(pcfiles type=excel path=);
-   %end;
-%mend;
-%CheckFor64Bits;
-libname testdata &_g_ExcelEngine. "&g_testdata/regression.xls";
+proc import datafile="&g_testdata/regression.xls" dbms=XLS out=work.data replace;
+   RANGE="data";
+run;
 data refdata (rename=(yhat=est)) testdata(drop=yhat); 
-   set testdata.data; 
+   set work.data; 
+   format _all_;
 run; 
-data refparm; 
-   set testdata.parameters;
-run; 
-libname testdata;
+proc import datafile="&g_testdata/regression.xls" dbms=XLS out=refparm replace;
+   RANGE="parameters";
+run;
    
 %regression(data=testdata, x=x, y=y, out=aus, yhat=est, parms=parameters, report=&g_work\report1.rtf)
 
 proc sql noprint; 
    select intercept into :intercept_sas from parameters; 
-   select x into :slope_sas from parameters; 
-   select f1 into :slope_xls from refparm; 
-   select f2 into :intercept_xls from refparm; 
+   select put (x, best12.) into :slope_sas from parameters; 
+   select put (e, best12.) into :slope_xls from refparm; 
+   select f into :intercept_xls from refparm; 
 quit; 
 
 %assertReport(i_actual=&g_work/report1.rtf, i_expected=&g_testdata/regression.xls,
