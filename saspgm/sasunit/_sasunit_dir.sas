@@ -94,7 +94,7 @@
          else do;
             input @1
                d mmddyy10. +2
-               t time6.
+               t time9.
             ;
          end;
          changed  = dhms (d, hour(t), minute(t), 0);
