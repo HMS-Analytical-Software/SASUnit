@@ -319,6 +319,47 @@ RUN;
    %PUT =========================== Error! runSASUnit aborted! ==========================================;
    %PUT;
    %PUT;
+
+   %IF %EVAL("%UPCASE(&g_error_code.)" EQ "%UPCASE(NoSourceFiles)") %THEN %DO;
+
+      /* create dummy entry for inexisting scenario, to be able to report it later
+      */
+      %LET l_scndesc = %STR(scenario not found);
+      %LET l_scn = %_sasunit_stdPath(&g_root., &l_source.);
+
+      PROC SQL NOPRINT;
+         SELECT max(scn_id) INTO :l_scnid FROM target.scn;
+         %IF &l_scnid=. %THEN %LET l_scnid=0;
+         %LET l_scnid = %eval(&l_scnid+1);
+         INSERT INTO target.scn 
+            ( 
+              scn_id
+             ,scn_path
+             ,scn_desc
+             ,scn_start
+             ,scn_end
+             ,scn_rc
+             ,scn_errorcount
+             ,scn_warningcount
+             ,scn_res
+            )
+            VALUES 
+            (
+                &l_scnid
+               ,"&l_scn."
+               ,"&l_scndesc."
+               ,.
+               ,.
+               ,.
+               ,.
+               ,.
+               ,1
+            )
+         ;
+      QUIT;
+
+   %END;
+
 %exit:
 PROC DATASETS NOLIST NOWARN LIB=%scan(&d_dir,1,.);
    DELETE %scan(&d_dir,2,.);

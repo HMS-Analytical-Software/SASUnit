@@ -36,6 +36,7 @@ proc options option=logparm;run;
   ,i_sascfg     = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
 )
 
+%runSASUnit(i_source = %str(saspgm/test/reportsasunit_inexisting_scenario_has_to_fail));
 %runSASUnit(i_source = %str(saspgm/test/%str(*)_test.sas));
 
 %reportSASUnit(

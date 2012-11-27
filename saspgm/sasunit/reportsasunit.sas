@@ -308,10 +308,24 @@ QUIT;
    %THEN %GOTO errexit;
 
 /*-- determine last run ------------------------------------------------------*/
-%LOCAL l_lastrun;
+%LOCAL 
+   l_lastrun
+   l_bOnlyInexistingScnFound
+;
 PROC SQL NOPRINT;
    SELECT coalesce(max(scn_start),0) FORMAT=12.0 INTO :l_lastrun FROM target.scn;
 QUIT;
+
+/*-- determine whether only invalid scenarios are present (were not run, but shall be reported) ---*/
+%LET l_bOnlyInexistingScnFound = 1;
+DATA _NULL_;
+   SET target.scn ( KEEP = scn_start );
+   IF scn_start > 0 THEN DO;
+      /* 'real' scenario found */
+      Call Symputx ('l_bOnlyInexistingScnFound', '0');
+      STOP;
+   END;
+RUN;
 
 /*-- report generator --------------------------------------------------------*/
 FILENAME repgen temp;
@@ -350,7 +364,7 @@ DATA _null_;
              ")";
       END;
       /*-- only if a test scenario has been run since last report ------------*/
-      IF &l_lastrun > tsu_lastrep OR &o_force THEN DO;
+      IF &l_lastrun > tsu_lastrep OR &l_bOnlyInexistingScnFound. OR &o_force. THEN DO;
          /*-- create table of contents ---------------------------------------*/
          PUT '%_sasunit_reportTreeHTML('                  /
              "    i_repdata = &d_rep"                     /
