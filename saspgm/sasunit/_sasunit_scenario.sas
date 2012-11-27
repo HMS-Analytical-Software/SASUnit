@@ -18,7 +18,7 @@
 );
 %LOCAL l_macname; %LET l_macname=&sysmacroname;
 
-OPTIONS MAUTOSOURCE MPRINT LINESIZE=100;
+OPTIONS MAUTOSOURCE MPRINT LINESIZE=MAX;
 
 /* initialize error handling */
 %_sasunit_initErrorHandler;
