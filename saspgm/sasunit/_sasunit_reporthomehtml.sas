@@ -146,10 +146,28 @@ DATA _null_;
          PUT '</tr>';
       END;
 
-     PUT '<tr>';
+      PUT '<tr>';
       PUT '<td class="idcolumn">' "&g_nls_reportHome_015</td>";
-      PUT '<td class="datacolumn"><div title="' "&g_error" '">&amp;g_error</div><div title="' "&g_warning" '">&amp;g_warning</div></td>';
-      PUT '<td class="datacolumn"><div>' "&g_error" '</div><div>' "&g_warning" '</div></td>';
+      PUT '<td class="datacolumn">&amp;SYSCPL</td>';
+      PUT '<td class="datacolumn">'"&SYSSCPL"'</td>';
+      PUT '</tr>';
+
+      PUT '<tr>';
+      PUT '<td class="idcolumn">' "&g_nls_reportHome_019</td>";
+      PUT '<td class="datacolumn">&amp;SYSVLONG4</td>';
+      PUT '<td class="datacolumn">'"&SYSVLONG4"'</td>';
+      PUT '</tr>';
+
+      PUT '<tr>';
+      PUT '<td class="idcolumn">' "&g_nls_reportHome_020</td>";
+      PUT '<td class="datacolumn">&amp;SYSUSERID</td>';
+      PUT '<td class="datacolumn">'"&SYSUSERID"'</td>';
+      PUT '</tr>';
+
+      PUT '<tr>';
+      PUT '<td class="idcolumn">' "&g_nls_reportHome_021</td>";
+      PUT '<td class="datacolumn">SASUNIT_LANGUAGE</td>';
+      PUT '<td class="datacolumn">'"%sysget(SASUNIT_LANGUAGE)"'</td>';
       PUT '</tr>';
 
       PUT '<tr>';

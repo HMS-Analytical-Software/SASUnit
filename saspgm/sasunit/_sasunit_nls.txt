@@ -261,14 +261,20 @@
  13 EN Path to SASUnit macros
  14 DE SAS-Log des Reporting-Jobs
  14 EN SAS log of reporting job
- 15 DE Symbole
- 15 EN Symbols
+ 15 DE Plattform
+ 15 EN Platform
  16 DE Anzahl Testszenarien
  16 EN Number of test scenarios
  17 DE Anzahl Testfälle
  17 EN Number of test cases
  18 DE Anzahl Prüfungen
  18 EN Number of assertions
+ 19 EN SAS Version
+ 19 DE SAS Version
+ 20 EN User ID
+ 20 DE Benutzer ID
+ 21 EN SASUnit Language
+ 21 DE SASUnit Sprache
 ---reportLibrary
   1 DE Prüfbericht - Vergleich der beiden Bibliotheken
   1 EN Test Report - Comparison of two Libraries
