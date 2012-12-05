@@ -179,12 +179,16 @@ RUN;
       %IF "&g_autoexec" NE "" %THEN %DO;
          %LET l_parms=&l_parms -autoexec ""&g_autoexec"";
       %END;
-      %IF "&g_sascfg" NE "" %THEN %DO;
-         %LET l_parms=&l_parms -config ""&g_sascfg"";
+      %IF &sysscp. = LINUX %THEN %DO;
       %END;
-      %ELSE %IF %length(%sysfunc(getoption(config))) NE 0 AND %index(%quote(%sysfunc(getoption(config))),%bquote(&l_parenthesis)) NE 1 %THEN %DO; 
-         %LET l_parms=&l_parms -config ""%sysfunc(getoption(config))"";
-      %END; 
+      %ELSE %DO;
+          %IF "&g_sascfg" NE "" %THEN %DO;
+              %LET l_parms=&l_parms -config ""&g_sascfg"";
+          %END;
+          %ELSE %IF %length(%sysfunc(getoption(config))) NE 0 AND %index(%quote(%sysfunc(getoption(config))),%bquote(&l_parenthesis)) NE 1 %THEN %DO; 
+             %LET l_parms=&l_parms -config ""%sysfunc(getoption(config))"";
+          %END; 
+      %END;
 
       %LOCAL
          l_scnlogfullpath
@@ -199,8 +203,27 @@ RUN;
          "%sysfunc(pathname(work))/xx.cmd"
             LRECL=32000
          ;
+      %IF &sysscp. = LINUX %THEN %DO;
          _sCmdString = 
-         """" !! &g_sasstart !! """"
+            "" !! &g_sasstart. 
+            !! " " 
+            !! "&l_parms. 
+            -sysin &&l_scnfile&i
+            -initstmt ""%nrstr(%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&l_scnid.;""
+            -log   &l_scnlogfullpath.
+            -print &g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst
+            -noovp
+            -nosyntaxcheck
+            -mautosource
+            -mcompilenote all
+            -sasautos &g_sasunit
+            -sasuser %sysfunc(pathname(work))/sasuser
+            -termstmt ""%nrstr(%%_sasunit_termScenario())""
+         ";
+      %END;
+      %ELSE %DO;
+         _sCmdString = 
+            """" !! &g_sasstart !! """"
             !! " " 
             !! "&l_parms.
             -sysin ""&&l_scnfile&i""
@@ -216,17 +239,18 @@ RUN;
             -sasuser ""%sysfunc(pathname(work))/sasuser""
             -termstmt ""%nrstr(%%%_sasunit_termScenario())""
          ";
+      %END;
          PUT
             _sCmdString
          ;
       RUN;
-
-      %if &sysscp. = LINUX %then %do;
-          %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/xx.cmd")
-      %end;
-     %_sasunit_xcmd("%sysfunc(pathname(work))/xx.cmd")
-     
-     
+      %IF &sysscp. = LINUX %THEN %DO;
+          %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/xx.cmd");
+          %_sasunit_xcmd(sed -i -e 's/\r//g' %sysfunc(pathname(work))/xx.cmd);
+      %END;
+      %_sasunit_xcmd("%sysfunc(pathname(work))/xx.cmd")
+      
+      
       %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/xx.cmd);
       %LET l_sysrc = &sysrc;
 

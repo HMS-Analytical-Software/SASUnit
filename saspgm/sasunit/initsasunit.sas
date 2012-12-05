@@ -38,16 +38,6 @@
                            in case parameter is set (is accessed readonly)
 */ /** \cond */ 
 
-/* change history
-   07.09.2012 LR  Column cas_runt removed from target.cas; unnecessary. 
-   26.06.2012 LR  Testcase runtime is stored in target.cas (for assertPerformance), Ticket #39
-   02.10.2008 NA  Modified for LINUX
-   27.06.2008 AM  Minimale Änderungen in den Kommentartexten
-   15.02.2008 AM  Dokumentation ausgelagert nach _sasunit_doc.sas
-   05.02.2008 AM  Dokumentation der asserts aktualisiert
-   29.12.2007 AM  Dokumentation der asserts aktualisiert
-   15.12.2007 AM  Dokumentation der asserts überarbeitet.
-*/ 
 
 %MACRO initSASUnit(
    i_root       = 
@@ -450,7 +440,11 @@ RUN;
    %LET l_parms=&l_parms -autoexec ""&g_autoexec"";
 %END;
 %IF "&g_sascfg" NE "" %THEN %DO;
-   %LET l_parms=&l_parms -config ""&g_sascfg"";
+   %IF &sysscp. = LINUX %THEN %DO;
+   %END;
+   %ELSE %DO;
+      %LET l_parms=&l_parms -config ""&g_sascfg"";
+   %END;
 %END;
 
    
@@ -462,30 +456,49 @@ DATA _null_;
    "%sysfunc(pathname(work))/xxx.cmd"
    LRECL=32000
  ;
+%IF &sysscp. = LINUX %THEN %DO;
  _sCmdString = 
- """" !! &g_sasstart !! """"
-   !! " " 
-   !! "&l_parms.
-   -sysin ""&l_work./run.sas""
-   -initstmt ""%nrstr(%%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);)""
-   -log   ""&g_log./000.log""
-   -print ""&g_log./000.lst""
-   &g_splash
-   -noovp
-   -nosyntaxcheck
-   -mautosource
-   -mcompilenote all
-   -sasautos ""&g_sasunit""
-   -sasuser ""%sysfunc(pathname(work))/sasuser""
- ";
- PUT
-   _sCmdString
+      "" !! &g_sasstart. 
+        !! " " 
+        !! "&l_parms. 
+        -sysin &l_work./run.sas
+        -initstmt ""%nrstr(%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);)""
+        -log  &g_log./000.log
+        -print &g_log./000.lst
+        -noovp
+        -nosyntaxcheck
+        -mautosource
+        -mcompilenote all
+        -sasautos &g_sasunit
+        -sasuser %sysfunc(pathname(work))/sasuser
+   ";
+%END;
+%ELSE %DO;
+ _sCmdString = 
+   """" !! &g_sasstart !! """"
+        !! " " 
+        !! "&l_parms.
+        -sysin ""&l_work./run.sas""
+        -initstmt ""%nrstr(%%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);)""
+        -log   ""&g_log./000.log""
+        -print ""&g_log./000.lst""
+        &g_splash
+        -noovp
+        -nosyntaxcheck
+        -mautosource
+        -mcompilenote all
+        -sasautos ""&g_sasunit""
+        -sasuser ""%sysfunc(pathname(work))/sasuser""
+  ";
+%END;
+ PUT _sCmdString
  ;
 RUN;
 
-%if &sysscp. = LINUX %then %do;
-  %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/xxx.cmd")
-%end;
+%IF &sysscp. = LINUX %THEN %DO;
+  %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/xxx.cmd");
+  %_sasunit_xcmd(sed -i -e 's/\r//g' %sysfunc(pathname(work))/xxx.cmd);
+%END;
 
 %_sasunit_xcmd("%sysfunc(pathname(work))/xxx.cmd")
 %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/xxx.cmd);
