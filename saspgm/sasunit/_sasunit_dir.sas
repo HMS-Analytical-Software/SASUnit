@@ -108,27 +108,31 @@
 %end; /* &sysscp. = WIN */
  
 %else %if &sysscp. = LINUX %then %do;
-   proc sql noprint;
-      create table &o_out (filename char(255));
-   quit;
+
+   %LOCAL dirfile encoding s;
+   
+   data &o_out ;
+       length filename $255;
+       format changed datetime20.;
+   run;
+   
    %IF &syserr NE 0 %THEN %GOTO errexit;
 
-   %local dirfile encoding;
-   %let encoding=pcoem850;
-   %let dirfile=%sysfunc(pathname(work))/.dir.txt;
+   %LET encoding=pcoem850;
+   %LET dirfile=%sysfunc(pathname(work))/.dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
-   %local s;
+   %put Directory search is: &i_path;
    %IF &i_recursive=0 %then %let s=-maxdepth 1;
-
-   %SYSEXEC(find -P &i_path. &s. -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile.);
-
+   %SYSEXEC(find -P &i_path. &s. -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null);
+   
    data &o_out (keep=filename changed);
-      length filename $255;
-      format changed datetime20.;
-      infile _dirfile delimiter='09'x truncover;
-      input filename $ d:mmddyy8. t:time8.; 
-      changed = dhms (d, hour(t), minute(t), 0);
+       length filename $255;
+       format changed datetime20.;
+       infile _dirfile delimiter='09'x truncover;
+       input filename $ d:mmddyy8. t:time8.; 
+       changed = dhms (d, hour(t), minute(t), 0);
    run;
+
 %end; /* &sysscp. = LINUX */
 
 %errexit:

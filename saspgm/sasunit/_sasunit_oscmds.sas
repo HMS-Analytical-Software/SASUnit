@@ -34,12 +34,12 @@
         %let g_splash = -nosplash;
 %end;
 %else %if &sysscp. = LINUX %then %do;
-        %let g_removedir = rm -r;
+        %let g_removedir = rm -r -f;
         %let g_makedir = mkdir;
         %let g_copydir = cp -R;
         %let g_endcommand =%str(;);
         %_sasunit_xcmd(umask 0033);
-        %let g_sasstart ="%sysfunc(pathname(sasroot))/sasexe/sas";
+        %let g_sasstart ="%sysfunc(pathname(sasroot))/bin/sas_%sysget(SASUNIT_LANGUAGE)";
         %let g_splash =;
 %end;
 

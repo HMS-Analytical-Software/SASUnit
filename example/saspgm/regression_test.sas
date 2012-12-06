@@ -19,16 +19,7 @@
 
 /*-- Compare linear regression between Excel and SAS -------------------------*/
 
-%macro onlywin;
-%if &sysscp ne WIN %then %do;
-   %initTestcase(i_object=regression.sas, i_desc=This test scenario will only run under SAS for Windows)
-   endsas;
-%end;
-%else %do;
-   %initTestcase(i_object=regression.sas, i_desc=Compare linear regression between Excel and SAS)
-%end;
-%mend onlywin;
-%onlywin;
+%initTestcase(i_object=regression.sas, i_desc=Compare linear regression between Excel and SAS)
 
 proc import datafile="&g_testdata/regression.xls" dbms=XLS out=work.data replace;
    RANGE="data";
@@ -41,7 +32,7 @@ proc import datafile="&g_testdata/regression.xls" dbms=XLS out=refparm replace;
    RANGE="parameters";
 run;
    
-%regression(data=testdata, x=x, y=y, out=aus, yhat=est, parms=parameters, report=&g_work\report1.rtf)
+%regression(data=testdata, x=x, y=y, out=aus, yhat=est, parms=parameters, report=&g_work/report1.rtf)
 
 proc sql noprint; 
    select intercept into :intercept_sas from parameters; 
