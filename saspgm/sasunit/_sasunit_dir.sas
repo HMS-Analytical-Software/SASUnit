@@ -38,7 +38,6 @@
 );
 
 %if &sysscp. = WIN %then %do; 
-
    %local dirindicator_en dirindicator_de encoding;
    %let dirindicator_en=Directory of;
    %let dirindicator_de=Verzeichnis von;
@@ -69,22 +68,32 @@
    
    data &o_out (keep=filename changed);
       length dir filename $255 language $2;
-      retain dir language FilePos;
+      retain language "__" dir FilePos;
       infile _dirfile truncover;
       input line $char255. @;
       if index (line, "&dirindicator_en") or index (line, "&dirindicator_de") then do;
          if index (line, "&dirindicator_en") then do;
-            language = 'EN';
-            dir      = substr(line, index (line, "&dirindicator_en")+length("&dirindicator_en")+1);
-            FilePos  = 40;
+            dir = substr(line, index (line, "&dirindicator_en")+length("&dirindicator_en")+1);
          end;
          else do;
-            language = 'DE';
-            dir      = substr(line, index (line, "&dirindicator_de")+length("&dirindicator_de")+1);
-            FilePos  = 37;
+            dir = substr(line, index (line, "&dirindicator_de")+length("&dirindicator_de")+1);
          end;
-      end;
+      end;      
       if substr(line,1,1) ne ' ' then do;
+         * Check for presence of AM/PM in time value, because you can specify AM/PM timeformat in German Windows *;
+         if (language = "__") then do;
+            Detect_AM_PM = upcase (scan (line, 3, " "));
+            if (Detect_AM_PM in ("AM", "PM")) then do;
+               Filenamepart = scan (line,5, " ");
+               Filepos      = index (line, trim(Filenamepart));
+               language     = "EN";
+            end;
+            else do;
+               Filenamepart = scan (line,4, " ");
+               Filepos      = index (line, trim(Filenamepart));
+               language     = "DE";
+            end;
+         end;
          if language='DE' then do;
             input @1
                d ddmmyy10. +2
