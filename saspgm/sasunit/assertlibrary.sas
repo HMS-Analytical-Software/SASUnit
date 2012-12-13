@@ -29,6 +29,8 @@
 */ /** \cond */ 
 
 /* 
+   13.12.2012 KL  Despite the noprint option PROC COMPARE issues a warning when there is no opeb output destination.
+                  So the listing destination is opened prior to calling PROC COMPARE.
    28.05.2010 KL  Pfade mit Sonderzeichen machen unter SAS9.2 Probleme, deshalb Strings in Hochkommata
    06.02.2008 AM  Dokumentation verbessert
    05.11.2008 KL  Unterdrücken von Warnings (Keine ODS Destination offen).
@@ -220,9 +222,20 @@
          where DoCompare=1;
       quit;
 
-      %*** upcase for id columsn ***;
+      %*** upcase for id columns ***;
       %if (&i_id. ne _NONE_) %then %do;
          %let i_id=%upcase (&i_id.);
+      %end;
+
+      %*** Check for open ODS DESTINATIONS ***;
+      %local OpenODSDestinations;
+      %let   OpenODSDestinations=0;
+      proc sql noprint;
+         select count (*) into :OpenODSDestinations from sashelp.vdest;
+      quit;
+
+      %if (&OpenODSDestinations. = 0) %then %do;
+         ods listing;
       %end;
 
       %*** Compare each pair of tables ***;
@@ -234,7 +247,7 @@
                select distinct upcase (name) into :l_col_names separated by ' '
                from dictionary.columns
                where libname = "%upcase (&i_actual.)" AND upcase (memname) = "%upcase(&&memname&i.)";
-            run;
+            quit;
 
             %let counter=1;
             %let l_id_col = %scan (&i_id.,&counter., %str ( ));
@@ -265,6 +278,10 @@
             set l_rc=&_sysinfo.
             where upcase (memname)="%upcase (&&memname&i.)";
          quit;
+      %end;
+
+      %if (&OpenODSDestinations. = 0) %then %do;
+         ods listing close;
       %end;
    %end;
    
