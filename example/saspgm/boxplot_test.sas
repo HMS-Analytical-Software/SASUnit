@@ -43,7 +43,7 @@ run;
 %boxplot(data=blood_pressure, x=visit, y=sbp, group=med, report=&g_work\report3.pdf)
 %assertReport(i_actual=&g_work\report3.pdf, i_expected=&g_refdata\boxplot1.pdf,
               i_desc=%str(please compare the two charts, no changes produced by missing values in the y variable))
-%assertLogMsg(i_logMsg=%str(NOTE: 240 observation\(s\) contained a MISSING value for the SBP \* Visit = Med request))
+%assertLogMsg(i_logMsg=%str(NOTE: 240 observation\(s\) contained a MISSING value for the SBP \* Visit = Med request|NOTE: 240 Beobachtung\(en\) in fehlendem Wert enthalten für den Befehl SBP \* Visit = Med))
 
 /*-- different scaling for x and y axis --------------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=different scaling for x and y axis)

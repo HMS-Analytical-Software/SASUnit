@@ -48,6 +48,6 @@ quit;
 
 %assertEquals(i_actual=&intercept_xls, i_expected=&intercept_sas, i_desc=compare intercept parameter)
 %assertEquals(i_actual=&slope_xls, i_expected=&slope_sas, i_desc=compare slope parameter)
-%assertPerformance(i_expected=3, i_desc=Comparison should be done within 5 seconds.)
+%assertPerformance(i_expected=5, i_desc=Comparison should be done within 5 seconds.)
 
 /** \endcond */
