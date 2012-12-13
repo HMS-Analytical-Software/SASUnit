@@ -442,7 +442,7 @@ RUN;
 %IF "&g_sascfg" NE "" %THEN %DO;
    %IF &sysscp. = LINUX %THEN %DO;
           %IF "&g_sascfg" NE "" %THEN %DO;
-             options SET=SASCFGPATH="&g_sascfg.";
+             options SET=SASCFGPATH "&g_sascfg.";
           %END;
    %END;
    %ELSE %DO;
