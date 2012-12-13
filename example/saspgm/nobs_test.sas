@@ -25,7 +25,7 @@
 %initTestcase(i_object=nobs.sas, i_desc=failed test must be red!)
 %let nobs=%nobs(sashelp.class);
 %endTestcall()
-%assertEquals(i_actual=&nobs, i_expected=20, i_desc=number of observations in dataset sashelp.class must be red)
+%assertEquals(i_actual=&nobs, i_expected=20, i_desc=number of observations in dataset sashelp.class must be red!)
 %endTestcase()
 
 /*-- example with big dataset ------------------------------------------------*/
