@@ -37,15 +37,15 @@ DATA _null_;
       _errorPatternId      LENGTH = 8
       _ignoreErrPatternId  LENGTH = 8
       _warningPatternId    LENGTH = 8
-      error_count          LENGTH = 8
-      warning_count        LENGTH = 8
+      _errcount            LENGTH = 8
+      _warncount           LENGTH = 8
    ;
    RETAIN
       _errorPatternId      0
       _ignoreErrPatternId  0
       _warningPatternId    0
-      error_count          0
-      warning_count        0
+      _errcount            0
+      _warncount           0
    ;
 
    IF _n_=1 THEN DO;
@@ -56,15 +56,15 @@ DATA _null_;
 
    IF prxmatch (_errorPatternId, logline) 
       AND (NOT prxmatch (_ignoreErrPatternId, logline)) THEN DO;
-      error_count = error_count+1;
+      _errcount = _errcount+1;
    END;
    ELSE IF prxmatch (_warningPatternId, logline) THEN DO;
-      warning_count = warning_count+1;
+      _warncount = _warncount+1;
    END;
 
    IF eof THEN DO;
-      CALL symputx ("&r_errors"  , put(error_count,8.));
-      CALL symputx ("&r_warnings", put(warning_count,8.));
+      CALL symputx ("&r_errors"  , put(_errcount,8.));
+      CALL symputx ("&r_warnings", put(_warncount,8.));
    END;
 
 RUN;

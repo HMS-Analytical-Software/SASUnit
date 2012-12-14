@@ -1,4 +1,4 @@
-/**
+ /**
    \file
    \ingroup    SASUNIT_CNTL
 
@@ -47,8 +47,38 @@
    i_source     =
   ,i_recursive  = 0
 );
-%LOCAL l_macname; %LET l_macname=&sysmacroname;
-%LOCAL d_dir  d_examinee l_source; 
+
+%LOCAL 
+   l_macname
+   d_dir  
+   d_examinee 
+   l_source
+   l_nscn 
+   i
+   l_auto 
+   l_autonr
+   l_scn 
+   l_scnid 
+   l_dorun 
+   l_scndesc 
+   l_sysrc
+   l_parms
+   l_parenthesis
+   l_rc
+   l_scnlogfullpath
+   l_filled
+   l_lstfile
+   l_error_count 
+   l_warning_count
+   l_result0 
+   l_result1 
+   l_result2
+   l_result
+   l_nscncount
+;
+
+%LET l_macname=&sysmacroname;
+
 %_sasunit_tempFileName(d_dir);
 %_sasunit_tempFileName(d_examinee);
 
@@ -69,10 +99,13 @@
    Error in parameter i_source: no test scenarios found) 
    %THEN %GOTO errexit;
 
-%LOCAL l_nscn i;
 %DO i=1 %TO %_sasunit_nobs(&d_dir); 
-   %LOCAL l_scnfile&i l_scnchanged&i;
+   %LOCAL 
+      l_scnfile&i 
+      l_scnchanged&i
+   ;
 %END;
+
 DATA _null_;
    SET &d_dir;
    CALL symput ('l_scnfile' !! left(put(_n_,8.)), trim(filename));
@@ -81,7 +114,6 @@ DATA _null_;
 RUN;
 
 /*-- find out all possible units under test ----------------------------------*/
-%LOCAL l_auto l_autonr;
 %LET l_auto=&g_sasautos;
 %LET l_autonr=0;
 %DO %WHILE("&l_auto" ne "");  
@@ -97,7 +129,6 @@ RUN;
 %END;
 
 /*-- loop over all test scenarios --------------------------------------------*/
-%LOCAL l_scn l_scnid l_dorun l_scndesc l_sysrc;
 %DO i=1 %TO &l_nscn;
 
    %LET l_scn = %_sasunit_stdPath(&g_root, &&l_scnfile&i);
@@ -169,11 +200,9 @@ RUN;
           %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
       %end;
       %_sasunit_xcmd("%sysfunc(pathname(work))/x.cmd")
-      %LOCAL l_rc;
       %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
          
       /*-- run test scenario in a new process --------------------------------*/
-      %LOCAL l_parms l_parenthesis;
       %LET l_parms=;
       %LET l_parenthesis=(;
       %IF "&g_autoexec" NE "" %THEN %DO;
@@ -193,9 +222,6 @@ RUN;
           %END; 
       %END;
 
-      %LOCAL
-         l_scnlogfullpath
-      ;
       %LET l_scnlogfullpath = &g_log/%substr(00&l_scnid.,%length(&l_scnid)).log;
 
       DATA _null_;
@@ -270,7 +296,6 @@ RUN;
       %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
 
       /*-- delete listing if empty -------------------------------------------*/
-      %LOCAL l_filled l_lstfile; 
       %LET l_filled=0;
       %LET l_lstfile=&g_testout/%substr(00&l_scnid,%length(&l_scnid)).lst;
       %IF %SYSFUNC(FILEEXIST("&l_lstfile")) %THEN %DO;
@@ -287,10 +312,6 @@ RUN;
 
       /*-- save metadata of test scenario ------------------------------------*/
       /* scan log for errors outside test cases */
-      %LOCAL 
-         l_error_count 
-         l_warning_count
-      ;
       %_sasunit_checklog (
           i_logfile = &l_scnlogfullpath.
          ,i_error   = &g_error.
@@ -300,17 +321,11 @@ RUN;
       )
 
       PROC SQL NOPRINT;
-         %LOCAL 
-            l_result0 
-            l_result1 
-            l_result2
-         ;
          /* determine results of the test cases */
          SELECT count(*) INTO :l_result0 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=0;
          SELECT count(*) INTO :l_result1 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=1;
          SELECT count(*) INTO :l_result2 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=2;
          
-         %LOCAL l_result;
          %IF &l_result1 GT 0 %THEN %DO;
             %LET l_result=1; /* error occured */
          %END;   
@@ -351,41 +366,54 @@ RUN;
 
    %IF %EVAL("%UPCASE(&g_error_code.)" EQ "%UPCASE(NoSourceFiles)") %THEN %DO;
 
-      /* create dummy entry for inexisting scenario, to be able to report it later
+      /* ensure that dummy entry for inexisting scenario is present in test database, to be able to report it later
       */
-      %LET l_scndesc = %STR(scenario not found);
       %LET l_scn = %_sasunit_stdPath(&g_root., &l_source.);
 
+      %LET l_nscncount = 0;
       PROC SQL NOPRINT;
-         SELECT max(scn_id) INTO :l_scnid FROM target.scn;
-         %IF &l_scnid=. %THEN %LET l_scnid=0;
-         %LET l_scnid = %eval(&l_scnid+1);
-         INSERT INTO target.scn 
-            ( 
-              scn_id
-             ,scn_path
-             ,scn_desc
-             ,scn_start
-             ,scn_end
-             ,scn_rc
-             ,scn_errorcount
-             ,scn_warningcount
-             ,scn_res
-            )
-            VALUES 
-            (
-                &l_scnid
-               ,"&l_scn."
-               ,"&l_scndesc."
-               ,.
-               ,.
-               ,.
-               ,.
-               ,.
-               ,1
-            )
-         ;
+         SELECT Count(scn_id)
+            INTO :l_nscncount SEPARATED BY ''
+         FROM target.scn
+         WHERE Upcase(scn_path) = "%UPCASE(&l_scn.)";
       QUIT;
+
+      %IF %EVAL(&l_nscncount. EQ 0) %THEN %DO;
+
+         %LET l_scndesc = %STR(scenario not found);
+        
+         PROC SQL NOPRINT;
+            SELECT max(scn_id) INTO :l_scnid FROM target.scn;
+            %IF &l_scnid=. %THEN %LET l_scnid=0;
+            %LET l_scnid = %eval(&l_scnid+1);
+            INSERT INTO target.scn 
+               ( 
+                 scn_id
+                ,scn_path
+                ,scn_desc
+                ,scn_start
+                ,scn_end
+                ,scn_rc
+                ,scn_errorcount
+                ,scn_warningcount
+                ,scn_res
+               )
+               VALUES 
+               (
+                   &l_scnid
+                  ,"&l_scn."
+                  ,"&l_scndesc."
+                  ,.
+                  ,.
+                  ,.
+                  ,.
+                  ,.
+                  ,1
+               )
+            ;
+         QUIT;
+
+      %END; /* if scenario is not present in database */
 
    %END;
 
