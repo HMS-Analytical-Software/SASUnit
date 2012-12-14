@@ -158,4 +158,68 @@ ods pdf close;
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=actual copied to testout)
 %endTestcase(i_assertLog=1)
 
+*** Testcase for display of different filetypes ***;
+%initTestcase(i_object=assertreport.sas, i_desc=%str(Is everthing displayed properly?))
+ods pdf file="&g_work/report2.pdf";
+proc print data=sashelp.class;
+title 'Report2 - actual';
+run;
+ods pdf close;
+%endTestcall()
+%assertReport(i_expected=&g_refdata./class.jpg,   i_actual=&g_refdata./class.jpg, i_manual=0, i_desc=JPG  / JPG);
+%assertReport(i_expected=&g_refdata./class.png,   i_actual=&g_refdata./class.jpg, i_manual=0, i_desc=PNG  / JPG);
+%assertReport(i_expected=&g_refdata./class.xls,   i_actual=&g_refdata./class.jpg, i_manual=0, i_desc=XLS  / JPG);
+%assertReport(i_expected=&g_refdata./class.xlsx,  i_actual=&g_refdata./class.jpg, i_manual=0, i_desc=XLSX / JPG);
+%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./class.jpg, i_manual=0, i_desc=DOC  / JPG);
+%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./class.jpg, i_manual=0, i_desc=DOCX / JPG);
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./class.jpg, i_manual=0, i_desc=HTML / JPG);
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./class.jpg, i_manual=0, i_desc=PDF  / JPG);
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./class.jpg, i_manual=0, i_desc=RTF  / JPG);
+
+%assertReport(i_expected=&g_refdata./class.png,   i_actual=&g_refdata./class.png, i_manual=0, i_desc=PNG  / PNG);
+%assertReport(i_expected=&g_refdata./class.xls,   i_actual=&g_refdata./class.png, i_manual=0, i_desc=XLS  / PNG);
+%assertReport(i_expected=&g_refdata./class.xlsx,  i_actual=&g_refdata./class.png, i_manual=0, i_desc=XLSX / PNG);
+%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./class.png, i_manual=0, i_desc=DOC  / PNG);
+%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./class.png, i_manual=0, i_desc=DOCX / PNG);
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./class.png, i_manual=0, i_desc=HTML / PNG);
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./class.png, i_manual=0, i_desc=PDF  / PNG);
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./class.png, i_manual=0, i_desc=RTF  / PNG);
+
+
+%assertReport(i_expected=&g_refdata./class.xls,   i_actual=&g_refdata./class.xls, i_manual=0, i_desc=XLS  / XLS);
+%assertReport(i_expected=&g_refdata./class.xlsx,  i_actual=&g_refdata./class.xls, i_manual=0, i_desc=XLSX / XLS);
+%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./class.xls, i_manual=0, i_desc=DOC  / XLS);
+%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./class.xls, i_manual=0, i_desc=DOCX / XLS);
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./class.xls, i_manual=0, i_desc=HTML / XLS);
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./class.xls, i_manual=0, i_desc=PDF  / XLS);
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./class.xls, i_manual=0, i_desc=RTF  / XLS);
+
+%assertReport(i_expected=&g_refdata./class.xlsx,  i_actual=&g_refdata./class.xlsx, i_manual=0, i_desc=XLSX / XLSX);
+%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./class.xlsx, i_manual=0, i_desc=DOC  / XLSX);
+%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./class.xlsx, i_manual=0, i_desc=DOCX / XLSX);
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./class.xlsx, i_manual=0, i_desc=HTML / XLSX);
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./class.xlsx, i_manual=0, i_desc=PDF  / XLSX);
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./class.xlsx, i_manual=0, i_desc=RTF  / XLSX);
+
+
+%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./Report.doc, i_manual=0, i_desc=DOC  / DOC);
+%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./Report.doc, i_manual=0, i_desc=DOCX / DOC);
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./Report.doc, i_manual=0, i_desc=HTML / DOC);
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./Report.doc, i_manual=0, i_desc=PDF  / DOC);
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.doc, i_manual=0, i_desc=RTF  / DOC);
+
+%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./Report.docx, i_manual=0, i_desc=DOCX / DOCX);
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./Report.docx, i_manual=0, i_desc=HTML / DOCX);
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./Report.docx, i_manual=0, i_desc=PDF  / DOCX);
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.docx, i_manual=0, i_desc=RTF  / DOCX);
+
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./Report.html, i_manual=0, i_desc=HTML / HTML);
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./Report.html, i_manual=0, i_desc=PDF  / HTML);
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.html, i_manual=0, i_desc=RTF  / HTML);
+
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./Report.pdf,  i_manual=0, i_desc=PDF  / PDF);
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.html, i_manual=0, i_desc=RTF  / PDF);
+
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.rtf, i_manual=0, i_desc=RTF  / RTF);
+
 /** \endcond */ 
