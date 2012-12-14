@@ -112,5 +112,24 @@ run;
    i_language=%upcase(%sysget(SASUNIT_LANGUAGE))
 );
 
+*** Recreate the old config and autoexec to ensure the right settings ***;
+*** if you use SASUnit without overwrite afterwards                   ***;
+%initSASUnit(
+   i_root       = %sysget(SASUNIT_ROOT)
+  ,io_target    = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
+  ,i_overwrite  = 0
+  ,i_project    = SASUnit
+  ,i_sasunit    = saspgm/sasunit
+  ,i_sasautos   = saspgm/sasunit
+  ,i_sasautos1  = saspgm/test
+  ,i_sasautos2  = saspgm/test/pgmlib1
+  ,i_sasautos3  = saspgm/test/pgmlib2
+  ,i_testdata   = dat
+  ,i_refdata    = dat
+  ,i_doc        = doc/spec
+  ,i_sascfg     = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
+  ,i_autoexec   = %str( )
+);
+
 /** \endcond */
 
