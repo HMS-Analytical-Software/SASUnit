@@ -108,10 +108,6 @@ run;
 
 %runSASUnit(i_source = saspgm/test/assert_i_autoexec_usage_configtest.sas);
 
-%reportSASUnit(
-   i_language=%upcase(%sysget(SASUNIT_LANGUAGE))
-);
-
 *** Recreate the old config and autoexec to ensure the right settings ***;
 *** if you use SASUnit without overwrite afterwards                   ***;
 %initSASUnit(
@@ -129,6 +125,10 @@ run;
   ,i_doc        = doc/spec
   ,i_sascfg     = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
   ,i_autoexec   = %str( )
+);
+
+%reportSASUnit(
+   i_language=%upcase(%sysget(SASUNIT_LANGUAGE))
 );
 
 /** \endcond */
