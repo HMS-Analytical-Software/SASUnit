@@ -14,6 +14,8 @@
 */ /** \cond */ 
 
 /* change history
+   02.01.2013 KL  Added new column "Assertions" and corrected the number in column "Test Cases".
+                  program library (none) is now support under different languages.
    12.08.2008 AM  Mehrsprachigkeit
    29.12.2007 AM  Neuererstellung
 */ 
@@ -28,6 +30,7 @@
 %LOCAL d_rep1 d_rep2;
 %_sasunit_tempFileName(d_rep1)
 %_sasunit_tempFileName(d_rep2)
+
 
 PROC MEANS NOPRINT NWAY DATA=&i_repdata(KEEP=cas_auton pgm_id scn_id cas_res);
    BY cas_auton pgm_id scn_id;
@@ -57,6 +60,21 @@ RUN;
 DATA &d_rep1 (COMPRESS=YES);
    MERGE &d_rep1 &d_rep2;
    BY cas_auton pgm_id;
+RUN;
+
+PROC MEANS NOPRINT NWAY missing DATA=&i_repdata(KEEP=cas_auton pgm_id scn_id cas_id);
+   class cas_auton pgm_id scn_id cas_id;
+   OUTPUT OUT=&d_rep2;
+RUN;
+
+PROC MEANS NOPRINT NWAY missing DATA=&d_rep2(KEEP=cas_auton pgm_id scn_id cas_id);
+   class cas_auton pgm_id scn_id;
+   OUTPUT OUT=&d_rep2 (drop=_type_ cas_id rename=(_freq_=scn_cas)) N=;
+RUN;
+
+DATA &d_rep1 (COMPRESS=YES);
+   MERGE &d_rep1 &d_rep2;
+   BY cas_auton pgm_id scn_id;
 RUN;
 
 DATA _null_;
@@ -91,7 +109,7 @@ DATA _null_;
          PUT '   <td><a class="lightlink" title="' "&g_nls_reportAuton_004 " '&#x0D;' hlp2 +(-1) '" href="file://' hlp2 +(-1) '">' hlp1 +(-1) '</a></td>';
       END;
       ELSE DO;
-         PUT '   <td>(ohne)</td>';
+         PUT "   <td>&g_nls_reportAuton_015</td>";
       END;
       PUT '</tr></table>';
 
@@ -100,6 +118,7 @@ DATA _null_;
       PUT '   <td class="tabheader">' "&g_nls_reportAuton_005" '</td>';
       PUT '   <td class="tabheader">' "&g_nls_reportAuton_006" '</td>';
       PUT '   <td class="tabheader">' "&g_nls_reportAuton_007" '</td>';
+      PUT '   <td class="tabheader">' "&g_nls_reportAuton_014" '</td>';
       PUT '   <td class="tabheader">' "&g_nls_reportAuton_008" '</td>';
       PUT '</tr>';
    END;
@@ -122,6 +141,8 @@ DATA _null_;
 
    IF first.scn_id THEN DO;
       PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportAuton_010 " scn_id z3. '" href="cas_overview.html#scn' scn_id z3. '">' scn_id z3. '</a></td>';
+      hlp1 = left (put (scn_cas, 8.));
+      PUT '   <td class="datacolumn">' hlp1 +(-1) '</td>';
       hlp1 = left (put (sum (res0, res1, res2), 8.));
       PUT '   <td class="datacolumn">' hlp1 +(-1) '</td>';
       PUT '   <td class="iconcolumn"><img src=' @;

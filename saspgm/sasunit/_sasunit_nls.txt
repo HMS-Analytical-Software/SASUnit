@@ -67,6 +67,10 @@
  12 EN manual
  13 DE Fehler in der Testausführung, siehe Log
  13 EN Error in execution of test scenario, see log
+ 14 DE Prüfungen
+ 14 EN Assertions
+ 15 DE (ohne)
+ 15 EN (none)
 ---reportCas
   1 DE Testfälle nach Szenarien
   1 EN Test Cases by Scenario
