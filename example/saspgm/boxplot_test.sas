@@ -10,7 +10,8 @@
             - check error handling with assertLogMsg.sas
             - use test data in library testdata 
 
-\version    \$Revision$
+\version    \$Revision$ - KL: Added hint for support of different languages in test assertion.\n
+            Revision: 71 - KL: Added support for different languages in test assertion.
 \author     \$Author$
 \date       \$Date$
 \sa         \$HeadURL$
@@ -43,7 +44,9 @@ run;
 %boxplot(data=blood_pressure, x=visit, y=sbp, group=med, report=&g_work\report3.pdf)
 %assertReport(i_actual=&g_work\report3.pdf, i_expected=&g_refdata\boxplot1.pdf,
               i_desc=%str(please compare the two charts, no changes produced by missing values in the y variable))
-%assertLogMsg(i_logMsg=%str(NOTE: 240 observation\(s\) contained a MISSING value for the SBP \* Visit = Med request|NOTE: 240 Beobachtung\(en\) in fehlendem Wert enthalten für den Befehl SBP \* Visit = Med))
+%assertLogMsg(i_logMsg=%str(NOTE: 240 observation\(s\) contained a MISSING value for the SBP \* Visit = Med request|NOTE: 240 Beobachtung\(en\) in fehlendem Wert enthalten für den Befehl SBP \* Visit = Med)
+             ,i_desc=regular expression used to support different languages
+             )
 
 /*-- different scaling for x and y axis --------------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=different scaling for x and y axis)

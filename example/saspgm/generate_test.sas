@@ -11,7 +11,8 @@
             - check error handling with assertLogMsg.sas
             - suppress automatic log scanning in endTestcase.sas
 
-\version    \$Revision$
+\version    \$Revision$ - KL: Added hint for support of different languages in test assertion.\n
+            Revision: 40 - KL: Added support for different languages in test assertion.
 \author     \$Author$
 \date       \$Date$
 \sa         \$HeadURL$
@@ -118,7 +119,9 @@ proc datasets lib=test2 nolist kill;
 quit; 
 %generate(data=sashelp.class, by=sex, out=test3.class)
 %endTestcall()
-%assertLogMsg(i_logMsg=ERROR: Libname TEST3 is not assigned|ERROR: Libname TEST3 ist nicht zugewiesen)
+%assertLogMsg(i_logMsg=ERROR: Libname TEST3 is not assigned|ERROR: Libname TEST3 ist nicht zugewiesen
+             ,i_desc=regular expression used to support different languages
+             )
 %endTestcase(i_assertLog=0)
 
 libname test1;
