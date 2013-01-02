@@ -2,7 +2,7 @@
 \file
 \ingroup    SASUNIT_EXAMPLES_TEST
 
-\brief      Tests for regression.sas (Windows only)
+\brief      Tests for regression.sas
 
             Example for a test scenario with the following features:
             - check reports manually agains reference standard 
@@ -11,7 +11,8 @@
 
             This example test scenario runs only with SAS under SAS Microsoft Windows.
 
-\version    \$Revision$
+\version    \$Revision$ - KL: Removed hint "Windows only".\n
+            Revision: 71 - KL: Test case can now be run under LINUX.
 \author     \$Author$
 \date       \$Date$
 \sa         \$HeadURL$
