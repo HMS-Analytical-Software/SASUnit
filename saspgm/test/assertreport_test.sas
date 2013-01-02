@@ -3,6 +3,11 @@
    \ingroup    SASUNIT_TEST 
 
    \brief      Tests for assertreport.sas, has to fail!
+   
+   \details    The asserts for test case "Is everthing displayed properly?" are all red. This is the case because only pre-generated documents are used.\n
+               This test case is used to check if there are problems opening differnt document types. SASUnit issues an error if the document is older than the\n
+               the last run fo the test case. All assertReport calls must be red. This is always the case for this particular test case.
+   
 
    \version    \$Revision$
    \author     \$Author$
@@ -12,6 +17,7 @@
 */ /** \cond */ 
 
 /* change log
+   02.01.2013 KL  New test case to check behaviour when comparing different report types.
    07.02.2008 AM  überarbeitet: 
                   Umbenennung AssertManual -> AssertReport
                   2 zusätzliche Testszenarien für Prüfung, ob Bericht auch tatsächlich erzeugt wurde
@@ -159,7 +165,7 @@ ods pdf close;
 %endTestcase(i_assertLog=1)
 
 *** Testcase for display of different filetypes ***;
-%initTestcase(i_object=assertreport.sas, i_desc=%str(Is everthing displayed properly?))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(Is everthing displayed properly? Asserts are red! Refer program documentation of this test scenario))
 ods pdf file="&g_work/report2.pdf";
 proc print data=sashelp.class;
 title 'Report2 - actual';
