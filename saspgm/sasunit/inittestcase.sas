@@ -26,7 +26,8 @@
 */ /** \cond */ 
 
 /* change log
-   09.02.2011 KL  added two macro variables for re-redirecting log- and printfile in testcases
+   02.01.2013 KL To support LINUX as OS we need to convert pgm-names (macro names) to lowercase. Otherwise LINUX can't find the macro and assigns no pgm-library.
+   09.02.2011 KL added two macro variables for re-redirecting log- and printfile in testcases
 */ 
 
 %MACRO initTestcase(
@@ -46,14 +47,15 @@
 %LET g_inTestcase=1;
 
 /* handle absolute and relative paths for programs */
-%LOCAL l_pgm l_auton;
-%IF %index(%sysfunc(translate(&i_object,/,\)),/) %THEN %DO;
+%LOCAL l_pgm l_auton l_object;
+%LET l_object = %lowcase (&i_object.);
+%IF %index(%sysfunc(translate(&l_object,/,\)),/) %THEN %DO;
    %LET l_pgm = %_sasunit_stdPath(&g_root,&i_object);
    %LET l_auton=.;
 %END;
 %ELSE %DO;
    %LET l_pgm = &i_object;
-   %LET l_auton = %_sasunit_getAutocallNumber(&i_object);
+   %LET l_auton = %_sasunit_getAutocallNumber(&l_object);
 %END;
 
 /* determine next test case id */
