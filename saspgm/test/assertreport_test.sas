@@ -17,6 +17,7 @@
 */ /** \cond */ 
 
 /* change log
+   07.01.2013 AM  corrected errors in test case no. 6 (i_actual older than current SAS session - must be red)
    02.01.2013 KL  New test case to check behaviour when comparing different report types.
    07.02.2008 AM  überarbeitet: 
                   Umbenennung AssertManual -> AssertReport
@@ -134,15 +135,15 @@ ods pdf close;
 %initTestcase(i_object=assertreport.sas, i_desc=%str(i_actual older than current SAS session - must be red))
 %endTestcall()
 %assertReport(i_expected=, i_actual=&g_sasunit/assertreport.sas, i_desc=
-%str(expected=empty, actual=.sas7bdat - not created anew, result red?))
+%str(expected=empty, actual=.sas - not generated anew, result red?))
 %markTest()
 %assertDBValue(tst,type,assertReport)
 %assertDBValue(tst,desc,
-%str(expected=empty, actual=.sas7bdat - not created anew, result red?))
+%str(expected=empty, actual=.sas - not generated anew, result red?))
 %assertDBValue(tst,exp,)
-%assertDBValue(tst,act,.sas7bdat)
+%assertDBValue(tst,act,.sas)
 %assertDBValue(tst,res,1)
-%assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.sas7bdat)), i_desc=actual copied to testout)
+%assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.sas)), i_desc=actual copied to testout)
 %endTestcase(i_assertLog=1)
 
 %initTestcase(i_object=assertreport.sas, i_desc=%str(i_manual=0 - must be green))

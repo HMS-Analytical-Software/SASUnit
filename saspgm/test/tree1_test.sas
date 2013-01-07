@@ -2,7 +2,8 @@
    \file
    \ingroup    SASUNIT_TEST
 
-   \brief      Test of the tree building and the functionality for program libraries
+   \brief      Test of the tree building and the functionality for program libraries - 
+               will always run because program pgm3_2.sas is being generated on the fly
 
    \version    \$Revision$
    \author     \$Author$
@@ -10,6 +11,10 @@
    \sa         \$HeadURL$
 
 */ /** \cond */ 
+
+/* change log
+   07.01.2013 AM  made clear in scenario description that this scenario runs always
+*/ 
 
 %initTestcase(i_object=pgm1_1.sas, i_desc=call of program 1 in library 1)
 %pgm1_1()

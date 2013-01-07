@@ -41,7 +41,6 @@ ods _all_ close;
 ods rtf file="&report"; 
 
 /*-- Compute regression analysis ---------------------------------------------*/
-goptions ftext=Swiss;
 proc reg data=&data outest=&parms; 
    model &y = &x; 
    output out=&out(keep=&x &y &yhat) p=&yhat; 
