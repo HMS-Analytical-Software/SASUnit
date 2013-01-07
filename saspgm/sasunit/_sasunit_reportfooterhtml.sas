@@ -11,9 +11,11 @@
 */ /** \cond */ 
 
 /* change log
+   07.01.2013 BB  Open link zu sourceforge in new tab
+                  Added class="link" to sourceforge link
    03.09.2012 KL  New logo; updated link to new resource
-   30.10.2010 AM  link to sourceforge project page
-   18.08.2008 AM  added national language support
+   30.10.2010 AM  Link to sourceforge project page
+   18.08.2008 AM  Added national language support
 */
 
 %MACRO _sasunit_reportFooterHTML (
@@ -27,7 +29,7 @@
       put(time(),time8.0) !! " &g_nls_reportFooter_004 "
    ;
    PUT _sasunit_reportFooterHTML +(-1);
-   PUT '<a href="http://sourceforge.net/projects/sasunit/" target="_parent">';
+   PUT '<a href="http://sourceforge.net/projects/sasunit/" class="link" onclick="window.open(this.href); return false;">';
    PUT 'SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" width=20px height=20px align="top" border="0"></a>';
    PUT "Version &g_version (&g_revision)</small></address>";
    PUT '</body>';

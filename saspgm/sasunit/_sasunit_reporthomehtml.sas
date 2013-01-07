@@ -14,7 +14,9 @@
 */ /** \cond */ 
 
 /* change log
-   18.08.2008 AM  added national language support
+   07.01.2013 BB  Open link zu sourceforge in new tab
+                  Added class="link" to sourceforge link
+   18.08.2008 AM  Added national language support
    29.12.2007 AM  Ampersands kodiert, minimale Textänderung
 */ 
 
@@ -26,7 +28,7 @@
 %LOCAL i
        HTML_Reference;
 
-%LET HTML_Reference=%nrbquote(<a href="http://sourceforge.net/projects/sasunit/" target="_parent">SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" width=30px height=30px align="top" border="0"></a>);
+%LET HTML_Reference=%nrbquote(<a href="http://sourceforge.net/projects/sasunit/" class="link" target="_blank">SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" width=30px height=30px align="top" border="0"></a>);
 
 DATA _null_;
    SET &i_repdata;
