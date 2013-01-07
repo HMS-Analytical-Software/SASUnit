@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for use of auoexec file
+   \brief      Tests for use of autoexec file
 
    \version    \$Revision$
    \author     \$Author$
