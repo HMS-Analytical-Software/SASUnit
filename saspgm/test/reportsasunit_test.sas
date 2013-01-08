@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for reportsasunit.sas, has to fail!
+   \brief      Tests for reportsasunit.sas, has to fail! 5 subsequent errors dealing with missing call of initTestcase.
 
    \version    \$Revision$
    \author     \$Author$
@@ -10,6 +10,9 @@
    \sa         \$HeadURL$
 */ /** \cond */ 
 
+/* change log 
+   08.01.2013 BB  Error Description added to \brief
+*/ 
 %Macro reportsasunit_test;
 
 /* test case start ------------------------------------ */

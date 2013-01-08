@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertlibrary.sas, has to fail!
+   \brief      Tests for assertlibrary.sas, has to fail! 4 errors concerning libref statements
 
    \version    \$Revision$
    \author     \$Author$
@@ -10,6 +10,10 @@
    \sa         \$HeadURL$
 
 */ /** \cond */ 
+
+/* change log 
+   08.01.2013 BB  Error Description added to \brief
+*/ 
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 

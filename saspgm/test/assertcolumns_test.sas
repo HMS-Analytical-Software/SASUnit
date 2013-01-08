@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertcolumns.sas, has to fail!
+   \brief      Tests for assertcolumns.sas, has to fail! 1 error concerning invalid parameter in macro assertColumns
 
    \version    \$Revision$
    \author     \$Author$
@@ -12,6 +12,7 @@
 */ /** \cond */ 
 
 /* change log 
+   08.01.2013 BB  Error Description added to \brief
    16.05.2010 AM  Changes for SAS 9.2: dataset label has been added to sashelp.class
    06.07.2008 AM  Umfangreiche Überarbeitung vorhandener Tests, Tests für i_allow und o_maxReportObs ergänzt
    10.08.2007 AM  Erste Version 
