@@ -37,6 +37,11 @@
    \param   i_doc          optional: directory containing specification documents, etc., has to exist
                            in case parameter is set (is accessed readonly)
 */ /** \cond */ 
+/* change log 
+   08.01.2013 KL  Fixed warning concerning %substr arguments. This was caused by the last call in run_all.sas. 
+                  To remove the entry for i_autoexec, a real blank must be passed. So there is now a different
+                  method used for check on empty parameter which now must include a real blank as empty.
+*/ 
 
 
 %MACRO initSASUnit(
@@ -271,7 +276,9 @@ PROC SQL NOPRINT;
    SELECT tsu_autoexec INTO :l_autoexec FROM target.tsu;
 QUIT;
 %LET l_autoexec=&l_autoexec;
-%IF "&i_autoexec" NE "" %THEN %LET l_autoexec=&i_autoexec;
+%*** because we need to specify a real blank (%str( )) as parameter, ***;
+%*** we need to use a different method of comparison.                ***;
+%IF %nrbquote(&i_autoexec) NE %THEN %LET l_autoexec=&i_autoexec;
 %LET l_autoexec_abs=%_sasunit_abspath(&l_root,&l_autoexec);
 %IF %_sasunit_handleError(&l_macname, AutoexecNotFound, 
    "&l_autoexec" NE "" AND NOT %sysfunc(fileexist(&l_autoexec_abs%str( ))), 
