@@ -16,6 +16,7 @@
 */ /** \cond */ 
 
 /* change log
+   08.01.2013 KL  Empty cells are rendered incorrectly in MS IE. So &nbsp; is now used as contents of an empty cell
    26.09.2008 AM  bug fixing NLS: standard description texts for assertLog(Msg)
    18.08.2008 AM  added national language support
    11.08.2008 AM  Frameseite für den Vergleich zweier Reports bei ASSERTREPORT einbinden
@@ -134,11 +135,12 @@ DATA _null_;
       END;
       OTHERWISE;
    END;
+   IF tst_desc = ' ' THEN tst_desc='&nbsp;';
    PUT '   <td class="datacolumn">' tst_desc +(-1) '</td>';
    SELECT(upcase(tst_type));
       WHEN ('ASSERTCOLUMNS') DO;
-         IF tst_act = ' ' THEN tst_act='&nbsp;';
-         IF tst_exp = ' ' THEN tst_exp='&nbsp;';
+         IF tst_act  = ' ' THEN tst_act ='&nbsp;';
+         IF tst_exp  = ' ' THEN tst_exp ='&nbsp;';
          PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportDetail_015" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_cmp_exp.html">' "&g_nls_reportDetail_038" '</a><br /><br />' tst_exp '</td>';
          PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportDetail_016" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_cmp_act.html">' "&g_nls_reportDetail_038" '</a><br />';
          PUT '                          <a class="lightlink" title="' "&g_nls_reportDetail_017" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_cmp_rep.html">' "&g_nls_reportDetail_039" '</a><br />' tst_act '</td>';

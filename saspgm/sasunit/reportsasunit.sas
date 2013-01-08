@@ -22,6 +22,7 @@
 */ /** \cond */ 
 
 /* change log 
+   08.01.2013 KL  Empty cells are rendered incorrectly in MS IE. So &nbsp; is now used as contents of an empty cell
    15.07.2009 AM  fixed copydir for Linux
    13.08.2008 AM  introduced o_force and o_output
    12.08.2008 AM  Reportingsprache umgestellt
@@ -130,9 +131,9 @@ PROC SQL NOPRINT;
           scn_id
          ,1
          ,0
-         ,' '
+         ,'%nrstr(&nbsp;)'
          ,"&l_sEmptyScnDummyCasDesc."
-         ,' '
+         ,'%nrstr(&nbsp;)'
          ,.
          ,.
          ,1
@@ -163,10 +164,10 @@ PROC SQL NOPRINT;
        scn_id
       ,1
       ,0
-      ,' '
-      ,' '
-      ,' '
-      ,' '
+      ,'%nrstr(&nbsp;)'
+      ,'%nrstr(&nbsp;)'
+      ,'%nrstr(&nbsp;)'
+      ,'%nrstr(&nbsp;)'
       ,1
       FROM &d_emptyscn.
   )
