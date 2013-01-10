@@ -234,9 +234,13 @@
       %*** Check for open ODS DESTINATIONS ***;
       %local OpenODSDestinations;
       %let   OpenODSDestinations=0;
-      proc sql noprint;
-         select count (*) into :OpenODSDestinations from sashelp.vdest;
-      quit;
+
+      %*** SASHELP.VDEST is only available in 9.2 or later ***;
+      %if (&sysver. NE 9.1) %then %do; 
+         proc sql noprint;
+            select count (*) into :OpenODSDestinations from sashelp.vdest;
+         quit;
+      %end;
 
       %if (&OpenODSDestinations. = 0) %then %do;
          ods listing;
@@ -283,10 +287,10 @@
             where upcase (memname)="%upcase (&&memname&i.)";
          quit;
       %end;
+   %end;
 
-      %if (&OpenODSDestinations. = 0) %then %do;
-         ods listing close;
-      %end;
+   %if (&OpenODSDestinations. = 0) %then %do;
+      ods listing close;
    %end;
    
    %*** set test result ***;

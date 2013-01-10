@@ -25,15 +25,17 @@
 /*-- Compare linear regression between Excel and SAS -------------------------*/
 
 %initTestcase(i_object=regression.sas, i_desc=Compare linear regression between Excel and SAS)
-
-proc import datafile="&g_testdata/regression.xls" dbms=XLS out=work.data replace;
+%macro SetXLSType;
+   %if (&sysver=9.1) %then EXCEL; %else XLS;
+%mend;
+proc import datafile="&g_testdata/regression.xls" dbms=%SetXLSType out=work.data replace;
    RANGE="data";
 run;
 data refdata (rename=(yhat=est)) testdata(drop=yhat); 
    set work.data; 
    format _all_;
 run; 
-proc import datafile="&g_testdata/regression.xls" dbms=XLS out=refparm replace;
+proc import datafile="&g_testdata/regression.xls" dbms=%SetXLSType out=refparm replace;
    RANGE="parameters";
 run;
    
