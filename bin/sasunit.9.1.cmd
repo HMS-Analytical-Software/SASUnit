@@ -1,2 +1,0 @@
-cd ..
-"C:\Programme\SAS\SAS 9.1\sas.exe" -CONFIG "C:\Programme\SAS\SAS 9.1\nls\en\SASV9.CFG" -sysin "saspgm\test\run_all.sas" -log "doc\sasunit\run_all.log" -print "doc\sasunit\run_all.lst" -no$syntaxcheck -noovp -nosplash
