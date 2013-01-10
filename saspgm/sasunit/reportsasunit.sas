@@ -135,9 +135,9 @@ PROC SQL NOPRINT;
           scn_id
          ,1
          ,0
-         ,'%nrstr(&nbsp;)'
+         ,'&#160;'
          ,"&l_sEmptyScnDummyCasDesc."
-         ,'%nrstr(&nbsp;)'
+         ,'&#160;'
          ,.
          ,.
          ,1
@@ -168,10 +168,10 @@ PROC SQL NOPRINT;
        scn_id
       ,1
       ,0
-      ,'%nrstr(&nbsp;)'
-      ,'%nrstr(&nbsp;)'
-      ,'%nrstr(&nbsp;)'
-      ,'%nrstr(&nbsp;)'
+      ,'&#160;'
+      ,'&#160;'
+      ,'&#160;'
+      ,'&#160;'
       ,1
       FROM &d_emptyscn.
   )
