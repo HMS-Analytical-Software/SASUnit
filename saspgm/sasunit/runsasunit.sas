@@ -240,38 +240,38 @@ RUN;
          _sCmdString = 
             "" !! &g_sasstart. 
             !! " " 
-            !! "&l_parms. 
-            -sysin &&l_scnfile&i
-            -initstmt ""%nrstr(%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&l_scnid.;""
-            -log   &l_scnlogfullpath.
-            -print &g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst
-            -noovp
-            -nosyntaxcheck
-            -mautosource
-            -mcompilenote all
-            -sasautos &g_sasunit
-            -sasuser %sysfunc(pathname(work))/sasuser
-            -termstmt ""%nrstr(%%_sasunit_termScenario())""
-         ";
+            !! "&l_parms. "
+            !! "-sysin &&l_scnfile&i "
+            !! "-initstmt ""%nrstr(%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&l_scnid.;"" "
+            !! "-log   &l_scnlogfullpath. "
+            !! "-print &g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst "
+            !! "-noovp "
+            !! "-nosyntaxcheck "
+            !! "-mautosource "
+            !! "-mcompilenote all "
+            !! "-sasautos &g_sasunit "
+            !! "-sasuser %sysfunc(pathname(work))/sasuser "
+            !! "-termstmt ""%nrstr(%%_sasunit_termScenario())"" "
+            !! "";
       %END;
       %ELSE %DO;
          _sCmdString = 
             """" !! &g_sasstart !! """"
             !! " " 
-            !! "&l_parms.
-            -sysin ""&&l_scnfile&i""
-            -initstmt ""%nrstr(%%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&l_scnid.;""
-            -log   ""&l_scnlogfullpath.""
-            -print ""&g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst""
-            &g_splash
-            -noovp
-            -nosyntaxcheck
-            -mautosource
-            -mcompilenote all
-            -sasautos ""&g_sasunit""
-            -sasuser ""%sysfunc(pathname(work))/sasuser""
-            -termstmt ""%nrstr(%%%_sasunit_termScenario())""
-         ";
+            !! "&l_parms. "
+            !! "-sysin ""&&l_scnfile&i"" "
+            !! "-initstmt ""%nrstr(%%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&l_scnid.;"" "
+            !! "-log   ""&l_scnlogfullpath."" "
+            !! "-print ""&g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst"" "
+            !! "&g_splash "
+            !! "-noovp "
+            !! "-nosyntaxcheck "
+            !! "-mautosource "
+            !! "-mcompilenote all "
+            !! "-sasautos ""&g_sasunit"" "
+            !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
+            !! "-termstmt ""%nrstr(%%%_sasunit_termScenario())"" "
+            !! "";
       %END;
          PUT
             _sCmdString

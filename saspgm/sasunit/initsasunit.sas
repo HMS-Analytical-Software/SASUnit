@@ -281,8 +281,8 @@ PROC SQL NOPRINT;
 QUIT;
 %LET l_autoexec=&l_autoexec;
 %*** because we need to specify a real blank (%str( )) as parameter, ***;
-%*** we need to use a different method of comparison.                ***;
-%IF %nrbquote(&i_autoexec) NE %THEN %LET l_autoexec=&i_autoexec;
+%*** we need to use a different method of assignment.                ***;
+%IF "&i_autoexec" NE "" %THEN %LET l_autoexec=%trim(&i_autoexec);
 %LET l_autoexec_abs=%_sasunit_abspath(&l_root,&l_autoexec);
 %IF %_sasunit_handleError(&l_macname, AutoexecNotFound, 
    "&l_autoexec" NE "" AND NOT %sysfunc(fileexist(&l_autoexec_abs%str( ))), 
@@ -474,36 +474,36 @@ DATA _null_;
  _sCmdString = 
       "" !! &g_sasstart. 
         !! " " 
-        !! "&l_parms. 
-        -sysin &l_work./run.sas
-        -initstmt ""%nrstr(%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);)""
-        -log  &g_log./000.log
-        -print &g_log./000.lst
-        -noovp
-        -nosyntaxcheck
-        -mautosource
-        -mcompilenote all
-        -sasautos &g_sasunit
-        -sasuser %sysfunc(pathname(work))/sasuser
-   ";
+        !! "&l_parms. " 
+        !! "-sysin &l_work./run.sas "
+        !! "-initstmt ""%nrstr(%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);)"" "
+        !! "-log  &g_log./000.log "
+        !! "-print &g_log./000.lst "
+        !! "-noovp "
+        !! "-nosyntaxcheck "
+        !! "-mautosource "
+        !! "-mcompilenote all "
+        !! "-sasautos &g_sasunit "
+        !! "-sasuser %sysfunc(pathname(work))/sasuser "
+        !! "";
 %END;
 %ELSE %DO;
  _sCmdString = 
    """" !! &g_sasstart !! """"
         !! " " 
-        !! "&l_parms.
-        -sysin ""&l_work./run.sas""
-        -initstmt ""%nrstr(%%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);)""
-        -log   ""&g_log./000.log""
-        -print ""&g_log./000.lst""
-        &g_splash
-        -noovp
-        -nosyntaxcheck
-        -mautosource
-        -mcompilenote all
-        -sasautos ""&g_sasunit""
-        -sasuser ""%sysfunc(pathname(work))/sasuser""
-  ";
+        !! "&l_parms. "
+        !! "-sysin ""&l_work./run.sas"" "
+        !! "-initstmt ""%nrstr(%%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);)"" "
+        !! "-log   ""&g_log./000.log"" "
+        !! "-print ""&g_log./000.lst"" "
+        !! "&g_splash "
+        !! "-noovp "
+        !! "-nosyntaxcheck "
+        !! "-mautosource "
+        !! "-mcompilenote all "
+        !! "-sasautos ""&g_sasunit"" "
+        !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
+        !! "";
 %END;
  PUT _sCmdString
  ;
