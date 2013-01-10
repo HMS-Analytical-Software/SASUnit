@@ -12,6 +12,10 @@
    \author     \$Author$
    \date       \$Date$
    \sa         \$HeadURL$
+   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */
 
@@ -22,19 +26,19 @@
 %macro _sasunit_mkdir(dir);
 
 %if &sysscp. = WIN %then %do; 
-	%local xwait xsync xmin;
-	%let xwait=%sysfunc(getoption(xwait));
-	%let xsync=%sysfunc(getoption(xsync));
-	%let xmin =%sysfunc(getoption(xmin));
+   %local xwait xsync xmin;
+   %let xwait=%sysfunc(getoption(xwait));
+   %let xsync=%sysfunc(getoption(xsync));
+   %let xmin =%sysfunc(getoption(xmin));
 
-	options noxwait xsync xmin;
+   options noxwait xsync xmin;
 
-	%SYSEXEC(md "&dir");
+   %SYSEXEC(md "&dir");
 
-	options &xwait &xsync &xmin;
+   options &xwait &xsync &xmin;
 %end;
 %else %if &sysscp. = LINUX %then %do;
-	%SYSEXEC(mkdir &dir.);
+   %SYSEXEC(mkdir &dir.);
 %end;
 
 %mend _sasunit_mkdir; 

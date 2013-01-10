@@ -7,6 +7,10 @@
    \author     \$Author$
    \date       \$Date$
    \sa         \$HeadURL$
+   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param   i_withlibrefs 1..initialize also filerefs and librefs 
                           0..initialize only macro symbols. 
@@ -15,7 +19,7 @@
 /* change history
    28.08.2012 KL  Problems occured resolving paths like ..\.\example\dat later in the project 
                   e.g. assertReport couldn't find expected pdfs. 
-				  Libname is successful, so the idea was to get the resolved path via pathname
+              Libname is successful, so the idea was to get the resolved path via pathname
    15.02.2011 KL  added support for testcases that need to redirect logfiles
                   Two new macrovariables g_logfile and g_printfile are available
    10.10.2010 AM  new Version 1.001

@@ -7,6 +7,10 @@
    \author     \$Author$
    \date       \$Date$
    \sa         \$HeadURL$
+   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param   i_data       SAS dataset (one or two level name) 
    \return  number of observations or 0, if dataset cannot be found
