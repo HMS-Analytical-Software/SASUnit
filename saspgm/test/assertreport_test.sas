@@ -12,7 +12,8 @@
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
-   \sa         \HeadURL: file:///P:/hms/00507_sasunit/svn/trunk/saspgm/test/assertReport_test.sas $
+   \sa         \$HeadURL$
+
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
