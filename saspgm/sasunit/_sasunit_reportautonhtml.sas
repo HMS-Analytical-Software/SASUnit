@@ -19,7 +19,7 @@
 
 /* change history
    02.01.2013 KL  Added new column "Assertions" and corrected the number in column "Test Cases".
-                  program library (none) is now support under different languages.
+                  program library (none) is now supported under different languages.
    12.08.2008 AM  Mehrsprachigkeit
    29.12.2007 AM  Neuererstellung
 */ 
