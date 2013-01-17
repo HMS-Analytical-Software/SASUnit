@@ -132,7 +132,7 @@
    
    %IF &syserr NE 0 %THEN %GOTO errexit;
 
-   %LET encoding=pcoem850;
+   %LET encoding=wlatin1;
    %LET dirfile=%sysfunc(pathname(work))/.dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
    %put Directory search is: &i_path;
