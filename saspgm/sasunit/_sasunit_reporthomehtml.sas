@@ -36,7 +36,7 @@
 
 DATA _null_;
    SET &i_repdata;
-   FILE "&o_html";
+   FILE "&o_html" LRECL=400;
 
    IF _n_=1 THEN DO;
 
