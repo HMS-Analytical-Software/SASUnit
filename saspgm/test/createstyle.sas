@@ -18,18 +18,18 @@ proc template;
    define style Styles.SASUNIT;
       style fonts
          "Fonts used in the default style" /
-         'TitleFont2' = ("Geneva, Arial, Helvetica, sans-serif",4,Bold Italic)
-         'TitleFont' = ("Geneva, Arial, Helvetica, sans-serif",5,Bold Italic)
-         'StrongFont' = ("Geneva, Arial, Helvetica, sans-serif",2,Bold)
-         'EmphasisFont' = ("Geneva, Arial, Helvetica, sans-serif",2,Italic)
-         'FixedEmphasisFont' = ("Geneva, Arial, Helvetica, sans-serif",2,Italic)
-         'FixedStrongFont' = ("Geneva, Arial, Helvetica, sans-serif",2,Bold)
-         'FixedHeadingFont' = ("Geneva, Arial, Helvetica, sans-serif",2)
-         'BatchFixedFont' = ("Geneva, Arial, Helvetica, sans-serif", 2)
-         'FixedFont' = ("Geneva, Arial, Helvetica, sans-serif",2)
-         'headingEmphasisFont' = ("Geneva, Arial, Helvetica, sans-serif",2,Bold Italic)
-         'headingFont' = ("Geneva, Arial, Helvetica, sans-serif",2,Bold)
-         'docFont' = ("Geneva, Arial, Helvetica, sans-serif",2);
+         'TitleFont2' = ("Geneva, Arial, Helvetica, sans-serif",18pt,Bold)
+         'TitleFont' = ("Geneva, Arial, Helvetica, sans-serif",20pt,Bold)
+         'StrongFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Bold)
+         'EmphasisFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Italic)
+         'FixedEmphasisFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Italic)
+         'FixedStrongFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Bold)
+         'FixedHeadingFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt)
+         'BatchFixedFont' = ("Geneva, Arial, Helvetica, sans-serif", 12pt)
+         'FixedFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt)
+         'headingEmphasisFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Bold Italic)
+         'headingFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Bold)
+         'docFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt);
       style GraphFonts
          "Fonts used in graph styles" /
          'GraphDataFont' = ("Arial",8pt)
@@ -39,17 +39,19 @@ proc template;
          'GraphTitleFont' = ("Arial",14pt,Bold);
       style color_list
          "Colors used in the default style" /
+         'fgB1' = cx000080
+         'bgB1' = cxe8eef2
          'fgB2' = cx0066AA
-         'fgB1' = cx004488
-         'fgA4' = cxAAFFAA
-         'bgA4' = white
+         'fgA4' = cx000080
+         'bgA4' = cxe8eef2
          'bgA3' = cxe8eef2
          'fgA2' = cx0033AA
          'bgA2' = cxe8eef2
          'fgA1' = cx000000
          'bgA1' = white
          'fgA' = cx002288
-         'bgA' = white;
+         'bgA' = white
+         ;
       style colors
          "Abstract colors used in the default style" /
          'headerfgemph' = color_list('fgA2')
@@ -83,7 +85,7 @@ proc template;
          'Conentryfg' = color_list('fgA2')
          'Confolderfg' = color_list('fgA')
          'Contitlefg' = color_list('fgA')
-         'link2' = color_list('fgB2')
+         'link2' = color_list('fgB1')
          'link1' = color_list('fgB1')
          'contentfg' = color_list('fgA2')
          'contentbg' = color_list('bgA2')
@@ -191,18 +193,21 @@ proc template;
          background = colors('contentbg');
       style Document from Container
          "Abstract. Controls the various document bodies." /
-         htmldoctype =
-         "<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2 Final//EN"">"
-         htmlcontenttype = "text/html"
+         htmldoctype         = "<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2 Final//EN"">"
+         htmlcontenttype     = "text/html"
          protectspecialchars = auto
-         linkcolor = colors('link2')
-         activelinkcolor = colors('link1')
-         visitedlinkcolor = colors('link1');
+         linkcolor           = colors('link1')
+         activelinkcolor     = colors('link1')
+         visitedlinkcolor    = colors('link1')
+         textdecoration      = _undef_
+         outputwidth         = 100%
+         ;
       style Body from Document
          "Controls the Body file." /
-         rightmargin = 8
-         leftmargin = 8
-         pagebreakhtml = html('PageBreakLine');
+         rightmargin   = 8
+         leftmargin    = 8
+         pagebreakhtml = html('PageBreakLine')
+         ;
       style Frame from Document
          "Controls the Frame file." /
          contentposition = L
@@ -384,8 +389,11 @@ proc template;
          borderwidth = 1;
       style Table from Output                                                 
          "Controls overall table style." /
-         cellpadding = 2px
-         Borderwidth=0;
+         cellpadding = 1
+         cellspacing = 4
+         Borderwidth = 0
+         bordercollapse=separate
+         borderspacing=2px;
       style Batch from Output                                                 
          "Controls batch mode output." /
          font = fonts('BatchFixedFont')
@@ -435,14 +443,21 @@ proc template;
          font = fonts('FixedFont');
       style Cell from Container                                               
          "Abstract. Controls general cells." /
-         cellpadding   = 2px
+         paddingtop    =  2px 
+         paddingtleft  = 10px 
+         paddingright  = 10px 
+         paddingbottom =  2px 
+         margintop     =  2px 
+         marginleft    =  0px 
+         marginright   =  0px 
+         marginbottom  =  2px 
+         bordercolor   = colors('tableborder')
          ;
       style Data from Cell                                                    
          "Default style for data cells in columns." /
-         foreground  = cx000080                                        
-         background  = colors('databg')
-         borderwidth = 1px
-         bordercolor = colors('tableborder')
+         foreground    = colors('datafg')
+         background    = colors('databg')
+         verticalalign = middle
          ;
       style DataFixed from Data                                               
          "Default style for data cells in columns. Fixed font." /
@@ -515,7 +530,8 @@ proc template;
          font = fonts('FixedStrongFont');
       style RowHeader from Header                                             
          "Controls row headers." /
-         background = color_list('bgA3');
+         background = color_list('bgA3')
+         vjust = middle;
       style RowHeaderFixed from RowHeader                                     
          "Controls row headers. Fixed font." /
          font = fonts('FixedFont');
@@ -736,12 +752,25 @@ ods listing close;
 *ods html(3)file="C:\TEMP\SASUNIT_HTML_mit_Styleangabe.html" style=styles.sasunit stylesheet=(url="SAS_SASUnit.css");
 *ods htmlcss(4)file="C:\TEMP\SASUNIT_HTMLCSS_mit_Styleangabe.html" style=styles.sasunit stylesheet=(url="SAS_SASUnit.css");
 * writing Stylesheet *;
-ods html(5)file="C:\TEMP\SASUNIT.html" style=styles.sasunit stylesheet="C:\TEMP\SAS_SASUnit.css";
+ods html(5)file="C:\TEMP\SASUNIT.html" style=styles.sasunit stylesheet="C:\TEMP\SAS_SASUnit.css"(url="SAS_SASUnit.css");
+proc report data=scenarios nowd;
+   column scn_id scn_desc scn_path scn_start duration PictureName_html;
+
+   define PictureName_html / style(column)={background=white};
+   define scn_id / id style(column)=rowheader;
+
+   compute scn_desc;
+      *call define (_col_, "URL",     "cas_overview.html#scn" !! put (scn_id.sum, z3.));
+      *call define (_col_, "STYLE", "style=[url=""cas_overview.html#scn" !! put (scn_id.sum, z3.) !! """]");
+      call define (_col_, "STYLE", "style=[url=""cas_overview.html#scn" !! put (scn_id.sum, z3.) !! """ flyover=""Details for test scenario " !! put (scn_id.sum, z3.) !! """]");
+   endcomp;
+
+run;
 proc print data=sashelp.class (obs=3);
 run;
 proc report data=sashelp.class (obs=3)nowd missing;
    columns name sex age height weight;
-   define name /id style={font_weight=bold};
+   define name /id style(column)=rowheader;
 run;
 ods _all_ close;
 ods listing;

@@ -1,950 +1,1653 @@
-.ContentTitle
+.aftercaption
 {
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
-  color: #002288;
-}
-.Output
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
   background-color: #FFFFFF;
-  border-width: 1px;
-  border-color: #CCCCCC;
-}
-.HeaderEmphasis
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.NoteContent
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.Graph
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-  border-width: 1px;
-  border-color: #CCCCCC;
-}
-.WarnContentFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.NoteBanner
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.FatalContent
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.DataStrong
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
+  border-spacing: 0px;
   color: #000000;
-  background-color: #E8EEF2;
-  border-width: 1px;
-  border-color: #CCCCCC;
-}
-.Document
-{
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
+  font-size: 12pt;
   font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-a:link {
-color:#0066AA
-}
-a:visited {
-color:#004488
-}
-a:active {
-color:#004488
-}
-.BeforeCaption
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
   font-weight: bold;
-  font-style: normal;
-  color: #000000;
-  background-color: #FFFFFF;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
 }
-.ContentsDate
+.batch
 {
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #E8EEF2;
-  width: 100%;
-}
-.Pages
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #E8EEF2;
-  margin-left: 8px;
-  margin-right: 8px;
-  list-style-type: decimal;
-}
-.TitlesAndFooters
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: medium;
-  font-weight: bold;
-  font-style: italic;
-  color: #000000;
-  background-color: #FFFFFF;
-}
-.IndexProcName
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  list-style-type: decimal;
-}
-.ProcTitle
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: medium;
-  font-weight: bold;
-  font-style: italic;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.IndexAction
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #0033AA;
-  margin-left: 6pt;
-  list-style-type: NONE;
-}
-.Data
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #000080;
   background-color: #E8EEF2;
   border: 1px solid #CCCCCC;
-  padding-right  : 10px;
-  padding-top    : 2px;
-  padding-left   : 10px;
-  padding-bottom : 2px;
-  margin-left    : 0px;
-  margin-right   : 0px;
-  margin-top     : 2px;
-  margin-bottom  : 2px;
-}
-.Table
-{
+  border-spacing: 1px;
+  color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
+  font-size: 12pt;
   font-style: normal;
-  color: #002288;
+  font-weight: normal;
+}
+.beforecaption
+{
   background-color: #FFFFFF;
-  border-width: 0;
-  border-color: #CCCCCC;
+  border-spacing: 0px;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.body
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  margin-left: 8px;
+  margin-right: 8px;
+  width: 100%;
+}
+.bodydate
+{
+  background-color: #FFFFFF;
+  border-spacing: 0px;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  text-align: right;
+  vertical-align: top;
+  width: 100%;
+}
+.bycontentfolder
+{
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: none;
+  margin-left: 6pt;
+}
+.byline
+{
+  background-color: #E8EEF2;
+  border-spacing: 0px;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.bylinecontainer
+{
+  background-color: #FFFFFF;
+  border: 0px solid #000000;
+  border-spacing: 1px;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  width: 100%;
+}
+.caption
+{
+  background-color: #FFFFFF;
+  border-spacing: 0px;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.cell
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.container
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.contentfolder
+{
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: none;
+  margin-left: 6pt;
+}
+.contentitem
+{
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: none;
+  margin-left: 6pt;
+}
+.contentproclabel
+{
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: decimal;
+}
+.contentprocname
+{
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: decimal;
+}
+.contents
+{
+  background-color: #E8EEF2;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: decimal;
+  margin-left: 8px;
+  margin-right: 8px;
+  width: 100%;
+}
+.contentsdate
+{
+  background-color: #E8EEF2;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  width: 100%;
+}
+.contenttitle
+{
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+}
+.continued
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 18pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.data
+{
+  background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.dataemphasis
+{
+  background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.dataemphasisfixed
+{
+  background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.dataempty
+{
+  background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.datafixed
+{
+  background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.datastrong
+{
+  background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.datastrongfixed
+{
+  background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.date
+{
+  background-color: #E8EEF2;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  width: 100%;
+}
+.document
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  width: 100%;
+}
+a:link {
+color:#000080;
+text-decoration: none;
+}
+a:visited {
+color:#000080;
+text-decoration: none;
+}
+a:active {
+color:#000080;
+text-decoration: none;
+}
+.errorbanner
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.errorcontent
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.errorcontentfixed
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.extendedpage
+{
+  background-color: #FFFFFF;
+  border: 1pt solid #000000;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+  text-align: center;
+}
+.fatalbanner
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.fatalcontent
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.fatalcontentfixed
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.folderaction
+{
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: none;
+  margin-left: 6pt;
+}
+.footer
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.footeremphasis
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.footeremphasisfixed
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.footerempty
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.footerfixed
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.footerstrong
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.footerstrongfixed
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.frame
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  width: 100%;
+}
+.graph
+{
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-spacing: 1px;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.header
+{
+  background-color: #D7DDE1;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.headeremphasis
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.headeremphasisfixed
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.headerempty
+{
+  background-color: #D7DDE1;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.headerfixed
+{
+  background-color: #D7DDE1;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.headersandfooters
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.headerstrong
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.headerstrongfixed
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.index
+{
+  background-color: #E8EEF2;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.indexaction
+{
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: none;
+  margin-left: 6pt;
+}
+.indexitem
+{
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: none;
+  margin-left: 6pt;
+}
+.indexprocname
+{
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: decimal;
+}
+.indextitle
+{
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+}
+.list
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.list10
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.list2
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.list3
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.list4
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.list5
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.list6
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.list7
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.list8
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.list9
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.listitem
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.listitem10
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.listitem2
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.listitem3
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.listitem4
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.listitem5
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.listitem6
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.listitem7
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.listitem8
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.listitem9
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.note
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.notebanner
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.notecontent
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.notecontentfixed
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.output
+{
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-spacing: 1px;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.pageno
+{
+  background-color: #FFFFFF;
+  border-spacing: 0px;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  text-align: right;
+  vertical-align: top;
+}
+.pages
+{
+  background-color: #E8EEF2;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: decimal;
+  margin-left: 8px;
+  margin-right: 8px;
+  width: 100%;
+}
+.pagesdate
+{
+  background-color: #E8EEF2;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  width: 100%;
+}
+.pagesitem
+{
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: none;
+  margin-left: 6pt;
+}
+.pagesproclabel
+{
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: decimal;
+}
+.pagesprocname
+{
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  list-style-type: decimal;
+}
+.pagestitle
+{
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+}
+.paragraph
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.parskip
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 18pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.prepage
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.proctitle
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 18pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.proctitlefixed
+{
+  background-color: #FFFFFF;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.rowfooter
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.rowfooteremphasis
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.rowfooteremphasisfixed
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.rowfooterempty
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.rowfooterfixed
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.rowfooterstrong
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.rowfooterstrongfixed
+{
+  background-color: #D7DDE1;
+  color: #0033AA;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.rowheader
+{
+  background-color: #E8EEF2;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.rowheaderemphasis
+{
+  background-color: #E8EEF2;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.rowheaderemphasisfixed
+{
+  background-color: #E8EEF2;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.rowheaderempty
+{
+  background-color: #E8EEF2;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.rowheaderfixed
+{
+  background-color: #E8EEF2;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.rowheaderstrong
+{
+  background-color: #E8EEF2;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.rowheaderstrongfixed
+{
+  background-color: #E8EEF2;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.systemfooter
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemfooter10
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemfooter2
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemfooter3
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemfooter4
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemfooter5
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemfooter6
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemfooter7
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemfooter8
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemfooter9
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemtitle
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemtitle10
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemtitle2
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemtitle3
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemtitle4
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemtitle5
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemtitle6
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemtitle7
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemtitle8
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systemtitle9
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 20pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.systitleandfootercontainer
+{
+  background-color: #FFFFFF;
+  border: 0px solid #000000;
+  border-spacing: 1px;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+  width: 100%;
+}
+.table
+{
+  background-color: #FFFFFF;
+  border: 0px solid #CCCCCC;
   border-collapse: separate;
   border-spacing: 2px;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
 }
 .top_stacked_value
 {
   padding-bottom: 1px;
+  border: 0;
 }
 .middle_stacked_value
 {
   padding-top: 1px;
   padding-bottom: 1px;
+  border: 0;
 }
 .bottom_stacked_value
 {
   padding-top: 1px;
+  border: 0;
 }
-.FooterEmpty
+.titleandnotecontainer
 {
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.SysTitleAndFooterContainer
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
   background-color: #FFFFFF;
-  border-width: 0;
+  border: 0px solid #000000;
+  border-spacing: 1px;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
   width: 100%;
 }
-.RowFooterEmpty
+.titlesandfooters
 {
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.ContentFolder
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  list-style-type: NONE;
-}
-.RowFooterEmphasis
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.RowFooterStrongFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.RowFooterFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.Index
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #E8EEF2;
-}
-.FooterFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.ExtendedPage
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
+  background-color: #FFFFFF;
   color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 18pt;
+  font-style: normal;
+  font-weight: bold;
+}
+.usertext
+{
   background-color: #FFFFFF;
-  border-width: 1pt;
-  text-align: center;
-}
-.Container
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
   color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.warnbanner
+{
   background-color: #FFFFFF;
-}
-.Date
-{
+  color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
+  font-size: 12pt;
   font-style: normal;
-  color: #0033AA;
-  background-color: #E8EEF2;
-  width: 100%;
-}
-.Caption
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
   font-weight: bold;
-  font-style: normal;
-  color: #000000;
+}
+.warncontent
+{
   background-color: #FFFFFF;
-}
-.WarnBanner
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
   color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  font-style: normal;
+  font-weight: normal;
+}
+.warncontentfixed
+{
   background-color: #FFFFFF;
-}
-.Frame
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
   color: #002288;
-  background-color: #FFFFFF;
-}
-.HeaderStrongFixed
-{
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
+  font-size: 12pt;
   font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.IndexTitle
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
   font-weight: normal;
-  font-style: italic;
-  color: #002288;
-}
-.NoteContentFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.DataEmphasisFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
-  color: #000000;
-  background-color: #E8EEF2;
-  border-width: 1px;
-  border-color: #CCCCCC;
-}
-.Note
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.Byline
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #E8EEF2;
-}
-.FatalBanner
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.ProcTitleFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.ByContentFolder
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  list-style-type: NONE;
-}
-.PagesProcLabel
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  list-style-type: decimal;
-}
-.RowHeaderFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #000000;
-  background-color: #E8EEF2;
-}
-.RowFooterEmphasisFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.WarnContent
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.DataEmpty
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #000080;
-  background-color: #E8EEF2;
-  border-width: 1px;
-  border-color: #CCCCCC;
-}
-.Cell
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.Header
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #000000;
-  background-color: #D7DDE1;
-  padding-right  : 10px;
-  padding-top    : 2px;
-  padding-left   : 10px;
-  padding-bottom : 2px;
-  margin-left    : 0px;
-  margin-right   : 0px;
-  margin-top     : 2px;
-  margin-bottom  : 2px;
-  border: 1px solid #CCCCCC;
-}
-.PageNo
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #000000;
-  background-color: #FFFFFF;
-  text-align: right;
-  vertical-align: top;
-}
-.ContentProcLabel
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  list-style-type: decimal;
-}
-.HeaderFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #000000;
-  background-color: #D7DDE1;
-}
-.PagesTitle
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
-  color: #002288;
-}
-.RowHeaderEmpty
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #000000;
-  background-color: #E8EEF2;
-}
-.PagesProcName
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  list-style-type: decimal;
-}
-.Batch
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #000000;
-  background-color: #E8EEF2;
-  border-width: 1px;
-  border-color: #CCCCCC;
-}
-.ContentItem
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #0033AA;
-  list-style-type: NONE;
-}
-.Body
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-  margin-left: 8px;
-  margin-right: 8px;
-}
-.PagesDate
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #E8EEF2;
-  width: 100%;
-}
-.HeaderEmpty
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #000000;
-  background-color: #D7DDE1;
-}
-.FooterStrong
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.FooterEmphasis
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.ErrorContent
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.DataFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #000080;
-  background-color: #E8EEF2;
-  border-width: 1px;
-  border-color: #CCCCCC;
-}
-.HeaderStrong
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.DataEmphasis
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
-  color: #000000;
-  background-color: #E8EEF2;
-  border-width: 1px;
-  border-color: #CCCCCC;
-}
-.TitleAndNoteContainer
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-  border-width: 0;
-  width: 100%;
-}
-.RowFooter
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.IndexItem
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #0033AA;
-  margin-left: 6pt;
-  list-style-type: NONE;
-}
-.BylineContainer
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-  border-width: 0;
-  width: 100%;
-}
-.FatalContentFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.BodyDate
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-  width: 100%;
-  text-align: right;
-  vertical-align: top;
-}
-.Contents
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #E8EEF2;
-  margin-left: 8px;
-  margin-right: 8px;
-  list-style-type: decimal;
-}
-.RowFooterStrong
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.UserText
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.HeadersAndFooters
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.RowHeaderEmphasisFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
-  color: #000000;
-  background-color: #E8EEF2;
-}
-.ErrorBanner
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.ContentProcName
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  list-style-type: decimal;
-}
-.RowHeaderStrong
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #000000;
-  background-color: #E8EEF2;
-}
-.PagesItem
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #0033AA;
-  list-style-type: NONE;
-}
-.RowHeader
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #000000;
-  background-color: #E8EEF2;
-  padding-right  : 10px;
-  padding-top    : 2px;
-  padding-left   : 10px;
-  padding-bottom : 2px;
-  margin-left    : 0px;
-  margin-right   : 0px;
-  margin-top     : 2px;
-  margin-bottom  : 2px;
-  border: 1px solid #CCCCCC;
-}
-.FooterStrongFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.AfterCaption
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #000000;
-  background-color: #FFFFFF;
-}
-.RowHeaderStrongFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #000000;
-  background-color: #E8EEF2;
-}
-.RowHeaderEmphasis
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
-  color: #000000;
-  background-color: #E8EEF2;
-}
-.DataStrongFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #000000;
-  background-color: #E8EEF2;
-  border-width: 1px;
-  border-color: #CCCCCC;
-}
-.Footer
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: bold;
-  font-style: normal;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.FolderAction
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #0033AA;
-  margin-left: 6pt;
-  list-style-type: NONE;
-}
-.HeaderEmphasisFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
-  color: #0033AA;
-  background-color: #D7DDE1;
-}
-.SystemTitle
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: large;
-  font-weight: bold;
-  font-style: italic;
-  color: #000000;
-  background-color: #FFFFFF;
-}
-.ErrorContentFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: normal;
-  color: #002288;
-  background-color: #FFFFFF;
-}
-.SystemFooter
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: large;
-  font-weight: bold;
-  font-style: italic;
-  color: #000000;
-  background-color: #FFFFFF;
-}
-.FooterEmphasisFixed
-{
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: x-small;
-  font-weight: normal;
-  font-style: italic;
-  color: #0033AA;
-  background-color: #D7DDE1;
 }
