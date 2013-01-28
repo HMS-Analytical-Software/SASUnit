@@ -123,7 +123,7 @@
  
 %else %if &sysscp. = LINUX %then %do;
 
-   %LOCAL dirfile encoding s;
+   %LOCAL dirfile encoding s l_i_path;
    
    data &o_out ;
        length filename $255;
@@ -135,9 +135,13 @@
    %LET encoding=wlatin1;
    %LET dirfile=%sysfunc(pathname(work))/.dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
+	 
    %put Directory search is: &i_path;
+	 /* Escape special characters in filenames*/
+	 %let l_i_path = %sysfunc(TRANWRD(&i_path,%str(%(), %str(\%()));
+	 %let l_i_path = %sysfunc(TRANWRD(&l_i_path,%str(%)), %str(\%))));
    %IF &i_recursive=0 %then %let s=-maxdepth 1;
-   %SYSEXEC(find -P &i_path. &s. -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null);
+   %SYSEXEC(find -P &l_i_path. &s. -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null);
    
    data &o_out (keep=filename changed);
        length filename $255;
