@@ -318,7 +318,7 @@
       end;
    run;
 
-   %*** format resuts for report ***;
+   %*** format results for report ***;
    data work._ergebnis;
       length icon_column $45 i_LibraryCheck i_CompareCheck $15 i_id i_ExcludeList $80;
       set work._ergebnis;
