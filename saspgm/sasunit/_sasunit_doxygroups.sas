@@ -1,22 +1,29 @@
 /**
    \defgroup   SASUNIT        SASUnit Testing Framework
+	 \brief			 Documentation root node
 
    \defgroup   SASUNIT_CNTL   Execution Control
+	 \brief			 Contains macros for execution control
    \ingroup    SASUNIT
 
    \defgroup   SASUNIT_SCN    Construction of Test Scenarios
+	 \brief			 Contains macros for contructing test scenarios
    \ingroup    SASUNIT
 
-   \defgroup   SASUNIT_ASSERT Assertions 
+   \defgroup   SASUNIT_ASSERT Assertions
+	 \brief			 Contains macros for assertions
    \ingroup    SASUNIT
 
    \defgroup   SASUNIT_UTIL   Utility Macros
+	 \brief			 Contains utility macros
    \ingroup    SASUNIT
 
    \defgroup   SASUNIT_REPORT Reporting 
+	 \brief			 Contains macros for reporting
    \ingroup    SASUNIT_UTIL
 
    \defgroup   SASUNIT_TEST   Test Scenarios
+	 \brief			 Contains programs for self testing of SASUnit
    \ingroup    SASUNIT
 
    \brief      No source code - only file grouping for Doxygen
