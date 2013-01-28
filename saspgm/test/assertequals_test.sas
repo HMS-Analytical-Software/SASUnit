@@ -43,7 +43,7 @@
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, no fuzz, must be red))
+%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, no fuzz - must be red))
 %endTestcall()
 %assertEquals(i_actual=19, i_expected=20, i_desc=the description 3)
 %markTest()
@@ -76,7 +76,7 @@
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, out of range, must be red))
+%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, out of range - must be red))
 %endTestcall()
 %assertEquals(i_actual=17, i_expected=20, i_desc=the description 6, i_fuzz=2)
 %markTest()
@@ -98,7 +98,7 @@
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, out of range, floating points, must be red))
+%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, out of range, floating points - must be red))
 %endTestcall()
 %assertEquals(i_actual=117.86532, i_expected=20, i_desc=the description 8, i_fuzz=10)
 %markTest()
@@ -120,7 +120,7 @@
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, out of range, floating points, twisted, must be red))
+%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, out of range, floating points, twisted - must be red))
 %endTestcall()
 %assertEquals(i_actual=20, i_expected=117.86532, i_desc=the description 8, i_fuzz=10)
 %markTest()
@@ -142,7 +142,7 @@
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, alpha numeric, must be red))
+%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, alpha numeric - must be red))
 %endTestcall()
 %assertEquals(i_actual=BBB, i_expected=AAA, i_desc=the description 10)
 %markTest()

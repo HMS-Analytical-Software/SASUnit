@@ -80,7 +80,7 @@ ods pdf close;
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual copied to testout)
 %endTestcase(i_assertLog=1)
 
-%initTestcase(i_object=assertreport.sas, i_desc=%str(only i_expected, not i_actual specified, must be red))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(only i_expected, not i_actual specified - must be red))
 %endTestcall()
 %assertReport(i_expected=&g_work/report1.pdf, i_actual=, i_desc=%str(expected=.pdf, actual=missing(red), result is red?))
 %markTest()
@@ -93,7 +93,7 @@ ods pdf close;
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual not in testout)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertreport.sas, i_desc=%str(neither i_expected nor i_actual specified, must be red))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(neither i_expected nor i_actual specified - must be red))
 %endTestcall()
 %assertReport(i_actual=, i_expected=, i_desc=%str(expected=, actual=missing(red), result is red?))
 %markTest()
@@ -106,7 +106,7 @@ ods pdf close;
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual not in testout)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertreport.sas, i_desc=%str(invalid file specified for i_actual, must be red))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(invalid file specified for i_actual - must be red))
 %endTestcall()
 %assertReport(i_expected=&g_work/report1.pdf, i_actual=&g_work/report3.pdf, i_desc=%str(expected=.pdf, actual=missing(red), result is red?))
 %markTest()
