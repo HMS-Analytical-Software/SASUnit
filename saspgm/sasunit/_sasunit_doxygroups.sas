@@ -1,6 +1,6 @@
 /**
    \defgroup   SASUNIT        SASUnit Testing Framework
-	 \brief			 Documentation root node
+	 \brief			 Root node documentation
 
    \defgroup   SASUNIT_CNTL   Execution Control
 	 \brief			 Contains macros for execution control

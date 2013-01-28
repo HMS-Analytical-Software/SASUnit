@@ -1,29 +1,29 @@
 /**
    \defgroup   SASUNIT        SASUnit automated testing
-	\brief		Documentation root node
+	\brief		SASUnit example project program documentation
 
    \defgroup   SASUNIT_EXAMPLES   Examples
-   \brief      Group containing an example project that demonstrates SASUnits key functionalities
+   \brief      SASUnit example project
    \ingroup    SASUNIT
 
    \defgroup   SASUNIT_EXAMPLES_PGM   Units under test
-   \brief      Contains the programs to be tested
+   \brief      SAS macros to be tested in the example project
    \ingroup    SASUNIT_EXAMPLES
 
    \defgroup   SASUNIT_EXAMPLES_TEST  Test Scenarios
-   \brief      Contains the test scenarios
+   \brief      Tests for the SAS macros in the example project
    \ingroup    SASUNIT_EXAMPLES
 
    \defgroup   SASUNIT_CNTL   SASUnit macros for control of the test suite
-   \brief      Contains the SASUnit core macros that control the test scenarios
+   \brief      Initialize SASUnit, run tests and generate reports
    \ingroup    SASUNIT
 
    \defgroup   SASUNIT_SCN    SASUnit macros for setup of test scenarios
-   \brief      Contains the macros necessary to control test cases
+   \brief      Control the collection of test results
    \ingroup    SASUNIT
 
    \defgroup   SASUNIT_ASSERT SASUnit macros for assertions
-   \brief      Contains the macros with the assertions that are called within a test scenario
+   \brief      Assertions compare actual outcomes to expectations
    \ingroup    SASUNIT
 
    \brief      No source code - only file grouping for Doxygen
