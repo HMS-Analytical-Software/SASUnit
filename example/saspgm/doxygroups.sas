@@ -1,6 +1,19 @@
 /**
+   \brief      No source code - only file grouping for Doxygen
+   \details    This file does not contain any source code. Its purpose is to define groups to be used by Doxygen. The group structure is being
+               defined by defgroup and ingroup instructions above. Defined groups may be used with an ingroup instruction in the other source code files. 
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+			   
    \defgroup   SASUNIT        SASUnit automated testing
-	\brief		SASUnit example project program documentation
+   \brief      SASUnit example project program documentation
 
    \defgroup   SASUNIT_EXAMPLES   Examples
    \brief      SASUnit example project
@@ -25,17 +38,4 @@
    \defgroup   SASUNIT_ASSERT SASUnit macros for assertions
    \brief      Assertions compare actual outcomes to expectations
    \ingroup    SASUNIT
-
-   \brief      No source code - only file grouping for Doxygen
-   \details    This file does not contain any source code. Its purpose is to define groups to be used by Doxygen. The group structure is being
-               defined by defgroup and ingroup instructions above. Defined groups may be used with an ingroup instruction in the other source code files. 
-
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
-   \sa         \$HeadURL$
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */
