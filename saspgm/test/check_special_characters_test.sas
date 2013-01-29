@@ -10,8 +10,9 @@
 */ /** \cond */ 
 
 /* change log
-   11.01.2013 BB Further Test Cases added
-   09.01.2013 KL  Created
+   29.01.2013 BB Removed test case with unbalanced bracket
+   11.01.2013 BB Further test cases added
+   09.01.2013 KL Created
 */ 
 
 
@@ -84,8 +85,10 @@
 %let testfile1 = class.jpg;
 %assertReport(i_actual=&g_refdata./class.jpg                ,i_expected=&g_refdata./&testfile1    ,i_desc= No Special characters in file name - must be red)
 %assertReport(i_actual=&g_refdata./%nrstr(class.jpg)        ,i_expected=&g_refdata./&testfile1    ,i_desc=No Special characters - must be red)
-%let testfile2 = %nrstr(filedh%(.xlsx);
+
+/* Does not run under LINUX in conjunction with %str(*) 
 %assertReport(i_actual=&g_refdata./%nrstr(file%%dh%(.xlsx)  ,i_expected=&g_refdata./%nrstr(file%%dh%(.xlsx)     ,i_desc=Special characters in file name - must be red)
-%let testfile3 =%nrstr(file-to_$8.xlsx);
+*/
+
 %assertReport(i_actual=&g_refdata./%nrstr(file-to_$8.xlsx)  ,i_expected=&g_refdata./%nrstr(file-to_$8.xlsx)     ,i_desc=Special characters in file name - must be red)
 %endTestcase()

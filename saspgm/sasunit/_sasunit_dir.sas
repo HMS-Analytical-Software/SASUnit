@@ -26,6 +26,7 @@
 */ /** \cond */
 
 /* version history
+   29.01.2013 KL  Removed support for filenames with unbalanced brackets.
    17.10.2012 KL  extended for english version of windows. In English Windows7 x64 there is an additional AM/PM column in the directory listing.
                   Therefore an new datastep variable is included to reflect this circumstances. SCAN CANNOT be used because there may be blanks
                   in the filenames and blank is the delimiter between the columns. So we need to stick to specific character positions
@@ -123,7 +124,7 @@
  
 %else %if &sysscp. = LINUX %then %do;
 
-   %LOCAL dirfile encoding s l_i_path;
+   %LOCAL dirfile encoding s;
    
    data &o_out ;
        length filename $255;
@@ -137,11 +138,8 @@
    filename _dirfile "&dirfile" encoding=&encoding;
 	 
    %put Directory search is: &i_path;
-	 /* Escape special characters in filenames*/
-	 %let l_i_path = %sysfunc(TRANWRD(&i_path,%str(%(), %str(\%()));
-	 %let l_i_path = %sysfunc(TRANWRD(&l_i_path,%str(%)), %str(\%))));
    %IF &i_recursive=0 %then %let s=-maxdepth 1;
-   %SYSEXEC(find -P &l_i_path. &s. -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null);
+   %SYSEXEC(find -P &i_path. &s. -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null);
    
    data &o_out (keep=filename changed);
        length filename $255;
