@@ -1,7 +1,7 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      create list of thest scenarios for HTML report
+   \brief      create list of test scenarios for HTML report
 
    \version    \$Revision$
    \author     \$Author$
