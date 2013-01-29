@@ -452,6 +452,7 @@ proc template;
          marginright   =  0px 
          marginbottom  =  2px 
          bordercolor   = colors('tableborder')
+         borderwidth   = 1px
          ;
       style Data from Cell                                                    
          "Default style for data cells in columns." /
@@ -493,7 +494,8 @@ proc template;
          "Abstract. Controls table headers and footers." /
          font = fonts('HeadingFont')
          foreground = colors('headerfg')
-         background = colors('headerbg');
+         background = colors('headerbg')
+         ;
       style Caption from HeadersAndFooters                                    
          "Abstract. Controls caption field in proc tabulate." /
          cellspacing = 0                                                      
@@ -506,7 +508,8 @@ proc template;
          "Caption that comes after a table.";
       style Header from HeadersAndFooters                                     
          "Controls the headers of a table." /
-         foreground=black;
+         foreground = black
+         borderwidth = 2px;
       style HeaderFixed from Header                                           
          "Controls the header of a table. Fixed font." /
          font = fonts('FixedFont');
@@ -530,8 +533,9 @@ proc template;
          font = fonts('FixedStrongFont');
       style RowHeader from Header                                             
          "Controls row headers." /
-         background = color_list('bgA3')
-         vjust = middle;
+         background  = color_list('bgA3')
+         vjust       = middle
+         borderwidth = 1px;
       style RowHeaderFixed from RowHeader                                     
          "Controls row headers. Fixed font." /
          font = fonts('FixedFont');

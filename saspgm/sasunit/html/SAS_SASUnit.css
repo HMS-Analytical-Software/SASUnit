@@ -1,6 +1,7 @@
 .aftercaption
 {
   background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
   border-spacing: 0px;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
@@ -30,6 +31,7 @@
 .beforecaption
 {
   background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
   border-spacing: 0px;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
@@ -105,6 +107,7 @@
 .caption
 {
   background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
   border-spacing: 0px;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
@@ -123,6 +126,7 @@
 .cell
 {
   background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -467,6 +471,7 @@ text-decoration: none;
 .footer
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -484,6 +489,7 @@ text-decoration: none;
 .footeremphasis
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -501,6 +507,7 @@ text-decoration: none;
 .footeremphasisfixed
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -518,6 +525,7 @@ text-decoration: none;
 .footerempty
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -535,6 +543,7 @@ text-decoration: none;
 .footerfixed
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -552,6 +561,7 @@ text-decoration: none;
 .footerstrong
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -569,6 +579,7 @@ text-decoration: none;
 .footerstrongfixed
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -607,6 +618,7 @@ text-decoration: none;
 .header
 {
   background-color: #D7DDE1;
+  border: 2px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -624,6 +636,7 @@ text-decoration: none;
 .headeremphasis
 {
   background-color: #D7DDE1;
+  border: 2px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -641,6 +654,7 @@ text-decoration: none;
 .headeremphasisfixed
 {
   background-color: #D7DDE1;
+  border: 2px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -658,6 +672,7 @@ text-decoration: none;
 .headerempty
 {
   background-color: #D7DDE1;
+  border: 2px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -675,6 +690,7 @@ text-decoration: none;
 .headerfixed
 {
   background-color: #D7DDE1;
+  border: 2px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -692,6 +708,7 @@ text-decoration: none;
 .headersandfooters
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -709,6 +726,7 @@ text-decoration: none;
 .headerstrong
 {
   background-color: #D7DDE1;
+  border: 2px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -726,6 +744,7 @@ text-decoration: none;
 .headerstrongfixed
 {
   background-color: #D7DDE1;
+  border: 2px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1132,6 +1151,7 @@ text-decoration: none;
 .rowfooter
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1149,6 +1169,7 @@ text-decoration: none;
 .rowfooteremphasis
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1166,6 +1187,7 @@ text-decoration: none;
 .rowfooteremphasisfixed
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1183,6 +1205,7 @@ text-decoration: none;
 .rowfooterempty
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1200,6 +1223,7 @@ text-decoration: none;
 .rowfooterfixed
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1217,6 +1241,7 @@ text-decoration: none;
 .rowfooterstrong
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1234,6 +1259,7 @@ text-decoration: none;
 .rowfooterstrongfixed
 {
   background-color: #D7DDE1;
+  border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1251,6 +1277,7 @@ text-decoration: none;
 .rowheader
 {
   background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1269,6 +1296,7 @@ text-decoration: none;
 .rowheaderemphasis
 {
   background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1287,6 +1315,7 @@ text-decoration: none;
 .rowheaderemphasisfixed
 {
   background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1305,6 +1334,7 @@ text-decoration: none;
 .rowheaderempty
 {
   background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1323,6 +1353,7 @@ text-decoration: none;
 .rowheaderfixed
 {
   background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1341,6 +1372,7 @@ text-decoration: none;
 .rowheaderstrong
 {
   background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
@@ -1359,6 +1391,7 @@ text-decoration: none;
 .rowheaderstrongfixed
 {
   background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   font-size: 12pt;
