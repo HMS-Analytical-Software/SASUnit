@@ -26,6 +26,7 @@
 */ /** \cond */ 
 
 /* change log 
+   18.01.2013 KL  Adjusted descriptions of testcases
    08.01.2013 KL  Empty cells are rendered incorrectly in MS IE. So &nbsp; is now used as contents of an empty cell
    15.07.2009 AM  fixed copydir for Linux
    13.08.2008 AM  introduced o_force and o_output
@@ -95,7 +96,7 @@
 %LOCAL
    l_sEmptyScnDummyCasDesc
 ;
-%LET l_sEmptyScnDummyCasDesc = %STR(no valid test case found);
+%LET l_sEmptyScnDummyCasDesc = %STR(no valid test case found - must be red!);
 
 PROC SQL NOPRINT;
    CREATE TABLE &d_emptyscn. AS

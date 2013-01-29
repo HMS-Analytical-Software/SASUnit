@@ -37,6 +37,7 @@
 */ /** \cond */ 
 
 /* change log
+   18.01.2013 KL  Adjusted descriptions of testcases
    02.10.2008 NA  Modified for LINUX
    11.08.2008 AM  Fehler bereinigt für den Fall, dass in der aufrufenden Sitzung keine config-Option angegeben ist 
                   und die mit getoption abgefragte config-option dann Werte (mit Klammern) enthält, 
@@ -384,7 +385,7 @@ RUN;
 
       %IF %EVAL(&l_nscncount. EQ 0) %THEN %DO;
 
-         %LET l_scndesc = %STR(scenario not found);
+         %LET l_scndesc = %STR(scenario not found - has to fail!);
         
          PROC SQL NOPRINT;
             SELECT max(scn_id) INTO :l_scnid FROM target.scn;
