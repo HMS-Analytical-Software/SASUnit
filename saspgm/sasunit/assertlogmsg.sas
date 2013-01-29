@@ -4,7 +4,7 @@
 
    \brief      Check whether a certain message appears in the log.
 
-               Please refer to the description of the test tools in _sasunit_doc.sas
+               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
                If the message does not appear in the log as expected, 
                the check of the assertion will fail.
@@ -28,6 +28,7 @@
 */ /** \cond */ 
 
 /* change log
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    26.09.2008 AM  bug fixing NLS: standard description text
    21.08.2008 AM  moved language dependent text to reportDetailHTML
    30.06.2008 AM  kleine Dokumentationsänderung

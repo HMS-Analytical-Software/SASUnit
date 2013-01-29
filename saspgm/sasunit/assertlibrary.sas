@@ -6,6 +6,8 @@
                
                The comparison report is created later, as PROC REPORT does not support ODS Document.
 
+               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
@@ -33,6 +35,7 @@
 */ /** \cond */ 
 
 /* 
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    13.12.2012 KL  Despite the noprint option PROC COMPARE issues a warning when there is no opeb output destination.
                   So the listing destination is opened prior to calling PROC COMPARE.
    28.05.2010 KL  Pfade mit Sonderzeichen machen unter SAS9.2 Probleme, deshalb Strings in Hochkommata

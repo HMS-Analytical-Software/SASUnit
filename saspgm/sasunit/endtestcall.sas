@@ -4,7 +4,7 @@
 
    \brief      Ends an invocation of a program under test
 
-               Please refer to the description of the test tools in _sasunit_doc.sas
+               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
                Ensure sequence
                End redirection of SAS log
@@ -21,7 +21,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-/* change log
+/* change history
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    09.02.2011 KL  added two macro variables for re-redirecting log- and printfile in testcases
 */ 
 

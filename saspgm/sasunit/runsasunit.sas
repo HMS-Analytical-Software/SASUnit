@@ -4,7 +4,7 @@
 
    \brief      Invokes one or more test scenarios.
 
-               Please refer to the description of the test tools in _sasunit_doc.sas.
+               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
                Procedure:
                - Check whether test repository was already initialized with \%initSASUnit, if not: End.
@@ -37,7 +37,8 @@
 */ /** \cond */ 
 
 /* change log
-   18.01.2013 KL  Adjusted descriptions of testcases
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
+   28.01.2013 KL  Adjusted descriptions of testcases
    02.10.2008 NA  Modified for LINUX
    11.08.2008 AM  Fehler bereinigt für den Fall, dass in der aufrufenden Sitzung keine config-Option angegeben ist 
                   und die mit getoption abgefragte config-option dann Werte (mit Klammern) enthält, 

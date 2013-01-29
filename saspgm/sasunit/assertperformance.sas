@@ -4,7 +4,7 @@
 
    \brief      Check whether runtime of the testcase is below or equal a given limit.
 
-               Please refer to the description of the test tools in _sasunit_doc.sas
+               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
    \version    \$Revision$
    \author     \$Author$
@@ -21,6 +21,7 @@
 */ /** \cond */ 
 
 /* change history
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    29.08.2012 KL
    For every call of the assert target.cas is rewritten! This slows down performance.
    In fact there is no need to store the run time in the target.cas.

@@ -4,7 +4,7 @@
 
    \brief      Check whether errors or warnings appear in the log.
 
-               Please refer to the description of the test tools in _sasunit_doc.sas
+               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
                If number of errors and warnings does not appear in the log as expected, 
                the check of the assertion will fail.
@@ -24,6 +24,7 @@
 */ /** \cond */ 
 
 /* change log
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    10.10.2008 AM  minimal correction for documentation 
    19.08.2008 AM  removed language specific text in order to enable national language support
 */ 

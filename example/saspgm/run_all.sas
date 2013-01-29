@@ -4,7 +4,7 @@
 
 \brief      Run all test scenarios for SASUnit example project
 
-            (see also _sasunit_doc.sas)
+            (see also <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>)\n
             Initialize SASUnit (open test repository or create when needed) with initSASUnit.sas
             - set project name
             - set root path for convenience (all other paths can be relative to root path)
@@ -25,7 +25,8 @@
             or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-/* History
+/* change history
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    30.08.2012 KL  Values for rootpath of SASUnit, language and overwrite are taken over from OS-Variables.
                   So there is no need to change run_all for operating systems or languages
    05.09.2008 NA  Anpassungen Linux

@@ -4,7 +4,7 @@
 
    \brief      Ends a test case
 
-               Please refer to the description of the test tools in _sasunit_doc.sas
+               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
                Result and finish time are added to the test repository.
 
@@ -20,6 +20,9 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
+/* change history
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
+*/
 
 %MACRO endTestcase(i_assertLog=1);
 

@@ -4,6 +4,8 @@
 
 \brief      create german report in separate subfolder
 
+            (see also <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>)\n
+
 \version    \$Revision$
 \author     \$Author$
 \date       \$Date$

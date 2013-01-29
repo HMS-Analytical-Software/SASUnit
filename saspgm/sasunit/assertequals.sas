@@ -5,7 +5,7 @@
    \brief      Check whether there are differences between the value of 
                a macro variable and an expected character string.
 
-               Please refer to the description of the test tools in _sasunit_doc.sas
+               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
    \version    \$Revision$
    \author     \$Author$
@@ -25,6 +25,7 @@
 */ /** \cond */ 
 
 /* change history 
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    30.06.2008 AM  Behandlung unterschiedlicher Datentypen verbessert 
 */ 
 %MACRO assertEquals (

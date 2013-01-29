@@ -4,7 +4,7 @@
 
    \brief      Creation of a test report
 
-               Please refer to the description of the test tools in _sasunit_doc.sas.
+               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
    \version \$Revision$
    \author  \$Author$
@@ -26,7 +26,8 @@
 */ /** \cond */ 
 
 /* change log 
-   18.01.2013 KL  Adjusted descriptions of testcases
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
+   28.01.2013 KL  Adjusted descriptions of testcases
    08.01.2013 KL  Empty cells are rendered incorrectly in MS IE. So &nbsp; is now used as contents of an empty cell
    15.07.2009 AM  fixed copydir for Linux
    13.08.2008 AM  introduced o_force and o_output

@@ -7,7 +7,7 @@
                It is possible to write an instruction into the test protocol indicating the need
                to perform a manual check of the report.
 
-               Please refer to the description of the test tools in _sasunit_doc.sas
+               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
                Writes an entry into the test repository indicating the need to perform a manual 
                check of the report and copies the report and a given report template (optional).
@@ -29,7 +29,8 @@
  */ /** \cond */ 
 
 
-/* 
+/* change history 
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    30.06.2008 AM  - kleine Dokumentationsänderung
    15.02.2008 AM  - kleine Dokumentationsänderung
    06.02.2008 AM  - umbenannt nach assertReport

@@ -4,7 +4,7 @@
 
    \brief      Initialization of a test suite that may comprise several test scenarios. 
 
-               Please refer to the description of the test tools in _sasunit_doc.sas. 
+               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
                An existing test repository is opened or a new test repository is created..
 
@@ -42,6 +42,7 @@
                            in case parameter is set (is accessed readonly)
 */ /** \cond */ 
 /* change log 
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    08.01.2013 KL  Fixed warning concerning %substr arguments. This was caused by the last call in run_all.sas. 
                   To remove the entry for i_autoexec, a real blank must be passed. So there is now a different
                   method used for check on empty parameter which now must include a real blank as empty.

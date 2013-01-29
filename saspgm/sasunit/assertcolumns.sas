@@ -5,7 +5,7 @@
    \brief      Check whether there are differences between the values of 
                the columns of two sas data sets (PROC COMPARE).
 
-               Please refer to the description of the test tools in _sasunit_doc.sas
+               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
                The values of the two data sets are considered to match each other
                if all columns existing in data set i_expected are also existing in 
@@ -54,6 +54,7 @@
 */ /** \cond */ 
 
 /* change history
+   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    01.07.2008 AM  umfangreiche Überarbeitung:
                   i_allow eingeführt, um erlaubte Unterschiede steuern zu können, 
                   i_maxReportObs durch o_maxReportObs ersetzt
