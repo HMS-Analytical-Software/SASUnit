@@ -1,3 +1,7 @@
+/* change log
+   29.01.2013 BB ReportDetail formats 49 und 50 inserted (International time formats)
+	 29.01.2013 BB Change Log created
+*/ 
 ---reportSASUnit
   1 DE SAS-Log aus initSASUnit
   1 EN SAS log from initSASUnit
@@ -222,6 +226,10 @@
  47 EN Scan for log message
  48 DE fehlt
  48 EN missing
+ 49 DE commax12.1
+ 49 EN comma12.1
+ 50 DE EURDFDT20.
+ 50 EN DATETIME20.
 ---reportFooter
   1 DE Erzeugt am
   1 EN Generated on

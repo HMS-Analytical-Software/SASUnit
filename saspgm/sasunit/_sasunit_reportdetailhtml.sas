@@ -20,6 +20,7 @@
 */ /** \cond */ 
 
 /* change log
+   29.01.2013 BB	Hard coded date and time formats replaced. ReportDetail formats 49 and 50 applied.
    08.01.2013 KL  Empty cells are rendered incorrectly in MS IE. So &nbsp; is now used as contents of an empty cell
    26.09.2008 AM  bug fixing NLS: standard description texts for assertLog(Msg)
    18.08.2008 AM  added national language support
@@ -87,13 +88,13 @@ DATA _null_;
          errcountmsg = '';
       END;
 
-      PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_005" '" href="' scn_id z3. '_log.html">' scn_start EURDFDT20. '</a>&nbsp;<span class="logerrcountmsg">' errcountmsg '</span> </td>';
+      PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_005" '" href="' scn_id z3. '_log.html">' scn_start &g_nls_reportDetail_050 '</a>&nbsp;<span class="logerrcountmsg">' errcountmsg '</span> </td>';
 
       duration = scn_end - scn_start;
 
       PUT '</tr><tr>';
       PUT "   <td>&g_nls_reportDetail_032</td>";
-      PUT '   <td>' duration commax12.1 's</td>';
+      PUT '   <td>' duration &g_nls_reportDetail_049 's</td>';
       PUT '</tr><tr>';
       PUT "   <td>&g_nls_reportDetail_033</td>";
       PUT '   <td>' cas_id z3. '</td>';
@@ -111,7 +112,7 @@ DATA _null_;
       PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_006 &#x0D;" abs_path +(-1) '" href="' abs_path +(-1) '">' cas_pgm +(-1) '</a></td>';
       PUT '</tr><tr>';
       PUT "   <td>&g_nls_reportDetail_031</td>";
-      PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_007" '" href="' scn_id z3. '_' cas_id z3. '_log.html">' cas_start EURDFDT20. '</a></td>';
+      PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_007" '" href="' scn_id z3. '_' cas_id z3. '_log.html">' cas_start &g_nls_reportDetail_050 '</a></td>';
       PUT '</tr><tr>';
       PUT "   <td>&g_nls_reportDetail_008</td>";
       PUT '</tr></table>';
