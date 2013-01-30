@@ -2,7 +2,7 @@
 \file
 \ingroup    SASUNIT_EXAMPLES_TEST
 
-\brief      Tests for nobs.sas
+\brief      Tests for nobs.sas - has to fail!
 
             Examplpe for a test scenario with the following features:
             - create simple test scenario
@@ -19,7 +19,7 @@
 */ /** \cond */ 
 
 /* change log
-   30.01.2013 BB Hint to failed tests formated consistently " - must be red!"
+   30.01.2013 BB Hint to failed tests formated consistently " - must be red!"; \brief tag amended "- has to fail!"
 	 30.01.2013 BB Change log created
 */ 
 
