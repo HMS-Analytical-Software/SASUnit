@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertreport.sas, has to fail!
+   \brief      Tests for assertreport.sas - has to fail!
    
    \details    The asserts for test case "Is everthing displayed properly?" are all red. This is the case because only pre-generated documents are used.\n
                This test case is used to check if there are problems opening differnt document types. SASUnit issues an error if the document is older than the\n
@@ -22,7 +22,8 @@
 */ /** \cond */ 
 
 /* change log
-   07.01.2013 AM  corrected errors in test case no. 6 (i_actual older than current SAS session - must be red)
+   30.01.2013 BB Hint to failed tests and scenarios formated consistently " - must be red!" and " - has to fail!"
+   07.01.2013 AM  corrected errors in test case no. 6 (i_actual older than current SAS session - must be red!)
    02.01.2013 KL  New test case to check behaviour when comparing different report types.
    07.02.2008 AM  überarbeitet: 
                   Umbenennung AssertManual -> AssertReport
@@ -80,7 +81,7 @@ ods pdf close;
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual copied to testout)
 %endTestcase(i_assertLog=1)
 
-%initTestcase(i_object=assertreport.sas, i_desc=%str(only i_expected, not i_actual specified - must be red))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(only i_expected, not i_actual specified - must be red!))
 %endTestcall()
 %assertReport(i_expected=&g_work/report1.pdf, i_actual=, i_desc=%str(expected=.pdf, actual=missing(red), result is red?))
 %markTest()
@@ -93,7 +94,7 @@ ods pdf close;
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual not in testout)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertreport.sas, i_desc=%str(neither i_expected nor i_actual specified - must be red))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(neither i_expected nor i_actual specified - must be red!))
 %endTestcall()
 %assertReport(i_actual=, i_expected=, i_desc=%str(expected=, actual=missing(red), result is red?))
 %markTest()
@@ -106,7 +107,7 @@ ods pdf close;
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual not in testout)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertreport.sas, i_desc=%str(invalid file specified for i_actual - must be red))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(invalid file specified for i_actual - must be red!))
 %endTestcall()
 %assertReport(i_expected=&g_work/report1.pdf, i_actual=&g_work/report3.pdf, i_desc=%str(expected=.pdf, actual=missing(red), result is red?))
 %markTest()
@@ -137,7 +138,7 @@ ods pdf close;
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual copied to testout)
 %endTestcase(i_assertLog=1)
 
-%initTestcase(i_object=assertreport.sas, i_desc=%str(i_actual older than current SAS session - must be red))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(i_actual older than current SAS session - must be red!))
 %endTestcall()
 %assertReport(i_expected=, i_actual=&g_sasunit/assertreport.sas, i_desc=
 %str(expected=empty, actual=.sas - not generated anew, result red?))
@@ -151,7 +152,7 @@ ods pdf close;
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.sas)), i_desc=actual copied to testout)
 %endTestcase(i_assertLog=1)
 
-%initTestcase(i_object=assertreport.sas, i_desc=%str(i_manual=0 - must be green))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(i_manual=0))
 ods pdf file="&g_work/report2.pdf";
 proc print data=sashelp.class;
 title 'Report2 - actual';
@@ -171,7 +172,7 @@ ods pdf close;
 %endTestcase(i_assertLog=1)
 
 *** Testcase for display of different filetypes ***;
-%initTestcase(i_object=assertreport.sas, i_desc=%str(Is everthing displayed properly? Asserts are red! Refer program documentation of this test scenario))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(is everthing displayed properly? Refer to program documentation of this test scenario - must be red!))
 ods pdf file="&g_work/report2.pdf";
 proc print data=sashelp.class;
 title 'Report2 - actual';

@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertequals.sas, has to fail!
+   \brief      Tests for assertequals.sas - has to fail!
 
    \version    \$Revision$
    \author     \$Author$
@@ -15,8 +15,9 @@
 */ /** \cond */ 
 
 /* change log
+	 30.01.2013 BB  Hint to failed tests and scenarios formated consistently " - must be red!" and "- has to fail!"
    10.10.2008 AM  Bug fixing
-   27.06.2008 AM Neuerstellung
+   27.06.2008 AM  Creation
 */ 
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
@@ -43,7 +44,7 @@
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, no fuzz - must be red))
+%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, no fuzz - must be red!))
 %endTestcall()
 %assertEquals(i_actual=19, i_expected=20, i_desc=the description 3)
 %markTest()
@@ -76,7 +77,7 @@
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, out of range - must be red))
+%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, out of range - must be red!))
 %endTestcall()
 %assertEquals(i_actual=17, i_expected=20, i_desc=the description 6, i_fuzz=2)
 %markTest()
@@ -98,7 +99,7 @@
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, out of range, floating points - must be red))
+%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, out of range, floating points - must be red!))
 %endTestcall()
 %assertEquals(i_actual=117.86532, i_expected=20, i_desc=the description 8, i_fuzz=10)
 %markTest()
@@ -120,7 +121,7 @@
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, out of range, floating points, twisted - must be red))
+%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, out of range, floating points, twisted - must be red!))
 %endTestcall()
 %assertEquals(i_actual=20, i_expected=117.86532, i_desc=the description 8, i_fuzz=10)
 %markTest()
@@ -142,7 +143,7 @@
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, alpha numeric - must be red))
+%initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, alpha numeric - must be red!))
 %endTestcall()
 %assertEquals(i_actual=BBB, i_expected=AAA, i_desc=the description 10)
 %markTest()

@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertlibrary.sas, has to fail! 4 errors concerning libref statements
+   \brief      Tests for assertlibrary.sas - has to fail! 4 errors concerning libref statements
 
    \version    \$Revision$
    \author     \$Author$

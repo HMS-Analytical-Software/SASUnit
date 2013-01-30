@@ -211,7 +211,7 @@
  40 DE Bibliothek
  40 EN Library
  41 DE Log prüfen
- 41 EN Scan log
+ 41 EN scan log
  42 DE vorhanden
  42 EN present
  43 DE nicht vorhanden
@@ -223,7 +223,7 @@
  46 DE Meldung nicht gefunden
  46 EN Message not found
  47 DE Logmeldung prüfen
- 47 EN Scan for log message
+ 47 EN scan for log message
  48 DE fehlt
  48 EN missing
  49 DE commax12.1

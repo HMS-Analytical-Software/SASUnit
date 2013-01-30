@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Empty scenario without any test cases, must be included into report, has to fail!
+   \brief      Empty scenario without any test cases, must be included into report - has to fail!
 
    \version    \$Revision$
    \author     \$Author$
@@ -13,6 +13,11 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
+
+/* change log
+   30.01.2013 BB Hint to failed scenarios formated consistently " - has to fail!"
+	 30.01.2013 BB Change log created
+*/ 
 
 %Macro reportsasunit_emptyscn_test;
 

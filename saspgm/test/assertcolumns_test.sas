@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertcolumns.sas, has to fail! 1 error concerning invalid parameter in macro assertColumns
+   \brief      Tests for assertcolumns.sas - has to fail! 1 error concerning invalid parameter in macro assertColumns
 
    \version    \$Revision$
    \author     \$Author$
@@ -165,7 +165,7 @@ data class6 / view=class6;
    set class;
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=Compare a view with a dataset)
+%initTestcase(i_object=assertcolumns.sas, i_desc=compare a view with a dataset)
 %endTestcall()
 %assertColumns(i_actual=class6, i_expected=class, i_desc=the description)
 %markTest()

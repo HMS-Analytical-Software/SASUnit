@@ -23,7 +23,7 @@
 */ /** \cond */ 
 
 /*-- Testcase 1: one by variable ---------------------------------------------*/
-%initTestcase(i_object=generate.sas, i_desc=Example with one by variable)
+%initTestcase(i_object=generate.sas, i_desc=example with one by variable)
 
 /* assign two temporary librefs */
 %_sasunit_mkdir(&g_work/test1)
@@ -46,7 +46,7 @@ run;
 %endTestcase() /* assertLog is called implicitly */
 
 /*-- Testcase 2: two by variables --------------------------------------------*/
-%initTestcase(i_object=generate.sas, i_desc=Example with two by variables)
+%initTestcase(i_object=generate.sas, i_desc=example with two by variables)
 proc datasets lib=test1 nolist kill;
 quit; 
 proc datasets lib=test2 nolist kill;
@@ -73,7 +73,7 @@ run;
 %endTestcase() 
 
 /*-- Testcase 3: one by variable with only one value -------------------------*/
-%initTestcase(i_object=generate.sas, i_desc=Example with one by variable with only one value)
+%initTestcase(i_object=generate.sas, i_desc=example with one by variable with only one value)
 proc datasets lib=test1 nolist kill;
 quit; 
 proc datasets lib=test2 nolist kill;

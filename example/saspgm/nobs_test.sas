@@ -18,6 +18,11 @@
             or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
+/* change log
+   30.01.2013 BB Hint to failed tests formated consistently " - must be red!"
+	 30.01.2013 BB Change log created
+*/ 
+
 /*-- simple example with sashelp.class ---------------------------------------*/
 %initTestcase(i_object=nobs.sas, i_desc=simple example with sashelp.class)
 %let nobs=%nobs(sashelp.class);
@@ -26,10 +31,10 @@
 %endTestcase()
 
 /*-- failed test -------------------------------------------------------------*/
-%initTestcase(i_object=nobs.sas, i_desc=failed test must be red!)
+%initTestcase(i_object=nobs.sas, i_desc=failed test - must be red!)
 %let nobs=%nobs(sashelp.class);
 %endTestcall()
-%assertEquals(i_actual=&nobs, i_expected=20, i_desc=number of observations in dataset sashelp.class must be red!)
+%assertEquals(i_actual=&nobs, i_expected=20, i_desc=number of observations in dataset sashelp.class - must be red!)
 %endTestcase()
 
 /*-- example with big dataset ------------------------------------------------*/

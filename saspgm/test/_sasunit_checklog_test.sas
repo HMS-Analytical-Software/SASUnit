@@ -34,7 +34,7 @@
 %LET l_fullfilepath     = &g_testdata./_sasunit_checklog_t01_input.log;
 
 %initTestcase (   i_object = _sasunit_checklog.sas
-                , i_desc   = %STR(Log contains errors and warnings)
+                , i_desc   = %STR(log contains errors and warnings)
                );
 
 %_sasunit_checkLog(
@@ -69,7 +69,7 @@
 %LET l_fullfilepath     = &g_testdata./_sasunit_checklog_t02_input.log;
 
 %initTestcase (   i_object = _sasunit_checklog.sas
-                , i_desc   = %STR(Log contains errors (one without colon) and no warnings)
+                , i_desc   = %STR(log contains errors (one without colon) and no warnings)
                );
 
 %_sasunit_checkLog(
@@ -104,7 +104,7 @@
 %LET l_fullfilepath     = &g_testdata./_sasunit_checklog_t03_input.log;
 
 %initTestcase (   i_object = _sasunit_checklog.sas
-                , i_desc   = %STR(Log contains no errors and warnings)
+                , i_desc   = %STR(log contains no errors and warnings)
                );
 
 %_sasunit_checkLog(
@@ -139,7 +139,7 @@
 %LET l_fullfilepath     = &g_testdata./_sasunit_checklog_txx_input.log;
 
 %initTestcase (   i_object = _sasunit_checklog.sas
-                , i_desc   = %STR(Inexistent log file)
+                , i_desc   = %STR(inexistent log file)
                );
 
 %_sasunit_checkLog(
@@ -178,7 +178,7 @@
 %LET l_fullfilepath     = &g_testdata./_sasunit_checklog_t01_input.log;
 
 %initTestcase (   i_object = _sasunit_checklog.sas
-                , i_desc   = %STR(Log contains errors and warnings, error/warning symbols passed in lowercase)
+                , i_desc   = %STR(log contains errors and warnings, error/warning symbols passed in lowercase)
                );
 
 %_sasunit_checkLog(

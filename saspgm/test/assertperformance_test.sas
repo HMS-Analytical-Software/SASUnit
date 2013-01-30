@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertperformance.sas, has to fail!
+   \brief      Tests for assertperformance.sas - has to fail!
 
    \version    \$Revision$
    \author     \$Author$
@@ -15,8 +15,9 @@
 */ /** \cond */ 
 
 /* change log
-   17.10.2012 KL Anpassung von i_object.
-   29.08.2012 KL Neuerstellung
+   30.01.2013 BB Hint to failed tests and scenarios formated consistently " - must be red!" and " - has to fail!"
+   17.10.2012 KL Adaption of i_object.
+   29.08.2012 KL Creation
 */ 
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
@@ -24,7 +25,7 @@
 /* test case 1 ------------------------------------ */
 %initTestcase(
     i_object=assertPerformance.sas
-   ,i_desc=Runtime less than 4 seconds
+   ,i_desc=runtime less than 4 seconds
 )
 
 data _null_;
@@ -39,7 +40,7 @@ run;
 /* test case 2 ------------------------------------ */
 %initTestcase(
     i_object=assertPerformance.sas
-   ,i_desc=Runtime equals expected value
+   ,i_desc=runtime equals expected value
 )
 
 data _null_;
@@ -60,7 +61,7 @@ quit;
 /* test case 3 ------------------------------------ */
 %initTestcase(
     i_object=assertPerformance.sas
-   ,i_desc=Runtime greater than 4 seconds - must be red!
+   ,i_desc=runtime greater than 4 seconds - must be red!
 );
 
 data _null_;
@@ -75,7 +76,7 @@ run;
 /* test case 4 ------------------------------------ */
 %initTestcase(
     i_object=assertPerformance.sas
-   ,i_desc=Runtime exceeds expected value by 1 billionth - must be red!
+   ,i_desc=runtime exceeds expected value by 1 billionth - must be red!
 )
 
 data _null_;
@@ -92,7 +93,7 @@ quit;
 /* create artificial difference in expected and actual runtime */
 %let _RunTime=%sysevalf(&_RunTime-0.00000000000001);
 
-%assertPerformance (i_expected=&_RunTime., i_desc=Runtime exceeds expected value by 1 billionth - must be red);
+%assertPerformance (i_expected=&_RunTime., i_desc=Runtime exceeds expected value by 1 billionth - must be red!);
 
 %assertLog (i_errors=0, i_warnings=0);
 

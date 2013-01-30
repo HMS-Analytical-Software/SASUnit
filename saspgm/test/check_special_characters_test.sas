@@ -1,7 +1,7 @@
 /**
    \file
    \ingroup    SASUNIT_TEST 
-   \brief      Tests for calls to macros including special characters as parameter
+   \brief      Tests for calls to macros including special characters as parameter - has to fail!
    \version    \$Revision: 101 $
    \author     \$Author: b-braun $
    \date       \$Date: 2013-01-08 11:24:50 +0100 (Di, 08 Jan 2013) $
@@ -10,10 +10,10 @@
 */ /** \cond */ 
 
 /* change log
+   30.01.2013 BB Hint to failed tests and scenario formated consistently " - must be red!" and "- has to fail!"
    29.01.2013 BB Removed test case with unbalanced bracket
-   11.01.2013 BB Further test cases added
-   09.01.2013 KL Created
-*/ 
+   11.01.2013 BB Further Test Cases added
+   09.01.2013 KL Created*/ 
 
 
 %macro _Dummy_Macro_For_Test (i_desc=);
@@ -23,14 +23,14 @@
 
 
 /*-- first call: Everthing is ok ------------------------------------*/
-%initTestcase(i_object=check_special_characters.sas, i_desc=No special characters anywhere)
+%initTestcase(i_object=check_special_characters.sas, i_desc=no special characters anywhere)
 %endTestcall()
 %assertLog(i_errors=0, i_warnings=0, i_desc=everything is OK)
-%assertEquals(i_actual=No special characters anywhere, i_expected=No special characters anywhere, i_desc=No special characters anywhere)
+%assertEquals(i_actual=No special characters anywhere, i_expected=No special characters anywhere, i_desc=no special characters anywhere)
 %endTestcase()
 
 /*-- Second call: Special characters in i_desc for assertLog,assertLogMsg and assertEquals  ------------------------------------*/
-%initTestcase(i_object=check_special_characters.sas, i_desc=%str(Special characters without comma, brackets and apostrophe))
+%initTestcase(i_object=check_special_characters.sas, i_desc=%str(special characters without comma, brackets and apostrophe))
 %_Dummy_Macro_For_Test (i_desc=i_desc contains special characters like & - < > \ {} [] % § and &%str(amp;) as well as &%str(hugo;))
 %endTestcall()
 %assertLog(i_errors=0, i_warnings=0, i_desc=i_desc contains special characters like & - \ < > % and %str(&amp;) as well as &%str(hugo;))
@@ -45,7 +45,7 @@
 %endTestcase()
 
 /*-- Third call: Special characters in html   ------------------------------------*/
-%initTestcase(i_object=check_special_characters.sas, i_desc=Special characters in html)
+%initTestcase(i_object=check_special_characters.sas, i_desc=special characters in html)
 %_Dummy_Macro_For_Test (i_desc=i_desc contains  special html characters such as &%str(rsquo;) &%str(rdquo;) &%str(#41;) &%str(lt;))
 %endTestcall()
 %assertLog(i_errors=0, i_warnings=0, i_desc= %str(%"))
@@ -74,7 +74,7 @@
 %endTestcase()
 
 /*-- Sixth call: Special characters in i_desc for dummy macro  ------------------------------------*/
-%initTestcase(i_object=check_special_characters.sas, i_desc=%str(Special characters without comma, brackets and apostrophe - must be red))
+%initTestcase(i_object=check_special_characters.sas, i_desc=%str(special characters without comma, brackets and apostrophe - must be red!))
 %_Dummy_Macro_For_Test (i_desc=%nrstr(i_desc contains special characters like & - ()%) {} [] § \ < > % and &amp; as well as &hugo;))
 %endTestcall()
 %assertEquals(i_actual=%nrstr(& - ()%) {})                  ,i_expected=%nrstr(& - ()%) {})       ,i_desc=Special characters in i_actual and i_expected)
@@ -83,12 +83,12 @@
 %assertEquals(i_actual= %nrstr(§ \ < > % and &amp; as well as &hugo;), i_expected= %nrstr(§ \ < > % and &amp; as well as &hugo;) , i_desc=Special characters in i_actual and i_expected)
 %assertEquals(i_actual=Special characters                   ,i_expected=Special characters        ,i_desc=Special characters in i_actual and i_expected)
 %let testfile1 = class.jpg;
-%assertReport(i_actual=&g_refdata./class.jpg                ,i_expected=&g_refdata./&testfile1    ,i_desc= No Special characters in file name - must be red)
-%assertReport(i_actual=&g_refdata./%nrstr(class.jpg)        ,i_expected=&g_refdata./&testfile1    ,i_desc=No Special characters - must be red)
+%assertReport(i_actual=&g_refdata./class.jpg                ,i_expected=&g_refdata./&testfile1    ,i_desc= No Special characters in file name - must be red!)
+%assertReport(i_actual=&g_refdata./%nrstr(class.jpg)        ,i_expected=&g_refdata./&testfile1    ,i_desc=No Special characters - must be red!)
 
 /* Does not run under LINUX in conjunction with %str(*) 
-%assertReport(i_actual=&g_refdata./%nrstr(file%%dh%(.xlsx)  ,i_expected=&g_refdata./%nrstr(file%%dh%(.xlsx)     ,i_desc=Special characters in file name - must be red)
+%assertReport(i_actual=&g_refdata./%nrstr(file%%dh%(.xlsx)  ,i_expected=&g_refdata./%nrstr(file%%dh%(.xlsx)     ,i_desc=Special characters in file name - must be red!)
 */
 
-%assertReport(i_actual=&g_refdata./%nrstr(file-to_$8.xlsx)  ,i_expected=&g_refdata./%nrstr(file-to_$8.xlsx)     ,i_desc=Special characters in file name - must be red)
+%assertReport(i_actual=&g_refdata./%nrstr(file-to_$8.xlsx)  ,i_expected=&g_refdata./%nrstr(file-to_$8.xlsx)     ,i_desc=Special characters in file name - must be red!)
 %endTestcase()

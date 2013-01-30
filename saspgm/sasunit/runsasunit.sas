@@ -386,7 +386,7 @@ RUN;
 
       %IF %EVAL(&l_nscncount. EQ 0) %THEN %DO;
 
-         %LET l_scndesc = %STR(scenario not found - has to fail!);
+         %LET l_scndesc = %STR(Scenario not found - has to fail!);
         
          PROC SQL NOPRINT;
             SELECT max(scn_id) INTO :l_scnid FROM target.scn;
