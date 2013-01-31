@@ -1,4 +1,7 @@
 /**
+   \file
+   \ingroup    SASUNIT 
+
    \brief      No source code - only file grouping for Doxygen
    
    \details    This file does not contain any source code. Its purpose is to define groups to be used by Doxygen. The group structure is being

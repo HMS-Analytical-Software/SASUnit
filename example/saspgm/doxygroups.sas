@@ -1,4 +1,7 @@
 /**
+   \file
+   \ingroup    SASUNIT 
+
    \brief      No source code - only file grouping for Doxygen
    \details    This file does not contain any source code. Its purpose is to define groups to be used by Doxygen. The group structure is being
                defined by defgroup and ingroup instructions above. Defined groups may be used with an ingroup instruction in the other source code files. 
@@ -11,7 +14,7 @@
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-			   
+
    \defgroup   SASUNIT        SASUnit automated testing
    \brief      SASUnit example project program documentation
 
