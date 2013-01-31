@@ -192,7 +192,7 @@ run;
 
 %initTestcase(i_object=assertcolumns.sas, i_desc=additional observation and use id and i_allow)
 %endTestcall()
-%assertColumns(i_actual=class4, i_expected=class, i_id=name, i_allow=COMPOBS, i_desc=must be red!)
+%assertColumns(i_actual=class4, i_expected=class, i_id=name, i_allow=COMPOBS, i_desc=table comparison)
 %markTest()
 %assertDBValue(tst,exp,COMPOBS)
 %assertDBValue(tst,act,COMPOBS)
