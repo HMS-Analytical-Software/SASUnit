@@ -23,16 +23,20 @@
 */ /** \cond */ 
 
 /* change log
+   31.01.2013 KL  Skip comments identified by ###
    22-07-2008 AM  modified infile statement for linux
    13-08-2008 AM  created
 */ 
 
 data nls (drop=mark);
-   infile "&g_sasunit/_sasunit_nls.txt" truncover termstr=crlf;
+   infile "C:\projects\sasunit\saspgm\sasunit/_sasunit_nls.txt" truncover termstr=crlf;
    input mark $3. @;
-   if mark='---' then input @4 program $32.;
-   retain program;  
-   input @1 num 3. +1 language $2. +1 text $128.;
+   if mark ne '###' then do;
+      if mark='---' then input @4 program $32.;
+      retain program;  
+      input @1 num 3. +1 language $2. +1 text $128.;
+      output;
+   end;
 run; 
 
 %MACRO _sasunit_nls(
