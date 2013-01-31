@@ -4,9 +4,7 @@ cd \projects
 
 del SASUnit\SASUnit*.zip
 
-"C:\Program Files\7-Zip\7z.exe" a -tzip SASUnit\SASUnit_v1.2.zip SASUnit\Example\*
-"C:\Program Files\7-Zip\7z.exe" a -tzip SASUnit\SASUnit_v1.2.zip SASUnit\saspgm\sasunit\*
-"C:\Program Files\7-Zip\7z.exe" a -tzip SASUnit\SASUnit_v1.2.zip SASUnit\saspgm\template\*
+"C:\Program Files\7-Zip\7z.exe" a -tzip SASUnit\SASUnit_v1.2.zip SASUnit\Example\* SASUnit\saspgm\sasunit\* SASUnit\saspgm\template\* SASUnit\*.txt
 
 "C:\Program Files\7-Zip\7z.exe" t SASUnit\SASUnit_v1.2.zip -r
 
