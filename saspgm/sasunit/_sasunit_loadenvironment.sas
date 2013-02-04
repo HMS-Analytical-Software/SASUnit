@@ -17,7 +17,7 @@
 */ /** \cond */ 
 
 /* change history
-   31.01.2013 KL  new Version 1.2
+   31.01.2013 KL  new Version 1.2 - recommited
    28.08.2012 KL  Problems occured resolving paths like ..\.\example\dat later in the project 
                   e.g. assertReport couldn't find expected pdfs. 
                   Libname is successful, so the idea was to get the resolved path via pathname
