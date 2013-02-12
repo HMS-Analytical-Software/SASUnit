@@ -86,10 +86,10 @@ RUN;
     /*-- in the log subdir: append all *.tcg files to one file named 000.tcg
      This is done in order to get one file containing coverage data 
      of all calls to the macros under test -----------------------------------*/
-	FILENAME allfiles "&g_log\*.tcg";
+	FILENAME allfiles "&g_log/*.tcg";
 	DATA _null_;
 	 INFILE allfiles end=done dlm=',';
-	 FILE "&g_log\000.tcg";
+	 FILE "&g_log/000.tcg";
 	 INPUT row :$256.;
 	 PUT row;
 	RUN;
@@ -160,9 +160,7 @@ RUN;
 		   %END;
         %END;
 	    %let l_tcg_res=.;
-		%PUT l_currentUnit: &l_currentUnit;
-        %PUT l_currentUnitLocation: &l_currentUnitLocation;
-		%PUT l_currentUnitFileName: &l_currentUnitFileName;
+		
 		%IF ("&l_currentUnitFileName." NE "" AND "&l_currentUnitLocation." NE "" AND %SYSFUNC(FILEEXIST(&l_currentUnitLocation./&l_currentUnitFileName.)) AND %SYSFUNC(FILEEXIST(&g_log./000.tcg)) ) %THEN %DO;
            %_sasunit_reporttcghtml(
                     i_macroName                = &l_currentUnitFileName.

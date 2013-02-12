@@ -239,7 +239,7 @@ RUN;
               path to the generated coverage file if necessary ---------------*/
          %LET   l_tcgFilePath = &g_log/%substr(00&l_scnid.,%length(&l_scnid)).tcg;
 		 %LET   l_tcgOptionsString      = -mcoverage -mcoverageloc = ""&l_tcgFilePath."";
-		 %LET   l_tcgOptionsStringLINUX = -mcoverage -mcoverageloc =   &l_tcgFilePath.  ;
+		 %LET   l_tcgOptionsStringLINUX = options mcoverage mcoverageloc='&l_tcgFilePath.';
 	  %END;
 
       DATA _null_;
@@ -256,7 +256,7 @@ RUN;
             !! " " 
             !! "&l_parms. "
             !! "-sysin &&l_scnfile&i "
-            !! "-initstmt ""%nrstr(%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&l_scnid.;"" "
+            !! "-initstmt "" &l_tcgOptionsStringLINUX.; %nrstr(%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&l_scnid.;"" "
             !! "-log   &l_scnlogfullpath. "
             !! "-print &g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst "
             !! "-noovp "
@@ -266,7 +266,6 @@ RUN;
             !! "-sasautos &g_sasunit "
             !! "-sasuser %sysfunc(pathname(work))/sasuser "
             !! "-termstmt ""%nrstr(%%_sasunit_termScenario())"" "
-			!! "&l_tcgOptionsStringLINUX. "
             !! "";
       %END;
       %ELSE %DO;

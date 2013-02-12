@@ -35,8 +35,8 @@
    %local l_MCoverageName;
    %local l_linesize;
 
-   %let l_MacroName=%upcase(&i_macroName.);
-   %let l_MCoverageName=%upcase(&i_mCoverageName.);
+   %let l_MacroName=%lowcase(&i_macroName.);
+   %let l_MCoverageName=%lowcase(&i_mCoverageName.);
 
    /*** Check existence of input files */
    %IF (NOT %SYSFUNC(FILEEXIST(&i_mCoverageLocation./&l_MCoverageName.)) OR &l_MCoverageName=) %THEN %DO;
@@ -49,7 +49,7 @@
    %END;
 
    /*** Read records from flat file and keep only those of given macro ***/
-   data WORK._MCoverage1 (where=(upcase (MacName)="%scan(&l_MacroName.,1,.)"));
+   data WORK._MCoverage1 (where=(upcase (MacName)="%scan(%upcase(&l_MacroName.),1,.)"));
       length MacName $40;
       infile "&i_mCoverageLocation./&l_MCoverageName.";
       input;
@@ -113,7 +113,7 @@
       infile "&i_macroLocation./&l_MacroName.";
       input;
       srcrow = _INFILE_;
-      if (index (upcase (srcrow), "%nrstr(%MACRO )%scan(&l_MacroName.,1,.)")) then do;
+      if (index (upcase (srcrow), "%nrstr(%MACRO )%scan(%upcase(&l_MacroName.),1,.)")) then do;
          nCounter=0;
       end;
       if (nCounter >= 0) then do;
@@ -137,7 +137,7 @@
       label srcrow="Macrostatements"; 
       infile "&i_macroLocation./&l_MacroName.";
       input;
-      if (index (upcase (_INFILE_), "%nrstr(%MACRO )%scan(&l_MacroName.,1,.)")) then do;
+      if (index (upcase (_INFILE_), "%nrstr(%MACRO )%scan(%upcase(&l_MacroName.),1,.)")) then do;
 	     if not(1 in (&MissingLines.)) then do;
 	        inExecutedMBlock = inExecutedMBlock + 1;
 		 end;
@@ -249,7 +249,7 @@
                 where nCounter in (select distinct nonEx from WORK._nonex where nonEx not eq .);
       update MCoverage 
          set covered = -1
-                where nCounter in ((select distinct nCounter from _commentLines where inComment eq 1 or compress(srcline) eq ''));
+                where nCounter in ((select distinct nCounter from _commentLines where inComment eq 1 or compress(compress(srcline),"0D"x) eq ''));
    quit;
 
    /*** Get sets of rows of different different types: covered contributing, non-covered contributing and non contributing ***/
@@ -282,7 +282,7 @@
 
    DATA _null_;
       LENGTH outputRow $2048;
-      FILE "&o_outputPath.\&o_outputFile." RECFM=P;
+      FILE "&o_outputPath./&o_outputFile." RECFM=P;
       SET MCoverage END=eof;
       outputRow = put(_N_,Z6.)||'  '||srcRowCopy;
       IF _n_=1 THEN DO;
@@ -309,16 +309,16 @@
       END;
 
       IF covered   = -1 THEN DO;
-         PUT '<span style="color:#828282">'outputRow'</span>';
+         PUT '<span style="color:#828282">' outputRow '</span>';
       END;
       ELSE IF covered   = 1 THEN DO;
-         PUT '<span style="color:#00BE00">'outputRow'</span>';
+         PUT '<span style="color:#00BE00">' outputRow '</span>';
       END;
       ELSE IF covered   = 0 THEN DO;
-         PUT '<span style="color:#FF8020">'outputRow'</span>';
+         PUT '<span style="color:#FF8020">' outputRow '</span>';
       END;
       ELSE DO; 
-         PUT '<span style="color:#8020FF">'outputRow'</span>';
+         PUT '<span style="color:#8020FF">' outputRow '</span>';
       END;
       IF eof=1 THEN DO;
          /*HTML-Close*/
