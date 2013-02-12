@@ -7,6 +7,7 @@
 cd ..
 export SASUNIT_ROOT=$(readlink -f .)
 export SASUNIT_OVERWRITE=0
+export SASUNIT_COVERAGEASSESSMENT=0
 export SASUNIT_LANGUAGE=de
 export SASUNIT_HOST_OS=linux
 export SASUNIT_SAS_VERSION=9.2

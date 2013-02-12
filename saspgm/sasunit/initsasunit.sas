@@ -40,8 +40,12 @@
                            (is accessed readonly)
    \param   i_doc          optional: directory containing specification documents, etc., has to exist
                            in case parameter is set (is accessed readonly)
+   \param   i_testcoverage optional: controls whether assessment of test coverage is activated
+						   0 (default) .. no assessment of test coverage
+                           1 .. assessment of test coverage is activated
 */ /** \cond */ 
 /* change log 
+   08.02.2013 PW  new parameter i_testcoverage
    29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    08.01.2013 KL  Fixed warning concerning %substr arguments. This was caused by the last call in run_all.sas. 
                   To remove the entry for i_autoexec, a real blank must be passed. So there is now a different
@@ -50,27 +54,28 @@
 
 
 %MACRO initSASUnit(
-   i_root       = 
-  ,io_target    = 
-  ,i_overwrite  = 0
-  ,i_project    = 
-  ,i_sasunit    =
-  ,i_sasautos   =
-  ,i_sasautos1  =
-  ,i_sasautos2  =
-  ,i_sasautos3  =
-  ,i_sasautos4  =
-  ,i_sasautos5  =
-  ,i_sasautos6  =
-  ,i_sasautos7  =
-  ,i_sasautos8  =
-  ,i_sasautos9  =
-  ,i_autoexec   =
-  ,i_sascfg     =
-  ,i_sasuser    =
-  ,i_testdata   = 
-  ,i_refdata    = 
-  ,i_doc        = 
+   i_root         = 
+  ,io_target      = 
+  ,i_overwrite    = 0
+  ,i_project      = 
+  ,i_sasunit      =
+  ,i_sasautos     =
+  ,i_sasautos1    =
+  ,i_sasautos2    =
+  ,i_sasautos3    =
+  ,i_sasautos4    =
+  ,i_sasautos5    =
+  ,i_sasautos6    =
+  ,i_sasautos7    =
+  ,i_sasautos8    =
+  ,i_sasautos9    =
+  ,i_autoexec     =
+  ,i_sascfg       =
+  ,i_sasuser      =
+  ,i_testdata     = 
+  ,i_refdata      = 
+  ,i_doc          = 
+  ,i_testcoverage = 0
 );
 %LOCAL l_macname; %LET l_macname=&sysmacroname;
 %LOCAL l_first_temp;
@@ -99,6 +104,20 @@ libname _tmp clear;
                          , (&sysver. NE 9.1) AND (&sysver. NE 9.2) AND (&sysver. NE 9.3)
                          , Invalid SAS version - only SAS 9.1 to 9.3) 
 %THEN %GOTO errexit;
+
+/*-- check value of parameter i_testcoverage, if it has an other value than 1, 
+     set it to 0 in order to assure that it will have only value 0 or 1 ------*/
+%IF &i_testcoverage. NE 1 %THEN %DO;
+	%LET i_testcoverage = 0;
+%END;
+%ELSE %DO;
+	/*-- if test coverage should be assessed: check SAS version --------------*/
+	%IF %_sasunit_handleError( &l_macname
+	                         , WrongTcVer
+	                         , &sysver. NE 9.3
+	                         , Invalid SAS version for test coverage assessment - only 9.3 supported) 
+	%THEN %GOTO errexit;
+%END;
 
 /*-- check for target directory ----------------------------------------------*/
 %LOCAL l_target_abs;
@@ -211,6 +230,22 @@ RUN;
 %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
 
 %END; /* %if &l_newdb */
+
+/*-- add and fill column tsu_testcoverage------------------------------------------*/
+%LOCAL l_col_testcoverage_exists;
+DATA _null_;
+  dsid=open('target.tsu');
+  varcheck=varnum(dsid,'tsu_testcoverage');
+  CALL SYMPUTX('l_col_testcoverage_exists',varcheck);
+RUN;
+PROC SQL NOPRINT;
+   %IF (NOT &l_col_testcoverage_exists.) %THEN %DO;
+	   ALTER TABLE target.tsu
+	      ADD tsu_testcoverage INT;
+   %END;
+
+   UPDATE target.tsu SET tsu_testcoverage = &i_testcoverage.;
+QUIT;
 
 /*-- check folders -----------------------------------------------------------*/
 %IF %_sasunit_handleError(&l_macname, NoLogDir, 

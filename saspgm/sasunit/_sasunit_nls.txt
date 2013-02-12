@@ -1,4 +1,5 @@
 ### change log
+###  08.02.2013 PW new reportAuton Texts for test coverage assessment
 ###   29.01.2013 BB ReportDetail formats 49 und 50 inserted (International time formats)
 ###	 29.01.2013 BB Change Log created
 ### 
@@ -75,6 +76,18 @@
  14 EN Assertions
  15 DE (ohne)
  15 EN (none)
+ 16 DE Testabdeckung
+ 16 EN Test Coverage
+ 17 DE Testabdeckung von
+ 17 EN Test Coverage of
+ 18 DE Abgedeckter Quelltext
+ 18 EN Covered code
+ 19 DE Nicht abgedeckter Quelltext
+ 19 EN Non covered code
+ 20 DE Kommentare
+ 20 EN Comments
+ 21 DE Quelltext der von der Option MCOVERAGE als nicht abgedeckt markiert wurde
+ 21 EN Code marked as non contributing by option mcoverage
 ---reportCas
   1 DE Testfälle nach Szenarien
   1 EN Test Cases by Scenario

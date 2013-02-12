@@ -16,6 +16,7 @@
 */ /** \cond */ 
 
 /* History
+   11.02.2013 PW  added usage of option i_testcoverage
    13.12.2012 KL  Checks for different config and autoexec files
    30.08.2012 KL  Values for rootpath of SASUnit, language and overwrite are taken over from OS-Variables.
                   So there is no need to change run_all for operating systems or languages
@@ -39,6 +40,7 @@ proc options option=logparm;run;
   ,i_refdata    = dat
   ,i_doc        = doc/spec
   ,i_sascfg     = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
+  ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
 );
 
 %runSASUnit(i_source = %str(saspgm/test/reportsasunit_inexisting_scenario_has_to_fail));

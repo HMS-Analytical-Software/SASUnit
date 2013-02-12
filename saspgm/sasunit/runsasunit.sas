@@ -37,6 +37,7 @@
 */ /** \cond */ 
 
 /* change log
+   08.02.2013 PW  implementation of test coverage assessment
    29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    28.01.2013 KL  Adjusted descriptions of testcases
    02.10.2008 NA  Modified for LINUX
@@ -81,6 +82,9 @@
    l_result2
    l_result
    l_nscncount
+   l_tcgFilePath
+   l_tcgOptionsString
+   l_tcgOptionsStringLINUX
 ;
 
 %LET l_macname=&sysmacroname;
@@ -230,6 +234,14 @@ RUN;
 
       %LET l_scnlogfullpath = &g_log/%substr(00&l_scnid.,%length(&l_scnid)).log;
 
+      %IF &g_testcoverage. EQ 1 %THEN %DO;
+	     /*-- generate a local macro variable containing the 
+              path to the generated coverage file if necessary ---------------*/
+         %LET   l_tcgFilePath = &g_log/%substr(00&l_scnid.,%length(&l_scnid)).tcg;
+		 %LET   l_tcgOptionsString      = -mcoverage -mcoverageloc = ""&l_tcgFilePath."";
+		 %LET   l_tcgOptionsStringLINUX = -mcoverage -mcoverageloc =   &l_tcgFilePath.  ;
+	  %END;
+
       DATA _null_;
          ATTRIB
             _sCmdString LENGTH = $32000
@@ -254,6 +266,7 @@ RUN;
             !! "-sasautos &g_sasunit "
             !! "-sasuser %sysfunc(pathname(work))/sasuser "
             !! "-termstmt ""%nrstr(%%_sasunit_termScenario())"" "
+			!! "&l_tcgOptionsStringLINUX. "
             !! "";
       %END;
       %ELSE %DO;
@@ -273,6 +286,7 @@ RUN;
             !! "-sasautos ""&g_sasunit"" "
             !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
             !! "-termstmt ""%nrstr(%%%_sasunit_termScenario())"" "
+			!! "&l_tcgOptionsString. "
             !! "";
       %END;
          PUT

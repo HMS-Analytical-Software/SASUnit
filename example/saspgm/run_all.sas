@@ -26,6 +26,7 @@
 */ /** \cond */ 
 
 /* change history
+   11.02.2013 PW  added usage of option i_testcoverage
    29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
    30.08.2012 KL  Values for rootpath of SASUnit, language and overwrite are taken over from OS-Variables.
                   So there is no need to change run_all for operating systems or languages
@@ -50,6 +51,7 @@ OPTIONS
   ,i_testdata   = example/dat                                                /* test data, libref testdata */
   ,i_refdata    = example/dat                                                /* reference data, libref refdata */
   ,i_sascfg     = example/bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
+  ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)                      /* set to 1 to assess test coverage assessment */
 )
 
 /* Run specified test scenarios. There can be more than one call to runSASUnit */
@@ -61,3 +63,4 @@ OPTIONS
 );
 
 /** \endcond */
+

@@ -17,6 +17,7 @@
 */ /** \cond */ 
 
 /* change history
+   08.02.2013 PW  implementation of test coverage assessment
    31.01.2013 KL  new Version 1.2 - recommited
    28.08.2012 KL  Problems occured resolving paths like ..\.\example\dat later in the project 
                   e.g. assertReport couldn't find expected pdfs. 
@@ -45,7 +46,8 @@
         g_testdata g_refdata g_doc g_error g_warning
         g_work g_testout g_log
         g_logfile g_printfile
-        g_version g_revision;
+        g_version g_revision
+        g_testcoverage;
 %LOCAL i;
         
 %LET g_target    = %sysfunc(pathname(target));
@@ -92,6 +94,7 @@ DATA _null_;
    call symput ('g_testdata'  , tsu_testdata);
    call symput ('g_refdata'   , tsu_refdata);
    call symput ('g_doc'       , tsu_doc);
+   call symput ('g_testcoverage'       , tsu_testcoverage);
 RUN;
 
 %LET g_project  = &g_project;
@@ -107,6 +110,7 @@ RUN;
 %LET g_testdata = %_sasunit_abspath(&g_root,&g_testdata);
 %LET g_refdata  = %_sasunit_abspath(&g_root,&g_refdata);
 %LET g_doc      = %_sasunit_abspath(&g_root,&g_doc);
+%LET g_testcoverage = &g_testcoverage.;
 
 %LET g_work     = %sysfunc(pathname(work));
 %LET g_testout  = &g_target/tst;
