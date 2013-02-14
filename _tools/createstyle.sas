@@ -18,18 +18,19 @@ proc template;
    define style Styles.SASUNIT;
       style fonts
          "Fonts used in the default style" /
-         'TitleFont2' = ("Geneva, Arial, Helvetica, sans-serif",18pt,Bold)
-         'TitleFont' = ("Geneva, Arial, Helvetica, sans-serif",20pt,Bold)
-         'StrongFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Bold)
-         'EmphasisFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Italic)
-         'FixedEmphasisFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Italic)
-         'FixedStrongFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Bold)
-         'FixedHeadingFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt)
-         'BatchFixedFont' = ("Geneva, Arial, Helvetica, sans-serif", 12pt)
-         'FixedFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt)
-         'headingEmphasisFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Bold Italic)
-         'headingFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Bold)
-         'docFont' = ("Geneva, Arial, Helvetica, sans-serif",12pt);
+         'TitleFont'  = ("Geneva, Arial, Helvetica, sans-serif",16pt,Bold)
+         'TitleFont2' = ("Geneva, Arial, Helvetica, sans-serif",12pt,Bold)
+         'TitleFont3' = ("Geneva, Arial, Helvetica, sans-serif",10pt,Bold)
+         'StrongFont' = ("Geneva, Arial, Helvetica, sans-serif", 9pt,Bold)
+         'EmphasisFont' = ("Geneva, Arial, Helvetica, sans-serif",9pt,Italic)
+         'FixedEmphasisFont' = ("Geneva, Arial, Helvetica, sans-serif",9pt,Italic)
+         'FixedStrongFont' = ("Geneva, Arial, Helvetica, sans-serif",9pt,Bold)
+         'FixedHeadingFont' = ("Geneva, Arial, Helvetica, sans-serif",9pt)
+         'BatchFixedFont' = ("Geneva, Arial, Helvetica, sans-serif", 9pt)
+         'FixedFont' = ("Geneva, Arial, Helvetica, sans-serif",9pt)
+         'headingEmphasisFont' = ("Geneva, Arial, Helvetica, sans-serif",9pt,Bold Italic)
+         'headingFont' = ("Geneva, Arial, Helvetica, sans-serif",9pt,Bold)
+         'docFont' = ("Geneva, Arial, Helvetica, sans-serif",9pt);
       style GraphFonts
          "Fonts used in graph styles" /
          'GraphDataFont' = ("Arial",8pt)
@@ -39,18 +40,20 @@ proc template;
          'GraphTitleFont' = ("Arial",14pt,Bold);
       style color_list
          "Colors used in the default style" /
-         'fgB1' = cx000080
-         'bgB1' = cxe8eef2
-         'fgB2' = cx0066AA
-         'fgA4' = cx000080
-         'bgA4' = cxe8eef2
-         'bgA3' = cxe8eef2
-         'fgA2' = cx0033AA
-         'bgA2' = cxe8eef2
-         'fgA1' = cx000000
-         'bgA1' = white
-         'fgA' = cx002288
-         'bgA' = white
+         'fgA'        = cx002288
+         'bgA'        =  white
+         'fgA1'       = cx000000
+         'bgA1'       = white
+         'fgA2'       = cx0033AA
+         'bgA2'       = cxe8eef2
+         'fgA3'       = dark red
+         'bgA3'       = cxe8eef2
+         'fgA4'       = cx000080
+         'bgA4'       = cxe8eef2
+         'fgB1'       = cx000080
+         'bgB1'       = cxe8eef2
+         'fgB2'       = cx0066AA
+         'bgB2'       = cxe8eef2
          ;
       style colors
          "Abstract colors used in the default style" /
@@ -62,7 +65,7 @@ proc template;
          'headerbg' = cxd7dde1
          'datafgemph' = color_list('fgA1')
          'databgemph' = color_list('bgA3')
-         'datafgstrong' = color_list('fgA1')
+         'datafgstrong' = color_list('fgA3')
          'databgstrong' = color_list('bgA3')
          'datafg' = color_list('fgA1')
          'databg' = color_list('bgA3')
@@ -90,7 +93,8 @@ proc template;
          'contentfg' = color_list('fgA2')
          'contentbg' = color_list('bgA2')
          'docfg' = color_list('fgA')
-         'docbg' = color_list('bgA');
+         'docbg' = color_list('bgA')
+         ;
       style GraphColors
          "Abstract colors used in graph styles" /
          'gcerror' = cx000000
@@ -165,9 +169,9 @@ proc template;
          'prehtml flyover' = "<span>"
          'break' = "<br>"
          'Line' = "<hr size=""3"">"
-         'PageBreakLine' =                                                    
-         "<p style=""page-break-after: always;""><br></p><hr size=""3"">"
-         'fake bullet' = %nrstr("<b>&#183;</b>");
+         'PageBreakLine' = "<p style=""page-break-after: always;""><br></p><hr size=""3"">"
+         'fake bullet' = %nrstr("<b>&#183;</b>")
+         ;
       style text
          "Common text." /
          'Fatal Banner' = "Fatal:"
@@ -206,7 +210,7 @@ proc template;
          "Controls the Body file." /
          rightmargin   = 8
          leftmargin    = 8
-         pagebreakhtml = html('PageBreakLine')
+         pagebreakhtml = _undef_ /*html('PageBreakLine')*/
          ;
       style Frame from Document
          "Controls the Frame file." /
@@ -444,7 +448,7 @@ proc template;
       style Cell from Container                                               
          "Abstract. Controls general cells." /
          paddingtop    =  2px 
-         paddingtleft  = 10px 
+         paddingleft   = 10px 
          paddingright  = 10px 
          paddingbottom =  2px 
          margintop     =  2px 
@@ -747,6 +751,28 @@ proc template;
          background = _undef_;
       style LayoutRegion from LayoutContainer                                 
          "Region style for LAYOUT cells";
+      style blindTable from table "Table that appears like background" /
+         cellspacing=0
+         borderwidth=0px
+         backgroundcolor=colors('docbg')
+      ;
+      style blindData from data "Data cell in a blind Table" /
+         borderwidth=0
+         backgroundcolor=colors('docbg')
+      ;
+      style blindHeader from header "Header cell in a blind Table" /
+         borderwidth=0
+         backgroundcolor=colors('docbg')
+         color=colors('docbg')
+         fontsize=10%
+      ;
+      style blindCaption from blindData "Caption row in a blind Table" /
+         font=fonts('TitleFont2')
+         color=colors('captionfg')
+      ;
+      style blindStrongData from blindData "Strong data cell in a blind Table" /
+         color=colors('datafgstrong')
+      ;
    end;
 run;
 ods listing close;
@@ -757,6 +783,7 @@ ods listing close;
 *ods htmlcss(4)file="C:\TEMP\SASUNIT_HTMLCSS_mit_Styleangabe.html" style=styles.sasunit stylesheet=(url="SAS_SASUnit.css");
 * writing Stylesheet *;
 ods html(5)file="C:\TEMP\SASUNIT.html" style=styles.sasunit stylesheet="C:\TEMP\SAS_SASUnit.css"(url="SAS_SASUnit.css");
+ods html(6)file="C:\TEMP\SASUNIT1.html" style=styles.sasunit stylesheet="C:\projects\sasunit\_sonst\DoxyGen Ablösung\SAS_SASUnit.css"(url="SAS_SASUnit.css");
 proc report data=scenarios nowd;
    column scn_id scn_desc scn_path scn_start duration PictureName_html;
 
