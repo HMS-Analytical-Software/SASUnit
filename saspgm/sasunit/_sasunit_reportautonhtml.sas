@@ -18,6 +18,7 @@
 */ /** \cond */ 
 
 /* change history
+   14.02.2013 PW/KL  Modified for LINUX
    08.02.2013 PW  implementation of test coverage assessment
    02.01.2013 KL  Added new column "Assertions" and corrected the number in column "Test Cases".
                   program library (none) is now supported under different languages.
@@ -86,19 +87,22 @@ RUN;
     /*-- in the log subdir: append all *.tcg files to one file named 000.tcg
      This is done in order to get one file containing coverage data 
      of all calls to the macros under test -----------------------------------*/
-	FILENAME allfiles "&g_log/*.tcg";
-	DATA _null_;
-	 INFILE allfiles end=done dlm=',';
-	 FILE "&g_log/000.tcg";
-	 INPUT row :$256.;
-	 PUT row;
-	RUN;
 
-	/*-- for every unit under test (see ‘target’ database ): 
-	 call new macro _sasunit_reporttcghtml.sas once in order to get a html 
-	 file showing test coverage for the given unit under test. For every call, 
-	 use the 000.tcg file as coverage analysis text file ---------------------*/
-	
+   %let l_rc =%_sasunit_delFile("&g_log/000.tcg");
+
+   FILENAME allfiles "&g_log/*.tcg";
+   DATA _null_;
+    INFILE allfiles end=done dlm=',';
+    FILE "&g_log/000.tcg";
+    INPUT row :$256.;
+    PUT row;
+   RUN;
+
+   /*-- for every unit under test (see ‘target’ database ): 
+    call new macro _sasunit_reporttcghtml.sas once in order to get a html 
+    file showing test coverage for the given unit under test. For every call, 
+    use the 000.tcg file as coverage analysis text file ---------------------*/
+   
    PROC SQL NOPRINT;
       SELECT DISTINCT cas_pgm 
       INTO:l_unitUnderTestList SEPARATED BY '*'
@@ -113,74 +117,76 @@ RUN;
 
    %LET l_listCount=%sysfunc(countw(&l_unitUnderTestList.,'*'));
    %do i = 1 %to &l_listCount;
-      %LET l_currentUnit=%scan(&l_unitUnderTestList,&i,*);
-	  %IF "%sysfunc(compress(&l_currentUnit.))" EQ "" %THEN %DO;
-	     %LET l_tcg_res = .;
-	  %END;
-	  %ELSE %DO;
+      %LET l_currentUnit=%lowcase(%scan(&l_unitUnderTestList,&i,*));
+      %IF "%sysfunc(compress(&l_currentUnit.))" EQ "" %THEN %DO;
+         %LET l_tcg_res = .;
+      %END;
+      %ELSE %DO;
          /*determine where macro source file is located*/ 
-	     %let l_currentUnitLocation=;
-		 %let l_currentUnitFileName=;
-	     %IF (%SYSFUNC(FILEEXIST(&l_currentUnit.))) %THEN %DO; /*full absolute path given*/
-			%_sasunit_getAbsPathComponents(
+         %let l_currentUnitLocation=;
+         %let l_currentUnitFileName=;
+         %IF (%SYSFUNC(FILEEXIST(&l_currentUnit.))) %THEN %DO; /*full absolute path given*/
+            %_sasunit_getAbsPathComponents(
                     i_absPath         = &l_currentUnit
                   , o_fileName        = l_currentUnitFileName
                   , o_pathWithoutName = l_currentUnitLocation
                   )
          %END; 
-	     %ELSE %DO; /*relative path given*/
+         %ELSE %DO; /*relative path given*/
             %IF (%SYSFUNC(FILEEXIST(&g_root./&l_currentUnit.))) %THEN %DO; /*relative path in root dir */
-			   %_sasunit_getAbsPathComponents(
+               %_sasunit_getAbsPathComponents(
                     i_absPath         = &g_root./&l_currentUnit.
                   , o_fileName        = l_currentUnitFileName
                   , o_pathWithoutName = l_currentUnitLocation
                   )
-		    %END;
-		    %ELSE %DO; /*relative path in one of the sasautos dirs*/
+            %END;
+            %ELSE %DO; /*relative path in one of the sasautos dirs*/
                %IF (%SYSFUNC(FILEEXIST(&g_sasautos./&l_currentUnit.))) %THEN %DO;
-	              %_sasunit_getAbsPathComponents(
+                   %_sasunit_getAbsPathComponents(
                     i_absPath         = &g_sasautos./&l_currentUnit.
                   , o_fileName        = l_currentUnitFileName
                   , o_pathWithoutName = l_currentUnitLocation
                   )
-	           %END;
-	           %ELSE %DO;
-	             %LET j = 1;
-    	         %DO %UNTIL ("&l_currentUnitLocation." NE "" OR &j. EQ 10);
-                    %IF (%SYSFUNC(FILEEXIST(&&g_sasautos&j/&l_currentUnit.))) %THEN %DO;
-					   %_sasunit_getAbsPathComponents(
-                          i_absPath         = &&g_sasautos&j/&l_currentUnit.
-                        , o_fileName        = l_currentUnitFileName
-                        , o_pathWithoutName = l_currentUnitLocation
-                       )
-	                %END;
-		            %LET j = %EVAL(&j + 1);
-	             %END;
-              %END;
-		   %END;
-        %END;
-	    %let l_tcg_res=.;
-		
-		%IF ("&l_currentUnitFileName." NE "" AND "&l_currentUnitLocation." NE "" AND %SYSFUNC(FILEEXIST(&l_currentUnitLocation./&l_currentUnitFileName.)) AND %SYSFUNC(FILEEXIST(&g_log./000.tcg)) ) %THEN %DO;
-           %_sasunit_reporttcghtml(
+               %END;
+               %ELSE %DO;
+                  %LET j = 1;
+                  %DO %UNTIL ("&l_currentUnitLocation." NE "" OR &j. EQ 10);
+                     %IF (%SYSFUNC(FILEEXIST(&&g_sasautos&j/&l_currentUnit.))) %THEN %DO;
+                        %_sasunit_getAbsPathComponents(
+                             i_absPath         = &&g_sasautos&j/&l_currentUnit.
+                           , o_fileName        = l_currentUnitFileName
+                           , o_pathWithoutName = l_currentUnitLocation
+                          )
+                     %END;
+                     %LET j = %EVAL(&j + 1);
+                  %END;
+               %END;
+            %END;
+         %END;
+         %let l_tcg_res=.;
+
+         %IF ("&l_currentUnitFileName." NE "" AND "&l_currentUnitLocation." NE "" 
+              AND %SYSFUNC(FILEEXIST(&l_currentUnitLocation./&l_currentUnitFileName.)) 
+              AND %SYSFUNC(FILEEXIST(&g_log./000.tcg)) ) %THEN %DO;
+              %_sasunit_reporttcghtml(
                     i_macroName                = &l_currentUnitFileName.
                    ,i_macroLocation            = &l_currentUnitLocation.
-				   ,i_mCoverageName            = 000.tcg
+                   ,i_mCoverageName            = 000.tcg
                    ,i_mCoverageLocation        = &g_log
                    ,o_outputFile               = tcg_%SCAN(&l_currentUnitFileName.,1,.).html
-				   ,o_outputPath               = &g_target/rep
-				   ,o_resVarName               = l_tcg_res
+                   ,o_outputPath               = &g_target/rep
+                   ,o_resVarName               = l_tcg_res
                    );
-        %END;
+         %END;
       %END; /*%ELSE %DO;*/
-	  /*store coverage percentage for report generation*/
+      /*store coverage percentage for report generation*/
       PROC SQL NOPRINT;
-	     UPDATE &d_rep1
-		    SET tcg_pct=&l_tcg_res.
-			WHERE cas_pgm EQ "&l_currentUnit.";
-	  QUIT;
+        UPDATE &d_rep1
+          SET tcg_pct=&l_tcg_res.
+         WHERE upcase(cas_pgm) EQ "%upcase(&l_currentUnit.)";
+      QUIT;
    %end; /*do i = 1 to &l_listCount*/
-	
+   
 %END;
 
 DATA _null_;
@@ -225,9 +231,9 @@ DATA _null_;
       PUT '   <td class="tabheader">' "&g_nls_reportAuton_006" '</td>';
       PUT '   <td class="tabheader">' "&g_nls_reportAuton_007" '</td>';
       PUT '   <td class="tabheader">' "&g_nls_reportAuton_014" '</td>';
-	  %IF &g_testcoverage. EQ 1 %THEN %DO;
-	  PUT '   <td class="tabheader">' "&g_nls_reportAuton_016" ' [%]' '</td>';
-	  %END;
+      %IF &g_testcoverage. EQ 1 %THEN %DO;
+         PUT '   <td class="tabheader">' "&g_nls_reportAuton_016" ' [%]' '</td>';
+      %END;
       PUT '   <td class="tabheader">' "&g_nls_reportAuton_008" '</td>';
       PUT '</tr>';
    END;
@@ -254,22 +260,22 @@ DATA _null_;
       PUT '   <td class="datacolumn">' hlp1 +(-1) '</td>';
       hlp1 = left (put (sum (res0, res1, res2), 8.));
       PUT '   <td class="datacolumn">' hlp1 +(-1) '</td>';
-	  %IF &g_testcoverage. EQ 1 %THEN %DO;
-	  if compress(cas_pgm) ne '' then do;
-         if index(cas_pgm,'/') GT 0 then do;
-	        hlpp =  'tcg_'||compress(trim(left(scan(substr(cas_pgm, findw(cas_pgm, scan(cas_pgm, countw(cas_pgm,'/'),'/'))),1,.) !! ".html")));
-		 end;
-		 else do;
-		    hlpp =  'tcg_'||compress(trim(left(scan(cas_pgm,1,.) !! ".html")));
-		 end;
-      end;
-	  if tcg_pct eq . then do;
-	     PUT '   <td class="datacolumn"></td>';
-	  end;
-	  else do;
-         PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportAuton_017. " cas_pgm +(-1) '" href="' hlpp '">' tcg_pct +(-1) '</a></td>';
-      end;
-	  %END;
+      %IF &g_testcoverage. EQ 1 %THEN %DO;
+         if compress(cas_pgm) ne '' then do;
+            if index(cas_pgm,'/') GT 0 then do;
+               hlpp =  'tcg_'||compress(trim(left(scan(substr(cas_pgm, findw(cas_pgm, scan(cas_pgm, countw(cas_pgm,'/'),'/'))),1,.) !! ".html")));
+            end;
+            else do;
+               hlpp =  'tcg_'||compress(trim(left(scan(cas_pgm,1,.) !! ".html")));
+            end;
+         end;
+         if tcg_pct eq . then do;
+            PUT '   <td class="datacolumn">&nbsp;</td>';
+         end;
+         else do;
+            PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportAuton_017. " cas_pgm +(-1) '" href="' hlpp '">' tcg_pct +(-1) '</a></td>';
+         end;
+      %END;
       PUT '   <td class="iconcolumn"><img src=' @;
       IF      res1>0 THEN PUT '"error.png"  alt="' "&g_nls_reportAuton_011" '"'        @;
       ELSE IF res2>0 THEN PUT '"manual.png" alt="' "&g_nls_reportAuton_012" '"'        @;

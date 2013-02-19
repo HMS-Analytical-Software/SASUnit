@@ -21,6 +21,11 @@
    \param      o_resVarName optional name of macroVariable in wich coverage percentage result is written
 
 */ /** \cond */ 
+
+/* change history
+   13.02.2013 KL Lange Zeilen umgebrochen
+*/ 
+
 %macro _sasunit_reporttcghtml(
                           i_macroName=
                          ,i_macroLocation=
@@ -123,7 +128,8 @@
    
    /*** Read all lines not explicitly marked as covered ***/
    proc sql noprint;
-      select distinct nCounter into :MissingLines separated by ' ' from WORK.rowsOfInputFile where nCounter not in (select distinct _line_ from WORK._MCoverage5  where _line_ not eq .);
+      select distinct nCounter into :MissingLines separated by ' ' from WORK.rowsOfInputFile 
+	  where nCounter not in (select distinct _line_ from WORK._MCoverage5  where _line_ not eq .);
    quit;
 
    /*** If there is an %if-statement with %do and %end an adjustment is made: ***/
