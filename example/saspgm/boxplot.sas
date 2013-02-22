@@ -117,6 +117,8 @@ quit;
 %if &lower=. %then %do; 
    %put ERROR: boxplot: Missing values in group variable are not allowed; 
    %return; 
+   %*** This is code not covered by any testcase and left intetionally here to ***;
+   %*** demonstrate the functionality of the test coverage                     ***;
    proc sql noprint; drop table &d_1; quit;
 %end; 
 %if &count NE 2 %then %do;
@@ -150,13 +152,13 @@ proc sql noprint;
 quit;
 %if &xdiff1=. %then %do;
    %put ERROR: boxplot: x variable must have at least two values;
-   %return; 
    proc sql noprint; drop table &d_1; quit;
+   %return; 
 %end; 
 %if &misscount>0 %then %do; 
    %put ERROR: boxplot: Missing values in x variable are not allowed;
-   %return; 
    proc sql noprint; drop table &d_1; quit;
+   %return; 
 %end; 
 
 %let xmin=%sysevalf(&xmin-&xdiff1);
@@ -165,8 +167,8 @@ quit;
 run; 
 %if &xdiff1 ne &xdiff2 %then %do; 
    %put ERROR: boxplot: Values of x variable are not equidistant;
-   %return; 
    proc sql noprint; drop table &d_1; quit;
+   %return; 
 %end; 
 
 /*-- calculate offset between the plots of the two groups --------------------*/
