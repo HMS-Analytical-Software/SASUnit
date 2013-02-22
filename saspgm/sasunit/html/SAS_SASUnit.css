@@ -5,7 +5,7 @@
   border-spacing: 0px;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -24,7 +24,7 @@
   border-spacing: 1px;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -35,7 +35,7 @@
   border-spacing: 0px;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -47,12 +47,99 @@
   padding-right: 10px;
   padding-top: 2px;
 }
+.blindcaption
+{
+  background-color: #FFFFFF;
+  border: 0px solid #CCCCCC;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 120%;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.blinddata
+{
+  background-color: #FFFFFF;
+  border: 0px solid #CCCCCC;
+  color: #000000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 90%;
+  font-style: normal;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.blindheader
+{
+  background-color: #FFFFFF;
+  border: 0px solid #CCCCCC;
+  color: #FFFFFF;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 10%;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+}
+.blindstrongdata
+{
+  background-color: #FFFFFF;
+  border: 0px solid #CCCCCC;
+  color: #BD0000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 90%;
+  font-style: normal;
+  font-weight: normal;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
+.blindtable
+{
+  background-color: #FFFFFF;
+  border: 0px solid #CCCCCC;
+  border-collapse: separate;
+  border-spacing: 0px;
+  color: #002288;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 90%;
+  font-style: normal;
+  font-weight: normal;
+}
 .body
 {
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   margin-left: 8px;
@@ -65,7 +152,7 @@
   border-spacing: 0px;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   text-align: right;
@@ -76,7 +163,7 @@
 {
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: none;
@@ -88,7 +175,7 @@
   border-spacing: 0px;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
 }
@@ -99,7 +186,7 @@
   border-spacing: 1px;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   width: 100%;
@@ -111,7 +198,7 @@
   border-spacing: 0px;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -129,7 +216,7 @@
   border: 1px solid #CCCCCC;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   margin-bottom: 2px;
@@ -146,7 +233,7 @@
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -154,7 +241,7 @@
 {
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: none;
@@ -164,7 +251,7 @@
 {
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: none;
@@ -174,7 +261,7 @@
 {
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: decimal;
@@ -183,7 +270,7 @@
 {
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: decimal;
@@ -193,7 +280,7 @@
   background-color: #E8EEF2;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: decimal;
@@ -206,7 +293,7 @@
   background-color: #E8EEF2;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   width: 100%;
@@ -215,7 +302,7 @@
 {
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
 }
@@ -224,7 +311,7 @@
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 18pt;
+  font-size: 120%;
   font-style: normal;
   font-weight: bold;
 }
@@ -234,7 +321,7 @@
   border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   margin-bottom: 2px;
@@ -253,7 +340,7 @@
   border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
   margin-bottom: 2px;
@@ -272,7 +359,7 @@
   border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
   margin-bottom: 2px;
@@ -291,7 +378,7 @@
   border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   margin-bottom: 2px;
@@ -310,7 +397,7 @@
   border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   margin-bottom: 2px;
@@ -327,9 +414,9 @@
 {
   background-color: #E8EEF2;
   border: 1px solid #CCCCCC;
-  color: #000000;
+  color: #BD0000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -346,9 +433,9 @@
 {
   background-color: #E8EEF2;
   border: 1px solid #CCCCCC;
-  color: #000000;
+  color: #BD0000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -366,7 +453,7 @@
   background-color: #E8EEF2;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   width: 100%;
@@ -376,29 +463,26 @@
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   width: 100%;
 }
 a:link {
-color:#000080;
-text-decoration: none;
+color:#000080
 }
 a:visited {
-color:#000080;
-text-decoration: none;
+color:#000080
 }
 a:active {
-color:#000080;
-text-decoration: none;
+color:#000080
 }
 .errorbanner
 {
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
 }
@@ -407,7 +491,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -416,7 +500,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -426,7 +510,7 @@ text-decoration: none;
   border: 1pt solid #000000;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
   text-align: center;
@@ -436,7 +520,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
 }
@@ -445,7 +529,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -454,7 +538,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -462,7 +546,7 @@ text-decoration: none;
 {
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: none;
@@ -474,7 +558,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -492,7 +576,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
   margin-bottom: 2px;
@@ -510,7 +594,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
   margin-bottom: 2px;
@@ -528,7 +612,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -546,7 +630,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   margin-bottom: 2px;
@@ -564,7 +648,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -582,7 +666,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -599,7 +683,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   width: 100%;
@@ -611,7 +695,7 @@ text-decoration: none;
   border-spacing: 1px;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -621,7 +705,7 @@ text-decoration: none;
   border: 2px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -639,7 +723,7 @@ text-decoration: none;
   border: 2px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
   margin-bottom: 2px;
@@ -657,7 +741,7 @@ text-decoration: none;
   border: 2px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
   margin-bottom: 2px;
@@ -675,7 +759,7 @@ text-decoration: none;
   border: 2px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -693,7 +777,7 @@ text-decoration: none;
   border: 2px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   margin-bottom: 2px;
@@ -711,7 +795,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -729,7 +813,7 @@ text-decoration: none;
   border: 2px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -747,7 +831,7 @@ text-decoration: none;
   border: 2px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -764,7 +848,7 @@ text-decoration: none;
   background-color: #E8EEF2;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -772,7 +856,7 @@ text-decoration: none;
 {
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: none;
@@ -782,7 +866,7 @@ text-decoration: none;
 {
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: none;
@@ -792,7 +876,7 @@ text-decoration: none;
 {
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: decimal;
@@ -801,7 +885,7 @@ text-decoration: none;
 {
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
 }
@@ -810,7 +894,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -819,7 +903,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -828,7 +912,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -837,7 +921,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -846,7 +930,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -855,7 +939,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -864,7 +948,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -873,7 +957,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -882,7 +966,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -891,7 +975,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -900,7 +984,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -909,7 +993,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -918,7 +1002,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -927,7 +1011,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -936,7 +1020,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -945,7 +1029,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -954,7 +1038,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -963,7 +1047,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -972,7 +1056,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -981,7 +1065,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -990,7 +1074,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -999,7 +1083,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1008,7 +1092,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -1017,7 +1101,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -1028,7 +1112,7 @@ text-decoration: none;
   border-spacing: 1px;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -1038,7 +1122,7 @@ text-decoration: none;
   border-spacing: 0px;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   text-align: right;
@@ -1049,7 +1133,7 @@ text-decoration: none;
   background-color: #E8EEF2;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: decimal;
@@ -1062,7 +1146,7 @@ text-decoration: none;
   background-color: #E8EEF2;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   width: 100%;
@@ -1071,7 +1155,7 @@ text-decoration: none;
 {
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: none;
@@ -1081,7 +1165,7 @@ text-decoration: none;
 {
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: decimal;
@@ -1090,7 +1174,7 @@ text-decoration: none;
 {
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   list-style-type: decimal;
@@ -1099,7 +1183,7 @@ text-decoration: none;
 {
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
 }
@@ -1108,7 +1192,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -1117,7 +1201,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 18pt;
+  font-size: 120%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1126,7 +1210,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -1135,7 +1219,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 18pt;
+  font-size: 120%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1144,7 +1228,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1154,7 +1238,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -1172,7 +1256,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
   margin-bottom: 2px;
@@ -1190,7 +1274,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
   margin-bottom: 2px;
@@ -1208,7 +1292,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -1226,7 +1310,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   margin-bottom: 2px;
@@ -1244,7 +1328,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -1262,7 +1346,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #0033AA;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -1280,7 +1364,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -1299,7 +1383,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
   margin-bottom: 2px;
@@ -1318,7 +1402,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: italic;
   font-weight: normal;
   margin-bottom: 2px;
@@ -1337,7 +1421,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -1356,7 +1440,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   margin-bottom: 2px;
@@ -1375,7 +1459,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -1394,7 +1478,7 @@ text-decoration: none;
   border: 1px solid #CCCCCC;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 2px;
@@ -1412,7 +1496,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1421,7 +1505,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1430,7 +1514,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1439,7 +1523,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1448,7 +1532,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1457,7 +1541,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1466,7 +1550,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1475,7 +1559,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1484,7 +1568,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1493,7 +1577,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1502,7 +1586,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1511,7 +1595,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1520,7 +1604,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1529,7 +1613,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1538,7 +1622,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1547,7 +1631,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1556,7 +1640,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1565,7 +1649,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1574,7 +1658,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1583,7 +1667,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 20pt;
+  font-size: 160%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1594,7 +1678,7 @@ text-decoration: none;
   border-spacing: 1px;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   width: 100%;
@@ -1607,7 +1691,7 @@ text-decoration: none;
   border-spacing: 2px;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -1634,7 +1718,7 @@ text-decoration: none;
   border-spacing: 1px;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
   width: 100%;
@@ -1644,7 +1728,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 18pt;
+  font-size: 120%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1653,7 +1737,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -1662,7 +1746,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: bold;
 }
@@ -1671,7 +1755,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
@@ -1680,7 +1764,7 @@ text-decoration: none;
   background-color: #FFFFFF;
   color: #002288;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 12pt;
+  font-size: 90%;
   font-style: normal;
   font-weight: normal;
 }
