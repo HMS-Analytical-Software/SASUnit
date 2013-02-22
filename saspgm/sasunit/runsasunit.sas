@@ -346,7 +346,7 @@ RUN;
          SELECT count(*) INTO :l_result1 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=1;
          SELECT count(*) INTO :l_result2 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=2;
          
-         %IF &l_result1 GT 0 %THEN %DO;
+         %IF &l_result1 GT 0 OR &l_error_count. GT 0 %THEN %DO;
             %LET l_result=1; /* error occured */
          %END;   
          %ELSE %IF &l_result2 GT 0 %THEN %DO;
