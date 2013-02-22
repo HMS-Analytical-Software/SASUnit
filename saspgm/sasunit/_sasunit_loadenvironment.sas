@@ -17,6 +17,7 @@
 */ /** \cond */ 
 
 /* change history
+   31.01.2013 KL  new Version 1.2.1
    08.02.2013 PW  implementation of test coverage assessment
    31.01.2013 KL  new Version 1.2 - recommited
    28.08.2012 KL  Problems occured resolving paths like ..\.\example\dat later in the project 
@@ -51,7 +52,7 @@
 %LOCAL i;
         
 %LET g_target    = %sysfunc(pathname(target));
-%LET g_version   = 1.2;
+%LET g_version   = 1.2.1;
 %LET g_revision  = $Revision$;
 %LET g_revision  = %scan(&g_revision,2,%str( $:));
 
