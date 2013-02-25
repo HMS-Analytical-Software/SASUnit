@@ -1,4 +1,4 @@
-This is the readme file for version 1.2 of SASUnit, the Unit testing 
+This is the readme file for version 1.2.1 of SASUnit, the Unit testing 
 framework for SAS(R) programs, copyright 2010, 2012 HMS Analytical 
 Software GmbH, http://www.analytical-software.de
 

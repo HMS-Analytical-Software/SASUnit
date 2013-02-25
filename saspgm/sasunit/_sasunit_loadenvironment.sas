@@ -15,7 +15,7 @@
    \param   i_withlibrefs 1..initialize also filerefs and librefs 
                           0..initialize only macro symbols. 
 */ /** \cond */ 
-
+ 
 /* change history
    31.01.2013 KL  new Version 1.2.1
    08.02.2013 PW  implementation of test coverage assessment
