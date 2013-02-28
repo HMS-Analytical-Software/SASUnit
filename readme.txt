@@ -23,7 +23,7 @@ SASUnit contains parts of Doxygen (http://www.doxygen.org).
 
 Release notes (changes since previous version, supported and tested 
 environments) can be found at 
-https://sourceforge.net/p/sasunit/wiki/Release%20Notes%20Version%201.2/.
+https://sourceforge.net/p/sasunit/wiki/Release%20Notes%20Version%201.2.1/.
 
 For installation and initial operation see 
 https://sourceforge.net/p/sasunit/wiki/Installation%20and%20initial%20operation/.
