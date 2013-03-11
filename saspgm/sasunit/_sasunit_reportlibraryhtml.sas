@@ -20,9 +20,10 @@
 */ /** \cond */ 
 
 /* change log
+   11.03.2013 KL  Ouput is now read from subfolders per assert
    18.08.2008 AM  added national language support
    13.08.2008 AM  control for output folder
-   17.12.2007 KL: ExcludeList mit im Report anzeigen
+   17.12.2007 KL  ExcludeList mit im Report anzeigen
 */ 
 
 %macro _sasunit_reportLibraryHTML (
@@ -32,30 +33,41 @@
   ,o_html    = 
 );
 
+   %local l_path;
+
    title;footnote;
-   LIBNAME testout "&g_target/tst";
+
+   %_sasunit_getTestSubfolder (i_assertType=assertLibrary
+                              ,i_root      =&g_target/tst
+                              ,i_scnid     =&i_scnid.
+                              ,i_casid     =&i_casid.
+                              ,i_tstid     =&i_tstid.
+                              ,o_path      =l_path
+                              );
+
+   libname _test "&l_path";
 
    ODS HTML FILE="&o_html/&i_scnid._&i_casid._&i_tstid._library_exp.html" stylesheet=(url="SAS_SASUnit.css");
       TITLE "&g_nls_reportLibrary_006";
-      PROC DOCUMENT NAME=testout._&i_scnid._&i_casid._&i_tstid._library_exp;
+      PROC DOCUMENT NAME=_test._library_exp;
          REPLAY / ACTIVETITLE;
       RUN;
    ODS HTML CLOSE;
 
    ODS HTML FILE="&o_html/&i_scnid._&i_casid._&i_tstid._library_act.html" stylesheet=(url="SAS_SASUnit.css");
       TITLE "&g_nls_reportLibrary_007";
-      PROC DOCUMENT NAME=testout._&i_scnid._&i_casid._&i_tstid._library_act;
+      PROC DOCUMENT NAME=_test._library_act;
          REPLAY / ACTIVETITLE;
       RUN;
    ODS HTML CLOSE;
 
    ODS HTML FILE="&o_html/&i_scnid._&i_casid._&i_tstid._library_rep.html" stylesheet=(url="SAS_SASUnit.css");
-      %if (%sysfunc (exist (testout._&i_scnid._&i_casid._&i_tstid._library_rep, DATA))) %then %do;
+      %if (%sysfunc (exist (_test._library_rep, DATA))) %then %do;
          %local l_LibraryCheck l_CompareCheck l_id l_ExcludeList;
          proc sql noprint;
             select    i_LibraryCheck,  i_CompareCheck,  i_id,  i_ExcludeList 
                 into :l_LibraryCheck, :l_CompareCheck, :l_id, :l_ExcludeList
-            from testout._&i_scnid._&i_casid._&i_tstid._library_rep (obs=1);
+            from _test._library_rep (obs=1);
          quit;
 
          options missing=' ';
@@ -67,7 +79,7 @@
          %if (&l_ExcludeList. ne _NONE_) %then %do;
             Title4 h=3 "&g_nls_reportLibrary_002: %trim (&l_ExcludeList.)";
          %end;
-         proc report data=testout._&i_scnid._&i_casid._&i_tstid._library_rep nowd missing
+         proc report data=_test._library_rep nowd missing
             style (column)={vjust=center};
             columns memname
                     ("&g_nls_reportLibrary_003" CmpLibname CmpObs CmpNVar)
@@ -86,7 +98,7 @@
       %end;
    ODS HTML CLOSE;
    
-   LIBNAME testout;
+   LIBNAME _test;
 
    title;footnote;
 %MEND _sasunit_reportLibraryHTML;

@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertlibrary.sas - has to fail! 4 errors concerning libref statements
+   \brief      Tests for assertlibrary.sas - has to fail! 4 errors concerning libref statements and 2 error with invalid values of parameters
 
    \version    \$Revision$
    \author     \$Author$
@@ -164,7 +164,7 @@ run;
 
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
-                i_LibraryCheck=MoreTables, 
+                i_libraryCheck=MoreTables, 
                 i_id=name age,
                 i_desc=MoreTables
 )
@@ -191,7 +191,7 @@ run;
 
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
-                i_CompareCheck=MoreObs, 
+                i_compareCheck=MoreObs, 
                 i_id=name age,
                 i_desc=MoreObs 
 )
@@ -218,7 +218,7 @@ run;
 
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
-                i_CompareCheck=MoreColsNObs, 
+                i_compareCheck=MoreColsNObs, 
                 i_id=name age,
                 i_desc=MoreCols
 )
@@ -245,8 +245,8 @@ run;
 
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
-                i_LibraryCheck=MoreTables, 
-                i_CompareCheck=MoreColsNObs, 
+                i_libraryCheck=MoreTables, 
+                i_compareCheck=MoreColsNObs, 
                 i_id=name age,
                 i_desc=MoreColsNObs 
 )
@@ -254,5 +254,29 @@ run;
 %assertLog (i_errors=0, i_warnings=0)
 
 %endTestcase()
+
+/* test case 11 ------------------------------------*/
+%initTestcase(i_object=assertlibrary.sas, i_desc=test with invalid value of i_libraryCheck!)
+%endTestcall()
+
+%assertLibrary (i_expected=_ref, 
+                i_actual=_tst, 
+                i_libraryCheck=NoMoreTables, 
+                i_desc=must be red 
+)
+
+%assertLog (i_errors=0, i_warnings=0)
+
+/* test case 11 ------------------------------------*/
+%initTestcase(i_object=assertlibrary.sas, i_desc=test with invalid value of i_compareCheck!)
+%endTestcall()
+
+%assertLibrary (i_expected=_ref, 
+                i_actual=_tst, 
+                i_compareCheck=NoMoreColsNObs, 
+                i_desc=must be red 
+)
+
+%assertLog (i_errors=0, i_warnings=0)
 
 /** \endcond */ 
