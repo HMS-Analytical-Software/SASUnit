@@ -1,5 +1,5 @@
 /**
-\defgroup   SASUNIT_TEST
+\ingroup   SASUNIT_TEST
 \file
 
 \brief      Example program for tree_test.sas
