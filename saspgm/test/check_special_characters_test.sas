@@ -10,28 +10,26 @@
 */ /** \cond */ 
 
 /* change log
+   19.03.2013 KL changed macro call to _dummy_macro.sas. Scenario will now be executed once(!) after modification, 
+                 because _dummy_macro.sas is an existing macro.
    30.01.2013 BB Hint to failed tests and scenario formated consistently " - must be red!" and "- has to fail!"
    29.01.2013 BB Removed test case with unbalanced bracket
    11.01.2013 BB Further Test Cases added
-   09.01.2013 KL Created*/ 
+   09.01.2013 KL Created
+*/ 
 
-
-%macro _Dummy_Macro_For_Test (i_desc=);
-   %put "&i_desc.";
-
-%mend;
 
 
 /*-- first call: Everthing is ok ------------------------------------*/
-%initTestcase(i_object=check_special_characters.sas, i_desc=no special characters anywhere)
+%initTestcase(i_object=_dummy_macro.sas, i_desc=no special characters anywhere)
 %endTestcall()
 %assertLog(i_errors=0, i_warnings=0, i_desc=everything is OK)
 %assertEquals(i_actual=No special characters anywhere, i_expected=No special characters anywhere, i_desc=no special characters anywhere)
 %endTestcase()
 
 /*-- Second call: Special characters in i_desc for assertLog,assertLogMsg and assertEquals  ------------------------------------*/
-%initTestcase(i_object=check_special_characters.sas, i_desc=%str(special characters without comma, brackets and apostrophe))
-%_Dummy_Macro_For_Test (i_desc=i_desc contains special characters like & - < > \ {} [] % § and &%str(amp;) as well as &%str(hugo;))
+%initTestcase(i_object=_dummy_macro.sas, i_desc=%str(special characters without comma, brackets and apostrophe))
+%_dummy_macro (i_desc=i_desc contains special characters like & - < > \ {} [] % § and &%str(amp;) as well as &%str(hugo;))
 %endTestcall()
 %assertLog(i_errors=0, i_warnings=0, i_desc=i_desc contains special characters like & - \ < > % and %str(&amp;) as well as &%str(hugo;))
 %assertLog(i_errors=0, i_warnings=0, i_desc=%nrstr(i_desc contains special characters like & - ()%) {} [] § \ < > % and &amp; as well as &hugo;))
@@ -45,8 +43,8 @@
 %endTestcase()
 
 /*-- Third call: Special characters in html   ------------------------------------*/
-%initTestcase(i_object=check_special_characters.sas, i_desc=special characters in html)
-%_Dummy_Macro_For_Test (i_desc=i_desc contains  special html characters such as &%str(rsquo;) &%str(rdquo;) &%str(#41;) &%str(lt;))
+%initTestcase(i_object=_dummy_macro.sas, i_desc=special characters in html)
+%_dummy_macro (i_desc=i_desc contains  special html characters such as &%str(rsquo;) &%str(rdquo;) &%str(#41;) &%str(lt;))
 %endTestcall()
 %assertLog(i_errors=0, i_warnings=0, i_desc= %str(%"))
 %assertLog(i_errors=0, i_warnings=0, i_desc= i_desc contains  special html characters such as &%str(rsquo;) &%str(rdquo;) &%str(#41;) &%str(lt;))
@@ -56,8 +54,8 @@
 %endTestcase()
 
 /*-- Fourth call: SASUnit macros  ------------------------------------*/
-%initTestcase(i_object=check_special_characters.sas, i_desc=%str(SASUnit macros - masked for passing))
-%_Dummy_Macro_For_Test (i_desc=i_desc contains  SASUnit macros such as %nrstr(%endTestcall()) and %nrstr(%endTestcase()))
+%initTestcase(i_object=_dummy_macro.sas, i_desc=%str(SASUnit macros - masked for passing))
+%_dummy_macro (i_desc=i_desc contains  SASUnit macros such as %nrstr(%endTestcall()) and %nrstr(%endTestcase()))
 %endTestcall()
 %assertLog(i_errors=0, i_warnings=0, i_desc=%nrstr(i_desc contains SASUnit macros such as %nrstr(%endTestcall()) and %nrstr(%endTestcase())))
 %assertEquals(i_actual=10, i_expected=10, i_desc=%nrstr(i_desc contains SASUnit macros such as %nrstr(%endTestcall()), %nrstr(%endTestcase()))) /* Komma nicht maskiert*/
@@ -66,16 +64,16 @@
 %endTestcase()
 
 /*-- Fifth call: Macro instructions  ------------------------------------*/
-%initTestcase(i_object=check_special_characters.sas, i_desc= SAS macro instructions)
-%_Dummy_Macro_For_Test (i_desc=%nrstr(i_desc contains macro instructions such as %%local and %%let ))
+%initTestcase(i_object=_dummy_macro.sas, i_desc= SAS macro instructions)
+%_dummy_macro (i_desc=%nrstr(i_desc contains macro instructions such as %%local and %%let ))
 %endTestcall()
 %assertEquals(i_actual=0, i_expected=0, i_desc=%nrstr(i_desc contains macro instructions such as %%nrstr%(%%local%), %%nrstr%(%%let%) ))
 %assertLog(i_errors=0, i_warnings=0, i_desc=%nrstr(i_desc contains macro instructions such as %%nrstr%(%%local%), %%nrstr%(%%let%) ))
 %endTestcase()
 
 /*-- Sixth call: Special characters in i_desc for dummy macro  ------------------------------------*/
-%initTestcase(i_object=check_special_characters.sas, i_desc=%str(special characters without comma, brackets and apostrophe - must be red!))
-%_Dummy_Macro_For_Test (i_desc=%nrstr(i_desc contains special characters like & - ()%) {} [] § \ < > % and &amp; as well as &hugo;))
+%initTestcase(i_object=_dummy_macro.sas, i_desc=%str(special characters without comma, brackets and apostrophe - must be red!))
+%_dummy_macro (i_desc=%nrstr(i_desc contains special characters like & - ()%) {} [] § \ < > % and &amp; as well as &hugo;))
 %endTestcall()
 %assertEquals(i_actual=%nrstr(& - ()%) {})                  ,i_expected=%nrstr(& - ()%) {})       ,i_desc=Special characters in i_actual and i_expected)
 %assertEquals(i_actual=&amp;                                ,i_expected=&amp;                     ,i_desc=Special characters in i_actual and i_expected)
