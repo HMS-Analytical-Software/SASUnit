@@ -18,6 +18,7 @@
 */ /** \cond */ 
 
 /* change log
+   14.03.2013 KL  Rework assertion framework: Use of new rendering macros
    19.08.2008 AM  national language support
 */ 
 
@@ -51,25 +52,46 @@ DATA _null_;
       PUT '</tr>';
    END;
 
-   LENGTH abs_path $256;
+   LENGTH abs_path scn_pgm $256 LinkColumn1 LinkTitle1 LinkColumn2 LinkTitle2 LinkColumn3 LinkTitle3 $200;
 
    IF first.scn_id THEN DO;
       PUT '<tr>';
-      PUT '   <td class="idcolumn"><a class="lightlink" title="' "&g_nls_reportScn_009 " scn_id z3. '" href="cas_overview.html#scn' scn_id z3. '">' scn_id z3. '</a></td>';
-      PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportScn_009 " scn_id z3. '" href="cas_overview.html#scn' scn_id z3. '">' scn_desc +(-1) '</a></td>';
-      abs_path = resolve ('%_sasunit_abspath(&g_root,' !! trim(scn_path) !! ')');
-      PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportScn_010 " '&#x0D;' abs_path +(-1) '" href="' abs_path +(-1) '">' scn_path +(-1) '</a></td>';
-      PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportScn_011" '" href="' scn_id z3. '_log.html">' scn_start &g_nls_reportScn_012 '</a></td>';
-      duration = scn_end - scn_start;
-      PUT '   <td class="datacolumn">' duration &g_nls_reportScn_013 's</td>';
-      PUT '   <td class="iconcolumn"><img src=' @;
-      SELECT (scn_res);
-         WHEN (0) PUT '"ok.png" alt="OK"' @;
-         WHEN (1) PUT '"error.png" alt="' "&g_nls_reportScn_014" '"' @;
-         WHEN (2) PUT '"manual.png" alt="' "&g_nls_reportScn_015" '"' @;
-         OTHERWISE PUT '"?????" alt="' "&g_nls_reportScn_016" '"' @;
-      END;
-      PUT '></img></td>';
+
+      abs_path    = resolve ('%_sasunit_abspath(&g_root,' !! trim(scn_path) !! ')');
+      scn_pgm     = resolve ('%_sasunit_stdpath(&g_root./saspgm/test,' !! trim(abs_path) !! ')');
+      duration    = scn_end - scn_start;
+      c_scnid     = put (scn_id, z3.);
+      LinkTitle1  = "&g_nls_reportScn_009 " !! c_scnid;
+      LinkColumn1 = "cas_overview.html#scn" !! c_scnid;
+      LinkTitle2  = "&g_nls_reportScn_010" !! byte(13) !! abs_path;
+      LinkColumn2 = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
+      LinkTitle3  = "&g_nls_reportScn_011";
+      LinkColumn3 = c_scnid !! "_log.html";
+
+      %_sasunit_render_IdColumn   (i_sourceColumn=scn_id
+                                  ,i_format=z3.
+                                  ,i_linkColumn=LinkColumn1
+                                  ,i_linkTitle=LinkTitle1
+                                  );
+      %_sasunit_render_DataColumn (i_sourceColumn=scn_desc
+                                  ,i_linkColumn=LinkColumn1
+                                  ,i_linkTitle=LinkTitle1
+                                  );
+      %_sasunit_render_DataColumn (i_sourceColumn=scn_path
+                                  ,i_linkColumn=abs_path
+                                  ,i_linkTitle=LinkTitle2
+                                  );
+      %_sasunit_render_DataColumn (i_sourceColumn=scn_start
+                                  ,i_format=&g_nls_reportScn_012.
+                                  ,i_linkColumn=LinkColumn3
+                                  ,i_linkTitle=LinkTitle3
+                                  );
+      %_sasunit_render_DataColumn (i_sourceColumn=duration
+                                  ,i_format=&g_nls_reportScn_013.
+                                  );
+      %_sasunit_render_IconColumn (i_sourceColumn=scn_res
+                                  );
+
       PUT '<tr>';
    END;
 

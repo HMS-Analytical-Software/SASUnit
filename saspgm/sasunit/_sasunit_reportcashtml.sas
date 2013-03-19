@@ -18,7 +18,8 @@
 */ /** \cond */ 
 
 /* change history
-   06.02.2012 OT minor bugfix
+   14.03.2013 KL  Rework assertion framework: Use of new rendering macros
+   06.02.2012 OT  minor bugfix
    12.08.2008 AM  Mehrsprachigkeit
    29.12.2007 AM  verbesserte Beschriftungen
 */ 
@@ -51,6 +52,12 @@ DATA _null_;
       abs_path    $  256 
       hlp         $  20
       errcountmsg $ 50
+      LinkTitle1
+      LinkTitle2
+      LinkTitle3
+      LinkColumn1
+      LinkColumn2
+      LinkColumn3 $200
    ;
 
    IF first.scn_id THEN DO;
@@ -105,23 +112,44 @@ DATA _null_;
 
    IF first.cas_id THEN DO;
       PUT '<tr>';
-      PUT '   <td class="idcolumn"><a class="lightlink" title="' "&g_nls_reportCas_017 " cas_id z3. '" href="cas_' scn_id z3. '_' cas_id z3. '.html">' cas_id z3. '</a></td>';
-      PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportCas_017 " cas_id z3. '" href="cas_' scn_id z3. '_' cas_id z3. '.html">' cas_desc +(-1) '</a></td>';
+
       IF cas_auton = '0' THEN hlp = '&g_sasautos';
       ELSE hlp = '&g_sasautos' !! put (cas_auton,1.);
       abs_path = resolve ('%_sasunit_abspath(' !! trim(hlp) !! ',' !! trim(cas_pgm) !! ')');
-      PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportCas_018 " '&#x0D;' abs_path +(-1) '" href="' abs_path +(-1) '">' cas_pgm +(-1) '</a></td>';
-      PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportCas_006" '" href="' scn_id z3. '_' cas_id z3. '_log.html">' cas_start &g_nls_reportCas_007 '</a></td>';
       duration = cas_end - cas_start;
-      PUT '   <td class="datacolumn">' duration &g_nls_reportCas_009 's</td>';
-      PUT '   <td class="iconcolumn"><img src=' @;
-      SELECT (cas_res);
-         WHEN (0) PUT '"ok.png" alt="OK"' @;
-         WHEN (1) PUT '"error.png" alt="' "&g_nls_reportCas_019" '"' @;
-         WHEN (2) PUT '"manual.png" alt="' "&g_nls_reportCas_020" '"' @;
-         OTHERWISE PUT '"?????" alt="' "&g_nls_reportCas_021" '"' @;
-      END;
-      PUT '></img></td>';
+      c_scnid  = put (scn_id, z3.);
+      c_casid  = put (cas_id, z3.);
+
+      LinkTitle1  = "&g_nls_reportCas_017 " !! c_casid;
+      LinkTitle2  = "&g_nls_reportCas_018" !! byte(13) !! abs_path;
+      LinkTitle3  = "&g_nls_reportCas_006";
+      LinkColumn1 = "cas_" !! c_scnid !! "_" !! c_casid !! ".html";
+      LinkColumn2 = "pgm_" !! tranwrd (cas_pgm, ".sas", ".html");
+      LinkColumn3 = c_scnid !! "_" !! c_casid !! "_log.html";
+
+      %_sasunit_render_IdColumn   (i_sourceColumn=cas_id
+                                  ,i_format=z3.
+                                  ,i_linkColumn=LinkColumn1
+                                  ,i_linkTitle=LinkTitle1
+                                  );
+      %_sasunit_render_DataColumn (i_sourceColumn=cas_desc
+                                  ,i_linkColumn=LinkColumn1
+                                  ,i_linkTitle=LinkTitle1
+                                  );
+      %_sasunit_render_DataColumn (i_sourceColumn=cas_pgm
+                                  ,i_linkColumn=abs_path
+                                  ,i_linkTitle=LinkTitle2
+                                  );
+      %_sasunit_render_DataColumn (i_sourceColumn=cas_start
+                                  ,i_format=&g_nls_reportCas_007.
+                                  ,i_linkColumn=LinkColumn3
+                                  ,i_linkTitle=LinkTitle3
+                                  );
+      %_sasunit_render_DataColumn (i_sourceColumn=duration
+                                  ,i_format=&g_nls_reportCas_009.
+                                  );
+      %_sasunit_render_IconColumn (i_sourceColumn=cas_res
+                                  );
       PUT '</tr>';
    END;
 

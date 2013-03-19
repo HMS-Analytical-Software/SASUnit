@@ -20,7 +20,8 @@
 */ /** \cond */ 
 
 /* change log
-   11.03.2013 KL  Ouput is now read from subfolders per assert
+   14.03.2013 KL  Creating blank pages if subfolder does not exist
+   11.03.2013 KL  Output is now read from subfolders per assert
    18.08.2008 AM  added national language support
    13.08.2008 AM  control for output folder
    17.12.2007 KL  ExcludeList mit im Report anzeigen
@@ -48,17 +49,31 @@
    libname _test "&l_path";
 
    ODS HTML FILE="&o_html/&i_scnid._&i_casid._&i_tstid._library_exp.html" stylesheet=(url="SAS_SASUnit.css");
-      TITLE "&g_nls_reportLibrary_006";
-      PROC DOCUMENT NAME=_test._library_exp;
-         REPLAY / ACTIVETITLE;
-      RUN;
+      %if (%sysfunc (libref(_test))=0) %then %do;
+         TITLE "&g_nls_reportLibrary_006";
+         PROC DOCUMENT NAME=_test._library_exp;
+            REPLAY / ACTIVETITLE;
+         RUN;
+      %end;
+      %else %do;
+         DATA _null_;
+            PUT ' ';
+         RUN;
+      %end;
    ODS HTML CLOSE;
 
    ODS HTML FILE="&o_html/&i_scnid._&i_casid._&i_tstid._library_act.html" stylesheet=(url="SAS_SASUnit.css");
-      TITLE "&g_nls_reportLibrary_007";
-      PROC DOCUMENT NAME=_test._library_act;
-         REPLAY / ACTIVETITLE;
-      RUN;
+      %if (%sysfunc (libref(_test))=0) %then %do;
+         TITLE "&g_nls_reportLibrary_007";
+         PROC DOCUMENT NAME=_test._library_act;
+            REPLAY / ACTIVETITLE;
+         RUN;
+      %end;
+      %else %do;
+         DATA _null_;
+            PUT ' ';
+         RUN;
+      %end;
    ODS HTML CLOSE;
 
    ODS HTML FILE="&o_html/&i_scnid._&i_casid._&i_tstid._library_rep.html" stylesheet=(url="SAS_SASUnit.css");
@@ -97,7 +112,7 @@
          RUN;
       %end;
    ODS HTML CLOSE;
-   
+      
    LIBNAME _test;
 
    title;footnote;
