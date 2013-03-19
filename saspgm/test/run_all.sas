@@ -1,6 +1,6 @@
 /** 
    \file
-   \ingroup    SASUNIT_TESTS 
+   \ingroup    SASUNIT_TEST 
 
    \brief      Invocation of the basic test scenarios
 
