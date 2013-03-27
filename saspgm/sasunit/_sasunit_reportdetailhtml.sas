@@ -89,7 +89,57 @@
             i_title   = %str(&g_nls_reportDetail_001 &i_scnid..&i_casid | &g_project - &g_nls_reportDetail_002)
            ,i_current = 0
          );
-         %_sasunit_reportScenarioTestCase;
+
+         PUT '<table><tr>';
+         PUT "   <td>&g_nls_reportDetail_028</td>";
+         PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_003 " scn_id z3. '" href="cas_overview.html#scn' scn_id z3. '">' scn_id z3. '</a></td>';
+         PUT '</tr><tr>';
+         PUT "   <td>&g_nls_reportDetail_029</td>";
+         PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_003 " scn_id z3. '" href="cas_overview.html#scn' scn_id z3. '">' scn_desc +(-1) '</a></td>';
+         PUT '</tr><tr>';
+         PUT "   <td>&g_nls_reportDetail_030</td>";
+
+         abs_path = resolve ('%_sasunit_abspath(&g_root,' !! trim(scn_path) !! ')');
+
+         PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_004 &#x0D;" abs_path +(-1) '" href="' abs_path +(-1) '">' scn_path +(-1) '</a></td>';
+         PUT '</tr><tr>';
+         PUT "   <td>&g_nls_reportDetail_031</td>";
+
+         IF scn_errorcount GT 0 THEN DO;
+            errcountmsg = '(' !! put(scn_errorcount, 3.) !! ' ' !! "&l_nls_reportdetail_errors." !! ')';
+         END;
+         ELSE DO;
+            errcountmsg = '';
+         END;
+
+         PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_005" '" href="' scn_id z3. '_log.html">' scn_start &g_nls_reportDetail_050 '</a>&nbsp;<span class="logerrcountmsg">' errcountmsg '</span> </td>';
+
+         duration = scn_end - scn_start;
+
+         PUT '</tr><tr>';
+         PUT "   <td>&g_nls_reportDetail_032</td>";
+         PUT '   <td>' duration &g_nls_reportDetail_049 's</td>';
+         PUT '</tr><tr>';
+         PUT "   <td>&g_nls_reportDetail_033</td>";
+         PUT '   <td>' cas_id z3. '</td>';
+         PUT '</tr><tr>';
+         PUT "   <td>&g_nls_reportDetail_034</td>";
+         PUT '   <td>' cas_desc +(-1) '</td>';
+
+         IF cas_auton = '0' THEN hlp = '&g_sasautos';
+         ELSE hlp = '&g_sasautos' !! put (cas_auton,1.);
+
+         abs_path = resolve ('%_sasunit_abspath(' !! trim(hlp) !! ',' !! trim(cas_pgm) !! ')');
+
+         PUT '</tr><tr>';
+         PUT "   <td>&g_nls_reportDetail_035</td>";
+         PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_006 &#x0D;" abs_path +(-1) '" href="' abs_path +(-1) '">' cas_pgm +(-1) '</a></td>';
+         PUT '</tr><tr>';
+         PUT "   <td>&g_nls_reportDetail_031</td>";
+         PUT '   <td><a class="lightlink" title="' "&g_nls_reportDetail_007" '" href="' scn_id z3. '_' cas_id z3. '_log.html">' cas_start &g_nls_reportDetail_050 '</a></td>';
+         PUT '</tr><tr>';
+         PUT "   <td>&g_nls_reportDetail_008</td>";
+         PUT '</tr></table>';
 
          PUT '<table>';
          PUT '<tr>';
