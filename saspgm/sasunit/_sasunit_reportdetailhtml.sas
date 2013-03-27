@@ -122,8 +122,10 @@
       %_sasunit_render_dataColumn (i_sourceColumn=tst_desc);
 
       %do l_NumAssert=1 %to &_numAsserts;
-         %_sasunit_render_&&asserttype&l_NumAssert..Exp (i_sourceColumn=tst_exp);
-         %_sasunit_render_&&asserttype&l_NumAssert..Act (i_sourceColumn=tst_act);
+         if (upcase(tst_type)="%upcase(&&asserttype&l_NumAssert.)") then do;
+            %_sasunit_render_&&asserttype&l_NumAssert..Exp (i_sourceColumn=tst_exp);
+            %_sasunit_render_&&asserttype&l_NumAssert..Act (i_sourceColumn=tst_act);
+         end;
       %end;
 
       %_sasunit_render_iconColumn (i_sourceColumn=tst_res);

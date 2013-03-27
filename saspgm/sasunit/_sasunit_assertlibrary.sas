@@ -234,15 +234,10 @@
       end;
    run;
 
-   %*** format results for report ***;
+   %*** collect results for report ***;
    data work._ergebnis;
       length icon_column $45 i_LibraryCheck i_CompareCheck $15 i_id i_ExcludeList $80;
       set work._ergebnis;
-      SELECT (CompareFailed);
-         WHEN (0) icon_column='<img src="ok.png" alt="OK"></img>';
-         WHEN (1) icon_column='<img src="error.png" alt="Fehler"></img>';
-         OTHERWISE icon_column='&nbsp;';
-      END;
       i_LibraryCheck="&i_LibraryCheck.";
       i_CompareCheck="&i_CompareCheck.";
       i_id="&i_id.";
@@ -266,6 +261,7 @@
                                  );
 
    %*** create library listing ***;
+   *** Capture tables instead of ODS DOCUMENT ***;
    libname _alLib "&l_path.";
    ods document name=_alLib._Library_act(WRITE);
       proc print data=WORK._assertLibraryActual label noobs;

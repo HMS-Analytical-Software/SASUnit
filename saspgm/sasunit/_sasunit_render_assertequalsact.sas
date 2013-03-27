@@ -24,8 +24,6 @@
 %macro _sasunit_render_assertEqualsAct (i_sourceColumn=
                                        ,i_targetColumn=
                                        );
-   IF (upcase(tst_type) ='ASSERTEQUALS') THEN DO;
-      %_sasunit_render_dataColumn(i_sourceColumn=&i_sourceColumn.);
-   END;
+   %_sasunit_render_dataColumn(i_sourceColumn=&i_sourceColumn.);
 %mend _sasunit_render_assertEqualsAct;
 /** \endcond */

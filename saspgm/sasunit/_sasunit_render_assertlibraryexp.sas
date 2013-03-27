@@ -24,8 +24,6 @@
 %macro _sasunit_render_assertLibraryExp (i_sourceColumn=
                                         ,i_targetColumn=
                                         );
-   IF (upcase(tst_type) = 'ASSERTLIBRARY') THEN DO;
-      PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportDetail_018" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_library_exp.html">' "&g_nls_reportDetail_040" '</a></td>';
-   END;
+   PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportDetail_018" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_library_exp.html">' "&g_nls_reportDetail_040" '</a></td>';
 %mend _sasunit_render_assertLibraryExp;
 /** \endcond */

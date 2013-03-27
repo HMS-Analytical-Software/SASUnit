@@ -24,10 +24,8 @@
 %macro _sasunit_render_assertEqualsExp (i_sourceColumn=
                                        ,i_targetColumn=
                                        );
-   IF (upcase(tst_type) ='ASSERTEQUALS') THEN DO;
-      %_sasunit_render_dataColumn(i_sourceColumn=&i_sourceColumn.
-                                 ,i_targetColumn=&i_targetColumn.
-                                 );
-   END;
+   %_sasunit_render_dataColumn(i_sourceColumn=&i_sourceColumn.
+                              ,i_targetColumn=&i_targetColumn.
+                              );
 %mend _sasunit_render_assertEqualsExp;
 /** \endcond */

@@ -24,11 +24,9 @@
 %macro _sasunit_render_assertLogExp (i_sourceColumn=
                                     ,i_targetColumn=
                                     );
-   IF (upcase(tst_type) ='ASSERTLOG') THEN DO;
-      hlp = "&g_nls_reportDetail_036: " !! trim (scan(&i_sourceColumn.,1,'#')) !! ", &g_nls_reportDetail_037: " !! trim(scan(&i_sourceColumn.,2,'#'));
-      %_sasunit_render_dataColumn (i_sourceColumn=hlp
-                                  ,i_targetColumn=&i_targetColumn.
-                                  );
-   END;
+   hlp = "&g_nls_reportDetail_036: " !! trim (scan(&i_sourceColumn.,1,'#')) !! ", &g_nls_reportDetail_037: " !! trim(scan(&i_sourceColumn.,2,'#'));
+   %_sasunit_render_dataColumn (i_sourceColumn=hlp
+                               ,i_targetColumn=&i_targetColumn.
+                               );
 %mend _sasunit_render_assertLogExp;
 /** \endcond */

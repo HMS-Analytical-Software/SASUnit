@@ -24,9 +24,7 @@
 %macro _sasunit_render_assertColumnsAct (i_sourceColumn=
                                         ,i_targetColumn=
                                         );
-   IF (upcase(tst_type) = 'ASSERTCOLUMNS') THEN DO;
-      PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportDetail_016" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_cmp_act.html">' "&g_nls_reportDetail_038" '</a><br />';
-      PUT '                          <a class="lightlink" title="' "&g_nls_reportDetail_017" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_cmp_rep.html">' "&g_nls_reportDetail_039" '</a><br />' &i_sourceColumn. '</td>';
-   END;
+   PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportDetail_016" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_cmp_act.html">' "&g_nls_reportDetail_038" '</a><br />';
+   PUT '                          <a class="lightlink" title="' "&g_nls_reportDetail_017" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_cmp_rep.html">' "&g_nls_reportDetail_039" '</a><br />' &i_sourceColumn. '</td>';
 %mend _sasunit_render_assertColumnsAct;
 /** \endcond */

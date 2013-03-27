@@ -24,8 +24,6 @@
 %macro _sasunit_render_assertColumnsExp (i_sourceColumn=
                                         ,i_targetColumn=
                                         );
-   IF (upcase(tst_type) = 'ASSERTCOLUMNS') THEN DO;
-      PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportDetail_015" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_cmp_exp.html">' "&g_nls_reportDetail_038" '</a><br /><br />' &i_sourceColumn. '</td>';
-   END;
+   PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportDetail_015" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_cmp_exp.html">' "&g_nls_reportDetail_038" '</a><br /><br />' &i_sourceColumn. '</td>';
 %mend _sasunit_render_assertColumnsExp;
 /** \endcond */

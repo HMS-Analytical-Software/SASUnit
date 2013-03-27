@@ -26,11 +26,9 @@
                                         ,i_format=_NONE_
                                         ,i_targetColumn=
                                         );
-   IF (upcase(tst_type) = 'ASSERTPERFORMANCE') THEN DO;
-      %_sasunit_render_dataColumn (i_sourceColumn=&i_sourceColumn.
-                                  ,i_format      =&i_format.
-                                  ,i_targetColumn=&i_targetColumn.
-                                  );
-   END;
+   %_sasunit_render_dataColumn (i_sourceColumn=&i_sourceColumn.
+                               ,i_format      =&i_format.
+                               ,i_targetColumn=&i_targetColumn.
+                               );
 %mend _sasunit_render_assertPerformExp;
 /** \endcond */

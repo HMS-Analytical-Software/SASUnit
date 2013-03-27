@@ -79,6 +79,17 @@
    ODS HTML FILE="&o_html/&i_scnid._&i_casid._&i_tstid._library_rep.html" stylesheet=(url="SAS_SASUnit.css");
       %if (%sysfunc (exist (_test._library_rep, DATA))) %then %do;
          %local l_LibraryCheck l_CompareCheck l_id l_ExcludeList;
+		 
+	   %*** format results for report ***;
+	   data WORK._library_rep;
+		  set _test._library_rep;
+		  SELECT (CompareFailed);
+			 WHEN (0) icon_column='<img src="ok.png" alt="OK"></img>';
+			 WHEN (1) icon_column='<img src="error.png" alt="Fehler"></img>';
+			 OTHERWISE icon_column='&nbsp;';
+		  END;
+	   run;
+		 
          proc sql noprint;
             select    i_LibraryCheck,  i_CompareCheck,  i_id,  i_ExcludeList 
                 into :l_LibraryCheck, :l_CompareCheck, :l_id, :l_ExcludeList
@@ -94,7 +105,7 @@
          %if (&l_ExcludeList. ne _NONE_) %then %do;
             Title4 h=3 "&g_nls_reportLibrary_002: %trim (&l_ExcludeList.)";
          %end;
-         proc report data=_test._library_rep nowd missing
+         proc report data=WORK._library_rep nowd missing
             style (column)={vjust=center};
             columns memname
                     ("&g_nls_reportLibrary_003" CmpLibname CmpObs CmpNVar)

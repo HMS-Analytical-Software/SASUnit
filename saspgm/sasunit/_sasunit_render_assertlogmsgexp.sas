@@ -24,15 +24,13 @@
 %macro _sasunit_render_assertLogMsgExp (i_sourceColumn=
                                        ,i_targetColumn=
                                        );
-   IF (upcase(tst_type) ='ASSERTLOGMSG') THEN DO;
-      hlp  = substr(&i_sourceColumn.,1,1); 
-      if hlp='1' then hlp="&g_nls_reportDetail_042"; 
-      else            hlp="&g_nls_reportDetail_043"; 
-      &i_sourceColumn. = substr(&i_sourceColumn.,2);
-      hlp = "&g_nls_reportDetail_044 " !! trim(&i_sourceColumn.) !! " " !! trim(hlp);
-      %_sasunit_render_dataColumn (i_sourceColumn=hlp
-                                  ,i_targetColumn=&i_targetColumn.
-                                  );
-   END;
+   hlp  = substr(&i_sourceColumn.,1,1); 
+   if hlp='1' then hlp="&g_nls_reportDetail_042"; 
+   else            hlp="&g_nls_reportDetail_043"; 
+   &i_sourceColumn. = substr(&i_sourceColumn.,2);
+   hlp = "&g_nls_reportDetail_044 " !! trim(&i_sourceColumn.) !! " " !! trim(hlp);
+   %_sasunit_render_dataColumn (i_sourceColumn=hlp
+                               ,i_targetColumn=&i_targetColumn.
+                               );
 %mend _sasunit_render_assertLogMsgExp;
 /** \endcond */
