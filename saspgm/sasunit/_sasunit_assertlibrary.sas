@@ -250,7 +250,7 @@
       from work._ergebnis;
    quit;
 
-   %_sasunit_getScenarioTestId (i_scnid=&g_scnid, o_casid=l_casid, o_tstid=l_tstid);
+   %_sasunit_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
    %*** create subfolder ***;
    %_sasunit_createTestSubfolder (i_assertType   =assertLibrary

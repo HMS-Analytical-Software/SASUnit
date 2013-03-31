@@ -68,6 +68,7 @@
 
    %LOCAL l_casid l_tstid ;
    %_sasunit_getScenarioTestId (i_scnid=&g_scnid, o_casid=l_casid, o_tstid=l_tstid);
+   /* o_tstid -> r_tstid */
 
    %local l_actual_ok l_expected_ok l_result l_path_actual l_path_expected _sysinfo l_col_names l_id_col l_counter l_id l_rc;
 

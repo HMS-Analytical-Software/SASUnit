@@ -13,7 +13,25 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
-      
+
+/*-- switch between example database and real database -----------------------*/
+%macro switch();
+%global state save_root save_target;
+%if &state= or &state=0 %then %do;
+   %let state=1;
+   %let save_root=&g_root;
+   %let save_target=&g_target;
+   %let g_root=&g_work;
+   %let g_target=&g_work;
+%end;
+%else %do;
+   %let state=0;
+   %let g_root=&save_root;
+   %let g_target=&save_target;
+%end;
+libname target "&g_target";
+%mend switch;
+
 *** Testcase 1 ***; 
 %initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with missing parameters);
 
@@ -27,33 +45,33 @@
 %endTestcase();
 
 *** Testcase 2 ***; 
-%initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with missing parameter o_casid);
+%initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with missing parameter r_casid);
 
 %_sasunit_getScenarioTestId(i_scnid=1);
 
 %endTestcall;
 
 %assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR: Please specify a value for o_casid.);
+%assertLogmsg (i_logmsg=ERROR: Please specify a value for r_casid.);
 
 %endTestcase();
 
 *** Testcase 3 ***; 
-%initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with missing parameter o_tstid);
+%initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with missing parameter r_tstid);
 
-%_sasunit_getScenarioTestId(i_scnid=1, o_casid=hugo);
+%_sasunit_getScenarioTestId(i_scnid=1, r_casid=hugo);
 
 %endTestcall;
 
 %assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR: Please specify a value for o_tstid.);
+%assertLogmsg (i_logmsg=ERROR: Please specify a value for r_tstid.);
 
 %endTestcase();
 
 *** Testcase 4 ***; 
-%initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with undeclared parameter o_casid);
+%initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with undeclared parameter r_casid);
 
-%_sasunit_getScenarioTestId(i_scnid=1, o_casid=hugo, o_tstid=fritz);
+%_sasunit_getScenarioTestId(i_scnid=1, r_casid=hugo, r_tstid=fritz);
 
 %endTestcall;
 
@@ -62,11 +80,11 @@
 
 %endTestcase();
 
-%global r_casid;
+%global ret_casid;
 *** Testcase 5 ***; 
-%initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with undeclared parameter o_tstid);
+%initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with undeclared parameter r_tstid);
 
-%_sasunit_getScenarioTestId(i_scnid=1, o_casid=r_casid, o_tstid=fritz);
+%_sasunit_getScenarioTestId(i_scnid=1, r_casid=ret_casid, r_tstid=fritz);
 
 %endTestcall;
 
@@ -75,28 +93,21 @@
 
 %endTestcase();
 
-%global r_tstid;
-*** Testcase 6 ***; 
-%initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with invalid i_libref);
-
-%_sasunit_getScenarioTestId(i_scnid=1, o_casid=r_casid, o_tstid=r_tstid, i_libref=hugo);
-
-%endTestcall;
-
-%assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR: Libref hugo was not assigned. Start this macro only within SASUnit.);
-
-%endTestcase();
+%global ret_tstid;
 
 *** Testcase 7 ***; 
 %initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with inexisting tables cas);
 
-%_sasunit_getScenarioTestId(i_scnid=1, o_casid=r_casid, o_tstid=r_tstid, i_libref=WORK);
+/*-- switch to example database -----------------------*/
+%switch();
+%_sasunit_getScenarioTestId(i_scnid=1, r_casid=ret_casid, r_tstid=ret_tstid);
+/*-- switch to real database -----------------------*/
+%switch();
 
 %endTestcall;
 
 %assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR: Table WORK.cas does not exist. Start this macro only within SASUnit.);
+%assertLogmsg (i_logmsg=ERROR: Table target.cas does not exist. Start this macro only within SASUnit.);
 
 %endTestcase();
 
@@ -106,12 +117,16 @@ run;
 *** Testcase 8 ***; 
 %initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with inexisting tables tst);
 
-%_sasunit_getScenarioTestId(i_scnid=1, o_casid=r_casid, o_tstid=r_tstid, i_libref=WORK);
+/*-- switch to example database -----------------------*/
+%switch();
+%_sasunit_getScenarioTestId(i_scnid=1, r_casid=ret_casid, r_tstid=ret_tstid);
+/*-- switch to real database -----------------------*/
+%switch();
 
 %endTestcall;
 
 %assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR: Table WORK.tst does not exist. Start this macro only within SASUnit.);
+%assertLogmsg (i_logmsg=ERROR: Table target.tst does not exist. Start this macro only within SASUnit.);
 
 %endTestcase();
 
@@ -121,12 +136,16 @@ run;
 *** Testcase 9 ***; 
 %initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with invalid dataset cas);
 
-%_sasunit_getScenarioTestId(i_scnid=11, o_casid=r_casid, o_tstid=r_tstid, i_libref=WORK);
+/*-- switch to example database -----------------------*/
+%switch();
+%_sasunit_getScenarioTestId(i_scnid=11, r_casid=ret_casid, r_tstid=ret_tstid);
+/*-- switch to real database -----------------------*/
+%switch();
 
 %endTestcall;
 
 %assertLog(i_errors=2,i_warnings=0);
-%assertEquals (i_actual=&r_casid.,i_expected=_ERROR_, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_casid.,i_expected=_ERROR_, i_desc=Values must be equal);
 %assertLogmsg (i_logmsg=ERROR: Scenario was not found in the test database.);
 %assertLogmsg (i_logmsg=Assert may not be called prior to initTestcase.);
 
@@ -143,12 +162,16 @@ run;
 *** Testcase 10 ***; 
 %initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with inexisting scenario);
 
-%_sasunit_getScenarioTestId(i_scnid=11, o_casid=r_casid, o_tstid=r_tstid, i_libref=WORK);
+/*-- switch to example database -----------------------*/
+%switch();
+%_sasunit_getScenarioTestId(i_scnid=11, r_casid=ret_casid, r_tstid=ret_tstid);
+/*-- switch to real database -----------------------*/
+%switch();
 
 %endTestcall;
 
 %assertLog(i_errors=1,i_warnings=0);
-%assertEquals (i_actual=&r_casid.,i_expected=_ERROR_,i_desc=Check that error occured);
+%assertEquals (i_actual=&ret_casid.,i_expected=_ERROR_,i_desc=Check that error occured);
 
 %endTestcase();
 
@@ -163,13 +186,17 @@ run;
 *** Testcase 11 ***; 
 %initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call with existing scenario without asserts);
 
-%_sasunit_getScenarioTestId(i_scnid=3, o_casid=r_casid, o_tstid=r_tstid, i_libref=WORK);
+/*-- switch to example database -----------------------*/
+%switch();
+%_sasunit_getScenarioTestId(i_scnid=3, r_casid=ret_casid, r_tstid=ret_tstid);
+/*-- switch to real database -----------------------*/
+%switch();
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertEquals (i_actual=&r_casid.,i_expected=3, i_desc=Values must be equal);
-%assertEquals (i_actual=&r_tstid.,i_expected=1, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_casid.,i_expected=3, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_tstid.,i_expected=1, i_desc=Values must be equal);
 
 %endTestcase();
 
@@ -185,65 +212,85 @@ run;
 *** Testcase 12 ***; 
 %initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call for existing scenario 1);
 
-%_sasunit_getScenarioTestId(i_scnid=1, o_casid=r_casid, o_tstid=r_tstid, i_libref=WORK);
+/*-- switch to example database -----------------------*/
+%switch();
+%_sasunit_getScenarioTestId(i_scnid=1, r_casid=ret_casid, r_tstid=ret_tstid);
+/*-- switch to real database -----------------------*/
+%switch();
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertEquals (i_actual=&r_casid.,i_expected=1, i_desc=Values must be equal);
-%assertEquals (i_actual=&r_tstid.,i_expected=2, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_casid.,i_expected=1, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_tstid.,i_expected=2, i_desc=Values must be equal);
 
 %endTestcase();
 
 *** Testcase 13 ***; 
 %initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call for existing scenario 2);
 
-%_sasunit_getScenarioTestId(i_scnid=2, o_casid=r_casid, o_tstid=r_tstid, i_libref=WORK);
+/*-- switch to example database -----------------------*/
+%switch();
+%_sasunit_getScenarioTestId(i_scnid=2, r_casid=ret_casid, r_tstid=ret_tstid);
+/*-- switch to real database -----------------------*/
+%switch();
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertEquals (i_actual=&r_casid.,i_expected=2, i_desc=Values must be equal);
-%assertEquals (i_actual=&r_tstid.,i_expected=3, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_casid.,i_expected=2, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_tstid.,i_expected=3, i_desc=Values must be equal);
 
 %endTestcase();
 
 *** Testcase 14 ***; 
 %initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call for existing scenario 3);
 
-%_sasunit_getScenarioTestId(i_scnid=3, o_casid=r_casid, o_tstid=r_tstid, i_libref=WORK);
+/*-- switch to example database -----------------------*/
+%switch();
+%_sasunit_getScenarioTestId(i_scnid=3, r_casid=ret_casid, r_tstid=ret_tstid);
+/*-- switch to real database -----------------------*/
+%switch();
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertEquals (i_actual=&r_casid.,i_expected=3, i_desc=Values must be equal);
-%assertEquals (i_actual=&r_tstid.,i_expected=4, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_casid.,i_expected=3, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_tstid.,i_expected=4, i_desc=Values must be equal);
 
 %endTestcase();
 
 *** Testcase 15 ***; 
 %initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call for existing scenario 4);
 
-%_sasunit_getScenarioTestId(i_scnid=4, o_casid=r_casid, o_tstid=r_tstid, i_libref=WORK);
+/*-- switch to example database -----------------------*/
+%switch();
+%_sasunit_getScenarioTestId(i_scnid=4, r_casid=ret_casid, r_tstid=ret_tstid);
+/*-- switch to real database -----------------------*/
+%switch();
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertEquals (i_actual=&r_casid.,i_expected=4, i_desc=Values must be equal);
-%assertEquals (i_actual=&r_tstid.,i_expected=5, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_casid.,i_expected=4, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_tstid.,i_expected=5, i_desc=Values must be equal);
 
 %endTestcase();
 
 *** Testcase 16 ***; 
 %initTestcase(i_object=_sasunit_getScenarioTestId.sas, i_desc=call for existing scenario 5);
 
-%_sasunit_getScenarioTestId(i_scnid=5, o_casid=r_casid, o_tstid=r_tstid, i_libref=WORK);
+/*-- switch to example database -----------------------*/
+%switch();
+%_sasunit_getScenarioTestId(i_scnid=5, r_casid=ret_casid, r_tstid=ret_tstid);
+/*-- switch to real database -----------------------*/
+%switch();
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertEquals (i_actual=&r_casid.,i_expected=5, i_desc=Values must be equal);
-%assertEquals (i_actual=&r_tstid.,i_expected=6, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_casid.,i_expected=5, i_desc=Values must be equal);
+%assertEquals (i_actual=&ret_tstid.,i_expected=6, i_desc=Values must be equal);
 
 %endTestcase();
 
