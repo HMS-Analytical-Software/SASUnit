@@ -19,30 +19,28 @@
 
 */ /** \cond */ 
 
+
 %MACRO _sasunit_reportTabsHTML (
    i_tabnames
   ,i_pages
   ,i_current = 1
 );
 
-   LENGTH _sasunit_reportTabsHTML $256;
-   PUT '<div class="tabs">';
-   PUT '  <ul>';
-%LOCAL i;
-%LET i=1;
-%DO %WHILE(%sysfunc(scanq(&i_tabnames, &i)) NE );
-   _sasunit_reportTabsHTML = %sysfunc(scanq(&i_pages, &i));
-   PUT '  <li ' @;
-   %IF &i=&i_current %THEN %DO;
-      PUT 'class="current"' @;
-   %END;
-   PUT '><a href="' _sasunit_reportTabsHTML +(-1) @;
-   _sasunit_reportTabsHTML = %sysfunc(scanq(&i_tabnames, &i));
-   PUT '"><span>' _sasunit_reportTabsHTML +(-1) '</span></a></li>';
-   %LET i=%eval(&i+1);
-%END;
-   PUT '  </ul>';
-   PUT '</div>';
+   %let l_string=^{RAW <div class="tabs"><ul>;
    
+   %LOCAL i l_class l_string;
+   %LET i=1;
+   %DO %WHILE(%sysfunc(scanq(&i_tabnames, &i)) NE );
+      %LET l_class=;
+      %IF &i=&i_current %THEN %DO;
+         %let l_class=class="current";
+      %END;
+      %let l_string=&l_string. <li &l_class.><a href="%sysfunc(compress(%sysfunc(scanq(&i_pages, &i)),%str(%")))"><span>%sysfunc(compress(%sysfunc(scanq(&i_tabnames, &i)),%str(%")))</span></a></li>;
+      %LET i=%eval(&i+1);
+   %END;
+
+   %let l_string=&l_string. </ul></div>};
+   %put l_string=&l_string.;
+   title2 %sysfunc(quote(&l_string.));
 %MEND _sasunit_reportTabsHTML;
 /** \endcond */

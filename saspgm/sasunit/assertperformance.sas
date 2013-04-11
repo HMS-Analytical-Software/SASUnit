@@ -56,7 +56,7 @@ PROC SQL NOPRINT;
 QUIT;
 
 /* determine result */
-%LET l_result = %SYSEVALF(NOT(&l_cas_runtime <= &i_expected)); 
+%LET l_result = %SYSEVALF((NOT(&l_cas_runtime <= &i_expected))*2); 
                /* evaluation negated because %_sasunit_asserts awaits 0 for l_result if the assertion is true */
 
 %_sasunit_asserts(

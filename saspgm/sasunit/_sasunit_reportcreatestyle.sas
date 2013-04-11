@@ -52,6 +52,7 @@
             'fgTcgNonCovered' = cxFF8020
             'fgTcgComment'    = cx828282
             'fgTcgNonContrib' = cx8020FF
+            'fgErrorCount'    = red
             ;
          style colors
             "Abstract colors used in the default style" /
@@ -202,7 +203,7 @@
             activelinkcolor     = colors('link1')
             visitedlinkcolor    = colors('link1')
             textdecoration      = _undef_
-            outputwidth         = 100%
+            outputwidth         = 95%
             ;
          style Body from Document
             "Controls the Body file." /
@@ -240,7 +241,7 @@
             leftmargin = 8;
          style Date from Container
             "Abstract. Controls how date fields look." /
-            outputwidth = 100%
+            outputwidth = 95%
             background = colors('contentbg')
             foreground = colors('contentfg');
          style BodyDate from Date
@@ -317,7 +318,7 @@
             "Controls container for system page title and system page footer." /
             rules = NONE                                                         
             frame = VOID                                                         
-            outputwidth = 100%                                                   
+            outputwidth = 95%                                                   
             cellpadding = 1                                                      
             cellspacing = 1                                                      
             borderwidth = 0;
@@ -325,7 +326,7 @@
             "Controls container for procedure defined titles and notes." /
             rules = NONE                                                         
             frame = VOID                                                         
-            outputwidth = 100%                                                   
+            outputwidth = 95%                                                   
             cellpadding = 1                                                      
             cellspacing = 1                                                      
             borderwidth = 0;
@@ -339,7 +340,7 @@
             background = colors('Docbg')
             rules = NONE                                                         
             frame = VOID                                                         
-            outputwidth = 100%                                                   
+            outputwidth = 95%                                                   
             cellpadding = 1                                                      
             cellspacing = 1                                                      
             borderwidth = 0;
@@ -348,7 +349,8 @@
             font = Fonts('TitleFont');
          style SystemFooter from TitlesAndFooters                                
             "Controls system footer text." /
-            font = Fonts('TitleFont');
+            font = Fonts('TitleFont')
+            fontsize = 9pt;
          style PageNo from TitlesAndFooters                                      
             "Controls page numbers for printer" /
             vjust = T                                                            
@@ -759,7 +761,7 @@
             backgroundcolor=colors('docbg')
          ;
          style blindHeader from header "Header cell in a blind Table" /
-            borderwidth=0
+            borderwidth=0px
             backgroundcolor=colors('docbg')
             color=colors('docbg')
             fontsize=10%
@@ -785,6 +787,15 @@
          ;
          style blindFixedFontData from blindData "Fixed font data cell in a blind Table" /
             font =fonts('BatchFixedFont');
+         ;
+         style logerrcountmsg from blindData "Count of scenario error messages in test case overview" /
+            color=color_list('fgErrorCount')
+            font_weight = Bold                                                   
+         ;
+         style datacolumnerror "Renders an error in a column" /
+            color=color_list('fgErrorCount')
+            borderwidth=0px
+            borderspacing=0px
          ;
       end;
    run;

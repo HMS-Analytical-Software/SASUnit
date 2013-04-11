@@ -79,7 +79,7 @@
    %let l_actual_ok=%sysfunc (libref (&i_actual.));
    %if (&l_actual_ok. > 0) %then %do;
        %put &g_error: Libref i_actual (&i_actual.) is invalid!;
-       %let l_rc=1;
+       %let l_rc=2;
        %goto Update;
    %end;
 
@@ -87,14 +87,14 @@
    %let l_expected_ok=%sysfunc (libref (&i_expected.));
    %if (&l_expected_ok. > 0) %then %do;
        %put &g_error: Libref i_expected (&i_expected.) is invalid!;
-       %let l_rc=1;
+       %let l_rc=2;
        %goto Update;
    %end;
 
    %*** check for equal librefs ***;
    %if (&i_actual. = &i_expected.) %then  %do;
        %put &g_error: Librefs are identical!;
-       %let l_rc=1;
+       %let l_rc=2;
        %goto Update;
    %end;
 
@@ -103,7 +103,7 @@
    %let l_path_expected = %sysfunc (pathname (&i_expected.));
    %if ("&l_path_actual."  = "&l_path_expected.") %then %do;
        %put &g_error: paths are identical!;
-       %let l_rc=1;
+       %let l_rc=2;
        %goto Update;
    %end;
 
@@ -111,7 +111,7 @@
    %let i_LibraryCheck = %upcase (%trim(&i_LibraryCheck.));
    %if (&i_LibraryCheck. ne STRICT AND &i_LibraryCheck. ne MORETABLES) %then %do;
        %put &g_error: Value of i_LibraryCheck (%trim(&i_LibraryCheck.)) is invalid!;
-       %let l_rc=1;
+       %let l_rc=2;
        %goto Update;
    %end;
 
@@ -120,7 +120,7 @@
    %if (&i_CompareCheck. ne STRICT AND &i_CompareCheck. ne MORECOLUMNS 
         AND &i_CompareCheck. ne MOREOBS AND &i_CompareCheck. ne MORECOLSNOBS) %then %do;
        %put &g_error: Value of i_CompareCheck (%trim(&i_CompareCheck.)) is invalid!;
-       %let l_rc=1;
+       %let l_rc=2;
        %goto Update;
    %end;
 
@@ -138,6 +138,7 @@
                            ,i_fuzz        =&i_fuzz.
                            ,o_result      =l_rc
                            );
+   %let l_rc=%eval(&l_rc.*2);
 
 %Update:;
    *** update result in test database ***;

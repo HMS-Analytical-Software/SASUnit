@@ -28,15 +28,14 @@
                                 ,i_format=_NONE_
                                 ,i_linkColumn=_NONE_
                                 ,i_linkTitle=_NONE_
-                                ,i_targetColumn=
+                                ,o_targetColumn=
                                 );
 
       %_sasunit_render_dataColumn (i_sourceColumn=&i_sourceColumn.
                                   ,i_format=&i_format.
                                   ,i_linkColumn=&i_linkColumn.
                                   ,i_linkTitle=&i_linkTitle.
-                                  ,i_targetColumn=&i_targetColumn.
-                                  ,i_columnType=idcolumn
+                                  ,o_targetColumn=&o_targetColumn.
                                   );
 %mend _sasunit_render_idcolumn;
 /** \endcond */

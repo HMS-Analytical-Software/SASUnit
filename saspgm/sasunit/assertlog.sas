@@ -66,10 +66,10 @@ QUIT;
 )
 
 %LOCAL l_result;
-%LET l_result = %eval (
+%LET l_result = %eval ((
       &l_error_count   NE &i_errors
    OR &l_warning_count NE &i_warnings
-   );
+   )*2);
 
 %_sasunit_asserts(
     i_type     = assertLog

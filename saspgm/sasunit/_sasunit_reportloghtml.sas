@@ -5,6 +5,8 @@
 
                Fehler- und Warnmeldungen werden markiert und verlinkt
 
+   \todo render results using ODS
+
    \param i_log     Logdatei mit kpl. Pfad
    \param i_title   String für Titel
    \param o_html    html-Datei Ausgabe kpl. Pfad

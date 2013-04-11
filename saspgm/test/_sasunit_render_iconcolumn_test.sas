@@ -18,88 +18,162 @@
 %LET g_nls_reportDetail_025=Error occured;
 %LET g_nls_reportDetail_026=Manual check;
 %LET g_nls_reportDetail_027=Undefined result;
+proc format lib=work;
+   value PictName     0 = "&g_sasunit./saspgm/sasunit/html/ok.png"
+                      1 = "&g_sasunit./saspgm/sasunit/html/manual.png"
+                      2 = "&g_sasunit./saspgm/sasunit/html/error.png"
+                      OTHER="?????";
+   value PictNameHTML 0 = "ok.png"
+                      1 = "manual.png"
+                      2 = "error.png"
+                      OTHER="?????";
+   value PictDesc     0 = "OK"
+                      1 = "&g_nls_reportDetail_026"
+                      2 = "&g_nls_reportDetail_025"
+                      OTHER = "&g_nls_reportDetail_027";
+run;
 
 *** Testcase 1 ***; 
-%initTestcase(i_object=_sasunit_render_iconColumn.sas, i_desc=Call with missing value);
-data _null_;
+data work.input;
+   Length _formatName $80 _output $1000;
    Num=.;
-   %_sasunit_render_iconColumn (i_sourceColumn=Num);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! """] }";
+run;
+%initTestcase(i_object=_sasunit_render_iconColumn.sas, i_desc=Call with missing value);
+data work.actual;
+   set work.input;
+   %_sasunit_render_iconColumn (i_sourceColumn=Num,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.iconcolumn.><img src=....... alt=.Undefined result.><.img><.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 2 ***; 
-%initTestcase(i_object=_sasunit_render_iconColumn.sas, i_desc=Call with negative value);
-data _null_;
+data work.input;
+   Length _formatName $80 _output $1000;
    Num=-1;
-   %_sasunit_render_iconColumn (i_sourceColumn=Num);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! """] }";
+run;
+%initTestcase(i_object=_sasunit_render_iconColumn.sas, i_desc=Call with negative value);
+data work.actual;
+   set work.input;
+   %_sasunit_render_iconColumn (i_sourceColumn=Num,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.iconcolumn.><img src=....... alt=.Undefined result.><.img><.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 3 ***; 
-%initTestcase(i_object=_sasunit_render_iconColumn.sas, i_desc=Call with result OK);
-data _null_;
+data work.input;
+   Length _formatName $80 _output $1000;
    Num=0;
-   %_sasunit_render_iconColumn (i_sourceColumn=Num);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! """] }";
+run;
+%initTestcase(i_object=_sasunit_render_iconColumn.sas, i_desc=Call with result OK);
+data work.actual;
+   set work.input;
+   %_sasunit_render_iconColumn (i_sourceColumn=Num,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.iconcolumn.>.img src=.ok.png. alt=.OK.><.img><.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 4 ***; 
-%initTestcase(i_object=_sasunit_render_iconColumn.sas, i_desc=Call with result Manual);
-data _null_;
+data work.input;
+   Length _formatName $80 _output $1000;
    Num=2;
-   %_sasunit_render_iconColumn (i_sourceColumn=Num);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! """] }";
+run;
+%initTestcase(i_object=_sasunit_render_iconColumn.sas, i_desc=Call with result Manual);
+data work.actual;
+   set work.input;
+   %_sasunit_render_iconColumn (i_sourceColumn=Num,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.iconcolumn.>.img src=.manual.png. alt=.Manual check.><.img><.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 5 ***; 
-%initTestcase(i_object=_sasunit_render_iconColumn.sas, i_desc=Call with result Error);
-data _null_;
+data work.input;
+   Length _formatName $80 _output $1000;
    Num=1;
-   %_sasunit_render_iconColumn (i_sourceColumn=Num);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! """] }";
+run;
+%initTestcase(i_object=_sasunit_render_iconColumn.sas, i_desc=Call with result Error);
+data work.actual;
+   set work.input;
+   %_sasunit_render_iconColumn (i_sourceColumn=Num,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.iconcolumn.>.img src=.error.png. alt=.Error occured.><.img><.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 6 ***; 
-%initTestcase(i_object=_sasunit_render_iconColumn.sas, i_desc=Call with high value);
-data _null_;
+data work.input;
+   Length _formatName $80 _output $1000;
    Num=3;
-   %_sasunit_render_iconColumn (i_sourceColumn=Num);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! """] }";
+run;
+%initTestcase(i_object=_sasunit_render_iconColumn.sas, i_desc=Call with high value);
+data work.actual;
+   set work.input;
+   %_sasunit_render_iconColumn (i_sourceColumn=Num,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.iconcolumn.>.img src=....... alt=.Undefined result.><.img><.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 

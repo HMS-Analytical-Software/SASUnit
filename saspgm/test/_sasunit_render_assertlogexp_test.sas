@@ -18,42 +18,55 @@
 %LET G_NLS_REPORTDETAIL_037=assertLogExp; 
 
 *** Testcase 1 ***; 
-%initTestcase(i_object=_sasunit_render_assertLogExp.sas, i_desc=Sourcecolumn contains missing value);
-data _null_;
-   Length text $80;
+data work._input;
+   length href href_act href_rep text _formatName $80 hlp _output $400;
    Text="";
-   tst_type="assertLog";
    scn_id=1;
    cas_id=1;
    tst_id=1;
-   %_sasunit_render_assertLogExp (i_sourceColumn=Text);
+run;
+data work.expected;
+   set work._input;
+   _output  = Text;
+   hlp      = _output;
+run;
+%initTestcase(i_object=_sasunit_render_assertLogExp.sas, i_desc=Sourcecolumn contains missing value);
+data work.actual;
+   set work._input;
+   %_sasunit_render_assertLogExp (i_sourceColumn=Text,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn..assertLogExp:  . assertLogExp: ..td.);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 2 ***; 
-%initTestcase(i_object=_sasunit_render_assertLogExp.sas, i_desc=Sourcecolumn contains non-missing value);
-data _null_;
-   Length text $80;
+data work._input;
+   length href href_act href_rep text _formatName $80 hlp _output $400;
    Text="08#AB";
-   tst_type="assertLog";
    scn_id=1;
    cas_id=1;
    tst_id=1;
-   %_sasunit_render_assertLogExp (i_sourceColumn=Text);
+run;
+data work.expected;
+   set work._input;
+   _output  = "assertLogExp: " !! trim(scan(Text,1,'#')) !! ", assertLogExp: " !! trim(scan(Text,2,'#'));
+   hlp      = _output;
+run;
+%initTestcase(i_object=_sasunit_render_assertLogExp.sas, i_desc=Sourcecolumn contains non-missing value);
+data work.actual;
+   set work._input;
+   %_sasunit_render_assertLogExp (i_sourceColumn=Text,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn..assertLogExp: 08. assertLogExp: AB ..td.);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
-
 
 /** \endcond */

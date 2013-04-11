@@ -14,7 +14,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */
-
+%let g_root=C:\projects\sasunit;
 %include "C:\projects\sasunit\saspgm\sasunit\_sasunit_reportcreatestyle.sas";
 %_sasunit_reportCreateStyle;
 
@@ -25,8 +25,8 @@ ods listing close;
 *ods html(3)file="C:\TEMP\SASUNIT_HTML_mit_Styleangabe.html" style=styles.sasunit stylesheet=(url="SAS_SASUnit.css");
 *ods htmlcss(4)file="C:\TEMP\SASUNIT_HTMLCSS_mit_Styleangabe.html" style=styles.sasunit stylesheet=(url="SAS_SASUnit.css");
 * writing Stylesheet *;
-ods html(5)file="C:\TEMP\SASUNIT.html" style=styles.sasunit stylesheet="C:\projects\sasunit\rseources\style\SAS_SASUnit.css"(url="SAS_SASUnit.css");
-*ods html(6)file="C:\TEMP\SASUNIT1.html" style=styles.sasunit stylesheet="C:\projects\sasunit\saspgm\sasunit\html\SAS_SASUnit.css"(url="SAS_SASUnit.css");
+*ods html(5)file="C:\TEMP\SASUNIT.html" style=styles.sasunit stylesheet="C:\projects\sasunit\resources\style\SAS_SASUnit.css"(url="SAS_SASUnit.css");
+ods html(6)file="C:\TEMP\SASUNIT1.html" style=styles.sasunit stylesheet="C:\projects\sasunit\saspgm\sasunit\html\SAS_SASUnit.css"(url="SAS_SASUnit.css");
 proc report data=scenarios nowd;
    column scn_id scn_desc scn_path scn_start duration PictureName_html;
 

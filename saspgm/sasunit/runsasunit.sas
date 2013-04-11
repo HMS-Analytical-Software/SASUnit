@@ -342,26 +342,14 @@ RUN;
 
       PROC SQL NOPRINT;
          /* determine results of the test cases */
-         SELECT count(*) INTO :l_result0 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=0;
-         SELECT count(*) INTO :l_result1 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=1;
-         SELECT count(*) INTO :l_result2 FROM target.cas WHERE cas_scnid=&l_scnid AND cas_res=2;
-         
-         %IF &l_result1 GT 0 OR &l_error_count. GT 0 %THEN %DO;
-            %LET l_result=1; /* error occured */
-         %END;   
-         %ELSE %IF &l_result2 GT 0 %THEN %DO;
-            %LET l_result=2; /* manual occured */
-         %END;   
-         %ELSE %IF %EVAL(%SYSFUNC(sum(&l_result0., &l_result1., &l_result2.)) EQ 0) %THEN %DO;
-            %LET l_result=1; /* no test cases -> show as error occurred */
-         %END;
-         %ELSE %IF &l_error_count. GT 0 %THEN %DO;
-            %LET l_result=1; /* error(s) in scenario log -> show as error occurred */
-         %END;
-         %ELSE %DO;
-            %LET l_result=0; /* everything OK */
-         %END;
+         %*** Treat missing scenario as error ***;
+         %let l_result=2;
 
+         SELECT max (cas_res) INTO :l_result FROM target.cas WHERE cas_scnid=&l_scnid;
+
+         %*** Treat missing scenario as failed and treat scenario wit errors in scenario log as failed ***;
+         %if (&l_result. = . or &l_error_count. > 0) %then %let l_result=2;
+         
          UPDATE target.scn
             SET 
                 scn_end          = %sysfunc(datetime())
@@ -428,7 +416,7 @@ RUN;
                   ,.
                   ,.
                   ,.
-                  ,1
+                  ,2
                )
             ;
          QUIT;

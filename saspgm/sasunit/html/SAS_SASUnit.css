@@ -163,7 +163,7 @@
   font-weight: normal;
   margin-left: 8px;
   margin-right: 8px;
-  width: 100%;
+  width: 95%;
 }
 .bodydate
 {
@@ -305,7 +305,7 @@
   list-style-type: decimal;
   margin-left: 8px;
   margin-right: 8px;
-  width: 100%;
+  width: 95%;
 }
 .contentsdate
 {
@@ -352,6 +352,12 @@
   padding-right: 10px;
   padding-top: 2px;
   vertical-align: middle;
+}
+.datacolumnerror
+{
+  border: 0px solid #000000;
+  border-spacing: 0px;
+  color: #FF0000;
 }
 .dataemphasis
 {
@@ -485,16 +491,19 @@
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
-  width: 100%;
+  width: 95%;
 }
 a:link {
-color:#000080
+color:#000080;
+text-decoration:none
 }
 a:visited {
-color:#000080
+color:#000080;
+text-decoration:none
 }
 a:active {
-color:#000080
+color:#000080;
+text-decoration:none
 }
 .errorbanner
 {
@@ -705,7 +714,7 @@ color:#000080
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
-  width: 100%;
+  width: 95%;
 }
 .graph
 {
@@ -1088,6 +1097,25 @@ color:#000080
   font-style: normal;
   font-weight: normal;
 }
+.logerrcountmsg
+{
+  background-color: #FFFFFF;
+  border: 0px solid #CCCCCC;
+  color: #FF0000;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size: 9pt;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  vertical-align: middle;
+}
 .note
 {
   background-color: #FFFFFF;
@@ -1158,7 +1186,7 @@ color:#000080
   list-style-type: decimal;
   margin-left: 8px;
   margin-right: 8px;
-  width: 100%;
+  width: 95%;
 }
 .pagesdate
 {
@@ -1515,7 +1543,7 @@ color:#000080
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 16pt;
+  font-size: 9pt;
   font-style: normal;
   font-weight: bold;
 }
@@ -1524,7 +1552,7 @@ color:#000080
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 16pt;
+  font-size: 9pt;
   font-style: normal;
   font-weight: bold;
 }
@@ -1533,7 +1561,7 @@ color:#000080
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 16pt;
+  font-size: 9pt;
   font-style: normal;
   font-weight: bold;
 }
@@ -1542,7 +1570,7 @@ color:#000080
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 16pt;
+  font-size: 9pt;
   font-style: normal;
   font-weight: bold;
 }
@@ -1551,7 +1579,7 @@ color:#000080
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 16pt;
+  font-size: 9pt;
   font-style: normal;
   font-weight: bold;
 }
@@ -1560,7 +1588,7 @@ color:#000080
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 16pt;
+  font-size: 9pt;
   font-style: normal;
   font-weight: bold;
 }
@@ -1569,7 +1597,7 @@ color:#000080
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 16pt;
+  font-size: 9pt;
   font-style: normal;
   font-weight: bold;
 }
@@ -1578,7 +1606,7 @@ color:#000080
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 16pt;
+  font-size: 9pt;
   font-style: normal;
   font-weight: bold;
 }
@@ -1587,7 +1615,7 @@ color:#000080
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 16pt;
+  font-size: 9pt;
   font-style: normal;
   font-weight: bold;
 }
@@ -1596,7 +1624,7 @@ color:#000080
   background-color: #FFFFFF;
   color: #000000;
   font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 16pt;
+  font-size: 9pt;
   font-style: normal;
   font-weight: bold;
 }

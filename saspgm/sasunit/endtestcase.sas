@@ -56,19 +56,11 @@ QUIT;
 %END;
 %LET g_inTestcase=0;
 
-PROC SQL NOPRINT;
-%LOCAL l_result0 l_result1 l_result2;
-/* determine test results */
-   SELECT count(*) INTO :l_result0 FROM target.tst WHERE tst_scnid=&g_scnid AND tst_casid=&l_casid AND tst_res=0;
-   SELECT count(*) INTO :l_result1 FROM target.tst WHERE tst_scnid=&g_scnid AND tst_casid=&l_casid AND tst_res=1;
-   SELECT count(*) INTO :l_result2 FROM target.tst WHERE tst_scnid=&g_scnid AND tst_casid=&l_casid AND tst_res=2;
-QUIT;
-
-/* determine overall result of testcase */
 %LOCAL l_result;
-%IF &l_result1 GT 0 %THEN %LET l_result=1;        /* errors occured */
-%ELSE %IF &l_result2 GT 0 %THEN %LET l_result=2;  /* manual checks occured */
-%ELSE %LET l_result=0;                            /* not errors and no manual checks */
+/* determine test results */
+PROC SQL NOPRINT;
+   SELECT max (tst_res) INTO :l_result FROM target.tst WHERE tst_scnid=&g_scnid AND tst_casid=&l_casid;
+QUIT;
 
 PROC SQL NOPRINT;
    UPDATE target.cas

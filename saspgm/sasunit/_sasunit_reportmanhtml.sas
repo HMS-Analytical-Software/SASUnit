@@ -4,6 +4,8 @@
    \brief      copy reports for assertReport and create frame page for comparison where necessary
                (if two reports have been specified)
 
+   \todo render results using ODS?
+
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$

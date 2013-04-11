@@ -21,16 +21,6 @@
 
 */ /** \cond */ 
 
-/* change log
-   30.01.2013 BB Hint to failed tests and scenarios formated consistently " - must be red!" and " - has to fail!"
-   07.01.2013 AM  corrected errors in test case no. 6 (i_actual older than current SAS session - must be red!)
-   02.01.2013 KL  New test case to check behaviour when comparing different report types.
-   07.02.2008 AM  überarbeitet: 
-                  Umbenennung AssertManual -> AssertReport
-                  2 zusätzliche Testszenarien für Prüfung, ob Bericht auch tatsächlich erzeugt wurde
-                  Umbenennung der Ausgabedateien nachvollzogen
-*/ 
-
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 %initTestcase(i_object=assertreport.sas, i_desc=i_actual as well as i_expected specified)
@@ -56,7 +46,7 @@ i_desc=%str(expected=.pdf, actual=.pdf, result grey/empty, correct title 'Report
 %str(expected=.pdf, actual=.pdf, result grey/empty, correct title 'Report2 - actual' in actual report and 'Report1 - expected' in expected report, tooltips on both links to .pdf correct?))
 %assertDBValue(tst,exp,.pdf)
 %assertDBValue(tst,act,.pdf)
-%assertDBValue(tst,res,2)
+%assertDBValue(tst,res,1)
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_exp.pdf)), i_desc=Report1 - expected copied to testout)
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual copied to testout)
 %endTestcase(i_assertLog=1)
@@ -76,7 +66,7 @@ ods pdf close;
 %str(expected=empty, actual=.pdf, result grey/empty, correct title 'Report2 - actual' in actual report?))
 %assertDBValue(tst,exp,)
 %assertDBValue(tst,act,.pdf)
-%assertDBValue(tst,res,2)
+%assertDBValue(tst,res,1)
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_exp.pdf)), i_desc=Report1 - expected not in testout)
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual copied to testout)
 %endTestcase(i_assertLog=1)
@@ -89,7 +79,7 @@ ods pdf close;
 %assertDBValue(tst,desc,%str(expected=.pdf, actual=missing(red), result is red?))
 %assertDBValue(tst,exp,.pdf)
 %assertDBValue(tst,act,)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_exp.pdf)), i_desc=Report1 - expected copied to testout)
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual not in testout)
 %endTestcase(i_assertLog=0)
@@ -102,7 +92,7 @@ ods pdf close;
 %assertDBValue(tst,desc,%str(expected=, actual=missing(red), result is red?))
 %assertDBValue(tst,exp,)
 %assertDBValue(tst,act,)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_exp.pdf)), i_desc=Report1 - expected not in testout)
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual not in testout)
 %endTestcase(i_assertLog=0)
@@ -115,7 +105,7 @@ ods pdf close;
 %assertDBValue(tst,desc,%str(expected=.pdf, actual=missing(red), result is red?))
 %assertDBValue(tst,exp,.pdf)
 %assertDBValue(tst,act,)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_exp.pdf)), i_desc=Report1 - expected copied to testout)
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual not in testout)
 %endTestcase(i_assertLog=0)
@@ -133,7 +123,7 @@ ods pdf close;
 %assertDBValue(tst,desc,%str(expected=, actual=.pdf, result is grey/empty?))
 %assertDBValue(tst,exp,)
 %assertDBValue(tst,act,.pdf)
-%assertDBValue(tst,res,2)
+%assertDBValue(tst,res,1)
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_exp.pdf)), i_desc=Report1 - expected not in testout)
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.pdf)), i_desc=Report2 - actual copied to testout)
 %endTestcase(i_assertLog=1)
@@ -148,7 +138,7 @@ ods pdf close;
 %str(expected=empty, actual=.sas - not generated anew, result red?))
 %assertDBValue(tst,exp,)
 %assertDBValue(tst,act,.sas)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._man_act.sas)), i_desc=actual copied to testout)
 %endTestcase(i_assertLog=1)
 

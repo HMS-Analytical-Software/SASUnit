@@ -7,6 +7,8 @@
             A html representation of a given macro source code file is generated, 
             showing which lines of code were executed during tests.
 
+   \todo render results using ODS
+
    \version \$Revision$
    \author  \$Author$
    \date    \$Date$
@@ -31,9 +33,9 @@
                          ,i_macroLocation=
                          ,i_mCoverageName=
                          ,i_mCoverageLocation=
-						 ,o_outputFile=
+                         ,o_outputFile=
                          ,o_outputPath=
-						 ,o_resVarName=
+                         ,o_resVarName=
                          );
 
    %local l_MacroName;
@@ -45,12 +47,12 @@
 
    /*** Check existence of input files */
    %IF (NOT %SYSFUNC(FILEEXIST(&i_mCoverageLocation./&l_MCoverageName.)) OR &l_MCoverageName=) %THEN %DO;
-	  %PUT  ERROR: Input file with coverage data does not exist.;
-	  %GOTO _macExit;
+     %PUT  ERROR: Input file with coverage data does not exist.;
+     %GOTO _macExit;
    %END;
    %IF (NOT %SYSFUNC(FILEEXIST(&i_macroLocation./&l_MacroName.)) OR &l_MacroName=) %THEN %DO;
-	  %PUT  ERROR: Input file with macro code does not exist.;
-	  %GOTO _macExit;
+     %PUT  ERROR: Input file with macro code does not exist.;
+     %GOTO _macExit;
    %END;
 
    /*** Read records from flat file and keep only those of given macro ***/
@@ -129,7 +131,7 @@
    /*** Read all lines not explicitly marked as covered ***/
    proc sql noprint;
       select distinct nCounter into :MissingLines separated by ' ' from WORK.rowsOfInputFile 
-	  where nCounter not in (select distinct _line_ from WORK._MCoverage5  where _line_ not eq .);
+     where nCounter not in (select distinct _line_ from WORK._MCoverage5  where _line_ not eq .);
    quit;
 
    /*** If there is an %if-statement with %do and %end an adjustment is made: ***/
@@ -144,9 +146,9 @@
       infile "&i_macroLocation./&l_MacroName.";
       input;
       if (index (upcase (_INFILE_), "%nrstr(%MACRO )%scan(%upcase(&l_MacroName.),1,.)")) then do;
-	     if not(1 in (&MissingLines.)) then do;
-	        inExecutedMBlock = inExecutedMBlock + 1;
-		 end;
+        if not(1 in (&MissingLines.)) then do;
+           inExecutedMBlock = inExecutedMBlock + 1;
+       end;
          nCounter=0;
       end;
       if (nCounter >= 0) then do;
@@ -154,8 +156,8 @@
       end;
       srcrow = cats ("", _INFILE_, "");
       srcRowCopy = _INFILE_;
-	  covered = 1;
-	  
+     covered = 1;
+     
       if (nCounter in (&MissingLines.)) then do;
          srcrow = cats ("", _INFILE_, "");
          covered = 0;
@@ -163,10 +165,10 @@
          if (length (_temp_row) > 4) then do;
             if ( (substr (_temp_row,1,5) = '%END;') or (substr (_temp_row,1,5) = '%END ') ) then do;
                srcrow = cats ("", _INFILE_, "");
-			   if inExecutedBlock gt 0 then do;
+            if inExecutedBlock gt 0 then do;
                   covered = 1;
-			   end;
-			   inExecutedBlock = inExecutedBlock - 1;
+            end;
+            inExecutedBlock = inExecutedBlock - 1;
             end;
          end;
          if (length (_temp_row) > 4) then do;
@@ -174,17 +176,17 @@
                srcrow = cats ("", _INFILE_, "");
                if inExecutedMBlock gt 0 then do;
                   covered = 1;
-			   end;
-			   inExecutedMBlock = inExecutedMBlock - 1;
+            end;
+            inExecutedMBlock = inExecutedMBlock - 1;
             end;
          end;
       end;
-	  else do;
-	     _temp_row = compress (upcase (_INFILE_));
+     else do;
+        _temp_row = compress (upcase (_INFILE_));
          if ( (count (_temp_row,'%DO') gt 0) ) then do;
             inExecutedBlock = inExecutedBlock + count (_temp_row,'%DO');
          end;
-		 if (length (_temp_row) > 4) then do;
+       if (length (_temp_row) > 4) then do;
             if ( (substr (_temp_row,1,5) = '%END;') or (substr (_temp_row,1,5) = '%END ') ) then do;
                inExecutedBlock = inExecutedBlock - 1;
             end;
@@ -194,7 +196,7 @@
                inExecutedMBlock = inExecutedMBlock - 1;
             end;
          end;
-	  end;
+     end;
    run;
    
    /*** Scan rows for comment lines ***/

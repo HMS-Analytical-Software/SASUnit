@@ -13,7 +13,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param   i_sourceColumn name of the column holding the value
-   \param   i_targetColumn name of the target column holding the ODS formatted value
+   \param   o_html         Test report in HTML-format?
+   \param   o_targetColumn name of the target column holding the ODS formatted value
 
 */ /** \cond */ 
 
@@ -22,11 +23,15 @@
 */ 
 
 %macro _sasunit_render_assertLogAct (i_sourceColumn=
-                                    ,i_targetColumn=
+                                    ,o_html=
+                                    ,o_targetColumn=
                                     );
-   hlp = "&g_nls_reportDetail_036: " !! trim(scan(&i_sourceColumn.,1,'#')) !! ", &g_nls_reportDetail_037: " !! trim(scan(&i_sourceColumn.,2,'#'));
+   hlp="";
+   if (not missing(&i_sourceColumn.)) then do;
+      hlp = "&g_nls_reportDetail_036: " !! trim(scan(&i_sourceColumn.,1,'#')) !! ", &g_nls_reportDetail_037: " !! trim(scan(&i_sourceColumn.,2,'#'));
+   end;
    %_sasunit_render_dataColumn (i_sourceColumn=hlp
-                               ,i_targetColumn=&i_targetColumn.
+                               ,o_targetColumn=&o_targetColumn.
                                );
 %mend _sasunit_render_assertLogAct;
 /** \endcond */

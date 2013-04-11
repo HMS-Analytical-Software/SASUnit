@@ -136,13 +136,13 @@ PROC SQL NOPRINT;
       SELECT
           scn_id
          ,1
-         ,0
-         ,'&#160;'
+         ,.
+         ,'^_'
          ,"&l_sEmptyScnDummyCasDesc."
-         ,'&#160;'
+         ,'^_'
          ,.
          ,.
-         ,1
+         ,2
          FROM &d_emptyscn.
    )
    ;
@@ -170,11 +170,11 @@ PROC SQL NOPRINT;
        scn_id
       ,1
       ,0
-      ,'&#160;'
-      ,'&#160;'
-      ,'&#160;'
-      ,'&#160;'
-      ,1
+      ,'^_'
+      ,'^_'
+      ,'^_'
+      ,'^_'
+      ,2
       FROM &d_emptyscn.
   )
   ;  
@@ -337,6 +337,25 @@ RUN;
 /*-- report generator --------------------------------------------------------*/
 FILENAME repgen temp;
 
+*** Create formats used in reports ***;
+proc format lib=work;
+   value PictName     0 = "&g_sasunit./saspgm/sasunit/html/ok.png"
+                      1 = "&g_sasunit./saspgm/sasunit/html/manual.png"
+                      2 = "&g_sasunit./saspgm/sasunit/html/error.png"
+                      OTHER="?????";
+   value PictNameHTML 0 = "ok.png"
+                      1 = "manual.png"
+                      2 = "error.png"
+                      OTHER="?????";
+   value PictDesc     0 = "OK"
+                      1 = "&g_nls_reportDetail_026"
+                      2 = "&g_nls_reportDetail_025"
+                      OTHER = "&g_nls_reportDetail_027";
+run;
+
+*** create style ****;
+%_sasunit_reportCreateStyle;
+
 DATA _null_;
    SET &d_rep;
    BY scn_id cas_id;
@@ -351,8 +370,8 @@ DATA _null_;
              "   ,&l_output" /
              ")";
          /*-- create frame HTML page -----------------------------------------*/
-         PUT '%_sasunit_reportFrameHTML('                 /
-             "    i_repdata = &d_rep"                     /
+         PUT '%_sasunit_reportFrameHTML('             /
+             "    i_repdata = &d_rep"                 /
              "   ,o_html    = &l_output/index.html"   /
              ")";
       END;
@@ -367,7 +386,9 @@ DATA _null_;
          /*-- create overview page -------------------------------------------*/
          PUT '%_sasunit_reportHomeHTML('                   /
              "    i_repdata = &d_rep"                      /
-             "   ,o_html    = &l_output/overview.html" /
+             "   ,o_html    = &o_html."    /
+             "   ,o_path    = &l_output."    /
+             "   ,o_file    = overview"    /
              ")";
       END;
       /*-- only if a test scenario has been run since last report ------------*/
@@ -379,19 +400,30 @@ DATA _null_;
              ")";
          /*-- create list of test scenarios ----------------------------------*/
          PUT '%_sasunit_reportScnHTML('                   /
-             "    i_repdata = &d_rep"                     /
-             "   ,o_html    = &l_output/scn_overview.html"    /
+             "    i_repdata = &d_rep."                     /
+             "   ,o_html    = &o_html."    /
+             "   ,o_path    = &l_output."    /
+             "   ,o_file    = scn_overview"    /
              ")";
          /*-- create list of test cases --------------------------------------*/
          PUT '%_sasunit_reportCasHTML('                   /
              "    i_repdata = &d_rep"                     /
-             "   ,o_html    = &l_output/cas_overview.html"    /
+             "   ,o_html    = &o_html."    /
+             "   ,o_path    = &l_output."    /
+             "   ,o_file    = cas_overview"    /
              ")";
          /*-- create list of units under test --------------------------------*/
          PUT '%_sasunit_reportAutonHTML('                   /
              "    i_repdata = &d_rep"                     /
-             "   ,o_html    = &l_output/auton_overview.html"    /
+             "   ,o_html    = &o_html."    /
+             "   ,o_path    = &l_output."    /
+             "   ,o_file    = auton_overview"    /
              ")";
+/*
+         PUT '%_sasunit_reportpgmdoc('                /
+             "    i_language = &i_language."          /
+             ")";
+/**/
       END;
    END;
 
@@ -424,7 +456,9 @@ DATA _null_;
              "    i_repdata = &d_rep"                        /
              "   ,i_scnid   = " scn_id z3.                   /
              "   ,i_casid   = " cas_id z3.                   /
-             "   ,o_html    = &l_output/cas_" scn_id z3. "_" cas_id z3. ".html"    /
+             "   ,o_html    = &o_html."    /
+             "   ,o_path    = &l_output."    /
+             "   ,o_file    = cas_" scn_id z3. "_" cas_id z3.    /
              ")";
       END;
  

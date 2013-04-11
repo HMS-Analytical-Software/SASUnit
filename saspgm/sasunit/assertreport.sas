@@ -60,7 +60,7 @@
 
 /*-- check for existence and check change date -------------------------------*/
 %LOCAL l_rep_ext l_result;
-%LET l_result=1;
+%LET l_result=2;
 %IF "&i_actual" NE "" %THEN %DO;
    %local d_dir;
    %_sasunit_tempFileName(d_dir)
@@ -69,7 +69,7 @@ data _null_;
    set &d_dir nobs=nobs;
    if nobs ne 1 then stop;
    if changed < dhms (today(), hour (input ("&systime",time5.)), minute (input ("&systime",time5.)), 0) then stop;
-   call symput ('l_result', '2');
+   call symput ('l_result', '1');
    stop;
 run;
 proc sql;
@@ -78,7 +78,7 @@ quit;
    %IF %sysfunc(fileexist(&i_actual)) %THEN %LET l_rep_ext = %_sasunit_getExtension(&i_actual);
 %END;
 
-%IF NOT &i_manual AND &l_result=2 %THEN %LET l_result=0;
+%IF NOT &i_manual AND &l_result=1 %THEN %LET l_result=0;
 
 %LOCAL l_expected l_exp_ext;
 %LET l_expected = %_sasunit_abspath(&g_refdata,&i_expected);

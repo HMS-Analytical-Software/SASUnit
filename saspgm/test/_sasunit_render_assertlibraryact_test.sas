@@ -18,45 +18,63 @@
 %LET G_NLS_REPORTDETAIL_019=assertLibraryAct; 
 %LET G_NLS_REPORTDETAIL_039=assertLibraryAct; 
 %LET G_NLS_REPORTDETAIL_040=assertLibraryAct; 
+
 *** Testcase 1 ***; 
-%initTestcase(i_object=_sasunit_render_assertLibraryAct.sas, i_desc=Sourcecolumn contains missing value);
-data _null_;
-   Length text $80;
+data work._input;
+   length href href_act href_rep text tst_exp $80 _output $400;
    Text="";
-   tst_type="assertLibrary";
    scn_id=1;
    cas_id=1;
    tst_id=1;
-   %_sasunit_render_assertLibraryAct (i_sourceColumn=Text);
+run;
+data work.expected;
+   set work._input;
+   href     = catt (put (scn_id, z3.),'_',put (1, z3.),'_',put (tst_id, z3.));
+   href_act = catt (href,'_library_act.html');
+   href_rep = catt (href,'_library_rep.html');
+   _output  = catt ("^{style [flyover=""assertLibraryAct"" url=""", href_act, """] assertLibraryAct }^n");
+   _output  = catt (_output, "^{style [flyover=""assertLibraryAct"" url=""", href_rep, """] assertLibraryAct }^n",Text);
+run;
+%initTestcase(i_object=_sasunit_render_assertLibraryAct.sas, i_desc=Sourcecolumn contains missing value);
+data work.actual;
+   set work._input;
+   %_sasunit_render_assertLibraryAct (i_sourceColumn=Text,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn...a class=.lightlink. title=.assertLibraryAct. href=.001_001_001_library_act.html..assertLibraryAct..a..br ..);
-%assertLogmsg (i_logmsg=                       .a class=.lightlink. title=.assertLibraryAct. href=.001_001_001_library_rep.html..assertLibraryAct..a...td.);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 2 ***; 
-%initTestcase(i_object=_sasunit_render_assertLibraryAct.sas, i_desc=Sourcecolumn contains non-missing value);
-data _null_;
-   Length text $80;
+data work._input;
+   length href href_act href_rep text tst_exp $80 _output $400;
    Text="Das ist mein anzuzeigender Text";
-   tst_type="assertLibrary";
    scn_id=1;
    cas_id=1;
    tst_id=1;
-   %_sasunit_render_assertLibraryAct (i_sourceColumn=Text);
+run;
+data work.expected;
+   set work._input;
+   href     = catt (put (scn_id, z3.),'_',put (1, z3.),'_',put (tst_id, z3.));
+   href_act = catt (href,'_library_act.html');
+   href_rep = catt (href,'_library_rep.html');
+   _output  = catt ("^{style [flyover=""assertLibraryAct"" url=""", href_act, """] assertLibraryAct }^n");
+   _output  = catt (_output, "^{style [flyover=""assertLibraryAct"" url=""", href_rep, """] assertLibraryAct }^n",Text);
+run;
+%initTestcase(i_object=_sasunit_render_assertLibraryAct.sas, i_desc=Sourcecolumn contains non-missing value);
+data work.actual;
+   set work._input;
+   %_sasunit_render_assertLibraryAct (i_sourceColumn=Text,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn...a class=.lightlink. title=.assertLibraryAct. href=.001_001_001_library_act.html..assertLibraryAct..a..br ..);
-%assertLogmsg (i_logmsg=                       .a class=.lightlink. title=.assertLibraryAct. href=.001_001_001_library_rep.html..assertLibraryAct..a...td.);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
-
 
 /** \endcond */

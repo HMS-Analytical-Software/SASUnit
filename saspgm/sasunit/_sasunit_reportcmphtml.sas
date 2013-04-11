@@ -3,6 +3,8 @@
 
    \brief      create HTML report for assertColumns 
 
+   \todo render results using ODS
+
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
@@ -25,13 +27,6 @@
   ,i_tstid   = 
   ,o_html    =
 );
-
-/* change history
-   22.07.2009 AM  necessary modifications for LINUX
-   13.08.2008 AM  control for output folder, support for multiple languages
-   07.07.2008 AM  Berichtsformat und Titel verbessert
-   15.12.2007 AM  Wenn Datei _exp oder _act nicht vorhanden, Leerseite erstellen 
-*/ 
 
 LIBNAME testout "&g_target/tst";
 

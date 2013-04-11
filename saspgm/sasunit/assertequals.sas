@@ -51,20 +51,20 @@
 /* alphanumerical value? */
 %IF   %sysfunc(prxmatch("^[0-9]*.?[0-9]*$",&i_expected))=0 
    OR %sysfunc(prxmatch("^[0-9]*.?[0-9]*$",&i_actual))=0 %THEN %DO; 
-   %LET l_result = %eval("&i_expected" NE "&i_actual");
+   %LET l_result = %eval(("&i_expected" NE "&i_actual")*2);
 %END; 
 /* numerical value and fuzz specified ? */
 %ELSE %IF %quote(&i_fuzz) NE %THEN %DO;
    %LET l_expected = %quote(&l_expected(+-&i_fuzz)); 
    %IF %sysevalf(%sysfunc(abs(%sysevalf(&i_expected - &i_actual))) <= &i_fuzz) 
       %THEN %LET l_result = 0;
-   %ELSE %LET l_result = 1;
+   %ELSE %LET l_result = 2;
 %END;
 /* numerical without fuzz */
 %ELSE %DO;
    %IF %quote(&i_expected) = %quote(&i_actual)
       %THEN %LET l_result = 0;
-   %ELSE %LET l_result = 1;
+   %ELSE %LET l_result = 2;
 %END;
 
 %_sasunit_asserts(

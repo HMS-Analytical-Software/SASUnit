@@ -18,78 +18,104 @@
 %LET G_NLS_REPORTDETAIL_046=Message not found; 
 
 *** Testcase 1 ***; 
-%initTestcase(i_object=_sasunit_render_assertPerformAct.sas, i_desc=Sourcecolumn contains missing value);
-data _null_;
-   Length text $80;
+data work._input;
+   length href href_act href_rep text _formatName $80 _output $400;
    num=.;
-   tst_type="assertPerformance";
+   _formatName="BEST32.";
    scn_id=1;
    cas_id=1;
    tst_id=1;
-   %_sasunit_render_assertPerformAct (i_sourceColumn=num);
+run;
+data work.expected;
+   set work._input;
+   _output  = compress (putn (num, _formatName));
+run;
+%initTestcase(i_object=_sasunit_render_assertPerformAct.sas, i_desc=Sourcecolumn contains missing value);
+data work.actual;
+   set work._input;
+   %_sasunit_render_assertPerformAct (i_sourceColumn=num,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>\. <.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 2 ***; 
-%initTestcase(i_object=_sasunit_render_assertPerformAct.sas, i_desc=Sourcecolumn contains non-missing value - No format);
-data _null_;
-   Length text $80;
+data work._input;
+   length href href_act href_rep text _formatName $80 _output $400;
    num=3.45678901234;
-   tst_type="assertPerformance";
+   _formatName="BEST32.";
    scn_id=1;
    cas_id=1;
    tst_id=1;
-   %_sasunit_render_assertPerformAct (i_sourceColumn=num);
+run;
+data work.expected;
+   set work._input;
+   _output  = compress (putn (num, _formatName));
+run;
+%initTestcase(i_object=_sasunit_render_assertPerformAct.sas, i_desc=Sourcecolumn contains non-missing value - No format);
+data work.actual;
+   set work._input;
+   %_sasunit_render_assertPerformAct (i_sourceColumn=num,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>3\.4567890123 <.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 3 ***; 
-%initTestcase(i_object=_sasunit_render_assertPerformAct.sas, i_desc=Sourcecolumn contains non-missing value - Format three digits);
-data _null_;
-   Length text $80;
+data work._input;
+   length href href_act href_rep text $80 _output $400;
    num=3.45678901234;
-   tst_type="assertPerformance";
    scn_id=1;
    cas_id=1;
    tst_id=1;
-   %_sasunit_render_assertPerformAct (i_sourceColumn=num, i_format=11.3);
+run;
+data work.expected;
+   set work._input;
+   _output  = put (num, 11.3);
+run;
+%initTestcase(i_object=_sasunit_render_assertPerformAct.sas, i_desc=Sourcecolumn contains non-missing value - Format three digits);
+data work.actual;
+   set work._input;
+   %_sasunit_render_assertPerformAct (i_sourceColumn=num, i_format=11.3,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>      3.457<.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 4 ***; 
-%initTestcase(i_object=_sasunit_render_assertPerformAct.sas, i_desc=Sourcecolumn contains non-missing value - Format no digits);
-data _null_;
-   Length text $80;
-   num=345678901.23456789;
-   tst_type="assertPerformance";
+data work._input;
+   length href href_act href_rep text $80 _output $400;
+   num=3.45678901234;
    scn_id=1;
    cas_id=1;
    tst_id=1;
-   %_sasunit_render_assertPerformAct (i_sourceColumn=num, i_format=11.);
+run;
+data work.expected;
+   set work._input;
+   _output  = put (num, 11.);
+run;
+%initTestcase(i_object=_sasunit_render_assertPerformAct.sas, i_desc=Sourcecolumn contains non-missing value - Format no digits);
+data work.actual;
+   set work._input;
+   %_sasunit_render_assertPerformAct (i_sourceColumn=num, i_format=11.,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>  345678901<.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 

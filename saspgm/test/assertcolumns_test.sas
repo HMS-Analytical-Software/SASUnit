@@ -72,7 +72,8 @@ run;
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,VALUE)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
 %initTestcase(i_object=assertcolumns.sas, i_desc=different value in variable age > fuzz - must be red!)
@@ -81,7 +82,8 @@ run;
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,VALUE)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
 %initTestcase(i_object=assertcolumns.sas, i_desc=different value in variable age = fuzz)
@@ -117,7 +119,8 @@ run;
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,COMPOBS)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
 data class5;
@@ -131,7 +134,8 @@ run;
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,BASEVAR)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
 %initTestcase(i_object=assertcolumns.sas, i_desc=missing dataset i_actual - must be red!)
@@ -140,7 +144,8 @@ run;
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,ERROR: actual table not found.)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
 %initTestcase(i_object=assertcolumns.sas, i_desc=missing dataset i_expected - must be red!)
@@ -149,7 +154,8 @@ run;
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,ERROR: expected table not found.)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
 %initTestcase(i_object=assertcolumns.sas, i_desc=both datasets are missing - must be red!)
@@ -158,7 +164,8 @@ run;
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,ERROR: actual table not found.)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
 data class6 / view=class6;
@@ -210,7 +217,8 @@ run;
 %markTest()
 %assertDBValue(tst,exp,DSLABEL COMPVAR)
 %assertDBValue(tst,act,LABEL)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
 %initTestcase(i_object=assertcolumns.sas, i_desc=different variable labels with i_allow LABEL)
@@ -239,6 +247,4 @@ run;
 %assertDBValue(tst,act,)
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
-
-
 /** \endcond */ 

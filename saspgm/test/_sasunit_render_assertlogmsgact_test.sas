@@ -18,59 +18,86 @@
 %LET G_NLS_REPORTDETAIL_046=Message not found; 
 
 *** Testcase 1 ***; 
-%initTestcase(i_object=_sasunit_render_assertLogMsgAct.sas, i_desc=Sourcecolumn contains missing value);
-data _null_;
-   Length text $80;
+data work._input;
+   length href href_act href_rep text _formatName $80 hlp _output $400;
    Text="";
-   tst_type="assertLogMsg";
    scn_id=1;
    cas_id=1;
    tst_id=1;
-   %_sasunit_render_assertLogMsgAct (i_sourceColumn=Text);
+run;
+data work.expected;
+   set work._input;
+   hlp  = substr(Text,1,1); 
+   if hlp='1' then hlp="&g_nls_reportDetail_045"; 
+   else            hlp="&g_nls_reportDetail_046"; 
+   _output  = hlp;
+run;
+%initTestcase(i_object=_sasunit_render_assertLogMsgAct.sas, i_desc=Sourcecolumn contains missing value);
+data work.actual;
+   set work._input;
+   %_sasunit_render_assertLogMsgAct (i_sourceColumn=Text,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn..Message not found <.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 2 ***; 
-%initTestcase(i_object=_sasunit_render_assertLogMsgAct.sas, i_desc=Sourcecolumn contains non-missing value);
-data _null_;
-   Length text $80;
+data work._input;
+   length href href_act href_rep text _formatName $80 hlp _output $400;
    Text="1Das ist mein anzuzeigender Text";
-   tst_type="assertLogMsg";
    scn_id=1;
    cas_id=1;
    tst_id=1;
-   %_sasunit_render_assertLogMsgAct (i_sourceColumn=Text);
+run;
+data work.expected;
+   set work._input;
+   hlp  = substr(Text,1,1); 
+   if hlp='1' then hlp="&g_nls_reportDetail_045"; 
+   else            hlp="&g_nls_reportDetail_046"; 
+   _output  = hlp;
+run;
+%initTestcase(i_object=_sasunit_render_assertLogMsgAct.sas, i_desc=Sourcecolumn contains non-missing value);
+data work.actual;
+   set work._input;
+   %_sasunit_render_assertLogMsgAct (i_sourceColumn=Text,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn..Message found <.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 3 ***; 
-%initTestcase(i_object=_sasunit_render_assertLogMsgAct.sas, i_desc=Sourcecolumn contains non-missing value);
-data _null_;
-   Length text $80;
+data work._input;
+   length href href_act href_rep text _formatName $80 hlp _output $400;
    Text="#Das ist mein anzuzeigender Text";
-   tst_type="assertLogMsg";
    scn_id=1;
    cas_id=1;
    tst_id=1;
-   %_sasunit_render_assertLogMsgAct (i_sourceColumn=Text);
+run;
+data work.expected;
+   set work._input;
+   hlp  = substr(Text,1,1); 
+   if hlp='1' then hlp="&g_nls_reportDetail_045"; 
+   else            hlp="&g_nls_reportDetail_046"; 
+   _output  = hlp;
+run;
+%initTestcase(i_object=_sasunit_render_assertLogMsgAct.sas, i_desc=Sourcecolumn contains non-missing value);
+data work.actual;
+   set work._input;
+   %_sasunit_render_assertLogMsgAct (i_sourceColumn=Text,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn..Message not found <.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 

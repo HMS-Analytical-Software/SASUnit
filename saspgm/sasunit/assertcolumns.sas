@@ -142,13 +142,13 @@
 /*-- check if actual dataset exists ------------------------------------------*/
 %LOCAL l_rc l_actual; 
 %IF NOT %sysfunc(exist(&i_actual,DATA)) AND NOT %sysfunc(exist(&i_actual,VIEW)) %THEN %DO;
-   %LET l_rc=1;
+   %LET l_rc=2;
    %LET l_actual=ERROR: actual table not found.;
 %END;
 
 /*-- check if expected dataset exists ----------------------------------------*/
 %ELSE %IF NOT %sysfunc(exist(&i_expected,DATA)) AND NOT %sysfunc(exist(&i_expected,VIEW))%THEN %DO;
-   %LET l_rc=1;
+   %LET l_rc=2;
    %LET l_actual=&l_actual ERROR: expected table not found.;
 %END;
 
@@ -176,7 +176,7 @@
    OPTIONS FORMCHAR="&l_formchar";
 
 /*-- check proc compare result -----------------------------------------------*/
-   %LET l_rc=%eval(%sysfunc(bxor(%sysfunc(bor(&l_mask,&l_compResult)),&l_mask)) NE 0);
+   %LET l_rc=%eval((%sysfunc(bxor(%sysfunc(bor(&l_mask,&l_compResult)),&l_mask)) NE 0)*2);
 
 /*-- format compare result ---------------------------------------------------*/
    %LET l_j=0;

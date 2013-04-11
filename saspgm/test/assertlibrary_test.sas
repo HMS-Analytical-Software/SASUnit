@@ -279,4 +279,5 @@ run;
 
 %assertLog (i_errors=0, i_warnings=0)
 
+%endTestcase()
 /** \endcond */ 

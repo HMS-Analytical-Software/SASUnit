@@ -43,7 +43,7 @@
 
 %GLOBAL g_target g_project g_root g_sasunit g_autoexec g_sascfg g_sasuser
         g_sasautos g_sasautos1 g_sasautos2 g_sasautos3 g_sasautos4 g_sasautos5
-                   g_sasautos6 g_sasautos7 g_sasautos8 g_sasautos9 
+                   g_sasautos6 g_sasautos7 g_sasautos8 g_sasautos9 g_sasautos0
         g_testdata g_refdata g_doc g_error g_warning
         g_work g_testout g_log
         g_logfile g_printfile
@@ -86,6 +86,7 @@ DATA _null_;
    call symput ('g_root'      , tsu_root);
    call symput ('g_sasunit'   , tsu_sasunit);
    call symput ('g_sasautos'  , tsu_sasautos);
+   call symput ('g_sasautos0' , tsu_sasautos);
 %DO i=1 %TO 9;
    call symput ("g_sasautos&i", tsu_sasautos&i);
 %END;
