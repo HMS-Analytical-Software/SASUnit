@@ -19,14 +19,6 @@
 
 */ /** \cond */ 
 
-/* change log
-   14.03.2013 KL  Creating blank pages if subfolder does not exist
-   11.03.2013 KL  Output is now read from subfolders per assert
-   18.08.2008 AM  added national language support
-   13.08.2008 AM  control for output folder
-   17.12.2007 KL  ExcludeList mit im Report anzeigen
-*/ 
-
 %macro _sasunit_reportLibraryHTML (
    i_scnid   =
   ,i_casid   = 
@@ -43,7 +35,7 @@
                               ,i_scnid     =&i_scnid.
                               ,i_casid     =&i_casid.
                               ,i_tstid     =&i_tstid.
-                              ,o_path      =l_path
+                              ,r_path      =l_path
                               );
 
    libname _test "&l_path";
@@ -79,17 +71,17 @@
    ODS HTML FILE="&o_html/&i_scnid._&i_casid._&i_tstid._library_rep.html" stylesheet=(url="SAS_SASUnit.css");
       %if (%sysfunc (exist (_test._library_rep, DATA))) %then %do;
          %local l_LibraryCheck l_CompareCheck l_id l_ExcludeList;
-		 
-	   %*** format results for report ***;
-	   data WORK._library_rep;
-		  set _test._library_rep;
-		  SELECT (CompareFailed);
-			 WHEN (0) icon_column='<img src="ok.png" alt="OK"></img>';
-			 WHEN (1) icon_column='<img src="error.png" alt="Fehler"></img>';
-			 OTHERWISE icon_column='&nbsp;';
-		  END;
-	   run;
-		 
+       
+      %*** format results for report ***;
+      data WORK._library_rep;
+        set _test._library_rep;
+        SELECT (CompareFailed);
+          WHEN (0) icon_column='<img src="ok.png" alt="OK"></img>';
+          WHEN (1) icon_column='<img src="error.png" alt="Fehler"></img>';
+          OTHERWISE icon_column='&nbsp;';
+        END;
+      run;
+       
          proc sql noprint;
             select    i_LibraryCheck,  i_CompareCheck,  i_id,  i_ExcludeList 
                 into :l_LibraryCheck, :l_CompareCheck, :l_id, :l_ExcludeList
