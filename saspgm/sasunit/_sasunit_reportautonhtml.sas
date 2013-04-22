@@ -26,7 +26,7 @@
   ,o_file    =
 );
 
-/*-- determine number of scenarios 
+   /*-- determine number of scenarios 
      and number of test cases per unit under test ----------------------------*/
    %LOCAL d_rep1 d_rep2 l_tcg_res l_pgmLibraries l_pgmLib l_title;
 
@@ -148,9 +148,10 @@
                       ,i_macroLocation            = &l_currentUnitLocation.
                       ,i_mCoverageName            = 000.tcg
                       ,i_mCoverageLocation        = &g_log
-                      ,o_outputFile               = tcg_%SCAN(&l_currentUnitFileName.,1,.).html
+                      ,o_outputFile               = tcg_%SCAN(&l_currentUnitFileName.,1,.)
                       ,o_outputPath               = &g_target/rep
                       ,o_resVarName               = l_tcg_res
+                      ,o_html                     = &o_html.
                       );
             %END;
          %END; /*%ELSE %DO;*/
@@ -180,7 +181,8 @@
    %if (&o_html.) %then %do;
       ods html file="&o_path./&o_file..html" 
                     (TITLE="&l_title.") 
-                    headtext="<link href=""tabs.css"" rel=""stylesheet"" type=""text/css""/><link rel=""shortcut icon"" href=""./favicon.ico"" type=""image/x-icon"" />"
+                    headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
+                    metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
       %_sasunit_reportPageTopHTML(
          i_title   = &l_title.
@@ -222,43 +224,10 @@
          END;
          scn_abs_path = resolve ('%_sasunit_abspath(&g_root,' !! trim(scn_path) !! ')');
 
-         LinkTitle1 = "&&g_nls_reportAuton_009." !! byte(13) !! cas_abs_path;
-         LinkTitle2 = "&&g_nls_reportAuton_010." !! byte(13) !! scn_abs_path;
-         LinkTitle3 = "&g_nls_reportAuton_017. " !! cas_pgm;
-
-         %if (&o_html.) %then %do;
-            LinkColumn1  = "pgm_" !! tranwrd (cas_pgm, ".sas", ".html");
-            LinkColumn2  = catt("cas_overview.html#SCN", put(scn_id,z3.), "_");
-            if compress(cas_pgm) ne '' then do;
-               if index(cas_pgm,'/') GT 0 then do;
-                  LinkColumn3 =  'tcg_'||trim(left(scan(substr(cas_pgm, findw(cas_pgm, scan(cas_pgm, countw(cas_pgm,'/'),'/'))),1,".") !! ".html"));
-               end;
-               else do;
-                  LinkColumn3 =  'tcg_'||trim(left(scan(cas_pgm,1,".") !! ".html"));
-               end;
-            end;
-         %end;
-
-         %_sasunit_render_dataColumn(i_sourceColumn=cas_pgm
-                                    ,i_linkColumn=cas_abs_path
-                                    ,i_linkTitle=LinkTitle1
-                                    ,o_targetColumn=pgmColumn);
-         %_sasunit_render_dataColumn(i_sourceColumn=scn_id
-                                    ,i_format=z3.
-                                    ,i_linkColumn=LinkColumn2
-                                    ,i_linkTitle=LinkTitle2
-                                    ,o_targetColumn=scenarioColumn);
          %_sasunit_render_dataColumn(i_sourceColumn=scn_cas
                                     ,o_targetColumn=caseColumn);
          %_sasunit_render_dataColumn(i_sourceColumn=scn_tst
                                     ,o_targetColumn=assertColumn);
-         %IF &g_testcoverage. EQ 1 %THEN %DO;
-            %_sasunit_render_dataColumn(i_sourceColumn=tcg_pct
-                                       ,i_format=3.
-                                       ,i_linkColumn=LinkColumn3
-                                       ,i_linkTitle=LinkTitle3
-                                       ,o_targetColumn=coverageColumn);
-         %END;
          %_sasunit_render_iconColumn(i_sourceColumn=scn_res
                                     ,o_html=&o_html.
                                     ,o_targetColumn=resultColumn);
@@ -271,6 +240,44 @@
          %_sasunit_render_dataColumn(i_sourceColumn=_autonColumn
                                     ,o_targetColumn=autonColumn);
          autonColumn="&g_nls_reportAuton_003.: " !! trim (autonColumn);
+
+         *** Any destination that renders links shares this if ***;
+         %if (&o_html.) %then %do;
+            LinkTitle1 = "&&g_nls_reportAuton_009." !! byte(13) !! cas_abs_path;
+            LinkTitle2 = "&&g_nls_reportAuton_010." !! byte(13) !! scn_abs_path;
+            LinkTitle3 = "&g_nls_reportAuton_017. " !! cas_pgm;
+
+            *** HTML-links are destinations specific ***;
+            %if (&o_html.) %then %do;
+               LinkColumn1  = "pgm_" !! tranwrd (cas_pgm, ".sas", ".html");
+               LinkColumn2  = catt("cas_overview.html#SCN", put(scn_id,z3.), "_");
+               if compress(cas_pgm) ne '' then do;
+                  if index(cas_pgm,'/') GT 0 then do;
+                     LinkColumn3 =  'tcg_'||trim(left(scan(substr(cas_pgm, findw(cas_pgm, scan(cas_pgm, countw(cas_pgm,'/'),'/'))),1,".") !! ".html"));
+                  end;
+                  else do;
+                     LinkColumn3 =  'tcg_'||trim(left(scan(cas_pgm,1,".") !! ".html"));
+                  end;
+               end;
+            %end;
+
+            %_sasunit_render_dataColumn(i_sourceColumn=cas_pgm
+                                       ,i_linkColumn=cas_abs_path
+                                       ,i_linkTitle=LinkTitle1
+                                       ,o_targetColumn=pgmColumn);
+            %_sasunit_render_dataColumn(i_sourceColumn=scn_id
+                                       ,i_format=z3.
+                                       ,i_linkColumn=LinkColumn2
+                                       ,i_linkTitle=LinkTitle2
+                                       ,o_targetColumn=scenarioColumn);
+            %IF &g_testcoverage. EQ 1 %THEN %DO;
+               %_sasunit_render_dataColumn(i_sourceColumn=tcg_pct
+                                          ,i_format=3.
+                                          ,i_linkColumn=LinkColumn3
+                                          ,i_linkTitle=LinkTitle3
+                                          ,o_targetColumn=coverageColumn);
+            %END;
+         %end;
       run;
 
       %if (&i. = &l_listCount.) %then %do;
@@ -303,13 +310,18 @@
          endcomp;
       run;
 
+      *** Supress title between testcases ***;
       %if (&i. = 1) %then %do;
          title;
       %end;
 
+      *** Render separation line between program libraries ***;
       %if (&o_html. AND &i. ne &l_listCount.) %then %do;
          ods html text="^{RAW <hr size=""1"">}";
       %end;
+
+      proc delete data=work._current_auton;
+      run;
    %end;
    options missing=.;
 
@@ -322,8 +334,8 @@
    footnote;
    options center;
    
-   PROC DATASETS NOWARN NOLIST LIB=work;
-      DELETE %scan(&d_rep1,2,.) %scan(&d_rep2,2,.) _current_auton _auton_report;
-   QUIT;
+
+   proc delete data=work._auton_report;
+   run;
 %MEND _sasunit_reportAutonHTML;
 /** \endcond */

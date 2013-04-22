@@ -28,6 +28,7 @@ data class0 class;
    SET sashelp.class;
 run;
 
+
 %initTestcase(i_object=assertcolumns.sas, i_desc=identical datasets)
 %endTestcall()
 %assertColumns(i_actual=class0, i_expected=class, i_desc=the description)
@@ -37,10 +38,13 @@ run;
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,)
 %assertDBValue(tst,res,0)
-%assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._columns_rep.sas7bitm)), i_desc=ODS document in testout)
-%assertEquals(i_expected=1, i_actual=%sysfunc(exist(testout._&scnid._&casid._&tstid._columns_act)), i_desc=i_actual in testout)
-%assertEquals(i_expected=1, i_actual=%sysfunc(exist(testout._&scnid._&casid._&tstid._columns_exp)), i_desc=i_expected in testout)
+%let tst_path=&g_testout/_&scnid._&casid._&tstid._assertcolumns;
+libname _acLib "&tst_path.";
+%assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&tst_path./_columns_rep.sas7bitm)), i_desc=ODS document in testout)
+%assertEquals(i_expected=1, i_actual=%sysfunc(exist(_acLib._columns_act)), i_desc=i_actual in testout)
+%assertEquals(i_expected=1, i_actual=%sysfunc(exist(_acLib._columns_exp)), i_desc=i_expected in testout)
 %endTestcase(i_assertLog=0)
+libname _acLib clear;
 
 data class1;
    SET class;
@@ -56,10 +60,13 @@ run;
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,COMPVAR)
 %assertDBValue(tst,res,0)
-%assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._columns_rep.sas7bitm)), i_desc=ODS document in testout)
-%assertEquals(i_expected=1, i_actual=%sysfunc(exist(testout._&scnid._&casid._&tstid._columns_act)), i_desc=i_actual in testout)
-%assertEquals(i_expected=1, i_actual=%sysfunc(exist(testout._&scnid._&casid._&tstid._columns_exp)), i_desc=i_expected in testout)
+%let tst_path=&g_testout/_&scnid._&casid._&tstid._assertcolumns;
+libname _acLib "&tst_path.";
+%assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&tst_path./_columns_rep.sas7bitm)), i_desc=ODS document in testout)
+%assertEquals(i_expected=1, i_actual=%sysfunc(exist(_acLib._columns_act)), i_desc=i_actual in testout)
+%assertEquals(i_expected=1, i_actual=%sysfunc(exist(_acLib._columns_exp)), i_desc=i_expected in testout)
 %endTestcase(i_assertLog=0)
+libname _acLib clear;
 
 data class3;
    SET class;
@@ -181,10 +188,13 @@ run;
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,)
 %assertDBValue(tst,res,0)
-%assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout/_&scnid._&casid._&tstid._columns_rep.sas7bitm)), i_desc=ODS document in testout)
-%assertEquals(i_expected=1, i_actual=%sysfunc(exist(testout._&scnid._&casid._&tstid._columns_act)), i_desc=view i_actual in testout)
-%assertEquals(i_expected=1, i_actual=%sysfunc(exist(testout._&scnid._&casid._&tstid._columns_exp)), i_desc=i_expected in testout)
+%let tst_path=&g_testout/_&scnid._&casid._&tstid._assertcolumns;
+libname _acLib "&tst_path.";
+%assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&tst_path./_columns_rep.sas7bitm)), i_desc=ODS document in testout)
+%assertEquals(i_expected=1, i_actual=%sysfunc(exist(_acLib._columns_act)), i_desc=view i_actual in testout)
+%assertEquals(i_expected=1, i_actual=%sysfunc(exist(_acLib._columns_exp)), i_desc=i_expected in testout)
 %endTestcase(i_assertLog=0)
+libname _acLib clear;
 
 data _null_;
    file "&g_work/1.txt";

@@ -3,8 +3,6 @@
 
    \brief      create frame page for HTML report
 
-   \todo render results using ODS?
-
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
@@ -23,10 +21,6 @@
    i_repdata = 
   ,o_html    =
 );
-
-/* change log
-   18.08.2008 AM  added national language support
-*/
 
 DATA _null_;
    SET &i_repdata;

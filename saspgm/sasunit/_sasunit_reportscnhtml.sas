@@ -53,32 +53,11 @@
          scn_pgm     = resolve ('%_sasunit_stdpath(&g_root./saspgm/test,' !! trim(abs_path) !! ')');
          duration    = scn_end - scn_start;
          c_scnid     = put (scn_id, z3.);
-         LinkTitle1  = "&g_nls_reportScn_009 " !! c_scnid;
-         LinkColumn1 = catt ("cas_overview.html#SCN", c_scnid, "_");
-         LinkTitle2  = "&g_nls_reportScn_010" !! byte(13) !! abs_path;
-         LinkColumn2 = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
-         LinkTitle3  = "&g_nls_reportScn_011";
-         LinkColumn3 = c_scnid !! "_log.html";
+
 
          %_sasunit_render_IdColumn   (i_sourceColumn=scn_id
                                      ,i_format=z3.
                                      ,o_targetColumn=idColumn
-                                     );
-         %_sasunit_render_DataColumn (i_sourceColumn=scn_desc
-                                     ,i_linkColumn=LinkColumn1
-                                     ,i_linkTitle=LinkTitle1
-                                     ,o_targetColumn=descriptionColumn
-                                     );
-         %_sasunit_render_DataColumn (i_sourceColumn=scn_path
-                                     ,i_linkColumn=abs_path
-                                     ,i_linkTitle=LinkTitle2
-                                     ,o_targetColumn=programColumn
-                                     );
-         %_sasunit_render_DataColumn (i_sourceColumn=scn_start
-                                     ,i_format=&g_nls_reportScn_012.
-                                     ,i_linkColumn=LinkColumn3
-                                     ,i_linkTitle=LinkTitle3
-                                     ,o_targetColumn=last_runColumn
                                      );
          %_sasunit_render_DataColumn (i_sourceColumn=duration
                                      ,i_format=&g_nls_reportScn_013.
@@ -88,6 +67,35 @@
                                      ,o_html=&o_html.
                                      ,o_targetColumn=resultColumn
                                      );
+
+         *** Any destination that renders links shares this if ***;
+         %if (&o_html.) %then %do;
+            LinkTitle1  = "&g_nls_reportScn_009 " !! c_scnid;
+            LinkTitle2  = "&g_nls_reportScn_010" !! byte(13) !! abs_path;
+            LinkTitle3  = "&g_nls_reportScn_011";
+            *** HTML-links are destinations specific ***;
+            %if (&o_html.) %then %do;
+               LinkColumn1 = catt ("cas_overview.html#SCN", c_scnid, "_");
+               LinkColumn2 = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
+               LinkColumn3 = c_scnid !! "_log.html";
+            %end;
+            %_sasunit_render_DataColumn (i_sourceColumn=scn_desc
+                                        ,i_linkColumn=LinkColumn1
+                                        ,i_linkTitle=LinkTitle1
+                                        ,o_targetColumn=descriptionColumn
+                                        );
+            %_sasunit_render_DataColumn (i_sourceColumn=scn_path
+                                        ,i_linkColumn=abs_path
+                                        ,i_linkTitle=LinkTitle2
+                                        ,o_targetColumn=programColumn
+                                        );
+            %_sasunit_render_DataColumn (i_sourceColumn=scn_start
+                                        ,i_format=&g_nls_reportScn_012.
+                                        ,i_linkColumn=LinkColumn3
+                                        ,i_linkTitle=LinkTitle3
+                                        ,o_targetColumn=last_runColumn
+                                        );
+         %end;
          if (first.scn_id);
    RUN; 
 
@@ -101,7 +109,8 @@
    %if (&o_html.) %then %do;
       ods html file="&o_path./&o_file..html" 
                     (TITLE="&l_title.") 
-                    headtext="<link href=""tabs.css"" rel=""stylesheet"" type=""text/css""/><link rel=""shortcut icon"" href=""./favicon.ico"" type=""image/x-icon"" />"
+                    headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
+                    metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
       %_sasunit_reportPageTopHTML(
          i_title   = &l_title.
@@ -122,13 +131,14 @@
       ods html close;
    %end;
 
-   proc delete data=work._scenario_report;
-   run;
-
    %*** Reset title and footnotes ***;
    title;
    footnote;
 
    options center;
+
+   PROC DATASETS NOWARN NOLIST LIB=work;
+      DELETE _scenario_report;
+   QUIT;
 %MEND _sasunit_reportScnHTML;
 /** \endcond */

@@ -36,7 +36,7 @@
       href     = catt ("_", put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
       href_act = catt (href,'_man_act');
       %if (&o_html.) %then %do;
-         href_rep = catt (href,'_rep.html');
+         href_rep = catt (href,'man_rep.html');
       %end;
       IF &i_expectedColumn. NE '^_' AND &i_expectedColumn. NE ' ' THEN DO; 
          %*** Link to reporting html, if both results exist ***;

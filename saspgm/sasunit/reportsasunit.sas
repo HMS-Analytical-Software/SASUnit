@@ -25,18 +25,6 @@
 
 */ /** \cond */ 
 
-/* change log 
-   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
-   28.01.2013 KL  Adjusted descriptions of testcases
-   08.01.2013 KL  Empty cells are rendered incorrectly in MS IE. So &nbsp; is now used as contents of an empty cell
-   15.07.2009 AM  fixed copydir for Linux
-   13.08.2008 AM  introduced o_force and o_output
-   12.08.2008 AM  Reportingsprache umgestellt
-   11.08.2008 AM  Dateiname der Frameseite an Reportgenerator für assertReport übergeben
-   05.02.2008 AM  assertManual nach assertReport umgestellt
-   29.12.2007 AM  Aufruf reportAuton aufgenommen 
-*/ 
-
 %MACRO reportSASUnit (
    i_language   = EN
   ,o_html       = 1
@@ -459,39 +447,6 @@ DATA _null_;
              "   ,o_html    = &o_html."    /
              "   ,o_path    = &l_output."    /
              "   ,o_file    = cas_" scn_id z3. "_" cas_id z3.    /
-             ")";
-      END;
- 
-      /*-- per test assertColumns --------------------------------------------*/
-      IF scn_id NE . AND cas_id NE . AND tst_id NE . AND upcase(tst_type) = 'ASSERTCOLUMNS' THEN DO;
-         PUT '%_sasunit_reportCmpHTML('                         /
-             "    i_scnid = " scn_id z3.                        /
-             "   ,i_casid = " cas_id z3.                        /
-             "   ,i_tstid = " tst_id z3.                        /
-             "   ,o_html  = &l_output"                          /
-             ")";
-      END;
-
-      /*-- per test assertLibrary --------------------------------------------*/
-      IF scn_id NE . AND cas_id NE . AND tst_id NE . AND upcase(tst_type) = 'ASSERTLIBRARY' THEN DO;
-         PUT '%_sasunit_reportLibraryHTML('                         /
-             "    i_scnid = " scn_id z3.                        /
-             "   ,i_casid = " cas_id z3.                        /
-             "   ,i_tstid = " tst_id z3.                        /
-             "   ,o_html  = &l_output"                          /
-             ")";
-      END;
-
-      /*-- per test assertReport ---------------------------------------------*/
-      IF scn_id NE . AND cas_id NE . AND tst_id NE . AND upcase(tst_type) = 'ASSERTREPORT' THEN DO;
-         PUT '%_sasunit_reportManHTML('                         /
-             "    i_scnid = " scn_id z3.                        /
-             "   ,i_casid = " cas_id z3.                        /
-             "   ,i_tstid = " tst_id z3.                        /
-             "   ,i_extexp= " tst_exp                           /
-             "   ,i_extact= " tst_act                           /
-             "   ,o_html  = &l_output/_" scn_id z3. "_" cas_id z3. "_" tst_id z3. "_rep.html"    /
-             "   ,o_output= &l_output"                          /
              ")";
       END;
 

@@ -5,7 +5,7 @@
 
                Fehler- und Warnmeldungen werden markiert und verlinkt
 
-   \todo render results using ODS
+   \todo render results using ODS. Technical implementation of links for multiple errors is difficult and must be redesigned for ODS.
 
    \param i_log     Logdatei mit kpl. Pfad
    \param i_title   String für Titel

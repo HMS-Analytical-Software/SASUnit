@@ -1,6 +1,20 @@
 /**
-   \todo Header
-*/ /** \cond */
+   \file
+   \ingroup    SASUNIT_UTIL 
+
+   \brief      Creates to style used while rendering ODS output.
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+
+*/ /** \cond */ 
+
 %macro _sasunit_reportCreateStyle ;
 
    ods escapechar="^";
@@ -390,7 +404,8 @@
             cellpadding = 7                                                      
             cellspacing = 1                                                    
             bordercolor = colors('tableborder')
-            borderwidth = 1;
+            borderwidth = 1
+            outputwidth = 95%;
          style Table from Output                                                 
             "Controls overall table style." /
             cellpadding = 1
@@ -402,7 +417,8 @@
             "Controls batch mode output." /
             font = fonts('BatchFixedFont')
             foreground = colors('batchfg')
-            background = colors('batchbg');
+            background = colors('batchbg')
+           outputwidth=95%;
          style Note from Container                                               
             "Abstract. Controls the container for note banners and note contents." /
             background = colors('notebg')
@@ -773,16 +789,16 @@
          style blindStrongData from blindData "Strong data cell in a blind Table" /
             color=colors('datafgstrong')
          ;
-         style tcgCoveredData from blindData "data cell with covered code in tcg report" /
+         style tcgCoveredData "data cell with covered code in tcg report" /
             color=color_list('fgTcgCovered')
          ;
-         style tcgNonCoveredData from blindData "data cell with non-covered code in tcg report" /
+         style tcgNonCoveredData "data cell with non-covered code in tcg report" /
             color=color_list('fgTcgNonCovered')
          ;
-         style tcgCommentData from blindData "data cell with commented code in tcg report" /
+         style tcgCommentData "data cell with commented code in tcg report" /
             color=color_list('fgTcgComment')
          ;
-         style tcgNonContribData from blindData "data cell with non-contributing code in tcg report" /
+         style tcgNonContribData "data cell with non-contributing code in tcg report" /
             color=color_list('fgTcgNonContrib')
          ;
          style blindFixedFontData from blindData "Fixed font data cell in a blind Table" /

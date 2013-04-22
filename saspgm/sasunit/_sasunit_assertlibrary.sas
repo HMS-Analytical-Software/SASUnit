@@ -31,10 +31,6 @@
    \retval    o_result       Return code of the assert 0: OK / 1: ERROR
 */ /** \cond */ 
 
-/* change history 
-   26.02.2013 KL created
-*/ 
-
 %macro _sasunit_assertlibrary (i_actual      =_NONE_
                               ,i_expected    =_NONE_
                               ,i_ExcludeList =_NONE_
@@ -236,7 +232,7 @@
 
    %*** collect results for report ***;
    data work._ergebnis;
-      length icon_column $45 i_LibraryCheck i_CompareCheck $15 i_id i_ExcludeList $80;
+      length i_LibraryCheck i_CompareCheck $15 i_id i_ExcludeList $80;
       set work._ergebnis;
       i_LibraryCheck="&i_LibraryCheck.";
       i_CompareCheck="&i_CompareCheck.";
@@ -253,11 +249,11 @@
    %_sasunit_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
    %*** create subfolder ***;
-   %_sasunit_createTestSubfolder (i_assertType   =assertLibrary
+   %_sasunit_createTestSubfolder (i_assertType   =assertlibrary
                                  ,i_scnid        =&g_scnid.
                                  ,i_casid        =&l_casid.
                                  ,i_tstid        =&l_tstid.
-                                 ,o_path         =l_path
+                                 ,r_path         =l_path
                                  );
 
    %*** create library listing ***;

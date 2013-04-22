@@ -87,32 +87,35 @@
          scn_pgm      = resolve ('%_sasunit_stdpath(&g_root./saspgm/test,' !! trim(scn_abs_path) !! ')');
          scn_duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid      = put (scn_id, z3.);
-         LinkTitle1   = "&g_nls_reportScn_010" !! byte(13) !! scn_abs_path;
-         LinkTitle2   = "&g_nls_reportScn_011";
-         %if (&o_html.) %then %do;
-            LinkColumn1  = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
-            LinkColumn2  = c_scnid !! "_log.html";
-         %end;
 
+
+         %_sasunit_render_idColumn   (i_sourceColumn=scn_id
+                                     ,i_format=z3.
+                                     ,o_targetColumn=ScnIdColumn
+                                     );
+         %_sasunit_render_dataColumn (i_sourceColumn=scn_desc
+                                     ,o_targetColumn=scnDescriptionColumn
+                                     );
+         %_sasunit_render_dataColumn (i_sourceColumn=scn_duration
+                                     ,o_targetColumn=scnDurationColumn
+                                     );
+
+         *** Any destination that renders links shares this if ***;
          %if (&o_html.) %then %do;
-            %_sasunit_render_IdColumn   (i_sourceColumn=scn_id
-                                        ,i_format=z3.
-                                        ,o_targetColumn=ScnIdColumn
-                                        );
-            %_sasunit_render_DataColumn (i_sourceColumn=scn_desc
-                                        ,o_targetColumn=scnDescriptionColumn
-                                        );
-            %_sasunit_render_DataColumn (i_sourceColumn=scn_path
+            LinkTitle1   = "&g_nls_reportScn_010" !! byte(13) !! scn_abs_path;
+            LinkTitle2   = "&g_nls_reportScn_011";
+            *** HTML-links are destinations specific ***;
+            %if (&o_html.) %then %do;
+               LinkColumn1  = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
+               LinkColumn2  = c_scnid !! "_log.html";
+            %end;
+            %_sasunit_render_dataColumn (i_sourceColumn=scn_path
                                         ,i_linkColumn=scn_abs_path
                                         ,i_linkTitle=LinkTitle1
                                         ,o_targetColumn=scnProgramColumn
                                         );
             scnLast_runColumn = catt ('^{style [flyover="',LinkTitle2,'" url="',LinkColumn2,'"]', put (scn_start, ??&g_nls_reportScn_012.),'}'
                                      ,"^{style logerrcountmsg ", errcountmsg, '}');
-
-            %_sasunit_render_DataColumn (i_sourceColumn=scn_duration
-                                        ,o_targetColumn=scnDurationColumn
-                                        );
          %end;
 
          *** Columns for test cases ***;
@@ -127,42 +130,45 @@
          duration = cas_end - cas_start;
          c_casid  = put (cas_id, z3.);
 
-         LinkTitle3  = "&g_nls_reportCas_017 " !! c_casid;
-         LinkTitle4  = "&g_nls_reportCas_018" !! byte(13) !! abs_path;
-         LinkTitle5  = "&g_nls_reportCas_006";
+         %_sasunit_render_idColumn   (i_sourceColumn=cas_id
+                                     ,i_format=z3.
+                                     ,o_targetColumn=idColumn
+                                     );
+         %_sasunit_render_dataColumn (i_sourceColumn=duration
+                                     ,i_format=&g_nls_reportCas_009.
+                                     ,o_targetColumn=durationColumn
+                                     );
+         %_sasunit_render_iconColumn (i_sourceColumn=cas_res
+                                     ,o_html=&o_html.
+                                     ,o_targetColumn=resultColumn
+                                     );
+         *** Any destination that renders links shares this if ***;
          %if (&o_html.) %then %do;
-            LinkColumn3 = "cas_" !! c_scnid !! "_" !! c_casid !! ".html";
-            LinkColumn4 = "pgm_" !! tranwrd (cas_pgm, ".sas", ".html");
-            LinkColumn5 = c_scnid !! "_" !! c_casid !! "_log.html";
-         %end;
-         %if (&o_html.) %then %do;
-            %_sasunit_render_IdColumn   (i_sourceColumn=cas_id
-                                        ,i_format=z3.
-                                        ,o_targetColumn=idColumn
-                                        );
-            %_sasunit_render_DataColumn (i_sourceColumn=cas_desc
+            LinkTitle3  = "&g_nls_reportCas_017 " !! c_casid;
+            LinkTitle4  = "&g_nls_reportCas_018" !! byte(13) !! abs_path;
+            LinkTitle5  = "&g_nls_reportCas_006";
+            *** HTML-links are destinations specific ***;
+            %if (&o_html.) %then %do;
+               LinkColumn3 = "cas_" !! c_scnid !! "_" !! c_casid !! ".html";
+               LinkColumn4 = "pgm_" !! tranwrd (cas_pgm, ".sas", ".html");
+               LinkColumn5 = c_scnid !! "_" !! c_casid !! "_log.html";
+            %end;
+
+            %_sasunit_render_dataColumn (i_sourceColumn=cas_desc
                                         ,i_linkColumn=LinkColumn3
                                         ,i_linkTitle=LinkTitle3
                                         ,o_targetColumn=descriptionColumn
                                         );
-            %_sasunit_render_DataColumn (i_sourceColumn=cas_pgm
+            %_sasunit_render_dataColumn (i_sourceColumn=cas_pgm
                                         ,i_linkColumn=abs_path
                                         ,i_linkTitle=LinkTitle4
                                         ,o_targetColumn=programColumn
                                         );
-            %_sasunit_render_DataColumn (i_sourceColumn=cas_start
+            %_sasunit_render_dataColumn (i_sourceColumn=cas_start
                                         ,i_format=&g_nls_reportCas_007.
                                         ,i_linkColumn=LinkColumn5
                                         ,i_linkTitle=LinkTitle5
                                         ,o_targetColumn=last_runColumn
-                                        );
-            %_sasunit_render_DataColumn (i_sourceColumn=duration
-                                        ,i_format=&g_nls_reportCas_009.
-                                        ,o_targetColumn=durationColumn
-                                        );
-            %_sasunit_render_IconColumn (i_sourceColumn=cas_res
-                                        ,o_html=&o_html.
-                                        ,o_targetColumn=resultColumn
                                         );
          %end;
          output;
@@ -181,7 +187,8 @@
    %if (&o_html.) %then %do;
       ods html file="&o_path./&o_file..html" 
                     (TITLE="&l_title.") 
-                    headtext="<link href=""tabs.css"" rel=""stylesheet"" type=""text/css""/><link rel=""shortcut icon"" href=""./favicon.ico"" type=""image/x-icon"" />"
+                    headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
+                    metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
       %_sasunit_reportPageTopHTML(
          i_title   = &l_title
@@ -203,6 +210,7 @@
          Name="&g_nls_reportCas_008."; Value=scnDurationColumn;output;
          keep Name Value;
       run;
+      *** Create specific HTML-Anchors ***;
       %if (&o_html.) %then %do;
          ods HTML anchor="SCN%sysfunc(putn(&l_scnid.,z3.))_";
       %end;
@@ -212,10 +220,12 @@
             style(header)=blindHeader;
       run;
 
+      *** Supress title between testcases ***;
       %if (&l_scnid. = 1) %then %do;
          title;
       %end;
 
+      *** Show footnote only once ***;
       %if (&l_scnid. = &l_anzScenarios.) %then %do;
          %_sasunit_reportFooter(o_html=&o_html.);
       %end;
@@ -234,6 +244,7 @@
          endcomp;
       run;
 
+      *** Render separation line between scenarios ***;
       %if (&o_html. AND &l_scnid. ne &l_anzScenarios.) %then %do;
          ods html text="^{RAW <hr size=""1"">}";
       %end;

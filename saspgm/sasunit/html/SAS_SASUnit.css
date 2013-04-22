@@ -27,6 +27,7 @@
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
+  width: 95%;
 }
 .beforecaption
 {
@@ -152,6 +153,7 @@
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
+  width: 95%;
 }
 .body
 {
@@ -176,7 +178,7 @@
   font-weight: normal;
   text-align: right;
   vertical-align: top;
-  width: 100%;
+  width: 95%;
 }
 .bycontentfolder
 {
@@ -208,7 +210,7 @@
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
-  width: 100%;
+  width: 95%;
 }
 .caption
 {
@@ -315,7 +317,7 @@
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
-  width: 100%;
+  width: 95%;
 }
 .contenttitle
 {
@@ -481,7 +483,7 @@
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
-  width: 100%;
+  width: 95%;
 }
 .document
 {
@@ -494,16 +496,13 @@
   width: 95%;
 }
 a:link {
-color:#000080;
-text-decoration:none
+color:#000080
 }
 a:visited {
-color:#000080;
-text-decoration:none
+color:#000080
 }
 a:active {
-color:#000080;
-text-decoration:none
+color:#000080
 }
 .errorbanner
 {
@@ -726,6 +725,7 @@ text-decoration:none
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
+  width: 95%;
 }
 .header
 {
@@ -1162,6 +1162,7 @@ text-decoration:none
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
+  width: 95%;
 }
 .pageno
 {
@@ -1196,7 +1197,7 @@ text-decoration:none
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
-  width: 100%;
+  width: 95%;
 }
 .pagesitem
 {
@@ -1728,7 +1729,7 @@ text-decoration:none
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
-  width: 100%;
+  width: 95%;
 }
 .table
 {
@@ -1741,6 +1742,7 @@ text-decoration:none
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
+  width: 95%;
 }
 .top_stacked_value
 {
@@ -1760,79 +1762,19 @@ text-decoration:none
 }
 .tcgcommentdata
 {
-  background-color: #FFFFFF;
-  border: 0px solid #CCCCCC;
   color: #828282;
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 9pt;
-  font-style: normal;
-  font-weight: normal;
-  margin-bottom: 2px;
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 2px;
-  vertical-align: middle;
 }
 .tcgcovereddata
 {
-  background-color: #FFFFFF;
-  border: 0px solid #CCCCCC;
   color: #00BE00;
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 9pt;
-  font-style: normal;
-  font-weight: normal;
-  margin-bottom: 2px;
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 2px;
-  vertical-align: middle;
 }
 .tcgnoncontribdata
 {
-  background-color: #FFFFFF;
-  border: 0px solid #CCCCCC;
   color: #8020FF;
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 9pt;
-  font-style: normal;
-  font-weight: normal;
-  margin-bottom: 2px;
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 2px;
-  vertical-align: middle;
 }
 .tcgnoncovereddata
 {
-  background-color: #FFFFFF;
-  border: 0px solid #CCCCCC;
   color: #FF8020;
-  font-family: Geneva, Arial, Helvetica, sans-serif;
-  font-size: 9pt;
-  font-style: normal;
-  font-weight: normal;
-  margin-bottom: 2px;
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 2px;
-  vertical-align: middle;
 }
 .titleandnotecontainer
 {
@@ -1844,7 +1786,7 @@ text-decoration:none
   font-size: 9pt;
   font-style: normal;
   font-weight: normal;
-  width: 100%;
+  width: 95%;
 }
 .titlesandfooters
 {

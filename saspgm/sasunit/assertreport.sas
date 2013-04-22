@@ -28,19 +28,6 @@
                            0: in case of a positive check result, write an entry indicating OK (green hook).
  */ /** \cond */ 
 
-
-/* change history 
-   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
-   30.06.2008 AM  - kleine Dokumentationsänderung
-   15.02.2008 AM  - kleine Dokumentationsänderung
-   06.02.2008 AM  - umbenannt nach assertReport
-                  - Parameter i_manual hinzugefügt, um auch eine Reine Prüfung auf 
-                    existierendes File (mit grünem Symbol) durchführen zu können
-                  - Prüfung auf neueres File hinzugefügt
-                    Unterstrich vor den Dateinamen der kopierten Reports hinzugefügt, 
-                    damit auch SAS-Dateien korrekt gehandhabt werden
-*/
-
 %MACRO assertReport (
     i_expected =       
    ,i_actual   =       
@@ -48,66 +35,75 @@
    ,i_manual   = 1
 );
 
-/*-- enforce sequence of calls ----- -----------------------------------------*/
-%GLOBAL g_inTestcase;
-%IF &g_inTestcase EQ 1 %THEN %DO;
-   %endTestcall;
-%END;
-%ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-   %PUT &g_error: assert must be called after initTestcase;
-   %RETURN;
-%END;
-
-/*-- check for existence and check change date -------------------------------*/
-%LOCAL l_rep_ext l_result;
-%LET l_result=2;
-%IF "&i_actual" NE "" %THEN %DO;
-   %local d_dir;
-   %_sasunit_tempFileName(d_dir)
-   %_sasunit_dir(i_path=&i_actual, o_out=&d_dir)
-data _null_;
-   set &d_dir nobs=nobs;
-   if nobs ne 1 then stop;
-   if changed < dhms (today(), hour (input ("&systime",time5.)), minute (input ("&systime",time5.)), 0) then stop;
-   call symput ('l_result', '1');
-   stop;
-run;
-proc sql;
-   drop table &d_dir;
-quit;
-   %IF %sysfunc(fileexist(&i_actual)) %THEN %LET l_rep_ext = %_sasunit_getExtension(&i_actual);
-%END;
-
-%IF NOT &i_manual AND &l_result=1 %THEN %LET l_result=0;
-
-%LOCAL l_expected l_exp_ext;
-%LET l_expected = %_sasunit_abspath(&g_refdata,&i_expected);
-%IF "&l_expected" NE "" %THEN %DO;
-   %IF %sysfunc(fileexist(&l_expected)) %THEN %DO;
-      %LET l_exp_ext = %_sasunit_getExtension(&l_expected);
+   /*-- enforce sequence of calls ----------------------------------------------*/
+   %GLOBAL g_inTestcase;
+   %IF &g_inTestcase EQ 1 %THEN %DO;
+      %endTestcall;
    %END;
-%END;
+   %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
+      %PUT &g_error: assert must be called after initTestcase;
+      %RETURN;
+   %END;
 
-%LOCAL l_casid l_tstid;
-%_sasunit_asserts(
-    i_type     = assertReport
-   ,i_expected = &l_exp_ext
-   ,i_actual   = &l_rep_ext
-   ,i_desc     = &i_desc
-   ,i_result   = &l_result
-   ,r_casid    = l_casid
-   ,r_tstid    = l_tstid
-)
+   %LOCAL l_expected l_exp_ext l_rep_ext l_result l_casid l_tstid l_path;
+   /*-- get current ids for test case and test --------- ------------------------*/
+   %_sasunit_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
-/* copy actual report if it exists */
-%IF &l_rep_ext NE %THEN %DO;
-   %_sasunit_copyFile(&i_actual, &g_testout/_%substr(00&g_scnid,%length(&g_scnid))_&l_casid._&l_tstid._man_act&l_rep_ext);
-%END;
+   %*** create subfolder ***;
+   %_sasunit_createTestSubfolder (i_assertType   =assertreport
+                                 ,i_scnid        =&g_scnid.
+                                 ,i_casid        =&l_casid.
+                                 ,i_tstid        =&l_tstid.
+                                 ,r_path         =l_path
+                                 );
 
-/* copy expected report if it exists  */
-%IF &l_exp_ext NE %THEN %DO;
-   %_sasunit_copyFile(&l_expected, &g_testout/_%substr(00&g_scnid,%length(&g_scnid))_&l_casid._&l_tstid._man_exp&l_exp_ext);
-%END;
 
+   /*-- check for existence and check change date -------------------------------*/
+   %LET l_result=2;
+   %IF "&i_actual" NE "" %THEN %DO;
+      %local d_dir;
+      %_sasunit_tempFileName(d_dir)
+      %_sasunit_dir(i_path=&i_actual, o_out=&d_dir)
+      data _null_;
+         set &d_dir nobs=nobs;
+         if nobs ne 1 then stop;
+         if changed < dhms (today(), hour (input ("&systime",time5.)), minute (input ("&systime",time5.)), 0) then stop;
+         call symput ('l_result', '1');
+         stop;
+      run;
+      proc sql;
+         drop table &d_dir;
+      quit;
+      %IF %sysfunc(fileexist(&i_actual)) %THEN %LET l_rep_ext = %_sasunit_getExtension(&i_actual);
+   %END;
+
+   %IF NOT &i_manual AND &l_result=1 %THEN %LET l_result=0;
+
+   %LET l_expected = %_sasunit_abspath(&g_refdata,&i_expected);
+   %IF "&l_expected" NE "" %THEN %DO;
+      %IF %sysfunc(fileexist(&l_expected)) %THEN %DO;
+         %LET l_exp_ext = %_sasunit_getExtension(&l_expected);
+      %END;
+   %END;
+
+   %_sasunit_asserts(
+       i_type     = assertReport
+      ,i_expected = &l_exp_ext
+      ,i_actual   = &l_rep_ext
+      ,i_desc     = &i_desc
+      ,i_result   = &l_result
+      ,r_casid    = l_casid
+      ,r_tstid    = l_tstid
+   )
+
+   /* copy actual report if it exists */
+   %IF &l_rep_ext NE %THEN %DO;
+      %_sasunit_copyFile(&i_actual, &l_path./_man_act&l_rep_ext);
+   %END;
+
+   /* copy expected report if it exists  */
+   %IF &l_exp_ext NE %THEN %DO;
+      %_sasunit_copyFile(&l_expected, &l_path./_man_exp&l_exp_ext);
+   %END;
 %MEND assertReport;
 /** \endcond */

@@ -33,7 +33,6 @@
       %let l_pictNameFmt=PictNameHTML.;
    %end;
 
-   &o_targetColumn. = "^{style [postimage=""" !! trim(put (&i_sourceColumn., &l_pictNameFmt.))
-                   !! """ flyover=""" !! trim(put (&i_sourceColumn., PictDesc.)) !! """] }";
+   &o_targetColumn. = '^{style [postimage="' !! trim(put (&i_sourceColumn., &l_pictNameFmt.)) !! '" flyover="' !! trim(put (&i_sourceColumn., PictDesc.)) !! '"] }';
 %mend _sasunit_render_iconcolumn;
 /** \endcond */
