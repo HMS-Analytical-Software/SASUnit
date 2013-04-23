@@ -404,8 +404,7 @@
             cellpadding = 7                                                      
             cellspacing = 1                                                    
             bordercolor = colors('tableborder')
-            borderwidth = 1
-            outputwidth = 95%;
+            borderwidth = 1;
          style Table from Output                                                 
             "Controls overall table style." /
             cellpadding = 1
@@ -417,8 +416,7 @@
             "Controls batch mode output." /
             font = fonts('BatchFixedFont')
             foreground = colors('batchfg')
-            background = colors('batchbg')
-           outputwidth=95%;
+            background = colors('batchbg');
          style Note from Container                                               
             "Abstract. Controls the container for note banners and note contents." /
             background = colors('notebg')

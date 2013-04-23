@@ -305,7 +305,7 @@
   1 EN Test Report - Comparison of two Libraries
   2 DE Nicht verglichene Dateien
   2 EN Datasets not compared
-  3 DE erwartete Library
+  3 DE erwartete Bibliothek
   3 EN Expected library
   4 DE tatsächliche Bibliothek
   4 EN Actual library

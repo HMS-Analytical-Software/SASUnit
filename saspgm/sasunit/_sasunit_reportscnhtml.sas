@@ -22,6 +22,8 @@
 %MACRO _sasunit_reportScnHTML (
    i_repdata = 
   ,o_html    =
+  ,o_pdf     = 0
+  ,o_rtf     = 0
   ,o_path    =
   ,o_file    =
 );
@@ -33,7 +35,7 @@
       by scn_id;
 
       LENGTH abs_path scn_pgm $256 
-             LinkColumn1 LinkTitle1 LinkColumn2 LinkTitle2 LinkColumn3 LinkTitle3 $1000
+             LinkColumn1 LinkTitle1 LinkColumn2 LinkTitle2 LinkColumn3 LinkTitle3 LinkColumn4 LinkColumn5 LinkColumn6 $1000
              idColumn $80
              descriptionColumn $1000
              programColumn $1000
@@ -68,8 +70,8 @@
                                      ,o_targetColumn=resultColumn
                                      );
 
-         *** Any destination that renders links shares this if ***;
-         %if (&o_html.) %then %do;
+         *** Any destination that renders links shares this if-clause ***;
+         %if (&o_html. OR &o_pdf. OR &o_rtf.) %then %do;
             LinkTitle1  = "&g_nls_reportScn_009 " !! c_scnid;
             LinkTitle2  = "&g_nls_reportScn_010" !! byte(13) !! abs_path;
             LinkTitle3  = "&g_nls_reportScn_011";
@@ -78,6 +80,12 @@
                LinkColumn1 = catt ("cas_overview.html#SCN", c_scnid, "_");
                LinkColumn2 = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
                LinkColumn3 = c_scnid !! "_log.html";
+            %end;
+            *** PDF- and RTF-links are not destination specific ***;
+            %if (&o_pdf. OR &o_rtf.) %then %do;
+               LinkColumn1 = catt ("SCN", c_scnid, "_");
+               LinkColumn2 = "pgm_" !! scn_pgm !! "_";
+               LinkColumn3 = c_scnid !! "_log";
             %end;
             %_sasunit_render_DataColumn (i_sourceColumn=scn_desc
                                         ,i_linkColumn=LinkColumn1
@@ -117,6 +125,12 @@
         ,i_current = 2
         )
    %end;
+   %if (&o_pdf.) %then %do;
+      ods pdf file="&o_path./&o_file..pdf" style=styles.SASUnit cssstyle="&g_target./SAS_SASUnit.css";
+   %end;
+   %if (&o_rtf.) %then %do;
+      ods rtf file="&o_path./&o_file..rtf" style=styles.SASUnit cssstyle="&g_target./html/SAS_SASUnit.css";
+   %end;
 
    proc print data=work._scenario_report noobs label;
       var idColumn / style(column)=rowheader;
@@ -129,6 +143,12 @@
    run;
    %if (&o_html.) %then %do;
       ods html close;
+   %end;
+   %if (&o_pdf.) %then %do;
+      ods pdf close;
+   %end;
+   %if (&o_rtf.) %then %do;
+      ods rtf close;
    %end;
 
    %*** Reset title and footnotes ***;
