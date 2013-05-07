@@ -300,6 +300,8 @@
  20 DE Benutzer ID
  21 EN SASUnit Language
  21 DE SASUnit Sprache
+ 22 EN SASUnit Data Base Version
+ 22 DE SASUnit Datenbankversion
 ---reportLibrary
   1 DE Prüfbericht - Vergleich der beiden Bibliotheken
   1 EN Test Report - Comparison of two Libraries

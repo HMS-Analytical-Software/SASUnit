@@ -244,6 +244,7 @@ PROC SQL NOPRINT;
       ,tsu_doc        
       ,tsu_lastinit
       ,tsu_lastrep
+      ,tsu_dbversion
       ,scn_id     
       ,scn_path   
       ,scn_desc   

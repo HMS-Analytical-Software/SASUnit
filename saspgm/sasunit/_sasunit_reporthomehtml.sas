@@ -1,4 +1,5 @@
-/** \file
+/** 
+   \file
    \ingroup    SASUNIT_REPORT
 
    \brief      create home page of HTML report
@@ -114,6 +115,12 @@
             valueColumn=catt ('^{style [flyover="', "%sysfunc(getoption(log))", '" url="', "%sysfunc(getoption(log))", '"]', resolve('%_sasunit_stdPath (i_root=&g_root, i_path=%sysfunc(getoption(log)))'), "}");
             output;
          end;
+         if (tsu_dbVersion ne .) then do;
+            idColumn = "&g_nls_reportHome_022.";
+            parameterColumn="^_";
+            valueColumn=tsu_dbVersion;
+            output;
+         end;
          idColumn = "&g_nls_reportHome_015.";
          parameterColumn='&SYSCPL';
          valueColumn="&SYSSCPL.";
@@ -144,7 +151,6 @@
          output;
       END;
    run;
-
 
    %let l_title   =%str(&g_project | &Reference. &g_nls_reportHome_001.);
    title j=c %sysfunc(quote(&l_title.));
