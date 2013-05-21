@@ -55,7 +55,6 @@ ods listing close;
 *ods htmlcss(4) file="C:\TEMP\SASUNIT_HTMLCSS_mit_Styleangabe.html" style=styles.sasunit stylesheet=(url="SAS_SASUnit.css");
 * writing Stylesheet *;
 ods html(5)     file="C:\TEMP\SASUNIT.html" style=styles.sasunit stylesheet="C:\projects\sasunit\resources\style\SAS_SASUnit.css"(url="SAS_SASUnit.css");
-ods html(6)     file="C:\TEMP\SASUNIT1.html" style=styles.sasunit stylesheet="C:\projects\sasunit\saspgm\sasunit\html\SAS_SASUnit.css"(url="SAS_SASUnit.css");
 proc compare base=sashelp.class compare=work.class;
 run;quit;
 proc report data=scenarios nowd;
