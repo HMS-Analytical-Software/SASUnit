@@ -1,7 +1,7 @@
 /** \file
    \ingroup SASUNIT_REPORT
 
-   \brief   Processes the otput of the MCOVERAGE and MCOVERAGELOC system options 
+   \brief   Processes the output of the MCOVERAGE and MCOVERAGELOC system options 
             available in SAS 9.3 in order to assess test coverage.
             <BR>
             A html representation of a given macro source code file is generated, 
@@ -280,10 +280,10 @@
 
    data work._tcg_legend;
       length dummy $3 Text $140;
-      dummy="   ";Text="^{unicode 2022} ^{style tcgCoveredData &g_nls_reportAuton_018.}";output;
+      dummy="   ";Text="^{unicode 25CF} ^{style tcgCoveredData &g_nls_reportAuton_018.}";output;
       dummy="   ";Text="^{unicode 25CF} ^{style tcgNonCoveredData &g_nls_reportAuton_019.}";output;
-      dummy="   ";Text="^{unicode 2022} ^{style tcgCommentData &g_nls_reportAuton_020.}";output;
-      dummy="   ";Text="^{unicode 2022} ^{style tcgNonContribData &g_nls_reportAuton_021.}";output;
+      dummy="   ";Text="^{unicode 25CF} ^{style tcgCommentData &g_nls_reportAuton_020.}";output;
+      dummy="   ";Text="^{unicode 25CF} ^{style tcgNonContribData &g_nls_reportAuton_021.}";output;
    run;
 
    data work._tcg_report;
@@ -354,10 +354,11 @@
    %end;
 
    proc print data=work._tcg_report noobs
+      style(report)=blindTable [borderwidth=0]
       style(column)=blindFixedFontData
       style(header)=blindHeader;
 
-      var RowNumber / style(column)=tcgCommentData;
+      var RowNumber / style(column)=tcgCommentData [borderwidth=0];
       var pgmSourceColumn;
    run;
 
