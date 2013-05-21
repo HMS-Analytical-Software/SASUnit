@@ -287,12 +287,17 @@
    run;
 
    data work._tcg_report;
-      LENGTH outputRow pgmSourceColumn $2048;
+      LENGTH outputRow pgmSourceColumn $2048 RowNumberOut $200;
       SET WORK.MCoverage;
-      RowNumber = put(_N_,Z6.);
+      RowNumber = _N_;
       outputRow = trim(srcRowCopy);
       outputRow = tranwrd (outputRow,'^{','^[');
       outputRow = tranwrd (outputRow,'}',']');
+      %_sasunit_render_dataColumn (i_sourceColumn=RowNumber
+                                  ,i_format=Z5.
+                                  ,i_columnType=tcgCommentData 
+                                  ,o_targetColumn=RowNumberOut
+                                  );
       IF covered   = -1 THEN DO;
          %_sasunit_render_dataColumn (i_sourceColumn=outputRow
                                      ,i_columnType=tcgCommentData 
@@ -358,8 +363,7 @@
       style(column)=blindFixedFontData
       style(header)=blindHeader;
 
-      var RowNumber / style(column)=tcgCommentData [borderwidth=0];
-      var pgmSourceColumn;
+      var RowNumberOut pgmSourceColumn;
    run;
 
    %if (&o_html.) %then %do;
