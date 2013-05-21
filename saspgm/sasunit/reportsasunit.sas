@@ -328,9 +328,9 @@ FILENAME repgen temp;
 
 *** Create formats used in reports ***;
 proc format lib=work;
-   value PictName     0 = "&g_sasunit./saspgm/sasunit/html/ok.png"
-                      1 = "&g_sasunit./saspgm/sasunit/html/manual.png"
-                      2 = "&g_sasunit./saspgm/sasunit/html/error.png"
+   value PictName     0 = "&g_root./resources/html/ok.png"
+                      1 = "&g_root./resources/html/manual.png"
+                      2 = "&g_root./resources/html/error.png"
                       OTHER="?????";
    value PictNameHTML 0 = "ok.png"
                       1 = "manual.png"
@@ -355,7 +355,7 @@ DATA _null_;
       IF tsu_lastrep=0 OR &o_force THEN DO;
          /*-- copy static files - images, css etc. ---------------------------*/
          PUT '%_sasunit_copydir(' /
-             "    &g_sasunit" '/html/%str(*.*)' /
+             "    &g_root./resources" '/html/%str(*.*)' /
              "   ,&l_output" /
              ")";
          /*-- create frame HTML page -----------------------------------------*/
