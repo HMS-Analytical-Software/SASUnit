@@ -103,7 +103,7 @@ RUN;
 %LET g_root     = &g_root;
 %LET g_sasunit  = %_sasunit_abspath(&g_root,&g_sasunit);
 %LET g_sasautos = %_sasunit_abspath(&g_root,&g_sasautos);
-%DO i=1 %TO 9;
+%DO i=0 %TO 9;
    %LET g_sasautos&i = %_sasunit_abspath(&g_root,&&g_sasautos&i);
 %END;
 %LET g_autoexec = %_sasunit_abspath(&g_root,&g_autoexec);

@@ -200,8 +200,8 @@
                    coverageColumn
                 %END;
                 resultColumn
-                linkTitle1  LinkTitle2  LinkTitle3
-                linkColumn1 LinkCOlumn2 LinkColumn3 $1000
+                linkTitle0  linkTitle1  LinkTitle2  LinkTitle3
+                linkColumn0 linkColumn1 LinkColumn2 LinkColumn3 $1000
                 _autonColumn autonColumn cas_abs_path scn_abs_path $400;
          set work._auton_report (where=(cas_auton=&l_pgmLib.));
          ARRAY sa(0:9) tsu_sasautos tsu_sasautos1-tsu_sasautos9;
@@ -236,21 +236,26 @@
          end;
          else do;
             _autonColumn = sa(cas_auton);
+            linkTitle0   =  symget("g_sasautos" !! put(cas_auton, z1.));
+            linkColumn0  = "file:///" !! linkTitle0;
+            linkTitle0   = "&g_nls_reportAuton_009. " !! linkTitle0;
          end;
          %_sasunit_render_dataColumn(i_sourceColumn=_autonColumn
+                                    ,i_linkColumn=LinkColumn0
+                                    ,i_linkTitle=LinkTitle0
                                     ,o_targetColumn=autonColumn);
-         autonColumn="&g_nls_reportAuton_003.: " !! trim (autonColumn);
+         autonColumn="&g_nls_reportAuton_003.: " !! trim(autonColumn);
 
          *** Any destination that renders links shares this if ***;
          %if (&o_html.) %then %do;
-            LinkTitle1 = "&&g_nls_reportAuton_009." !! byte(13) !! cas_abs_path;
-            LinkTitle2 = "&&g_nls_reportAuton_010." !! byte(13) !! scn_abs_path;
+            LinkTitle1 = "&g_nls_reportAuton_009." !! byte(13) !! cas_abs_path;
+            LinkTitle2 = "&g_nls_reportAuton_010." !! byte(13) !! scn_abs_path;
             LinkTitle3 = "&g_nls_reportAuton_017. " !! cas_pgm;
 
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
-               LinkColumn1  = "pgm_" !! tranwrd (cas_pgm, ".sas", ".html");
-               LinkColumn2  = catt("cas_overview.html#SCN", put(scn_id,z3.), "_");
+               LinkColumn1 = "file:///" !! cas_abs_path;
+               LinkColumn2 = catt("cas_overview.html#SCN", put(scn_id,z3.), "_");
                if compress(cas_pgm) ne '' then do;
                   if index(cas_pgm,'/') GT 0 then do;
                      LinkColumn3 =  'tcg_'||trim(left(scan(substr(cas_pgm, findw(cas_pgm, scan(cas_pgm, countw(cas_pgm,'/'),'/'))),1,".") !! ".html"));
@@ -262,7 +267,7 @@
             %end;
 
             %_sasunit_render_dataColumn(i_sourceColumn=cas_pgm
-                                       ,i_linkColumn=cas_abs_path
+                                       ,i_linkColumn=LinkColumn1
                                        ,i_linkTitle=LinkTitle1
                                        ,o_targetColumn=pgmColumn);
             %_sasunit_render_dataColumn(i_sourceColumn=scn_id

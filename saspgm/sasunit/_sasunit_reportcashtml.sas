@@ -106,11 +106,11 @@
             LinkTitle2   = "&g_nls_reportScn_011";
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
-               LinkColumn1  = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
+               LinkColumn1  = "file:///" !! scn_abs_path;
                LinkColumn2  = c_scnid !! "_log.html";
             %end;
             %_sasunit_render_dataColumn (i_sourceColumn=scn_path
-                                        ,i_linkColumn=scn_abs_path
+                                        ,i_linkColumn=LinkColumn1
                                         ,i_linkTitle=LinkTitle1
                                         ,o_targetColumn=scnProgramColumn
                                         );
@@ -150,7 +150,7 @@
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
                LinkColumn3 = "cas_" !! c_scnid !! "_" !! c_casid !! ".html";
-               LinkColumn4 = "pgm_" !! tranwrd (cas_pgm, ".sas", ".html");
+               LinkColumn4 = "file:///" !! abs_path;
                LinkColumn5 = c_scnid !! "_" !! c_casid !! "_log.html";
             %end;
 
@@ -160,7 +160,7 @@
                                         ,o_targetColumn=descriptionColumn
                                         );
             %_sasunit_render_dataColumn (i_sourceColumn=cas_pgm
-                                        ,i_linkColumn=abs_path
+                                        ,i_linkColumn=LinkColumn4
                                         ,i_linkTitle=LinkTitle4
                                         ,o_targetColumn=programColumn
                                         );

@@ -14,7 +14,7 @@
 
    \param   i_sourceColumn name of the column holding the value
    \param   i_format       name of the format that will be applied to the value. <em>(optional: _NONE_)</em>.
-   \param   i_linkColumn   name of the column holding the value for the path (href) og the link. <em>(optional: _NONE_)</em>.
+   \param   i_linkColumn   name of the column holding the value for the path (href) or the link. <em>(optional: _NONE_)</em>.
    \param   i_linkTitle    name of the column holding the value for the title (flyover) of the link. <em>(optional: _NONE_)</em>.
    \param   i_columnType   type of the column as defined in the CSS ("datacolumn" / "datacolumnerror"). <em>(optional: _NONE_)</em>.
    \param   o_targetColumn name of the target column holding the ODS formatted value

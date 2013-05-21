@@ -78,7 +78,7 @@
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
                LinkColumn1 = catt ("cas_overview.html#SCN", c_scnid, "_");
-               LinkColumn2 = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
+               LinkColumn2 = "file:///" !! abs_path;
                LinkColumn3 = c_scnid !! "_log.html";
             %end;
             *** PDF- and RTF-links are not destination specific ***;
@@ -93,7 +93,7 @@
                                         ,o_targetColumn=descriptionColumn
                                         );
             %_sasunit_render_DataColumn (i_sourceColumn=scn_path
-                                        ,i_linkColumn=abs_path
+                                        ,i_linkColumn=LinkColumn2
                                         ,i_linkTitle=LinkTitle2
                                         ,o_targetColumn=programColumn
                                         );
