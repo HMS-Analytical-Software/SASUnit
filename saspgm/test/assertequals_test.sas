@@ -15,7 +15,7 @@
 */ /** \cond */ 
 
 /* change log
-	 30.01.2013 BB  Hint to failed tests and scenarios formated consistently " - must be red!" and "- has to fail!"
+    30.01.2013 BB  Hint to failed tests and scenarios formated consistently " - must be red!" and "- has to fail!"
    10.10.2008 AM  Bug fixing
    27.06.2008 AM  Creation
 */ 
@@ -52,7 +52,7 @@
 %assertDBValue(tst,desc,the description 3)
 %assertDBValue(tst,exp,20)
 %assertDBValue(tst,act,19)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
 %endTestcase(i_assertLog=0)
 
 %initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, in range))
@@ -85,7 +85,7 @@
 %assertDBValue(tst,desc,the description 6)
 %assertDBValue(tst,exp,20(+-2))
 %assertDBValue(tst,act,17)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
 %endTestcase(i_assertLog=0)
 
 %initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, in range, floating points))
@@ -107,7 +107,7 @@
 %assertDBValue(tst,desc,the description 8)
 %assertDBValue(tst,exp,20(+-10))
 %assertDBValue(tst,act,117.86532)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
 %endTestcase(i_assertLog=0)
 
 %initTestcase(i_object=assertequals.sas, i_desc=%str(unequal values, with fuzz, in range, floating points, twisted))
@@ -129,7 +129,7 @@
 %assertDBValue(tst,desc,the description 8)
 %assertDBValue(tst,exp,117.86532(+-10))
 %assertDBValue(tst,act,20)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
 %endTestcase(i_assertLog=0)
 
 %initTestcase(i_object=assertequals.sas, i_desc=%str(equal values, alpha numeric))
@@ -151,7 +151,7 @@
 %assertDBValue(tst,desc,the description 10)
 %assertDBValue(tst,exp,AAA)
 %assertDBValue(tst,act,BBB)
-%assertDBValue(tst,res,1)
+%assertDBValue(tst,res,2)
 %endTestcase(i_assertLog=0)
 
 %initTestcase(i_object=assertequals.sas, i_desc=%str(equal values, alpha numeric, with i_fuzz))

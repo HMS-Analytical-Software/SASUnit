@@ -89,11 +89,11 @@ RUN;
 %LOCAL l_expected l_assert_failed;
 %IF &i_not %THEN %DO;
    %LET l_expected = 2&i_logmsg; /* message not present */
-   %LET l_assert_failed = &l_msg_found;
+   %LET l_assert_failed = %eval (&l_msg_found.*2);
 %END;
 %ELSE %DO;
    %LET l_expected = 1&i_logmsg; /* message present */
-   %LET l_assert_failed = %eval(NOT &l_msg_found);
+   %LET l_assert_failed = %eval((NOT &l_msg_found)*2);
 %END;
 
 %_sasunit_asserts(

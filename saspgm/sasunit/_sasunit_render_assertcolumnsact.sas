@@ -13,7 +13,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param   i_sourceColumn name of the column holding the value
-   \param   i_targetColumn name of the target column holding the ODS formatted value
+   \param   o_html         Test report in HTML-format?
+   \param   o_targetColumn name of the target column holding the ODS formatted value
 
 */ /** \cond */ 
 
@@ -22,9 +23,15 @@
 */ 
 
 %macro _sasunit_render_assertColumnsAct (i_sourceColumn=
-                                        ,i_targetColumn=
+                                        ,o_html=
+                                        ,o_targetColumn=
                                         );
-   PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportDetail_016" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_cmp_act.html">' "&g_nls_reportDetail_038" '</a><br />';
-   PUT '                          <a class="lightlink" title="' "&g_nls_reportDetail_017" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_cmp_rep.html">' "&g_nls_reportDetail_039" '</a><br />' &i_sourceColumn. '</td>';
+   href     = catt (put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
+   %if (&o_html.) %then %do;
+      href_act = catt (href,'_cmp_act.html');
+      href_rep = catt (href,'_cmp_rep.html');
+   %end;
+   &o_targetColumn. = catt ("^{style [flyover=""&g_nls_reportDetail_016"" url=""", href_act, """] &g_nls_reportDetail_038. } ^n ");
+   &o_targetColumn. = catt (&o_targetColumn., " ^{style [flyover=""&g_nls_reportDetail_017"" url=""", href_rep, """] &&g_nls_reportDetail_039. } ^n ", &i_sourceColumn.);
 %mend _sasunit_render_assertColumnsAct;
 /** \endcond */

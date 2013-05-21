@@ -13,291 +13,334 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param   i_repdata      input data set (created in reportSASUnit.sas)
-   \param   o_html         output HTML file
+   \param   o_html         flag to output file in HTML format
+   \param   o_path         path for output file
+   \param   o_file         name of the outputfile without extension
 
 */ /** \cond */ 
-
-/* change history
-   14.02.2013 PW/KL  Modified for LINUX
-   08.02.2013 PW  implementation of test coverage assessment
-   02.01.2013 KL  Added new column "Assertions" and corrected the number in column "Test Cases".
-                  program library (none) is now supported under different languages.
-   12.08.2008 AM  Mehrsprachigkeit
-   29.12.2007 AM  Neuererstellung
-*/ 
 
 %MACRO _sasunit_reportAutonHTML (
    i_repdata = 
   ,o_html    =
+  ,o_path    =
+  ,o_file    =
 );
 
-/*-- determine number of scenarios 
+   /*-- determine number of scenarios 
      and number of test cases per unit under test ----------------------------*/
-%LOCAL d_rep1 d_rep2 l_tcg_res;
-%_sasunit_tempFileName(d_rep1)
-%_sasunit_tempFileName(d_rep2)
+   %LOCAL d_rep1 d_rep2 l_tcg_res l_pgmLibraries l_pgmLib l_title;
 
+   %_sasunit_tempFileName(d_rep1)
+   %_sasunit_tempFileName(d_rep2)
 
-PROC MEANS NOPRINT NWAY DATA=&i_repdata(KEEP=cas_auton pgm_id scn_id cas_res);
-   BY cas_auton pgm_id scn_id;
-   CLASS cas_res;
-   OUTPUT OUT=&d_rep1 (drop=_type_);
-RUN;
-
-PROC TRANSPOSE DATA=&d_rep1 OUT=&d_rep1 (DROP=_name_) PREFIX=res;
-   BY cas_auton pgm_id scn_id;
-   VAR _freq_;
-   ID cas_res;
-RUN;
-
-PROC MEANS NOPRINT NWAY DATA=&d_rep1(KEEP=cas_auton pgm_id);
-   BY cas_auton pgm_id;
-   OUTPUT OUT=&d_rep2 (DROP=_type_ RENAME=(_freq_=scn_count));
-RUN;
-
-DATA &d_rep1 (COMPRESS=YES);
-   MERGE &i_repdata (KEEP=cas_auton pgm_id scn_id cas_pgm tsu_sasautos tsu_sasautos1-tsu_sasautos9) &d_rep1;
-   BY cas_auton pgm_id scn_id;
-   IF res0=. THEN res0=0;
-   IF res1=. THEN res1=0;
-   IF res2=. THEN res2=0;
-RUN;
-
-DATA &d_rep1 (COMPRESS=YES);
-   MERGE &d_rep1 &d_rep2;
-   BY cas_auton pgm_id;
-RUN;
-
-PROC MEANS NOPRINT NWAY missing DATA=&i_repdata(KEEP=cas_auton pgm_id scn_id cas_id);
-   class cas_auton pgm_id scn_id cas_id;
-   OUTPUT OUT=&d_rep2;
-RUN;
-
-PROC MEANS NOPRINT NWAY missing DATA=&d_rep2(KEEP=cas_auton pgm_id scn_id cas_id);
-   class cas_auton pgm_id scn_id;
-   OUTPUT OUT=&d_rep2 (drop=_type_ cas_id rename=(_freq_=scn_cas)) N=;
-RUN;
-
-DATA &d_rep1 (COMPRESS=YES);
-   MERGE &d_rep1 &d_rep2;
-   BY cas_auton pgm_id scn_id;
-RUN;
-
-%IF &g_testcoverage. EQ 1 %THEN %DO;
-    /*-- in the log subdir: append all *.tcg files to one file named 000.tcg
-     This is done in order to get one file containing coverage data 
-     of all calls to the macros under test -----------------------------------*/
-
-   %let l_rc =%_sasunit_delFile("&g_log/000.tcg");
-
-   FILENAME allfiles "&g_log/*.tcg";
-   DATA _null_;
-    INFILE allfiles end=done dlm=',';
-    FILE "&g_log/000.tcg";
-    INPUT row :$256.;
-    PUT row;
+   PROC MEANS NOPRINT NWAY missing DATA=&i_repdata(KEEP=cas_auton pgm_id scn_id cas_id);
+      class cas_auton pgm_id scn_id cas_id;
+      OUTPUT OUT=&d_rep1. (rename=(_FREQ_=scn_tst));
    RUN;
 
-   /*-- for every unit under test (see ‘target’ database ): 
-    call new macro _sasunit_reporttcghtml.sas once in order to get a html 
-    file showing test coverage for the given unit under test. For every call, 
-    use the 000.tcg file as coverage analysis text file ---------------------*/
-   
-   PROC SQL NOPRINT;
-      SELECT DISTINCT cas_pgm 
-      INTO:l_unitUnderTestList SEPARATED BY '*'
-      FROM &d_rep1;
-   QUIT;
-   /* Add col tcg_pct to data set &d_rep1 to store coverage percentage for report generation*/
-   DATA &d_rep1 (COMPRESS=YES);
-      LENGTH tcg_pct 8;
-      SET &d_rep1;
-      tcg_pct = .;
+   PROC MEANS NOPRINT NWAY missing DATA=&d_rep1.(KEEP=cas_auton pgm_id scn_id scn_tst);
+      class cas_auton pgm_id scn_id;
+      OUTPUT OUT=&d_rep2. (rename=(_FREQ_=scn_cas)) sum(scn_tst)=scn_tst;
    RUN;
 
-   %LET l_listCount=%sysfunc(countw(&l_unitUnderTestList.,'*'));
-   %do i = 1 %to &l_listCount;
-      %LET l_currentUnit=%lowcase(%scan(&l_unitUnderTestList,&i,*));
-      %IF "%sysfunc(compress(&l_currentUnit.))" EQ "" %THEN %DO;
-         %LET l_tcg_res = .;
-      %END;
-      %ELSE %DO;
-         /*determine where macro source file is located*/ 
-         %let l_currentUnitLocation=;
-         %let l_currentUnitFileName=;
-         %IF (%SYSFUNC(FILEEXIST(&l_currentUnit.))) %THEN %DO; /*full absolute path given*/
-            %_sasunit_getAbsPathComponents(
-                    i_absPath         = &l_currentUnit
-                  , o_fileName        = l_currentUnitFileName
-                  , o_pathWithoutName = l_currentUnitLocation
-                  )
-         %END; 
-         %ELSE %DO; /*relative path given*/
-            %IF (%SYSFUNC(FILEEXIST(&g_root./&l_currentUnit.))) %THEN %DO; /*relative path in root dir */
+   proc sort data=&i_repdata. out=work._auton_report;
+      by cas_auton pgm_id scn_id;
+   run;
+
+   data work._auton_report;
+      set work._auton_report;
+      by cas_auton pgm_id scn_id;
+      if (first.scn_id);
+   run;
+
+   data work._auton_report;
+      merge work._auton_report &d_rep2.;
+      by cas_auton pgm_id scn_id;
+   run;
+
+   %IF &g_testcoverage. EQ 1 %THEN %DO;
+       /*-- in the log subdir: append all *.tcg files to one file named 000.tcg
+        This is done in order to get one file containing coverage data 
+        of all calls to the macros under test -----------------------------------*/
+
+      %let l_rc =%_sasunit_delFile("&g_log/000.tcg");
+
+      FILENAME allfiles "&g_log/*.tcg";
+      DATA _null_;
+       INFILE allfiles end=done dlm=',';
+       FILE "&g_log/000.tcg";
+       INPUT row :$256.;
+       PUT row;
+      RUN;
+
+      /*-- for every unit under test (see ‘target’ database ): 
+       call new macro _sasunit_reporttcghtml.sas once in order to get a html 
+       file showing test coverage for the given unit under test. For every call, 
+       use the 000.tcg file as coverage analysis text file ---------------------*/
+      
+      PROC SQL NOPRINT;
+         SELECT DISTINCT cas_pgm 
+         INTO:l_unitUnderTestList SEPARATED BY '*'
+         FROM work._auton_report;
+      QUIT;
+      /* Add col tcg_pct to data set &d_rep1 to store coverage percentage for report generation*/
+      DATA work._auton_report (COMPRESS=YES);
+         LENGTH tcg_pct 8;
+         SET work._auton_report;
+         tcg_pct = .;
+      RUN;
+
+      %LET l_listCount=%sysfunc(countw(&l_unitUnderTestList.,'*'));
+      %do i = 1 %to &l_listCount;
+         %LET l_currentUnit=%lowcase(%scan(&l_unitUnderTestList,&i,*));
+         %IF "%sysfunc(compress(&l_currentUnit.))" EQ "" %THEN %DO;
+            %LET l_tcg_res = .;
+         %END;
+         %ELSE %DO;
+            /*determine where macro source file is located*/ 
+            %let l_currentUnitLocation=;
+            %let l_currentUnitFileName=;
+            %IF (%SYSFUNC(FILEEXIST(&l_currentUnit.))) %THEN %DO; /*full absolute path given*/
                %_sasunit_getAbsPathComponents(
-                    i_absPath         = &g_root./&l_currentUnit.
-                  , o_fileName        = l_currentUnitFileName
-                  , o_pathWithoutName = l_currentUnitLocation
-                  )
-            %END;
-            %ELSE %DO; /*relative path in one of the sasautos dirs*/
-               %IF (%SYSFUNC(FILEEXIST(&g_sasautos./&l_currentUnit.))) %THEN %DO;
-                   %_sasunit_getAbsPathComponents(
-                    i_absPath         = &g_sasautos./&l_currentUnit.
-                  , o_fileName        = l_currentUnitFileName
-                  , o_pathWithoutName = l_currentUnitLocation
-                  )
+                       i_absPath         = &l_currentUnit
+                     , o_fileName        = l_currentUnitFileName
+                     , o_pathWithoutName = l_currentUnitLocation
+                     )
+            %END; 
+            %ELSE %DO; /*relative path given*/
+               %IF (%SYSFUNC(FILEEXIST(&g_root./&l_currentUnit.))) %THEN %DO; /*relative path in root dir */
+                  %_sasunit_getAbsPathComponents(
+                       i_absPath         = &g_root./&l_currentUnit.
+                     , o_fileName        = l_currentUnitFileName
+                     , o_pathWithoutName = l_currentUnitLocation
+                     )
                %END;
-               %ELSE %DO;
-                  %LET j = 1;
-                  %DO %UNTIL ("&l_currentUnitLocation." NE "" OR &j. EQ 10);
-                     %IF (%SYSFUNC(FILEEXIST(&&g_sasautos&j/&l_currentUnit.))) %THEN %DO;
-                        %_sasunit_getAbsPathComponents(
-                             i_absPath         = &&g_sasautos&j/&l_currentUnit.
-                           , o_fileName        = l_currentUnitFileName
-                           , o_pathWithoutName = l_currentUnitLocation
-                          )
+               %ELSE %DO; /*relative path in one of the sasautos dirs*/
+                  %IF (%SYSFUNC(FILEEXIST(&g_sasautos./&l_currentUnit.))) %THEN %DO;
+                      %_sasunit_getAbsPathComponents(
+                       i_absPath         = &g_sasautos./&l_currentUnit.
+                     , o_fileName        = l_currentUnitFileName
+                     , o_pathWithoutName = l_currentUnitLocation
+                     )
+                  %END;
+                  %ELSE %DO;
+                     %LET j = 1;
+                     %DO %UNTIL ("&l_currentUnitLocation." NE "" OR &j. EQ 10);
+                        %IF (%SYSFUNC(FILEEXIST(&&g_sasautos&j/&l_currentUnit.))) %THEN %DO;
+                           %_sasunit_getAbsPathComponents(
+                                i_absPath         = &&g_sasautos&j/&l_currentUnit.
+                              , o_fileName        = l_currentUnitFileName
+                              , o_pathWithoutName = l_currentUnitLocation
+                             )
+                        %END;
+                        %LET j = %EVAL(&j + 1);
                      %END;
-                     %LET j = %EVAL(&j + 1);
                   %END;
                %END;
             %END;
-         %END;
-         %let l_tcg_res=.;
+            %let l_tcg_res=.;
 
-         %IF ("&l_currentUnitFileName." NE "" AND "&l_currentUnitLocation." NE "" 
-              AND %SYSFUNC(FILEEXIST(&l_currentUnitLocation./&l_currentUnitFileName.)) 
-              AND %SYSFUNC(FILEEXIST(&g_log./000.tcg)) ) %THEN %DO;
-              %_sasunit_reporttcghtml(
-                    i_macroName                = &l_currentUnitFileName.
-                   ,i_macroLocation            = &l_currentUnitLocation.
-                   ,i_mCoverageName            = 000.tcg
-                   ,i_mCoverageLocation        = &g_log
-                   ,o_outputFile               = tcg_%SCAN(&l_currentUnitFileName.,1,.).html
-                   ,o_outputPath               = &g_target/rep
-                   ,o_resVarName               = l_tcg_res
-                   );
-         %END;
-      %END; /*%ELSE %DO;*/
-      /*store coverage percentage for report generation*/
-      PROC SQL NOPRINT;
-        UPDATE &d_rep1
-          SET tcg_pct=&l_tcg_res.
-         WHERE upcase(cas_pgm) EQ "%upcase(&l_currentUnit.)";
-      QUIT;
-   %end; /*do i = 1 to &l_listCount*/
-   
-%END;
+            %IF ("&l_currentUnitFileName." NE "" AND "&l_currentUnitLocation." NE "" 
+                 AND %SYSFUNC(FILEEXIST(&l_currentUnitLocation./&l_currentUnitFileName.)) 
+                 AND %SYSFUNC(FILEEXIST(&g_log./000.tcg)) ) %THEN %DO;
+                 %_sasunit_reporttcghtml(
+                       i_macroName                = &l_currentUnitFileName.
+                      ,i_macroLocation            = &l_currentUnitLocation.
+                      ,i_mCoverageName            = 000.tcg
+                      ,i_mCoverageLocation        = &g_log
+                      ,o_outputFile               = tcg_%SCAN(&l_currentUnitFileName.,1,.)
+                      ,o_outputPath               = &g_target/rep
+                      ,o_resVarName               = l_tcg_res
+                      ,o_html                     = &o_html.
+                      );
+            %END;
+         %END; /*%ELSE %DO;*/
+         /*store coverage percentage for report generation*/
+         PROC SQL NOPRINT;
+           UPDATE work._auton_report
+             SET tcg_pct=&l_tcg_res.
+            WHERE upcase(cas_pgm) EQ "%upcase(&l_currentUnit.)";
+         QUIT;
+      %end; /*do i = 1 to &l_listCount*/
+      
+   %END;
 
-DATA _null_;
-   SET &d_rep1 END=eof;
-   BY cas_auton pgm_id scn_id;
+   PROC SQL NOPRINT;
+      SELECT DISTINCT cas_auton 
+      INTO :l_pgmLibraries SEPARATED BY '§'
+      FROM work._auton_report;
+   QUIT;
 
-   FILE "&o_html";
+   title;
+   footnote;
+   options nocenter;
 
-   IF _n_=1 THEN DO;
+   %let l_title=%str(&g_nls_reportAuton_001 | &g_project - SASUnit &g_nls_reportAuton_002);
+   title j=c "&l_title.";
+
+   %if (&o_html.) %then %do;
+      ods html file="&o_path./&o_file..html" 
+                    (TITLE="&l_title.") 
+                    headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
+                    metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
+                    style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
       %_sasunit_reportPageTopHTML(
-         i_title   = %str(&g_nls_reportAuton_001 | &g_project - SASUnit &g_nls_reportAuton_002)
+         i_title   = &l_title.
         ,i_current = 4
       )
-   END;
+   %end;
 
-   LENGTH hlp1 hlp2 hlp3 hlpp $256;
-   RETAIN hlp3;
-
-   IF first.cas_auton THEN DO;
-      IF _n_>1 THEN DO;
-         PUT '<hr size="1">';
-      END;
-      IF cas_auton NE . THEN hlp3 = 'auton' !! put (cas_auton, z3.);
-      ELSE hlp3 = 'auton';
-      PUT '<table id="' hlp3 +(-1) '"><tr>';
-      PUT "   <td>&g_nls_reportAuton_003</td>";
-      IF cas_auton>=0 THEN DO;
+   options missing=" ";
+   %LET l_listCount=%sysfunc(countw(&l_pgmLibraries.,'§'));
+   %do i = 1 %to &l_listCount.;
+      %LET l_pgmLib=%lowcase(%scan(&l_pgmLibraries,&i,§));
+      data work._current_auton;
+         length pgmColumn scenarioColumn caseColumn assertColumn
+                %IF &g_testcoverage. EQ 1 %THEN %DO;
+                   coverageColumn
+                %END;
+                resultColumn
+                linkTitle0  linkTitle1  LinkTitle2  LinkTitle3
+                linkColumn0 linkColumn1 LinkColumn2 LinkColumn3 $1000
+                _autonColumn autonColumn cas_abs_path scn_abs_path $400;
+         set work._auton_report (where=(cas_auton=&l_pgmLib.));
          ARRAY sa(0:9) tsu_sasautos tsu_sasautos1-tsu_sasautos9;
-         hlp1 = sa(cas_auton);
-         IF cas_auton=0 THEN hlp2 = symget('g_sasautos');
-         ELSE hlp2 = symget ('g_sasautos' !! compress(put(cas_auton,8.)));
-         PUT '   <td><a class="lightlink" title="' "&g_nls_reportAuton_004 " '&#x0D;' hlp2 +(-1) '" href="file://' hlp2 +(-1) '">' hlp1 +(-1) '</a></td>';
-      END;
-      ELSE DO;
-         PUT "   <td>&g_nls_reportAuton_015</td>";
-      END;
-      PUT '</tr></table>';
+         label 
+            pgmColumn="&g_nls_reportAuton_005."
+            scenarioColumn="&g_nls_reportAuton_006."
+            caseColumn="&g_nls_reportAuton_007."
+            assertColumn="&g_nls_reportAuton_014."
+            %IF &g_testcoverage. EQ 1 %THEN %DO;
+               coverageColumn="&g_nls_reportAuton_016."
+            %END;
+            resultColumn="&g_nls_reportAuton_008.";
 
-      PUT '<table>';
-      PUT '<tr>';
-      PUT '   <td class="tabheader">' "&g_nls_reportAuton_005" '</td>';
-      PUT '   <td class="tabheader">' "&g_nls_reportAuton_006" '</td>';
-      PUT '   <td class="tabheader">' "&g_nls_reportAuton_007" '</td>';
-      PUT '   <td class="tabheader">' "&g_nls_reportAuton_014" '</td>';
-      %IF &g_testcoverage. EQ 1 %THEN %DO;
-         PUT '   <td class="tabheader">' "&g_nls_reportAuton_016" ' [%]' '</td>';
-      %END;
-      PUT '   <td class="tabheader">' "&g_nls_reportAuton_008" '</td>';
-      PUT '</tr>';
-   END;
+         if (cas_pgm="^_") then cas_pgm="";
+         IF cas_auton = . THEN DO;
+            cas_abs_path = resolve ('%_sasunit_abspath(&g_root,' !! trim(cas_pgm) !! ')');   
+         END;
+         ELSE DO;
+            cas_abs_path = resolve ('%_sasunit_abspath(&g_sasautos' !! put (cas_auton,1.) !! ',' !! trim(cas_pgm) !! ')');
+         END;
+         scn_abs_path = resolve ('%_sasunit_abspath(&g_root,' !! trim(scn_path) !! ')');
 
-   IF first.scn_id THEN DO;
-      PUT '<tr>';
-   END;
-
-   IF first.pgm_id THEN DO;
-      IF cas_auton = . THEN DO;
-         hlp2 = resolve ('%_sasunit_abspath(&g_root,' !! trim(cas_pgm) !! ')');   
-      END;
-      ELSE DO;
-         IF cas_auton = 0 THEN hlp1 = '&g_sasautos';
-         ELSE hlp1 = '&g_sasautos' !! compress (put (cas_auton,8.));
-         hlp2 = resolve ('%_sasunit_abspath(' !! trim(hlp1) !! ',' !! trim(cas_pgm) !! ')');
-      END;
-      PUT '   <td id="' hlp3 +(-1) '_' pgm_id z3. '" rowspan="' scn_count +(-1) '" class="datacolumn"><a class="lightlink" title="' "&g_nls_reportAuton_009 " '&#x0D;' hlp2 +(-1) '" href="' hlp2 +(-1) '">' cas_pgm +(-1) '</a></td>';
-   END;
-
-   IF first.scn_id THEN DO;
-      PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportAuton_010 " scn_id z3. '" href="cas_overview.html#scn' scn_id z3. '">' scn_id z3. '</a></td>';
-      hlp1 = left (put (scn_cas, 8.));
-      PUT '   <td class="datacolumn">' hlp1 +(-1) '</td>';
-      hlp1 = left (put (sum (res0, res1, res2), 8.));
-      PUT '   <td class="datacolumn">' hlp1 +(-1) '</td>';
-      %IF &g_testcoverage. EQ 1 %THEN %DO;
-         if compress(cas_pgm) ne '' then do;
-            if index(cas_pgm,'/') GT 0 then do;
-               hlpp =  'tcg_'||compress(trim(left(scan(substr(cas_pgm, findw(cas_pgm, scan(cas_pgm, countw(cas_pgm,'/'),'/'))),1,.) !! ".html")));
-            end;
-            else do;
-               hlpp =  'tcg_'||compress(trim(left(scan(cas_pgm,1,.) !! ".html")));
-            end;
-         end;
-         if tcg_pct eq . then do;
-            PUT '   <td class="datacolumn">&nbsp;</td>';
+         %_sasunit_render_dataColumn(i_sourceColumn=scn_cas
+                                    ,o_targetColumn=caseColumn);
+         %_sasunit_render_dataColumn(i_sourceColumn=scn_tst
+                                    ,o_targetColumn=assertColumn);
+         %_sasunit_render_iconColumn(i_sourceColumn=scn_res
+                                    ,o_html=&o_html.
+                                    ,o_targetColumn=resultColumn);
+         if (cas_auton < 0) then do;
+            _autonColumn = "&g_nls_reportAuton_015.";
          end;
          else do;
-            PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportAuton_017. " cas_pgm +(-1) '" href="' hlpp '">' tcg_pct +(-1) '</a></td>';
+            _autonColumn = sa(cas_auton);
+            linkTitle0   =  symget("g_sasautos" !! put(cas_auton, z1.));
+            linkColumn0  = "file:///" !! linkTitle0;
+            linkTitle0   = "&g_nls_reportAuton_009. " !! linkTitle0;
          end;
-      %END;
-      PUT '   <td class="iconcolumn"><img src=' @;
-      IF      res1>0 THEN PUT '"error.png"  alt="' "&g_nls_reportAuton_011" '"'        @;
-      ELSE IF res2>0 THEN PUT '"manual.png" alt="' "&g_nls_reportAuton_012" '"'        @;
-      ELSE IF res0>0 THEN PUT '"ok.png"     alt="OK"'                                      @;
-      ELSE                PUT '"?????"      alt="' "&g_nls_reportAuton_013" '"'        @;
-      PUT '></img></td>';
-      PUT '</tr>';
-   END;
+         %_sasunit_render_dataColumn(i_sourceColumn=_autonColumn
+                                    ,i_linkColumn=LinkColumn0
+                                    ,i_linkTitle=LinkTitle0
+                                    ,o_targetColumn=autonColumn);
+         autonColumn="&g_nls_reportAuton_003.: " !! trim(autonColumn);
 
-   IF last.cas_auton THEN DO;
-      PUT '</table>';
-   END;
+         *** Any destination that renders links shares this if ***;
+         %if (&o_html.) %then %do;
+            LinkTitle1 = "&g_nls_reportAuton_009." !! byte(13) !! cas_abs_path;
+            LinkTitle2 = "&g_nls_reportAuton_010." !! byte(13) !! scn_abs_path;
+            LinkTitle3 = "&g_nls_reportAuton_017. " !! cas_pgm;
 
-   IF eof THEN DO;
-      %_sasunit_reportFooterHTML()
-   END;
+            *** HTML-links are destinations specific ***;
+            %if (&o_html.) %then %do;
+               LinkColumn1 = "file:///" !! cas_abs_path;
+               LinkColumn2 = catt("cas_overview.html#SCN", put(scn_id,z3.), "_");
+               if compress(cas_pgm) ne '' then do;
+                  if index(cas_pgm,'/') GT 0 then do;
+                     LinkColumn3 =  'tcg_'||trim(left(scan(substr(cas_pgm, findw(cas_pgm, scan(cas_pgm, countw(cas_pgm,'/'),'/'))),1,".") !! ".html"));
+                  end;
+                  else do;
+                     LinkColumn3 =  'tcg_'||trim(left(scan(cas_pgm,1,".") !! ".html"));
+                  end;
+               end;
+            %end;
 
-RUN; 
+            %_sasunit_render_dataColumn(i_sourceColumn=cas_pgm
+                                       ,i_linkColumn=LinkColumn1
+                                       ,i_linkTitle=LinkTitle1
+                                       ,o_targetColumn=pgmColumn);
+            %_sasunit_render_dataColumn(i_sourceColumn=scn_id
+                                       ,i_format=z3.
+                                       ,i_linkColumn=LinkColumn2
+                                       ,i_linkTitle=LinkTitle2
+                                       ,o_targetColumn=scenarioColumn);
+            %IF &g_testcoverage. EQ 1 %THEN %DO;
+               %_sasunit_render_dataColumn(i_sourceColumn=tcg_pct
+                                          ,i_format=3.
+                                          ,i_linkColumn=LinkColumn3
+                                          ,i_linkTitle=LinkTitle3
+                                          ,o_targetColumn=coverageColumn);
+            %END;
+         %end;
+      run;
+
+      %if (&i. = &l_listCount.) %then %do;
+         %_sasunit_reportFooter(o_html=&o_html.);
+      %end;
+
+      proc report data=work._current_auton nowd missing spanrows
+            style(lines)=blindData
+            ;
+
+         columns pgm_id pgmColumn scenarioColumn caseColumn assertColumn
+            %IF &g_testcoverage. EQ 1 %THEN %DO;
+                coverageColumn
+            %END;
+                resultColumn autonColumn;
+
+         define autonColumn    / noprint;
+         define pgm_id         / group noprint;
+         define pgmColumn      / group;
+         define scenarioColumn / group;
+         define caseColumn     / group;
+         define assertColumn   / group;
+         %IF &g_testcoverage. EQ 1 %THEN %DO;
+             define coverageColumn / group;
+         %END;
+         define resultColumn / group style(COLUMN)=[background=white];
+
+         compute before _page_;
+            line @1 autonColumn $;
+         endcomp;
+      run;
+
+      *** Supress title between testcases ***;
+      %if (&i. = 1) %then %do;
+         title;
+      %end;
+
+      *** Render separation line between program libraries ***;
+      %if (&o_html. AND &i. ne &l_listCount.) %then %do;
+         ods html text="^{RAW <hr size=""1"">}";
+      %end;
+
+      proc delete data=work._current_auton;
+      run;
+   %end;
+   options missing=.;
+
+
+   %if (&o_html.) %then %do;
+      ods html close;
+   %end;
+
+   title;
+   footnote;
+   options center;
    
-PROC DATASETS NOWARN NOLIST LIB=work;
-   DELETE %scan(&d_rep1,2,.) %scan(&d_rep2,2,.);
-QUIT;
 
+   proc delete data=work._auton_report;
+   run;
 %MEND _sasunit_reportAutonHTML;
 /** \endcond */

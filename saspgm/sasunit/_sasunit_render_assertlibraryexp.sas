@@ -13,7 +13,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param   i_sourceColumn name of the column holding the value
-   \param   i_targetColumn name of the target column holding the ODS formatted value
+   \param   o_html         Test report in HTML-format?
+   \param   o_targetColumn name of the target column holding the ODS formatted value
 
 */ /** \cond */ 
 
@@ -22,8 +23,14 @@
 */ 
 
 %macro _sasunit_render_assertLibraryExp (i_sourceColumn=
-                                        ,i_targetColumn=
+                                        ,o_html=
+                                        ,o_targetColumn=
                                         );
-   PUT '   <td class="datacolumn"><a class="lightlink" title="' "&g_nls_reportDetail_018" '" href="' scn_id z3. '_' cas_id z3. '_' tst_id z3. '_library_exp.html">' "&g_nls_reportDetail_040" '</a></td>';
+
+   href     = catt (put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
+   %if (&o_html.) %then %do;
+      href_exp = catt (href,'_library_exp.html');
+   %end;
+   &o_targetColumn. = catt ("^{style [flyover=""&g_nls_reportDetail_018."" url=""", href_exp, """] &g_nls_reportDetail_040. }^n^n", &i_sourceColumn.);
 %mend _sasunit_render_assertLibraryExp;
 /** \endcond */

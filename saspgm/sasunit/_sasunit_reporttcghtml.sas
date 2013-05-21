@@ -12,28 +12,26 @@
    \date    \$Date$
    \sa      \$HeadURL$
 
-   \param      i_macroName     name of the macro for which test coverage is assessed
-   \param      i_macroLocation path of the folder containing the source code file of the macro  
-   \param      i_mCoverageName name of the coverage analysis text file
+   \param      i_macroName         name of the macro for which test coverage is assessed
+   \param      i_macroLocation     path of the folder containing the source code file of the macro  
+   \param      i_mCoverageName     name of the coverage analysis text file
    \param      i_mCoverageLocation path of the folder containing the coverage analysis text file generated with the mcoverage option
-   \param      o_outputFile name of the resulting html file
-   \param      o_outputPath path of the folder in which the result html file is generated
-   \param      o_resVarName optional name of macroVariable in wich coverage percentage result is written
+   \param      o_outputFile        name of the resulting html file
+   \param      o_outputPath        path of the folder in which the result html file is generated
+   \param      o_resVarName        optional name of macroVariable in wich coverage percentage result is written
+   \param      o_html              Test report in HTML-format?
 
 */ /** \cond */ 
-
-/* change history
-   13.02.2013 KL Lange Zeilen umgebrochen
-*/ 
 
 %macro _sasunit_reporttcghtml(
                           i_macroName=
                          ,i_macroLocation=
                          ,i_mCoverageName=
                          ,i_mCoverageLocation=
-						 ,o_outputFile=
+                         ,o_outputFile=
                          ,o_outputPath=
-						 ,o_resVarName=
+                         ,o_resVarName=
+                         ,o_html=
                          );
 
    %local l_MacroName;
@@ -45,12 +43,12 @@
 
    /*** Check existence of input files */
    %IF (NOT %SYSFUNC(FILEEXIST(&i_mCoverageLocation./&l_MCoverageName.)) OR &l_MCoverageName=) %THEN %DO;
-	  %PUT  ERROR: Input file with coverage data does not exist.;
-	  %GOTO _macExit;
+     %PUT  ERROR: Input file with coverage data does not exist.;
+     %GOTO _macExit;
    %END;
    %IF (NOT %SYSFUNC(FILEEXIST(&i_macroLocation./&l_MacroName.)) OR &l_MacroName=) %THEN %DO;
-	  %PUT  ERROR: Input file with macro code does not exist.;
-	  %GOTO _macExit;
+     %PUT  ERROR: Input file with macro code does not exist.;
+     %GOTO _macExit;
    %END;
 
    /*** Read records from flat file and keep only those of given macro ***/
@@ -129,7 +127,7 @@
    /*** Read all lines not explicitly marked as covered ***/
    proc sql noprint;
       select distinct nCounter into :MissingLines separated by ' ' from WORK.rowsOfInputFile 
-	  where nCounter not in (select distinct _line_ from WORK._MCoverage5  where _line_ not eq .);
+      where nCounter not in (select distinct _line_ from WORK._MCoverage5  where _line_ not eq .);
    quit;
 
    /*** If there is an %if-statement with %do and %end an adjustment is made: ***/
@@ -144,9 +142,9 @@
       infile "&i_macroLocation./&l_MacroName.";
       input;
       if (index (upcase (_INFILE_), "%nrstr(%MACRO )%scan(%upcase(&l_MacroName.),1,.)")) then do;
-	     if not(1 in (&MissingLines.)) then do;
-	        inExecutedMBlock = inExecutedMBlock + 1;
-		 end;
+        if not(1 in (&MissingLines.)) then do;
+           inExecutedMBlock = inExecutedMBlock + 1;
+       end;
          nCounter=0;
       end;
       if (nCounter >= 0) then do;
@@ -154,8 +152,8 @@
       end;
       srcrow = cats ("", _INFILE_, "");
       srcRowCopy = _INFILE_;
-	  covered = 1;
-	  
+      covered = 1;
+     
       if (nCounter in (&MissingLines.)) then do;
          srcrow = cats ("", _INFILE_, "");
          covered = 0;
@@ -163,10 +161,10 @@
          if (length (_temp_row) > 4) then do;
             if ( (substr (_temp_row,1,5) = '%END;') or (substr (_temp_row,1,5) = '%END ') ) then do;
                srcrow = cats ("", _INFILE_, "");
-			   if inExecutedBlock gt 0 then do;
+            if inExecutedBlock gt 0 then do;
                   covered = 1;
-			   end;
-			   inExecutedBlock = inExecutedBlock - 1;
+            end;
+            inExecutedBlock = inExecutedBlock - 1;
             end;
          end;
          if (length (_temp_row) > 4) then do;
@@ -174,17 +172,17 @@
                srcrow = cats ("", _INFILE_, "");
                if inExecutedMBlock gt 0 then do;
                   covered = 1;
-			   end;
-			   inExecutedMBlock = inExecutedMBlock - 1;
+            end;
+            inExecutedMBlock = inExecutedMBlock - 1;
             end;
          end;
       end;
-	  else do;
-	     _temp_row = compress (upcase (_INFILE_));
+     else do;
+        _temp_row = compress (upcase (_INFILE_));
          if ( (count (_temp_row,'%DO') gt 0) ) then do;
             inExecutedBlock = inExecutedBlock + count (_temp_row,'%DO');
          end;
-		 if (length (_temp_row) > 4) then do;
+       if (length (_temp_row) > 4) then do;
             if ( (substr (_temp_row,1,5) = '%END;') or (substr (_temp_row,1,5) = '%END ') ) then do;
                inExecutedBlock = inExecutedBlock - 1;
             end;
@@ -194,7 +192,7 @@
                inExecutedMBlock = inExecutedMBlock - 1;
             end;
          end;
-	  end;
+     end;
    run;
    
    /*** Scan rows for comment lines ***/
@@ -250,10 +248,10 @@
 
    /*** Update WORK.MCoverage to flag the non contributing rows identified by MCOVERAGE OPTION ***/  
    proc sql noprint;
-      update MCoverage 
+      update WORK.MCoverage 
          set covered = -2
                 where nCounter in (select distinct nonEx from WORK._nonex where nonEx not eq .);
-      update MCoverage 
+      update WORK.MCoverage 
          set covered = -1
                 where nCounter in ((select distinct nCounter from _commentLines where inComment eq 1 or compress(compress(srcline),"0D"x) eq ''));
    quit;
@@ -279,63 +277,96 @@
    %if "&o_resVarName." NE "" %then %do;
       %let &o_resVarName. = %sysevalf(%sysfunc (round(&Coverage.,0.01))*100);
    %end;
-   
-   /*** Print the result *****************************************************/
-   /* Save the value of the LINESIZE system option */
-   %LET l_linesize = %sysfunc(getoption(linesize,keyword));
-   OPTIONS LINESIZE=MAX;
-   TITLE1;
 
-   DATA _null_;
-      LENGTH outputRow $2048;
-      FILE "&o_outputPath./&o_outputFile." RECFM=P;
-      SET MCoverage END=eof;
-      outputRow = put(_N_,Z6.)||'  '||srcRowCopy;
-      IF _n_=1 THEN DO;
-         /*HTML-Header*/
-         PUT '<html>';
-         PUT '<head>';
-         PUT '<meta http-equiv="Content-Language" content="de">';
-         PUT '<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">';
-         PUT '<link href="sasunit.css" rel="stylesheet" type="text/css">';
-         PUT "<title>&g_nls_reportAuton_017. &i_macroName.</title>";
-         PUT '</head>';
-         /*HTML-Body*/
-         PUT '<body>';
-         PUT '<h1>'"&g_nls_reportAuton_005.: &i_macroName"'</h1>';
-         PUT '<h2>'"&g_nls_reportAuton_016.: &CoveragePCT."'</h2>';
-         PUT '<h3>Color Legend:</h3>';
-         PUT '<ul>';
-         PUT '  <li><span style="color:#00BE00">'"&g_nls_reportAuton_018."'</span></li>';
-         PUT '  <li><span style="color:#FF8020">'"&g_nls_reportAuton_019."'</span></li>';
-         PUT '  <li><span style="color:#828282">'"&g_nls_reportAuton_020."'</span></li>';
-         PUT '  <li><span style="color:#8020FF">'"&g_nls_reportAuton_021."'</span></li>';
-         PUT '</ul>';
-         PUT '<hr /><pre><code>';
-      END;
+   data work._tcg_legend;
+      length dummy $3 Text $140;
+      dummy="   ";Text="^{unicode 2022} ^{style tcgCoveredData &g_nls_reportAuton_018.}";output;
+      dummy="   ";Text="^{unicode 25CF} ^{style tcgNonCoveredData &g_nls_reportAuton_019.}";output;
+      dummy="   ";Text="^{unicode 2022} ^{style tcgCommentData &g_nls_reportAuton_020.}";output;
+      dummy="   ";Text="^{unicode 2022} ^{style tcgNonContribData &g_nls_reportAuton_021.}";output;
+   run;
 
+   data work._tcg_report;
+      LENGTH outputRow pgmSourceColumn $2048;
+      SET WORK.MCoverage;
+      RowNumber = put(_N_,Z6.);
+      outputRow = trim(srcRowCopy);
+      outputRow = tranwrd (outputRow,'^{','^[');
+      outputRow = tranwrd (outputRow,'}',']');
       IF covered   = -1 THEN DO;
-         PUT '<span style="color:#828282">' outputRow '</span>';
+         %_sasunit_render_dataColumn (i_sourceColumn=outputRow
+                                     ,i_columnType=tcgCommentData 
+                                     ,o_targetColumn=pgmSourceColumn
+                                     );
       END;
       ELSE IF covered   = 1 THEN DO;
-         PUT '<span style="color:#00BE00">' outputRow '</span>';
+         %_sasunit_render_dataColumn (i_sourceColumn=outputRow
+                                     ,i_columnType=tcgCoveredData 
+                                     ,o_targetColumn=pgmSourceColumn
+                                     );
       END;
       ELSE IF covered   = 0 THEN DO;
-         PUT '<span style="color:#FF8020">' outputRow '</span>';
+         %_sasunit_render_dataColumn (i_sourceColumn=outputRow
+                                     ,i_columnType=tcgNonCoveredData 
+                                     ,o_targetColumn=pgmSourceColumn
+                                     );
       END;
       ELSE DO; 
-         PUT '<span style="color:#8020FF">' outputRow '</span>';
-      END;
-      IF eof=1 THEN DO;
-         /*HTML-Close*/
-         PUT '</code></pre>';
-         PUT '</body>';
-         PUT '</html>';
+         %_sasunit_render_dataColumn (i_sourceColumn=outputRow
+                                     ,i_columnType=tcgNonContribData 
+                                     ,o_targetColumn=pgmSourceColumn
+                                     );
       END;
    RUN;
-   /* reset option linesize*/
-   OPTIONS &l_linesize.;
 
+   options nocenter;
+   title;footnote;
+
+   title  j=c "&g_nls_reportAuton_005.: &i_macroName";
+   title2 "&g_nls_reportAuton_016.: &CoveragePCT.";
+
+   %if (&o_html.) %then %do;
+      ods html file="&o_outputPath./&o_outputFile..html" 
+                    (TITLE="&l_title.") 
+                    headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
+                    metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
+                    style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
+   %end;
+
+   proc report data=work._tcg_legend nowd
+            style(report)=blindTable [borderwidth=0]
+            style(column)=blindData
+            style(lines) =blindData
+            style(header)=blindHeader;
+      columns dummy Text;
+
+      compute before _page_;
+         line @1 "Color Legend:";
+      endcomp;
+   run;
+
+   title;
+   %_sasunit_reportFooter(o_html=&o_html.);
+
+   *** Render separation line between legend and source code ***;
+   %if (&o_html.) %then %do;
+      ods html text="^{RAW <hr size=""1"">}";
+   %end;
+
+   proc print data=work._tcg_report noobs
+      style(column)=blindFixedFontData
+      style(header)=blindHeader;
+
+      var RowNumber / style(column)=tcgCommentData;
+      var pgmSourceColumn;
+   run;
+
+   %if (&o_html.) %then %do;
+      ods html close;
+   %end;
+
+   options center;
+   title;footnote;
    %_macExit:
 %mend _sasunit_reporttcghtml;
 /** \endcond */

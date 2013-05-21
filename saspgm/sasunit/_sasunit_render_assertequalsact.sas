@@ -13,7 +13,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param   i_sourceColumn name of the column holding the value
-   \param   i_targetColumn name of the target column holding the ODS formatted value
+   \param   o_html         Test report in HTML-format?
+   \param   o_targetColumn name of the target column holding the ODS formatted value
 
 */ /** \cond */ 
 
@@ -22,8 +23,11 @@
 */ 
 
 %macro _sasunit_render_assertEqualsAct (i_sourceColumn=
-                                       ,i_targetColumn=
+                                       ,o_html=
+                                       ,o_targetColumn=
                                        );
-   %_sasunit_render_dataColumn(i_sourceColumn=&i_sourceColumn.);
+   %_sasunit_render_dataColumn(i_sourceColumn=&i_sourceColumn.
+                              ,o_targetColumn=&o_targetColumn.
+                              );
 %mend _sasunit_render_assertEqualsAct;
 /** \endcond */

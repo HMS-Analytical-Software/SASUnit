@@ -15,236 +15,348 @@
 */ /** \cond */ 
 
 *** Testcase 1 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Sourcecolumn contains missing value);
-data _null_;
-   Length text $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="";
-   %_sasunit_render_dataColumn (i_sourceColumn=Text);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=Text;
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Sourcecolumn contains missing value);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Text,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>  <.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 2 ***; 
+data work.input;
+   Length text _formatName $80 _output $1000;
+   Text="^_";
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=Text;
+run;
 %initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Sourcecolumn contains html blank);
-data _null_;
-   Length text $80;
-   Text='&nbsp;';
-   %_sasunit_render_dataColumn (i_sourceColumn=Text);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Text,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>%str(&)nbsp; <.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 3 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Numeric column without format);
-data _null_;
-   Length text $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="1234";
    Num=12.3456;
-   %_sasunit_render_dataColumn (i_sourceColumn=Num);
+   _formatName="BEST32.";
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=compress(put(num,best32.));
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Numeric column without format);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Num,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>12.3456 <.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 4 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Numeric column with numeric format);
-data _null_;
-   Length text $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="1234";
    Num=12.3456;
-   %_sasunit_render_dataColumn (i_sourceColumn=Num, i_format=z6.2);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=put(num,z6.2);
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Numeric column with numeric format);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Num, i_format=z6.2,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>012.35<.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 5 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Character column without format);
-data _null_;
-   Length text $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="1234";
    Num=12.3456;
-   %_sasunit_render_dataColumn (i_sourceColumn=Text);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=Text;
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Character column without format);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Text,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>1234 <.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 6 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Character column with character format);
-data _null_;
-   Length text $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="1234";
    Num=12.3456;
-   %_sasunit_render_dataColumn (i_sourceColumn=Text, i_format=$8.);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=Text;
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Character column with character format);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Text, i_format=$8.,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>1234    <.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 7 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Numeric column with character format);
-data _null_;
-   Length text $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="1234";
    Num=12.3456;
-   %_sasunit_render_dataColumn (i_sourceColumn=Num, i_format=$8.);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=put(num,$8.);
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Numeric column with character format);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Num, i_format=$8.,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=1);
-%assertLogmsg (i_logmsg=WARNING: Variable Num has already been defined as numeric.);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 8 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Character column with numeric format);
-data _null_;
-   Length text $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="Hugo";
    Num=12.3456;
-   %_sasunit_render_dataColumn (i_sourceColumn=Text, i_format=z8.2);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output="";
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Character column with numeric format);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Text, i_format=z8.2,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
-%assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR 48-59. The format .Z was not found or could not be loaded.);
+%assertLog(i_errors=1,i_warnings=2);
 
 %endTestcase();
 
 *** Testcase 9 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Link Column without title);
-data _null_;
-   Length text MyLinkColumn MyLinkTitle $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="Hugo";
    MyLinkColumn="This path points to my link";
    MyLinkTitle="This is the title for my link";
    Num=12.3456;
-   %_sasunit_render_dataColumn (i_sourceColumn=Text, i_linkColumn=MyLinkColumn);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=catt ("^{style [ url=""", MyLinkColumn, """]", " " !! Text, "}");
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Link Column without title);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Text, i_linkColumn=MyLinkColumn,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>.a class=.lightlink. href=.This path points to my link .>Hugo <.a><.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 10 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Link Column with title);
-data _null_;
-   Length text MyLinkColumn MyLinkTitle $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="Hugo";
    MyLinkColumn="This path points to my link";
    MyLinkTitle="This is the title for my link";
    Num=12.3456;
-   %_sasunit_render_dataColumn (i_sourceColumn=Text, i_linkColumn=MyLinkColumn, i_linkTitle=MyLinkTitle);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=catt ("^{style [flyover=""", MyLinkTitle, """ url=""", MyLinkColumn, """]", " " !! Text, "}");
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Link Column with title);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Text, i_linkColumn=MyLinkColumn, i_linkTitle=MyLinkTitle,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>.a class=.lightlink. title=.This is the title for my link . href=.This path points to my link .>Hugo <.a><.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 11 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Link title without link column);
-data _null_;
-   Length text MyLinkColumn MyLinkTitle $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="Hugo";
    MyLinkColumn="This path points to my link";
    MyLinkTitle="This is the title for my link";
    Num=12.3456;
-   %_sasunit_render_dataColumn (i_sourceColumn=Text, i_linkTitle=MyLinkTitle);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=catt ("^{style [flyover=""", MyLinkTitle, """]", " " !! Text, "}");
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Link title without link column);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Text, i_linkTitle=MyLinkTitle,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.datacolumn.>Hugo <.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 12 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Setting column type);
-data _null_;
-   Length text MyLinkColumn MyLinkTitle $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="Hugo";
    MyLinkColumn="This path points to my link";
    MyLinkTitle="This is the title for my link";
    Num=12.3456;
-   %_sasunit_render_dataColumn (i_sourceColumn=Text, i_columnType=MyDataColumnTestType);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=catt ("^{style %lowcase(MyDataColumnTestType)", " " !! Text, "}");
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Setting column type);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Text, i_columnType=MyDataColumnTestType,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.MyDataColumnTestType.>Hugo <.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 13 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Numeric column with link - no title - with different column type);
-data _null_;
-   Length text MyLinkColumn MyLinkTitle $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="Hugo";
    MyLinkColumn="This path points to my link";
    MyLinkTitle="This is the title for my link";
    Num=12.3456;
-   %_sasunit_render_dataColumn (i_sourceColumn=Num, i_columnType=MyDataColumnTestType, i_format=z10.2, i_linkColumn=MyLinkColumn);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=catt ("^{style %lowcase(MyDataColumnTestType) [ url=""", MyLinkColumn, """]", " " !! put (num,z10.2), "}");
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Numeric column with link - no title - with different column type);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Num, i_columnType=MyDataColumnTestType, i_format=z10.2, i_linkColumn=MyLinkColumn,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.MyDataColumnTestType.>.a class=.lightlink. href=.This path points to my link .>0000012.35<.a><.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 
 *** Testcase 14 ***; 
-%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Numeric column with link and title with different column type);
-data _null_;
-   Length text MyLinkColumn MyLinkTitle $80;
+data work.input;
+   Length text _formatName $80 _output $1000;
    Text="Hugo";
    MyLinkColumn="This path points to my link";
    MyLinkTitle="This is the title for my link";
    Num=12.3456;
-   %_sasunit_render_dataColumn (i_sourceColumn=Num, i_columnType=MyDataColumnTestType, i_format=z10.2, i_linkColumn=MyLinkColumn, i_linkTitle=MyLinkTitle);
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output=catt ("^{style %lowcase(MyDataColumnTestType) [flyover=""", MyLinkTitle, """ url=""", MyLinkColumn, """]", " " !! put (num,z10.2), "}");
+run;
+%initTestcase(i_object=_sasunit_render_dataColumn.sas, i_desc=Numeric column with link and title with different column type);
+data work.actual;
+   set work.input;
+   %_sasunit_render_dataColumn (i_sourceColumn=Num, i_columnType=MyDataColumnTestType, i_format=z10.2, i_linkColumn=MyLinkColumn, i_linkTitle=MyLinkTitle,o_targetColumn=_output);
 run;
 
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=.td class=.MyDataColumnTestType.>.a class=.lightlink. title=.This is the title for my link . href=.This path points to my link .>0000012.35<.a><.td>);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
 

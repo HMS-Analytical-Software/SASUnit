@@ -41,7 +41,7 @@
    \param   i_doc          optional: directory containing specification documents, etc., has to exist
                            in case parameter is set (is accessed readonly)
    \param   i_testcoverage optional: controls whether assessment of test coverage is activated
-						   0 (default) .. no assessment of test coverage
+                     0 (default) .. no assessment of test coverage
                            1 .. assessment of test coverage is activated
 */ /** \cond */ 
 /* change log 
@@ -75,10 +75,13 @@
   ,i_testdata     = 
   ,i_refdata      = 
   ,i_doc          = 
-  ,i_testcoverage = 0
+  ,i_testcoverage = 1
 );
 %LOCAL l_macname; %LET l_macname=&sysmacroname;
 %LOCAL l_first_temp;
+%LOCAL l_expected_dbversion l_current_dbversion; 
+%LET l_expected_dbversion=1;
+%LET l_current_dbversion=0;
 
 /*-- Resolve relative root path like .../. to an absolute root path ----------*/
 libname _tmp "&i_root.";
@@ -108,15 +111,15 @@ libname _tmp clear;
 /*-- check value of parameter i_testcoverage, if it has an other value than 1, 
      set it to 0 in order to assure that it will have only value 0 or 1 ------*/
 %IF &i_testcoverage. NE 1 %THEN %DO;
-	%LET i_testcoverage = 0;
+   %LET i_testcoverage = 0;
 %END;
 %ELSE %DO;
-	/*-- if test coverage should be assessed: check SAS version --------------*/
-	%IF %_sasunit_handleError( &l_macname
-	                         , WrongTcVer
-	                         , &sysver. NE 9.3
-	                         , Invalid SAS version for test coverage assessment - only 9.3 supported) 
-	%THEN %GOTO errexit;
+   /*-- if test coverage should be assessed: check SAS version --------------*/
+   %IF %_sasunit_handleError( &l_macname
+                            , WrongTcVer
+                            , &sysver. NE 9.3
+                            , Invalid SAS version for test coverage assessment - only 9.3 supported) 
+   %THEN %GOTO errexit;
 %END;
 
 /*-- check for target directory ----------------------------------------------*/
@@ -148,104 +151,106 @@ QUIT;
 %IF &i_overwrite %THEN %LET l_newdb=1;
 %ELSE %LET l_newdb=%eval(NOT %sysfunc(exist(target.tsu)));
 
+*** Check tsu db version                      ***;
+*** Is there a need to recreate the database? ***;
+%IF &l_newdb. ne 1 %THEN %DO;
+   data _null_;
+      if (exist ("target.tsu")) then do;
+         did = open ("target.tsu");
+         if varnum (did, "tsu_dbVersion") then do;
+            rc            = fetch (did);
+            tsu_dbVersion = getvarn (did, varnum (did, "tsu_dbVersion"));
+            call symput ("l_current_dbversion", compress (put (tsu_dbVersion, best32.)));
+         end;
+         did = close(did);
+      end;
+   run;
+   %LET l_newdb=%eval (&l_current_dbversion. NE &l_expected_dbversion.);
+%END;
+
 /*-- create test database if necessary ---------------------------------------*/
 %IF &l_newdb %THEN %DO;
-PROC SQL NOPRINT;
-   CREATE TABLE target.tsu (        /* test suite */
-       tsu_project    CHAR(255)        /* see i_project */
-      ,tsu_root       CHAR(255)        /* see i_root */
-      ,tsu_target     CHAR(255)        /* see io_target */
-      ,tsu_sasunit    CHAR(255)        /* see i_sasunit */
-      ,tsu_sasautos   CHAR(255)        /* see i_sasautos */
-%DO i=1 %TO 9;
-      ,tsu_sasautos&i CHAR(255)        /* see i_sasautos<n> */
-%END;
-      ,tsu_autoexec   CHAR(255)        /* see i_autoexec */
-      ,tsu_sascfg     CHAR(255)        /* see i_sascfg */
-      ,tsu_sasuser    CHAR(255)        /* see i_sasuser */
-      ,tsu_testdata   CHAR(255)        /* see i_testdata */
-      ,tsu_refdata    CHAR(255)        /* see i_refdata */
-      ,tsu_doc        CHAR(255)        /* see i_doc */
-      ,tsu_lastinit   INT FORMAT=datetime21.2 /* date and time of last initialization */
-      ,tsu_lastrep    INT FORMAT=datetime21.2 /* date and time of last report generation*/
-   );
-   INSERT INTO target.tsu VALUES (
-   "","","","","","","","","","","","","","","","","","","","",0,0
-   );
-
-   CREATE TABLE target.scn (                    /* test scenario */
-       scn_id           INT FORMAT=z3.          /* number of scenario */
-      ,scn_path         CHAR(255)               /* path to program file */ 
-      ,scn_desc         CHAR(255)               /* description of program (brief tag in comment header) */
-      ,scn_start        INT FORMAT=datetime21.2 /* starting date and time of the last run */
-      ,scn_end          INT FORMAT=datetime21.2 /* ending date and time of the last run */
-      ,scn_rc           INT                     /* return code of SAS session of last run */
-      ,scn_errorcount   INT                     /* number of detected errors in the scenario log */
-      ,scn_warningcount INT                     /* number of detected warnings in the scenario log */
-      ,scn_res          INT                     /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
-   );
-   CREATE TABLE target.cas (        /* test case */
-       cas_scnid INT FORMAT=z3.        /* reference to test scenario */
-      ,cas_id    INT FORMAT=z3.        /* sequential number of test case within test scenario */
-      ,cas_auton INT                   /* number of autocall path where program under test has been found or ., if not found */
-      ,cas_pgm   CHAR(255)             /* file name of program under test: only name if found in autocall paths, or fully qualified path otherwise */ 
-      ,cas_desc  CHAR(255)             /* description of test case */
-      ,cas_spec  CHAR(255)             /* optional: specification document, fully qualified path or only filename to be found in folder &g_doc */
-      ,cas_start INT FORMAT=datetime21.2  /* starting date and time of the last run */
-      ,cas_end   INT FORMAT=datetime21.2  /* ending date and time of the last run */
-      ,cas_res   INT                   /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
-   );
-   CREATE TABLE target.tst (        /* Test */
-       tst_scnid INT FORMAT=z3.        /* reference to test scenario */
-      ,tst_casid INT FORMAT=z3.        /* reference to test case */
-      ,tst_id    INT FORMAT=z3.        /* sequential number of test within test case */
-      ,tst_type  CHAR(32)              /* type of test (name of assert macro) */
-      ,tst_desc  CHAR(255)             /* description of test */
-      ,tst_exp   CHAR(255)             /* expected result */
-      ,tst_act   CHAR(255)             /* actual result */
-      ,tst_res   INT                   /* test result of the last run: 0 .. OK, 1 .. not OK, 2 .. manual */
-   );
-QUIT;
-%IF %_sasunit_handleError(&l_macname, ErrorCreateDB, 
-   &syserr NE 0, 
-   Error on creation of test database) 
-   %THEN %GOTO errexit;
-
-
-/*-- regenerate empty folders ------------------------------------------------*/
-DATA _null_;
-   FILE "%sysfunc(pathname(work))/x.cmd" encoding=pcoem850;/* wg. Umlauten in Pfaden */
-   PUT "&g_removedir ""&l_target_abs/log""&g_endcommand";
-   PUT "&g_removedir ""&l_target_abs/tst""&g_endcommand";
-   PUT "&g_removedir ""&l_target_abs/rep""&g_endcommand";
-   PUT "&g_makedir ""&l_target_abs/log""&g_endcommand";
-   PUT "&g_makedir ""&l_target_abs/tst""&g_endcommand";
-   PUT "&g_makedir ""&l_target_abs/rep""&g_endcommand";
-RUN;
-%if &sysscp. = LINUX %then %do;
-   %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
-%end;
-%_sasunit_xcmd("%sysfunc(pathname(work))/x.cmd")
-%LOCAL l_rc;
-%LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
-
-%END; /* %if &l_newdb */
-
-/*-- add and fill column tsu_testcoverage------------------------------------------*/
-%LOCAL l_col_testcoverage_exists;
-DATA _null_;
-  dsid=open('target.tsu');
-  varcheck=varnum(dsid,'tsu_testcoverage');
-  CALL SYMPUTX('l_col_testcoverage_exists',varcheck);
-RUN;
-PROC SQL NOPRINT;
-   %IF (NOT &l_col_testcoverage_exists.) %THEN %DO;
-	   ALTER TABLE target.tsu
-	      ADD tsu_testcoverage INT;
+   PROC SQL NOPRINT;
+      CREATE TABLE target.tsu (             /* test suite */
+          tsu_project      CHAR(255)        /* see i_project */
+         ,tsu_root         CHAR(255)        /* see i_root */
+         ,tsu_target       CHAR(255)        /* see io_target */
+         ,tsu_sasunit      CHAR(255)        /* see i_sasunit */
+         ,tsu_sasautos     CHAR(255)        /* see i_sasautos */
+   %DO i=1 %TO 9;
+         ,tsu_sasautos&i   CHAR(255)        /* see i_sasautos<n> */
    %END;
+         ,tsu_autoexec     CHAR(255)        /* see i_autoexec */
+         ,tsu_sascfg       CHAR(255)        /* see i_sascfg */
+         ,tsu_sasuser      CHAR(255)        /* see i_sasuser */
+         ,tsu_testdata     CHAR(255)        /* see i_testdata */
+         ,tsu_refdata      CHAR(255)        /* see i_refdata */
+         ,tsu_doc          CHAR(255)        /* see i_doc */
+         ,tsu_lastinit     INT FORMAT=datetime21.2 /* date and time of last initialization */
+         ,tsu_lastrep      INT FORMAT=datetime21.2 /* date and time of last report generation*/
+         ,tsu_testcoverage INT FORMAT=8.    /* see i_testcoverage */
+         ,tsu_dbversion    INT FORMAT=8.    /* Counter to force creation of a new test data base */
+      );
+      INSERT INTO target.tsu VALUES (
+      "","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,0
+      );
 
-   UPDATE target.tsu SET tsu_testcoverage = &i_testcoverage.;
-QUIT;
+      CREATE TABLE target.scn (                    /* test scenario */
+          scn_id           INT FORMAT=z3.          /* number of scenario */
+         ,scn_path         CHAR(255)               /* path to program file */ 
+         ,scn_desc         CHAR(255)               /* description of program (brief tag in comment header) */
+         ,scn_start        INT FORMAT=datetime21.2 /* starting date and time of the last run */
+         ,scn_end          INT FORMAT=datetime21.2 /* ending date and time of the last run */
+         ,scn_rc           INT                     /* return code of SAS session of last run */
+         ,scn_errorcount   INT                     /* number of detected errors in the scenario log */
+         ,scn_warningcount INT                     /* number of detected warnings in the scenario log */
+         ,scn_res          INT                     /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
+      );
+      CREATE TABLE target.cas (        /* test case */
+          cas_scnid INT FORMAT=z3.        /* reference to test scenario */
+         ,cas_id    INT FORMAT=z3.        /* sequential number of test case within test scenario */
+         ,cas_auton INT                   /* number of autocall path where program under test has been found or ., if not found */
+         ,cas_pgm   CHAR(255)             /* file name of program under test: only name if found in autocall paths, or fully qualified path otherwise */ 
+         ,cas_desc  CHAR(255)             /* description of test case */
+         ,cas_spec  CHAR(255)             /* optional: specification document, fully qualified path or only filename to be found in folder &g_doc */
+         ,cas_start INT FORMAT=datetime21.2  /* starting date and time of the last run */
+         ,cas_end   INT FORMAT=datetime21.2  /* ending date and time of the last run */
+         ,cas_res   INT                   /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
+      );
+      CREATE TABLE target.tst (        /* Test */
+          tst_scnid INT FORMAT=z3.        /* reference to test scenario */
+         ,tst_casid INT FORMAT=z3.        /* reference to test case */
+         ,tst_id    INT FORMAT=z3.        /* sequential number of test within test case */
+         ,tst_type  CHAR(32)              /* type of test (name of assert macro) */
+         ,tst_desc  CHAR(255)             /* description of test */
+         ,tst_exp   CHAR(255)             /* expected result */
+         ,tst_act   CHAR(255)             /* actual result */
+         ,tst_res   INT                   /* test result of the last run: 0 .. OK, 1 .. manual, 2 .. not OK */
+      );
+   QUIT;
+   %IF %_sasunit_handleError(&l_macname, ErrorCreateDB, 
+      &syserr NE 0, 
+      Error on creation of test database) 
+      %THEN %GOTO errexit;
+
+
+   /*-- regenerate empty folders ------------------------------------------------*/
+   DATA _null_;
+      FILE "%sysfunc(pathname(work))/x.cmd" encoding=pcoem850;/* wg. Umlauten in Pfaden */
+      PUT "&g_removedir ""&l_target_abs/log""&g_endcommand";
+      PUT "&g_removedir ""&l_target_abs/tst""&g_endcommand";
+      PUT "&g_removedir ""&l_target_abs/rep""&g_endcommand";
+      PUT "&g_makedir ""&l_target_abs/log""&g_endcommand";
+      PUT "&g_makedir ""&l_target_abs/tst""&g_endcommand";
+      PUT "&g_makedir ""&l_target_abs/rep""&g_endcommand";
+   RUN;
+   %if &sysscp. = LINUX %then %do;
+      %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
+   %end;
+   %_sasunit_xcmd("%sysfunc(pathname(work))/x.cmd")
+   %LOCAL l_rc;
+   %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
+%END; /* %if &l_newdb */
 
 /*-- check folders -----------------------------------------------------------*/
 %IF %_sasunit_handleError(&l_macname, NoLogDir, 
@@ -569,6 +574,13 @@ QUIT;
 PROC SQL NOPRINT;
    UPDATE target.tsu 
       SET tsu_lastinit = %sysfunc(datetime())
+   ;
+QUIT;
+
+/*-- update column tsu_dbVersion ------------------------------------------*/
+PROC SQL NOPRINT;
+   UPDATE target.tsu 
+      SET tsu_dbVersion = &l_expected_dbversion.
    ;
 QUIT;
 

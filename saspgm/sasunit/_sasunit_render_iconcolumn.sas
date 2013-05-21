@@ -22,15 +22,17 @@
 */ 
 
 %macro _sasunit_render_iconcolumn (i_sourceColumn=
-                                  ,i_targetColumn=
+                                  ,o_html=
+                                  ,o_targetColumn=
                                   );
-   PUT '   <td class="iconcolumn"><img src=' @;
-   SELECT (&i_sourceColumn.);
-      WHEN (0) PUT '"ok.png" alt="OK"' @;
-      WHEN (1) PUT '"error.png" alt="' "&g_nls_reportDetail_025" '"' @;
-      WHEN (2) PUT '"manual.png" alt="' "&g_nls_reportDetail_026" '"' @;
-      OTHERWISE PUT '"?????" alt="' "&g_nls_reportDetail_027" '"' @;
-   END;
-   PUT '></img></td>';
+
+   %local l_pictNameFmt;
+
+   %let l_pictNameFmt=PictName.;
+   %if (&o_html.) %then %do;
+      %let l_pictNameFmt=PictNameHTML.;
+   %end;
+
+   &o_targetColumn. = '^{style [postimage="' !! trim(put (&i_sourceColumn., &l_pictNameFmt.)) !! '" flyover="' !! trim(put (&i_sourceColumn., PictDesc.)) !! '"] }';
 %mend _sasunit_render_iconcolumn;
 /** \endcond */

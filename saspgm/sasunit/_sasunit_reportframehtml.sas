@@ -22,10 +22,6 @@
   ,o_html    =
 );
 
-/* change log
-   18.08.2008 AM  added national language support
-*/
-
 DATA _null_;
    SET &i_repdata;
    FILE "&o_html";
