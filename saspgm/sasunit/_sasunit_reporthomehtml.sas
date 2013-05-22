@@ -109,12 +109,12 @@
          end;
          idColumn = "&g_nls_reportHome_013.";
          parameterColumn="^{style [flyover=""&g_sasunit.""]%str(&)amp;g_sasunit}";
-         valueColumn=catt ("^{style [flyover=""&g_sasunit."" url=""file:///&g_sasunit.""]", tsu_sasunit, "}");
+         valueColumn=catt ("^{style [flyover=""%trim(&g_sasunit.)"" url=""file:///%trim(&g_sasunit.)""]", tsu_sasunit, "}");
          output;
-         if "%sysfunc(getoption(log))" ne "" then do;
+         if getoption("LOG") ne "" then do;
             idColumn = "&g_nls_reportHome_014.";
             parameterColumn="^_";
-            valueColumn=catt ('^{style [flyover="', "%sysfunc(getoption(log))", '" url="', resolve("file:///" !! "%sysfunc(getoption(log))"), '"]', resolve('%_sasunit_stdPath (i_root=&g_root, i_path=%sysfunc(getoption(log)))'), "}");
+            valueColumn=catt ('^{style [flyover="', getoption("LOG"), '" url="', "file:///" , getoption("LOG"), '"]', resolve('%_sasunit_stdPath (i_root=&g_root, i_path=%sysfunc(getoption(log)))'), "}");
             output;
          end;
          if (tsu_dbVersion ne .) then do;
