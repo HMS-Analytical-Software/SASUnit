@@ -68,7 +68,7 @@
    %end;
 
    %let l_scnid_string =_%sysfunc(putn (&i_scnid,z3.))_%sysfunc(putn (&i_casid.,z3.))_%sysfunc (putn (&i_tstid.,z3.));
-   %let l_subfoldername=&l_scnid_string._&i_assertType.;
+   %let l_subfoldername=&l_scnid_string._%lowcase(&i_assertType.);
    %let &r_path.=%_sasunit_abspath (i_root=&i_root., i_path=&l_subfoldername.);
 %mend;
 /** \endcond */

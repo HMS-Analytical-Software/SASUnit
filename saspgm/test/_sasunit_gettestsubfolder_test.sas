@@ -119,7 +119,7 @@
 %endTestcall;
 
 %assertLog(i_errors=0,i_warnings=0);
-%assertEquals(i_expected=_003_008_004_assertLibrary
+%assertEquals(i_expected=_003_008_004_assertlibrary
              ,i_actual  =%_sasunit_stdpath(i_root=%sysfunc(pathname(testout)),i_path=&_path.)
              ,i_desc    =Values must be equal
              );

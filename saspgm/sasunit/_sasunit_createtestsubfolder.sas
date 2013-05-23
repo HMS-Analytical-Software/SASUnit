@@ -46,18 +46,18 @@
    %let &r_path.=_ERROR_;
 
    %_sasunit_getTestSubfolder (i_assertType=&i_assertType.
-                               ,i_root      =&i_root.
-                               ,i_scnid     =&i_scnid.
-                               ,i_casid     =&i_casid.
-                               ,i_tstid     =&i_tstid.
-                               ,r_path      =l_path_cts
-                               );
+                              ,i_root      =&i_root.
+                              ,i_scnid     =&i_scnid.
+                              ,i_casid     =&i_casid.
+                              ,i_tstid     =&i_tstid.
+                              ,r_path      =l_path_cts
+                              );
 
    %if (%nrbquote(&l_path_cts.) = _ERROR_) %then %do;
       %RETURN;
    %end;
 
-   %_sasunit_mkdir (%lowcase(&l_path_cts.));
+   %_sasunit_mkdir (&l_path_cts.);
 
    %let &r_path.=&l_path_cts.;
 %mend;
