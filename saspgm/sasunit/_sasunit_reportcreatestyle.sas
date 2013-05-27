@@ -771,14 +771,14 @@
             backgroundcolor=colors('docbg')
          ;
          style blindData from data "Data cell in a blind Table" /
-            borderwidth=0
+            borderwidth=0px
             backgroundcolor=colors('docbg')
          ;
          style blindHeader from header "Header cell in a blind Table" /
             borderwidth=0px
             backgroundcolor=colors('docbg')
             color=colors('docbg')
-            fontsize=10%
+            fontsize=0.5pt
          ;
          style blindCaption from blindData "Caption row in a blind Table" /
             font=fonts('TitleFont2')

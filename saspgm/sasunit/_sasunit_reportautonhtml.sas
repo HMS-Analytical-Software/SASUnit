@@ -211,7 +211,7 @@
             caseColumn="&g_nls_reportAuton_007."
             assertColumn="&g_nls_reportAuton_014."
             %IF &g_testcoverage. EQ 1 %THEN %DO;
-               coverageColumn="&g_nls_reportAuton_016."
+               coverageColumn="&g_nls_reportAuton_016." [%]
             %END;
             resultColumn="&g_nls_reportAuton_008.";
 
@@ -302,11 +302,11 @@
          define autonColumn    / noprint;
          define pgm_id         / group noprint;
          define pgmColumn      / group;
-         define scenarioColumn / group;
-         define caseColumn     / group;
-         define assertColumn   / group;
+         define scenarioColumn / group style(column)=[just=right];
+         define caseColumn     / group style(column)=[just=right];
+         define assertColumn   / group style(column)=[just=right];
          %IF &g_testcoverage. EQ 1 %THEN %DO;
-             define coverageColumn / group;
+             define coverageColumn / group style(column)=[just=right];
          %END;
          define resultColumn / group style(COLUMN)=[background=white];
 

@@ -37,7 +37,7 @@
    %LET Reference=%nrbquote(^{style [url="http://sourceforge.net/projects/sasunit/" postimage="SASUnit_Logo.png"]SASUnit});
    %*** because in HTML we want to open the link to SASUnit in a new window, ***;
    %*** we need to insert raw HTML ***;
-   %LET HTML_Reference=%nrbquote(<a href="http://sourceforge.net/projects/sasunit/" class="link" target="_blank">SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" width=30px height=30px align="top" border="0"></a>);
+   %LET HTML_Reference=%nrbquote(<a href="http://sourceforge.net/projects/sasunit/" class="link" target="_blank">SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" width=26px height=26px align="top" border="0"></a>);
 
    DATA work._home_report;
       SET &i_repdata;
@@ -117,7 +117,7 @@
             valueColumn=catt ('^{style [flyover="', getoption("LOG"), '" url="', "file:///" , getoption("LOG"), '"]', resolve('%_sasunit_stdPath (i_root=&g_root, i_path=%sysfunc(getoption(log)))'), "}");
             output;
          end;
-         if (tsu_dbVersion ne .) then do;
+         if (tsu_dbVersion ne "") then do;
             idColumn = "&g_nls_reportHome_022.";
             parameterColumn="^_";
             valueColumn=tsu_dbVersion;

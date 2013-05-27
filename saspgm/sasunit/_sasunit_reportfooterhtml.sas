@@ -22,7 +22,7 @@
       %let l_footnote=&l_footnote.%str(,) %sysfunc (putn(%sysfunc(today()),&g_nls_reportFooter_003.));
       %let l_footnote=&l_footnote.%str(,) %sysfunc (putn(%sysfunc(time()), time8.0)) &g_nls_reportFooter_004.;
       %let l_footnote=&l_footnote. <a href="http://sourceforge.net/projects/sasunit/" class="link" onclick="window.open(this.href); return false;">;
-      %let l_footnote=&l_footnote. SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" width=20px height=20px align="top" border="0"></a>;
+      %let l_footnote=&l_footnote. SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" width=18px height=18px align="absmiddle" border="0"></a>;
       %let l_footnote=&l_footnote. Version &g_version (&g_revision) </small>};
       footnote  %sysfunc(quote(^{RAW <hr size="1">}));
       footnote2 j=r %sysfunc(quote(&l_footnote.  ));   

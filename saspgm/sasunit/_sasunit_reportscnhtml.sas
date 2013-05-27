@@ -53,7 +53,7 @@
 
          abs_path    = resolve ('%_sasunit_abspath(&g_root,' !! trim(scn_path) !! ')');
          scn_pgm     = resolve ('%_sasunit_stdpath(&g_root./saspgm/test,' !! trim(abs_path) !! ')');
-         duration    = scn_end - scn_start;
+         duration    = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid     = put (scn_id, z3.);
 
 
@@ -62,7 +62,6 @@
                                      ,o_targetColumn=idColumn
                                      );
          %_sasunit_render_DataColumn (i_sourceColumn=duration
-                                     ,i_format=&g_nls_reportScn_013.
                                      ,o_targetColumn=durationColumn
                                      );
          %_sasunit_render_IconColumn (i_sourceColumn=scn_res
@@ -133,13 +132,12 @@
    %end;
 
    proc print data=work._scenario_report noobs label;
-      var idColumn / style(column)=rowheader;
+      var idColumn 				/ style(column)=rowheader;
       var descriptionColumn
           programColumn
-          last_runColumn
-          durationColumn;
-      var resultColumn / style(column)=[background=white]
-          ;
+          last_runColumn;
+      var durationColumn 	/ style(column)=[just=right];
+      var resultColumn 		/ style(column)=[background=white];
    run;
    %if (&o_html.) %then %do;
       ods html close;

@@ -55,6 +55,9 @@ DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5);
    RETAIN lst1-lst5 0;
    SET &i_repdata;
    BY scn_id cas_id tst_id;
+	 
+	 tst_type=tranwrd(tst_type,"^_","");
+	 tst_desc=tranwrd(tst_desc,"^_","");
 
    IF _n_=1 THEN DO;
       label  = "&g_nls_reportTree_001";
@@ -109,6 +112,10 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5);
    SET &i_repdata;
    BY cas_auton pgm_id scn_id cas_id tst_id;
 
+	 tst_type=tranwrd(tst_type,"^_","");
+	 tst_desc=tranwrd(tst_desc,"^_","");
+	 cas_pgm =tranwrd(cas_pgm,"^_","");
+
    IF _n_=1 THEN DO;
       label  = "&g_nls_reportTree_006";
       popup  = "&g_nls_reportTree_007";
@@ -129,7 +136,7 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5);
 %DO i=1 %TO 9;
          WHEN (&i) label = tsu_sasautos&i;
 %END;
-         OTHERWISE label="(&g_nls_reportTree_008)";
+         OTHERWISE label="&g_nls_reportAuton_015";
       END;
       IF cas_auton=0 THEN 
          popup  = "&g_nls_reportTree_009 sasautos:" !! '&#x0D;' !! label;

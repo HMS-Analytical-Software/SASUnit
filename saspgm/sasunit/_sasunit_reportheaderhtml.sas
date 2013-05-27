@@ -13,6 +13,8 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
+  \deprecated No longer used because we create HTML now via SAS ODS
+
    \param   i_title        page title (displayed in browser window)
 */ /** \cond */ 
 

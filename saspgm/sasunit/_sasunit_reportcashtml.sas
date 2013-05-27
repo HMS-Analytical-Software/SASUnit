@@ -127,7 +127,7 @@
             abs_path = resolve ('%_sasunit_abspath(&g_sasautos' !! put (cas_auton,1.) !! ',' !! trim(cas_pgm) !! ')');
          END;
 
-         duration = cas_end - cas_start;
+         duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_casid  = put (cas_id, z3.);
 
          %_sasunit_render_idColumn   (i_sourceColumn=cas_id
@@ -135,7 +135,6 @@
                                      ,o_targetColumn=idColumn
                                      );
          %_sasunit_render_dataColumn (i_sourceColumn=duration
-                                     ,i_format=&g_nls_reportCas_009.
                                      ,o_targetColumn=durationColumn
                                      );
          %_sasunit_render_iconColumn (i_sourceColumn=cas_res
@@ -236,8 +235,9 @@
 
          columns idColumn descriptionColumn programColumn last_runColumn durationColumn resultColumn;
 
-         define idColumn     / display style(Column)=rowheader;
-         define resultColumn / display style(Column)=[background=white];
+         define idColumn     		/ display style(Column)=rowheader;
+				 define durationColumn 	/ display style(Column)=[just=right];
+         define resultColumn 		/ display style(Column)=[background=white];
 
          compute before _page_;
             line @1 "&g_nls_reportCas_010."; 
