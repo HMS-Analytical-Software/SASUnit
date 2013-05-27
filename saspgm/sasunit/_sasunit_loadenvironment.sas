@@ -47,14 +47,10 @@
         g_testdata g_refdata g_doc g_error g_warning
         g_work g_testout g_log
         g_logfile g_printfile
-        g_version g_revision
         g_testcoverage;
 %LOCAL i;
         
 %LET g_target    = %sysfunc(pathname(target));
-%LET g_version   = 1.2.1;
-%LET g_revision  = $Revision$;
-%LET g_revision  = %scan(&g_revision,2,%str( $:));
 
 %*** Both macvars are dependent on scenario and testcase, values can only be assigned later ***;
 %LET g_logfile   = ;

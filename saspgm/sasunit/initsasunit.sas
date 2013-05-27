@@ -77,10 +77,15 @@
   ,i_doc          = 
   ,i_testcoverage = 1
 );
+%GLOBAL g_version g_revision;
+
+%LET g_version   = 1.2.1;
+%LET g_revision  = $Revision$;
+%LET g_revision  = %scan(&g_revision,2,%str( $:));
+
 %LOCAL l_macname; %LET l_macname=&sysmacroname;
 %LOCAL l_first_temp;
-%LOCAL l_expected_dbversion l_current_dbversion; 
-%LET l_expected_dbversion=1;
+%LOCAL l_current_dbversion; 
 %LET l_current_dbversion=0;
 
 /*-- Resolve relative root path like .../. to an absolute root path ----------*/
@@ -104,8 +109,8 @@ libname _tmp clear;
 /*-- check SAS version -------------------------------------------------------*/
 %IF %_sasunit_handleError( &l_macname
                          , WrongVer
-                         , (&sysver. NE 9.1) AND (&sysver. NE 9.2) AND (&sysver. NE 9.3)
-                         , Invalid SAS version - only SAS 9.1 to 9.3) 
+                         , (&sysver. NE 9.2) AND (&sysver. NE 9.3)
+                         , Invalid SAS version - only SAS 9.2 to 9.3) 
 %THEN %GOTO errexit;
 
 /*-- check value of parameter i_testcoverage, if it has an other value than 1, 
@@ -159,14 +164,15 @@ QUIT;
          did = open ("target.tsu");
          if varnum (did, "tsu_dbVersion") then do;
             rc            = fetch (did);
-            tsu_dbVersion = getvarn (did, varnum (did, "tsu_dbVersion"));
-            call symput ("l_current_dbversion", compress (put (tsu_dbVersion, best32.)));
+            tsu_dbVersion = getvarc (did, varnum (did, "tsu_dbVersion"));
+            call symput ("l_current_dbversion", trim(tsu_dbVersion));
          end;
          did = close(did);
       end;
    run;
-   %LET l_newdb=%eval (&l_current_dbversion. NE &l_expected_dbversion.);
+   %LET l_newdb=%eval ("&l_current_dbversion." NE "&g_version.");
 %END;
+   %PUT ---> l_newdb=eval ("&l_current_dbversion." NE "&g_version.");
 
 /*-- create test database if necessary ---------------------------------------*/
 %IF &l_newdb %THEN %DO;
@@ -189,10 +195,10 @@ QUIT;
          ,tsu_lastinit     INT FORMAT=datetime21.2 /* date and time of last initialization */
          ,tsu_lastrep      INT FORMAT=datetime21.2 /* date and time of last report generation*/
          ,tsu_testcoverage INT FORMAT=8.    /* see i_testcoverage */
-         ,tsu_dbversion    INT FORMAT=8.    /* Counter to force creation of a new test data base */
+         ,tsu_dbversion    CHAR(8)    			/* Version String to force creation of a new test data base */
       );
       INSERT INTO target.tsu VALUES (
-      "","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,0
+      "","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,""
       );
 
       CREATE TABLE target.scn (                    /* test scenario */
@@ -580,7 +586,7 @@ QUIT;
 /*-- update column tsu_dbVersion ------------------------------------------*/
 PROC SQL NOPRINT;
    UPDATE target.tsu 
-      SET tsu_dbVersion = &l_expected_dbversion.
+      SET tsu_dbVersion = "&g_version."
    ;
 QUIT;
 
@@ -594,6 +600,7 @@ QUIT;
    %PUT &g_error: ===================== Error! Testsuite aborted! ===========================================;
    %PUT;
    LIBNAME target;
+	 endsas;
 %exit:
 %MEND initSASUnit;
 /** \endcond */
