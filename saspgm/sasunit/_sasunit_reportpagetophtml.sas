@@ -15,11 +15,7 @@
    \param   i_title        Title line of HTML page
    \param   i_current      number of the active tab, default is 1
 
-*/ /** \cond */ 
-
-/* change log
-   19.08.2008 AM  national language support
-*/ 
+*/ /** \cond */  
 
 %MACRO _sasunit_reportPageTopHTML (
     i_title   =

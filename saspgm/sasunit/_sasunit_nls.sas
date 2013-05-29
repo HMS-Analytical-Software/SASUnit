@@ -22,12 +22,6 @@
 \return     macro symbols in global symbol table
 */ /** \cond */ 
 
-/* change log
-   31.01.2013 KL  Skip comments identified by ###
-   22-07-2008 AM  modified infile statement for linux
-   13-08-2008 AM  created
-*/ 
-
 data nls (drop=mark);
    infile "&g_sasunit./_sasunit_nls.txt" truncover termstr=crlf;
    input mark $3. @;

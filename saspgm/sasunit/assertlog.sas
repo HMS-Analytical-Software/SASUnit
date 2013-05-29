@@ -23,12 +23,6 @@
    \param   i_desc         description of the assertion to be checked, default value: "Scan for log message"
 */ /** \cond */ 
 
-/* change log
-   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
-   10.10.2008 AM  minimal correction for documentation 
-   19.08.2008 AM  removed language specific text in order to enable national language support
-*/ 
-
 %MACRO assertLog (
     i_errors   = 0
    ,i_warnings = 0

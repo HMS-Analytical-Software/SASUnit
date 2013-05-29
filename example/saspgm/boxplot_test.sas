@@ -19,11 +19,7 @@
             This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
             For terms of usage under the GPL license see included file readme.txt
             or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-*/ /** \cond */ 
-
-/* History
-   05.10.2010 AM  Changed output format to pdf in order to be able to run on linux
-*/ 
+*/ /** \cond */
 
 /*-- standard case without reference -----------------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=standard case without reference)

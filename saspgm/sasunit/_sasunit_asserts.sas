@@ -19,11 +19,7 @@
    \param  i_result         result 0 .. OK, 1 .. not OK, 2 .. manual check
    \param  r_casid          optional: return number of current test case 
    \param  r_tstid          optional: return number of this check within test case
-*/ /** \cond */ 
-
-/* change history
-   07.02.2008 AM  Quoting für Texte verbessert, die doppelte Hochkommata enthalten
-*/ 
+*/ /** \cond */  
 
 
 %MACRO _sasunit_asserts (

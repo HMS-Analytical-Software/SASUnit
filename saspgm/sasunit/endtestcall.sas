@@ -21,11 +21,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-/* change history
-   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
-   09.02.2011 KL  added two macro variables for re-redirecting log- and printfile in testcases
-*/ 
-
 %MACRO endTestcall();
 
 %GLOBAL g_inTestcase;

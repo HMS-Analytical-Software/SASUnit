@@ -9,10 +9,6 @@
 
 */ /** \cond */ 
 
-/* change log
-   14.02.2013 KL Created
-*/ 
-
 data test;
    set work.class;
 run;

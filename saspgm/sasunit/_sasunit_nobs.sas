@@ -16,10 +16,6 @@
    \return  number of observations or 0, if dataset cannot be found
 */ /** \cond */ 
 
-/* change log
-   07.02.2008 AM  return logical instead of physical observations
-*/ 
-
 %MACRO _sasunit_nobs(
     i_data
 );

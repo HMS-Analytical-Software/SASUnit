@@ -23,19 +23,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 
-*/ /** \cond */
-
-/* version history
-   29.01.2013 KL  Removed support for filenames with unbalanced brackets.
-   17.10.2012 KL  extended for english version of windows. In English Windows7 x64 there is an additional AM/PM column in the directory listing.
-                  Therefore an new datastep variable is included to reflect this circumstances. SCAN CANNOT be used because there may be blanks
-                  in the filenames and blank is the delimiter between the columns. So we need to stick to specific character positions
-   14.07.2009 AM  extended for english version of windows
-   02.10.2008 NA  modified for LINUX
-   10.02.2008 AM  Dokumentation verbessert
-   15.12.2007 AM  Abfrage nach sysrc entfernt, weil sysrc>0, wenn keine Datei gefunden;
-                  Dateinamen mit slashes statt backslashes
-*/ 
+*/ /** \cond */ 
 
 %MACRO _sasunit_dir(
     i_path=

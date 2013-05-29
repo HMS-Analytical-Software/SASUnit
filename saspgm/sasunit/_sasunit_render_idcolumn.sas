@@ -20,10 +20,6 @@
 
 */ /** \cond */ 
 
-/* change log
-   26.02.2013 KL  Created
-*/ 
-
 %macro _sasunit_render_idcolumn (i_sourceColumn=
                                 ,i_format=_NONE_
                                 ,i_linkColumn=_NONE_

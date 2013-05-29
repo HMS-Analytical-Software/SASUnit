@@ -15,11 +15,6 @@
 
 */ /** \cond */ 
 
-/* change log
-   19.03.2013 KL added parameter and %put statement;
-   13.12.2012 KL Neuerstellung
-*/ 
-
 %MACRO _dummy_macro(i_desc);
    %put &i_desc.;
 %MEND _dummy_macro;

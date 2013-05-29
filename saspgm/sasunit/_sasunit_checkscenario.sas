@@ -35,10 +35,6 @@
             or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-/* change history
-   15.12.2007 AM  Neuerstellung 
-*/ 
-
 %MACRO _sasunit_checkScenario(
    i_scnfile = 
   ,i_changed = 

@@ -29,12 +29,6 @@
    \return results will be written to folder &g_target/rep 
 */ /** \cond */ 
 
-/* change history
-   12.08.2008 AM  national language support
-   29.12.2007 AM  Texte verbessert, Teilbaum Prüflinge fertiggestellt, 
-                  temporäre Dateien aufgeräumt 
-*/ 
-
 %MACRO _sasunit_reportTreeHTML (
     i_repdata = 
    ,o_html    =

@@ -23,16 +23,7 @@
             This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
             For terms of usage under the GPL license see included file readme.txt
             or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-*/ /** \cond */ 
-
-/* change history
-   11.02.2013 PW  added usage of option i_testcoverage
-   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
-   30.08.2012 KL  Values for rootpath of SASUnit, language and overwrite are taken over from OS-Variables.
-                  So there is no need to change run_all for operating systems or languages
-   05.09.2008 NA  Anpassungen Linux
-   06.02.2008 AM  Neuerstellung 
-*/ 
+*/ /** \cond */  
 
 OPTIONS 
    MPRINT MAUTOSOURCE NOMLOGIC NOSYMBOLGEN

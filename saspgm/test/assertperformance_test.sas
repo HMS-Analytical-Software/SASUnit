@@ -14,12 +14,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-/* change log
-   30.01.2013 BB Hint to failed tests and scenarios formated consistently " - must be red!" and " - has to fail!"
-   17.10.2012 KL Adaption of i_object.
-   29.08.2012 KL Creation
-*/ 
-
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /* test case 1 ------------------------------------ */

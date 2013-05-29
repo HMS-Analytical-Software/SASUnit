@@ -1,8 +1,3 @@
-### change log
-###  08.02.2013 PW new reportAuton Texts for test coverage assessment
-###   29.01.2013 BB ReportDetail formats 49 und 50 inserted (International time formats)
-###	 29.01.2013 BB Change Log created
-### 
 ---reportSASUnit
   1 DE SAS-Log aus initSASUnit
   1 EN SAS log from initSASUnit

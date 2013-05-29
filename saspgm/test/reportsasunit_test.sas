@@ -14,9 +14,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-/* change log 
-   08.01.2013 BB  Error Description added to \brief
-*/ 
 %Macro reportsasunit_test;
 
 /* test case start ------------------------------------ */

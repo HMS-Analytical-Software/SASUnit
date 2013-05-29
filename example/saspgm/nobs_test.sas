@@ -18,11 +18,6 @@
             or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-/* change log
-   30.01.2013 BB Hint to failed tests formated consistently " - must be red!"; \brief tag amended "- has to fail!"
-	 30.01.2013 BB Change log created
-*/ 
-
 /*-- simple example with sashelp.class ---------------------------------------*/
 %initTestcase(i_object=nobs.sas, i_desc=simple example with sashelp.class)
 %let nobs=%nobs(sashelp.class);

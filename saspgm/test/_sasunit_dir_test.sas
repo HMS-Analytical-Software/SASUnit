@@ -14,10 +14,6 @@
 
 */ /** \cond */ 
 
-/* Change log 
-   xx.xx.xxxx YY  <reason>
-*/
-
 /*-- Prepare file to check for correct results -------------------------------*/
 data dircheck; 
    length filename $255; 

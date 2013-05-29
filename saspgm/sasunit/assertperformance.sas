@@ -20,14 +20,6 @@
 
 */ /** \cond */ 
 
-/* change history
-   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
-   29.08.2012 KL
-   For every call of the assert target.cas is rewritten! This slows down performance.
-   In fact there is no need to store the run time in the target.cas.
-   If it's needed it can be done via an update on the data set, but that should be done in endTestcall.
-*/
-
 %MACRO assertPerformance(i_expected=, i_desc=);
 
 %GLOBAL g_inTestcase;

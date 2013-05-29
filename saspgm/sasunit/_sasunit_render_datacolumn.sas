@@ -19,11 +19,7 @@
    \param   i_columnType   type of the column as defined in the CSS ("datacolumn" / "datacolumnerror"). <em>(optional: _NONE_)</em>.
    \param   o_targetColumn name of the target column holding the ODS formatted value
 
-*/ /** \cond */ 
-
-/* change log
-   26.02.2013 KL  Created
-*/ 
+*/ /** \cond */  
 
 %macro _sasunit_render_datacolumn (i_sourceColumn=
                                   ,i_format=_NONE_

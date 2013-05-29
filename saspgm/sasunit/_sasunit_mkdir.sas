@@ -19,10 +19,6 @@
 
 */ /** \cond */
 
-/* change history
-   05.09.2008 NA  Anpassung an Linux
-*/ 
-
 %macro _sasunit_mkdir(dir);
 
 %if &sysscp. = WIN %then %do; 

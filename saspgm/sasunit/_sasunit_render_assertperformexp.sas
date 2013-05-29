@@ -17,11 +17,7 @@
    \param   o_html         Test report in HTML-format?
    \param   o_targetColumn name of the target column holding the ODS formatted value
 
-*/ /** \cond */ 
-
-/* change log
-   14.03.2013 KL  Created
-*/ 
+*/ /** \cond */  
 
 %macro _sasunit_render_assertPerformExp (i_sourceColumn=
                                         ,i_format=_NONE_

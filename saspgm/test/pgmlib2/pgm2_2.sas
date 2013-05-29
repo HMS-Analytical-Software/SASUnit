@@ -15,10 +15,6 @@
 
 */ /** \cond */ 
 
-/* change log 
-   28.12.2007 AM  Neuerstellung
-*/ 
-
 %MACRO pgm2_2();
 %PUT Call of pgm2_2;
 %MEND pgm2_2;

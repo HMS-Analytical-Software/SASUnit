@@ -18,10 +18,6 @@
 
 */ /** \cond */ 
 
-/* History
-   02.10.2008 NA  modified for LINUX
-*/ 
-
 %MACRO _sasunit_getPgmDesc (
     i_pgmfile =
    ,r_desc    = desc

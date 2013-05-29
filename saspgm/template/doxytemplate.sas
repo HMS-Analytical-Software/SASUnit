@@ -21,10 +21,6 @@
 \return     return value
 */ /** \cond */ 
 
-/* change log
-   dd-mm-yyyy <author> <change description>
-*/ 
-
 %MACRO test;
 %MEND test;
 /** \endcond */

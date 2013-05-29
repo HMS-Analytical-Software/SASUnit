@@ -24,10 +24,6 @@
 
 */ /** \cond */ 
 
-/* change history 
-   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
-   30.06.2008 AM  Behandlung unterschiedlicher Datentypen verbessert 
-*/ 
 %MACRO assertEquals (
     i_expected =      
    ,i_actual   =      

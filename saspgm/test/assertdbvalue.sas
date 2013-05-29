@@ -17,11 +17,7 @@
    \param   i_col        column name without prefix
    \param   i_val        value
    \param   i_desc       optional: description of the tests
-*/ /** \cond */
-
-/* change log
-   30.06.2008 AM  führende Blanks abschneiden beim Holen des Werts aus der Datenbank
-*/ 
+*/ /** \cond */ 
 
 %macro assertDBValue(
     i_tab

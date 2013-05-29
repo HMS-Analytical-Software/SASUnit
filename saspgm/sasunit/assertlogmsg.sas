@@ -27,16 +27,6 @@
    \param   i_not          negates the assertion, if set to 1
 */ /** \cond */ 
 
-/* change log
-   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
-   26.09.2008 AM  bug fixing NLS: standard description text
-   21.08.2008 AM  moved language dependent text to reportDetailHTML
-   30.06.2008 AM  kleine Dokumentationsänderung
-   07.02.2008 AM  doppelte Hochkammata wieder entfernt, Quoting wird jetzt in 
-                  %_sasunit_asserts erledigt, Doku zu Sonderzeichen in Strings ergänzt
-   15.12.2007 AM  doppelte Hochkommata in l_expected ergänzt.
-*/ 
-
 %MACRO assertLogMsg (
     i_logmsg   =       
    ,i_desc     =   

@@ -18,10 +18,6 @@
 
 */ /** \cond */ 
 
-/* change log
-   14.03.2013 KL  Created
-*/ 
-
 %macro _sasunit_render_assertLogExp (i_sourceColumn=
                                     ,o_html=
                                     ,o_targetColumn=

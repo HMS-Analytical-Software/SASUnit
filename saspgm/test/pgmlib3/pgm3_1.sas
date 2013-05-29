@@ -15,10 +15,6 @@
 
 */ /** \cond */ 
 
-/* change log 
-   28.12.2007 AM  Neuerstellung
-*/ 
-
 %MACRO pgm3_1();
 %PUT Call of pgm3_1;
 %MEND pgm3_1;

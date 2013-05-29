@@ -20,11 +20,7 @@
 \param      data   input data set
 \param      by     by variable(s) for partitioning
 \param      out    prefix for putput data sets, mubers will be appended
-*/ /** \cond */ 
-
-/* Änderungshistorie
-   05.02.2008 AM Neuerstellung
-*/ 
+*/ /** \cond */
 
 %MACRO generate(
    data   =

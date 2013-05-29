@@ -36,21 +36,6 @@
                            default 0 ... do not search subdirectories.
 */ /** \cond */ 
 
-/* change log
-   14.02.2013 PW/KL  Modified for LINUX
-   08.02.2013 PW  implementation of test coverage assessment
-   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
-   28.01.2013 KL  Adjusted descriptions of testcases
-   02.10.2008 NA  Modified for LINUX
-   11.08.2008 AM  Fehler bereinigt für den Fall, dass in der aufrufenden Sitzung keine config-Option angegeben ist 
-                  und die mit getoption abgefragte config-option dann Werte (mit Klammern) enthält, 
-                  die nicht an die gestartete SAS-Sitzung übergeben werden können
-   27.06.2008 AM  config-option aus Aufruf ggfs. an die SAS-Sitzungen der Testszenarien weitergeben
-   29.12.2007 AM  SASUSER nach Aufruf Testszenario wieder löschen
-   18.12.2007 KL  Bugfixing beim Ermitteln der möglichen Prüflinge
-   15.12.2007 AM  Logik für Überprüfung auf auszuführende Testszenarien neu implementiert (checkSzenario) 
-*/ 
-
 %MACRO runSASUnit(
    i_source     =
   ,i_recursive  = 0

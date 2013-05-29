@@ -15,26 +15,6 @@
    \param   i_withlibrefs 1..initialize also filerefs and librefs 
                           0..initialize only macro symbols. 
 */ /** \cond */ 
- 
-/* change history
-   31.01.2013 KL  new Version 1.2.1
-   08.02.2013 PW  implementation of test coverage assessment
-   31.01.2013 KL  new Version 1.2 - recommited
-   28.08.2012 KL  Problems occured resolving paths like ..\.\example\dat later in the project 
-                  e.g. assertReport couldn't find expected pdfs. 
-                  Libname is successful, so the idea was to get the resolved path via pathname
-   15.02.2011 KL  added support for testcases that need to redirect logfiles
-                  Two new macrovariables g_logfile and g_printfile are available
-   10.10.2010 AM  new Version 1.001
-   05.10.2010 AM  new Version 1.000
-   12.06.2010 AM  neue Version 0.910
-   16.07.2009 AM  neue Version 0.905
-   14.07.2009 AM  neue Version 0.903L
-   19.08.2008 AM  neue Version 0.904
-   11.08.2008 AM  neue Revision
-   15.02.2008 AM  neue Revision
-   10.02.2008 AM  neue Revision
-*/
 
 %MACRO _sasunit_loadEnvironment(
     i_withlibrefs = 1

@@ -17,10 +17,6 @@
 
 */ /** \cond */ 
 
-/* change log
-   07.03.2013 KL  Created
-*/ 
-
 %macro _sasunit_render_iconcolumn (i_sourceColumn=
                                   ,o_html=
                                   ,o_targetColumn=

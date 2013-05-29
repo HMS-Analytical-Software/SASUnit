@@ -19,10 +19,6 @@
 
 */ /** \cond */ 
 
-/* change log
-   14.03.2013 KL  Created
-*/ 
-
 %macro _sasunit_render_assertPerformAct (i_sourceColumn=
                                         ,i_format=_NONE_
                                         ,o_html=

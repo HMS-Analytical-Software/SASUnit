@@ -14,11 +14,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-*/ /** \cond */ 
-
-/* change log
-   07.01.2013 AM  made clear in scenario description that this scenario runs always
-*/ 
+*/ /** \cond */  
 
 %initTestcase(i_object=pgm1_1.sas, i_desc=call of program 1 in library 1)
 %pgm1_1()

@@ -34,18 +34,6 @@
    \return    ODS documents with the contents of the libraries and a SAS file with the comparison result.
 */ /** \cond */ 
 
-/* 
-   26.02.2013 KL  Reworked assertion framework as a template. Moved actual check to e new macro to simplify undertanding of this macro.
-   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
-   13.12.2012 KL  Despite the noprint option PROC COMPARE issues a warning when there is no open output destination.
-                  So the listing destination is opened prior to calling PROC COMPARE.
-   28.05.2010 KL  Pfade mit Sonderzeichen machen unter SAS9.2 Probleme, deshalb Strings in Hochkommata
-   06.02.2008 AM  Dokumentation verbessert
-   05.11.2008 KL  Unterdrücken von Warnings (Keine ODS Destination offen).
-   21.10.2008 KL  Logik bei MoreColumns etc. war leider falschrum.
-   17.12.2007 KL  Parameter ExcludeList hinzugefügt
-*/
-
 %MACRO assertLibrary (
     i_actual       = _NONE_
    ,i_expected     = _NONE_

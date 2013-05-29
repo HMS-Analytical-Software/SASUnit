@@ -29,12 +29,6 @@
    \return
 */ /** \cond */ 
 
-/* change log
-   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
-   02.01.2013 KL To support LINUX as OS we need to convert pgm-names (macro names) to lowercase. Otherwise LINUX can't find the macro and assigns no pgm-library.
-   09.02.2011 KL added two macro variables for re-redirecting log- and printfile in testcases
-*/ 
-
 %MACRO initTestcase(
    i_object   =  
   ,i_desc     =  

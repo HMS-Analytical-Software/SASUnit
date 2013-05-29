@@ -14,12 +14,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-/* change log
-    30.01.2013 BB  Hint to failed tests and scenarios formated consistently " - must be red!" and "- has to fail!"
-   10.10.2008 AM  Bug fixing
-   27.06.2008 AM  Creation
-*/ 
-
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 %initTestcase(i_object=assertequals.sas, i_desc=%str(equal values, no fuzz))

@@ -20,10 +20,6 @@
 
 */ /** \cond */ 
 
-/* change history
-   02.10.2008 NA  Anpassung an Linux
-*/ 
-
 %macro _sasunit_copyDir(
    i_from
   ,i_to

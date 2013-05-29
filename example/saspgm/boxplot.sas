@@ -33,10 +33,6 @@
 \param      report  output report file (file name extension must be pdf)
 */ /** \cond */ 
 
-/* History
-   05.10.2010 AM  Changed output format to pdf in order to be able to run on linux
-*/ 
-
 %MACRO boxplot(
    data   =
   ,x      =

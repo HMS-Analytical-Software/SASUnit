@@ -17,11 +17,6 @@
                which can be found in autocall paths or have relative or absolute paths. 
 
 */ /** \cond */ 
-
-/* change log 
-   15.12.2007 AM  Neuerstellung 
-*/ 
-
 /*-- create folders for example programs -------------------------------------*/
 %_sasunit_mkdir(&g_work/auto)
 %_sasunit_mkdir(&g_work/auto1)

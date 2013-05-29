@@ -15,14 +15,6 @@
 
 */ /** \cond */ 
 
-/* History
-   11.02.2013 PW  added usage of option i_testcoverage
-   13.12.2012 KL  Checks for different config and autoexec files
-   30.08.2012 KL  Values for rootpath of SASUnit, language and overwrite are taken over from OS-Variables.
-                  So there is no need to change run_all for operating systems or languages
-   10.10.2010 AM  Neuerstellung 
-*/ 
-
 OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "%trim(%sysget(SASUNIT_ROOT))/saspgm/sasunit");
 proc options option=logparm;run;
 

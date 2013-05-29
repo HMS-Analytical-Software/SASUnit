@@ -14,11 +14,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-/* change log
-   30.01.2013 BB Hint to failed scenarios formated consistently " - has to fail!"
-	 30.01.2013 BB Change log created
-*/ 
-
 %Macro reportsasunit_emptyscn_test;
 
 /* scenario must not contain any test cases

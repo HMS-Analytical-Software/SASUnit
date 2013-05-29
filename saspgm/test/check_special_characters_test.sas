@@ -9,17 +9,6 @@
 
 */ /** \cond */ 
 
-/* change log
-   19.03.2013 KL changed macro call to _dummy_macro.sas. Scenario will now be executed once(!) after modification, 
-                 because _dummy_macro.sas is an existing macro.
-   30.01.2013 BB Hint to failed tests and scenario formated consistently " - must be red!" and "- has to fail!"
-   29.01.2013 BB Removed test case with unbalanced bracket
-   11.01.2013 BB Further Test Cases added
-   09.01.2013 KL Created
-*/ 
-
-
-
 /*-- first call: Everthing is ok ------------------------------------*/
 %initTestcase(i_object=_dummy_macro.sas, i_desc=no special characters anywhere)
 %endTestcall()

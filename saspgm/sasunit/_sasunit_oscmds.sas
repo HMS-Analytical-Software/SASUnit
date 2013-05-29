@@ -12,12 +12,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-*/ /** \cond */ 
-
-/* change history
-   31.08.2012 KL  Contents of g_sasstart is concatenated in a data step for both environments, so both need quotes.
-   03.08.2010 AM  First version
-*/ 
+*/ /** \cond */  
 
 %macro _sasunit_oscmds;
 

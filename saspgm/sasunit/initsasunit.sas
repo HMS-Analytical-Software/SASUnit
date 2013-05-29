@@ -44,13 +44,6 @@
                      0 (default) .. no assessment of test coverage
                            1 .. assessment of test coverage is activated
 */ /** \cond */ 
-/* change log 
-   08.02.2013 PW  new parameter i_testcoverage
-   29.01.2013 KL  changed link from _sasunit_doc.sas to Sourceforge SASUnit User's Guide
-   08.01.2013 KL  Fixed warning concerning %substr arguments. This was caused by the last call in run_all.sas. 
-                  To remove the entry for i_autoexec, a real blank must be passed. So there is now a different
-                  method used for check on empty parameter which now must include a real blank as empty.
-*/ 
 
 
 %MACRO initSASUnit(
