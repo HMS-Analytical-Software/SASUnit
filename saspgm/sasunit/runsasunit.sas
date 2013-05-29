@@ -240,8 +240,9 @@ RUN;
               path to the generated coverage file if necessary ---------------*/
          %LET   l_tcgFilePath           = &g_log/%substr(00&l_scnid.,%length(&l_scnid)).tcg;
          %LET   l_tcgOptionsString      = -mcoverage -mcoverageloc = ""&l_tcgFilePath."";
-         %LET   l_tcgOptionsStringLINUX = options mcoverage mcoverageloc='&l_tcgFilePath.';
+         %LET   l_tcgOptionsStringLINUX = options mcoverage mcoverageloc='%sysfunc(tranwrd(&l_tcgFilePath.,%str( ), %str(\ )))';
      %END;
+
 
       DATA _null_;
          ATTRIB
@@ -256,15 +257,15 @@ RUN;
             "" !! &g_sasstart. 
             !! " " 
             !! "&l_parms. "
-            !! "-sysin &&l_scnfile&i "
+            !! "-sysin %sysfunc(tranwrd(&&l_scnfile&i, %str( ), %str(\ ))) "
             !! "-initstmt "" &l_tcgOptionsStringLINUX.; %nrstr(%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&l_scnid.;"" "
-            !! "-log   &l_scnlogfullpath. "
-            !! "-print &g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst "
+            !! "-log   %sysfunc(tranwrd(&l_scnlogfullpath, %str( ), %str(\ ))) "
+            !! "-print %sysfunc(tranwrd(&g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst, %str( ), %str(\ ))) "
             !! "-noovp "
             !! "-nosyntaxcheck "
             !! "-mautosource "
             !! "-mcompilenote all "
-            !! "-sasautos &g_sasunit "
+            !! "-sasautos %sysfunc(tranwrd(&g_sasunit, %str( ), %str(\ ))) "
             !! "-sasuser %sysfunc(pathname(work))/sasuser "
             !! "-termstmt ""%nrstr(%%_sasunit_termScenario())"" "
             !! "";

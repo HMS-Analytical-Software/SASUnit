@@ -65,10 +65,10 @@
 
       %let l_rc =%_sasunit_delFile("&g_log/000.tcg");
 
-      FILENAME allfiles "&g_log/*.tcg";
+      FILENAME allfiles "%sysfunc(tranwrd(&g_log, %str( ),%str(\ )))/*.tcg";
       DATA _null_;
        INFILE allfiles end=done dlm=',';
-       FILE "&g_log/000.tcg";
+       FILE "%sysfunc(tranwrd(&g_log, %str( ),%str(\ )))/000.tcg";
        INPUT row :$256.;
        PUT row;
       RUN;

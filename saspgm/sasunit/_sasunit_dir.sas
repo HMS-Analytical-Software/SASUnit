@@ -49,7 +49,7 @@
    %let dirindicator_de=Verzeichnis von;
    %let encoding=pcoem850;
    %let i_path = %sysfunc(translate(&i_path,\,/));
-
+	 
    proc sql noprint;
       create table &o_out (filename char(255));
    quit;
@@ -124,7 +124,7 @@
  
 %else %if &sysscp. = LINUX %then %do;
 
-   %LOCAL dirfile encoding s;
+   %LOCAL dirfile encoding s l_i_path;
    
    data &o_out ;
        length filename $255;
@@ -138,8 +138,9 @@
    filename _dirfile "&dirfile" encoding=&encoding;
 	 
    %put Directory search is: &i_path;
-   %IF &i_recursive=0 %then %let s=-maxdepth 1;
-   %SYSEXEC(find -P &i_path. &s. -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null);
+	 %let l_i_path=%qsysfunc(tranwrd(&i_path, %str( ), %str(\ )));
+   %IF &i_recursive=0 %then %let s=-maxdepth 1; 
+   %SYSEXEC(find -P &l_i_path. &s. -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null);
    
    data &o_out (keep=filename changed);
        length filename $255;

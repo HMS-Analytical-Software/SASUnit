@@ -29,6 +29,8 @@
   ,i_to
 );
 
+%LOCAL l_i_from l_i_to;
+
 %if &sysscp. = WIN %then %do; 
 
    /* save and modify os command options */
@@ -57,7 +59,10 @@
 %end;
 
 %else %if &sysscp. = LINUX %then %do;
-   %SYSEXEC(cp -R &i_from. &i_to.);
+   %let l_i_from = %qsysfunc(tranwrd(&i_from, %str( ), %str(\ )));
+   %let l_i_to   = %qsysfunc(tranwrd(&i_to, %str( ), %str(\ )));
+
+   %SYSEXEC(cp -R &l_i_from. &l_i_to.);
 %end;
 
 %mend _sasunit_copyDir;

@@ -38,7 +38,7 @@
    options &xwait &xsync &xmin;
 %end;
 %else %if &sysscp. = LINUX %then %do;
-   %SYSEXEC(mkdir &dir.);
+   %SYSEXEC(mkdir "&dir.");
 %end;
 
 %mend _sasunit_mkdir; 

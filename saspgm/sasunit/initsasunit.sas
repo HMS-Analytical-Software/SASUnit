@@ -172,7 +172,6 @@ QUIT;
    run;
    %LET l_newdb=%eval ("&l_current_dbversion." NE "&g_version.");
 %END;
-   %PUT ---> l_newdb=eval ("&l_current_dbversion." NE "&g_version.");
 
 /*-- create test database if necessary ---------------------------------------*/
 %IF &l_newdb %THEN %DO;
@@ -518,19 +517,20 @@ DATA _null_;
    LRECL=32000
  ;
 %IF &sysscp. = LINUX %THEN %DO;
+	/* sasautos: the blank is part of the syntax and separates multiple directories from each other!!*/
  _sCmdString = 
       "" !! &g_sasstart. 
         !! " " 
         !! "&l_parms. " 
         !! "-sysin &l_work./run.sas "
         !! "-initstmt ""%nrstr(%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);)"" "
-        !! "-log  &g_log./000.log "
-        !! "-print &g_log./000.lst "
+        !! "-log  ""&g_log./000.log"" "
+        !! "-print ""&g_log./000.lst"" "
         !! "-noovp "
         !! "-nosyntaxcheck "
         !! "-mautosource "
         !! "-mcompilenote all "
-        !! "-sasautos &g_sasunit "
+        !! "-sasautos %sysfunc(tranwrd(&g_sasunit, %str( ), %str(\ ))) "
         !! "-sasuser %sysfunc(pathname(work))/sasuser "
         !! "";
 %END;
