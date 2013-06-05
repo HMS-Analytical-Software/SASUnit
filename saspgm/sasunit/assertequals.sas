@@ -63,7 +63,7 @@
    %ELSE %LET l_result = 2;
 %END;
 
-%_sasunit_asserts(
+%_asserts(
     i_type     = assertEquals
    ,i_expected = &l_expected
    ,i_actual   = &i_actual

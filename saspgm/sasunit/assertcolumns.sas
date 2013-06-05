@@ -120,10 +120,10 @@
 %END;
 
 /*-- get current ids for test case and test --------- ------------------------*/
-%_sasunit_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
+%_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
 %*** create subfolder ***;
-%_sasunit_createTestSubfolder (i_assertType   =assertcolumns
+%_createTestSubfolder (i_assertType   =assertcolumns
                               ,i_scnid        =&g_scnid.
                               ,i_casid        =&l_casid.
                               ,i_tstid        =&l_tstid.
@@ -189,7 +189,7 @@ libname _acLib "&l_path.";
 %END; /* i_expected and i_actual exist */
 
 /*-- update comparison result in test database -------------------------------*/
-%_sasunit_asserts(
+%_asserts(
     i_type     = assertColumns
    ,i_expected = %upcase(&i_allow)
    ,i_actual   = &l_actual.

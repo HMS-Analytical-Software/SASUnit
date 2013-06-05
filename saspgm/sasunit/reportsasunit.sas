@@ -15,7 +15,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_language     Language of the report (DE, EN) - refer to _sasunit_nls
+   \param   i_language     Language of the report (DE, EN) - refer to _nls
    \param   o_html         Test report in HTML-format?
    \param   o_force        0 .. (default) incremental, 1 .. create complete report
    \param   o_output       (optional) full path of the directory in which the test report is created. 
@@ -38,21 +38,21 @@
 
 %IF "&o_force" NE "1" %THEN %LET o_force=0;
 
-%_sasunit_nls (i_language=&i_language)
+%_nls (i_language=&i_language)
 
 /*-- check if target folder exists -------------------------------------------*/
 %LOCAL l_output; 
 %IF %length(&o_output) %THEN %LET l_output=&o_output;
 %ELSE %LET l_output =&g_target/rep;
-%LET l_output=%_sasunit_abspath(&g_root,&l_output);
+%LET l_output=%_abspath(&g_root,&l_output);
 
-%IF %_sasunit_handleError(&l_macname, InvalidOutputDir, 
-   NOT %_sasunit_existDir(&l_output), 
+%IF %_handleError(&l_macname, InvalidOutputDir, 
+   NOT %_existDir(&l_output), 
    Error in parameter o_output: target folder does not exist) 
    %THEN %GOTO errexit;
 
 /*-- check if test database can be accessed ----------------------------------*/
-%IF %_sasunit_handleError(&l_macname, NoTestDB, 
+%IF %_handleError(&l_macname, NoTestDB, 
    NOT %sysfunc(exist(target.tsu)) OR NOT %symexist(g_project), 
    %nrstr(Test database cannot be accessed, call %initSASUnit before %reportSASUnit))
    %THEN %GOTO errexit;
@@ -69,15 +69,15 @@
    d_cas
    d_tst
 ;
-%_sasunit_tempFilename(d_rep)
-%_sasunit_tempFilename(d_scn)
-%_sasunit_tempFilename(d_cas01)
-%_sasunit_tempFilename(d_auton)
-%_sasunit_tempFilename(d_pgm)
-%_sasunit_tempFilename(d_pcs)
-%_sasunit_tempFilename(d_emptyscn)
-%_sasunit_tempFilename(d_cas)
-%_sasunit_tempFilename(d_tst)
+%_tempFilename(d_rep)
+%_tempFilename(d_scn)
+%_tempFilename(d_cas01)
+%_tempFilename(d_auton)
+%_tempFilename(d_pgm)
+%_tempFilename(d_pcs)
+%_tempFilename(d_emptyscn)
+%_tempFilename(d_cas)
+%_tempFilename(d_tst)
 
 
 /*-- check for empty scenarios and generate entries in temporary copies of cas and tst datasets,
@@ -298,7 +298,7 @@ PROC SQL NOPRINT;
    CREATE UNIQUE INDEX idx2 ON &d_rep (cas_auton, pgm_id, scn_id, cas_id, tst_id);
 
 QUIT;
-%IF %_sasunit_handleError(&l_macname, ErrorTestDB, 
+%IF %_handleError(&l_macname, ErrorTestDB, 
    &syserr NE 0, 
    %nrstr(Fehler beim Zugriff auf die Testdatenbank))
    %THEN %GOTO errexit;
@@ -343,7 +343,7 @@ proc format lib=work;
 run;
 
 *** create style ****;
-%_sasunit_reportCreateStyle;
+%_reportCreateStyle;
 
 DATA _null_;
    SET &d_rep;
@@ -354,12 +354,12 @@ DATA _null_;
       /*-- only if testreport is generated competely anew --------------------*/
       IF tsu_lastrep=0 OR &o_force THEN DO;
          /*-- copy static files - images, css etc. ---------------------------*/
-         PUT '%_sasunit_copydir(' /
+         PUT '%_copydir(' /
              "    &g_root./resources" '/html/%str(*.*)' /
              "   ,&l_output" /
              ")";
          /*-- create frame HTML page -----------------------------------------*/
-         PUT '%_sasunit_reportFrameHTML('             /
+         PUT '%_reportFrameHTML('             /
              "    i_repdata = &d_rep"                 /
              "   ,o_html    = &l_output/index.html"   /
              ")";
@@ -367,13 +367,13 @@ DATA _null_;
       /*-- only if testsuite has been initialized anew after last report -----*/
       IF tsu_lastinit > tsu_lastrep OR &o_force THEN DO;
          /*-- convert SAS-log from initSASUnit -------------------------------*/
-         PUT '%_sasunit_reportLogHTML('                   /
+         PUT '%_reportLogHTML('                   /
              "    i_log     = &g_log/000.log"             /
              "   ,i_title   = &g_nls_reportSASUnit_001"    /
              "   ,o_html    = &l_output/000_log.html" /
              ")";
          /*-- create overview page -------------------------------------------*/
-         PUT '%_sasunit_reportHomeHTML('                   /
+         PUT '%_reportHomeHTML('                   /
              "    i_repdata = &d_rep"                      /
              "   ,o_html    = &o_html."    /
              "   ,o_path    = &l_output."    /
@@ -383,33 +383,33 @@ DATA _null_;
       /*-- only if a test scenario has been run since last report ------------*/
       IF &l_lastrun > tsu_lastrep OR &l_bOnlyInexistingScnFound. OR &o_force. THEN DO;
          /*-- create table of contents ---------------------------------------*/
-         PUT '%_sasunit_reportTreeHTML('                  /
+         PUT '%_reportTreeHTML('                  /
              "    i_repdata = &d_rep"                     /
              "   ,o_html    = &l_output/tree.html"    /
              ")";
          /*-- create list of test scenarios ----------------------------------*/
-         PUT '%_sasunit_reportScnHTML('                   /
+         PUT '%_reportScnHTML('                   /
              "    i_repdata = &d_rep."                     /
              "   ,o_html    = &o_html."    /
              "   ,o_path    = &l_output."    /
              "   ,o_file    = scn_overview"    /
              ")";
          /*-- create list of test cases --------------------------------------*/
-         PUT '%_sasunit_reportCasHTML('                   /
+         PUT '%_reportCasHTML('                   /
              "    i_repdata = &d_rep"                     /
              "   ,o_html    = &o_html."    /
              "   ,o_path    = &l_output."    /
              "   ,o_file    = cas_overview"    /
              ")";
          /*-- create list of units under test --------------------------------*/
-         PUT '%_sasunit_reportAutonHTML('                   /
+         PUT '%_reportAutonHTML('                   /
              "    i_repdata = &d_rep"                     /
              "   ,o_html    = &o_html."    /
              "   ,o_path    = &l_output."    /
              "   ,o_file    = auton_overview"    /
              ")";
 /*
-         PUT '%_sasunit_reportpgmdoc('                /
+         PUT '%_reportpgmdoc('                /
              "    i_language = &i_language."          /
              ")";
 /**/
@@ -421,7 +421,7 @@ DATA _null_;
       /*-- only if scenario has been run since report ------------------------*/
       IF scn_start > tsu_lastrep OR &o_force THEN DO;
          /*-- convert logfile of scenario ------------------------------------*/
-         PUT '%_sasunit_reportLogHTML(' / 
+         PUT '%_reportLogHTML(' / 
              "    i_log     = &g_log/" scn_id z3. ".log"  /
              "   ,i_title   = &g_nls_reportSASUnit_002 " scn_id z3. " (" cas_pgm +(-1) ")" /
              "   ,o_html    = &l_output/" scn_id z3. "_log.html" /
@@ -435,13 +435,13 @@ DATA _null_;
       /*-- per test case -----------------------------------------------------*/
       IF first.cas_id AND scn_id NE . AND cas_id NE . THEN DO;
          /*-- convert logfile of test case -----------------------------------*/
-         PUT '%_sasunit_reportLogHTML(' /
+         PUT '%_reportLogHTML(' /
              "    i_log     = &g_log/" scn_id z3. "_" cas_id z3. ".log" /
              "   ,i_title   = &g_nls_reportSASUnit_003 " cas_id z3. " &g_nls_reportSASUnit_004 " scn_id z3. " (" cas_pgm +(-1) ")" /
              "   ,o_html    = &l_output/" scn_id z3. "_" cas_id z3. "_log.html" /
              ")";
          /*-- compile detail information for test case -----------------------*/
-         PUT '%_sasunit_reportDetailHTML('                   /
+         PUT '%_reportDetailHTML('                   /
              "    i_repdata = &d_rep"                        /
              "   ,i_scnid   = " scn_id z3.                   /
              "   ,i_casid   = " cas_id z3.                   /

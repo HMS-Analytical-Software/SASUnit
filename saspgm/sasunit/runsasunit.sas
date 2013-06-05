@@ -15,7 +15,7 @@
                  - if no:  Creation of the test scenario in the test repository.
                  - In case the test scenario is new or changed:
                    - The test scenario is executed in an own SAS session which is initialized
-                     by _sasunit_scenario.sas .
+                     by _scenario.sas .
                      All test results are gathered in the test repository. 
 
    \version    \$Revision$
@@ -75,11 +75,11 @@
 
 %LET l_macname=&sysmacroname;
 
-%_sasunit_tempFileName(d_dir);
-%_sasunit_tempFileName(d_examinee);
+%_tempFileName(d_dir);
+%_tempFileName(d_examinee);
 
 /*-- check if testdatabase can be accessed -----------------------------------*/
-%IF %_sasunit_handleError(&l_macname, NoTestDB, 
+%IF %_handleError(&l_macname, NoTestDB, 
    NOT %sysfunc(exist(target.tsu)) OR NOT %symexist(g_project), 
    %nrstr(test database cannot be accessed, call %initSASUnit before %runSASUnit))
    %THEN %GOTO errexit;
@@ -88,14 +88,14 @@
 %IF "&i_recursive" NE "1" %THEN %LET i_recursive=0;
 
 /*-- find out all test scenarios ---------------------------------------------*/
-%LET l_source = %_sasunit_abspath(&g_root, &i_source);
-%_sasunit_dir(i_path=&l_source, i_recursive=&i_recursive, o_out=&d_dir)
-%IF %_sasunit_handleError(&l_macname, NoSourceFiles, 
-   %_sasunit_nobs(&d_dir) EQ 0, 
+%LET l_source = %_abspath(&g_root, &i_source);
+%_dir(i_path=&l_source, i_recursive=&i_recursive, o_out=&d_dir)
+%IF %_handleError(&l_macname, NoSourceFiles, 
+   %_nobs(&d_dir) EQ 0, 
    Error in parameter i_source: no test scenarios found) 
    %THEN %GOTO errexit;
 
-%DO i=1 %TO %_sasunit_nobs(&d_dir); 
+%DO i=1 %TO %_nobs(&d_dir); 
    %LOCAL 
       l_scnfile&i 
       l_scnchanged&i
@@ -114,7 +114,7 @@ RUN;
 %LET l_autonr=0;
 %DO %WHILE("&l_auto" ne "");  
    %LET l_auto=%quote(&l_auto/);
-   %_sasunit_dir(i_path=&l_auto.*.sas, o_out=&d_dir)
+   %_dir(i_path=&l_auto.*.sas, o_out=&d_dir)
    data &d_examinee;
       set %IF &l_autonr>0 %THEN &d_examinee; &d_dir(in=indir);
       if indir then auton=&l_autonr;
@@ -127,10 +127,10 @@ RUN;
 /*-- loop over all test scenarios --------------------------------------------*/
 %DO i=1 %TO &l_nscn;
 
-   %LET l_scn = %_sasunit_stdPath(&g_root, &&l_scnfile&i);
+   %LET l_scn = %_stdPath(&g_root, &&l_scnfile&i);
 
    /* check if test scenario must be run */
-   %_sasunit_checkScenario(
+   %_checkScenario(
       i_scnfile = &&l_scnfile&i
      ,i_changed = &&l_scnchanged&i
      ,i_dir     = &d_examinee
@@ -174,7 +174,7 @@ RUN;
    %IF &l_dorun %THEN %DO;
 
       /*-- save description and start date and time of scenario --------------*/
-      %_sasunit_getPgmDesc (i_pgmfile=&&l_scnfile&i, r_desc=l_scndesc)
+      %_getPgmDesc (i_pgmfile=&&l_scnfile&i, r_desc=l_scndesc)
       PROC SQL NOPRINT;
          UPDATE target.scn SET
             scn_desc  = "&l_scndesc"
@@ -193,10 +193,10 @@ RUN;
       %END;
       RUN;
       %if &sysscp. = LINUX %then %do;
-          %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
+          %_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
       %end;
-      %_sasunit_xcmd("%sysfunc(pathname(work))/x.cmd")
-      %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
+      %_xcmd("%sysfunc(pathname(work))/x.cmd")
+      %LET l_rc=_delfile(%sysfunc(pathname(work))/x.cmd);
          
       /*-- run test scenario in a new process --------------------------------*/
       %LET l_parms=;
@@ -243,7 +243,7 @@ RUN;
             !! " " 
             !! "&l_parms. "
             !! "-sysin %sysfunc(tranwrd(&&l_scnfile&i, %str( ), %str(\ ))) "
-            !! "-initstmt "" &l_tcgOptionsStringLINUX.; %nrstr(%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&l_scnid.;"" "
+            !! "-initstmt "" &l_tcgOptionsStringLINUX.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&l_scnid.;"" "
             !! "-log   %sysfunc(tranwrd(&l_scnlogfullpath, %str( ), %str(\ ))) "
             !! "-print %sysfunc(tranwrd(&g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst, %str( ), %str(\ ))) "
             !! "-noovp "
@@ -252,7 +252,7 @@ RUN;
             !! "-mcompilenote all "
             !! "-sasautos %sysfunc(tranwrd(&g_sasunit, %str( ), %str(\ ))) "
             !! "-sasuser %sysfunc(pathname(work))/sasuser "
-            !! "-termstmt ""%nrstr(%%_sasunit_termScenario())"" "
+            !! "-termstmt ""%nrstr(%%_termScenario())"" "
             !! "";
       %END;
       %ELSE %DO;
@@ -261,7 +261,7 @@ RUN;
             !! " " 
             !! "&l_parms. "
             !! "-sysin ""&&l_scnfile&i"" "
-            !! "-initstmt ""%nrstr(%%%_sasunit_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&l_scnid.;"" "
+            !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&l_scnid.;"" "
             !! "-log   ""&l_scnlogfullpath."" "
             !! "-print ""&g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst"" "
             !! "&g_splash "
@@ -271,7 +271,7 @@ RUN;
             !! "-mcompilenote all "
             !! "-sasautos ""&g_sasunit"" "
             !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
-            !! "-termstmt ""%nrstr(%%%_sasunit_termScenario())"" "
+            !! "-termstmt ""%nrstr(%%%_termScenario())"" "
             !! "&l_tcgOptionsString. "
             !! "";
       %END;
@@ -280,13 +280,13 @@ RUN;
          ;
       RUN;
       %IF &sysscp. = LINUX %THEN %DO;
-          %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/xx.cmd");
-          %_sasunit_xcmd(sed -i -e 's/\r//g' %sysfunc(pathname(work))/xx.cmd);
+          %_xcmd(chmod u+x "%sysfunc(pathname(work))/xx.cmd");
+          %_xcmd(sed -i -e 's/\r//g' %sysfunc(pathname(work))/xx.cmd);
       %END;
-      %_sasunit_xcmd("%sysfunc(pathname(work))/xx.cmd")
+      %_xcmd("%sysfunc(pathname(work))/xx.cmd")
       
       
-      %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/xx.cmd);
+      %LET l_rc=_delfile(%sysfunc(pathname(work))/xx.cmd);
       %LET l_sysrc = &sysrc;
 
       /*-- delete sasuser ----------------------------------------------------*/
@@ -295,11 +295,11 @@ RUN;
          PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       RUN;
       %if &sysscp. = LINUX %then %do;
-          %_sasunit_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
+          %_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
       %end;
 
-      %_sasunit_xcmd("%sysfunc(pathname(work))/x.cmd")
-      %LET l_rc=_sasunit_delfile(%sysfunc(pathname(work))/x.cmd);
+      %_xcmd("%sysfunc(pathname(work))/x.cmd")
+      %LET l_rc=_delfile(%sysfunc(pathname(work))/x.cmd);
 
       /*-- delete listing if empty -------------------------------------------*/
       %LET l_filled=0;
@@ -313,12 +313,12 @@ RUN;
         RUN;
       %END;
       %IF NOT &l_filled %THEN %DO;
-         %LET l_filled=%_sasunit_delfile(&l_lstfile);
+         %LET l_filled=%_delfile(&l_lstfile);
       %END;
 
       /*-- save metadata of test scenario ------------------------------------*/
       /* scan log for errors outside test cases */
-      %_sasunit_checklog (
+      %_checklog (
           i_logfile = &l_scnlogfullpath.
          ,i_error   = &g_error.
          ,i_warning = &g_warning.
@@ -362,7 +362,7 @@ RUN;
 
       /* ensure that dummy entry for inexisting scenario is present in test database, to be able to report it later
       */
-      %LET l_scn = %_sasunit_stdPath(&g_root., &l_source.);
+      %LET l_scn = %_stdPath(&g_root., &l_source.);
 
       %LET l_nscncount = 0;
       PROC SQL NOPRINT;

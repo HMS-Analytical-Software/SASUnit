@@ -70,7 +70,7 @@ DATA _null_;
    STOP;
 RUN;
 %IF NOT &l_filled %THEN %DO;
-   %LET l_filled=%_sasunit_delfile(&l_lstfile);
+   %LET l_filled=%_delfile(&l_lstfile);
 %END;
 
 ODS _ALL_ CLOSE;

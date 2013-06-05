@@ -49,12 +49,12 @@
 %LOCAL l_pgm l_auton l_object;
 %LET l_object = %lowcase (&i_object.);
 %IF %index(%sysfunc(translate(&l_object,/,\)),/) %THEN %DO;
-   %LET l_pgm = %_sasunit_stdPath(&g_root,&i_object);
+   %LET l_pgm = %_stdPath(&g_root,&i_object);
    %LET l_auton=.;
 %END;
 %ELSE %DO;
    %LET l_pgm = &i_object;
-   %LET l_auton = %_sasunit_getAutocallNumber(&l_object);
+   %LET l_auton = %_getAutocallNumber(&l_object);
 %END;
 
 /* determine next test case id */
@@ -71,7 +71,7 @@ PROC SQL NOPRINT;
       ,&l_auton
       ,"&l_pgm"
       ,"&i_desc"
-      ,"%_sasunit_abspath(&g_doc,&i_specdoc)"
+      ,"%_abspath(&g_doc,&i_specdoc)"
       ,%sysfunc(datetime())
       ,.
       ,.

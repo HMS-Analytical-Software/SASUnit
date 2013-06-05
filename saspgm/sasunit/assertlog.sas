@@ -51,7 +51,7 @@ QUIT;
 
 /* Scan Log */
 %LOCAL l_error_count l_warning_count;
-%_sasunit_checklog (
+%_checklog (
     i_logfile = &g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log
    ,i_error   = &g_error
    ,i_warning = &g_warning
@@ -65,7 +65,7 @@ QUIT;
    OR &l_warning_count NE &i_warnings
    )*2);
 
-%_sasunit_asserts(
+%_asserts(
     i_type     = assertLog
    ,i_expected = %str(&i_errors#&i_warnings)
    ,i_actual   = %str(&l_error_count#&l_warning_count)

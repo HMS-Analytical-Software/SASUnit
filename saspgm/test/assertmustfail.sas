@@ -22,7 +22,7 @@
    %local l_casid l_tstid l_tstres;
 
    %if (&i_tstid. = _NONE_ AND &i_casid. = _NONE_) %then %do;
-      %_sasunit_getScenarioTestId (i_scnid=&g_scnid
+      %_getScenarioTestId (i_scnid=&g_scnid
                                   ,r_casid=l_casid
                                   ,r_tstid=l_tstid
                                   );

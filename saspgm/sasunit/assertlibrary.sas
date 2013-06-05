@@ -55,7 +55,7 @@
    %END;
 
    %LOCAL l_casid l_tstid ;
-   %_sasunit_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
+   %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
    %local l_actual_ok l_expected_ok l_result l_path_actual l_path_expected _sysinfo l_col_names l_id_col l_counter l_id l_rc;
 
@@ -117,7 +117,7 @@
    %*************************************************************;
    %*** start tests                                           ***;
    %*************************************************************;
-   %_sasunit_assertLibrary (i_actual      =&i_actual.
+   %_assertLibrary (i_actual      =&i_actual.
                            ,i_expected    =&i_expected.
                            ,i_ExcludeList =&i_Excludelist.
                            ,i_CompareCheck=&i_CompareCheck.
@@ -130,7 +130,7 @@
 
 %Update:;
    *** update result in test database ***;
-   %_sasunit_asserts(
+   %_asserts(
        i_type     = assertLibrary
       ,i_expected = &i_expected.
       ,i_actual   = &i_actual.

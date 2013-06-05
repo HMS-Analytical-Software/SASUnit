@@ -47,10 +47,10 @@
 
    %LOCAL l_expected l_exp_ext l_rep_ext l_result l_casid l_tstid l_path;
    /*-- get current ids for test case and test --------- ------------------------*/
-   %_sasunit_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
+   %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
    %*** create subfolder ***;
-   %_sasunit_createTestSubfolder (i_assertType   =assertreport
+   %_createTestSubfolder (i_assertType   =assertreport
                                  ,i_scnid        =&g_scnid.
                                  ,i_casid        =&l_casid.
                                  ,i_tstid        =&l_tstid.
@@ -62,8 +62,8 @@
    %LET l_result=2;
    %IF "&i_actual" NE "" %THEN %DO;
       %local d_dir;
-      %_sasunit_tempFileName(d_dir)
-      %_sasunit_dir(i_path=&i_actual, o_out=&d_dir)
+      %_tempFileName(d_dir)
+      %_dir(i_path=&i_actual, o_out=&d_dir)
       data _null_;
          set &d_dir nobs=nobs;
          if nobs ne 1 then stop;
@@ -74,19 +74,19 @@
       proc sql;
          drop table &d_dir;
       quit;
-      %IF %sysfunc(fileexist(&i_actual)) %THEN %LET l_rep_ext = %_sasunit_getExtension(&i_actual);
+      %IF %sysfunc(fileexist(&i_actual)) %THEN %LET l_rep_ext = %_getExtension(&i_actual);
    %END;
 
    %IF NOT &i_manual AND &l_result=1 %THEN %LET l_result=0;
 
-   %LET l_expected = %_sasunit_abspath(&g_refdata,&i_expected);
+   %LET l_expected = %_abspath(&g_refdata,&i_expected);
    %IF "&l_expected" NE "" %THEN %DO;
       %IF %sysfunc(fileexist(&l_expected)) %THEN %DO;
-         %LET l_exp_ext = %_sasunit_getExtension(&l_expected);
+         %LET l_exp_ext = %_getExtension(&l_expected);
       %END;
    %END;
 
-   %_sasunit_asserts(
+   %_asserts(
        i_type     = assertReport
       ,i_expected = &l_exp_ext
       ,i_actual   = &l_rep_ext
@@ -98,12 +98,12 @@
 
    /* copy actual report if it exists */
    %IF &l_rep_ext NE %THEN %DO;
-      %_sasunit_copyFile(&i_actual, &l_path./_man_act&l_rep_ext);
+      %_copyFile(&i_actual, &l_path./_man_act&l_rep_ext);
    %END;
 
    /* copy expected report if it exists  */
    %IF &l_exp_ext NE %THEN %DO;
-      %_sasunit_copyFile(&l_expected, &l_path./_man_exp&l_exp_ext);
+      %_copyFile(&l_expected, &l_path./_man_exp&l_exp_ext);
    %END;
 %MEND assertReport;
 /** \endcond */

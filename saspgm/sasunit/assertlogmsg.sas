@@ -86,7 +86,7 @@ RUN;
    %LET l_assert_failed = %eval((NOT &l_msg_found)*2);
 %END;
 
-%_sasunit_asserts(
+%_asserts(
     i_type     = assertLogMsg
    ,i_expected = %str(&l_expected)
    ,i_actual   = %str(&l_actual)
