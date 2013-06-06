@@ -1,7 +1,7 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      renders the layout of the expected column for assertPerformance
+   \brief      renders the layout of the actual column for assertPerformance
 
    \version \$Revision$
    \author  \$Author$
@@ -17,9 +17,9 @@
    \param   o_html         Test report in HTML-format?
    \param   o_targetColumn name of the target column holding the ODS formatted value
 
-*/ /** \cond */  
+*/ /** \cond */ 
 
-%macro _render_assertPerformExp (i_sourceColumn=
+%macro _render_assertPerformanceAct (i_sourceColumn=
                                         ,i_format=_NONE_
                                         ,o_html=
                                         ,o_targetColumn=
@@ -28,5 +28,5 @@
                                ,i_format      =&i_format.
                                ,o_targetColumn=&o_targetColumn.
                                );
-%mend _render_assertPerformExp;
+%mend _render_assertPerformanceAct;
 /** \endcond */

@@ -252,7 +252,7 @@ run;
 %endTestcase()
 
 /* test case 11 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=test with invalid value of i_libraryCheck!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=test with invalid value of i_libraryCheck - must be red!)
 %endTestcall()
 
 %assertLibrary (i_expected=_ref, 
@@ -263,8 +263,8 @@ run;
 
 %assertLog (i_errors=0, i_warnings=0)
 
-/* test case 11 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=test with invalid value of i_compareCheck!)
+/* test case 12 ------------------------------------*/
+%initTestcase(i_object=assertlibrary.sas, i_desc=test with invalid value of i_compareCheck - must be red!)
 %endTestcall()
 
 %assertLibrary (i_expected=_ref, 

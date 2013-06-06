@@ -189,8 +189,8 @@
       %do l_NumAssert=1 %to &_numAsserts;
          if (upcase(tst_type)="%upcase(&&asserttype&l_NumAssert.)") then do;
             %let l_NumAssertSubstr = &&asserttype&l_NumAssert.;
-            %if (%length(&l_NumAssertSubstr.) > 13) %then %do;
-               %let l_NumAssertSubstr = %substr(&l_NumAssertSubstr.,1,13);
+            %if (%length(&l_NumAssertSubstr.) > 21) %then %do;
+               %let l_NumAssertSubstr = %substr(&l_NumAssertSubstr.,1,21);
             %end;
             %_render_&l_NumAssertSubstr.Exp (i_sourceColumn=tst_exp
                                                            ,o_html=&o_html.
@@ -276,8 +276,8 @@
    *** Call all associated submacros for rendering specific assert reports ***;
    %do l_NumAssert=1 %to &_numAsserts;
       %let l_NumAssertSubstr = %lowcase(&&asserttype&l_NumAssert.);
-      %if (%length(&l_NumAssertSubstr.) > 13) %then %do;
-         %let l_NumAssertSubstr = %substr(&l_NumAssertSubstr.,1,13);
+      %if (%length(&l_NumAssertSubstr.) > 21) %then %do;
+         %let l_NumAssertSubstr = %substr(&l_NumAssertSubstr.,1,21);
       %end;
       %if (%sysfunc (fileexist(&g_sasunit./_render_&l_NumAssertSubstr.rep.sas))) %then %do;
          proc sql noprint;

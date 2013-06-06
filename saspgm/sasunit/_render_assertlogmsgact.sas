@@ -19,14 +19,14 @@
 */ /** \cond */  
 
 %macro _render_assertLogMsgAct (i_sourceColumn=
-                                       ,o_html=
-                                       ,o_targetColumn=
-                                       );
+                               ,o_html=
+                               ,o_targetColumn=
+                               );
    hlp  = substr(&i_sourceColumn.,1,1); 
    if hlp='1' then hlp="&g_nls_reportDetail_045"; 
    else            hlp="&g_nls_reportDetail_046"; 
    %_render_dataColumn (i_sourceColumn=hlp
-                               ,o_targetColumn=&o_targetColumn.
-                               );
+                       ,o_targetColumn=&o_targetColumn.
+                       );
 %mend _render_assertLogMsgAct;
 /** \endcond */

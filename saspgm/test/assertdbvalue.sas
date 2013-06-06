@@ -52,7 +52,7 @@ quit;
 %let l_val=%qtrim(%qleft(%superq(l_val)));
 
 %if &i_desc= %then
-   %let i_desc=&i_tab..&i_col = &i_val;
+   %let i_desc=&i_tab..&i_col = '&i_val';
 
 %assertEquals(i_expected=&i_val, i_actual=&l_val, i_desc=&i_desc)
 

@@ -11,48 +11,48 @@ NOTE: SAS initialization used:
       real time           0.98 seconds
       cpu time            0.12 seconds
       
-NOTE: The macro _SASUNIT_SCENARIO completed compilation without errors.
+NOTE: The macro _SCENARIO completed compilation without errors.
       73 instructions 2020 bytes.
-MPRINT(_SASUNIT_SCENARIO):  =100;
-NOTE: The macro _SASUNIT_INITERRORHANDLER completed compilation without errors.
+MPRINT(_SCENARIO):  =100;
+NOTE: The macro _INITERRORHANDLER completed compilation without errors.
       24 instructions 444 bytes.
-MPRINT(_SASUNIT_SCENARIO):  ;
-NOTE: The macro _SASUNIT_HANDLEERROR completed compilation without errors.
+MPRINT(_SCENARIO):  ;
+NOTE: The macro _HANDLEERROR completed compilation without errors.
       70 instructions 1704 bytes.
-NOTE: The macro _SASUNIT_EXISTDIR completed compilation without errors.
+NOTE: The macro _EXISTDIR completed compilation without errors.
       40 instructions 824 bytes.
-MPRINT(_SASUNIT_SCENARIO):   LIBNAME target "C:\HMS\Projekte\HMS\00507_sasunit\00507-001 SASUnit 
+MPRINT(_SCENARIO):   LIBNAME target "C:\HMS\Projekte\HMS\00507_sasunit\00507-001 SASUnit 
 Entwicklung\SVN_sourceforge_neu_trunk\doc\sasunit\en";
 NOTE: Libref TARGET was successfully assigned as follows: 
       Engine:        V9 
       Physical Name: C:\HMS\Projekte\HMS\00507_sasunit\00507-001 SASUnit 
       Entwicklung\SVN_sourceforge_neu_trunk\doc\sasunit\en
-NOTE: The macro _SASUNIT_LOADENVIRONMENT completed compilation without errors.
+NOTE: The macro _LOADENVIRONMENT completed compilation without errors.
       198 instructions 5972 bytes.
-NOTE: The macro _SASUNIT_NOBS completed compilation without errors.
+NOTE: The macro _NOBS completed compilation without errors.
       31 instructions 624 bytes.
-MPRINT(_SASUNIT_LOADENVIRONMENT):   DATA _null_;
-MPRINT(_SASUNIT_LOADENVIRONMENT):   SET target.tsu;
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ('g_project' , tsu_project);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ('g_root' , tsu_root);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ('g_sasunit' , tsu_sasunit);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ('g_sasautos' , tsu_sasautos);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ("g_sasautos1", tsu_sasautos1);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ("g_sasautos2", tsu_sasautos2);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ("g_sasautos3", tsu_sasautos3);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ("g_sasautos4", tsu_sasautos4);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ("g_sasautos5", tsu_sasautos5);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ("g_sasautos6", tsu_sasautos6);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ("g_sasautos7", tsu_sasautos7);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ("g_sasautos8", tsu_sasautos8);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ("g_sasautos9", tsu_sasautos9);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ('g_autoexec' , tsu_autoexec);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ('g_sascfg' , tsu_sascfg);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ('g_sasuser' , tsu_sasuser);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ('g_testdata' , tsu_testdata);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ('g_refdata' , tsu_refdata);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   call symput ('g_doc' , tsu_doc);
-MPRINT(_SASUNIT_LOADENVIRONMENT):   RUN;
+MPRINT(_LOADENVIRONMENT):   DATA _null_;
+MPRINT(_LOADENVIRONMENT):   SET target.tsu;
+MPRINT(_LOADENVIRONMENT):   call symput ('g_project' , tsu_project);
+MPRINT(_LOADENVIRONMENT):   call symput ('g_root' , tsu_root);
+MPRINT(_LOADENVIRONMENT):   call symput ('g_sasunit' , tsu_sasunit);
+MPRINT(_LOADENVIRONMENT):   call symput ('g_sasautos' , tsu_sasautos);
+MPRINT(_LOADENVIRONMENT):   call symput ("g_sasautos1", tsu_sasautos1);
+MPRINT(_LOADENVIRONMENT):   call symput ("g_sasautos2", tsu_sasautos2);
+MPRINT(_LOADENVIRONMENT):   call symput ("g_sasautos3", tsu_sasautos3);
+MPRINT(_LOADENVIRONMENT):   call symput ("g_sasautos4", tsu_sasautos4);
+MPRINT(_LOADENVIRONMENT):   call symput ("g_sasautos5", tsu_sasautos5);
+MPRINT(_LOADENVIRONMENT):   call symput ("g_sasautos6", tsu_sasautos6);
+MPRINT(_LOADENVIRONMENT):   call symput ("g_sasautos7", tsu_sasautos7);
+MPRINT(_LOADENVIRONMENT):   call symput ("g_sasautos8", tsu_sasautos8);
+MPRINT(_LOADENVIRONMENT):   call symput ("g_sasautos9", tsu_sasautos9);
+MPRINT(_LOADENVIRONMENT):   call symput ('g_autoexec' , tsu_autoexec);
+MPRINT(_LOADENVIRONMENT):   call symput ('g_sascfg' , tsu_sascfg);
+MPRINT(_LOADENVIRONMENT):   call symput ('g_sasuser' , tsu_sasuser);
+MPRINT(_LOADENVIRONMENT):   call symput ('g_testdata' , tsu_testdata);
+MPRINT(_LOADENVIRONMENT):   call symput ('g_refdata' , tsu_refdata);
+MPRINT(_LOADENVIRONMENT):   call symput ('g_doc' , tsu_doc);
+MPRINT(_LOADENVIRONMENT):   RUN;
 2                                          The SAS System         13:20 Thursday, September 27, 2012
 
 
@@ -62,25 +62,25 @@ NOTE: DATA statement used (Total process time):
       cpu time            0.00 seconds
       
 
-NOTE: The macro _SASUNIT_ABSPATH completed compilation without errors.
+NOTE: The macro _ABSPATH completed compilation without errors.
       54 instructions 1224 bytes.
-NOTE: The macro _SASUNIT_DETECTSYMBOLS completed compilation without errors.
+NOTE: The macro _DETECTSYMBOLS completed compilation without errors.
       39 instructions 1220 bytes.
-MPRINT(_SASUNIT_DETECTSYMBOLS):   proc printto log=work.detect.note.log new;
-MPRINT(_SASUNIT_DETECTSYMBOLS):   run;
+MPRINT(_DETECTSYMBOLS):   proc printto log=work.detect.note.log new;
+MPRINT(_DETECTSYMBOLS):   run;
 
 NOTE: PROCEDURE PRINTTO used (Total process time):
       real time           0.00 seconds
       cpu time            0.00 seconds
       
 
-MPRINT(_SASUNIT_DETECTSYMBOLS):   filename _detect catalog "work.detect.note.log";
-MPRINT(_SASUNIT_DETECTSYMBOLS):   data _null_;
-MPRINT(_SASUNIT_DETECTSYMBOLS):   infile _detect truncover;
-MPRINT(_SASUNIT_DETECTSYMBOLS):   input line $char256.;
-MPRINT(_SASUNIT_DETECTSYMBOLS):   call symput ("note_symbol", scan(line, 1, ':'));
-MPRINT(_SASUNIT_DETECTSYMBOLS):   stop;
-MPRINT(_SASUNIT_DETECTSYMBOLS):   run;
+MPRINT(_DETECTSYMBOLS):   filename _detect catalog "work.detect.note.log";
+MPRINT(_DETECTSYMBOLS):   data _null_;
+MPRINT(_DETECTSYMBOLS):   infile _detect truncover;
+MPRINT(_DETECTSYMBOLS):   input line $char256.;
+MPRINT(_DETECTSYMBOLS):   call symput ("note_symbol", scan(line, 1, ':'));
+MPRINT(_DETECTSYMBOLS):   stop;
+MPRINT(_DETECTSYMBOLS):   run;
 
 NOTE: The infile _DETECT is:
       Catalog Name=WORK.DETECT.NOTE.LOG,
@@ -102,11 +102,11 @@ NOTE: DATA statement used (Total process time):
 
 3                                          The SAS System         13:20 Thursday, September 27, 2012
 
-MPRINT(_SASUNIT_DETECTSYMBOLS):   filename _detect;
+MPRINT(_DETECTSYMBOLS):   filename _detect;
 NOTE: Fileref _DETECT has been deassigned.
-MPRINT(_SASUNIT_DETECTSYMBOLS):   proc datasets lib=work nolist;
-MPRINT(_SASUNIT_DETECTSYMBOLS):   delete detect / memtype=catalog;
-MPRINT(_SASUNIT_DETECTSYMBOLS):   quit;
+MPRINT(_DETECTSYMBOLS):   proc datasets lib=work nolist;
+MPRINT(_DETECTSYMBOLS):   delete detect / memtype=catalog;
+MPRINT(_DETECTSYMBOLS):   quit;
 
 NOTE: Deleting WORK.DETECT (memtype=CATALOG).
 NOTE: PROCEDURE DATASETS used (Total process time):
@@ -114,28 +114,28 @@ NOTE: PROCEDURE DATASETS used (Total process time):
       cpu time            0.03 seconds
       
 
-MPRINT(_SASUNIT_LOADENVIRONMENT):   LIBNAME testout "C:\HMS\Projekte\HMS\00507_sasunit\00507-001 
+MPRINT(_LOADENVIRONMENT):   LIBNAME testout "C:\HMS\Projekte\HMS\00507_sasunit\00507-001 
 SASUnit Entwicklung\SVN_sourceforge_neu_trunk\doc\sasunit\en/tst";
 NOTE: Libref TESTOUT was successfully assigned as follows: 
       Engine:        V9 
       Physical Name: C:\HMS\Projekte\HMS\00507_sasunit\00507-001 SASUnit 
       Entwicklung\SVN_sourceforge_neu_trunk\doc\sasunit\en\tst
-MPRINT(_SASUNIT_LOADENVIRONMENT):   FILENAME testout "C:\HMS\Projekte\HMS\00507_sasunit\00507-001 
+MPRINT(_LOADENVIRONMENT):   FILENAME testout "C:\HMS\Projekte\HMS\00507_sasunit\00507-001 
 SASUnit Entwicklung\SVN_sourceforge_neu_trunk\doc\sasunit\en/tst";
-MPRINT(_SASUNIT_LOADENVIRONMENT):   LIBNAME testdata "./dat";
+MPRINT(_LOADENVIRONMENT):   LIBNAME testdata "./dat";
 NOTE: Libref TESTDATA was successfully assigned as follows: 
       Engine:        V9 
       Physical Name: C:\HMS\Projekte\HMS\00507_sasunit\00507-001 SASUnit 
       Entwicklung\SVN_sourceforge_neu_trunk\dat
-MPRINT(_SASUNIT_LOADENVIRONMENT):   FILENAME testdata "./dat";
-MPRINT(_SASUNIT_LOADENVIRONMENT):   LIBNAME refdata "./dat";
+MPRINT(_LOADENVIRONMENT):   FILENAME testdata "./dat";
+MPRINT(_LOADENVIRONMENT):   LIBNAME refdata "./dat";
 NOTE: Libname REFDATA refers to the same physical library as TESTDATA.
 NOTE: Libref REFDATA was successfully assigned as follows: 
       Engine:        V9 
       Physical Name: C:\HMS\Projekte\HMS\00507_sasunit\00507-001 SASUnit 
       Entwicklung\SVN_sourceforge_neu_trunk\dat
-MPRINT(_SASUNIT_LOADENVIRONMENT):   FILENAME refdata "./dat";
-MPRINT(_SASUNIT_LOADENVIRONMENT):   FILENAME doc "./doc/spec";
+MPRINT(_LOADENVIRONMENT):   FILENAME refdata "./dat";
+MPRINT(_LOADENVIRONMENT):   FILENAME doc "./doc/spec";
 GLOBAL G_SASUSER 
 GLOBAL G_TESTDATA C:\HMS\Projekte\HMS\00507_sasunit\00507-001 SASUnit 
 Entwicklung\SVN_sourceforge_neu_trunk\dat
@@ -175,7 +175,7 @@ GLOBAL G_PROJECT SASUnit
 GLOBAL G_SASUNIT ./saspgmsasunit
 GLOBAL G_WORK C:\Users\lang\AppData\Local\Temp\SAS Temporary Files\_TD1476_HD1PCMS0069_
 GLOBAL G_LOGFILE 
-MPRINT(_SASUNIT_SCENARIO):   OPTIONS MAUTOSOURCE SASAUTOS=(SASAUTOS "./saspgm/sasunit" 
+MPRINT(_SCENARIO):   OPTIONS MAUTOSOURCE SASAUTOS=(SASAUTOS "./saspgm/sasunit" 
 "./saspgm/sasunit" "./saspgm/test" "./saspgm/test/pgmlib1" "./saspgm/test/pgmlib2" );
 1          /**
 2             \file
@@ -203,7 +203,7 @@ NOTE: The macro REPORTSASUNIT_EMPTYSCN_TEST completed compilation without errors
 19         %reportsasunit_emptyscn_test;
 20         /** \endcond */
 
-NOTE: The macro _SASUNIT_TERMSCENARIO completed compilation without errors.
+NOTE: The macro _TERMSCENARIO completed compilation without errors.
       26 instructions 516 bytes.
 
 NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
