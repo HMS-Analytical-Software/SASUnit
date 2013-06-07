@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST
 
-   \brief      Test of _render_assertPerformExp.sas
+   \brief      Test of _render_assertPerformanceExp.sas
 
    \version    \$Revision$
    \author     \$Author$
@@ -32,10 +32,10 @@ data work.expected;
    set work._input;
    _output  = compress (putn (num, _formatName));
 run;
-%initTestcase(i_object=_render_assertPerformExp.sas, i_desc=Sourcecolumn contains missing value);
+%initTestcase(i_object=_render_assertPerformanceExp.sas, i_desc=Sourcecolumn contains missing value);
 data work.actual;
    set work._input;
-   %_render_assertPerformExp (i_sourceColumn=num,o_html=1,o_targetColumn=_output);
+   %_render_assertPerformanceExp (i_sourceColumn=num,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
@@ -58,10 +58,10 @@ data work.expected;
    set work._input;
    _output  = compress (putn (num, _formatName));
 run;
-%initTestcase(i_object=_render_assertPerformExp.sas, i_desc=Sourcecolumn contains non-missing value - No format);
+%initTestcase(i_object=_render_assertPerformanceExp.sas, i_desc=Sourcecolumn contains non-missing value - No format);
 data work.actual;
    set work._input;
-   %_render_assertPerformExp (i_sourceColumn=num,o_html=1,o_targetColumn=_output);
+   %_render_assertPerformanceExp (i_sourceColumn=num,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
@@ -83,10 +83,10 @@ data work.expected;
    set work._input;
    _output  = put (num, 11.3);
 run;
-%initTestcase(i_object=_render_assertPerformExp.sas, i_desc=Sourcecolumn contains non-missing value - Format three digits);
+%initTestcase(i_object=_render_assertPerformanceExp.sas, i_desc=Sourcecolumn contains non-missing value - Format three digits);
 data work.actual;
    set work._input;
-   %_render_assertPerformExp (i_sourceColumn=num, i_format=11.3,o_html=1,o_targetColumn=_output);
+   %_render_assertPerformanceExp (i_sourceColumn=num, i_format=11.3,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
@@ -108,10 +108,10 @@ data work.expected;
    set work._input;
    _output  = put (num, 11.);
 run;
-%initTestcase(i_object=_render_assertPerformExp.sas, i_desc=Sourcecolumn contains non-missing value - Format no digits);
+%initTestcase(i_object=_render_assertPerformanceExp.sas, i_desc=Sourcecolumn contains non-missing value - Format no digits);
 data work.actual;
    set work._input;
-   %_render_assertPerformExp (i_sourceColumn=num, i_format=11.,o_html=1,o_targetColumn=_output);
+   %_render_assertPerformanceExp (i_sourceColumn=num, i_format=11.,o_html=1,o_targetColumn=_output);
 run;
 
 %endTestcall;
