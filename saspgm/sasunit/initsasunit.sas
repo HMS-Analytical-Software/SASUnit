@@ -169,34 +169,36 @@ QUIT;
 /*-- create test database if necessary ---------------------------------------*/
 %IF &l_newdb %THEN %DO;
    PROC SQL NOPRINT;
-      CREATE TABLE target.tsu (             /* test suite */
-          tsu_project      CHAR(255)        /* see i_project */
-         ,tsu_root         CHAR(255)        /* see i_root */
-         ,tsu_target       CHAR(255)        /* see io_target */
-         ,tsu_sasunit      CHAR(255)        /* see i_sasunit */
-         ,tsu_sasautos     CHAR(255)        /* see i_sasautos */
+      CREATE TABLE target.tsu(COMPRESS=CHAR)
+      (                                      /* test suite */
+          tsu_project      CHAR(1000)        /* see i_project */
+         ,tsu_root         CHAR(1000)        /* see i_root */
+         ,tsu_target       CHAR(1000)        /* see io_target */
+         ,tsu_sasunit      CHAR(1000)        /* see i_sasunit */
+         ,tsu_sasautos     CHAR(1000)        /* see i_sasautos */
    %DO i=1 %TO 9;
-         ,tsu_sasautos&i   CHAR(255)        /* see i_sasautos<n> */
+         ,tsu_sasautos&i   CHAR(1000)        /* see i_sasautos<n> */
    %END;
-         ,tsu_autoexec     CHAR(255)        /* see i_autoexec */
-         ,tsu_sascfg       CHAR(255)        /* see i_sascfg */
-         ,tsu_sasuser      CHAR(255)        /* see i_sasuser */
-         ,tsu_testdata     CHAR(255)        /* see i_testdata */
-         ,tsu_refdata      CHAR(255)        /* see i_refdata */
-         ,tsu_doc          CHAR(255)        /* see i_doc */
+         ,tsu_autoexec     CHAR(1000)        /* see i_autoexec */
+         ,tsu_sascfg       CHAR(1000)        /* see i_sascfg */
+         ,tsu_sasuser      CHAR(1000)        /* see i_sasuser */
+         ,tsu_testdata     CHAR(1000)        /* see i_testdata */
+         ,tsu_refdata      CHAR(1000)        /* see i_refdata */
+         ,tsu_doc          CHAR(1000)        /* see i_doc */
          ,tsu_lastinit     INT FORMAT=datetime21.2 /* date and time of last initialization */
          ,tsu_lastrep      INT FORMAT=datetime21.2 /* date and time of last report generation*/
          ,tsu_testcoverage INT FORMAT=8.    /* see i_testcoverage */
-         ,tsu_dbversion    CHAR(8)    			/* Version String to force creation of a new test data base */
+         ,tsu_dbversion    CHAR(8)          /* Version String to force creation of a new test data base */
       );
       INSERT INTO target.tsu VALUES (
       "","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,""
       );
 
-      CREATE TABLE target.scn (                    /* test scenario */
+      CREATE TABLE target.scn(COMPRESS=CHAR)
+      (                                            /* test scenario */
           scn_id           INT FORMAT=z3.          /* number of scenario */
-         ,scn_path         CHAR(255)               /* path to program file */ 
-         ,scn_desc         CHAR(255)               /* description of program (brief tag in comment header) */
+         ,scn_path         CHAR(1000)              /* path to program file */ 
+         ,scn_desc         CHAR(1000)              /* description of program (brief tag in comment header) */
          ,scn_start        INT FORMAT=datetime21.2 /* starting date and time of the last run */
          ,scn_end          INT FORMAT=datetime21.2 /* ending date and time of the last run */
          ,scn_rc           INT                     /* return code of SAS session of last run */
@@ -204,23 +206,25 @@ QUIT;
          ,scn_warningcount INT                     /* number of detected warnings in the scenario log */
          ,scn_res          INT                     /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
       );
-      CREATE TABLE target.cas (        /* test case */
-          cas_scnid INT FORMAT=z3.        /* reference to test scenario */
-         ,cas_id    INT FORMAT=z3.        /* sequential number of test case within test scenario */
-         ,cas_auton INT                   /* number of autocall path where program under test has been found or ., if not found */
-         ,cas_pgm   CHAR(255)             /* file name of program under test: only name if found in autocall paths, or fully qualified path otherwise */ 
-         ,cas_desc  CHAR(255)             /* description of test case */
-         ,cas_spec  CHAR(255)             /* optional: specification document, fully qualified path or only filename to be found in folder &g_doc */
+      CREATE TABLE target.cas(COMPRESS=CHAR)
+      (                                      /* test case */
+          cas_scnid INT FORMAT=z3.           /* reference to test scenario */
+         ,cas_id    INT FORMAT=z3.           /* sequential number of test case within test scenario */
+         ,cas_auton INT                      /* number of autocall path where program under test has been found or ., if not found */
+         ,cas_pgm   CHAR(255)                /* file name of program under test: only name if found in autocall paths, or fully qualified path otherwise */ 
+         ,cas_desc  CHAR(1000)               /* description of test case */
+         ,cas_spec  CHAR(1000)               /* optional: specification document, fully qualified path or only filename to be found in folder &g_doc */
          ,cas_start INT FORMAT=datetime21.2  /* starting date and time of the last run */
          ,cas_end   INT FORMAT=datetime21.2  /* ending date and time of the last run */
-         ,cas_res   INT                   /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
+         ,cas_res   INT                      /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
       );
-      CREATE TABLE target.tst (        /* Test */
+      CREATE TABLE target.tst(COMPRESS=CHAR)
+      (                                   /* Test */
           tst_scnid INT FORMAT=z3.        /* reference to test scenario */
          ,tst_casid INT FORMAT=z3.        /* reference to test case */
          ,tst_id    INT FORMAT=z3.        /* sequential number of test within test case */
          ,tst_type  CHAR(32)              /* type of test (name of assert macro) */
-         ,tst_desc  CHAR(255)             /* description of test */
+         ,tst_desc  CHAR(1000)            /* description of test */
          ,tst_exp   CHAR(255)             /* expected result */
          ,tst_act   CHAR(255)             /* actual result */
          ,tst_res   INT                   /* test result of the last run: 0 .. OK, 1 .. manual, 2 .. not OK */
