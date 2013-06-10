@@ -49,6 +49,8 @@
    \param   i_id           optional: Id-column for matching of observations    
    \param   o_maxReportObs optional: number of observations that are copied from the expected and actual
                                      data set. default setting is MAX
+   \param   i_include      optional: include list of variables to match
+   \param   i_exclude      optional: exclude list of variables to match
    \return  ODS-document containing a comparison report; moreover, if o_maxReportObs ne 0, the expected and 
             the actual data set are written to _acLib
 */ /** \cond */ 
@@ -62,6 +64,8 @@
    ,i_id           =       
    ,o_maxReportObs = max
    ,i_maxReportObs =      /* obsolete */
+   ,i_include      =
+   ,i_exclude      =
 );
 
 %LOCAL l_allowSymbols l_i l_j l_symboli l_symbolj l_potenz l_mask l_casid l_tstid l_path;
@@ -109,6 +113,14 @@
 /*-- support obsolete parameter i_maxReportObs -------------------------------*/
 %IF %length(&i_maxReportObs) %then %LET o_maxReportObs = &i_maxReportObs;
 
+/*-- input from parameter i_include should override the input from i_exclude--*/
+%IF (%length(&i_include) > 0 AND %length(&i_exclude) > 0) %THEN %DO;
+  %PUT &g_warning: both parameters i_include and i_exclude have been set.;
+  %PUT &g_warning- I_exclude parameter will be dropped;
+
+  %LET i_exclude =;
+%END;
+
 /*-- verify correct sequence of calls-----------------------------------------*/
 %GLOBAL g_inTestcase;
 %IF &g_inTestcase EQ 1 %THEN %DO;
@@ -124,11 +136,11 @@
 
 %*** create subfolder ***;
 %_createTestSubfolder (i_assertType   =assertcolumns
-                              ,i_scnid        =&g_scnid.
-                              ,i_casid        =&l_casid.
-                              ,i_tstid        =&l_tstid.
-                              ,r_path         =l_path
-                              );
+                      ,i_scnid        =&g_scnid.
+                      ,i_casid        =&l_casid.
+                      ,i_tstid        =&l_tstid.
+                      ,r_path         =l_path
+                      );
 
 libname _acLib "&l_path.";
 
@@ -159,11 +171,13 @@ libname _acLib "&l_path.";
    TITLE;
    FOOTNOTE;
    PROC COMPARE
-      BASE=&i_expected 
-      COMPARE=&i_actual
+      BASE=&i_expected %IF %quote(&i_exclude) NE %THEN %str(%(DROP= &i_exclude%));
+      COMPARE=&i_actual %IF %quote(&i_exclude) NE %THEN %str(%(DROP= &i_exclude%));
+
       %IF %quote(&i_fuzz) NE %THEN CRITERION=&i_fuzz METHOD=ABSOLUTE;
       ;
       %IF %quote(&i_id) NE %THEN %str(ID &i_id;);
+      %IF %quote(&i_include) NE %THEN %str(VAR &i_include;);
    RUN;
    %PUT sysinfo = &sysinfo;
    %LET l_compResult = &sysinfo;

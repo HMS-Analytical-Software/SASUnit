@@ -250,4 +250,34 @@ run;
 %assertDBValue(tst,act,)
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
+
+%initTestcase(i_object=assertcolumns.sas, i_desc=compares only columns in the include list)
+%endTestcall()
+%assertColumns(i_actual=class1, i_expected=class, i_desc=only included columns, i_include=name height)
+%markTest()
+%assertDBValue(tst,res,0)
+%endTestcase(i_assertLog=0)
+
+data class8;
+   SET sashelp.class;
+   name   = "DUMMY";
+   height = 123;
+run;
+
+%initTestcase(i_object=assertcolumns.sas, i_desc=compares only columns not in the exclude list)
+%endTestcall()
+%assertColumns(i_actual=class8, i_expected=class, i_desc=only not excluded columns, i_exclude=name height)
+%markTest()
+%assertDBValue(tst,res,0)
+%endTestcase(i_assertLog=0)
+
+
+%initTestcase(i_object=assertcolumns.sas, i_desc=exclude list is dropped if include list is present)
+%endTestcall()
+%assertColumns(i_actual=class8, i_expected=class, i_desc=exclude list is dropped if include list is present, i_include=age weight, i_exclude=age weight)
+%markTest()
+%assertDBValue(tst,res,0)
+%endTestcase(i_assertLog=0)
+
+
 /** \endcond */ 
