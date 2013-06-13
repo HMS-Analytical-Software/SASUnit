@@ -27,7 +27,7 @@
 );
 
 %LOCAL l_countMatches l_rc;
-
+%LET l_countMatches = -1;
 
 /*-- check parameter i_dataset  ------------------------------------------------*/
 %IF NOT %SYSFUNC(EXIST(&i_dataset.)) %THEN %DO;
@@ -56,7 +56,7 @@
 
 PROC SQL NOPRINT;
   SELECT COUNT(*) FORMAT=10. INTO :l_countMatches
-    FROM &i_dataset(WHERE=(&i_whereExpr))
+    FROM &i_dataset(WHERE=(%nrbquote(&i_whereExpr)))
   ;
 QUIT;
 

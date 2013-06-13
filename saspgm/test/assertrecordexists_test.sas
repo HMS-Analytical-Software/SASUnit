@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertrecordexists.sas
+   \brief      Tests for assertrecordexists.sas - has to fail 2 errors concerning invalid parameters, 1 error with invalid syntax
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $
@@ -40,6 +40,8 @@
 %endTestcall()
 %assertRecordExists(i_dataset=sashelp._invalid_, i_whereExpr=%str(name="Alice"), i_desc=invalid dataset causes error)
 %markTest()
+%assertDBValue(tst,type,assertRecordExists)
+%assertDBValue(tst,act,-1)
 %assertDBValue(tst,res,2)
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
@@ -48,8 +50,22 @@
 %endTestcall()
 %assertRecordExists(i_dataset=sashelp.class, i_whereExpr=%str(), i_desc=empty whereExpr parameter causes error)
 %markTest()
+%assertDBValue(tst,type,assertRecordExists)
+%assertDBValue(tst,act,-1)
 %assertDBValue(tst,res,2)
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
+
+
+%initTestcase(i_object=assertrecordexists.sas, i_desc=%str(invalid whereExpr parameter causes error))
+%endTestcall()
+%assertRecordExists(i_dataset=sashelp.class, i_whereExpr=age_123=HUGO, i_desc=invalid whereExpr parameter causes error)
+%markTest()
+%assertDBValue(tst,type,assertRecordExists)
+%assertDBValue(tst,act,-1)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+%endTestcase(i_assertLog=0)
+
 
 /** \endcond */
