@@ -16,7 +16,7 @@
    \param  i_expected       expected value
    \param  i_actual         actual value
    \param  i_desc           description of the check
-   \param  i_result         result 0 .. OK, 1 .. not OK, 2 .. manual check
+   \param  i_result         result 0 .. OK, 1 .. manual check, 2 .. not OK
    \param  r_casid          optional: return number of current test case 
    \param  r_tstid          optional: return number of this check within test case
 */ /** \cond */  

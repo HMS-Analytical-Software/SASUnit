@@ -362,3 +362,26 @@
  15 EN manual
  16 DE Fehler in der Testausführung, siehe Log
  16 EN Error in execution of test scenario, see log
+---reportTableExist
+  1 DE Libref ist nicht gültig
+  1 EN Libref is invalid
+  2 DE Tabelle / View / Katalog existiert nicht
+  2 EN Table / view / catalog does not exist
+	3 DE Tabelle / View / Katalog existiert
+  3 EN Table / view / catalog exists
+	4 DE Tabelle
+  4 EN Table
+	5 DE View
+  5 EN View
+	6 DE Katalog
+  6 EN Catalog
+	7 DE existiert
+  7 EN exists
+	8 DE existiert nicht
+  8 EN does not exist
+  9 DE Parameter i_target ist nicht gültig
+  9 EN Parameter i_target is invalid
+ 10 DE Erstelldatum
+ 10 EN Creation date
+ 11 DE Änderungsdatum
+ 11 EN Modification date
