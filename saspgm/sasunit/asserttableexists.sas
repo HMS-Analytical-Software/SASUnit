@@ -2,14 +2,12 @@
    \file
    \ingroup    SASUNIT_ASSERT 
 
-   \brief      Check whether a certain message appears in the log.
-
+   \brief      Check whether a certain data set, view or catalogue exists.
+							 Step 1: Check weather library has been assigned successfully. If the library hasn't been assigned successfully parameter i_not has
+							         no effect.
+							 Step 2: Check for existence with exist  function
+							
                Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-
-               If the message does not appear in the log as expected, 
-               the check of the assertion will fail.
-               If i_not is set to 1, the check of the assertion will fail in case the 
-               message is found in the log.
 
    \version    \$Revision: 191 $
    \author     \$Author: b-braun $
@@ -22,7 +20,8 @@
 
    \param   i_libref			 Library in which the test candidate can be found
    \param   i_memname			 Name of data set, view or catalog to be tested
-   \param   i_target	 		 optional: Explicit test for existens of a dataset,view or catalog (Possible arguments: data, view, catalog)
+   \param   i_target	 		 optional: Explicit test for existens of a dataset,view or catalog (Possible arguments: data, view, catalog). 
+													 If i_target is not given data will be used as default.
    \param   i_desc         description of the assertion to be checked
    \param   i_not          negates the assertion, if set to 1
 */ /** \cond */ 

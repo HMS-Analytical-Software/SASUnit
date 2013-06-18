@@ -385,3 +385,14 @@
  10 EN Creation date
  11 DE Änderungsdatum
  11 EN Modification date
+---reportRecordCount
+  1 DE Libref nicht gültig oder data set existiert nicht
+  1 EN Libref not valid or data set does not exist
+  2 DE Proc SQL endete mit Fehlern
+  2 EN Proc SQL ended with errors
+	3 DE Variable i_recordsExp ist keine Zahl
+  3 EN Variable i_recordsExp not a number
+	4 DE Variable i_recordsExp < 0
+  4 EN Variable i_recordsExp < 0
+	5 DE Der Parameter i_operator ist nicht gültig
+  5 EN Parameter i_operator not valid

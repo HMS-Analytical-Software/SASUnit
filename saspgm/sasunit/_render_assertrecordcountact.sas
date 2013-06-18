@@ -1,12 +1,12 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      renders the layout of the actual column for assertTableExists
+   \brief      renders the layout of the actual column for assertRecordCount
 
    \version \$Revision: 191 $
    \author  \$Author: b-braun $
    \date    \$Date: 2013-06-05 15:23:22 +0200 (Mi, 05 Jun 2013) $
-   \sa      \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_render_assertTableExistsAct.sas $
+   \sa      \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_render_assertRecordCountAct.sas $
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -19,30 +19,23 @@
 
 */ /** \cond */ 
 
-%macro _render_assertTableExistsAct (i_sourceColumn=
+%macro _render_assertRecordCountAct (i_sourceColumn=
                                    ,o_html=
                                    ,o_targetColumn=
                                    );
-			hlp2 = scan(&i_sourceColumn., 1, "#");
-			select (hlp2);
-			   when (-2) hlp = "&g_nls_reportTableExist_009.";
-			   when (-1) hlp = "&g_nls_reportTableExist_001.";
-			   when ( 0) hlp = "&g_nls_reportTableExist_002.";
-			   when ( 1) hlp = "&g_nls_reportTableExist_003.";
-				 otherwise;
-			end;
-
-			hlp2 = scan(&i_sourceColumn., 2, "#");
-			if (length(trim(hlp2)) > 10) then do;
-				hlp2 = put(input(compress(put(hlp2,32.)),32.),&g_nls_reportDetail_050.);
-				hlp  = catx(" ", hlp,"^n","&g_nls_reportTableExist_010." ,hlp2);
-				hlp2 = scan(&i_sourceColumn., 3, "#");
-				hlp2 = put(input(compress(put(hlp2,32.)),32.),&g_nls_reportDetail_050.);
-				hlp  = catx(" ", hlp,"^n","&g_nls_reportTableExist_011." ,hlp2);
-			end;
 			
+				hlp = trim(left(&i_sourceColumn.));
+				select (hlp);
+					 when (-1) hlp = "&g_nls_reportRecordCount_001.";
+					 when (-2) hlp = "&g_nls_reportRecordCount_002.";
+					 when (-3) hlp = "&g_nls_reportRecordCount_003.";
+					 when (-4) hlp = "&g_nls_reportRecordCount_004.";
+					 when (-5) hlp = "&g_nls_reportRecordCount_005.";
+					 otherwise;
+				end;
+
       %_render_dataColumn (i_sourceColumn=hlp
                           ,o_targetColumn=&o_targetColumn.
                           );
-%mend _render_assertTableExistsAct;
+%mend _render_assertRecordCountAct;
 /** \endcond */
