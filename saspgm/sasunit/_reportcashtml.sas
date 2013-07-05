@@ -90,15 +90,15 @@
 
 
          %_render_idColumn   (i_sourceColumn=scn_id
-                                     ,i_format=z3.
-                                     ,o_targetColumn=ScnIdColumn
-                                     );
+                             ,i_format=z3.
+                             ,o_targetColumn=ScnIdColumn
+                             );
          %_render_dataColumn (i_sourceColumn=scn_desc
-                                     ,o_targetColumn=scnDescriptionColumn
-                                     );
+                             ,o_targetColumn=scnDescriptionColumn
+                             );
          %_render_dataColumn (i_sourceColumn=scn_duration
-                                     ,o_targetColumn=scnDurationColumn
-                                     );
+                             ,o_targetColumn=scnDurationColumn
+                             );
 
          *** Any destination that renders links shares this if ***;
          %if (&o_html.) %then %do;
@@ -110,10 +110,10 @@
                LinkColumn2  = c_scnid !! "_log.html";
             %end;
             %_render_dataColumn (i_sourceColumn=scn_path
-                                        ,i_linkColumn=LinkColumn1
-                                        ,i_linkTitle=LinkTitle1
-                                        ,o_targetColumn=scnProgramColumn
-                                        );
+                                ,i_linkColumn=LinkColumn1
+                                ,i_linkTitle=LinkTitle1
+                                ,o_targetColumn=scnProgramColumn
+                                );
             scnLast_runColumn = catt ('^{style [flyover="',LinkTitle2,'" url="',LinkColumn2,'"]', put (scn_start, ??&g_nls_reportScn_012.),'}'
                                      ,"^{style logerrcountmsg ", errcountmsg, '}');
          %end;
@@ -127,20 +127,20 @@
             abs_path = resolve ('%_abspath(&g_sasautos' !! put (cas_auton,1.) !! ',' !! trim(cas_pgm) !! ')');
          END;
 
-         duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
+         duration = put (cas_end - cas_start, ??&g_nls_reportScn_013.) !! " s";
          c_casid  = put (cas_id, z3.);
 
          %_render_idColumn   (i_sourceColumn=cas_id
-                                     ,i_format=z3.
-                                     ,o_targetColumn=idColumn
-                                     );
+                             ,i_format=z3.
+                             ,o_targetColumn=idColumn
+                             );
          %_render_dataColumn (i_sourceColumn=duration
-                                     ,o_targetColumn=durationColumn
-                                     );
+                             ,o_targetColumn=durationColumn
+                             );
          %_render_iconColumn (i_sourceColumn=cas_res
-                                     ,o_html=&o_html.
-                                     ,o_targetColumn=resultColumn
-                                     );
+                             ,o_html=&o_html.
+                             ,o_targetColumn=resultColumn
+                             );
          *** Any destination that renders links shares this if ***;
          %if (&o_html.) %then %do;
             LinkTitle3  = "&g_nls_reportCas_017 " !! c_casid;
@@ -154,21 +154,21 @@
             %end;
 
             %_render_dataColumn (i_sourceColumn=cas_desc
-                                        ,i_linkColumn=LinkColumn3
-                                        ,i_linkTitle=LinkTitle3
-                                        ,o_targetColumn=descriptionColumn
-                                        );
+                                ,i_linkColumn=LinkColumn3
+                                ,i_linkTitle=LinkTitle3
+                                ,o_targetColumn=descriptionColumn
+                                );
             %_render_dataColumn (i_sourceColumn=cas_pgm
-                                        ,i_linkColumn=LinkColumn4
-                                        ,i_linkTitle=LinkTitle4
-                                        ,o_targetColumn=programColumn
-                                        );
+                                ,i_linkColumn=LinkColumn4
+                                ,i_linkTitle=LinkTitle4
+                                ,o_targetColumn=programColumn
+                                );
             %_render_dataColumn (i_sourceColumn=cas_start
-                                        ,i_format=&g_nls_reportCas_007.
-                                        ,i_linkColumn=LinkColumn5
-                                        ,i_linkTitle=LinkTitle5
-                                        ,o_targetColumn=last_runColumn
-                                        );
+                                ,i_format=&g_nls_reportCas_007.
+                                ,i_linkColumn=LinkColumn5
+                                ,i_linkTitle=LinkTitle5
+                                ,o_targetColumn=last_runColumn
+                                );
          %end;
          output;
       end;
@@ -235,9 +235,9 @@
 
          columns idColumn descriptionColumn programColumn last_runColumn durationColumn resultColumn;
 
-         define idColumn     		/ display style(Column)=rowheader;
-				 define durationColumn 	/ display style(Column)=[just=right];
-         define resultColumn 		/ display style(Column)=[background=white];
+         define idColumn         / display style(Column)=rowheader;
+             define durationColumn  / display style(Column)=[just=right];
+         define resultColumn     / display style(Column)=[background=white];
 
          compute before _page_;
             line @1 "&g_nls_reportCas_010."; 
