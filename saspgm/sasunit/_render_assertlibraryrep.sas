@@ -23,25 +23,25 @@
 */ /** \cond */ 
 
 %macro _render_assertLibraryRep (i_assertype=
-                                        ,i_repdata  =
-                                        ,i_scnid    =
-                                        ,i_casid    =
-                                        ,i_tstid    =
-                                        ,o_html     =
-                                        ,o_path     =
-                                        );
+                                ,i_repdata  =
+                                ,i_scnid    =
+                                ,i_casid    =
+                                ,i_tstid    =
+                                ,o_html     =
+                                ,o_path     =
+                                );
 
    %local l_path;
 
    title;footnote;
 
    %_getTestSubfolder (i_assertType=assertLibrary
-                              ,i_root      =&g_target./tst
-                              ,i_scnid     =&i_scnid.
-                              ,i_casid     =&i_casid.
-                              ,i_tstid     =&i_tstid.
-                              ,r_path      =l_path
-                              );
+                      ,i_root      =&g_target./tst
+                      ,i_scnid     =&i_scnid.
+                      ,i_casid     =&i_casid.
+                      ,i_tstid     =&i_tstid.
+                      ,r_path      =l_path
+                      );
 
    libname _test "&l_path";
 
@@ -93,9 +93,9 @@
          Length resultColumn $400;
          set _test._library_rep;
          %_render_iconColumn (i_sourceColumn=CompareFailed
-                                     ,o_html=&o_html.
-                                     ,o_targetColumn=resultColumn
-                                     );
+                             ,o_html=&o_html.
+                             ,o_targetColumn=resultColumn
+                             );
       run;
     
       proc sql noprint;

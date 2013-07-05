@@ -32,17 +32,17 @@
 */ /** \cond */ 
 
 %macro _assertlibrary (i_actual      =_NONE_
-                              ,i_expected    =_NONE_
-                              ,i_ExcludeList =_NONE_
-                              ,i_CompareCheck=_NONE_
-                              ,i_LibraryCheck=_NONE_
-                              ,i_id          =_NONE_
-                              ,i_fuzz        =_NONE_
-                              ,i_scnid       =
-                              ,i_casid       =
-                              ,i_tstid       =
-                              ,o_result      =
-                              );
+                      ,i_expected    =_NONE_
+                      ,i_ExcludeList =_NONE_
+                      ,i_CompareCheck=_NONE_
+                      ,i_LibraryCheck=_NONE_
+                      ,i_id          =_NONE_
+                      ,i_fuzz        =_NONE_
+                      ,i_scnid       =
+                      ,i_casid       =
+                      ,i_tstid       =
+                      ,o_result      =
+                      );
 
    %LOCAL l_casid l_tstid AnzCompares l_subfoldername l_path;
 
@@ -99,7 +99,7 @@
       InExpected=InExp;
       if (InAct AND inExp) then do;
          DoCompare=1;
-         CompareFailed=1;
+         CompareFailed=2;
          if (BaseObs ne CmpObs) then do;
             if ("&i_CompareCheck." = "STRICT" OR "&i_CompareCheck." = "MORECOLUMNS") then do;
                DoCompare=0;
@@ -117,7 +117,7 @@
       end;
       else do;
          DoCompare=0;
-         CompareFailed=1;
+         CompareFailed=2;
       end;
    run;
 
@@ -250,11 +250,11 @@
 
    %*** create subfolder ***;
    %_createTestSubfolder (i_assertType   =assertlibrary
-                                 ,i_scnid        =&g_scnid.
-                                 ,i_casid        =&l_casid.
-                                 ,i_tstid        =&l_tstid.
-                                 ,r_path         =l_path
-                                 );
+                         ,i_scnid        =&g_scnid.
+                         ,i_casid        =&l_casid.
+                         ,i_tstid        =&l_tstid.
+                         ,r_path         =l_path
+                         );
 
    %*** create library listing ***;
    *** Capture tables instead of ODS DOCUMENT ***;

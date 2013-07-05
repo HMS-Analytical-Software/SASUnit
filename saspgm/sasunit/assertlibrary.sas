@@ -118,15 +118,14 @@
    %*** start tests                                           ***;
    %*************************************************************;
    %_assertLibrary (i_actual      =&i_actual.
-                           ,i_expected    =&i_expected.
-                           ,i_ExcludeList =&i_Excludelist.
-                           ,i_CompareCheck=&i_CompareCheck.
-                           ,i_LibraryCheck=&i_LibraryCheck.
-                           ,i_id          =&i_id.
-                           ,i_fuzz        =&i_fuzz.
-                           ,o_result      =l_rc
-                           );
-   %let l_rc=%eval(&l_rc.*2);
+                   ,i_expected    =&i_expected.
+                   ,i_ExcludeList =&i_Excludelist.
+                   ,i_CompareCheck=&i_CompareCheck.
+                   ,i_LibraryCheck=&i_LibraryCheck.
+                   ,i_id          =&i_id.
+                   ,i_fuzz        =&i_fuzz.
+                   ,o_result      =l_rc
+                   );
 
 %Update:;
    *** update result in test database ***;
