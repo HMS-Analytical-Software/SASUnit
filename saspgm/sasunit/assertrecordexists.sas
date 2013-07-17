@@ -55,7 +55,7 @@
 %END;
 
 PROC SQL NOPRINT;
-  SELECT COUNT(*) FORMAT=10. INTO :l_countMatches
+  SELECT COUNT(*) FORMAT=best12. INTO :l_countMatches
     FROM &i_dataset(WHERE=(%nrbquote(&i_whereExpr)))
   ;
 QUIT;

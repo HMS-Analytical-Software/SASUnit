@@ -19,11 +19,11 @@
 */ /** \cond */ 
 
 %macro _render_assertRecordExistsExp (i_sourceColumn=
-                                       ,o_html=
-                                       ,o_targetColumn=
-                                       );
+                                     ,o_html=
+                                     ,o_targetColumn=
+                                     );
    %_render_dataColumn(i_sourceColumn=&i_sourceColumn.
-                              ,o_targetColumn=&o_targetColumn.
-                              );
+                      ,o_targetColumn=&o_targetColumn.
+                      );
 %mend _render_assertRecordExistsExp;
 /** \endcond */
