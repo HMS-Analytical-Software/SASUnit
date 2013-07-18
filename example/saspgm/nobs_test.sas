@@ -30,6 +30,14 @@
 %let nobs=%nobs(sashelp.class);
 %endTestcall()
 %assertEquals(i_actual=&nobs, i_expected=20, i_desc=number of observations in dataset sashelp.class - must be red!)
+%assertRecordCount  (i_libref=sashelp, i_memname=class, i_operator=GT, i_recordsExp=10)
+%assertRecordCount  (i_libref=sashelp, i_memname=class, i_operator=LE, i_recordsExp=15, i_desc=must be red!)
+%assertRecordExists (i_dataset=sashelp.class, i_whereExpr=%str(sex="F"), i_desc=Are there any females?)
+%assertRecordExists (i_dataset=sashelp.class, i_whereExpr=%str(missing%(sex%)), i_desc=Are there any neuters?)
+%assertTableExists  (i_libref=sashelp, i_memname=class, i_desc=Check existence of table sashelp.class)
+%assertTableExists  (i_libref=sashelp, i_memname=class, i_desc=Check absence of table sashelp.class, i_not=1)
+%assertTableExists  (i_libref=work, i_memname=class, i_desc=Check existence of table work.class%str(,) table does not exist!)
+%assertTableExists  (i_libref=work, i_memname=class, i_desc=Check absence of table work.class%str(,) table does not exist!, i_not=1)
 %endTestcase()
 
 /*-- example with big dataset ------------------------------------------------*/
