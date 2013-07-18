@@ -66,9 +66,9 @@ data class3;
    IF _n_=12 THEN age=age+0.1;
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=different values for variable age - must be red!)
+%initTestcase(i_object=assertcolumns.sas, i_desc=different values for variable age)
 %endTestcall()
-%assertColumns(i_actual=class3, i_expected=class, i_desc=must be red!)
+%assertColumns(i_actual=class3, i_expected=class, i_desc=check on equality)
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,VALUE)
@@ -76,9 +76,9 @@ run;
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=different value in variable age > fuzz - must be red!)
+%initTestcase(i_object=assertcolumns.sas, i_desc=different value in variable age > fuzz)
 %endTestcall()
-%assertColumns(i_actual=class3, i_expected=class, i_fuzz=0.09, i_desc=must be red!)
+%assertColumns(i_actual=class3, i_expected=class, i_fuzz=0.09, i_desc=check on equality)
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,VALUE)
@@ -113,9 +113,9 @@ data class4;
    end;
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=additional observation and compare with id  - must be red!)
+%initTestcase(i_object=assertcolumns.sas, i_desc=additional observation and compare with id)
 %endTestcall()
-%assertColumns(i_actual=class4, i_expected=class,i_id=name, i_desc=must be red!)
+%assertColumns(i_actual=class4, i_expected=class,i_id=name, i_desc=check on equality)
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,COMPOBS)
@@ -128,9 +128,9 @@ data class5;
    drop age;
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=missing column - must be red!)
+%initTestcase(i_object=assertcolumns.sas, i_desc=missing column)
 %endTestcall()
-%assertColumns(i_actual=class5, i_expected=class, i_desc=must be red!)
+%assertColumns(i_actual=class5, i_expected=class, i_desc=check on equality)
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,BASEVAR)
@@ -138,9 +138,9 @@ run;
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=missing dataset i_actual - must be red!)
+%initTestcase(i_object=assertcolumns.sas, i_desc=missing dataset i_actual)
 %endTestcall()
-%assertColumns(i_actual=classxxx, i_expected=class, i_desc=must be red!)
+%assertColumns(i_actual=classxxx, i_expected=class, i_desc=check on equality)
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,ERROR: actual table not found.)
@@ -148,9 +148,9 @@ run;
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=missing dataset i_expected - must be red!)
+%initTestcase(i_object=assertcolumns.sas, i_desc=missing dataset i_expected)
 %endTestcall()
-%assertColumns(i_actual=class1, i_expected=classxxx, i_desc=must be red!)
+%assertColumns(i_actual=class1, i_expected=classxxx, i_desc=check on equality)
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,ERROR: expected table not found.)
@@ -158,9 +158,9 @@ run;
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=both datasets are missing - must be red!)
+%initTestcase(i_object=assertcolumns.sas, i_desc=both datasets are missing)
 %endTestcall()
-%assertColumns(i_actual=classxxx, i_expected=classxxx, i_desc=must be red!)
+%assertColumns(i_actual=classxxx, i_expected=classxxx, i_desc=check on equality!)
 %markTest()
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,ERROR: actual table not found.)
@@ -214,9 +214,9 @@ data class7;
    label age='XXX';
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=different variable labels and not i_allow LABEL - must be red!)
+%initTestcase(i_object=assertcolumns.sas, i_desc=different variable labels and not i_allow LABEL)
 %endTestcall()
-%assertColumns(i_actual=class7, i_expected=class, i_desc=must be red!, i_allow=DSLABEL COMPVAR)
+%assertColumns(i_actual=class7, i_expected=class, i_desc=check on equality, i_allow=DSLABEL COMPVAR)
 %markTest()
 %assertDBValue(tst,exp,DSLABEL COMPVAR)
 %assertDBValue(tst,act,LABEL)
