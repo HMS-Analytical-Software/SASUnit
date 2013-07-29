@@ -74,7 +74,12 @@
          resultColumn="&g_nls_reportCas_016."
          ;
 
-      if (first.cas_id) then do;
+ 			*** initalizing variables that MAY be used in a specific assert	***;
+			if (_N_=1) then do;
+			   hlp="";
+			end;
+			
+     if (first.cas_id) then do;
          *** Columns for scenario overview ***;
          IF scn_errorcount GT 0 THEN DO;
             errcountmsg = '(' !! compress(put(scn_errorcount, 3.)) !! ' ' !! "&l_nls_reportcas_errors." !! ')';

@@ -98,7 +98,18 @@
          actualColumn        ="&g_nls_reportDetail_013."
          resultColumn        ="&g_nls_reportDetail_014."
          ;
-
+				 
+			*** initalizing variables that MAY be used in a specific assert	***;
+			if (_N_=1) then do;
+			   hlp="";
+				 hlp2="";
+				 errcountmsg="";
+				 href="";
+				 href_act="";
+				 href_exp="";
+				 href_rep="";
+			end;
+			
       *** Set default description per assert type ***;
       SELECT(upcase(tst_type));
          WHEN ('ASSERTLOG') DO; 

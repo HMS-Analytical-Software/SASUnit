@@ -35,7 +35,7 @@
       by scn_id;
 
       LENGTH abs_path scn_pgm $256 
-             LinkColumn1 LinkTitle1 LinkColumn2 LinkTitle2 LinkColumn3 LinkTitle3 LinkColumn4 LinkColumn5 LinkColumn6 $1000
+             LinkColumn1 LinkTitle1 LinkColumn2 LinkTitle2 LinkColumn3 LinkTitle3 /*LinkColumn4 LinkColumn5 LinkColumn6*/ $1000
              idColumn $80
              descriptionColumn $1000
              programColumn $1000

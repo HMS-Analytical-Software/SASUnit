@@ -3,10 +3,10 @@
 
    \brief      renders the layout of the expected column for assertColumns
 
-   \version \$Revision$
-   \author  \$Author$
-   \date    \$Date$
-   \sa      \$HeadURL$
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -19,9 +19,9 @@
 */ /** \cond */  
 
 %macro _render_assertColumnsExp (i_sourceColumn=
-                                        ,o_html=
-                                        ,o_targetColumn=
-                                        );
+                                ,o_html=
+                                ,o_targetColumn=
+                                );
    href     = catt (put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
    %if (&o_html.) %then %do;
       href_exp = catt (href,'_cmp_exp.html');

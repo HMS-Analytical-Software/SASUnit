@@ -51,11 +51,11 @@
 
    %*** create subfolder ***;
    %_createTestSubfolder (i_assertType   =assertreport
-                                 ,i_scnid        =&g_scnid.
-                                 ,i_casid        =&l_casid.
-                                 ,i_tstid        =&l_tstid.
-                                 ,r_path         =l_path
-                                 );
+                         ,i_scnid        =&g_scnid.
+                         ,i_casid        =&l_casid.
+                         ,i_tstid        =&l_tstid.
+                         ,r_path         =l_path
+                         );
 
 
    /*-- check for existence and check change date -------------------------------*/
@@ -86,14 +86,13 @@
       %END;
    %END;
 
-   %_asserts(
-       i_type     = assertReport
-      ,i_expected = &l_exp_ext
-      ,i_actual   = &l_rep_ext
-      ,i_desc     = &i_desc
-      ,i_result   = &l_result
-      ,r_casid    = l_casid
-      ,r_tstid    = l_tstid
+   %_asserts(i_type     = assertReport
+            ,i_expected = &l_exp_ext
+            ,i_actual   = &l_rep_ext
+            ,i_desc     = &i_desc
+            ,i_result   = &l_result
+            ,r_casid    = l_casid
+            ,r_tstid    = l_tstid
    )
 
    /* copy actual report if it exists */
