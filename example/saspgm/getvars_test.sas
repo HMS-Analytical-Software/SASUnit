@@ -67,5 +67,4 @@ run;
 %initTestcase(i_object=getvars.sas, i_desc=example with invalid dataset)
 %let vars=%getvars(xxx);
 %assertEquals(i_actual=&vars, i_expected=, i_desc=example with invalid dataset)
-
 /** \endcond */
