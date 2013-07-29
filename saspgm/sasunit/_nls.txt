@@ -367,17 +367,17 @@
   1 EN Libref is invalid
   2 DE Tabelle / View / Katalog existiert nicht
   2 EN Table / view / catalog does not exist
-	3 DE Tabelle / View / Katalog existiert
+  3 DE Tabelle / View / Katalog existiert
   3 EN Table / view / catalog exists
-	4 DE Tabelle
+  4 DE Tabelle
   4 EN Table
-	5 DE View
+  5 DE View
   5 EN View
-	6 DE Katalog
+  6 DE Katalog
   6 EN Catalog
-	7 DE existiert
+  7 DE existiert
   7 EN exists
-	8 DE existiert nicht
+  8 DE existiert nicht
   8 EN does not exist
   9 DE Parameter i_target ist nicht gültig
   9 EN Parameter i_target is invalid
@@ -390,9 +390,58 @@
   1 EN Libref not valid or data set does not exist
   2 DE Proc SQL endete mit Fehlern
   2 EN Proc SQL ended with errors
-	3 DE Variable i_recordsExp ist keine Zahl
+  3 DE Variable i_recordsExp ist keine Zahl
   3 EN Variable i_recordsExp not a number
-	4 DE Variable i_recordsExp < 0
+  4 DE Variable i_recordsExp < 0
   4 EN Variable i_recordsExp < 0
-	5 DE Der Parameter i_operator ist nicht gültig
+  5 DE Der Parameter i_operator ist nicht gültig
   5 EN Parameter i_operator not valid
+---reportForeignKey
+  1 DE Libref der Stammtabelle nicht gültig oder data set existiert nicht
+  1 EN Libref of master table not valid or data set does not exist
+  2 DE Libref der Nachschlagetabelle nicht gültig oder data set existiert nicht
+  2 EN Libref of lookup table not valid or data set does not exist
+  3 DE Anzahl der gefundenen Schlüssel in i_mstKey ungleich der spezifizierten Anzahl
+  3 EN Number of keys found in i_mstKey not compatible to specified number
+  4 DE Anzahl der gefundenen Schlüssel in i_lookupKey ungleich der spezifizierten Anzahl
+  4 EN Number of found keys in i_lookupKey not compatible to specified number
+  5 DE Schlüsselspalte in der Stammtabelle nicht gefunden
+  5 EN Key in master table not found
+  6 DE Schlüsselspalte in der Nachschlagetabelle nicht gefunden
+  6 EN Key in lookup table not found
+  7 DE Variablentypen der Stamm- und Nachschlagetabelle stimmen nicht überein
+  7 EN Variable types of keys in master and lookup table do not match
+  8 DE Schlüssel der Nachschlagetabelle ist nicht eindeutig, bitte Parameter i_unique und die Nachschlagetabelle Tabelle prüfen
+  8 EN Specified key of lookup table not unique, check parameter i_unique or lookup table
+  9 DE Funktion open nicht erfolgreich
+  9 EN Open function failed
+ 11 DE Assert Foreign Key - Ergebnisse
+ 11 EN Assert Foreign Key - Results
+ 12 DE Es wurden keine SAS-Tabellen erzeugt
+ 12 EN No SAS tables created
+ 13 DE In der Nachschlagetabelle nicht gefundene Schlüssel
+ 13 EN Keys not found in lookup table
+ 14 DE In der Stammtabelle nicht benutzte Schlüssel
+ 14 EN Keys not used in master table
+ 15 DE Leere Tabelle
+ 15 EN Table contains no records
+ 16 DE Nachschlagetabelle: 
+ 16 EN lookup dataset:
+ 17 DE eindeutig
+ 17 EN unique
+ 18 DE nicht eindeutig
+ 18 EN non unique
+ 19 DE Parameter maxObsRprtFail: MAX or numerisch GE 0 
+ 19 EN Parameter maxObsRprtFail: MAX or numeric GE 0
+ 20 DE Parameter maxObsRprtFail < 0
+ 20 EN Parameter maxObsRprtFail < 0
+ 21 DE i_listingVars nicht in der Stammtabelle gefunden
+ 21 EN i_listingVars not found in Master Table
+ 22 DE Ungültiges Argument für Parameter treatMissingsMst
+ 22 EN Invalid Argument für parameter treatMissingsMst
+ 23 DE Parameter treatMissingsMst auf disallow, aber fehlende Wert gefunden
+ 23 EN Parameter treatMissingsMst set to disallow, but missings found in master table
+ 24 DE Wert für Parameter unique nicht gültig
+ 24 EN Value für parameter unique not valid
+ 25 DE Schlüssel in der Nachschlagetable nicht gefunden
+ 25 EN key(s) in lookup table not found
