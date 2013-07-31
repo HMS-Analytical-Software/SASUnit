@@ -38,6 +38,9 @@
    %RETURN;
 %END;
 
+%LOCAL l_errMsg;
+%LET l_errMsg=;
+
 PROC SQL NOPRINT;
 %LOCAL l_casid;
 /* determine number of the current test case */
@@ -65,12 +68,17 @@ QUIT;
    OR &l_warning_count NE &i_warnings
    )*2);
 
+%IF (&l_result. EQ 2) %THEN %DO;
+   %LET l_errmsg=%bquote(expected &i_errors. error(s) and &i_warnings. warning(s), but actually there are &l_error_count. error(s) and &l_warning_count warning(s));
+%END;
+
 %_asserts(
     i_type     = assertLog
    ,i_expected = %str(&i_errors#&i_warnings)
    ,i_actual   = %str(&l_error_count#&l_warning_count)
    ,i_desc     = &i_desc
    ,i_result   = &l_result
+   ,i_errMsg   = &l_errMsg
 )
 
 %MEND assertLog;

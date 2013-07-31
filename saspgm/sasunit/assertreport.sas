@@ -24,7 +24,7 @@
    \param   i_expected     optional: file name for the expected file (full path or file in &g_refdata)
    \param   i_actual       file name for created report file (full path!)
    \param   i_desc         description of the assertion to be checked 
-   \param   i_manual       1 (default): in case of a positive check result einen Eintrag indicating a manual check (empty rectangle). 
+   \param   i_manual       1 (default): in case of a positive check result write an entry indicating a manual check (empty rectangle). 
                            0: in case of a positive check result, write an entry indicating OK (green hook).
  */ /** \cond */ 
 
@@ -45,7 +45,7 @@
       %RETURN;
    %END;
 
-   %LOCAL l_expected l_exp_ext l_rep_ext l_result l_casid l_tstid l_path;
+   %LOCAL l_expected l_exp_ext l_rep_ext l_result l_casid l_tstid l_path l_errmsg;
    /*-- get current ids for test case and test --------- ------------------------*/
    %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
@@ -60,6 +60,7 @@
 
    /*-- check for existence and check change date -------------------------------*/
    %LET l_result=2;
+   %LET l_errmsg=Report was not created anew!;
    %IF "&i_actual" NE "" %THEN %DO;
       %local d_dir;
       %_tempFileName(d_dir)
@@ -93,6 +94,7 @@
             ,i_result   = &l_result
             ,r_casid    = l_casid
             ,r_tstid    = l_tstid
+            ,i_errmsg   = &l_errmsg
    )
 
    /* copy actual report if it exists */

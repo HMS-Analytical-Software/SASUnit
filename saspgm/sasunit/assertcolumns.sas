@@ -68,7 +68,8 @@
    ,i_exclude      =
 );
 
-%LOCAL l_allowSymbols l_i l_j l_symboli l_symbolj l_potenz l_mask l_casid l_tstid l_path;
+%LOCAL l_allowSymbols l_i l_j l_symboli l_symbolj l_potenz l_mask l_casid l_tstid l_path l_errMsg;
+%LET l_errMsg=;
 
 /*-- possible values for i_allow ---------------------------------------------*/
 %LET l_allowSymbols=
@@ -117,7 +118,6 @@
 %IF (%length(&i_include) > 0 AND %length(&i_exclude) > 0) %THEN %DO;
   %PUT &g_warning: both parameters i_include and i_exclude have been set.;
   %PUT &g_warning- I_exclude parameter will be dropped;
-
   %LET i_exclude =;
 %END;
 
@@ -149,12 +149,14 @@ libname _acLib "&l_path.";
 %IF NOT %sysfunc(exist(&i_actual,DATA)) AND NOT %sysfunc(exist(&i_actual,VIEW)) %THEN %DO;
    %LET l_rc=2;
    %LET l_actual=ERROR: actual table not found.;
+   %LET l_errMsg=Actual table (&i_actual.) could not be found!;
 %END;
 
 /*-- check if expected dataset exists ----------------------------------------*/
 %ELSE %IF NOT %sysfunc(exist(&i_expected,DATA)) AND NOT %sysfunc(exist(&i_expected,VIEW))%THEN %DO;
    %LET l_rc=2;
    %LET l_actual=&l_actual ERROR: expected table not found.;
+   %LET l_errMsg=Expected table (&i_expected.) could not be found!;
 %END;
 
 /*-- compare tables ----------------------------------------------------------*/
@@ -200,6 +202,10 @@ libname _acLib "&l_path.";
       %END;
       %LET l_potenz = &l_potenz*2;
    %END;
+
+   %IF (&l_rc eq 2) %THEN %DO;
+      %LET l_errMsg=%str(Allowed return codes are %upcase(&i_allow), comparing &i_expected. with &i_actual. resulted in these return codes &l_actual.);
+   %END;
 %END; /* i_expected and i_actual exist */
 
 /*-- update comparison result in test database -------------------------------*/
@@ -209,6 +215,7 @@ libname _acLib "&l_path.";
    ,i_actual   = &l_actual.
    ,i_desc     = &i_desc.
    ,i_result   = &l_rc.
+   ,i_errMsg   = &l_errMsg.
 );
 
 /*-- write dataset set the target area ---------------------------------------*/

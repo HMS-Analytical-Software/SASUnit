@@ -54,7 +54,7 @@ options symbolgen mprint mlogic;
    %GLOBAL g_inTestcase g_maxObsRprtFail g_listingVars;
 	%LOCAL l_dsMstrName l_dsLookupName l_MstrVars l_LookupVars l_renameLookup l_actual l_helper l_helper1 l_vartypMstr 
 			 l_vartypLookup l_rc l_result l_cnt1 l_cnt2 l_casid l_tstid l_path i l_listingVars num_missing l_treatMissings
-          l_treatMissing l_unique;
+          l_treatMissing l_unique l_errMsg;
 
 	%LET l_actual 				= -999;
 	%LET l_dsMstrName 		= &i_mstrLib..&i_mstMem.;
@@ -65,6 +65,7 @@ options symbolgen mprint mlogic;
    %LET l_treatMissings    = %sysfunc(upcase(&o_treatMissings.));
    %LET l_unique           = %sysfunc(upcase(&i_unique.));  
 	%LET l_result				= 2;
+   %LET l_errMsg           =;
 
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;
@@ -81,10 +82,12 @@ options symbolgen mprint mlogic;
    %*** check for valid librefs und existence of data sets Master und Lookup***;
    %IF ((%sysfunc (libref (&i_mstrLib.)) NE 0) or (%sysfunc(exist(&l_dsMstrName)) EQ 0)) %THEN %DO;
       %LET l_actual =-1;
+      %LET l_errMsg =Libref of master table not valid or data set does not exist;
       %GOTO Update;
    %END;
    %IF ((%sysfunc (libref (&i_lookupLib.)) NE 0) or (%sysfunc(exist(&l_dsLookupName)) EQ 0)) %THEN %DO;
       %LET l_actual =-2;
+      %LET l_errMsg =Libref of lookup table not valid or data set does not exist;
       %GOTO Update;
    %END;
 
@@ -92,11 +95,13 @@ options symbolgen mprint mlogic;
    %LET l_helper = %eval(%sysfunc(count(&i_mstKey,%str( )))+1);
    %IF(&l_helper. NE &i_cmpKeyLen.) %THEN %DO;
       %LET l_actual =-3;
+      %LET l_errMsg =Number of keys found in i_mstKey not compatible to specified number;
       %GOTO Update;
    %END;
    %LET l_helper = %eval(%sysfunc(count(&i_lookupKey,%str( )))+1);
    %IF(&l_helper. NE &i_cmpKeyLen.) %THEN %DO;
       %LET l_actual = -4;
+      %LET l_errMsg =Number of found keys in i_lookupKey not compatible to specified number;
       %GOTO Update;
    %END;
 
@@ -111,10 +116,12 @@ options symbolgen mprint mlogic;
    %IF NOT (%sysfunc(upcase(&o_maxObsRprtFail.)) = MAX) %THEN %DO;
       %IF(%datatyp(&o_maxObsRprtFail.) ~=NUMERIC) %then %do;
          %LET l_actual =-19;
+         %LET l_errMsg =%bquote(Parameter o_maxObsRprtFail (&o_maxObsRprtFail): MAX or numeric GE 0);
          %GOTO Update;
       %END;
       %ELSE %IF (&o_maxObsRprtFail. < 0) %then %do;
          %LET l_actual =-20;
+         %LET l_errMsg =%bquote(Parameter o_maxObsRprtFail(&o_maxObsRprtFail) < 0);
          %GOTO Update;
       %END;  
    %END;
@@ -126,6 +133,7 @@ options symbolgen mprint mlogic;
       %*** opened correctly? ***; 
    %IF(&l_dsMstid. EQ 0 or &l_dsLookupid. EQ 0) %THEN %DO;
       %LET l_actual = -9;
+      %LET l_errMsg =Open function failed;
       %GOTO Update;
    %END;
 
@@ -135,6 +143,7 @@ options symbolgen mprint mlogic;
       %IF  &l_helper. = 0 %THEN %DO;
          %* specified variable not found;
          %LET l_actual = -5;
+         %LET l_errMsg =Key in master table not found;
          %GOTO Update;				
       %END;
       %else %do;
@@ -159,6 +168,7 @@ options symbolgen mprint mlogic;
       %IF (&l_helper. EQ 0) %THEN %DO;
          %* specified variable not found;
          %LET l_actual = -6;
+         %LET l_errMsg = Key in lookup table not found;
          %GOTO Update;				
       %END;
       %else %do;
@@ -170,6 +180,7 @@ options symbolgen mprint mlogic;
       %IF (&l_vartypMstr. NE  &l_vartypLookup.) %THEN %DO;
          %* specified variable not found;
          %LET l_actual = -7;
+         %LET l_errMsg =Variable types of keys in master and lookup table do not match;
          %GOTO Update;				
       %END;
    %END;
@@ -186,6 +197,7 @@ options symbolgen mprint mlogic;
       %IF  &l_helper. = 0 %THEN %DO;
          %* specified variable not found;
          %LET l_actual = -21;
+         %LET l_errMsg =%bquote(Parameter o_listingVars (&l_listingVars) not found in Master Table);
          %GOTO Update;				
       %END;  
       %LET i = %eval(&i+1);
@@ -205,6 +217,7 @@ options symbolgen mprint mlogic;
    %*** check for valid parameters*;
    %IF(&l_treatMissings. NE IGNORE AND &l_treatMissings. NE DISALLOW AND &l_treatMissings. NE VALUE) %THEN %DO;
       %LET l_actual = -22;
+      %LET l_errMsg = %bquote(Invalid argument für parameter treatMissings (&l_treatMissings));
       %GOTO Update;
    %END;
 
@@ -225,6 +238,7 @@ options symbolgen mprint mlogic;
    %*** Exit if missings were found***;
    %IF("&l_treatMissings." = "DISALLOW" AND &num_missing. GT 0) %THEN %DO;
       %LET l_actual = -23;
+      %LET l_errMsg = %str(Parameter treatMissingsMst set to disallow, but missings found in master table);
       %GOTO Update;
    %END;
    %ELSE %IF ("&l_treatMissings." EQ "IGNORE") %THEN %DO;
@@ -239,6 +253,7 @@ options symbolgen mprint mlogic;
    %*** check for valid parameter o_unique ***;
    %IF(&l_unique. NE TRUE AND &l_unique. NE FALSE) %THEN %DO;
       %LET l_actual = -24;
+      %LET l_errMsg =Value for parameter i_unique not valid (&l_unique);
       %GOTO Update;
    %END;
 
@@ -281,7 +296,8 @@ options symbolgen mprint mlogic;
 
    %*** Is parameter l_unique set to true -> are duplicates allowed? ***;
    %IF (("&l_unique." EQ "TRUE") and (&l_cnt1. NE &l_cnt2.)) %THEN %DO;
-         %LET l_actual = -8;		 
+         %LET l_actual = -8;
+         %LET l_errMsg =%str(Specified key of lookup table not unique, check parameter i_unique or lookup table);
       %GOTO Update;
    %END;
    %*** if parameter l_unique is set to false, put warning to log, but go on processing ***;
@@ -309,6 +325,10 @@ options symbolgen mprint mlogic;
    %*** Test successful? l_actual < 0 -> error_message, l_actual > 0 -> no foreign key relationship***;
    %IF(&l_actual. = 0) %THEN %DO;
       %LET l_result = 0;
+   %END;
+   
+   %IF(&l_actual. > 0) %THEN %DO;
+      %LET l_errMsg = &l_actual. key(s) not found in lookup table;
    %END;  
 
    /*-- get current ids for test case and test ---------------------------------*/
@@ -349,12 +369,13 @@ options symbolgen mprint mlogic;
 
    %Update:
 	%_asserts(
-            i_type      = assertForeignKey
-            ,i_expected = %str(&l_unique.)
-            ,i_actual   = %str(&l_actual)
-            ,i_desc     = &i_desc.
-            ,i_result   = &l_result.
-            )
+       i_type      = assertForeignKey
+      ,i_expected = %str(&l_unique.)
+      ,i_actual   = %str(&l_actual)
+      ,i_desc     = &i_desc.
+      ,i_result   = &l_result.
+      ,i_errMsg   = &l_errMsg.
+   )
 
 %MEND assertForeignKey;
 /** \endcond */

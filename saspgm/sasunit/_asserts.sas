@@ -17,6 +17,8 @@
    \param  i_actual         actual value
    \param  i_desc           description of the check
    \param  i_result         result 0 .. OK, 1 .. manual check, 2 .. not OK
+   \param  i_errMsg         optional: custom error message describinng the reason of the failure. Used to show up in jenkins output.\n
+                            Message will be prefixed by '<assertType> failed: '.
    \param  r_casid          optional: return number of current test case 
    \param  r_tstid          optional: return number of this check within test case
 */ /** \cond */  
@@ -27,18 +29,40 @@
    ,i_expected =       
    ,i_actual   =       
    ,i_desc     =       
-   ,i_result   =       
-   ,r_casid    =       
-   ,r_tstid    =       
+   ,i_result   =   
+   ,i_errMsg   = _NONE_ 
+   ,r_casid    = _NONE_ 
+   ,r_tstid    = _NONE_       
 );
 
-%IF &r_casid= %THEN %DO;
+%LOCAL l_errMsg;
+
+%IF (&r_casid=_NONE_) %THEN %DO;
    %LOCAL l_casid;
    %LET r_casid=l_casid;
 %END;
-%IF &r_tstid= %THEN %DO;
+%IF (&r_tstid=_NONE_) %THEN %DO;
    %LOCAL l_tstid;
    %LET r_tstid=l_tstid;
+%END;
+
+%IF (&i_result. eq 0) %THEN %DO;
+   %LET l_errMsg =No Errors ocurred.;
+   %PUT &G_NOTE.: &i_type.: &l_errMsg.;
+%END;
+%ELSE %IF (&i_result. eq 1) %THEN %DO;
+   %LET l_errMsg =Check manually.;
+   %PUT &G_NOTE.: &i_type.: &l_errMsg.;
+%END;
+%ELSE %DO;
+   %LET l_errMsg=&i_errMsg.;
+   %IF (%nrbquote(&i_errMsg.) eq _NONE_) %THEN %DO;
+      %LET l_errMsg =%bquote(&i_type. failed: expected value equals &i_expected., but actual value equals &i_actual.);
+   %END;
+   %ELSE %DO;
+      %LET l_errMsg =%bquote(&i_type. failed: &i_errMsg.);
+   %END;
+   %PUT &G_ERROR.: &l_errMsg.;
 %END;
 
 PROC SQL NOPRINT;
@@ -66,6 +90,7 @@ PROC SQL NOPRINT;
       ,%sysfunc(quote(&i_expected%str( )))
       ,%sysfunc(quote(&i_actual%str( )))
       ,&i_result
+      ,"&l_errMsg"
    );
 QUIT;
 

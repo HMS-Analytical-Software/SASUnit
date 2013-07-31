@@ -31,12 +31,13 @@
    %RETURN;
 %END;
 
+%LOCAL l_casid l_errMsg;
+
 /* determine current case id */
 PROC SQL NOPRINT;
-%LOCAL l_casid;
    SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid=&g_scnid;
-%LET l_casid = &l_casid;
 QUIT;
+%LET l_casid = &l_casid;
 
 PROC SQL NOPRINT;
    SELECT cas_end - cas_start
@@ -49,14 +50,18 @@ QUIT;
 
 /* determine result */
 %LET l_result = %SYSEVALF((NOT(&l_cas_runtime <= &i_expected))*2); 
-               /* evaluation negated because %_asserts awaits 0 for l_result if the assertion is true */
+/* evaluation negated because %_asserts awaits 0 for l_result if the assertion is true */
+
+%LET l_errMsg=%bquote(Expected run time was &i_expected. s, but test case took &l_cas_runtime. s!);
 
 %_asserts(
    i_type      = assertPerformance
    ,i_expected = &i_expected
    ,i_actual   = &l_cas_runtime
    ,i_desc     = &i_desc
-   ,i_result   = &l_result)
+   ,i_result   = &l_result
+   ,i_errMsg   = &l_errMsg
+)
 %MEND assertPerformance;
 /** \endcond */
 

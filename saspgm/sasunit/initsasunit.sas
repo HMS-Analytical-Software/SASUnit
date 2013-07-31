@@ -219,15 +219,16 @@ QUIT;
          ,cas_res   INT                      /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
       );
       CREATE TABLE target.tst(COMPRESS=CHAR)
-      (                                   /* Test */
-          tst_scnid INT FORMAT=z3.        /* reference to test scenario */
-         ,tst_casid INT FORMAT=z3.        /* reference to test case */
-         ,tst_id    INT FORMAT=z3.        /* sequential number of test within test case */
-         ,tst_type  CHAR(32)              /* type of test (name of assert macro) */
-         ,tst_desc  CHAR(1000)            /* description of test */
-         ,tst_exp   CHAR(255)             /* expected result */
-         ,tst_act   CHAR(255)             /* actual result */
-         ,tst_res   INT                   /* test result of the last run: 0 .. OK, 1 .. manual, 2 .. not OK */
+      (                                    /* Test */
+          tst_scnid  INT FORMAT=z3.        /* reference to test scenario */
+         ,tst_casid  INT FORMAT=z3.        /* reference to test case */
+         ,tst_id     INT FORMAT=z3.        /* sequential number of test within test case */
+         ,tst_type   CHAR(32)              /* type of test (name of assert macro) */
+         ,tst_desc   CHAR(1000)            /* description of test */
+         ,tst_exp    CHAR(255)             /* expected result */
+         ,tst_act    CHAR(255)             /* actual result */
+         ,tst_res    INT                   /* test result of the last run: 0 .. OK, 1 .. manual, 2 .. not OK */
+         ,tst_errmsg CHAR(1000)            /* custom error message for asserts */
       );
    QUIT;
    %IF %_handleError(&l_macname, ErrorCreateDB, 
@@ -514,7 +515,7 @@ DATA _null_;
    LRECL=32000
  ;
 %IF &sysscp. = LINUX %THEN %DO;
-	/* sasautos: the blank is part of the syntax and separates multiple directories from each other!!*/
+   /* sasautos: the blank is part of the syntax and separates multiple directories from each other!!*/
  _sCmdString = 
       "" !! &g_sasstart. 
         !! " " 
@@ -597,7 +598,7 @@ QUIT;
    %PUT &g_error: ===================== Error! Testsuite aborted! ===========================================;
    %PUT;
    LIBNAME target;
-	 endsas;
+    endsas;
 %exit:
 %MEND initSASUnit;
 /** \endcond */

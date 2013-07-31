@@ -26,20 +26,21 @@
    ,i_desc         =      
 );
 
-%LOCAL l_countMatches l_rc;
+%LOCAL l_countMatches l_rc l_errMsg;
 %LET l_countMatches = -1;
+%LET l_errMsg=;
 
 /*-- check parameter i_dataset  ------------------------------------------------*/
 %IF NOT %SYSFUNC(EXIST(&i_dataset.)) %THEN %DO;
-  %PUT &g_error: assertRecordExists: input dataset &i_dataset. does not exist;
   %LET l_rc = 2;
+  %LET l_errMsg=input dataset &i_dataset. does not exist!;
   %GOTO Update;
 %END;
 
 /*-- check parameter i_dataset  ------------------------------------------------*/
 %IF %LENGTH(&i_whereExpr) = 0 %THEN %DO;
-  %PUT &g_error: assertRecordExists: where expression is empty;
   %LET l_rc = 2;
+  %LET l_errMsg=where expression is empty!;
   %GOTO Update;
 %END;
 
@@ -49,8 +50,8 @@
    %endTestcall()
 %END;
 %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-  %PUT &g_error: assert can only be called after initTestcase;
   %LET l_rc = 2;
+  %LET l_errMsg=assert can only be called after initTestcase!;
   %GOTO Update;
 %END;
 
@@ -66,15 +67,17 @@ QUIT;
   %then %let l_rc = 0;
 %else
   %let l_rc = 2;
+%LET l_errMsg=No matching records were found!;
 
 %UPDATE:
 /*-- update comparison result in test database -------------------------------*/
 %_asserts(
     i_type     = assertRecordExists
    ,i_expected = > 0
-   ,i_actual   = &l_countMatches
+   ,i_actual   = &l_countMatches.
    ,i_desc     = &i_desc.
    ,i_result   = &l_rc.
+   ,i_errMsg   = &l_errMsg.
 );
 
 %MEND assertRecordExists;
