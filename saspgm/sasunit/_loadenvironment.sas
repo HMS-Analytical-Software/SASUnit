@@ -24,7 +24,7 @@
 %GLOBAL g_target g_project g_root g_sasunit g_autoexec g_sascfg g_sasuser
         g_sasautos g_sasautos1 g_sasautos2 g_sasautos3 g_sasautos4 g_sasautos5
                    g_sasautos6 g_sasautos7 g_sasautos8 g_sasautos9 g_sasautos0
-        g_testdata g_refdata g_doc g_error g_warning
+        g_testdata g_refdata g_doc g_error g_warning g_note
         g_work g_testout g_log
         g_logfile g_printfile
         g_testcoverage;
@@ -94,7 +94,7 @@ RUN;
 %LET g_testout  = &g_target/tst;
 %LET g_log      = &g_target/log;
 
-%_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning)
+%_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note)
 
 %IF &i_withlibrefs %THEN %DO;
       LIBNAME testout "&g_testout";
