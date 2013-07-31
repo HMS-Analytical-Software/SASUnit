@@ -30,16 +30,17 @@
    PROC SQL NOPRINT;
       /* Start with the test-scenarion information */
       CREATE TABLE Work.Combined AS
-         SELECT DISTINCT  1                    AS isScenario
-         ,        0                    AS failures  FORMAT = best12.
-         ,        LEFT(PUT(scn_id,8.)) AS id
-         ,        0                    AS cas_id
-         ,        scn_id               AS scn_id
-         ,        scn_desc             AS name
-         ,        scn_path             AS classname
-         ,        scn_start            AS timestamp FORMAT = e8601dt.
-         ,        (scn_end-scn_start)  AS time
-         ,        0                    AS tests
+         SELECT DISTINCT  
+                  1                     AS isScenario
+         ,        0                     AS failures  FORMAT = best12.
+         ,        LEFT(PUT(scn_id,z3.)) AS id        LENGTH = 7 FORMAT = $7.       
+         ,        0                     AS cas_id
+         ,        scn_id                AS scn_id
+         ,        scn_desc              AS name
+         ,        scn_path              AS classname
+         ,        scn_start             AS timestamp FORMAT = e8601dt.
+         ,        (scn_end-scn_start)   AS time
+         ,        0                     AS tests
          FROM     &d_rep.
       ;
    
@@ -49,9 +50,11 @@
 
       /* Insert testcases */
       INSERT INTO Work.Combined 
-         SELECT  DISTINCT 0                             AS isScenario
-         ,        cas_res = &_SU_Error.         AS failures FORMAT = best12.
-         ,        CATX("-", scn_id, cas_id)     AS id
+         SELECT  DISTINCT 
+                  0                             AS isScenario
+         ,        cas_res = &_SU_Error.         AS failures  FORMAT = best12.
+         ,        put (scn_id,z3.) !! "-" !! put(cas_id,z3.) 
+                                                AS id        LENGTH = 7 FORMAT = $7. 
          ,        cas_id                        AS cas_id
          ,        scn_id                        AS scn_id
          ,        cas_desc                      AS name

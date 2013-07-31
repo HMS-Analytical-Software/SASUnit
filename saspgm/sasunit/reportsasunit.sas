@@ -1,6 +1,6 @@
 /**
    \file
-   \ingroup    SASUNIT_CNTL 
+   \ingroup    SASUNIT_REPORT 
 
    \brief      Creation of a test report
 
@@ -17,6 +17,7 @@
 
    \param   i_language     Language of the report (DE, EN) - refer to _nls
    \param   o_html         Test report in HTML-format?
+   \param   o_junit        Test report in JUNIT-XML-format?
    \param   o_force        0 .. (default) incremental, 1 .. create complete report
    \param   o_output       (optional) full path of the directory in which the test report is created. 
                            If the parameter is not set, the subdirectory rep of the test repository is used.
@@ -28,6 +29,7 @@
 %MACRO reportSASUnit (
    i_language   = EN
   ,o_html       = 1
+  ,o_junit      = 0
   ,o_force      = 0
   ,o_output     =
 );
@@ -37,6 +39,12 @@
 %IF "&o_html" NE "1" %THEN %LET o_html=0;
 
 %IF "&o_force" NE "1" %THEN %LET o_force=0;
+
+%IF "&o_junit" NE "1" %THEN %LET o_junit=0;
+
+%IF ("&o_html" NE "1" AND "&o_junit" NE "1") %THEN %DO;
+   %GOTO exit;
+%END;
 
 %_nls (i_language=&i_language)
 
@@ -152,6 +160,7 @@ PROC SQL NOPRINT;
    ,tst_exp
    ,tst_act
    ,tst_res
+   ,tst_errmsg
   )
   (
     SELECT
@@ -163,6 +172,7 @@ PROC SQL NOPRINT;
       ,'^_'
       ,'^_'
       ,2
+      ,''
       FROM &d_emptyscn.
   )
   ;  
@@ -274,6 +284,7 @@ PROC SQL NOPRINT;
       ,tst_exp   
       ,tst_act   
       ,tst_res
+      ,tst_errmsg
    FROM 
        target.tsu
       ,&d_scn
@@ -344,121 +355,127 @@ run;
 
 *** create style ****;
 %_reportCreateStyle;
+%_reportCreateTagset;
 
-DATA _null_;
-   SET &d_rep;
-   BY scn_id cas_id;
-   FILE repgen;
+%IF (&o_html.=1) %THEN %DO;
+   DATA _null_;
+      SET &d_rep;
+      BY scn_id cas_id;
+      FILE repgen;
 
-   IF _n_=1 THEN DO;
-      /*-- only if testreport is generated competely anew --------------------*/
-      IF tsu_lastrep=0 OR &o_force THEN DO;
-         /*-- copy static files - images, css etc. ---------------------------*/
-         PUT '%_copydir(' /
-             "    &g_root./resources" '/html/%str(*.*)' /
-             "   ,&l_output" /
-             ")";
-         /*-- create frame HTML page -----------------------------------------*/
-         PUT '%_reportFrameHTML('             /
-             "    i_repdata = &d_rep"                 /
-             "   ,o_html    = &l_output/index.html"   /
-             ")";
-      END;
-      /*-- only if testsuite has been initialized anew after last report -----*/
-      IF tsu_lastinit > tsu_lastrep OR &o_force THEN DO;
-         /*-- convert SAS-log from initSASUnit -------------------------------*/
-         PUT '%_reportLogHTML('                   /
-             "    i_log     = &g_log/000.log"             /
-             "   ,i_title   = &g_nls_reportSASUnit_001"    /
-             "   ,o_html    = &l_output/000_log.html" /
-             ")";
-         /*-- create overview page -------------------------------------------*/
-         PUT '%_reportHomeHTML('                   /
-             "    i_repdata = &d_rep"                      /
-             "   ,o_html    = &o_html."    /
-             "   ,o_path    = &l_output."    /
-             "   ,o_file    = overview"    /
-             ")";
-      END;
-      /*-- only if a test scenario has been run since last report ------------*/
-      IF &l_lastrun > tsu_lastrep OR &l_bOnlyInexistingScnFound. OR &o_force. THEN DO;
-         /*-- create table of contents ---------------------------------------*/
-         PUT '%_reportTreeHTML('                  /
-             "    i_repdata = &d_rep"                     /
-             "   ,o_html    = &l_output/tree.html"    /
-             ")";
-         /*-- create list of test scenarios ----------------------------------*/
-         PUT '%_reportScnHTML('                   /
-             "    i_repdata = &d_rep."                     /
-             "   ,o_html    = &o_html."    /
-             "   ,o_path    = &l_output."    /
-             "   ,o_file    = scn_overview"    /
-             ")";
-         /*-- create list of test cases --------------------------------------*/
-         PUT '%_reportCasHTML('                   /
-             "    i_repdata = &d_rep"                     /
-             "   ,o_html    = &o_html."    /
-             "   ,o_path    = &l_output."    /
-             "   ,o_file    = cas_overview"    /
-             ")";
-         /*-- create list of units under test --------------------------------*/
-         PUT '%_reportAutonHTML('                   /
-             "    i_repdata = &d_rep"                     /
-             "   ,o_html    = &o_html."    /
-             "   ,o_path    = &l_output."    /
-             "   ,o_file    = auton_overview"    /
-             ")";
-/*
-         PUT '%_reportpgmdoc('                /
-             "    i_language = &i_language."          /
-             ")";
-/**/
-      END;
-   END;
-
-   /*-- per scenario ---------------------------------------------------------*/
-   IF first.scn_id AND scn_id NE . THEN DO;
-      /*-- only if scenario has been run since report ------------------------*/
-      IF scn_start > tsu_lastrep OR &o_force THEN DO;
-         /*-- convert logfile of scenario ------------------------------------*/
-         PUT '%_reportLogHTML(' / 
-             "    i_log     = &g_log/" scn_id z3. ".log"  /
-             "   ,i_title   = &g_nls_reportSASUnit_002 " scn_id z3. " (" cas_pgm +(-1) ")" /
-             "   ,o_html    = &l_output/" scn_id z3. "_log.html" /
-             ")";
-      END;
-   END;
-
-   /*-- only if test case has been run since last report ---------------------*/
-   IF cas_start > tsu_lastrep OR &o_force THEN DO;
-
-      /*-- per test case -----------------------------------------------------*/
-      IF first.cas_id AND scn_id NE . AND cas_id NE . THEN DO;
-         /*-- convert logfile of test case -----------------------------------*/
-         PUT '%_reportLogHTML(' /
-             "    i_log     = &g_log/" scn_id z3. "_" cas_id z3. ".log" /
-             "   ,i_title   = &g_nls_reportSASUnit_003 " cas_id z3. " &g_nls_reportSASUnit_004 " scn_id z3. " (" cas_pgm +(-1) ")" /
-             "   ,o_html    = &l_output/" scn_id z3. "_" cas_id z3. "_log.html" /
-             ")";
-         /*-- compile detail information for test case -----------------------*/
-         PUT '%_reportDetailHTML('                   /
-             "    i_repdata = &d_rep"                        /
-             "   ,i_scnid   = " scn_id z3.                   /
-             "   ,i_casid   = " cas_id z3.                   /
-             "   ,o_html    = &o_html."    /
-             "   ,o_path    = &l_output."    /
-             "   ,o_file    = cas_" scn_id z3. "_" cas_id z3.    /
-             ")";
+      IF _n_=1 THEN DO;
+         /*-- only if testreport is generated competely anew --------------------*/
+         IF tsu_lastrep=0 OR &o_force THEN DO;
+            /*-- copy static files - images, css etc. ---------------------------*/
+            PUT '%_copydir(' /
+                "    &g_root./resources" '/html/%str(*.*)' /
+                "   ,&l_output" /
+                ")";
+            /*-- create frame HTML page -----------------------------------------*/
+            PUT '%_reportFrameHTML('             /
+                "    i_repdata = &d_rep"                 /
+                "   ,o_html    = &l_output/index.html"   /
+                ")";
+         END;
+         /*-- only if testsuite has been initialized anew after last report -----*/
+         IF tsu_lastinit > tsu_lastrep OR &o_force THEN DO;
+            /*-- convert SAS-log from initSASUnit -------------------------------*/
+            PUT '%_reportLogHTML('                   /
+                "    i_log     = &g_log/000.log"             /
+                "   ,i_title   = &g_nls_reportSASUnit_001"    /
+                "   ,o_html    = &l_output/000_log.html" /
+                ")";
+            /*-- create overview page -------------------------------------------*/
+            PUT '%_reportHomeHTML('                   /
+                "    i_repdata = &d_rep"                      /
+                "   ,o_html    = &o_html."    /
+                "   ,o_path    = &l_output."    /
+                "   ,o_file    = overview"    /
+                ")";
+         END;
+         /*-- only if a test scenario has been run since last report ------------*/
+         IF &l_lastrun > tsu_lastrep OR &l_bOnlyInexistingScnFound. OR &o_force. THEN DO;
+            /*-- create table of contents ---------------------------------------*/
+            PUT '%_reportTreeHTML('                  /
+                "    i_repdata = &d_rep"                     /
+                "   ,o_html    = &l_output/tree.html"    /
+                ")";
+            /*-- create list of test scenarios ----------------------------------*/
+            PUT '%_reportScnHTML('                   /
+                "    i_repdata = &d_rep."                     /
+                "   ,o_html    = &o_html."    /
+                "   ,o_path    = &l_output."    /
+                "   ,o_file    = scn_overview"    /
+                ")";
+            /*-- create list of test cases --------------------------------------*/
+            PUT '%_reportCasHTML('                   /
+                "    i_repdata = &d_rep"                     /
+                "   ,o_html    = &o_html."    /
+                "   ,o_path    = &l_output."    /
+                "   ,o_file    = cas_overview"    /
+                ")";
+            /*-- create list of units under test --------------------------------*/
+            PUT '%_reportAutonHTML('                   /
+                "    i_repdata = &d_rep"                     /
+                "   ,o_html    = &o_html."    /
+                "   ,o_path    = &l_output."    /
+                "   ,o_file    = auton_overview"    /
+                ")";
+   /*
+            PUT '%_reportpgmdoc('                /
+                "    i_language = &i_language."          /
+                ")";
+   /**/
+         END;
       END;
 
-   END; /* if test case has been run since last report */
+      /*-- per scenario ---------------------------------------------------------*/
+      IF first.scn_id AND scn_id NE . THEN DO;
+         /*-- only if scenario has been run since report ------------------------*/
+         IF scn_start > tsu_lastrep OR &o_force THEN DO;
+            /*-- convert logfile of scenario ------------------------------------*/
+            PUT '%_reportLogHTML(' / 
+                "    i_log     = &g_log/" scn_id z3. ".log"  /
+                "   ,i_title   = &g_nls_reportSASUnit_002 " scn_id z3. " (" cas_pgm +(-1) ")" /
+                "   ,o_html    = &l_output/" scn_id z3. "_log.html" /
+                ")";
+         END;
+      END;
 
-RUN;
+      /*-- only if test case has been run since last report ---------------------*/
+      IF cas_start > tsu_lastrep OR &o_force THEN DO;
 
-/*-- create report -----------------------------------------------------------*/
-ODS LISTING CLOSE;
-%INCLUDE repgen / source2;
-FILENAME repgen;
+         /*-- per test case -----------------------------------------------------*/
+         IF first.cas_id AND scn_id NE . AND cas_id NE . THEN DO;
+            /*-- convert logfile of test case -----------------------------------*/
+            PUT '%_reportLogHTML(' /
+                "    i_log     = &g_log/" scn_id z3. "_" cas_id z3. ".log" /
+                "   ,i_title   = &g_nls_reportSASUnit_003 " cas_id z3. " &g_nls_reportSASUnit_004 " scn_id z3. " (" cas_pgm +(-1) ")" /
+                "   ,o_html    = &l_output/" scn_id z3. "_" cas_id z3. "_log.html" /
+                ")";
+            /*-- compile detail information for test case -----------------------*/
+            PUT '%_reportDetailHTML('                   /
+                "    i_repdata = &d_rep"                        /
+                "   ,i_scnid   = " scn_id z3.                   /
+                "   ,i_casid   = " cas_id z3.                   /
+                "   ,o_html    = &o_html."    /
+                "   ,o_path    = &l_output."    /
+                "   ,o_file    = cas_" scn_id z3. "_" cas_id z3.    /
+                ")";
+         END;
+
+      END; /* if test case has been run since last report */
+
+   RUN;
+
+   /*-- create report -----------------------------------------------------------*/
+   ODS LISTING CLOSE;
+   %INCLUDE repgen / source2;
+   FILENAME repgen;
+%END;
+%IF (&o_junit.=1) %THEN %DO;
+   %_reportJUnitXML(o_file=&l_output./JUnit.XML)
+%END;
 
 /*-- save last report date ---------------------------------------------------*/
 PROC SQL NOPRINT;

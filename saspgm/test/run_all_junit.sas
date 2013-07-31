@@ -31,7 +31,7 @@ proc options option=logparm;run;
   ,i_testdata   = dat
   ,i_refdata    = dat
   ,i_doc        = doc/spec
-  ,i_sascfg     = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
+  ,i_sascfg     = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE))_junit.cfg
   ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
 );
 
@@ -51,7 +51,7 @@ proc options option=logparm;run;
 
 data _null_;
    file "&ConfigName.";
-   infile "%sysget(SASUNIT_ROOT)/bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg" end=eof;
+   infile "%sysget(SASUNIT_ROOT)/bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE))_junit.cfg" end=eof;
    input;
    put _INFILE_;
    if (eof) then do;
@@ -101,7 +101,7 @@ run;
   ,i_testdata   = dat
   ,i_refdata    = dat
   ,i_doc        = doc/spec
-  ,i_sascfg     = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
+  ,i_sascfg     = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE))_junit.cfg
   ,i_autoexec   = &AutoexecName2.
   ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
 )
@@ -123,7 +123,7 @@ run;
   ,i_testdata   = dat
   ,i_refdata    = dat
   ,i_doc        = doc/spec
-  ,i_sascfg     = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
+  ,i_sascfg     = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE))_junit.cfg
   ,i_autoexec   = %str( )
   ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
 );
