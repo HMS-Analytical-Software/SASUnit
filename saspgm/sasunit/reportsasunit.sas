@@ -6,10 +6,10 @@
 
                Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
-   \version \$Revision$
-   \author  \$Author$
-   \date    \$Date$
-   \sa      \$HeadURL$
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -353,9 +353,20 @@ proc format lib=work;
                       OTHER = "&g_nls_reportDetail_027";
 run;
 
+*** set options for ODS ****;
+ods escapechar="^";
+
+libname _style "&g_root./resources/style";
+
 *** create style ****;
+ods path reset;
+ods path (PREPEND) _style.template(UPDATE);
 %_reportCreateStyle;
 %_reportCreateTagset;
+
+ods path reset;
+ods path (PREPEND) _style.template(READ);
+ods path (PREPEND) WORK.template(UPDATE);
 
 %IF (&o_html.=1) %THEN %DO;
    DATA _null_;

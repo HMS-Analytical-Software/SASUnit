@@ -121,6 +121,9 @@
       UPDATE Work.Junit SET message = TRANWRD(message, '<', '&lt;'  );
       UPDATE Work.Junit SET message = TRANWRD(message, '>', '&gt;'  );
       UPDATE Work.Junit SET message = TRANWRD(message, '"', '&quot;');
+
+      UPDATE Work.Junit SET classname = TRANWRD(classname, '^_', ' ');
+      UPDATE Work.Junit SET type      = put(TRANWRD(type, '^_', ' '),$32.);
    QUIT;
 
 

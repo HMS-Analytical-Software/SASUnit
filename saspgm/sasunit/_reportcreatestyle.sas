@@ -17,11 +17,6 @@
 
 %macro _reportCreateStyle ;
 
-   ods escapechar="^";
-
-   libname _style "&g_root./resources/style";
-   ods path reset;
-   ods path (PREPEND) _style.style_template(UPDATE);
    proc template;
       define style Styles.SASUNIT;
          style fonts
