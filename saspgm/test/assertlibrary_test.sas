@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertlibrary.sas - has to fail! 4 errors concerning libref statements and 2 error with invalid values of parameters
+   \brief      Tests for assertlibrary.sas - has to fail! 11 assertLibrary errors
 
    \version    \$Revision$
    \author     \$Author$

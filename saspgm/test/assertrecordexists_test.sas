@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertrecordexists.sas - has to fail 2 errors concerning invalid parameters, 1 error with invalid syntax
+   \brief      Tests for assertrecordexists.sas - has to fail! 5 errors (4 assertRecordExists and one error concerning non-existing variable)
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $

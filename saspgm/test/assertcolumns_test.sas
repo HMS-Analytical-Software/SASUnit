@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertcolumns.sas - has to fail! 1 error concerning invalid parameter in macro assertColumns
+   \brief      Tests for assertcolumns.sas - has to fail! 9 assertColumns errors and one warning
 
    \version    \$Revision$
    \author     \$Author$

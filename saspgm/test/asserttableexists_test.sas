@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertTableExists.sas
+   \brief      Tests for assertTableExists.sas - 12 assertTableExists errors
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $
@@ -133,14 +133,14 @@ libname hugo (WORK);
 	run;
 %endTestcall()
 
-%assertTableExists (i_libref=hugo, i_memname=class_V, i_target=view, i_desc=Libref is valid. Dataset exists., i_not=0);
-%assertTableExists (i_libref=hugo, i_memname=class_B, i_target=view, i_desc=Libref is valid. Dataset does not exist, i_not=0);
+%assertTableExists (i_libref=hugo, i_memname=class_V, i_target=view, i_desc=Libref is valid. View exists., i_not=0);
+%assertTableExists (i_libref=hugo, i_memname=class_B, i_target=view, i_desc=Libref is valid. View does not exist, i_not=0);
 	%markTest()
 	%assertDBValue(tst,exp,VIEW:hugo.class_B:0)
 	%assertDBValue(tst,act,0)
 	%assertDBValue(tst,res,2)
 	%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertTableExists (i_libref=hugo, i_memname=class_V, i_target=view, i_desc=Libref is valid. Dataset exists (negated), i_not=1);
+%assertTableExists (i_libref=hugo, i_memname=class_V, i_target=view, i_desc=Libref is valid. View exists (negated), i_not=1);
 	%markTest()
 	%assertDBValue(tst,exp,VIEW:hugo.class_V:1);
 						proc sql noprint;
@@ -155,10 +155,50 @@ libname hugo (WORK);
 	%assertequals(i_expected=1,i_actual=&_actval.,i_desc=%str(TST.ACT='1'));
 	%assertDBValue(tst,res,2)
 	%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertTableExists (i_libref=hugo, i_memname=class_B, i_target=view, i_desc=Libref is valid. Dataset does not exist (negated)., i_not=1);
-
+%assertTableExists (i_libref=hugo, i_memname=class_B, i_target=view, i_desc=Libref is valid. View does not exist (negated)., i_not=1);
 %assertLog (i_errors=0, i_warnings=0)
 
 %endTestcase();
+
+/* test case 5 ------------------------------------ */
+libname hugo (WORK);
+%initTestcase(
+             i_object=assertTableExists.sas
+            ,i_desc=call with valid library and catalog
+)
+   FILENAME CODE CATALOG "hugo.catalog01.PROC_PRINT.SOURCE";
+   DATA _NULL_;
+      FILE CODE;
+      PUT "Test Case";
+   RUN;
+%endTestcall()
+
+%assertTableExists (i_libref=hugo, i_memname=catalog01, i_target=catalog, i_desc=Libref is valid. Catalog exists., i_not=0);
+%assertTableExists (i_libref=hugo, i_memname=catalog02, i_target=catalog, i_desc=Libref is valid. Catalog does not exist, i_not=0);
+	%markTest()
+	%assertDBValue(tst,exp,CATALOG:hugo.catalog02:0)
+	%assertDBValue(tst,act,0)
+	%assertDBValue(tst,res,2)
+	%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+%assertTableExists (i_libref=hugo, i_memname=catalog01, i_target=catalog, i_desc=Libref is valid. Catalog exists (negated), i_not=1);
+	%markTest()
+	%assertDBValue(tst,exp,CATALOG:hugo.catalog01:1);
+						proc sql noprint;
+										select scan (tst_act,1,"#") into :_actval from target.tst
+											 where
+													tst_scnid = &g_scnid and
+													tst_casid = &casid and
+													tst_id = &tstid
+										;
+						quit;
+
+	%assertequals(i_expected=1,i_actual=&_actval.,i_desc=%str(TST.ACT='1'));
+	%assertDBValue(tst,res,2)
+	%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+%assertTableExists (i_libref=hugo, i_memname=catalog02, i_target=catalog, i_desc=Libref is valid. Catalog does not exist (negated)., i_not=1);
+%assertLog (i_errors=0, i_warnings=0)
+
+%endTestcase();
+
 
 /** \endcond */

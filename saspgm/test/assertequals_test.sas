@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertequals.sas - has to fail!
+   \brief      Tests for assertequals.sas - has to fail! 5 assertEquals errors
 
    \version    \$Revision$
    \author     \$Author$

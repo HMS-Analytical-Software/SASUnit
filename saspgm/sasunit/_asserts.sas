@@ -24,80 +24,85 @@
 */ /** \cond */  
 
 
-%MACRO _asserts (
-    i_type     =       
-   ,i_expected =       
-   ,i_actual   =       
-   ,i_desc     =       
-   ,i_result   =   
-   ,i_errMsg   = _NONE_ 
-   ,r_casid    = _NONE_ 
-   ,r_tstid    = _NONE_       
-);
+%MACRO _asserts (i_type     =       
+                ,i_expected =       
+                ,i_actual   =       
+                ,i_desc     =       
+                ,i_result   =   
+                ,i_errMsg   = _NONE_ 
+                ,r_casid    = _NONE_ 
+                ,r_tstid    = _NONE_       
+                );
 
-%LOCAL l_errMsg;
+   %LOCAL l_errMsg;
 
-%IF (&r_casid=_NONE_) %THEN %DO;
-   %LOCAL l_casid;
-   %LET r_casid=l_casid;
-%END;
-%IF (&r_tstid=_NONE_) %THEN %DO;
-   %LOCAL l_tstid;
-   %LET r_tstid=l_tstid;
-%END;
+   %IF (&r_casid=_NONE_) %THEN %DO;
+      %LOCAL l_casid;
+      %LET r_casid=l_casid;
+   %END;
+   %IF (&r_tstid=_NONE_) %THEN %DO;
+      %LOCAL l_tstid;
+      %LET r_tstid=l_tstid;
+   %END;
 
-%IF (&i_result. eq 0) %THEN %DO;
-   %LET l_errMsg =No Errors ocurred.;
-   %PUT &G_NOTE.: &i_type.: &l_errMsg.;
-%END;
-%ELSE %IF (&i_result. eq 1) %THEN %DO;
-   %LET l_errMsg =Check manually.;
-   %PUT &G_NOTE.: &i_type.: &l_errMsg.;
-%END;
-%ELSE %DO;
-   %LET l_errMsg=&i_errMsg.;
-   %IF (%nrbquote(&i_errMsg.) eq _NONE_) %THEN %DO;
-      %LET l_errMsg =%bquote(&i_type. failed: expected value equals &i_expected., but actual value equals &i_actual.);
+   %IF (&i_result. eq 0) %THEN %DO;
+      %LET l_errMsg =&i_type.: No Errors ocurred.;
+   %END;
+   %ELSE %IF (&i_result. eq 1) %THEN %DO;
+      %LET l_errMsg =&i_type.: Check manually.;
    %END;
    %ELSE %DO;
-      %LET l_errMsg =%bquote(&i_type. failed: &i_errMsg.);
+      %LET l_errMsg=&i_errMsg.;
+      %IF (%nrbquote(&i_errMsg.) eq _NONE_) %THEN %DO;
+         %LET l_errMsg =%bquote(&i_type. failed: expected value equals &i_expected., but actual value equals &i_actual.);
+      %END;
+      %ELSE %DO;
+         %LET l_errMsg =%bquote(&i_type. failed: &i_errMsg.);
+      %END;
    %END;
-   %PUT &G_ERROR.: &l_errMsg.;
-%END;
 
-PROC SQL NOPRINT;
-   /* determine number of test case */
-   SELECT max(cas_id) INTO :&r_casid FROM target.cas WHERE cas_scnid=&g_scnid;
-   %IF &&&r_casid=. %THEN %DO;
-      %PUT &g_error: _asserts: Fehler beim Ermitteln der Testfall-Id;
-      %RETURN;
+   %IF (&g_verbose.) %THEN %DO;
+      %IF (&i_result. NE 2) %THEN %DO;
+         %PUT &G_NOTE.: &l_errMsg.;
+      %END;
+      %ELSE %DO;
+         %PUT &G_ERROR.: &l_errMsg.;
+      %END;
    %END;
-   /* generate a new check number */
-   SELECT max(tst_id) INTO :&r_tstid 
-   FROM target.tst 
-   WHERE 
-      tst_scnid = &g_scnid AND
-      tst_casid = &&&r_casid
-   ;
-   %IF &&&r_tstid=. %THEN %LET &r_tstid=1;
-   %ELSE                  %LET &r_tstid=%eval(&&&r_tstid+1);
-   INSERT INTO target.tst VALUES (
-       &g_scnid
-      ,&&&r_casid
-      ,&&&r_tstid
-      ,"&i_type"
-      ,%sysfunc(quote(&i_desc%str( )))
-      ,%sysfunc(quote(&i_expected%str( )))
-      ,%sysfunc(quote(&i_actual%str( )))
-      ,&i_result
-      ,"&l_errMsg"
-   );
-QUIT;
 
-%PUT ========================== Check &&&r_casid...&&&r_tstid (&i_type) =====================================;
+   PROC SQL NOPRINT;
+      /* determine number of test case */
+      SELECT max(cas_id) INTO :&r_casid FROM target.cas WHERE cas_scnid=&g_scnid;
+      %IF &&&r_casid=. %THEN %DO;
+         %PUT &g_error: _asserts: Fehler beim Ermitteln der Testfall-Id;
+         %RETURN;
+      %END;
+      /* generate a new check number */
+      SELECT max(tst_id) INTO :&r_tstid 
+      FROM target.tst 
+      WHERE 
+         tst_scnid = &g_scnid AND
+         tst_casid = &&&r_casid
+      ;
+      %IF &&&r_tstid=. %THEN %LET &r_tstid=1;
+      %ELSE                  %LET &r_tstid=%eval(&&&r_tstid+1);
+      INSERT INTO target.tst VALUES (
+          &g_scnid
+         ,&&&r_casid
+         ,&&&r_tstid
+         ,"&i_type"
+         ,%sysfunc(quote(&i_desc%str( )))
+         ,%sysfunc(quote(&i_expected%str( )))
+         ,%sysfunc(quote(&i_actual%str( )))
+         ,&i_result
+         ,"&l_errMsg"
+      );
+   QUIT;
 
-%LET &r_casid = %sysfunc(putn(&&&r_casid,z3.));
-%LET &r_tstid = %sysfunc(putn(&&&r_tstid,z3.));
+   %PUT ========================== Check &&&r_casid...&&&r_tstid (&i_type) =====================================;
+
+   %LET &r_casid = %sysfunc(putn(&&&r_casid,z3.));
+   %LET &r_tstid = %sysfunc(putn(&&&r_tstid,z3.));
 
 %MEND _asserts;
 /** \endcond */

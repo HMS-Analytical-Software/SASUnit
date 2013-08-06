@@ -36,65 +36,65 @@ run;
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
-                        ,i_actual=_tst
-                        ,o_result=sal_rc
-                        );
-%assertEquals           (i_expected=1, i_actual=&sal_rc., i_desc=Must be identical);
+                ,i_actual=_tst
+                ,o_result=sal_rc
+                );
+%assertEquals   (i_expected=2, i_actual=&sal_rc., i_desc=Must be identical);
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
-                        ,i_actual=_tst
-                        ,i_LibraryCheck=%upcase(MoreTables)
-                        ,o_result=sal_rc
-                        );
-%assertEquals           (i_expected=1, i_actual=&sal_rc., i_desc=Must be identical);
+                ,i_actual=_tst
+                ,i_LibraryCheck=%upcase(MoreTables)
+                ,o_result=sal_rc
+                );
+%assertEquals   (i_expected=2, i_actual=&sal_rc., i_desc=Must be identical);
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
-                        ,i_actual=_tst
-                        ,i_LibraryCheck=%upcase(MoreTables)
-                        ,i_CompareCheck=%upcase(MoreColumns)
-                        ,o_result=sal_rc
-                        );
-%assertEquals           (i_expected=1, i_actual=&sal_rc., i_desc=Must be identical);
+                ,i_actual=_tst
+                ,i_LibraryCheck=%upcase(MoreTables)
+                ,i_CompareCheck=%upcase(MoreColumns)
+                ,o_result=sal_rc
+                );
+%assertEquals   (i_expected=2, i_actual=&sal_rc., i_desc=Must be identical);
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
-                        ,i_actual=_tst
-                        ,i_LibraryCheck=%upcase(MoreTables)
-                        ,i_CompareCheck=%upcase(MoreObs)
-                        ,o_result=sal_rc
-                        );
-%assertEquals           (i_expected=1, i_actual=&sal_rc., i_desc=Must be identical);
+                ,i_actual=_tst
+                ,i_LibraryCheck=%upcase(MoreTables)
+                ,i_CompareCheck=%upcase(MoreObs)
+                ,o_result=sal_rc
+                );
+%assertEquals   (i_expected=2, i_actual=&sal_rc., i_desc=Must be identical);
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
-                        ,i_actual=_tst
-                        ,i_LibraryCheck=%upcase(MoreTables)
-                        ,i_CompareCheck=%upcase(MoreColsNObs)
-                        ,o_result=sal_rc
-                        );
-%assertEquals           (i_expected=1, i_actual=&sal_rc., i_desc=Must be identical);
+                ,i_actual=_tst
+                ,i_LibraryCheck=%upcase(MoreTables)
+                ,i_CompareCheck=%upcase(MoreColsNObs)
+                ,o_result=sal_rc
+                );
+%assertEquals   (i_expected=2, i_actual=&sal_rc., i_desc=Must be identical);
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
-                        ,i_actual=_tst
-                        ,i_LibraryCheck=%upcase(MoreTables)
-                        ,i_CompareCheck=%upcase(MoreColsNObs)
-                        ,i_id=name age
-                        ,o_result=sal_rc
-                        );
-%assertEquals           (i_expected=0, i_actual=&sal_rc., i_desc=Must be identical);
+                ,i_actual=_tst
+                ,i_LibraryCheck=%upcase(MoreTables)
+                ,i_CompareCheck=%upcase(MoreColsNObs)
+                ,i_id=name age
+                ,o_result=sal_rc
+                );
+%assertEquals   (i_expected=0, i_actual=&sal_rc., i_desc=Must be identical);
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
-                        ,i_actual=_tst
-                        ,i_LibraryCheck=%upcase(MoreTables)
-                        ,i_id=name age
-                        ,i_ExcludeList=class2 class3 class4 
-                        ,o_result=sal_rc
-                        );
-%assertEquals           (i_expected=0, i_actual=&sal_rc., i_desc=Must be identical);
+                ,i_actual=_tst
+                ,i_LibraryCheck=%upcase(MoreTables)
+                ,i_id=name age
+                ,i_ExcludeList=class2 class3 class4 
+                ,o_result=sal_rc
+                );
+%assertEquals   (i_expected=0, i_actual=&sal_rc., i_desc=Must be identical);
 
 
 %let sal_rc=-1;

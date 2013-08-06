@@ -6,7 +6,7 @@
                certain data set, view or catalogue does not exist.
                Step 1: Check weather library has been assigned successfully.
                Step 2: Check for existence with exist function
-							
+                     
                Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
    \version    \$Revision: 191 $
@@ -18,17 +18,16 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_libref			Library in which the test candidate can be found
-   \param   i_memname		Name of data set, view or catalog to be tested
-   \param   i_target	 		Optional parameter: Explicit test for existens of a dataset,view or catalog (Possible arguments: data, view, catalog). 
+   \param   i_libref       Library in which the test candidate can be found
+   \param   i_memname      Name of data set, view or catalog to be tested
+   \param   i_target       Optional parameter: Explicit test for existens of a dataset,view or catalog (Possible arguments: data, view, catalog). 
                               If i_target is not given data will be used as default.
    \param   i_desc         Optional Parameter: Description of the assertion to be checked
    \param   i_not          Optional parameter: negates the assertion, if set to 1. Set to 0 no negation takes place. 
                            If the library hasn't been assigned successfully parameter i_not has no effect.
 */ /** \cond */
 
-%MACRO assertTableExists (
-                          i_libref 	=
+%MACRO assertTableExists (i_libref  =
                          ,i_memname =
                          ,i_target  = DATA
                          ,i_desc    =
@@ -36,12 +35,7 @@
                          );
 
    %GLOBAL g_inTestcase;
-	%LOCAL l_dsname l_libref_ok l_table_exist l_result l_date;
-	%let l_dsname =%sysfunc(catx(., &i_libref, &i_memname));
-	%let l_table_exist = -1;
-	%let l_result=2;
-	%let l_date =;
-	 
+    
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;
    %END;
@@ -49,6 +43,11 @@
       %PUT &g_error: assert must be called after initTestcase;
       %RETURN;
    %END;
+   %LOCAL l_dsname l_libref_ok l_table_exist l_result l_date l_suffix l_errMsg;
+   %let l_dsname =%sysfunc(catx(., &i_libref, &i_memname));
+   %let l_table_exist = -1;
+   %let l_result=2;
+   %let l_date =;
 
    %*************************************************************;
    %*** Check preconditions                                   ***;
@@ -57,13 +56,15 @@
    %*** check for valid libref ***;
    %let l_libref_ok=%sysfunc (libref (&i_libref.));
    %if &l_libref_ok. NE 0 %then %do;
+      %let l_errMsg=Libref &i_libref. is invalid!;
       %goto Update;
    %end;
-	 
+    
    %*** check if i_target is valid ***;
    %let i_target=%sysfunc(upcase(&i_target));
    %if not(&i_target=DATA or &i_target=VIEW or &i_target=CATALOG) %then %do;
       %let l_table_exist = -2;
+      %let l_errMsg=%bquote(Invalid value for parameter i_target (&i_target.)!);
       %goto Update;
    %end;
 
@@ -72,8 +73,9 @@
    %*************************************************************;
    
    %if %sysfunc(exist(&l_dsname, &i_target)) %then %do;
-     %let l_table_exist=1;
+      %let l_table_exist=1;
       %put &i_target. &l_dsname. exists.;
+      %let l_errMsg=&i_target &l_dsname exists;
 
       %*** get creation und modification date of tested member ***;
       data _null_ ;
@@ -87,22 +89,27 @@
    %end;
    %else %do;
       %put &i_target. &l_dsname. does not exist.;
+      %let l_errMsg=&i_target &l_dsname does not exist;
       %let l_table_exist=0;
    %end;
 
    %let l_result = %eval(1 - &l_table_exist.);
-   %if(&i_not) %then %do;
+   %let l_suffix=%str(, but it should exist!);
+   %if (&i_not) %then %do;
       %let l_result = %eval(1 - &l_result.);
+      %let l_suffix=%str(, but it should not exist!);
    %end;
+   %let l_errMsg =&l_errMsg.&l_suffix.;
    %let l_result = %eval(&l_result.*2);
 
    %Update:;
-	%_asserts(
+   %_asserts(
              i_type     = assertTableExists
             ,i_expected = %str(&i_target.:&l_dsname.:&i_not.)
             ,i_actual   = %str(&l_table_exist.&l_date.)
             ,i_desc     = &i_desc.
             ,i_result   = &l_result.
+            ,i_errMsg   = &l_errMsg.
             )
 
 %MEND assertTableExists;
