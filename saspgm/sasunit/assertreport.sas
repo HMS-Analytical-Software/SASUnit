@@ -21,19 +21,24 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_expected     optional: file name for the expected file (full path or file in &g_refdata)
-   \param   i_actual       file name for created report file (full path!)
-   \param   i_desc         description of the assertion to be checked 
-   \param   i_manual       1 (default): in case of a positive check result write an entry indicating a manual check (empty rectangle). 
-                           0: in case of a positive check result, write an entry indicating OK (green hook).
+   \param   i_expected           optional: file name for the expected file (full path or file in &g_refdata)
+   \param   i_actual             file name for created report file (full path!)
+   \param   i_desc               description of the assertion to be checked 
+   \param   i_manual             1: in case of a positive check result write an entry indicating a manual check (empty rectangle). 
+                                 0: in case of a positive check result, write an entry indicating OK (green hook).
+                                 default: 1
+   \param   i_ignoreCreationDate optional: Omits the check for the creation date of the report 
+                                 1: do not check creation date
+                                 0: check creation date (default)
+                                 default: 1
  */ /** \cond */ 
 
-%MACRO assertReport (
-    i_expected =       
-   ,i_actual   =       
-   ,i_desc     =       
-   ,i_manual   = 1
-);
+%MACRO assertReport (i_expected           =       
+                    ,i_actual             =       
+                    ,i_desc               =       
+                    ,i_manual             = 1
+                    ,i_ignoreCreationDate = 0
+                    );
 
    /*-- enforce sequence of calls ----------------------------------------------*/
    %GLOBAL g_inTestcase;
@@ -46,6 +51,59 @@
    %END;
 
    %LOCAL l_expected l_exp_ext l_rep_ext l_result l_casid l_tstid l_path l_errmsg;
+
+   %*** check parameters ***;
+   %IF (&i_ignoreCreationDate. NE 0) %THEN %DO;
+      %LET i_ignoreCreationDate=1;
+   %END;
+
+   %LET l_rep_ext  = %_getExtension(&i_actual);
+
+   %IF ("&i_actual." EQ "") %THEN %DO;
+      %LET l_errmsg = parameter i_actual is missing!;
+      %LET l_result=2;
+      %GOTO Update;
+   %END;
+
+   %IF not (%sysfunc (fileexist(&i_actual.))) %THEN %DO;
+      %LET l_errmsg = File i_actual (&i_actual.) does not exist!;
+      %LET l_result=2;
+      %GOTO Update;
+   %END;
+
+   %IF ("&i_expected." EQ "") %THEN %DO;
+      %LET l_errmsg = parameter i_expected is missing!;
+   %END;
+   %ELSE %DO;
+      %LET l_expected = %_abspath(&g_refdata,&i_expected);
+      %IF (%sysfunc (fileexist(&l_expected.))) %THEN %DO;
+         %LET l_exp_ext  = %_getExtension(&l_expected);
+      %END;
+   %END;
+
+   /*-- check for existence and check change date -------------------------------*/
+   %LET l_result=2;
+   %LET l_errmsg=Report was not created anew!;
+   %local d_dir;
+   %_tempFileName(d_dir)
+   %_dir(i_path=&i_actual, o_out=&d_dir)
+   data _null_;
+      set &d_dir nobs=nobs;
+      if nobs ne 1 then stop;
+      if changed < dhms (today(), hour (input ("&systime",time5.)), minute (input ("&systime",time5.)), 0) then do;
+         if (&i_ignoreCreationDate. EQ 0) then do;
+            stop;
+         end;
+      end;
+      call symput ('l_result', '1');
+      stop;
+   run;
+   proc sql;
+      drop table &d_dir;
+   quit;
+
+   %IF NOT &i_manual AND &l_result=1 %THEN %LET l_result=0;
+
    /*-- get current ids for test case and test --------- ------------------------*/
    %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
@@ -57,54 +115,26 @@
                          ,r_path         =l_path
                          );
 
-
-   /*-- check for existence and check change date -------------------------------*/
-   %LET l_result=2;
-   %LET l_errmsg=Report was not created anew!;
-   %IF "&i_actual" NE "" %THEN %DO;
-      %local d_dir;
-      %_tempFileName(d_dir)
-      %_dir(i_path=&i_actual, o_out=&d_dir)
-      data _null_;
-         set &d_dir nobs=nobs;
-         if nobs ne 1 then stop;
-         if changed < dhms (today(), hour (input ("&systime",time5.)), minute (input ("&systime",time5.)), 0) then stop;
-         call symput ('l_result', '1');
-         stop;
-      run;
-      proc sql;
-         drop table &d_dir;
-      quit;
-      %IF %sysfunc(fileexist(&i_actual)) %THEN %LET l_rep_ext = %_getExtension(&i_actual);
-   %END;
-
-   %IF NOT &i_manual AND &l_result=1 %THEN %LET l_result=0;
-
-   %LET l_expected = %_abspath(&g_refdata,&i_expected);
-   %IF "&l_expected" NE "" %THEN %DO;
-      %IF %sysfunc(fileexist(&l_expected)) %THEN %DO;
-         %LET l_exp_ext = %_getExtension(&l_expected);
-      %END;
-   %END;
-
-   %_asserts(i_type     = assertReport
-            ,i_expected = &l_exp_ext
-            ,i_actual   = &l_rep_ext
-            ,i_desc     = &i_desc
-            ,i_result   = &l_result
-            ,r_casid    = l_casid
-            ,r_tstid    = l_tstid
-            ,i_errmsg   = &l_errmsg
-   )
-
    /* copy actual report if it exists */
-   %IF &l_rep_ext NE %THEN %DO;
+   %IF &l_rep_ext. NE %THEN %DO;
       %_copyFile(&i_actual, &l_path./_man_act&l_rep_ext);
    %END;
 
    /* copy expected report if it exists  */
-   %IF &l_exp_ext NE %THEN %DO;
+   %IF &l_exp_ext. NE %THEN %DO;
       %_copyFile(&l_expected, &l_path./_man_exp&l_exp_ext);
    %END;
+
+%Update:
+   %_asserts(i_type     = assertReport
+            ,i_expected = &l_exp_ext.
+            ,i_actual   = &l_rep_ext.
+            ,i_desc     = &i_desc.
+            ,i_result   = &l_result.
+            ,r_casid    = l_casid
+            ,r_tstid    = l_tstid
+            ,i_errmsg   = &l_errmsg.
+   )
+
 %MEND assertReport;
 /** \endcond */

@@ -70,12 +70,12 @@
 %assertEquals(i_actual= %nrstr(§ \ < > % and &amp; as well as &hugo;), i_expected= %nrstr(§ \ < > % and &amp; as well as &hugo;) , i_desc=Special characters in i_actual and i_expected)
 %assertEquals(i_actual=Special characters                   ,i_expected=Special characters        ,i_desc=Special characters in i_actual and i_expected)
 %let testfile1 = class.jpg;
-%assertReport(i_actual=&g_refdata./class.jpg                ,i_expected=&g_refdata./&testfile1    ,i_desc= No Special characters in file name - must be red!)
-%assertReport(i_actual=&g_refdata./%nrstr(class.jpg)        ,i_expected=&g_refdata./&testfile1    ,i_desc=No Special characters - must be red!)
+%assertReport(i_actual=&g_refdata./class.jpg                ,i_expected=&g_refdata./&testfile1    ,i_desc= No Special characters in file name - must be red!, i_ignoreCreationDate=1)
+%assertReport(i_actual=&g_refdata./%nrstr(class.jpg)        ,i_expected=&g_refdata./&testfile1    ,i_desc=No Special characters - must be red!, i_ignoreCreationDate=1)
 
 /* Does not run under LINUX in conjunction with %str(*) 
 %assertReport(i_actual=&g_refdata./%nrstr(file%%dh%(.xlsx)  ,i_expected=&g_refdata./%nrstr(file%%dh%(.xlsx)     ,i_desc=Special characters in file name - must be red!)
 */
 
-%assertReport(i_actual=&g_refdata./%nrstr(file-to_$8.xlsx)  ,i_expected=&g_refdata./%nrstr(file-to_$8.xlsx)     ,i_desc=Special characters in file name - must be red!)
+%assertReport(i_actual=&g_refdata./%nrstr(file-to_$8.xlsx)  ,i_expected=&g_refdata./%nrstr(file-to_$8.xlsx)     ,i_desc=Special characters in file name - must be red!, i_ignoreCreationDate=1)
 %endTestcase()
