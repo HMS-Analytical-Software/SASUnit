@@ -17,10 +17,9 @@
 
 */ /** \cond */ 
 
-%MACRO _reportFrameHTML (
-   i_repdata = 
-  ,o_html    =
-);
+%MACRO _reportFrameHTML (i_repdata = 
+                        ,o_html    =
+                        );
 
 DATA _null_;
    SET &i_repdata;

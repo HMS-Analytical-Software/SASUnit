@@ -15,7 +15,7 @@
 */ /** \cond */ 
 
 %MACRO _reportFooter (o_html=
-                             );
+                     );
    %local l_footnote;
    %if (&o_html.) %then %do;
       %_reportFooterHTML;

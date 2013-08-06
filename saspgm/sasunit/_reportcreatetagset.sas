@@ -17,9 +17,6 @@
 
 %MACRO _reportCreateTagset;
 
-      *ods path reset;
-      *ods path (prepend) Work.TEMPLATE (UPDATE);
-      
       PROC TEMPLATE;
          define tagset tagsets.JUnit_XML;
             indent=3;

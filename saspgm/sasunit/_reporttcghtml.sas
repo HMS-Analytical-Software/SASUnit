@@ -23,16 +23,15 @@
 
 */ /** \cond */ 
 
-%macro _reporttcghtml(
-                          i_macroName=
-                         ,i_macroLocation=
-                         ,i_mCoverageName=
-                         ,i_mCoverageLocation=
-                         ,o_outputFile=
-                         ,o_outputPath=
-                         ,o_resVarName=
-                         ,o_html=
-                         );
+%macro _reporttcghtml(i_macroName=
+                     ,i_macroLocation=
+                     ,i_mCoverageName=
+                     ,i_mCoverageLocation=
+                     ,o_outputFile=
+                     ,o_outputPath=
+                     ,o_resVarName=
+                     ,o_html=
+                     );
 
    %local l_MacroName;
    %local l_MCoverageName;

@@ -3,10 +3,10 @@
 
    \brief      renders the layout of a generic data column
 
-   \version \$Revision$
-   \author  \$Author$
-   \date    \$Date$
-   \sa      \$HeadURL$
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -22,12 +22,12 @@
 */ /** \cond */  
 
 %macro _render_datacolumn (i_sourceColumn=
-                                  ,i_format=_NONE_
-                                  ,i_linkColumn=_NONE_
-                                  ,i_linkTitle=_NONE_
-                                  ,i_columnType=_NONE_
-                                  ,o_targetColumn=
-                                  );
+                          ,i_format=_NONE_
+                          ,i_linkColumn=_NONE_
+                          ,i_linkTitle=_NONE_
+                          ,i_columnType=_NONE_
+                          ,o_targetColumn=
+                          );
 
       %local l_format l_doStyle l_doBrackets;
 

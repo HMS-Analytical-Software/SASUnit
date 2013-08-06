@@ -29,15 +29,15 @@
    \return results will be written to folder &g_target/rep 
 */ /** \cond */ 
 
-%MACRO _reportTreeHTML (
-    i_repdata = 
-   ,o_html    =
-);
+%MACRO _reportTreeHTML (i_repdata = 
+                       ,o_html    =
+                       );
 
 %LOCAL l_title;
+%LOCAL d_tree d_tree1 d_tree2 d_la i; 
+
 %LET l_title = &g_project | SASUnit;
 
-%LOCAL d_tree d_tree1 d_tree2 d_la i; 
 %_tempFilename(d_tree)
 %_tempFilename(d_tree1)
 %_tempFilename(d_tree2)
@@ -49,9 +49,9 @@ DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5);
    RETAIN lst1-lst5 0;
    SET &i_repdata;
    BY scn_id cas_id tst_id;
-	 
-	 tst_type=tranwrd(tst_type,"^_","");
-	 tst_desc=tranwrd(tst_desc,"^_","");
+    
+    tst_type=tranwrd(tst_type,"^_","");
+    tst_desc=tranwrd(tst_desc,"^_","");
 
    IF _n_=1 THEN DO;
       label  = "&g_nls_reportTree_001";
@@ -106,9 +106,9 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5);
    SET &i_repdata;
    BY cas_auton pgm_id scn_id cas_id tst_id;
 
-	 tst_type=tranwrd(tst_type,"^_","");
-	 tst_desc=tranwrd(tst_desc,"^_","");
-	 cas_pgm =tranwrd(cas_pgm,"^_","");
+    tst_type=tranwrd(tst_type,"^_","");
+    tst_desc=tranwrd(tst_desc,"^_","");
+    cas_pgm =tranwrd(cas_pgm,"^_","");
 
    IF _n_=1 THEN DO;
       label  = "&g_nls_reportTree_006";

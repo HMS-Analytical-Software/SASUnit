@@ -20,12 +20,11 @@
 
 */ /** \cond */ 
 
-%MACRO _reportHomeHTML (
-   i_repdata = 
-  ,o_html    =
-  ,o_path    =
-  ,o_file    =
-);
+%MACRO _reportHomeHTML (i_repdata = 
+                       ,o_html    =
+                       ,o_path    =
+                       ,o_file    =
+                       );
 
 %LOCAL i
        HTML_Reference

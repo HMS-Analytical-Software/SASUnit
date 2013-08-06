@@ -3,10 +3,10 @@
 
    \brief      renders the layout of the expected column for assertReport
 
-   \version \$Revision$
-   \author  \$Author$
-   \date    \$Date$
-   \sa      \$HeadURL$
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -20,15 +20,15 @@
 */ /** \cond */ 
 
 %macro _render_assertReportExp (i_sourceColumn=
-                                       ,i_actualColumn=tst_act
-                                       ,o_html=
-                                       ,o_targetColumn=
-                                       );
+                               ,i_actualColumn=tst_act
+                               ,o_html=
+                               ,o_targetColumn=
+                               );
    IF &i_sourceColumn. EQ '^_' OR &i_sourceColumn. EQ ' ' THEN DO;
       %** render empty actual column ***;
       %_render_dataColumn (i_sourceColumn=&i_sourceColumn.
-                                  ,o_targetColumn=&o_targetColumn.
-                                  );
+                          ,o_targetColumn=&o_targetColumn.
+                          );
    END;
    ELSE DO;
       href     = catt ("_", put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
@@ -48,10 +48,10 @@
          i_linkTitle  = "&g_nls_reportDetail_021.";
       END;
       %_render_dataColumn (i_sourceColumn=&i_sourceColumn.
-                                  ,i_linkTitle=i_linkTitle
-                                  ,i_linkColumn=i_linkColumn
-                                  ,o_targetColumn=&o_targetColumn.
-                                  );
+                          ,i_linkTitle=i_linkTitle
+                          ,i_linkColumn=i_linkColumn
+                          ,o_targetColumn=&o_targetColumn.
+                          );
    END;
 %mend _render_assertReportExp;
 /** \endcond */

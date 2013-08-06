@@ -28,22 +28,22 @@
 
 %MACRO _tempFileName(r_TempFile);
 
-/* create empty dataset */
-DATA;STOP;RUN;
+   /* create empty dataset */
+   DATA;STOP;RUN;
 
-/* store to macro variable */
-%LET &r_TempFile=&syslast;
-%PUT Temporary dataset %nrstr(&)&r_tempFile is &&&r_tempFile;
+   /* store to macro variable */
+   %LET &r_TempFile=&syslast;
+   %PUT Temporary dataset %nrstr(&)&r_tempFile is &&&r_tempFile;
 
-/* delete again, need only name */
-PROC SQL NOPRINT; 
-   DROP TABLE &&&r_TempFile;
-QUIT;
+   /* delete again, need only name */
+   PROC SQL NOPRINT; 
+      DROP TABLE &&&r_TempFile;
+   QUIT;
 
-/* store number of first dataset to l_first_temp */
-%IF %symexist (l_first_temp) %THEN %DO;
-   %IF &l_first_temp = %THEN %LET l_first_temp = %substr(&syslast,10);
-%END;
+   /* store number of first dataset to l_first_temp */
+   %IF %symexist (l_first_temp) %THEN %DO;
+      %IF &l_first_temp = %THEN %LET l_first_temp = %substr(&syslast,10);
+   %END;
 
 %MEND _tempFileName;
 /** \endcond */

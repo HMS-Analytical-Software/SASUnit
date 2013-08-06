@@ -9,7 +9,6 @@
           only temporary datasets beginning with that number will be deleted. 
 
    \%delTempFiles;
-   \sa    tempFileName.sas
 
    \version    \$Revision$
    \author     \$Author$
@@ -25,24 +24,24 @@
 
 %MACRO _delTempFiles;
 
-%IF NOT %symexist(g_deltempfiles_debug) %THEN %DO;
+   %IF NOT %symexist(g_deltempfiles_debug) %THEN %DO;
 
-DATA _null_;
-   SET sashelp.vtable END=eof;
-   WHERE libname = 'WORK' AND memname LIKE 'DATA%';
-   IF _n_=1 THEN 
-      CALL EXECUTE ('PROC SQL NOPRINT;');
-%IF %symexist(l_first_temp) %THEN %DO;
-   %IF &l_first_temp NE %THEN %DO;
-   IF input(substr(memname,5),8.) >= &l_first_temp;
+      DATA _null_;
+         SET sashelp.vtable END=eof;
+         WHERE libname = 'WORK' AND memname LIKE 'DATA%';
+         IF _n_=1 THEN 
+            CALL EXECUTE ('PROC SQL NOPRINT;');
+      %IF %symexist(l_first_temp) %THEN %DO;
+         %IF &l_first_temp NE %THEN %DO;
+         IF input(substr(memname,5),8.) >= &l_first_temp;
+         %END;
+      %END;
+         CALL execute ('DROP TABLE ' !! memname !! ';');
+         IF eof THEN 
+            CALL execute ('QUIT;');
+      RUN;
+
    %END;
-%END;
-   CALL execute ('DROP TABLE ' !! memname !! ';');
-   IF eof THEN 
-      CALL execute ('QUIT;');
-RUN;
-
-%END;
 
 %MEND _delTempFiles;
 /** \endcond */

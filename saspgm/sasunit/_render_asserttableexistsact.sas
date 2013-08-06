@@ -20,9 +20,9 @@
 */ /** \cond */ 
 
 %macro _render_assertTableExistsAct (i_sourceColumn=
-                                   ,o_html=
-                                   ,o_targetColumn=
-                                   );
+                                    ,o_html=
+                                    ,o_targetColumn=
+                                    );
                                    
    hlp2 = scan(&i_sourceColumn., 1, "#");
    select (hlp2);

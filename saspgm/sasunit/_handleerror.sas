@@ -36,13 +36,13 @@
    \return                   evaluated i_condition
 */ /** \cond */
 
-%MACRO _handleError (
-    i_macroname      
-   ,i_errorcode      
-   ,i_condition      
-   ,i_text           
-   ,i_verbose=0       
-);
+%MACRO _handleError (i_macroname      
+                    ,i_errorcode      
+                    ,i_condition      
+                    ,i_text           
+                    ,i_verbose=0       
+                    );
+
 %IF %unquote(&i_condition) %THEN %DO;
    1
    %PUT;
@@ -60,7 +60,7 @@
    0
    %IF &i_verbose %THEN %DO;
       %PUT;
-      %PUT handleError: OK: &i_errorcode &i_macroname (Bedingung: &i_condition);
+      %PUT handleError: OK: &i_errorcode &i_macroname (Condition: &i_condition);
       %PUT;
    %END;
 %END;

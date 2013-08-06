@@ -20,46 +20,45 @@
 
 */ /** \cond */ 
 
-%macro _copyDir(
-   i_from
-  ,i_to
-);
+%macro _copyDir (i_from
+                ,i_to
+                );
 
-%LOCAL l_i_from l_i_to;
+   %LOCAL l_i_from l_i_to;
 
-%if &sysscp. = WIN %then %do; 
+   %if &sysscp. = WIN %then %do; 
 
-   /* save and modify os command options */
-   %local xwait xsync xmin;
-   %let xwait=%sysfunc(getoption(xwait));
-   %let xsync=%sysfunc(getoption(xsync));
-   %let xmin =%sysfunc(getoption(xmin));
-   options noxwait xsync xmin;
+      /* save and modify os command options */
+      %local xwait xsync xmin;
+      %let xwait=%sysfunc(getoption(xwait));
+      %let xsync=%sysfunc(getoption(xsync));
+      %let xmin =%sysfunc(getoption(xmin));
+      options noxwait xsync xmin;
 
-   %let i_from = %qsysfunc(translate(&i_from,\,/));
-   %let i_to   = %qsysfunc(translate(&i_to  ,\,/));
+      %let i_from = %qsysfunc(translate(&i_from,\,/));
+      %let i_to   = %qsysfunc(translate(&i_to  ,\,/));
 
-   /*-- XCOPY
-        /E copy directories (even empty ones) and files recursively 
-        /I do not prompt before file or directory creation
-        /Y do not prompt before overwriting target
-     --*/
-   %sysexec 
-      xcopy
-         "&i_from"
-         "&i_to"
-         /E /I /Y
-   ;
-   %put sysrc=&sysrc;
-   options &xwait &xsync &xmin;
-%end;
+      /*-- XCOPY
+           /E copy directories (even empty ones) and files recursively 
+           /I do not prompt before file or directory creation
+           /Y do not prompt before overwriting target
+        --*/
+      %sysexec 
+         xcopy
+            "&i_from"
+            "&i_to"
+            /E /I /Y
+      ;
+      %put sysrc=&sysrc;
+      options &xwait &xsync &xmin;
+   %end;
 
-%else %if &sysscp. = LINUX %then %do;
-   %let l_i_from = %qsysfunc(tranwrd(&i_from, %str( ), %str(\ )));
-   %let l_i_to   = %qsysfunc(tranwrd(&i_to, %str( ), %str(\ )));
+   %else %if &sysscp. = LINUX %then %do;
+      %let l_i_from = %qsysfunc(tranwrd(&i_from, %str( ), %str(\ )));
+      %let l_i_to   = %qsysfunc(tranwrd(&i_to, %str( ), %str(\ )));
 
-   %SYSEXEC(cp -R &l_i_from. &l_i_to.);
-%end;
+      %SYSEXEC(cp -R &l_i_from. &l_i_to.);
+   %end;
 
 %mend _copyDir;
 /** \endcond */

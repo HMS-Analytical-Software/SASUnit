@@ -19,25 +19,24 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%MACRO _getAutocallNumber (
-    i_object
-);
+%MACRO _getAutocallNumber (i_object
+                          );
 
-%LOCAL l_path;
-%LET l_path = &g_sasautos/&i_object;
-%IF %sysfunc(fileexist(&l_path)) %THEN %DO;
-   0
-   %RETURN;
-%END;
-
-%LOCAL i;
-%DO i=1 %TO 9;
-   %LET l_path = &&g_sasautos&i/&i_object;
+   %LOCAL l_path;
+   %LET l_path = &g_sasautos/&i_object;
    %IF %sysfunc(fileexist(&l_path)) %THEN %DO;
-      &i
+      0
       %RETURN;
    %END;
-%END;
+
+   %LOCAL i;
+   %DO i=1 %TO 9;
+      %LET l_path = &&g_sasautos&i/&i_object;
+      %IF %sysfunc(fileexist(&l_path)) %THEN %DO;
+         &i
+         %RETURN;
+      %END;
+   %END;
 
 .
 

@@ -19,15 +19,14 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%MACRO _delFile(
-   i_file   
-);
+%MACRO _delFile(i_file   
+               );
 
-%LOCAL rc filrf;
-%LET filrf=_tmpf;
-%LET rc=%sysfunc(filename(filrf,&i_file));
-%LET rc=%sysfunc(fdelete(_tmpf));
-&rc
-%LET rc=%sysfunc(filename(filrf));
+   %LOCAL rc filrf;
+   %LET filrf=_tmpf;
+   %LET rc=%sysfunc(filename(filrf,&i_file));
+   %LET rc=%sysfunc(fdelete(_tmpf));
+   &rc
+   %LET rc=%sysfunc(filename(filrf));
 %MEND _delFile;
 /** \endcond */

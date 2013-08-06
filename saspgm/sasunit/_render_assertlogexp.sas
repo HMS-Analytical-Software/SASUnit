@@ -3,10 +3,10 @@
 
    \brief      renders the layout of the expected column for assertLog
 
-   \version \$Revision$
-   \author  \$Author$
-   \date    \$Date$
-   \sa      \$HeadURL$
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -19,15 +19,15 @@
 */ /** \cond */ 
 
 %macro _render_assertLogExp (i_sourceColumn=
-                                    ,o_html=
-                                    ,o_targetColumn=
-                                    );
+                            ,o_html=
+                            ,o_targetColumn=
+                            );
    hlp="";
    if (not missing(&i_sourceColumn.)) then do;
       hlp = "&g_nls_reportDetail_036: " !! trim (scan(&i_sourceColumn.,1,'#')) !! ", &g_nls_reportDetail_037: " !! trim(scan(&i_sourceColumn.,2,'#'));
    end;
    %_render_dataColumn (i_sourceColumn=hlp
-                               ,o_targetColumn=&o_targetColumn.
-                               );
+                       ,o_targetColumn=&o_targetColumn.
+                       );
 %mend _render_assertLogExp;
 /** \endcond */

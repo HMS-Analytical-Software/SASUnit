@@ -3,10 +3,10 @@
 
    \brief      renders the layout of the icon column
 
-   \version \$Revision$
-   \author  \$Author$
-   \date    \$Date$
-   \sa      \$HeadURL$
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -18,9 +18,9 @@
 */ /** \cond */ 
 
 %macro _render_iconcolumn (i_sourceColumn=
-                                  ,o_html=
-                                  ,o_targetColumn=
-                                  );
+                          ,o_html=
+                          ,o_targetColumn=
+                          );
 
    %local l_pictNameFmt;
 

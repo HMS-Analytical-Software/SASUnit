@@ -25,12 +25,12 @@
 */ /** \cond */ 
 
 %macro _getTestSubfolder (i_assertType=
-                                 ,i_root      =%sysfunc(pathname(testout))
-                                 ,i_scnid     =
-                                 ,i_casid     =
-                                 ,i_tstid     =
-                                 ,r_path      =
-                                 );
+                         ,i_root      =%sysfunc(pathname(testout))
+                         ,i_scnid     =
+                         ,i_casid     =
+                         ,i_tstid     =
+                         ,r_path      =
+                         );
 
    %local l_scnid_string l_subfoldername;
 

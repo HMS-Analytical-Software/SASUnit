@@ -23,25 +23,25 @@
 */ /** \cond */  
 
 %MACRO _render_assertReportRep (i_assertype=
-                                       ,i_repdata  =
-                                       ,i_scnid    =
-                                       ,i_casid    = 
-                                       ,i_tstid    = 
-                                       ,o_html     = 
-                                       ,o_path     = 
-                                       );
+                               ,i_repdata  =
+                               ,i_scnid    =
+                               ,i_casid    = 
+                               ,i_tstid    = 
+                               ,o_html     = 
+                               ,o_path     = 
+                               );
 
    %local l_ifile l_ofile l_path ;
 
    title;footnote;
 
    %_getTestSubfolder (i_assertType=assertReport
-                              ,i_root      =&g_target./tst
-                              ,i_scnid     =&i_scnid.
-                              ,i_casid     =&i_casid.
-                              ,i_tstid     =&i_tstid.
-                              ,r_path      =l_path
-                              );
+                      ,i_root      =&g_target./tst
+                      ,i_scnid     =&i_scnid.
+                      ,i_casid     =&i_casid.
+                      ,i_tstid     =&i_tstid.
+                      ,r_path      =l_path
+                      );
 
    proc sql noprint;
       select tst_act, tst_exp into :l_extAct,:l_extExp from &i_repdata.

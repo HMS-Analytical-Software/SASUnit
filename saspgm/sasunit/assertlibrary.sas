@@ -34,16 +34,15 @@
    \return    ODS documents with the contents of the libraries and a SAS file with the comparison result.
 */ /** \cond */ 
 
-%MACRO assertLibrary (
-    i_actual       = _NONE_
-   ,i_expected     = _NONE_
-   ,i_desc         = Bibliotheken prüfen
-   ,i_libraryCheck = STRICT
-   ,i_compareCheck = STRICT
-   ,i_fuzz         = _NONE_
-   ,i_id           = _NONE_
-   ,i_ExcludeList  = _NONE_
-);
+%MACRO assertLibrary (i_actual       = _NONE_
+                     ,i_expected     = _NONE_
+                     ,i_desc         = Bibliotheken prüfen
+                     ,i_libraryCheck = STRICT
+                     ,i_compareCheck = STRICT
+                     ,i_fuzz         = _NONE_
+                     ,i_id           = _NONE_
+                     ,i_ExcludeList  = _NONE_
+                     );
 
    %GLOBAL g_inTestcase;
    %IF &g_inTestcase EQ 1 %THEN %DO;

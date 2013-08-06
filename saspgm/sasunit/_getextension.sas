@@ -20,15 +20,14 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%MACRO _getExtension (
-    i_file  
-); 
+%MACRO _getExtension (i_file  
+                     ); 
 
-%LOCAL i; %LET i=0;
-%DO %WHILE("%scan(&i_file,%eval(&i+1),.)" NE "");
-   %LET i=%eval(&i+1);
-%END;
-%IF &i>1 %THEN .%scan(&i_file,&i,.);
+   %LOCAL i; %LET i=0;
+   %DO %WHILE("%scan(&i_file,%eval(&i+1),.)" NE "");
+      %LET i=%eval(&i+1);
+   %END;
+   %IF &i>1 %THEN .%scan(&i_file,&i,.);
 
 %MEND _getExtension;
 /** \endcond */

@@ -24,51 +24,50 @@
 
 */ /** \cond */ 
 
-%MACRO assertEquals (
-    i_expected =      
-   ,i_actual   =      
-   ,i_desc     =      
-   ,i_fuzz     =      
-);
+%MACRO assertEquals (i_expected =      
+                    ,i_actual   =      
+                    ,i_desc     =      
+                    ,i_fuzz     =      
+                    );
 
-%GLOBAL g_inTestcase;
-%IF &g_inTestcase EQ 1 %THEN %DO;
-   %endTestcall;
-%END;
-%ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-   %PUT &g_error: assert has to be called after initTestcase;
-   %RETURN;
-%END;
+   %GLOBAL g_inTestcase;
+   %IF &g_inTestcase EQ 1 %THEN %DO;
+      %endTestcall;
+   %END;
+   %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
+      %PUT &g_error: assert has to be called after initTestcase;
+      %RETURN;
+   %END;
 
-%LOCAL l_expected;
-%LET l_expected = &i_expected;
-%LOCAL l_result;
+   %LOCAL l_expected;
+   %LET l_expected = &i_expected;
+   %LOCAL l_result;
 
-/* alphanumerical value? */
-%IF   %sysfunc(prxmatch("^[0-9]*.?[0-9]*$",&i_expected))=0 
-   OR %sysfunc(prxmatch("^[0-9]*.?[0-9]*$",&i_actual))=0 %THEN %DO; 
-   %LET l_result = %eval(("&i_expected" NE "&i_actual")*2);
-%END; 
-/* numerical value and fuzz specified ? */
-%ELSE %IF %quote(&i_fuzz) NE %THEN %DO;
-   %LET l_expected = %quote(&l_expected(+-&i_fuzz)); 
-   %IF %sysevalf(%sysfunc(abs(%sysevalf(&i_expected - &i_actual))) <= &i_fuzz) 
-      %THEN %LET l_result = 0;
-   %ELSE %LET l_result = 2;
-%END;
-/* numerical without fuzz */
-%ELSE %DO;
-   %IF %quote(&i_expected) = %quote(&i_actual)
-      %THEN %LET l_result = 0;
-   %ELSE %LET l_result = 2;
-%END;
+   /* alphanumerical value? */
+   %IF   %sysfunc(prxmatch("^[0-9]*.?[0-9]*$",&i_expected))=0 
+      OR %sysfunc(prxmatch("^[0-9]*.?[0-9]*$",&i_actual))=0 %THEN %DO; 
+      %LET l_result = %eval(("&i_expected" NE "&i_actual")*2);
+   %END; 
+   /* numerical value and fuzz specified ? */
+   %ELSE %IF %quote(&i_fuzz) NE %THEN %DO;
+      %LET l_expected = %quote(&l_expected(+-&i_fuzz)); 
+      %IF %sysevalf(%sysfunc(abs(%sysevalf(&i_expected - &i_actual))) <= &i_fuzz) 
+         %THEN %LET l_result = 0;
+      %ELSE %LET l_result = 2;
+   %END;
+   /* numerical without fuzz */
+   %ELSE %DO;
+      %IF %quote(&i_expected) = %quote(&i_actual)
+         %THEN %LET l_result = 0;
+      %ELSE %LET l_result = 2;
+   %END;
 
-%_asserts(
-    i_type     = assertEquals
-   ,i_expected = &l_expected
-   ,i_actual   = &i_actual
-   ,i_desc     = &i_desc
-   ,i_result   = &l_result
-)
+   %_asserts(
+       i_type     = assertEquals
+      ,i_expected = &l_expected
+      ,i_actual   = &i_actual
+      ,i_desc     = &i_desc
+      ,i_result   = &l_result
+   )
 %MEND assertEquals;
 /** \endcond */

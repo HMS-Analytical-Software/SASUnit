@@ -25,12 +25,12 @@
 */ /** \cond */ 
 
 %macro _createTestSubfolder (i_assertType=
-                                    ,i_root      =%sysfunc(pathname(testout))
-                                    ,i_scnid     =
-                                    ,i_casid     =
-                                    ,i_tstid     =
-                                    ,r_path      =
-                                    );
+                            ,i_root      =%sysfunc(pathname(testout))
+                            ,i_scnid     =
+                            ,i_casid     =
+                            ,i_tstid     =
+                            ,r_path      =
+                            );
 
    %local l_path_cts;
    %let l_path_cts=_ERROR_;

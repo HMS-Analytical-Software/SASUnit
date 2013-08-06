@@ -23,50 +23,50 @@
 
 %MACRO endTestcase(i_assertLog=1);
 
-PROC SQL NOPRINT;
-%LOCAL l_casid l_assertLog;
-/* determine id of current test case */
-   SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid=&g_scnid;
-%LET l_casid = &l_casid;
-%IF &l_casid=. %THEN %DO;
-   %PUT &g_error: endTestcase muss nach InitTestcase aufgerufen werden;
-   %RETURN;
-%END;
-%IF &i_assertLog %THEN %DO;
-/* call assertLog if not already coded by programmer */
-   SELECT count(*) INTO :l_assertLog 
-   FROM target.tst
-   WHERE tst_scnid = &g_scnid AND tst_casid = &l_casid AND tst_type='assertLog';
-   %IF &l_assertLog=0 %THEN %DO;
-      %assertLog()
+   %GLOBAL g_inTestcase;
+   %LOCAL l_casid l_assertLog l_result;
+
+   PROC SQL NOPRINT;
+   /* determine id of current test case */
+      SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid=&g_scnid;
+   %LET l_casid = &l_casid;
+   %IF &l_casid=. %THEN %DO;
+      %PUT &g_error: endTestcase muss nach InitTestcase aufgerufen werden;
+      %RETURN;
    %END;
-%END;
-QUIT;
+   %IF &i_assertLog %THEN %DO;
+   /* call assertLog if not already coded by programmer */
+      SELECT count(*) INTO :l_assertLog 
+      FROM target.tst
+      WHERE tst_scnid = &g_scnid AND tst_casid = &l_casid AND tst_type='assertLog';
+      %IF &l_assertLog=0 %THEN %DO;
+         %assertLog()
+      %END;
+   %END;
+   QUIT;
 
-%GLOBAL g_inTestcase;
-%IF &g_inTestcase EQ 1 %THEN %DO;
-   %endTestcall;
-%END;
-%ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-   %PUT &g_error: endTestcase muss nach initTestcase aufgerufen werden;
-   %RETURN;
-%END;
-%LET g_inTestcase=0;
+   %IF &g_inTestcase EQ 1 %THEN %DO;
+      %endTestcall;
+   %END;
+   %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
+      %PUT &g_error: endTestcase muss nach initTestcase aufgerufen werden;
+      %RETURN;
+   %END;
+   %LET g_inTestcase=0;
 
-%LOCAL l_result;
-/* determine test results */
-PROC SQL NOPRINT;
-   SELECT max (tst_res) INTO :l_result FROM target.tst WHERE tst_scnid=&g_scnid AND tst_casid=&l_casid;
-QUIT;
+   /* determine test results */
+   PROC SQL NOPRINT;
+      SELECT max (tst_res) INTO :l_result FROM target.tst WHERE tst_scnid=&g_scnid AND tst_casid=&l_casid;
+   QUIT;
 
-PROC SQL NOPRINT;
-   UPDATE target.cas
-   SET 
-      cas_res = &l_result
-   WHERE 
-      cas_scnid = &g_scnid AND
-      cas_id    = &l_casid;
-QUIT;
+   PROC SQL NOPRINT;
+      UPDATE target.cas
+      SET 
+         cas_res = &l_result
+      WHERE 
+         cas_scnid = &g_scnid AND
+         cas_id    = &l_casid;
+   QUIT;
 
 %MEND endTestcase;
 /** \endcond */

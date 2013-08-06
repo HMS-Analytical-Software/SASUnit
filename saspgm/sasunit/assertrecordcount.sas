@@ -17,20 +17,19 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param     i_libref       	 Library containing the data set
+   \param     i_libref         Library containing the data set
    \param     i_memname        Data set to be tested    
    \param     i_operator       Optional Parameter: Logical operator to compare i_recordsExp and l_actual; if not specified "EQ" is assumed as default.
    \param     i_recordsExp     Number of records expected: a numeric value >= 0
-	\param     i_where          Optional Parameter: where condition to be checked. Set to 1 by default. 
+   \param     i_where          Optional Parameter: where condition to be checked. Set to 1 by default. 
    \param     i_desc           Optional Parameter: description of the assertion to be checked
 */ /** \cond */ 
 
-%MACRO assertRecordCount(
-                        i_libref       	= 
-                        ,i_memname    		= 
-                        ,i_operator		   = EQ
-                        ,i_recordsExp 		= 
-                        ,i_where				= 1
+%MACRO assertRecordCount(i_libref         = 
+                        ,i_memname        = 
+                        ,i_operator       = EQ
+                        ,i_recordsExp     = 
+                        ,i_where          = 1
                         ,i_desc           =
                         );
 
@@ -44,10 +43,10 @@
    %END;
 
    %LOCAL l_dsname l_result l_actual;
-	%let l_dsname =%sysfunc(catx(., &i_libref., &i_memname.));
-	%let l_result = 2;
-	%let l_actual = -999;
-	%let i_operator = %sysfunc(upcase(&i_operator.));
+   %let l_dsname =%sysfunc(catx(., &i_libref., &i_memname.));
+   %let l_result = 2;
+   %let l_actual = -999;
+   %let i_operator = %sysfunc(upcase(&i_operator.));
   
    %*************************************************************;
    %*** Check preconditions                                   ***;
@@ -73,7 +72,7 @@
    %*** check for valid parameter i_operator***;
    data _null_;
      IF NOT("&i_operator." IN ("EQ", "NE", "GT", "LT", "GE", "LE", "=", "<", ">", ">=", "<=", "~="))  then call symput('l_actual',"-5");
-   run;		
+   run;     
    %if (&l_actual. EQ -5) %THEN %DO;
       %put Operator not found;
       %goto Update;
@@ -83,7 +82,7 @@
    %*** start tests                                           ***;
    %*************************************************************;
    
-	%*** Determine results***;
+   %*** Determine results***;
    proc sql noprint;
       select count(*) into :l_actual 
          from &l_dsname.

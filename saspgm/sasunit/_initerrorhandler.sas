@@ -14,17 +14,18 @@
 */ /** \cond */ 
 
 %MACRO _initErrorHandler;
-/* global signal for return of error conditions to calling macros programs */
-%GLOBAL g_error_code; 
-%LET g_error_code=;
 
-/* most recent error message */
-%GLOBAL g_error_msg; 
-%LET g_error_msg=;
+   /* global signal for return of error conditions to calling macros programs */
+   %GLOBAL g_error_code; 
+   %LET g_error_code=;
 
-/* macro program which generated the most recent error */
-%GLOBAL g_error_macro; 
-%LET g_error_macro=;
+   /* most recent error message */
+   %GLOBAL g_error_msg; 
+   %LET g_error_msg=;
+
+   /* macro program which generated the most recent error */
+   %GLOBAL g_error_macro; 
+   %LET g_error_macro=;
 
 %MEND _initErrorHandler;
 /** \endcond */

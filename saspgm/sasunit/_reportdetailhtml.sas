@@ -3,10 +3,10 @@
 
    \brief      create page with detail information of a test case in HTML format
 
-   \version \$Revision$
-   \author  \$Author$
-   \date    \$Date$
-   \sa      \$HeadURL$
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -21,14 +21,13 @@
 
 */ /** \cond */ 
 
-%MACRO _reportDetailHTML (
-   i_repdata =
-  ,i_scnid   =
-  ,i_casid   = 
-  ,o_html    =
-  ,o_path    =
-  ,o_file    =
-);
+%MACRO _reportDetailHTML (i_repdata =
+                         ,i_scnid   =
+                         ,i_casid   = 
+                         ,o_html    =
+                         ,o_path    =
+                         ,o_file    =
+                         );
 
    %LOCAL
       l_nls_reportdetail_errors
@@ -55,7 +54,7 @@
    quit;
 
 
-   DATA work._test_report / view=work._test_report;
+   DATA work._test_report;* / view=work._test_report;
       SET &i_repdata. END=eof;
       WHERE scn_id = &i_scnid AND cas_id = &i_casid;
 
@@ -98,18 +97,18 @@
          actualColumn        ="&g_nls_reportDetail_013."
          resultColumn        ="&g_nls_reportDetail_014."
          ;
-				 
-			*** initalizing variables that MAY be used in a specific assert	***;
-			if (_N_=1) then do;
-			   hlp="";
-				 hlp2="";
-				 errcountmsg="";
-				 href="";
-				 href_act="";
-				 href_exp="";
-				 href_rep="";
-			end;
-			
+             
+         *** initalizing variables that MAY be used in a specific assert   ***;
+         if (_N_=1) then do;
+            hlp="";
+             hlp2="";
+             errcountmsg="";
+             href="";
+             href_act="";
+             href_exp="";
+             href_rep="";
+         end;
+         
       *** Set default description per assert type ***;
       SELECT(upcase(tst_type));
          WHEN ('ASSERTLOG') DO; 
@@ -133,25 +132,25 @@
       cas_pgm      = resolve ('%_stdpath(&g_root./saspgm/,' !! trim(cas_abs_path) !! ')');
 
       %_render_DataColumn (i_sourceColumn=scn_duration
-                                  ,o_targetColumn=scnDurationColumn
-                                  );
+                          ,o_targetColumn=scnDurationColumn
+                          );
       %_render_DataColumn (i_sourceColumn=cas_desc
-                                  ,o_targetColumn=casDescriptionColumn
-                                  );
+                          ,o_targetColumn=casDescriptionColumn
+                          );
       %_render_IdColumn   (i_sourceColumn=tst_id
-                                  ,i_format=z3.
-                                  ,o_targetColumn=idColumn
-                                  );
+                          ,i_format=z3.
+                          ,o_targetColumn=idColumn
+                          );
       %_render_DataColumn (i_sourceColumn=tst_desc
-                                  ,o_targetColumn=descriptionColumn
-                                  );
+                          ,o_targetColumn=descriptionColumn
+                          );
       %_render_DataColumn (i_sourceColumn=tst_type
-                                  ,o_targetColumn=assertTypeColumn
-                                  );
+                          ,o_targetColumn=assertTypeColumn
+                          );
       %_render_IconColumn (i_sourceColumn=tst_res
-                                  ,o_html=&o_html.
-                                  ,o_targetColumn=resultColumn
-                                  );
+                          ,o_html=&o_html.
+                          ,o_targetColumn=resultColumn
+                          );
 
       *** Any destination that renders links shares this if ***;
       %if (&o_html.) %then %do;
@@ -169,32 +168,32 @@
             LinkColumn5  = c_scnid !! "_" !! c_casid !! "_log.html";
          %end;
          %_render_DataColumn (i_sourceColumn=scn_desc
-                                     ,o_targetColumn=scnDescriptionColumn
-                                     ,i_linkColumn=LinkColumn1
-                                     ,i_linkTitle=LinkTitle1
-                                     );
+                             ,o_targetColumn=scnDescriptionColumn
+                             ,i_linkColumn=LinkColumn1
+                             ,i_linkTitle=LinkTitle1
+                             );
          %_render_DataColumn (i_sourceColumn=scn_path
-                                     ,i_linkColumn=scn_abs_path
-                                     ,i_linkTitle=LinkTitle2
-                                     ,o_targetColumn=scnProgramColumn
-                                     );
+                             ,i_linkColumn=scn_abs_path
+                             ,i_linkTitle=LinkTitle2
+                             ,o_targetColumn=scnProgramColumn
+                             );
          %_render_DataColumn (i_sourceColumn=scn_start
-                                     ,i_format=&g_nls_reportDetail_050.
-                                     ,i_linkColumn=LinkColumn3
-                                     ,i_linkTitle=LinkTitle3
-                                     ,o_targetColumn=scnLast_runColumn
-                                     );
+                             ,i_format=&g_nls_reportDetail_050.
+                             ,i_linkColumn=LinkColumn3
+                             ,i_linkTitle=LinkTitle3
+                             ,o_targetColumn=scnLast_runColumn
+                             );
          %_render_DataColumn (i_sourceColumn=cas_pgm
-                                     ,i_linkColumn=cas_abs_path
-                                     ,i_linkTitle=LinkTitle4
-                                     ,o_targetColumn=casProgramColumn
-                                     );
+                             ,i_linkColumn=cas_abs_path
+                             ,i_linkTitle=LinkTitle4
+                             ,o_targetColumn=casProgramColumn
+                             );
          %_render_DataColumn (i_sourceColumn=cas_start
-                                     ,i_format=&g_nls_reportDetail_050.
-                                     ,i_linkColumn=LinkColumn5
-                                     ,i_linkTitle=LinkTitle5
-                                     ,o_targetColumn=casLast_runColumn
-                                     );
+                             ,i_format=&g_nls_reportDetail_050.
+                             ,i_linkColumn=LinkColumn5
+                             ,i_linkTitle=LinkTitle5
+                             ,o_targetColumn=casLast_runColumn
+                             );
       %end;
 
       %do l_NumAssert=1 %to &_numAsserts;
@@ -204,13 +203,13 @@
                %let l_NumAssertSubstr = %substr(&l_NumAssertSubstr.,1,21);
             %end;
             %_render_&l_NumAssertSubstr.Exp (i_sourceColumn=tst_exp
-                                                           ,o_html=&o_html.
-                                                           ,o_targetColumn=expectedColumn
-                                                           );
+                                            ,o_html=&o_html.
+                                            ,o_targetColumn=expectedColumn
+                                            );
             %_render_&l_NumAssertSubstr.Act (i_sourceColumn=tst_act
-                                                           ,o_html=&o_html.
-                                                           ,o_targetColumn=actualColumn
-                                                           );
+                                            ,o_html=&o_html.
+                                            ,o_targetColumn=actualColumn
+                                            );
          end;
       %end;
    run;
@@ -230,13 +229,12 @@
                     headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
-      %_reportPageTopHTML(
-         i_title   = &l_title
-        ,i_current = 0
-      )
+      %_reportPageTopHTML(i_title   = &l_title
+                         ,i_current = 0
+                         )
    %end;
    
-   data work._test_overview / view=work._test_overview;
+   data work._test_overview;
       set work._test_report (where=(tst_id=1));
       length Name $20 Value $1000;
       Name="&g_nls_reportDetail_028."; Value=c_scnid;output;

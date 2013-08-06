@@ -22,9 +22,9 @@
 */ /** \cond */ 
 
 %macro _getScenarioTestId (i_scnid=
-                                  ,r_casid=
-                                  ,r_tstid=
-                                  );
+                          ,r_casid=
+                          ,r_tstid=
+                          );
 
    %LOCAL l_casid_gti l_tstid_gti;
 

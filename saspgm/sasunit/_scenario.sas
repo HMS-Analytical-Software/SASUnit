@@ -17,10 +17,12 @@
    \param   io_target       path to test database
 */ /** \cond */ 
 
-%MACRO _scenario(
-   io_target  = 
-);
-%LOCAL l_macname; %LET l_macname=&sysmacroname;
+%MACRO _scenario(io_target  = 
+                );
+
+%LOCAL l_macname; 
+
+%LET l_macname=&sysmacroname;
 
 OPTIONS MAUTOSOURCE MPRINT LINESIZE=MAX;
 
@@ -28,16 +30,20 @@ OPTIONS MAUTOSOURCE MPRINT LINESIZE=MAX;
 %_initErrorHandler;
 
 /* check for target directory*/
-%IF %_handleError(&l_macname, InvalidTargetDir, 
-   "&io_target" EQ "" OR NOT %_existDir(&io_target), 
-   target directory &io_target does not exist) 
+%IF %_handleError(&l_macname
+                 ,InvalidTargetDir
+                 ,"&io_target" EQ "" OR NOT %_existDir(&io_target)
+                 ,target directory &io_target does not exist
+                 ) 
    %THEN %GOTO errexit;
 
 /* create libref for test database*/
 LIBNAME target "&io_target";
-%IF %_handleError(&l_macname, ErrorNoTargetDirLib, 
-   %quote(&syslibrc) NE 0, 
-   test database cannot be opened) 
+%IF %_handleError(&l_macname
+                 ,ErrorNoTargetDirLib
+                 ,%quote(&syslibrc.) NE 0
+                 ,test database cannot be opened
+                 ) 
    %THEN %GOTO errexit;
 
 /* set global macro symbols and librefs / filerefs  */

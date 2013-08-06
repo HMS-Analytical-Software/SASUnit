@@ -16,18 +16,17 @@
 */ /** \cond */ 
 
 
-%MACRO _termScenario(
-);
+%MACRO _termScenario();
 
-%GLOBAL g_inTestcase;
-%IF &g_inTestcase EQ 1 %THEN %DO;
-   %endTestcall;
-   %endTestcase;
-%END;
-%IF &g_inTestcase EQ 2 %THEN %DO;
-   %endTestcase;
-%END;
-%LET g_inTestcase=1;
+   %GLOBAL g_inTestcase;
+   %IF &g_inTestcase EQ 1 %THEN %DO;
+      %endTestcall;
+      %endTestcase;
+   %END;
+   %IF &g_inTestcase EQ 2 %THEN %DO;
+      %endTestcase;
+   %END;
+   %LET g_inTestcase=1;
 
 %MEND _termScenario;
 /** \endcond */

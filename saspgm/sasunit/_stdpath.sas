@@ -17,10 +17,9 @@
    \return  standardized path
 */ /** \cond */ 
 
-%MACRO _stdPath(
-    i_root
-   ,i_path
-);
+%MACRO _stdPath(i_root
+               ,i_path
+               );
 
 %IF %LENGTH(&i_root) = 0 %THEN %DO;
   %PUT &g_error: i_root parameter must not be blank;

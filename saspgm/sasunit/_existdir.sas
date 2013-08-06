@@ -19,18 +19,19 @@
 
 */ /** \cond */ 
 
-%MACRO _existDir(i_dir);
-%LOCAL rc did filrf;
-%LET filrf=_tmpf;
-%LET rc=%sysfunc(filename(filrf,&i_dir));
-%LET did=%sysfunc(dopen(_tmpf));
-%IF &did NE 0 %THEN %DO;
-   1
-   %LET rc=%sysfunc(dclose(&did));
-%END;
-%ELSE %DO;
-   0
-%END;
-%LET rc=%sysfunc(filename(filrf));
+%MACRO _existDir(i_dir
+                );
+   %LOCAL rc did filrf;
+   %LET filrf=_tmpf;
+   %LET rc=%sysfunc(filename(filrf,&i_dir));
+   %LET did=%sysfunc(dopen(_tmpf));
+   %IF &did NE 0 %THEN %DO;
+      1
+      %LET rc=%sysfunc(dclose(&did));
+   %END;
+   %ELSE %DO;
+      0
+   %END;
+   %LET rc=%sysfunc(filename(filrf));
 %MEND _existDir;
 /** \endcond */

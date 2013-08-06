@@ -4,10 +4,10 @@
 
    \brief      Creation of XML-based test report according to the JUnit-Sepcification
 
-   \version \$Revision: 191 $
-   \author  \$Author: thieleman $
-   \date    \$Date: 2013-07-31 09:01:22 +0200 (Mi, 31 Jul 2013) $
-   \sa      \$HeadURL: svn://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/reportsasunit.sas $
+   \version    \$Revision: 191 $
+   \author     \$Author: thieleman $
+   \date       \$Date: 2013-07-31 09:01:22 +0200 (Mi, 31 Jul 2013) $
+   \sa         \$HeadURL: svn://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/reportsasunit.sas $
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -17,9 +17,8 @@
 
 */ /** \cond */ 
 
-%MACRO _reportJUnitXML(
-    o_file    =
-);
+%MACRO _reportJUnitXML(o_file    =
+                      );
 
    /**
     * Preprocess data: Create a table containing the information about the testsuites and testcases.
@@ -76,7 +75,7 @@
       ;
    RUN;
 
-   /* Assert that the failed TEsts are listed first */
+   /* Assert that the failed tests are listed first */
    PROC SORT
       DATA = &d_rep.
       OUT  = Work.Failures
@@ -101,7 +100,7 @@
 
    PROC SQL NOPRINT;
       /* Combine testdata with error messages */
-       CREATE TABLE Work.Junit AS 
+      CREATE TABLE Work.Junit AS 
          SELECT   C.*
             ,     F.tst_errmsg AS message
             ,     F.tst_type   AS type 

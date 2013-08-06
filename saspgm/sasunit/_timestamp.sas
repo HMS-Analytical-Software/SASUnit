@@ -24,13 +24,13 @@
 */ /** \cond */ 
 
 %MACRO _timestamp(dt);
-%LOCAL dt d t;
-%IF &dt= %THEN %LET dt=%sysfunc(datetime());
-%LET d=%sysfunc(datepart(&dt));
-%LET t=%sysfunc(timepart(&dt));
-%LET h=%sysfunc(hour(&t));
-%LET m=%sysfunc(minute(&t));
-%LET s=%sysfunc(second(&t));
-%sysfunc(putn(&d,yymmdd10.))-%sysfunc(putn(&h,z2.))-%sysfunc(putn(&m,z2.))-%sysfunc(putn(&s,z6.3))
+   %LOCAL dt d t;
+   %IF &dt= %THEN %LET dt=%sysfunc(datetime());
+   %LET d=%sysfunc(datepart(&dt));
+   %LET t=%sysfunc(timepart(&dt));
+   %LET h=%sysfunc(hour(&t));
+   %LET m=%sysfunc(minute(&t));
+   %LET s=%sysfunc(second(&t));
+   %sysfunc(putn(&d,yymmdd10.))-%sysfunc(putn(&h,z2.))-%sysfunc(putn(&m,z2.))-%sysfunc(putn(&s,z6.3))
 %MEND _timestamp;
 /** \endcond */

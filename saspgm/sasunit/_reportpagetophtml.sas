@@ -17,15 +17,13 @@
 
 */ /** \cond */  
 
-%MACRO _reportPageTopHTML (
-    i_title   =
-   ,i_current = 1
-);
+%MACRO _reportPageTopHTML (i_title   =
+                          ,i_current = 1
+                          );
 
-      %_reportTabsHTML(
-          &g_nls_reportPageTop_001
-         ,overview.html scn_overview.html cas_overview.html auton_overview.html
-         ,i_current=&i_current
-      )
+      %_reportTabsHTML(&g_nls_reportPageTop_001
+                      ,overview.html scn_overview.html cas_overview.html auton_overview.html
+                      ,i_current=&i_current
+                      )
 %MEND _reportPageTopHTML;
 /** \endcond */

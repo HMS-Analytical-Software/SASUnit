@@ -15,11 +15,10 @@
    \sa         \$HeadURL$
 */ /** \cond */ 
 
-%MACRO _getAbsPathComponents (
-     i_absPath =
-   , o_fileName =
-   , o_pathWithoutName =
-); 
+%MACRO _getAbsPathComponents (i_absPath =
+                             ,o_fileName =
+                             ,o_pathWithoutName =
+                             ); 
 
    %LOCAL l_pathElementCount;
    %LOCAL l_fileNameStartPos;
@@ -33,10 +32,10 @@
          %LET l_fileNameStartPos=%sysfunc(findw(&i_absPath.,%scan(&i_absPath,&l_pathElementCount,/)));
          %LET &o_pathWithoutName=%sysfunc(substr(&i_absPath.,1,%EVAL(&l_fileNameStartPos. - 2)));
          %LET &o_fileName = %sysfunc(substr(&i_absPath.,&l_fileNameStartPos.));
-	  %END; /*IF %sysfunc(index(&i_absPath.,'/')) GT 0*/
-	  %ELSE %DO; /*input string is a filename only*/
-	     %LET &o_fileName = &i_absPath;
-	  %END;
+     %END; /*IF %sysfunc(index(&i_absPath.,'/')) GT 0*/
+     %ELSE %DO; /*input string is a filename only*/
+        %LET &o_fileName = &i_absPath;
+     %END;
    %END; /*IF "%sysfunc(compress(&i_absPath))" NE ""*/
    
 %MEND _getAbsPathComponents;

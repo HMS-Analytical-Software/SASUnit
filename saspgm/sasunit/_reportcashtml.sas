@@ -3,10 +3,10 @@
 
    \brief      create a list of test cases for HTML report
 
-   \version \$Revision$
-   \author  \$Author$
-   \date    \$Date$
-   \sa      \$HeadURL$
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -19,12 +19,11 @@
 
 */ /** \cond */ 
 
-%MACRO _reportCasHTML (
-   i_repdata = 
-  ,o_html    =
-  ,o_path    =
-  ,o_file    =
-);
+%MACRO _reportCasHTML (i_repdata = 
+                      ,o_html    =
+                      ,o_path    =
+                      ,o_file    =
+                      );
 
    %LOCAL
       l_nls_reportcas_errors
@@ -74,12 +73,12 @@
          resultColumn="&g_nls_reportCas_016."
          ;
 
- 			*** initalizing variables that MAY be used in a specific assert	***;
-			if (_N_=1) then do;
-			   hlp="";
-			end;
-			
-     if (first.cas_id) then do;
+      *** initalizing variables that MAY be used in a specific assert   ***;
+      if (_N_=1) then do;
+         hlp="";
+      end;
+         
+      if (first.cas_id) then do;
          *** Columns for scenario overview ***;
          IF scn_errorcount GT 0 THEN DO;
             errcountmsg = '(' !! compress(put(scn_errorcount, 3.)) !! ' ' !! "&l_nls_reportcas_errors." !! ')';
@@ -194,10 +193,9 @@
                     headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
-      %_reportPageTopHTML(
-         i_title   = &l_title
-        ,i_current = 3
-      )
+      %_reportPageTopHTML(i_title   = &l_title.
+                         ,i_current = 3
+                         )
    %end;
    %do l_scnid=1 %to &l_anzScenarios.;
       data work._current_scn;

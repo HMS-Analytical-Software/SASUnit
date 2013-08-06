@@ -18,9 +18,8 @@
    \param   i_title        page title (displayed in browser window)
 */ /** \cond */ 
 
-%MACRO _reportHeaderHTML (
-   i_title   
-);
+%MACRO _reportHeaderHTML (i_title   
+                         );
 
       PUT "<html xmlns=""http://www.w3.org/1999/xhtml"" xml:lang=""en"" lang=""en"">";
       PUT "  <head>";

@@ -22,24 +22,23 @@
 
 */ /** \cond */ 
 
-%MACRO _existVar (
-   i_data       
-  ,i_var        
-  ,i_vartype    
-); 
+%MACRO _existVar (i_data       
+                 ,i_var        
+                 ,i_vartype    
+                 ); 
 
-%LOCAL dsid varnum;
-%LET dsid=%sysfunc(open(&i_data,i));
-%IF &dsid EQ 0 %THEN 0;
-%ELSE %DO;
-   %LET varnum=%sysfunc(varnum(&dsid,&i_var));
-   %IF &varnum LE 0 %THEN 0;
-   %ELSE 
-      %IF &i_vartype NE 
-         AND %sysfunc(vartype(&dsid,&varnum)) NE %upcase(&i_vartype) 
-         %THEN 0;
-   %ELSE 1;
-   %LET dsid = %sysfunc(close(&dsid));
-%END;
+   %LOCAL dsid varnum;
+   %LET dsid=%sysfunc(open(&i_data,i));
+   %IF &dsid EQ 0 %THEN 0;
+   %ELSE %DO;
+      %LET varnum=%sysfunc(varnum(&dsid,&i_var));
+      %IF &varnum LE 0 %THEN 0;
+      %ELSE 
+         %IF &i_vartype NE 
+            AND %sysfunc(vartype(&dsid,&varnum)) NE %upcase(&i_vartype) 
+            %THEN 0;
+      %ELSE 1;
+      %LET dsid = %sysfunc(close(&dsid));
+   %END;
 %MEND _existVar;
 /** \endcond */

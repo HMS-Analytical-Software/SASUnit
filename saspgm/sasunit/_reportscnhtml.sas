@@ -19,14 +19,13 @@
 
 */ /** \cond */ 
 
-%MACRO _reportScnHTML (
-   i_repdata = 
-  ,o_html    =
-  ,o_pdf     = 0
-  ,o_rtf     = 0
-  ,o_path    =
-  ,o_file    =
-);
+%MACRO _reportScnHTML (i_repdata = 
+                      ,o_html    =
+                      ,o_pdf     = 0
+                      ,o_rtf     = 0
+                      ,o_path    =
+                      ,o_file    =
+                      );
 
    %local l_title l_footnote;
 
@@ -132,12 +131,12 @@
    %end;
 
    proc print data=work._scenario_report noobs label;
-      var idColumn 				/ style(column)=rowheader;
+      var idColumn            / style(column)=rowheader;
       var descriptionColumn
           programColumn
           last_runColumn;
-      var durationColumn 	/ style(column)=[just=right];
-      var resultColumn 		/ style(column)=[background=white];
+      var durationColumn   / style(column)=[just=right];
+      var resultColumn     / style(column)=[background=white];
    run;
    %if (&o_html.) %then %do;
       ods html close;

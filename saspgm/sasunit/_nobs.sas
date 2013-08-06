@@ -16,16 +16,16 @@
    \return  number of observations or 0, if dataset cannot be found
 */ /** \cond */ 
 
-%MACRO _nobs(
-    i_data
-);
-%local dsid nobs;
-%let nobs=0;
-%let dsid=%sysfunc(open(&i_data));
-%if &dsid>0 %then %do;
-   %let nobs=%sysfunc(attrn(&dsid,nlobs));
-   %let dsid=%sysfunc(close(&dsid));
-%end;
+%MACRO _nobs(i_data
+            );
+
+   %local dsid nobs;
+   %let nobs=0;
+   %let dsid=%sysfunc(open(&i_data));
+   %if &dsid>0 %then %do;
+      %let nobs=%sysfunc(attrn(&dsid,nlobs));
+      %let dsid=%sysfunc(close(&dsid));
+   %end;
 &nobs
 %MEND _nobs;
 /** \endcond */

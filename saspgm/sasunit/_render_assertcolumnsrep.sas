@@ -23,25 +23,25 @@
 */ /** \cond */ 
 
 %MACRO _render_assertColumnsRep (i_assertype=
-                                        ,i_repdata  =
-                                        ,i_scnid    =
-                                        ,i_casid    = 
-                                        ,i_tstid    = 
-                                        ,o_html     =
-                                        ,o_path     =
-                                        );
+                                ,i_repdata  =
+                                ,i_scnid    =
+                                ,i_casid    = 
+                                ,i_tstid    = 
+                                ,o_html     =
+                                ,o_path     =
+                                );
 
    %local l_path;
 
    title;footnote;
 
    %_getTestSubfolder (i_assertType=assertColumns
-                              ,i_root      =&g_target./tst
-                              ,i_scnid     =&i_scnid.
-                              ,i_casid     =&i_casid.
-                              ,i_tstid     =&i_tstid.
-                              ,r_path      =l_path
-                              );
+                      ,i_root      =&g_target./tst
+                      ,i_scnid     =&i_scnid.
+                      ,i_casid     =&i_casid.
+                      ,i_tstid     =&i_tstid.
+                      ,r_path      =l_path
+                      );
 
    LIBNAME _acLib "&l_path";
 

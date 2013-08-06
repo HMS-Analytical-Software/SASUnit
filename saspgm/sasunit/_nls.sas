@@ -33,16 +33,15 @@ data nls (drop=mark);
    end;
 run; 
 
-%MACRO _nls(
-   i_language = 
-);
+%MACRO _nls (i_language = 
+            );
 
-data _null_;
-   set nls;
-   where language = "&i_language";
-   call execute ('%global g_nls_' !! trim(program) !! '_' !! put (num, z3.) !! ';');
-   call symput ('g_nls_' !! trim(program) !! '_' !! put (num, z3.), trim (text));
-run; 
+   data _null_;
+      set nls;
+      where language = "&i_language";
+      call execute ('%global g_nls_' !! trim(program) !! '_' !! put (num, z3.) !! ';');
+      call symput ('g_nls_' !! trim(program) !! '_' !! put (num, z3.), trim (text));
+   run; 
 
 %MEND _nls;
 /** \endcond */

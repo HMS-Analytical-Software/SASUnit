@@ -20,65 +20,63 @@
    \param   i_desc         description of the assertion to be checked
 */ /** \cond */ 
 
-%MACRO assertRecordExists (
-    i_dataset      =      
-   ,i_whereExpr    =      
-   ,i_desc         =      
-);
+%MACRO assertRecordExists (i_dataset      =      
+                          ,i_whereExpr    =      
+                          ,i_desc         =      
+                          );
 
-%LOCAL l_countMatches l_rc l_errMsg;
-%LET l_countMatches = -1;
-%LET l_errMsg=;
+   /*-- verify correct sequence of calls-----------------------------------------*/
+   %GLOBAL g_inTestcase;
+   %IF &g_inTestcase EQ 1 %THEN %DO;
+      %endTestcall()
+   %END;
+   %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
+      %PUT &g_error: assert must be called after initTestcase;
+      %RETURN;
+   %END;
 
-/*-- check parameter i_dataset  ------------------------------------------------*/
-%IF NOT %SYSFUNC(EXIST(&i_dataset.)) %THEN %DO;
-  %LET l_rc = 2;
-  %LET l_errMsg=input dataset &i_dataset. does not exist!;
-  %GOTO Update;
-%END;
+   %LOCAL l_countMatches l_rc l_errMsg;
+   %LET l_countMatches = -1;
+   %LET l_errMsg=;
 
-/*-- check parameter i_dataset  ------------------------------------------------*/
-%IF %LENGTH(&i_whereExpr) = 0 %THEN %DO;
-  %LET l_rc = 2;
-  %LET l_errMsg=where expression is empty!;
-  %GOTO Update;
-%END;
+   /*-- check parameter i_dataset  ------------------------------------------------*/
+   %IF NOT %SYSFUNC(EXIST(&i_dataset.)) %THEN %DO;
+     %LET l_rc = 2;
+     %LET l_errMsg=input dataset &i_dataset. does not exist!;
+     %GOTO Update;
+   %END;
 
-/*-- verify correct sequence of calls-----------------------------------------*/
-%GLOBAL g_inTestcase;
-%IF &g_inTestcase EQ 1 %THEN %DO;
-   %endTestcall()
-%END;
-%ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-  %LET l_rc = 2;
-  %LET l_errMsg=assert can only be called after initTestcase!;
-  %GOTO Update;
-%END;
+   /*-- check parameter i_dataset  ------------------------------------------------*/
+   %IF %LENGTH(&i_whereExpr) = 0 %THEN %DO;
+     %LET l_rc = 2;
+     %LET l_errMsg=where expression is empty!;
+     %GOTO Update;
+   %END;
 
-PROC SQL NOPRINT;
-  SELECT COUNT(*) FORMAT=best12. INTO :l_countMatches
-    FROM &i_dataset(WHERE=(%nrbquote(&i_whereExpr)))
-  ;
-QUIT;
+   PROC SQL NOPRINT;
+     SELECT COUNT(*) FORMAT=best12. INTO :l_countMatches
+       FROM &i_dataset(WHERE=(%nrbquote(&i_whereExpr)))
+     ;
+   QUIT;
 
-%let l_countMatches = &l_countMatches; /* trim white space */
+   %let l_countMatches = &l_countMatches; /* trim white space */
 
-%if %eval(&l_countMatches >= 1) 
-  %then %let l_rc = 0;
-%else
-  %let l_rc = 2;
-%LET l_errMsg=No matching records were found!;
+   %if %eval(&l_countMatches >= 1) 
+     %then %let l_rc = 0;
+   %else
+     %let l_rc = 2;
+   %LET l_errMsg=No matching records were found!;
 
 %UPDATE:
-/*-- update comparison result in test database -------------------------------*/
-%_asserts(
-    i_type     = assertRecordExists
-   ,i_expected = > 0
-   ,i_actual   = &l_countMatches.
-   ,i_desc     = &i_desc.
-   ,i_result   = &l_rc.
-   ,i_errMsg   = &l_errMsg.
-);
+   /*-- update comparison result in test database -------------------------------*/
+   %_asserts(
+       i_type     = assertRecordExists
+      ,i_expected = > 0
+      ,i_actual   = &l_countMatches.
+      ,i_desc     = &i_desc.
+      ,i_result   = &l_rc.
+      ,i_errMsg   = &l_errMsg.
+   );
 
 %MEND assertRecordExists;
 /** \endcond */

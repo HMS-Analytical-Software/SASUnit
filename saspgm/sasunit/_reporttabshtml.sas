@@ -20,11 +20,10 @@
 */ /** \cond */ 
 
 
-%MACRO _reportTabsHTML (
-   i_tabnames
-  ,i_pages
-  ,i_current = 1
-);
+%MACRO _reportTabsHTML (i_tabnames
+                       ,i_pages
+                       ,i_current = 1
+                       );
 
    %let l_string=^{RAW <div class="tabs"><ul>;
    

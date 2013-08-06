@@ -18,22 +18,23 @@
  */ /** \cond */ 
 
 %macro _xcmd(i_cmd);
-%if &sysscp. = WIN %then %do; 
-   %local xwait xsync xmin;
-   %let xwait=%sysfunc(getoption(xwait));
-   %let xsync=%sysfunc(getoption(xsync));
-   %let xmin =%sysfunc(getoption(xmin));
 
-   options noxwait xsync xmin;
+   %if &sysscp. = WIN %then %do; 
+      %local xwait xsync xmin;
+      %let xwait=%sysfunc(getoption(xwait));
+      %let xsync=%sysfunc(getoption(xsync));
+      %let xmin =%sysfunc(getoption(xmin));
 
-   %SYSEXEC &i_cmd;
+      options noxwait xsync xmin;
 
-   options &xwait &xsync &xmin;
-%end;
+      %SYSEXEC &i_cmd;
 
-%else %if &sysscp. = LINUX %then %do;
-   %SYSEXEC &i_cmd;
-%end;
+      options &xwait &xsync &xmin;
+   %end;
+
+   %else %if &sysscp. = LINUX %then %do;
+      %SYSEXEC &i_cmd;
+   %end;
 
 %mend _xcmd; 
 

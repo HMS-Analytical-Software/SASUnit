@@ -1,6 +1,6 @@
 /** \file
    \ingroup    SASUNIT_REPORT
-	 
+    
    \brief      renders the layout of the expected column for assertReport
 
    \version    \$Revision: 191 $
@@ -20,26 +20,33 @@
 */ /** \cond */ 
 
 %macro _render_assertTableExistsExp (i_sourceColumn=
-                                   ,o_html=
-                                   ,o_targetColumn=
-                                   );
+                                    ,o_html=
+                                    ,o_targetColumn=
+                                    );
                                    
    hlp2 = scan(&i_sourceColumn., 1, ":");
-   select (hlp2);
-      when ("DATA") 		hlp = "&g_nls_reportTableExist_004.";
-      when ("VIEW") 		hlp = "&g_nls_reportTableExist_005.";
-      when ("CATALOG") hlp = "&g_nls_reportTableExist_006.";
-       otherwise hlp = hlp2;*"invalid type";
+   if (hlp2 in ("DATA", "VIEW", "CATALOG")) then do;
+      select (hlp2);
+         when ("DATA")     hlp = "&g_nls_reportTableExist_004.";
+         when ("VIEW")     hlp = "&g_nls_reportTableExist_005.";
+         when ("CATALOG")  hlp = "&g_nls_reportTableExist_006.";
+         otherwise;
+      end;
+
+      hlp2 = scan(&i_sourceColumn., 2, ":");
+      hlp = catx(" ",hlp,hlp2);
+      hlp2 = scan(&i_sourceColumn., 3, ":");
+      select (hlp2);
+         when (0) hlp = catt(hlp," &g_nls_reportTableExist_007.");
+         when (1) hlp = catt(hlp," &g_nls_reportTableExist_008.");
+         otherwise;
+      end;
    end;
-   hlp2 = scan(&i_sourceColumn., 2, ":");
-   hlp = catx(" ",hlp,hlp2);
-   hlp2 = scan(&i_sourceColumn., 3, ":");
-   select (hlp2);
-      when (0) 		hlp = catt(hlp," &g_nls_reportTableExist_007.");
-      when (1) 		hlp = catt(hlp," &g_nls_reportTableExist_008.");
-       otherwise;
-   end;			
-   
+   else do;
+      /* invalid type */
+      hlp = tst_errMsg;    
+   end;
+ 
    %_render_dataColumn (i_sourceColumn=hlp
                        ,o_targetColumn=&o_targetColumn.
                        );

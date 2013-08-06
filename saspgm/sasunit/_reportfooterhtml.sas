@@ -15,7 +15,7 @@
 */ /** \cond */ 
 
 %MACRO _reportFooterHTML (
-                                 );
+                         );
       %local l_footnote;
 
       %let l_footnote=^{RAW <small>&g_nls_reportFooter_001. %sysfunc (putn(%sysfunc(today()),&g_nls_reportFooter_002.));

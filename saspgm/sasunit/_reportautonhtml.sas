@@ -3,10 +3,10 @@
 
    \brief      create a list of units under test for HTML report
 
-   \version \$Revision$
-   \author  \$Author$
-   \date    \$Date$
-   \sa      \$HeadURL$
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -19,12 +19,11 @@
 
 */ /** \cond */ 
 
-%MACRO _reportAutonHTML (
-   i_repdata = 
-  ,o_html    =
-  ,o_path    =
-  ,o_file    =
-);
+%MACRO _reportAutonHTML (i_repdata = 
+                        ,o_html    =
+                        ,o_path    =
+                        ,o_file    =
+                        );
 
    /*-- determine number of scenarios 
      and number of test cases per unit under test ----------------------------*/
@@ -143,16 +142,15 @@
             %IF ("&l_currentUnitFileName." NE "" AND "&l_currentUnitLocation." NE "" 
                  AND %SYSFUNC(FILEEXIST(&l_currentUnitLocation./&l_currentUnitFileName.)) 
                  AND %SYSFUNC(FILEEXIST(&g_log./000.tcg)) ) %THEN %DO;
-                 %_reporttcghtml(
-                       i_macroName                = &l_currentUnitFileName.
-                      ,i_macroLocation            = &l_currentUnitLocation.
-                      ,i_mCoverageName            = 000.tcg
-                      ,i_mCoverageLocation        = &g_log
-                      ,o_outputFile               = tcg_%SCAN(&l_currentUnitFileName.,1,.)
-                      ,o_outputPath               = &g_target/rep
-                      ,o_resVarName               = l_tcg_res
-                      ,o_html                     = &o_html.
-                      );
+                 %_reporttcghtml(i_macroName                = &l_currentUnitFileName.
+                                ,i_macroLocation            = &l_currentUnitLocation.
+                                ,i_mCoverageName            = 000.tcg
+                                ,i_mCoverageLocation        = &g_log
+                                ,o_outputFile               = tcg_%SCAN(&l_currentUnitFileName.,1,.)
+                                ,o_outputPath               = &g_target/rep
+                                ,o_resVarName               = l_tcg_res
+                                ,o_html                     = &o_html.
+                                );
             %END;
          %END; /*%ELSE %DO;*/
          /*store coverage percentage for report generation*/
@@ -184,10 +182,9 @@
                     headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
-      %_reportPageTopHTML(
-         i_title   = &l_title.
-        ,i_current = 4
-      )
+      %_reportPageTopHTML(i_title   = &l_title.
+                         ,i_current = 4
+                         )
    %end;
 
    options missing=" ";
@@ -225,12 +222,15 @@
          scn_abs_path = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
 
          %_render_dataColumn(i_sourceColumn=scn_cas
-                                    ,o_targetColumn=caseColumn);
+                            ,o_targetColumn=caseColumn
+                            );
          %_render_dataColumn(i_sourceColumn=scn_tst
-                                    ,o_targetColumn=assertColumn);
+                            ,o_targetColumn=assertColumn
+                            );
          %_render_iconColumn(i_sourceColumn=scn_res
-                                    ,o_html=&o_html.
-                                    ,o_targetColumn=resultColumn);
+                            ,o_html=&o_html.
+                            ,o_targetColumn=resultColumn
+                            );
          if (cas_auton < 0) then do;
             _autonColumn = "&g_nls_reportAuton_015.";
          end;
@@ -241,9 +241,10 @@
             linkTitle0   = "&g_nls_reportAuton_009. " !! linkTitle0;
          end;
          %_render_dataColumn(i_sourceColumn=_autonColumn
-                                    ,i_linkColumn=LinkColumn0
-                                    ,i_linkTitle=LinkTitle0
-                                    ,o_targetColumn=autonColumn);
+                            ,i_linkColumn=LinkColumn0
+                            ,i_linkTitle=LinkTitle0
+                            ,o_targetColumn=autonColumn
+                            );
          autonColumn="&g_nls_reportAuton_003.: " !! trim(autonColumn);
 
          *** Any destination that renders links shares this if ***;
@@ -267,20 +268,23 @@
             %end;
 
             %_render_dataColumn(i_sourceColumn=cas_pgm
-                                       ,i_linkColumn=LinkColumn1
-                                       ,i_linkTitle=LinkTitle1
-                                       ,o_targetColumn=pgmColumn);
+                               ,i_linkColumn=LinkColumn1
+                               ,i_linkTitle=LinkTitle1
+                               ,o_targetColumn=pgmColumn
+                               );
             %_render_dataColumn(i_sourceColumn=scn_id
-                                       ,i_format=z3.
-                                       ,i_linkColumn=LinkColumn2
-                                       ,i_linkTitle=LinkTitle2
-                                       ,o_targetColumn=scenarioColumn);
+                               ,i_format=z3.
+                               ,i_linkColumn=LinkColumn2
+                               ,i_linkTitle=LinkTitle2
+                               ,o_targetColumn=scenarioColumn
+                               );
             %IF &g_testcoverage. EQ 1 %THEN %DO;
                %_render_dataColumn(i_sourceColumn=tcg_pct
-                                          ,i_format=3.
-                                          ,i_linkColumn=LinkColumn3
-                                          ,i_linkTitle=LinkTitle3
-                                          ,o_targetColumn=coverageColumn);
+                                  ,i_format=3.
+                                  ,i_linkColumn=LinkColumn3
+                                  ,i_linkTitle=LinkTitle3
+                                  ,o_targetColumn=coverageColumn
+                                  );
             %END;
          %end;
       run;
