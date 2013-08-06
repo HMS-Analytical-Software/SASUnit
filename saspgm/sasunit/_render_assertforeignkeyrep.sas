@@ -36,12 +36,12 @@
   TITLE;FOOTNOTE;
 
   %_getTestSubfolder (i_assertType=assertForeignKey
-			 							 ,i_root      =&g_target./tst
-				 						 ,i_scnid     =&i_scnid.
-					 					 ,i_casid     =&i_casid.
-						 				 ,i_tstid     =&i_tstid.
-							 			 ,r_path      =l_path
-										 );
+                     ,i_root      =&g_target./tst
+                     ,i_scnid     =&i_scnid.
+                     ,i_casid     =&i_casid.
+                     ,i_tstid     =&i_tstid.
+                     ,r_path      =l_path
+                     );
 	LIBNAME _afkLib "&l_path";
 
 	%IF (1) %then %do;

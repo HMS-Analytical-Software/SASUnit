@@ -1,7 +1,7 @@
 /**
    \file
    \ingroup    SASUNIT_TEST 
-   \brief      Tests for assertForeignKey.sas - has to fail! 1 Warning Parameter i_unique set to false
+   \brief      Tests for assertForeignKey.sas - has to fail! 18 errors, 1 Warning Parameter i_unique set to false
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $

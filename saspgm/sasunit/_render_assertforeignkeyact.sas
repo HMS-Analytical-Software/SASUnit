@@ -40,7 +40,6 @@
        when (-22) hlp = "&g_nls_reportForeignKey_022.";
        when (-23) hlp = "&g_nls_reportForeignKey_023.";
        when (-24) hlp = "&g_nls_reportForeignKey_024.";
-/*       when (>0) hlp = " &g_nls_reportForeignKey_025.";  */
        otherwise hlp = catx(" ",hlp,"&g_nls_reportForeignKey_025.");
    end;
    
@@ -51,11 +50,6 @@
    
    &o_targetColumn. = catt ("^{style [flyover=""&g_nls_reportDetail_016"" url=""", href_act, """] &g_nls_reportDetail_038. } ^n ");
    &o_targetColumn. = catt (hlp, "^n", &o_targetColumn.);
- 
-/* 
-   %_render_dataColumn (i_sourceColumn=hlp
-                       ,o_targetColumn=&o_targetColumn.
-                       );
-*/
+
 %mend _render_assertForeignKeyAct;
 /** \endcond */

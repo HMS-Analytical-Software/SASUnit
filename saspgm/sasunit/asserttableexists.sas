@@ -35,6 +35,11 @@
                          );
 
    %GLOBAL g_inTestcase;
+   %LOCAL l_dsname l_libref_ok l_table_exist l_result l_date l_suffix l_errMsg;
+   %let l_dsname =%sysfunc(catx(., &i_libref, &i_memname));
+   %let l_table_exist = -1;
+   %let l_result=2;
+   %let l_date =;
     
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;

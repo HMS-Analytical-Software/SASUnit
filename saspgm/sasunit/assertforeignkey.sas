@@ -34,10 +34,8 @@
    \param   i_desc               A description of the test          	       
 
 */ /** \cond */ 
-options symbolgen mprint mlogic;
 
-%MACRO assertForeignKey (
-                        i_mstrLib 			   = 
+%MACRO assertForeignKey (i_mstrLib 			   = 
                         ,i_mstMem  			   = 
                         ,i_mstKey			   = 
                         ,i_unique			   = TRUE
@@ -47,7 +45,7 @@ options symbolgen mprint mlogic;
                         ,i_cmpKeyLen		   = 1
                         ,o_maxObsRprtFail    = MAX
                         ,o_listingVars	      = 
-                        ,o_treatMissings     =VALUE
+                        ,o_treatMissings     = VALUE
                         ,i_desc    	         =
                         );
 
@@ -59,11 +57,11 @@ options symbolgen mprint mlogic;
 	%LET l_actual 				= -999;
 	%LET l_dsMstrName 		= &i_mstrLib..&i_mstMem.;
 	%LET l_dsLookupName 	   = &i_lookupLib..&i_lookupMem.;
-	%LET i_mstKey 				= %sysfunc(compbl(&i_mstKey.));
-	%LET i_lookupKey 			= %sysfunc(compbl(&i_lookupKey.));
-   %LET l_listingVars      = %sysfunc(COMPBL(&o_listingVars. %str( )));
-   %LET l_treatMissings    = %sysfunc(upcase(&o_treatMissings.));
-   %LET l_unique           = %sysfunc(upcase(&i_unique.));  
+	%LET i_mstKey 				= %SYSFUNC(compbl(&i_mstKey.));
+	%LET i_lookupKey 			= %SYSFUNC(compbl(&i_lookupKey.));
+   %LET l_listingVars      = %SYSFUNC(COMPBL(&o_listingVars. %str( )));
+   %LET l_treatMissings    = %SYSFUNC(upcase(&o_treatMissings.));
+   %LET l_unique           = %SYSFUNC(upcase(&i_unique.));  
 	%LET l_result				= 2;
    %LET l_errMsg           =;
 
@@ -80,25 +78,25 @@ options symbolgen mprint mlogic;
    %*************************************************************;
    
    %*** check for valid librefs und existence of data sets Master und Lookup***;
-   %IF ((%sysfunc (libref (&i_mstrLib.)) NE 0) or (%sysfunc(exist(&l_dsMstrName)) EQ 0)) %THEN %DO;
+   %IF((%SYSFUNC (libref (&i_mstrLib.)) NE 0) or (%SYSFUNC(exist(&l_dsMstrName)) EQ 0)) %THEN %DO;
       %LET l_actual =-1;
       %LET l_errMsg =Libref of master table not valid or data set does not exist;
       %GOTO Update;
    %END;
-   %IF ((%sysfunc (libref (&i_lookupLib.)) NE 0) or (%sysfunc(exist(&l_dsLookupName)) EQ 0)) %THEN %DO;
+   %IF((%SYSFUNC (libref (&i_lookupLib.)) NE 0) or (%SYSFUNC(exist(&l_dsLookupName)) EQ 0)) %THEN %DO;
       %LET l_actual =-2;
       %LET l_errMsg =Libref of lookup table not valid or data set does not exist;
       %GOTO Update;
    %END;
 
    %*** Is the number of keys specified in i_cmpKeyLen the same as actually specified in i_mstKey and i_lookupKey***;
-   %LET l_helper = %eval(%sysfunc(count(&i_mstKey,%str( )))+1);
+   %LET l_helper = %eval(%SYSFUNC(count(&i_mstKey,%str( )))+1);
    %IF(&l_helper. NE &i_cmpKeyLen.) %THEN %DO;
       %LET l_actual =-3;
       %LET l_errMsg =Number of keys found in i_mstKey not compatible to specified number;
       %GOTO Update;
    %END;
-   %LET l_helper = %eval(%sysfunc(count(&i_lookupKey,%str( )))+1);
+   %LET l_helper = %eval(%SYSFUNC(count(&i_lookupKey,%str( )))+1);
    %IF(&l_helper. NE &i_cmpKeyLen.) %THEN %DO;
       %LET l_actual = -4;
       %LET l_errMsg =Number of found keys in i_lookupKey not compatible to specified number;
@@ -106,20 +104,20 @@ options symbolgen mprint mlogic;
    %END;
 
    %*** Extract given keys to local variables***;	
-   %do i=1 %to &i_cmpKeyLen.;
+   %DO i=1 %TO &i_cmpKeyLen.;
       %local l_mstKey&i l_lookupKey&i;
-      %LET l_mstKey&i 	   = %sysfunc(scan(&i_mstKey, &i., " "));
-      %LET l_lookupKey&i   = %sysfunc(scan(&i_lookupKey, &i., " "));
+      %LET l_mstKey&i 	   = %SYSFUNC(scan(&i_mstKey, &i., " "));
+      %LET l_lookupKey&i   = %SYSFUNC(scan(&i_lookupKey, &i., " "));
    %END;
 
    %*** Check if parameter o_maxObsRprtFail is valid ***;
-   %IF NOT (%sysfunc(upcase(&o_maxObsRprtFail.)) = MAX) %THEN %DO;
-      %IF(%datatyp(&o_maxObsRprtFail.) ~=NUMERIC) %then %do;
+   %IF NOT (%SYSFUNC(upcase(&o_maxObsRprtFail.)) = MAX) %THEN %DO;
+      %IF(%datatyp(&o_maxObsRprtFail.) ~=NUMERIC) %THEN %DO;
          %LET l_actual =-19;
          %LET l_errMsg =%bquote(Parameter o_maxObsRprtFail (&o_maxObsRprtFail): MAX or numeric GE 0);
          %GOTO Update;
       %END;
-      %ELSE %IF (&o_maxObsRprtFail. < 0) %then %do;
+      %ELSE %IF (&o_maxObsRprtFail. < 0) %THEN %DO;
          %LET l_actual =-20;
          %LET l_errMsg =%bquote(Parameter o_maxObsRprtFail(&o_maxObsRprtFail) < 0);
          %GOTO Update;
@@ -128,8 +126,8 @@ options symbolgen mprint mlogic;
       
    %*** Check existence of specified keys in their respective tables***;
    %*** open specified tables ***; 
-   %LET l_dsMstid 	= %sysfunc(open(&l_dsMstrName.));
-   %LET l_dsLookupid = %sysfunc(open(&l_dsLookupName.));
+   %LET l_dsMstid 	= %SYSFUNC(open(&l_dsMstrName.));
+   %LET l_dsLookupid = %SYSFUNC(open(&l_dsLookupName.));
       %*** opened correctly? ***; 
    %IF(&l_dsMstid. EQ 0 or &l_dsLookupid. EQ 0) %THEN %DO;
       %LET l_actual = -9;
@@ -138,17 +136,17 @@ options symbolgen mprint mlogic;
    %END;
 
    %*** loop through all variables ***;
-   %do i=1 %to &i_cmpKeyLen.;
-      %LET l_helper   = %sysfunc(varnum(&l_dsMstid., &&l_mstKey&i.));
+   %DO i=1 %TO &i_cmpKeyLen.;
+      %LET l_helper   = %SYSFUNC(varnum(&l_dsMstid., &&l_mstKey&i.));
       %IF  &l_helper. = 0 %THEN %DO;
          %* specified variable not found;
          %LET l_actual = -5;
          %LET l_errMsg =Key in master table not found;
          %GOTO Update;				
       %END;
-      %else %do;
+      %ELSE %DO;
          %* specified variable found: get variable type;
-         %LET l_vartypMstr = %sysfunc(vartype(&l_dsMstid., &l_helper.));
+         %LET l_vartypMstr = %SYSFUNC(vartype(&l_dsMstid., &l_helper.));
          
          %*** Concatenate String for sql where condition: find missing values ***;
          %IF &l_vartypMstr. =N %THEN %DO;
@@ -164,16 +162,16 @@ options symbolgen mprint mlogic;
          %LET l_treatMissing = &l_treatMissing.  &&l_mstKey&i. %str(=) &l_helper1;
       %END;
 
-      %LET l_helper = %sysfunc(varnum(&l_dsLookupid.,&&l_lookupKey&i.));
+      %LET l_helper = %SYSFUNC(varnum(&l_dsLookupid.,&&l_lookupKey&i.));
       %IF (&l_helper. EQ 0) %THEN %DO;
          %* specified variable not found;
          %LET l_actual = -6;
          %LET l_errMsg = Key in lookup table not found;
          %GOTO Update;				
       %END;
-      %else %do;
+      %ELSE %DO;
          %* specified variable found: get variable type;
-         %LET l_vartypLookup = %sysfunc(vartype(&l_dsLookupid., &l_helper.));
+         %LET l_vartypLookup = %SYSFUNC(vartype(&l_dsLookupid., &l_helper.));
       %END;
 
       %* Same Data Type?;
@@ -187,13 +185,13 @@ options symbolgen mprint mlogic;
 
    %*** loop through l_listingVars: Check if valid ***;
    %LET i = 1;
-   %LET l_helper1 = %sysfunc(scan(&l_listingVars., &i., %str( )));
+   %LET l_helper1 = %SYSFUNC(scan(&l_listingVars., &i., %str( )));
    
-   %do %until (&l_helper1=%str( ));
+   %DO %UNTIL (&l_helper1=%str( ));
       %IF (&l_helper1. =) %THEN %DO;
          %GOTO Continue;
       %END;
-      %LET l_helper   = %sysfunc(varnum(&l_dsMstid., &l_helper1.));
+      %LET l_helper   = %SYSFUNC(varnum(&l_dsMstid., &l_helper1.));
       %IF  &l_helper. = 0 %THEN %DO;
          %* specified variable not found;
          %LET l_actual = -21;
@@ -201,12 +199,12 @@ options symbolgen mprint mlogic;
          %GOTO Update;				
       %END;  
       %LET i = %eval(&i+1);
-      %LET l_helper1 = %sysfunc(scan(&l_listingVars., &i., %str( )));
-   %end;
+      %LET l_helper1 = %SYSFUNC(scan(&l_listingVars., &i., %str( )));
+   %END;
    %Continue:
    %LET l_listingVars= &i_mstKey. &l_listingVars.;
-   %LET l_rc=%sysfunc(close(&l_dsMstid.));
-   %LET l_rc=%sysfunc(close(&l_dsLookupid.));
+   %LET l_rc=%SYSFUNC(close(&l_dsMstid.));
+   %LET l_rc=%SYSFUNC(close(&l_dsLookupid.));
 
    %*** parameter l_treatMissings: handle different cases ***;
    %*** make local copy of master table*;
@@ -222,18 +220,18 @@ options symbolgen mprint mlogic;
    %END;
 
    %*** get number of missing keys in master table*;
-    proc sql;
+    PROC SQL;
       create table master_missing as
       select *
       from mstrCopy
       where &l_treatMissing.;
       ;
-   quit; 
+   QUIT; 
    
    %***get number of observations ***;
-   %LET l_helper     =%sysfunc(open(master_missing));
-   %LET num_missing  =%sysfunc(attrn(&l_helper,nlobs));
-   %LET l_rc         =%sysfunc(close(&l_helper)); 
+   %LET l_helper     =%SYSFUNC(open(master_missing));
+   %LET num_missing  =%SYSFUNC(attrn(&l_helper,nlobs));
+   %LET l_rc         =%SYSFUNC(close(&l_helper)); 
    
    %*** Exit if missings were found***;
    %IF("&l_treatMissings." = "DISALLOW" AND &num_missing. GT 0) %THEN %DO;
@@ -243,11 +241,11 @@ options symbolgen mprint mlogic;
    %END;
    %ELSE %IF ("&l_treatMissings." EQ "IGNORE") %THEN %DO;
       %*** delete missing values ***;
-      proc sql;
+      PROC SQL;
          delete from mstrCopy
          where &l_treatMissing.;
          ;
-      quit;
+      QUIT;
    %END;
 
    %*** check for valid parameter o_unique ***;
@@ -262,8 +260,8 @@ options symbolgen mprint mlogic;
    %*************************************************************;
    
    %*** Get distinct values from lookup table***;
-   %do i=1 %to &i_cmpKeyLen.;
-      %if(&i>1) %THEN %DO;
+   %DO i=1 %to &i_cmpKeyLen.;
+      %IF(&i>1) %THEN %DO;
          %*** Insert comma into sql select clause ***;
          %LET l_LookupVars 	= &l_LookupVars. ,;
       %END;
@@ -295,7 +293,7 @@ options symbolgen mprint mlogic;
    QUIT;
 
    %*** Is parameter l_unique set to true -> are duplicates allowed? ***;
-   %IF (("&l_unique." EQ "TRUE") and (&l_cnt1. NE &l_cnt2.)) %THEN %DO;
+   %IF(("&l_unique." EQ "TRUE") and (&l_cnt1. NE &l_cnt2.)) %THEN %DO;
          %LET l_actual = -8;
          %LET l_errMsg =%str(Specified key of lookup table not unique, check parameter i_unique or lookup table);
       %GOTO Update;
@@ -314,13 +312,13 @@ options symbolgen mprint mlogic;
       merge mstrSorted(in=fndMstr) distKeysLookUp(in=fndLookUp rename=(&l_renameLookup.));
       by &l_MstrVars.;
       if     fndLookUp AND not   fndMstr then output keyNotFndMstr;
-      if not fndLookUp AND       fndMstr then output keyNotFndLookUp;
+      IF not fndLookUp AND       fndMstr then output keyNotFndLookUp;
    run;
 
    %*** Who many keys from the master table were not found in the lookup table ***;
-   %LET l_helper	=%sysfunc(OPEN(work.keyNotFndLookUp,IN));
-   %LET l_actual	=%sysfunc(ATTRN(&l_helper,NOBS));
-   %LET l_rc		=%sysfunc(CLOSE(&l_helper));
+   %LET l_helper	=%SYSFUNC(OPEN(work.keyNotFndLookUp,IN));
+   %LET l_actual	=%SYSFUNC(ATTRN(&l_helper,NOBS));
+   %LET l_rc		=%SYSFUNC(CLOSE(&l_helper));
 
    %*** Test successful? l_actual < 0 -> error_message, l_actual > 0 -> no foreign key relationship***;
    %IF(&l_actual. = 0) %THEN %DO;
@@ -336,16 +334,16 @@ options symbolgen mprint mlogic;
 
 	%*** create subfolder ***;
    %_createTestSubfolder (i_assertType  =assertForeignKey
-                          ,i_scnid      =&g_scnid.
-                          ,i_casid      =&l_casid.
-                          ,i_tstid      =&l_tstid.
-                          ,r_path       =l_path
+                         ,i_scnid      =&g_scnid.
+                         ,i_casid      =&l_casid.
+                         ,i_tstid      =&l_tstid.
+                         ,r_path       =l_path
                           );
 
-   /* copy data sets if they exist  */
-   %LET l_helper= %sysfunc(getoption(work));
+   /* copy data sets IF they exist  */
+   %LET l_helper= %SYSFUNC(getoption(work));
    libname tar_afk "&l_path.";
-   %IF %sysfunc(fileexist(&l_helper./keyNotFndLookUp.sas7bdat)) NE 0 %THEN %DO;
+   %IF %SYSFUNC(fileexist(&l_helper./keyNotFndLookUp.sas7bdat)) NE 0 %THEN %DO;
       /*Subset data set, keep only key variables + variables specified in l_listingVars*/
       data keyNotFndLookUp;
          set keyNotFndLookUp(OBS=&o_maxObsRprtFail.);
@@ -356,7 +354,7 @@ options symbolgen mprint mlogic;
          select keyNotFndLookUp;
       run;
    %END;
-   %IF %sysfunc(fileexist(&l_helper./keyNotFndMstr.sas7bdat)) NE 0 %THEN %DO;
+   %IF %SYSFUNC(fileexist(&l_helper./keyNotFndMstr.sas7bdat)) NE 0 %THEN %DO;
       data keyNotFndMstr;
          set keyNotFndMstr(OBS=&o_maxObsRprtFail.);
          keep &l_listingVars;
@@ -368,14 +366,13 @@ options symbolgen mprint mlogic;
    %END;
 
    %Update:
-	%_asserts(
-       i_type      = assertForeignKey
-      ,i_expected = %str(&l_unique.)
-      ,i_actual   = %str(&l_actual)
-      ,i_desc     = &i_desc.
-      ,i_result   = &l_result.
-      ,i_errMsg   = &l_errMsg.
-   )
+	%_asserts(i_type      = assertForeignKey
+            ,i_expected = %str(&l_unique.)
+            ,i_actual   = %str(&l_actual)
+            ,i_desc     = &i_desc.
+            ,i_result   = &l_result.
+            ,i_errMsg   = &l_errMsg.
+            )
 
 %MEND assertForeignKey;
 /** \endcond */
