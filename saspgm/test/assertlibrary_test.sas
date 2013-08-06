@@ -18,43 +18,67 @@
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /* test case 1 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=i_actual is an invalid libref - must be red!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=i_actual is an invalid libref)
 %endTestcall()
 
-%assertLibrary (i_expected=WORK, i_actual=CTEMP, i_desc=must be red!)
+%assertLibrary (i_expected=WORK, i_actual=CTEMP, i_desc=Compare libraries)
+%markTest()
+%assertDBValue(tst,type,assertLibrary)
+%assertDBValue(tst,exp,WORK)
+%assertDBValue(tst,act,CTEMP)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %assertLog (i_errors=0, i_warnings=0)
 
 /* test case 2 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=i_expected is an invalid libref - must be red!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=i_expected is an invalid libref)
 %endTestcall()
 
-%assertLibrary (i_expected=CTEMP, i_actual=WORK, i_desc=must be red!)
+%assertLibrary (i_expected=CTEMP, i_actual=WORK, i_desc=Compare libraries)
+%markTest()
+%assertDBValue(tst,type,assertLibrary)
+%assertDBValue(tst,exp,CTEMP)
+%assertDBValue(tst,act,WORK)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %assertLog (i_errors=0, i_warnings=0);
 
 
 /* test case 3 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=identical librefs - must be red!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=identical librefs)
 %endTestcall()
 
-%assertLibrary (i_expected=WORK, i_actual=WORK, i_desc=must be red!)
+%assertLibrary (i_expected=WORK, i_actual=WORK, i_desc=Compare libraries)
+%markTest()
+%assertDBValue(tst,type,assertLibrary)
+%assertDBValue(tst,exp,WORK)
+%assertDBValue(tst,act,WORK)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %assertLog (i_errors=0, i_warnings=0)
 
 /* test case 4 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=identical paths - must be red!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=identical paths)
 %endTestcall();
 
 libname a "%sysfunc (pathname (WORK))";
 libname b "%sysfunc (pathname (WORK))";
 
-%assertLibrary (i_expected=a, i_actual=b, i_desc=must be red!)
+%assertLibrary (i_expected=a, i_actual=b, i_desc=Compare libraries)
+%markTest()
+%assertDBValue(tst,type,assertLibrary)
+%assertDBValue(tst,exp,a)
+%assertDBValue(tst,act,b)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %assertLog (i_errors=0, i_warnings=0);
 
 /* test case 5 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=diverse differences - must be red!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=diverse differences)
 %endTestcall();
 
 %_mkdir (%sysfunc (pathname (WORK))/_refdata);
@@ -71,31 +95,66 @@ run;
 
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
-                i_desc=Strict/Strict NoID - must be red! 
+                i_desc=Strict/Strict NoID 
                 )
+%markTest()
+%assertDBValue(tst,type,assertLibrary)
+%assertDBValue(tst,exp,_ref)
+%assertDBValue(tst,act,_tst)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
                 i_LibraryCheck=MoreTables, 
-                i_desc=MoreTables/Strict NoID - must be red!  
+                i_desc=MoreTables/Strict NoID  
                 )
+%markTest()
+%assertDBValue(tst,type,assertLibrary)
+%assertDBValue(tst,exp,_ref)
+%assertDBValue(tst,act,_tst)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
                 i_LibraryCheck=MoreTables, 
                 i_CompareCheck=MoreColumns, 
-                i_desc=MoreTables/MoreCols NoID - must be red!  
+                i_desc=MoreTables/MoreCols NoID 
                 )
+%markTest()
+%assertDBValue(tst,type,assertLibrary)
+%assertDBValue(tst,exp,_ref)
+%assertDBValue(tst,act,_tst)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
                 i_LibraryCheck=MoreTables, 
                 i_CompareCheck=MoreObs, 
-                i_desc=MoreTables/MoreObs NoID - must be red!  
+                i_desc=MoreTables/MoreObs NoID
                 )
+%markTest()
+%assertDBValue(tst,type,assertLibrary)
+%assertDBValue(tst,exp,_ref)
+%assertDBValue(tst,act,_tst)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
                 i_LibraryCheck=MoreTables, 
                 i_CompareCheck=MoreColsNObs, 
-                i_desc=MoreTables/MoreColsNObs NoID - must be red!  
+                i_desc=MoreTables/MoreColsNObs NoID
                 )
+%markTest()
+%assertDBValue(tst,type,assertLibrary)
+%assertDBValue(tst,exp,_ref)
+%assertDBValue(tst,act,_tst)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
                 i_LibraryCheck=MoreTables, 
@@ -252,26 +311,38 @@ run;
 %endTestcase()
 
 /* test case 11 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=test with invalid value of i_libraryCheck - must be red!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=test with invalid value of i_libraryCheck)
 %endTestcall()
 
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
                 i_libraryCheck=NoMoreTables, 
-                i_desc=must be red 
+                i_desc=Compare libraries 
 )
+%markTest()
+%assertDBValue(tst,type,assertLibrary)
+%assertDBValue(tst,exp,_ref)
+%assertDBValue(tst,act,_tst)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %assertLog (i_errors=0, i_warnings=0)
 
 /* test case 12 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=test with invalid value of i_compareCheck - must be red!)
+%initTestcase(i_object=assertlibrary.sas, i_desc=test with invalid value of i_compareCheck)
 %endTestcall()
 
 %assertLibrary (i_expected=_ref, 
                 i_actual=_tst, 
                 i_compareCheck=NoMoreColsNObs, 
-                i_desc=must be red 
+                i_desc=Compare libraries 
 )
+%markTest()
+%assertDBValue(tst,type,assertLibrary)
+%assertDBValue(tst,exp,_ref)
+%assertDBValue(tst,act,_tst)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %assertLog (i_errors=0, i_warnings=0)
 

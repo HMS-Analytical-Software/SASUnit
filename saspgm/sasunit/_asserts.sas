@@ -46,10 +46,10 @@
    %END;
 
    %IF (&i_result. eq 0) %THEN %DO;
-      %LET l_errMsg =&i_type.: No Errors ocurred.;
+      %LET l_errMsg =&i_type.: assert passed.;
    %END;
    %ELSE %IF (&i_result. eq 1) %THEN %DO;
-      %LET l_errMsg =&i_type.: Check manually.;
+      %LET l_errMsg =&i_type.: assert passed, but manual check necessary.;
    %END;
    %ELSE %DO;
       %LET l_errMsg=&i_errMsg.;
