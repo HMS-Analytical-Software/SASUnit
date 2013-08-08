@@ -248,7 +248,7 @@
       QUIT;
    %END;
 
-   %*** check for valid parameter o_unique ***;
+   %*** check for valid parameter i_unique ***;
    %IF(&l_unique. NE TRUE AND &l_unique. NE FALSE) %THEN %DO;
       %LET l_actual = -24;
       %LET l_errMsg =Value for parameter i_unique not valid (&l_unique);
@@ -293,14 +293,14 @@
    QUIT;
 
    %*** Is parameter l_unique set to true -> are duplicates allowed? ***;
-   %IF(("&l_unique." EQ "TRUE") and (&l_cnt1. NE &l_cnt2.)) %THEN %DO;
+   %IF(("&l_unique." EQ "TRUE") AND (&l_cnt1. NE &l_cnt2.)) %THEN %DO;
          %LET l_actual = -8;
          %LET l_errMsg =%str(Specified key of lookup table not unique, check parameter i_unique or lookup table);
       %GOTO Update;
    %END;
    %*** if parameter l_unique is set to false, put warning to log, but go on processing ***;
-   %ELSE %IF("&l_unique." EQ "FALSE") %THEN %DO;
-      %PUT WARNING: Parameter o_unique set to false;
+   %ELSE %IF(("&l_unique." EQ "FALSE") AND (&l_cnt1. NE &l_cnt2.))%THEN %DO;
+      %PUT WARNING: Parameter i_unique set to false and lookup table not unique;
    %END;
 
    %*** Check whether all keys in the master table are available in the lookup table***;
