@@ -15,12 +15,12 @@
 */ /** \cond */ 
 
 
-%macro _createTestFiles();
+%MACRO _createTestFiles();
    %LOCAL l_abs_path;
    %LET l_abs_path = %_abspath(&g_root, &g_target);
    
    %*** Create test data base ***;
-   proc sql;
+   PROC SQL;
       create table work.tst
       (
       tst_scnid   num   format=z3.,
@@ -28,16 +28,16 @@
       tst_id      num   format=z3.,
       tst_type    char(35)
       );
-   quit;
+   QUIT;
 
-   proc sql;
+   PROC SQL;
       insert into work.tst(tst_scnid,tst_casid,tst_id ,tst_type)
       values(001,005,004,"assertlibrary")
       values(001,009,001,"assertlibrary")
       values(002,002,001,"assertreport")
       values(003,002,001,"assertreport")
       ;
-   quit;
+   QUIT;
 
    %*** Create folder structure for the test ***;  
    %_mkdir(%sysfunc(pathname(work))/log);
@@ -49,51 +49,46 @@
    %_mkdir(%sysfunc(pathname(work))/tst/_003_002_001_assertreport);
  
    %*** Create test files ***;
-   %do i=1 %to 3;
+   %DO i=1 %TO 3;
       %*** Create "/log" files ***;
-      data _null_;
-         file "%sysfunc(pathname(work))/log/00&i..log";
-         put "hugo&i.";
-      run;
-      data _null_;
-         file "%sysfunc(pathname(work))/log/00&i..tcg";
-         put "hugo&i.";
-      run;
-      data _null_;
-         file "%sysfunc(pathname(work))/log/00&i._003.log";
-         put "hugo&i.";
-      run;
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/log/00&i..log";
+         PUT "hugo&i.";
+      RUN;
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/log/00&i..tcg";
+         PUT "hugo&i.";
+      RUN;
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/log/00&i._003.log";
+         PUT "hugo&i.";
+      RUN;
 
       %*** Create "/rep" files ***;
-      data _null_;
-         file "%sysfunc(pathname(work))/rep/cas_00&i._004.html";
-         put "hugo&i.";
-      run;
-      data _null_;
-         file "%sysfunc(pathname(work))/rep/00&i._004_006.html";
-         put "hugo&i.";
-      run;
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/rep/cas_00&i._004.html";
+         PUT "hugo&i.";
+      RUN;
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/rep/00&i._004_006.html";
+         PUT "hugo&i.";
+      RUN;
       
       %*** Create "/tst" files ***;
-      data _null_;
-         file "%sysfunc(pathname(work))/tst/00&i..lst";
-         put "hugo&i.";
-      run;
-      data _null_;
-         file "%sysfunc(pathname(work))/tst/00&i._003.lst";
-         put "hugo&i.";
-      run;
-      data _null_;
-         file "%sysfunc(pathname(work))/tst/_001_005_004_assertlibrary/test.sas7bdat";
-         put "hugo&i.";
-      run;
-      data _null_;
-         file "%sysfunc(pathname(work))/tst/_004_002_001_assertreport/test2.sas7bdat";
-         put "hugo&i.";
-      run;
-      
-   %end;
-%mend _createTestFiles;
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/tst/00&i..lst";
+         PUT "hugo&i.";
+      RUN;
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/tst/00&i._003.lst";
+         PUT "hugo&i.";
+      RUN;
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/tst/_001_005_004_assertlibrary/test.sas7bdat";
+         PUT "hugo&i.";
+      RUN;      
+   %END;
+%MEND _createTestFiles;
 
 %*** Initialize/create test files ***;
 %_createTestFiles();

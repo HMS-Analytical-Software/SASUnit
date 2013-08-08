@@ -34,7 +34,6 @@
          prxmatch("/rep\/_&i_scnid._.*$/", filename) OR 
          prxmatch("/rep\/cas_&i_scnid._.*$/", filename) THEN DO;
          PUT '%PUT Delete ' filename ' RC: %_delfile(' filename ');';
-         putlog '%PUT Delete ' filename ' RC: %_delfile(' filename ');';
       END;
    RUN;
 
@@ -43,27 +42,23 @@
    DATA _NULL_;
       FILE "%sysfunc(pathname(work))/_scenarioFilesToDelete.sas" mod;
       SET dir2;
-      %***IF (filename =: "&l_target./log/&i_scnid.") THEN DO ****;
       IF prxmatch("/\/&i_scnid..*$/", filename) THEN DO; 
          PUT '%LET rc=%_delfile(' filename ');' ;
-         putlog '%LET rc=%_delfile(' filename ');';
       END;
    RUN;  
-   
+
    %*** Deletion of /tst files ***;
    %_dir(i_path=&l_target./tst/&i_scnid.%str(*), o_out=dir3);
    DATA _NULL_;
       FILE "%sysfunc(pathname(work))/_scenarioFilesToDelete.sas" mod;
       SET dir3;
-      %*** IF (filename =: &l_target./tst/&i_scnid.) THEN DO; ****;
       IF prxmatch("/\/&i_scnid..*$/", filename) THEN DO;
          PUT '%LET rc=%_delfile(' filename ');';
-         putlog '%LET rc=%_delfile(' filename ');';
       END;
    RUN;
 
    %include "%sysfunc(pathname(work))/_scenarioFilesToDelete.sas";
-   
+
    %*** Deletion of /tst folders ***;
    PROC SQL;
      CREATE TABLE foldersToDelete AS
@@ -72,7 +67,7 @@
      WHERE tst_scnid = &i_scnid.;
      ;
    QUIT;
-   
+
    %LET l_nobs = &SYSNOBS;
    %*** Write and execute cmd file only if table foldersToDelete is not empty ***;
    %IF &l_nobs > 0 %THEN %DO;
@@ -80,10 +75,12 @@
       DATA _NULL_;
          FILE "%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd";
          SET foldersToDelete;
-         PUT "&g_removedir ""&l_target.\tst\_" tst_scnid +(-1)"_" tst_casid +(-1)"_" tst_id +(-1) "_" tst_type +(-1)"""&g_endcommand";
-         PUTLOG "&g_removedir ""&l_target.\tst\_" tst_scnid +(-1)"_" tst_casid +(-1)"_" tst_id +(-1) "_" tst_type +(-1)"""&g_endcommand";
+         PUT "&g_removedir ""&l_target./tst/_" tst_scnid +(-1)"_" tst_casid +(-1)"_" tst_id +(-1) "_" tst_type +(-1)"""&g_endcommand";
       RUN;
-      %_xcmd("%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd");      
+      %IF &sysscp. = LINUX %THEN %DO;
+          %_xcmd(chmod u+x "%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd")
+      %END;
+      %_xcmd("%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd");
    %END;
 
 %MEND _deletescenariofiles;
