@@ -14,34 +14,36 @@
 
 */ /** \cond */  
 
-%macro _oscmds;
+%MACRO _oscmds;
 
-   %global 
+   %GLOBAL 
       g_removedir 
       g_makedir
       g_copydir
       g_endcommand
       g_sasstart
       g_splash
+      g_removefile
       ;
-   %if &sysscp. = WIN %then %do; 
-           %let g_removedir = rd /S /Q;
-           %let g_makedir = md;
-           %let g_copydir = xcopy /E /I /Y;
-           %let g_endcommand =;
-           %let g_sasstart ="%sysget(sasroot)/sas.exe";
-           %let g_splash = -nosplash;
-   %end;
-   %else %if &sysscp. = LINUX %then %do;
-           %let g_removedir = rm -r -f;
-           %let g_makedir = mkdir;
-           %let g_copydir = cp -R;
-           %let g_endcommand =%str(;);
+   %IF &sysscp. = WIN %THEN %DO; 
+           %LET g_removedir   = rd /S /Q;
+           %LET g_removefile  = del /S /Q;
+           %LET g_makedir     = md;
+           %LET g_copydir     = xcopy /E /I /Y;
+           %LET g_endcommand  =%str( );
+           %LET g_sasstart    ="%sysget(sasroot)/sas.exe";
+           %LET g_splash      = -nosplash;
+   %END;
+   %ELSE %IF &sysscp.         = LINUX %THEN %DO;
+           %LET g_removedir   = rm -r -f;
+           %LET g_removefile  = rm;
+           %LET g_makedir     = mkdir;
+           %LET g_copydir     = cp -R;
+           %LET g_endcommand  =%str(;);
            %_xcmd(umask 0033);
-           %let g_sasstart ="%sysfunc(pathname(sasroot))/bin/sas_%sysget(SASUNIT_LANGUAGE)";
-           %let g_splash =;
-   %end;
-
-%mend _oscmds;
+           %LET g_sasstart    ="%sysfunc(pathname(sasroot))/bin/sas_%sysget(SASUNIT_LANGUAGE)";
+           %LET g_splash      =;
+   %END;
+%MEND _oscmds;
 
 /** \endcond */

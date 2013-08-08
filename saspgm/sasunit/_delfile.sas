@@ -5,10 +5,6 @@
 
    \%delfile (file)
 
-   \param   i_file   full path and name of external file
-
-   \return           0 if OK, system code otherwise
-
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
@@ -17,6 +13,11 @@
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+               
+   \param      i_file   full path and name of external file
+   
+   \return     0 if OK, system code otherwise  
+               
 */ /** \cond */ 
 
 %MACRO _delFile(i_file   

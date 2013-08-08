@@ -162,7 +162,10 @@
             DELETE FROM target.cas WHERE cas_scnid = &l_scnid;
             DELETE FROM target.tst WHERE tst_scnid = &l_scnid;
          QUIT;
+         /*-- delete corresponding files -----*/
+         %_deletescenariofiles(i_scnid=&l_scnid.);         
       %END;
+      
 
       %IF &l_dorun %THEN %DO;
          %PUT ======== test scenario &l_scnid (&l_scn) will be run ========;

@@ -107,30 +107,12 @@ ods listing;
 proc print; run; 
 ods listing close;
 
-/*-- switch between example database and real database -----------------------*/
-%macro switch();
-%global state save_root save_target;
-%if &state= or &state=0 %then %do;
-   %let state=1;
-   %let save_root=&g_root;
-   %let save_target=&g_target;
-   %let g_root=&g_work;
-   %let g_target=&g_work;
-%end;
-%else %do;
-   %let state=0;
-   %let g_root=&save_root;
-   %let g_target=&save_target;
-%end;
-libname target "&g_target";
-%mend switch;
-
 /*-- Case 1: scenario changed after last run --*/
 %initTestcase(
    i_object = _checkscenario.sas
   ,i_desc   = scenario changed after last run 
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -140,7 +122,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=1, i_actual=&scnid, i_desc=szenario id must be 1)
 %assertEquals(i_expected=1, i_actual=&run  , i_desc=scenario must be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <1>), i_desc=choose exit 1)
@@ -151,7 +133,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = scenario still unknown
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -161,7 +143,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=0,  i_actual=&scnid, i_desc=scenario id must be 0 - not found)
 %assertEquals(i_expected=1, i_actual=&run  , i_desc=scenario must be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <1>), i_desc=choose exit 1)
@@ -172,7 +154,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = %str(scenario not changed, but one of two autocall programs)
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -182,7 +164,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=3, i_actual=&scnid, i_desc=scenario id must be 3)
 %assertEquals(i_expected=1, i_actual=&run  , i_desc=scenario must be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <2>), i_desc=choose exit 2)
@@ -193,7 +175,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = %str(scenario not changed, but one of two autocall programs is missing)
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -203,7 +185,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=4, i_actual=&scnid, i_desc=scenario id must be 4)
 %assertEquals(i_expected=1, i_actual=&run  , i_desc=scenario must be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <2>), i_desc=choose exit 2)
@@ -214,7 +196,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = %str(scenario not changed, but the only autocall program is missing)
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -224,7 +206,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=5, i_actual=&scnid, i_desc=scenario id must be 5)
 %assertEquals(i_expected=1, i_actual=&run  , i_desc=scenario must be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <2>), i_desc=choose exit 2)
@@ -235,7 +217,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = %str(scenario not changed, but one program without autocall)
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -245,7 +227,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=6, i_actual=&scnid, i_desc=scenario id must be 6)
 %assertEquals(i_expected=1, i_actual=&run  , i_desc=scenario must be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <4>), i_desc=choose exit 4)
@@ -256,7 +238,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = %str(scenario not changed, but one program without autocall (abs. path))
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -266,7 +248,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=7, i_actual=&scnid, i_desc=scenario id must be 7)
 %assertEquals(i_expected=1, i_actual=&run  , i_desc=scenario must be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <4>), i_desc=Choose exit 4)
@@ -277,7 +259,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = %str(scenario not changed, but the only program without autocall is missing)
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -287,7 +269,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=8, i_actual=&scnid, i_desc=scenario id must be 8)
 %assertEquals(i_expected=1, i_actual=&run  , i_desc=scenario must be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <4>), i_desc=Choose exit 4)
@@ -298,7 +280,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = %str(scenario not changed, none of two autocall programs changed)
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -308,7 +290,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=9, i_actual=&scnid, i_desc=scenario id must be 9)
 %assertEquals(i_expected=0, i_actual=&run  , i_desc=scenario does not have to be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <3>), i_desc=Choose exit 3)
@@ -319,7 +301,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = %str(scenario not changed,  none of the two programs changed, one with, one without autocall)
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -329,7 +311,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=10, i_actual=&scnid, i_desc=scenario id must be 10)
 %assertEquals(i_expected=0, i_actual=&run  , i_desc=scenario does not have to be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <5>), i_desc=Choose exit 5)
@@ -340,7 +322,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = %str(scenario not changed, one program without autocall not changed)
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -350,7 +332,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=11, i_actual=&scnid, i_desc=scenario id must be 11)
 %assertEquals(i_expected=0, i_actual=&run  , i_desc=scenario does not have to be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <5>), i_desc=Choose exit 5)
@@ -361,7 +343,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = %str(scenario not changed, one program without autocall not changed (abs. path))
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -371,7 +353,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=12, i_actual=&scnid, i_desc=scenario id must be 12)
 %assertEquals(i_expected=0, i_actual=&run  , i_desc=scenario does not have to be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <5>), i_desc=Choose exit 5)
@@ -382,7 +364,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = %str(scenario changed (abs. path))
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -392,7 +374,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=13, i_actual=&scnid, i_desc=scenario id must be 13)
 %assertEquals(i_expected=1, i_actual=&run, i_desc=scenario must be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <1>), i_desc=Choose exit 1)
@@ -403,7 +385,7 @@ libname target "&g_target";
    i_object = _checkscenario.sas
   ,i_desc   = %str(scenario (abs path) not changed, but one of two autocall programs)
 )
-%switch()
+%_switch()
 %let scnid=0;
 %let run=;
 %_checkScenario(
@@ -413,7 +395,7 @@ libname target "&g_target";
   ,r_scnid   = scnid
   ,r_run     = run
 )   
-%switch()
+%_switch()
 %assertEquals(i_expected=14, i_actual=&scnid, i_desc=scenario id must be 14)
 %assertEquals(i_expected=1, i_actual=&run, i_desc=scenario must be run)
 %assertLogMsg(i_logMsg=%str(_checkScenario <2>), i_desc=Choose exit 2)

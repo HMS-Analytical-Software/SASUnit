@@ -15,22 +15,6 @@
 
 */ /** \cond */
 
-%macro switch();
-%global state save_root save_target;
-%if &state= or &state=0 %then %do;
-   %let state=1;
-   %let save_root=&g_root;
-   %let save_target=&g_target;
-   %let g_root=&g_work;
-   %let g_target=&g_work;
-%end;
-%else %do;
-   %let state=0;
-   %let g_root=&save_root;
-   %let g_target=&save_target;
-%end;
-libname target "&g_target";
-%mend switch;
 data work.cas;
    cas_scnid=&g_scnid.;
    cas_id=4;
@@ -56,10 +40,10 @@ run;
 %initTestcase(i_object=assertMustFail.sas, i_desc=call with failed assert);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %assertMustFail;
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 
@@ -82,10 +66,10 @@ run;
 %initTestcase(i_object=assertMustFail.sas, i_desc=call with manual assert);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %assertMustFail;
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 
@@ -108,10 +92,10 @@ run;
 %initTestcase(i_object=assertMustFail.sas, i_desc=call with green assert);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %assertMustFail;
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 

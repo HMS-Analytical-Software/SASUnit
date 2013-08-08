@@ -14,24 +14,6 @@
 
 */ /** \cond */ 
 
-/*-- switch between example database and real database -----------------------*/
-%macro switch();
-%global state save_root save_target;
-%if &state= or &state=0 %then %do;
-   %let state=1;
-   %let save_root=&g_root;
-   %let save_target=&g_target;
-   %let g_root=&g_work;
-   %let g_target=&g_work;
-%end;
-%else %do;
-   %let state=0;
-   %let g_root=&save_root;
-   %let g_target=&save_target;
-%end;
-libname target "&g_target";
-%mend switch;
-
 *** Testcase 1 ***; 
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with missing parameters);
 
@@ -99,10 +81,10 @@ libname target "&g_target";
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with inexisting tables cas);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %_getScenarioTestId(i_scnid=1, r_casid=ret_casid, r_tstid=ret_tstid);
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 
@@ -118,10 +100,10 @@ run;
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with inexisting tables tst);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %_getScenarioTestId(i_scnid=1, r_casid=ret_casid, r_tstid=ret_tstid);
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 
@@ -137,10 +119,10 @@ run;
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with invalid dataset cas);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %_getScenarioTestId(i_scnid=11, r_casid=ret_casid, r_tstid=ret_tstid);
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 
@@ -163,10 +145,10 @@ run;
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with inexisting scenario);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %_getScenarioTestId(i_scnid=11, r_casid=ret_casid, r_tstid=ret_tstid);
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 
@@ -187,10 +169,10 @@ run;
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with existing scenario without asserts);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %_getScenarioTestId(i_scnid=3, r_casid=ret_casid, r_tstid=ret_tstid);
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 
@@ -213,10 +195,10 @@ run;
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call for existing scenario 1);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %_getScenarioTestId(i_scnid=1, r_casid=ret_casid, r_tstid=ret_tstid);
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 
@@ -230,10 +212,10 @@ run;
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call for existing scenario 2);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %_getScenarioTestId(i_scnid=2, r_casid=ret_casid, r_tstid=ret_tstid);
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 
@@ -247,10 +229,10 @@ run;
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call for existing scenario 3);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %_getScenarioTestId(i_scnid=3, r_casid=ret_casid, r_tstid=ret_tstid);
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 
@@ -264,10 +246,10 @@ run;
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call for existing scenario 4);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %_getScenarioTestId(i_scnid=4, r_casid=ret_casid, r_tstid=ret_tstid);
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 
@@ -281,10 +263,10 @@ run;
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call for existing scenario 5);
 
 /*-- switch to example database -----------------------*/
-%switch();
+%_switch();
 %_getScenarioTestId(i_scnid=5, r_casid=ret_casid, r_tstid=ret_tstid);
 /*-- switch to real database -----------------------*/
-%switch();
+%_switch();
 
 %endTestcall;
 
