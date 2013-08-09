@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertRecordCount.sas - has to fail! 9 errors (8 assertRecordCount errors, one warning and one subsequent error)
+   \brief      Tests for assertRecordCount.sas - has to fail! 10 errors (8 assertRecordCount errors, 2 subsequent error and 1 warning)
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $
@@ -71,7 +71,7 @@
       %assertDBValue(tst,act,-2)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertRecordCount(i_libref=sashelp, i_memname=Company, i_operator=<=, i_recordsExp=21, i_where=%str(depthead = "2"  LEVEL2 = "NEW YORK"), i_desc=Invalid where clause: missing AND);
+%assertRecordCount(i_libref=sashelp, i_memname=class, i_operator=<=, i_recordsExp=21, i_where=%str(age = 14  weight < 100), i_desc=Invalid where clause: missing AND);
    %markTest()
       %assertDBValue(tst,exp,<= 21)
       %assertDBValue(tst,act,-2)
@@ -93,8 +93,7 @@
 %assertRecordCount(i_libref=sashelp, i_memname=class,    i_operator=LT,       i_recordsExp=6,   i_where=%str(age = 14), i_desc=test with operator LT);
 %assertRecordCount(i_libref=sashelp, i_memname=class,    i_operator=~=,       i_recordsExp=6,   i_where=%str(age = 14), i_desc=test with operator ~=);
 %assertRecordCount(i_libref=sashelp, i_memname=class,    i_operator=NE,       i_recordsExp=6,   i_where=%str(age = 14), i_desc=test with operator NE);
-%assertRecordCount(i_libref=sashelp, i_memname=Company,  i_operator=<=,       i_recordsExp=21,  i_where=%str(depthead = "2" and LEVEL2 = "NEW YORK"), i_desc=complex where condition);
-
+%assertRecordCount(i_libref=sashelp, i_memname=class,    i_operator=<=,       i_recordsExp=2,  i_where=%str(age = 14 and weight < 100), i_desc=complex where condition);
 %assertLog (i_errors=0, i_warnings=0)
 %endTestcase();
 

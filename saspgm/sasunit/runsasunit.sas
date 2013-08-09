@@ -158,12 +158,14 @@
       %END;
       /*-- if scenario already exists and has been changed: delete scenario -----*/
       %ELSE %IF &l_dorun %THEN %DO;
+         /*-- delete corresponding files -----*/
+         %_deletescenariofiles(i_scnid=&l_scnid.);  
+      
          PROC SQL NOPRINT;
             DELETE FROM target.cas WHERE cas_scnid = &l_scnid;
             DELETE FROM target.tst WHERE tst_scnid = &l_scnid;
          QUIT;
-         /*-- delete corresponding files -----*/
-         %_deletescenariofiles(i_scnid=&l_scnid.);         
+       
       %END;
       
 

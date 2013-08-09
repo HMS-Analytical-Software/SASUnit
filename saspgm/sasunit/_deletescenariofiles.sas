@@ -27,7 +27,7 @@
  
    %*** Deletion of /rep files *;
    %_dir(i_path=&l_target./rep/%str(*.*), o_out=dir1);
-   DATA test;
+   DATA _NULL_;
       FILE "%sysfunc(pathname(work))/_scenarioFilesToDelete.sas";
       SET dir1;
       IF prxmatch("/rep\/&i_scnid..*$/", filename) OR 
@@ -62,7 +62,7 @@
    %*** Deletion of /tst folders ***;
    PROC SQL;
      CREATE TABLE foldersToDelete AS
-     SELECT distinct tst_scnid, tst_casid, tst_id, tst_type
+     SELECT distinct tst_scnid, tst_casid, tst_id, lowcase(tst_type) as tst_type
      FROM target.tst
      WHERE tst_scnid = &i_scnid.;
      ;
