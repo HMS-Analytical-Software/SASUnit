@@ -20,12 +20,12 @@
 
    \param   i_errors       number of errors, default 0
    \param   i_warnings     number of warnings, default 0
-   \param   i_desc         description of the assertion to be checked, default value: "Scan for log message"
+   \param   i_desc         description of the assertion to be checked, default value: "Scan log for erros"
 */ /** \cond */ 
 
 %MACRO assertLog (i_errors   = 0
                  ,i_warnings = 0
-                 ,i_desc     = 
+                 ,i_desc     = Scan log for errors
                  );
 
    %GLOBAL g_inTestcase;

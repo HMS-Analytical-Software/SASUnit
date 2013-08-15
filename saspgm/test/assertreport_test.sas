@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertreport.sas - has to fail! 4 assertReport errors.
+   \brief      Tests for assertreport.sas - has to fail! 49 assertReport errors (46 times not created anew.)
    
    \version    \$Revision$
    \author     \$Author$
@@ -66,45 +66,48 @@ ods pdf close;
 %endTestcase(i_assertLog=1)
 
 /* test case 3 ------------------------------------*/
-%initTestcase(i_object=assertreport.sas, i_desc=%str(only i_expected, not i_actual specified - must be red!))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(only i_expected, not i_actual specified))
 %endTestcall()
-%assertReport(i_expected=&g_work/report1.pdf, i_actual=, i_desc=%str(expected=.pdf, actual=missing(red), result is red?))
+%assertReport(i_expected=&g_work/report1.pdf, i_actual=, i_desc=%str(expected=.pdf, actual=missing(red)))
 %markTest()
 %assertDBValue(tst,type,assertReport)
-%assertDBValue(tst,desc,%str(expected=.pdf, actual=missing(red), result is red?))
+%assertDBValue(tst,desc,%str(expected=.pdf, actual=missing(red)))
 %assertDBValue(tst,exp,)
 %assertDBValue(tst,act,)
 %assertDBValue(tst,res,2)
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout./_&scnid._&casid._&tstid._assertreport/_man_exp.pdf)), i_desc=Report1 - expected not in testout)
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout./_&scnid._&casid._&tstid._assertreport/_man_act.pdf)), i_desc=Report2 - actual not in testout)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
 /* test case 4 ------------------------------------*/
-%initTestcase(i_object=assertreport.sas, i_desc=%str(neither i_expected nor i_actual specified - must be red!))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(neither i_expected nor i_actual specified))
 %endTestcall()
-%assertReport(i_actual=, i_expected=, i_desc=%str(expected=, actual=missing(red), result is red?))
+%assertReport(i_actual=, i_expected=, i_desc=%str(expected=, actual=missing(red)))
 %markTest()
 %assertDBValue(tst,type,assertReport)
-%assertDBValue(tst,desc,%str(expected=, actual=missing(red), result is red?))
+%assertDBValue(tst,desc,%str(expected=, actual=missing(red)))
 %assertDBValue(tst,exp,)
 %assertDBValue(tst,act,)
 %assertDBValue(tst,res,2)
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout./_&scnid._&casid._&tstid._assertreport/_man_exp.pdf)), i_desc=Report1 - expected not in testout)
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout./_&scnid._&casid._&tstid._assertreport/_man_act.pdf)), i_desc=Report2 - actual not in testout)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
 /* test case 5 ------------------------------------*/
-%initTestcase(i_object=assertreport.sas, i_desc=%str(invalid file specified for i_actual - must be red!))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(invalid file specified for i_actual))
 %endTestcall()
-%assertReport(i_expected=&g_work/report1.pdf, i_actual=&g_work/report3.pdf, i_desc=%str(expected=.pdf, actual=missing(red), result is red?))
+%assertReport(i_expected=&g_work/report1.pdf, i_actual=&g_work/report3.pdf, i_desc=%str(expected=.pdf, actual=missing(red)))
 %markTest()
 %assertDBValue(tst,type,assertReport)
-%assertDBValue(tst,desc,%str(expected=.pdf, actual=missing(red), result is red?))
+%assertDBValue(tst,desc,%str(expected=.pdf, actual=missing(red)))
 %assertDBValue(tst,exp,)
 %assertDBValue(tst,act,.pdf)
 %assertDBValue(tst,res,2)
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout./_&scnid._&casid._&tstid._assertreport/_man_exp.pdf)), i_desc=Report1 - expected not in testout)
 %assertEquals(i_expected=0, i_actual=%sysfunc(fileexist(&g_testout./_&scnid._&casid._&tstid._assertreport/_man_act.pdf)), i_desc=Report2 - actual not in testout)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
 /* test case 6 ------------------------------------*/
@@ -127,16 +130,17 @@ ods pdf close;
 %endTestcase(i_assertLog=1)
 
 /* test case 7 ------------------------------------*/
-%initTestcase(i_object=assertreport.sas, i_desc=%str(i_actual older than current SAS session - must be red!))
+%initTestcase(i_object=assertreport.sas, i_desc=%str(i_actual older than current SAS session))
 %endTestcall()
-%assertReport(i_expected=, i_actual=&g_testdata/Report.docx, i_desc=%str(expected=empty, actual=.docx - not generated anew, result red?))
+%assertReport(i_expected=, i_actual=&g_testdata/Report.docx, i_desc=%str(expected=empty, actual=.docx - not generated anew))
 %markTest()
 %assertDBValue(tst,type,assertReport)
-%assertDBValue(tst,desc, %str(expected=empty, actual=.docx - not generated anew, result red?))
+%assertDBValue(tst,desc, %str(expected=empty, actual=.docx - not generated anew))
 %assertDBValue(tst,exp,)
 %assertDBValue(tst,act,.docx)
 %assertDBValue(tst,res,2)
 %assertEquals(i_expected=1, i_actual=%sysfunc(fileexist(&g_testout./_&scnid._&casid._&tstid._assertreport/_man_act.docx)), i_desc=actual copied to testout)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=1)
 
 /* test case 8 ------------------------------------*/
@@ -150,8 +154,7 @@ ods pdf close;
 %assertReport(i_expected=, i_actual=&g_work/report2.pdf, i_manual=0, i_desc=%str(expected=empty, actual=.pdf, result green?))
 %markTest()
 %assertDBValue(tst,type,assertReport)
-%assertDBValue(tst,desc,
-%str(expected=empty, actual=.pdf, result green?))
+%assertDBValue(tst,desc,%str(expected=empty, actual=.pdf, result green?))
 %assertDBValue(tst,exp,)
 %assertDBValue(tst,act,.pdf)
 %assertDBValue(tst,res,0)
@@ -167,58 +170,418 @@ title 'Report2 - actual';
 run;
 ods pdf close;
 %endTestcall()
-%assertReport(i_expected=&g_refdata./class.jpg,   i_actual=&g_refdata./class.jpg,   i_manual=0, i_ignoreCreationDate=1, i_desc=JPG  / JPG);
-%assertReport(i_expected=&g_refdata./class.png,   i_actual=&g_refdata./class.jpg,   i_manual=0, i_ignoreCreationDate=1, i_desc=PNG  / JPG);
-%assertReport(i_expected=&g_refdata./class.xls,   i_actual=&g_refdata./class.jpg,   i_manual=0, i_ignoreCreationDate=1, i_desc=XLS  / JPG);
-%assertReport(i_expected=&g_refdata./class.xlsx,  i_actual=&g_refdata./class.jpg,   i_manual=0, i_ignoreCreationDate=1, i_desc=XLSX / JPG);
-%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./class.jpg,   i_manual=0, i_ignoreCreationDate=1, i_desc=DOC  / JPG);
-%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./class.jpg,   i_manual=0, i_ignoreCreationDate=1, i_desc=DOCX / JPG);
-%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./class.jpg,   i_manual=0, i_ignoreCreationDate=1, i_desc=HTML / JPG);
-%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./class.jpg,   i_manual=0, i_ignoreCreationDate=1, i_desc=PDF  / JPG);
-%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./class.jpg,   i_manual=0, i_ignoreCreationDate=1, i_desc=RTF  / JPG);
 
-%assertReport(i_expected=&g_refdata./class.png,   i_actual=&g_refdata./class.png,   i_manual=0, i_ignoreCreationDate=1, i_desc=PNG  / PNG);
-%assertReport(i_expected=&g_refdata./class.xls,   i_actual=&g_refdata./class.png,   i_manual=0, i_ignoreCreationDate=1, i_desc=XLS  / PNG);
-%assertReport(i_expected=&g_refdata./class.xlsx,  i_actual=&g_refdata./class.png,   i_manual=0, i_ignoreCreationDate=1, i_desc=XLSX / PNG);
-%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./class.png,   i_manual=0, i_ignoreCreationDate=1, i_desc=DOC  / PNG);
-%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./class.png,   i_manual=0, i_ignoreCreationDate=1, i_desc=DOCX / PNG);
-%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./class.png,   i_manual=0, i_ignoreCreationDate=1, i_desc=HTML / PNG);
-%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./class.png,   i_manual=0, i_ignoreCreationDate=1, i_desc=PDF  / PNG);
-%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./class.png,   i_manual=0, i_ignoreCreationDate=1, i_desc=RTF  / PNG);
+%assertReport(i_expected=&g_refdata./class.jpg,   i_actual=&g_refdata./class.jpg,   i_manual=0, i_desc=JPG / JPG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,JPG / JPG)
+%assertDBValue(tst,exp,.jpg)
+%assertDBValue(tst,act,.jpg)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
-%assertReport(i_expected=&g_refdata./class.xls,   i_actual=&g_refdata./class.xls,   i_manual=0, i_ignoreCreationDate=1, i_desc=XLS  / XLS);
-%assertReport(i_expected=&g_refdata./class.xlsx,  i_actual=&g_refdata./class.xls,   i_manual=0, i_ignoreCreationDate=1, i_desc=XLSX / XLS);
-%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./class.xls,   i_manual=0, i_ignoreCreationDate=1, i_desc=DOC  / XLS);
-%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./class.xls,   i_manual=0, i_ignoreCreationDate=1, i_desc=DOCX / XLS);
-%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./class.xls,   i_manual=0, i_ignoreCreationDate=1, i_desc=HTML / XLS);
-%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./class.xls,   i_manual=0, i_ignoreCreationDate=1, i_desc=PDF  / XLS);
-%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./class.xls,   i_manual=0, i_ignoreCreationDate=1, i_desc=RTF  / XLS);
+%assertReport(i_expected=&g_refdata./class.png,   i_actual=&g_refdata./class.jpg,   i_manual=0, i_desc=PNG / JPG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,PNG / JPG)
+%assertDBValue(tst,exp,.png)
+%assertDBValue(tst,act,.jpg)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
-%assertReport(i_expected=&g_refdata./class.xlsx,  i_actual=&g_refdata./class.xlsx,  i_manual=0, i_ignoreCreationDate=1, i_desc=XLSX / XLSX);
-%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./class.xlsx,  i_manual=0, i_ignoreCreationDate=1, i_desc=DOC  / XLSX);
-%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./class.xlsx,  i_manual=0, i_ignoreCreationDate=1, i_desc=DOCX / XLSX);
-%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./class.xlsx,  i_manual=0, i_ignoreCreationDate=1, i_desc=HTML / XLSX);
-%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./class.xlsx,  i_manual=0, i_ignoreCreationDate=1, i_desc=PDF  / XLSX);
-%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./class.xlsx,  i_manual=0, i_ignoreCreationDate=1, i_desc=RTF  / XLSX);
+%assertReport(i_expected=&g_refdata./class.xls,   i_actual=&g_refdata./class.jpg,   i_manual=0, i_desc=XLS / JPG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,XLS / JPG)
+%assertDBValue(tst,exp,.xls)
+%assertDBValue(tst,act,.jpg)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
-%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./Report.doc,  i_manual=0, i_ignoreCreationDate=1, i_desc=DOC  / DOC);
-%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./Report.doc,  i_manual=0, i_ignoreCreationDate=1, i_desc=DOCX / DOC);
-%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./Report.doc,  i_manual=0, i_ignoreCreationDate=1, i_desc=HTML / DOC);
-%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./Report.doc,  i_manual=0, i_ignoreCreationDate=1, i_desc=PDF  / DOC);
-%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.doc,  i_manual=0, i_ignoreCreationDate=1, i_desc=RTF  / DOC);
+%assertReport(i_expected=&g_refdata./class.xlsx,  i_actual=&g_refdata./class.jpg,   i_manual=0, i_desc=XLSX / JPG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,XLSX / JPG)
+%assertDBValue(tst,exp,.xlsx)
+%assertDBValue(tst,act,.jpg)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
-%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./Report.docx, i_manual=0, i_ignoreCreationDate=1, i_desc=DOCX / DOCX);
-%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./Report.docx, i_manual=0, i_ignoreCreationDate=1, i_desc=HTML / DOCX);
-%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./Report.docx, i_manual=0, i_ignoreCreationDate=1, i_desc=PDF  / DOCX);
-%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.docx, i_manual=0, i_ignoreCreationDate=1, i_desc=RTF  / DOCX);
+%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./class.jpg,   i_manual=0, i_desc=DOC / JPG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,DOC / JPG)
+%assertDBValue(tst,exp,.doc)
+%assertDBValue(tst,act,.jpg)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
-%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./Report.html, i_manual=0, i_ignoreCreationDate=1, i_desc=HTML / HTML);
-%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./Report.html, i_manual=0, i_ignoreCreationDate=1, i_desc=PDF  / HTML);
-%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.html, i_manual=0, i_ignoreCreationDate=1, i_desc=RTF  / HTML);
+%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./class.jpg,   i_manual=0, i_desc=DOCX / JPG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,DOCX / JPG)
+%assertDBValue(tst,exp,.docx)
+%assertDBValue(tst,act,.jpg)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
-%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./Report.pdf,  i_manual=0, i_ignoreCreationDate=1, i_desc=PDF  / PDF);
-%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.html, i_manual=0, i_ignoreCreationDate=1, i_desc=RTF  / PDF);
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./class.jpg,   i_manual=0, i_desc=HTML / JPG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,HTML / JPG)
+%assertDBValue(tst,exp,.html)
+%assertDBValue(tst,act,.jpg)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
-%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.rtf,  i_manual=0, i_ignoreCreationDate=1, i_desc=RTF  / RTF);
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./class.jpg,   i_manual=0, i_desc=PDF / JPG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,PDF / JPG)
+%assertDBValue(tst,exp,.pdf)
+%assertDBValue(tst,act,.jpg)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./class.jpg,   i_manual=0, i_desc=RTF / JPG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,RTF / JPG)
+%assertDBValue(tst,exp,.rtf)
+%assertDBValue(tst,act,.jpg)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+
+%assertReport(i_expected=&g_refdata./class.png,   i_actual=&g_refdata./class.png,   i_manual=0, i_desc=PNG / PNG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,PNG / PNG)
+%assertDBValue(tst,exp,.png)
+%assertDBValue(tst,act,.png)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./class.xls,   i_actual=&g_refdata./class.png,   i_manual=0, i_desc=XLS / PNG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,XLS / PNG)
+%assertDBValue(tst,exp,.xls)
+%assertDBValue(tst,act,.png)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./class.xlsx,  i_actual=&g_refdata./class.png,   i_manual=0, i_desc=XLSX / PNG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,XLSX / PNG)
+%assertDBValue(tst,exp,.xlsx)
+%assertDBValue(tst,act,.png)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./class.png,   i_manual=0, i_desc=DOC / PNG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,DOC / PNG)
+%assertDBValue(tst,exp,.doc)
+%assertDBValue(tst,act,.png)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./class.png,   i_manual=0, i_desc=DOCX / PNG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,DOCX / PNG)
+%assertDBValue(tst,exp,.docx)
+%assertDBValue(tst,act,.png)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./class.png,   i_manual=0, i_desc=HTML / PNG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,HTML / PNG)
+%assertDBValue(tst,exp,.html)
+%assertDBValue(tst,act,.png)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./class.png,   i_manual=0, i_desc=PDF / PNG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,PDF / PNG)
+%assertDBValue(tst,exp,.pdf)
+%assertDBValue(tst,act,.png)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./class.png,   i_manual=0, i_desc=RTF / PNG);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,RTF / PNG)
+%assertDBValue(tst,exp,.rtf)
+%assertDBValue(tst,act,.png)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+
+%assertReport(i_expected=&g_refdata./class.xls,   i_actual=&g_refdata./class.xls,   i_manual=0, i_desc=XLS / XLS);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,XLS / XLS)
+%assertDBValue(tst,exp,.xls)
+%assertDBValue(tst,act,.xls)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./class.xlsx,  i_actual=&g_refdata./class.xls,   i_manual=0, i_desc=XLSX / XLS);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,XLSX / XLS)
+%assertDBValue(tst,exp,.xlsx)
+%assertDBValue(tst,act,.xls)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./class.xls,   i_manual=0, i_desc=DOC / XLS);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,DOC / XLS)
+%assertDBValue(tst,exp,.doc)
+%assertDBValue(tst,act,.xls)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./class.xls,   i_manual=0, i_desc=DOCX / XLS);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,DOCX / XLS)
+%assertDBValue(tst,exp,.docx)
+%assertDBValue(tst,act,.xls)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./class.xls,   i_manual=0, i_desc=HTML / XLS);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,HTML / XLS)
+%assertDBValue(tst,exp,.html)
+%assertDBValue(tst,act,.xls)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./class.xls,   i_manual=0, i_desc=PDF / XLS);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,PDF / XLS)
+%assertDBValue(tst,exp,.pdf)
+%assertDBValue(tst,act,.xls)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./class.xls,   i_manual=0, i_desc=RTF / XLS);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,RTF / XLS)
+%assertDBValue(tst,exp,.rtf)
+%assertDBValue(tst,act,.xls)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+
+%assertReport(i_expected=&g_refdata./class.xlsx,  i_actual=&g_refdata./class.xlsx,  i_manual=0, i_desc=XLSX / XLSX);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,XLSX / XLSX)
+%assertDBValue(tst,exp,.xlsx)
+%assertDBValue(tst,act,.xlsx)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./class.xlsx,  i_manual=0, i_desc=DOC / XLSX);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,DOC / XLSX)
+%assertDBValue(tst,exp,.doc)
+%assertDBValue(tst,act,.xlsx)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./class.xlsx,  i_manual=0, i_desc=DOCX / XLSX);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,DOCX / XLSX)
+%assertDBValue(tst,exp,.docx)
+%assertDBValue(tst,act,.xlsx)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./class.xlsx,  i_manual=0, i_desc=HTML / XLSX);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,HTML / XLSX)
+%assertDBValue(tst,exp,.html)
+%assertDBValue(tst,act,.xlsx)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./class.xlsx,  i_manual=0, i_desc=PDF / XLSX);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,PDF / XLSX)
+%assertDBValue(tst,exp,.pdf)
+%assertDBValue(tst,act,.xlsx)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./class.xlsx,  i_manual=0, i_desc=RTF / XLSX);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,RTF / XLSX)
+%assertDBValue(tst,exp,.rtf)
+%assertDBValue(tst,act,.xlsx)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+
+%assertReport(i_expected=&g_refdata./Report.doc,  i_actual=&g_refdata./Report.doc,  i_manual=0, i_desc=DOC / DOC);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,DOC / DOC)
+%assertDBValue(tst,exp,.doc)
+%assertDBValue(tst,act,.doc)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./Report.doc,  i_manual=0, i_desc=DOCX / DOC);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,DOCX / DOC)
+%assertDBValue(tst,exp,.docx)
+%assertDBValue(tst,act,.doc)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./Report.doc,  i_manual=0, i_desc=HTML / DOC);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,HTML / DOC)
+%assertDBValue(tst,exp,.html)
+%assertDBValue(tst,act,.doc)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./Report.doc,  i_manual=0, i_desc=PDF / DOC);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,PDF / DOC)
+%assertDBValue(tst,exp,.pdf)
+%assertDBValue(tst,act,.doc)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.doc,  i_manual=0, i_desc=RTF / DOC);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,RTF / DOC)
+%assertDBValue(tst,exp,.rtf)
+%assertDBValue(tst,act,.doc)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+
+%assertReport(i_expected=&g_refdata./Report.docx, i_actual=&g_refdata./Report.docx, i_manual=0, i_desc=DOCX / DOCX);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,DOCX / DOCX)
+%assertDBValue(tst,exp,.docx)
+%assertDBValue(tst,act,.docx)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./Report.docx, i_manual=0, i_desc=HTML / DOCX);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,HTML / DOCX)
+%assertDBValue(tst,exp,.html)
+%assertDBValue(tst,act,.docx)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./Report.docx, i_manual=0, i_desc=PDF / DOCX);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,PDF / DOCX)
+%assertDBValue(tst,exp,.pdf)
+%assertDBValue(tst,act,.docx)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.docx, i_manual=0, i_desc=RTF / DOCX);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,RTF / DOCX)
+%assertDBValue(tst,exp,.rtf)
+%assertDBValue(tst,act,.docx)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+
+%assertReport(i_expected=&g_refdata./Report.html, i_actual=&g_refdata./Report.html, i_manual=0, i_desc=HTML / HTML);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,HTML / HTML)
+%assertDBValue(tst,exp,.html)
+%assertDBValue(tst,act,.html)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./Report.html, i_manual=0, i_desc=PDF / HTML);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,PDF / HTML)
+%assertDBValue(tst,exp,.pdf)
+%assertDBValue(tst,act,.html)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.html, i_manual=0, i_desc=RTF / HTML);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,RTF / HTML)
+%assertDBValue(tst,exp,.rtf)
+%assertDBValue(tst,act,.html)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+
+%assertReport(i_expected=&g_refdata./Report.pdf,  i_actual=&g_refdata./Report.pdf,  i_manual=0, i_desc=PDF / PDF);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,PDF / PDF)
+%assertDBValue(tst,exp,.pdf)
+%assertDBValue(tst,act,.pdf)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.pdf, i_manual=0, i_desc=RTF / PDF);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,RTF / PDF)
+%assertDBValue(tst,exp,.rtf)
+%assertDBValue(tst,act,.pdf)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+
+%assertReport(i_expected=&g_refdata./Report.rtf,  i_actual=&g_refdata./Report.rtf,  i_manual=0, i_desc=RTF / RTF);
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,RTF / RTF)
+%assertDBValue(tst,exp,.rtf)
+%assertDBValue(tst,act,.rtf)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 /** \endcond */ 

@@ -26,7 +26,7 @@
 
 %MACRO assertEquals (i_expected =      
                     ,i_actual   =      
-                    ,i_desc     =      
+                    ,i_desc     = Compare Values
                     ,i_fuzz     =      
                     );
 

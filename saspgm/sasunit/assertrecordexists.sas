@@ -22,7 +22,7 @@
 
 %MACRO assertRecordExists (i_dataset      =      
                           ,i_whereExpr    =      
-                          ,i_desc         =      
+                          ,i_desc         = Check for existance of specific records
                           );
 
    /*-- verify correct sequence of calls-----------------------------------------*/

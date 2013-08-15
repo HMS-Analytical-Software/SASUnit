@@ -27,17 +27,12 @@
    \param   i_manual             1: in case of a positive check result write an entry indicating a manual check (empty rectangle). 
                                  0: in case of a positive check result, write an entry indicating OK (green hook).
                                  default: 1
-   \param   i_ignoreCreationDate optional: Omits the check for the creation date of the report 
-                                 1: do not check creation date
-                                 0: check creation date (default)
-                                 default: 1
- */ /** \cond */ 
+*/ /** \cond */ 
 
 %MACRO assertReport (i_expected           =       
                     ,i_actual             =       
-                    ,i_desc               =       
+                    ,i_desc               = Compare documents
                     ,i_manual             = 1
-                    ,i_ignoreCreationDate = 0
                     );
 
    /*-- enforce sequence of calls ----------------------------------------------*/
@@ -53,10 +48,6 @@
    %LOCAL l_expected l_exp_ext l_rep_ext l_result l_casid l_tstid l_path l_errmsg;
 
    %*** check parameters ***;
-   %IF (&i_ignoreCreationDate. NE 0) %THEN %DO;
-      %LET i_ignoreCreationDate=1;
-   %END;
-
    %LET l_rep_ext  = %_getExtension(&i_actual);
 
    %IF ("&i_actual." EQ "") %THEN %DO;
@@ -91,9 +82,7 @@
       set &d_dir nobs=nobs;
       if nobs ne 1 then stop;
       if changed < dhms (today(), hour (input ("&systime",time5.)), minute (input ("&systime",time5.)), 0) then do;
-         if (&i_ignoreCreationDate. EQ 0) then do;
-            stop;
-         end;
+         stop;
       end;
       call symput ('l_result', '1');
       stop;

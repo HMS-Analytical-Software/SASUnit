@@ -134,8 +134,9 @@ run;
 );
 
 %reportSASUnit(
-   i_language=%upcase(%sysget(SASUNIT_LANGUAGE))
+    i_language=%upcase(%sysget(SASUNIT_LANGUAGE))
+   ,o_html    =1
+   ,o_junit   =1
 );
 
 /** \endcond */
-

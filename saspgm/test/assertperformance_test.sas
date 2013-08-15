@@ -64,6 +64,11 @@ run;
 %endTestcall()
 
 %assertPerformance (i_expected=4, i_desc=Runtime equal 4 seconds);
+%markTest()
+%assertDBValue(tst,type,assertPerformance)
+%assertDBValue(tst,exp,4)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %assertLog (i_errors=0, i_warnings=0)
 
@@ -88,6 +93,11 @@ quit;
 %let _RunTime=%sysevalf(&_RunTime-0.00000000000001);
 
 %assertPerformance (i_expected=&_RunTime., i_desc=Runtime exceeds expected value by 1 billionth - must be red!);
+%markTest()
+%assertDBValue(tst,type,assertPerformance)
+%assertDBValue(tst,exp,&_RunTime.)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %assertLog (i_errors=0, i_warnings=0);
 

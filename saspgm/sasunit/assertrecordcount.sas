@@ -30,7 +30,7 @@
                         ,i_operator       = EQ
                         ,i_recordsExp     = 
                         ,i_where          = 1
-                        ,i_desc           =
+                        ,i_desc           = Check for a specific number of records
                         );
 
    %GLOBAL g_inTestcase;
@@ -96,11 +96,11 @@
    %end;
 
    %*** Determine results***;
-   %if (&l_actual. &i_operator. &i_recordsExp and &l_actual. NE -999) %then %do;
+   %if (&l_actual. &i_operator. &i_recordsExp. and &l_actual. NE -999) %then %do;
       %let l_result = 0;
    %end;
 
-   %Update:;
+%Update:
    *** update result in test database ***;
    %_asserts(
              i_type     = assertRecordCount

@@ -1,13 +1,15 @@
 /**
    \file
    \ingroup    SASUNIT_TEST 
-   \brief      Tests for calls to macros including special characters as parameter - has to fail!
+   \brief      Tests for calls to macros including special characters as parameter - has to fail! 3 assertReport errors
    \version    \$Revision: 101 $
    \author     \$Author: b-braun $
    \date       \$Date: 2013-01-08 11:24:50 +0100 (Di, 08 Jan 2013) $
    \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/test/assertcolumns_test.sas $
 
 */ /** \cond */ 
+
+%let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /*-- first call: Everthing is ok ------------------------------------*/
 %initTestcase(i_object=_dummy_macro.sas, i_desc=no special characters anywhere)
@@ -69,13 +71,36 @@
 %assertEquals(i_actual=& - \                                ,i_expected=& - \                     ,i_desc=Special characters in i_actual and i_expected)
 %assertEquals(i_actual= %nrstr(§ \ < > % and &amp; as well as &hugo;), i_expected= %nrstr(§ \ < > % and &amp; as well as &hugo;) , i_desc=Special characters in i_actual and i_expected)
 %assertEquals(i_actual=Special characters                   ,i_expected=Special characters        ,i_desc=Special characters in i_actual and i_expected)
+
 %let testfile1 = class.jpg;
-%assertReport(i_actual=&g_refdata./class.jpg                ,i_expected=&g_refdata./&testfile1    ,i_desc= No Special characters in file name - must be red!, i_ignoreCreationDate=1)
-%assertReport(i_actual=&g_refdata./%nrstr(class.jpg)        ,i_expected=&g_refdata./&testfile1    ,i_desc=No Special characters - must be red!, i_ignoreCreationDate=1)
+%assertReport(i_actual=&g_refdata./class.jpg                ,i_expected=&g_refdata./&testfile1    ,i_desc=No Special characters in file name)
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,No Special characters in file name)
+%assertDBValue(tst,exp,.jpg)
+%assertDBValue(tst,act,.jpg)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+
+%assertReport(i_actual=&g_refdata./%nrstr(class.jpg)        ,i_expected=&g_refdata./&testfile1    ,i_desc=No Special characters)
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,No Special characters)
+%assertDBValue(tst,exp,.jpg)
+%assertDBValue(tst,act,.jpg)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 /* Does not run under LINUX in conjunction with %str(*) 
 %assertReport(i_actual=&g_refdata./%nrstr(file%%dh%(.xlsx)  ,i_expected=&g_refdata./%nrstr(file%%dh%(.xlsx)     ,i_desc=Special characters in file name - must be red!)
 */
 
-%assertReport(i_actual=&g_refdata./%nrstr(file-to_$8.xlsx)  ,i_expected=&g_refdata./%nrstr(file-to_$8.xlsx)     ,i_desc=Special characters in file name - must be red!, i_ignoreCreationDate=1)
+%assertReport(i_actual=&g_refdata./%nrstr(file-to_$8.xlsx)  ,i_expected=&g_refdata./%nrstr(file-to_$8.xlsx)     ,i_desc=Special characters in file name)
+%markTest()
+%assertDBValue(tst,type,assertReport)
+%assertDBValue(tst,desc,Special characters in file name)
+%assertDBValue(tst,exp,.xlsx)
+%assertDBValue(tst,act,.xlsx)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase()

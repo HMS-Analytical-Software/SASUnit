@@ -30,7 +30,7 @@
 %MACRO assertTableExists (i_libref  =
                          ,i_memname =
                          ,i_target  = DATA
-                         ,i_desc    =
+                         ,i_desc    = Check for existance of a specific dataset
                          ,i_not     = 0
                          );
 

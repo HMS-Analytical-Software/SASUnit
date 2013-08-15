@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertTableExists.sas - 12 assertTableExists errors
+   \brief      Tests for assertTableExists.sas - has to fail! 12 assertTableExists errors
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $

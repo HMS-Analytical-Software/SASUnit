@@ -23,12 +23,12 @@
    \param   i_logmsg       message of interest (Perl Regular Expression),non-case-sensitive log scan
                            special characters have to be quoted with a prefixed single backslash,
                            see http://support.sas.com/onlinedoc/913/getDoc/de/lrdict.hlp/a002288677.htm#a002405779
-   \param   i_desc         description of the assertion to be checked, default value: "Scan for log message"
+   \param   i_desc         description of the assertion to be checked, default value: "Scan for log messages"
    \param   i_not          negates the assertion, if set to 1
 */ /** \cond */ 
 
 %MACRO assertLogMsg (i_logmsg   =       
-                    ,i_desc     =   
+                    ,i_desc     = Scan for log messages  
                     ,i_not      = 0
                     );
 

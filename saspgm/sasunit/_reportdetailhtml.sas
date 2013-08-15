@@ -108,7 +108,7 @@
              href_exp="";
              href_rep="";
          end;
-         
+/*         
       *** Set default description per assert type ***;
       SELECT(upcase(tst_type));
          WHEN ('ASSERTLOG') DO; 
@@ -119,6 +119,7 @@
          END;
          OTHERWISE;
       END;
+*/
       if tst_act="" then tst_act='^_';
       if tst_exp="" then tst_exp='^_';
 

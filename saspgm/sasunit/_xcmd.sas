@@ -12,7 +12,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   cmd     OS command with quotes where necessary 
+   \param   i_cmd     OS command with quotes where necessary 
    \return  error symbol &sysrc will be set to a value other than 0, if an error occurs.
 
  */ /** \cond */ 

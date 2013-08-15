@@ -36,7 +36,7 @@
 
 %MACRO assertLibrary (i_actual       = _NONE_
                      ,i_expected     = _NONE_
-                     ,i_desc         = Bibliotheken prüfen
+                     ,i_desc         = Compare libraries
                      ,i_libraryCheck = STRICT
                      ,i_compareCheck = STRICT
                      ,i_fuzz         = _NONE_

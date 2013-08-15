@@ -58,7 +58,7 @@
 
 %MACRO assertColumns (i_expected     =      
                      ,i_actual       =      
-                     ,i_desc         =      
+                     ,i_desc         = Compare datasets
                      ,i_fuzz         =      
                      ,i_allow        = DSLABEL LABEL COMPVAR
                      ,i_id           =       

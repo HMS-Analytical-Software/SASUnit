@@ -16,11 +16,13 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param   i_expected       expected value  
-   \param   i_desc           description of the assertion to be checked
+   \param   i_desc           description of the assertion to be checked. Default "Check for run time"
 
 */ /** \cond */ 
 
-%MACRO assertPerformance(i_expected=, i_desc=);
+%MACRO assertPerformance(i_expected=
+                        ,i_desc    = Check for run time
+						);
 
    %GLOBAL g_inTestcase;
    %IF &g_inTestcase EQ 1 %THEN %DO;
