@@ -417,14 +417,14 @@
   9 EN Open function failed
  11 DE Assert Foreign Key - Ergebnisse
  11 EN Assert Foreign Key - Results
- 12 DE Es wurden keine SAS-Tabellen erzeugt
- 12 EN No SAS tables created
+ 12 DE Es wurden kein SAS-Tabellen erzeugt
+ 12 EN No SAS table created
  13 DE In der Stammtabelle als Schlüssel verwendete Werte, die nicht in der Nachschlagetabelle vorkommen
  13 EN Values that are used as keys in the master table, which were not found in lookup table
  14 DE Schlüssel der Nachschlagetabelle, die in der Stammtabelle nicht verwendet werden
  14 EN Keys of lookup table, which are not used in master table
- 15 DE Leere Tabelle
- 15 EN Table contains no records
+ 15 DE Leere Tabelle wurde erzeugt
+ 15 EN Table created but it contains no records
  16 DE Nachschlagetabelle: 
  16 EN lookup dataset:
  17 DE eindeutig

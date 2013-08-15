@@ -8,7 +8,7 @@
                must be the same and keys have to in the same order.
                If more than one key is specified please provide parameter i_cmpKeyLen with number of keys
                Eventual needed renaming of key variables takes place automatically               
-							
+                     
                Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
    \version    \$Revision: 191 $
@@ -22,47 +22,47 @@
 
    \param   i_mstrLib            Library of data set treated as master table
    \param   i_mstMem             Member name of data set treated as master table
-   \param 	i_mstKey		         Key or keys of the master table. Multiple keys have to be separated by blank
+   \param   i_mstKey             Key or keys of the master table. Multiple keys have to be separated by blank
    \param   i_unique             Optional parameter: by default set to true
    \param   i_lookupLib          Library of data set treated as lookup table
-   \param   i_lookupMem  	      Member name of data set treated as lookup table
-   \param   i_lookupKey		      Key or keys of the master table. Multiple keys have to be separated by blank
-   \param   i_cmpKeyLen		      Number of keys specified in i_mstKey and i_lookupKey
+   \param   i_lookupMem          Member name of data set treated as lookup table
+   \param   i_lookupKey          Key or keys of the master table. Multiple keys have to be separated by blank
+   \param   i_cmpKeyLen          Number of keys specified in i_mstKey and i_lookupKey
    \param   o_maxObsRprtFail     Optional parameter: maximum number of records to be listed where lookup failed. By default set to MAX
-   \param   o_listingVars	      Additional variables from master dataset to be listed. Additional variables have to be separated by blanks
+   \param   o_listingVars        Additional variables from master dataset to be listed. Additional variables have to be separated by blanks
    \param   o_treatMissings      Optional parameter: Handling of missing values in the master data set: Possible parameters are IGNORE, DISALLOW, VALUE(default)
-   \param   i_desc               A description of the test          	       
+   \param   i_desc               A description of the test                  
 
 */ /** \cond */ 
 
-%MACRO assertForeignKey (i_mstrLib 			   = 
-                        ,i_mstMem  			   = 
-                        ,i_mstKey			   = 
-                        ,i_unique			   = TRUE
-                        ,i_lookupLib 		   = 
-                        ,i_lookupMem  	      = 
-                        ,i_lookupKey		   = 
-                        ,i_cmpKeyLen		   = 1
+%MACRO assertForeignKey (i_mstrLib           = 
+                        ,i_mstMem            = 
+                        ,i_mstKey            = 
+                        ,i_unique            = TRUE
+                        ,i_lookupLib         = 
+                        ,i_lookupMem         = 
+                        ,i_lookupKey         = 
+                        ,i_cmpKeyLen         = 1
                         ,o_maxObsRprtFail    = MAX
-                        ,o_listingVars	      = 
+                        ,o_listingVars       = 
                         ,o_treatMissings     = VALUE
-                        ,i_desc    	         =
+                        ,i_desc              = Check for foreign key relation
                         );
 
    %GLOBAL g_inTestcase g_maxObsRprtFail g_listingVars;
-	%LOCAL l_dsMstrName l_dsLookupName l_MstrVars l_LookupVars l_renameLookup l_actual l_helper l_helper1 l_vartypMstr 
-			 l_vartypLookup l_rc l_result l_cnt1 l_cnt2 l_casid l_tstid l_path i l_listingVars num_missing l_treatMissings
+   %LOCAL l_dsMstrName l_dsLookupName l_MstrVars l_LookupVars l_renameLookup l_actual l_helper l_helper1 l_vartypMstr 
+          l_vartypLookup l_rc l_result l_cnt1 l_cnt2 l_casid l_tstid l_path i l_listingVars num_missing l_treatMissings
           l_treatMissing l_unique l_errMsg;
 
-	%LET l_actual 				= -999;
-	%LET l_dsMstrName 		= &i_mstrLib..&i_mstMem.;
-	%LET l_dsLookupName 	   = &i_lookupLib..&i_lookupMem.;
-	%LET i_mstKey 				= %SYSFUNC(compbl(&i_mstKey.));
-	%LET i_lookupKey 			= %SYSFUNC(compbl(&i_lookupKey.));
+   %LET l_actual           = -999;
+   %LET l_dsMstrName       = &i_mstrLib..&i_mstMem.;
+   %LET l_dsLookupName     = &i_lookupLib..&i_lookupMem.;
+   %LET i_mstKey           = %SYSFUNC(compbl(&i_mstKey.));
+   %LET i_lookupKey        = %SYSFUNC(compbl(&i_lookupKey.));
    %LET l_listingVars      = %SYSFUNC(COMPBL(&o_listingVars. %str( )));
    %LET l_treatMissings    = %SYSFUNC(upcase(&o_treatMissings.));
    %LET l_unique           = %SYSFUNC(upcase(&i_unique.));  
-	%LET l_result				= 2;
+   %LET l_result           = 2;
    %LET l_errMsg           =;
 
    %IF &g_inTestcase EQ 1 %THEN %DO;
@@ -78,12 +78,12 @@
    %*************************************************************;
    
    %*** check for valid librefs und existence of data sets Master und Lookup***;
-   %IF((%SYSFUNC (libref (&i_mstrLib.)) NE 0) or (%SYSFUNC(exist(&l_dsMstrName)) EQ 0)) %THEN %DO;
+   %IF ((%SYSFUNC (libref (&i_mstrLib.)) NE 0) or (%SYSFUNC(exist(&l_dsMstrName)) EQ 0)) %THEN %DO;
       %LET l_actual =-1;
       %LET l_errMsg =Libref of master table not valid or data set does not exist;
       %GOTO Update;
    %END;
-   %IF((%SYSFUNC (libref (&i_lookupLib.)) NE 0) or (%SYSFUNC(exist(&l_dsLookupName)) EQ 0)) %THEN %DO;
+   %IF ((%SYSFUNC (libref (&i_lookupLib.)) NE 0) or (%SYSFUNC(exist(&l_dsLookupName)) EQ 0)) %THEN %DO;
       %LET l_actual =-2;
       %LET l_errMsg =Libref of lookup table not valid or data set does not exist;
       %GOTO Update;
@@ -91,28 +91,28 @@
 
    %*** Is the number of keys specified in i_cmpKeyLen the same as actually specified in i_mstKey and i_lookupKey***;
    %LET l_helper = %eval(%SYSFUNC(count(&i_mstKey,%str( )))+1);
-   %IF(&l_helper. NE &i_cmpKeyLen.) %THEN %DO;
+   %IF (&l_helper. NE &i_cmpKeyLen.) %THEN %DO;
       %LET l_actual =-3;
       %LET l_errMsg =Number of keys found in i_mstKey not compatible to specified number;
       %GOTO Update;
    %END;
    %LET l_helper = %eval(%SYSFUNC(count(&i_lookupKey,%str( )))+1);
-   %IF(&l_helper. NE &i_cmpKeyLen.) %THEN %DO;
+   %IF (&l_helper. NE &i_cmpKeyLen.) %THEN %DO;
       %LET l_actual = -4;
       %LET l_errMsg =Number of found keys in i_lookupKey not compatible to specified number;
       %GOTO Update;
    %END;
 
-   %*** Extract given keys to local variables***;	
+   %*** Extract given keys to local variables***;  
    %DO i=1 %TO &i_cmpKeyLen.;
       %local l_mstKey&i l_lookupKey&i;
-      %LET l_mstKey&i 	   = %SYSFUNC(scan(&i_mstKey, &i., " "));
+      %LET l_mstKey&i      = %SYSFUNC(scan(&i_mstKey, &i., " "));
       %LET l_lookupKey&i   = %SYSFUNC(scan(&i_lookupKey, &i., " "));
    %END;
 
    %*** Check if parameter o_maxObsRprtFail is valid ***;
    %IF NOT (%SYSFUNC(upcase(&o_maxObsRprtFail.)) = MAX) %THEN %DO;
-      %IF(%datatyp(&o_maxObsRprtFail.) ~=NUMERIC) %THEN %DO;
+      %IF (%datatyp(&o_maxObsRprtFail.) ~=NUMERIC) %THEN %DO;
          %LET l_actual =-19;
          %LET l_errMsg =%bquote(Parameter o_maxObsRprtFail (&o_maxObsRprtFail): MAX or numeric GE 0);
          %GOTO Update;
@@ -126,10 +126,10 @@
       
    %*** Check existence of specified keys in their respective tables***;
    %*** open specified tables ***; 
-   %LET l_dsMstid 	= %SYSFUNC(open(&l_dsMstrName.));
+   %LET l_dsMstid    = %SYSFUNC(open(&l_dsMstrName.));
    %LET l_dsLookupid = %SYSFUNC(open(&l_dsLookupName.));
-      %*** opened correctly? ***; 
-   %IF(&l_dsMstid. EQ 0 or &l_dsLookupid. EQ 0) %THEN %DO;
+   %*** opened correctly? ***; 
+   %IF (&l_dsMstid. EQ 0 or &l_dsLookupid. EQ 0) %THEN %DO;
       %LET l_actual = -9;
       %LET l_errMsg =Open function failed;
       %GOTO Update;
@@ -142,7 +142,7 @@
          %* specified variable not found;
          %LET l_actual = -5;
          %LET l_errMsg =Key in master table not found;
-         %GOTO Update;				
+         %GOTO Update;           
       %END;
       %ELSE %DO;
          %* specified variable found: get variable type;
@@ -167,7 +167,7 @@
          %* specified variable not found;
          %LET l_actual = -6;
          %LET l_errMsg = Key in lookup table not found;
-         %GOTO Update;				
+         %GOTO Update;           
       %END;
       %ELSE %DO;
          %* specified variable found: get variable type;
@@ -179,7 +179,7 @@
          %* specified variable not found;
          %LET l_actual = -7;
          %LET l_errMsg =Variable types of keys in master and lookup table do not match;
-         %GOTO Update;				
+         %GOTO Update;           
       %END;
    %END;
 
@@ -196,7 +196,7 @@
          %* specified variable not found;
          %LET l_actual = -21;
          %LET l_errMsg =%bquote(Parameter o_listingVars (&l_listingVars) not found in Master Table);
-         %GOTO Update;				
+         %GOTO Update;           
       %END;  
       %LET i = %eval(&i+1);
       %LET l_helper1 = %SYSFUNC(scan(&l_listingVars., &i., %str( )));
@@ -213,14 +213,14 @@
    run; 
 
    %*** check for valid parameters*;
-   %IF(&l_treatMissings. NE IGNORE AND &l_treatMissings. NE DISALLOW AND &l_treatMissings. NE VALUE) %THEN %DO;
+   %IF (&l_treatMissings. NE IGNORE AND &l_treatMissings. NE DISALLOW AND &l_treatMissings. NE VALUE) %THEN %DO;
       %LET l_actual = -22;
       %LET l_errMsg = %bquote(Invalid argument für parameter treatMissings (&l_treatMissings));
       %GOTO Update;
    %END;
 
    %*** get number of missing keys in master table*;
-    PROC SQL;
+   PROC SQL;
       create table master_missing as
       select *
       from mstrCopy
@@ -234,7 +234,7 @@
    %LET l_rc         =%SYSFUNC(close(&l_helper)); 
    
    %*** Exit if missings were found***;
-   %IF("&l_treatMissings." = "DISALLOW" AND &num_missing. GT 0) %THEN %DO;
+   %IF ("&l_treatMissings." = "DISALLOW" AND &num_missing. GT 0) %THEN %DO;
       %LET l_actual = -23;
       %LET l_errMsg = %str(Parameter treatMissingsMst set to disallow, but missings found in master table);
       %GOTO Update;
@@ -249,7 +249,7 @@
    %END;
 
    %*** check for valid parameter i_unique ***;
-   %IF(&l_unique. NE TRUE AND &l_unique. NE FALSE) %THEN %DO;
+   %IF (&l_unique. NE TRUE AND &l_unique. NE FALSE) %THEN %DO;
       %LET l_actual = -24;
       %LET l_errMsg =Value for parameter i_unique not valid (&l_unique);
       %GOTO Update;
@@ -261,12 +261,12 @@
    
    %*** Get distinct values from lookup table***;
    %DO i=1 %to &i_cmpKeyLen.;
-      %IF(&i>1) %THEN %DO;
+      %IF (&i>1) %THEN %DO;
          %*** Insert comma into sql select clause ***;
-         %LET l_LookupVars 	= &l_LookupVars. ,;
+         %LET l_LookupVars    = &l_LookupVars. ,;
       %END;
-      %LET l_MstrVars 		= &l_MstrVars. &&l_mstKey&i.;
-      %LET l_LookupVars 	= &l_LookupVars. &&l_lookupKey&i.;
+      %LET l_MstrVars      = &l_MstrVars. &&l_mstKey&i.;
+      %LET l_LookupVars    = &l_LookupVars. &&l_lookupKey&i.;
       %LET l_renameLookup  = &l_renameLookup. &&l_lookupKey&i.=&&l_mstKey&i.;
    %END;
 
@@ -293,20 +293,20 @@
    QUIT;
 
    %*** Is parameter l_unique set to true -> are duplicates allowed? ***;
-   %IF(("&l_unique." EQ "TRUE") AND (&l_cnt1. NE &l_cnt2.)) %THEN %DO;
+   %IF (("&l_unique." EQ "TRUE") AND (&l_cnt1. NE &l_cnt2.)) %THEN %DO;
          %LET l_actual = -8;
          %LET l_errMsg =%str(Specified key of lookup table not unique, check parameter i_unique or lookup table);
       %GOTO Update;
    %END;
    %*** if parameter l_unique is set to false, put warning to log, but go on processing ***;
-   %ELSE %IF(("&l_unique." EQ "FALSE") AND (&l_cnt1. NE &l_cnt2.))%THEN %DO;
+   %ELSE %IF (("&l_unique." EQ "FALSE") AND (&l_cnt1. NE &l_cnt2.))%THEN %DO;
       %PUT WARNING: Parameter i_unique set to false and lookup table not unique;
    %END;
 
    %*** Check whether all keys in the master table are available in the lookup table***;
    proc sort data = mstrCopy out = mstrSorted;
       by &l_MstrVars;
-   run;		
+   run;     
    data keyNotFndMstr keyNotFndLookUp;
       /*merge distKeysLookUp(in=fndLookUp rename=(&l_renameLookup.)) mstrSorted(in=fndMstr);*/
       merge mstrSorted(in=fndMstr) distKeysLookUp(in=fndLookUp rename=(&l_renameLookup.));
@@ -316,23 +316,23 @@
    run;
 
    %*** Who many keys from the master table were not found in the lookup table ***;
-   %LET l_helper	=%SYSFUNC(OPEN(work.keyNotFndLookUp,IN));
-   %LET l_actual	=%SYSFUNC(ATTRN(&l_helper,NOBS));
-   %LET l_rc		=%SYSFUNC(CLOSE(&l_helper));
+   %LET l_helper  =%SYSFUNC(OPEN(work.keyNotFndLookUp,IN));
+   %LET l_actual  =%SYSFUNC(ATTRN(&l_helper,NOBS));
+   %LET l_rc      =%SYSFUNC(CLOSE(&l_helper));
 
    %*** Test successful? l_actual < 0 -> error_message, l_actual > 0 -> no foreign key relationship***;
-   %IF(&l_actual. = 0) %THEN %DO;
+   %IF (&l_actual. = 0) %THEN %DO;
       %LET l_result = 0;
    %END;
    
-   %IF(&l_actual. > 0) %THEN %DO;
+   %IF (&l_actual. > 0) %THEN %DO;
       %LET l_errMsg = &l_actual. key(s) not found in lookup table;
    %END;  
 
    /*-- get current ids for test case and test ---------------------------------*/
    %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
-	%*** create subfolder ***;
+   %*** create subfolder ***;
    %_createTestSubfolder (i_assertType  =assertForeignKey
                          ,i_scnid      =&g_scnid.
                          ,i_casid      =&l_casid.
@@ -366,7 +366,7 @@
    %END;
 
    %Update:
-	%_asserts(i_type      = assertForeignKey
+   %_asserts(i_type      = assertForeignKey
             ,i_expected = %str(&l_unique.)
             ,i_actual   = %str(&l_actual)
             ,i_desc     = &i_desc.

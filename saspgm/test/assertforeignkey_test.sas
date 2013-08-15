@@ -18,8 +18,8 @@
 /* test case 1 ------------------------------------ */
 %initTestcase(
     i_object=assertForeignKey.sas
-   ,i_desc=Tests with invalid parameters - must be red!
-	)
+   ,i_desc=Tests with invalid parameters
+   )
 %endTestcall()
 PROC SQL;
   create table test1 as
@@ -46,91 +46,91 @@ data test9;
    if name = "Jane" then name="";
 run;
 
-%assertForeignKey(i_mstrLib=hugo,	 i_mstMem=class,	i_mstKey=sex, 		i_lookupLib=work,	i_lookupMem=test1,	i_lookupKey = sex,		i_desc = Invalid master table library);
+%assertForeignKey(i_mstrLib=hugo,    i_mstMem=class,  i_mstKey=sex,     i_lookupLib=work, i_lookupMem=test1,   i_lookupKey=sex,      i_desc=Invalid master table library);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-1)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=hugo,	i_mstKey=sex, 		i_lookupLib=work,	i_lookupMem=test1,	i_lookupKey = sex,		i_desc = Invalid master table member name);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=hugo,   i_mstKey=sex,     i_lookupLib=work, i_lookupMem=test1,   i_lookupKey=sex,      i_desc=Invalid master table member name);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-1)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,	i_mstKey=sex, 		i_lookupLib=hugo,	i_lookupMem=test1,	i_lookupKey = sex,		i_desc = Invalid lookup table library);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex,     i_lookupLib=hugo, i_lookupMem=test1,   i_lookupKey=sex,      i_desc=Invalid lookup table library);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-2)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,	i_mstKey=sex, 		i_lookupLib=work,	i_lookupMem=hugo,		i_lookupKey = sex,		i_desc = Invalid lookup table member name);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex,     i_lookupLib=work, i_lookupMem=hugo,    i_lookupKey=sex,      i_desc=Invalid lookup table member name);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-2)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,	i_mstKey=sex hugo,i_lookupLib=work, i_lookupMem=test1,	i_lookupKey = sex,		i_desc = Number of keys specified for master table not equal to number of keys given);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex hugo,i_lookupLib=work, i_lookupMem=test1,   i_lookupKey=sex,      i_desc=Number of keys specified for master table not equal to number of keys given);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-3)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,	i_mstKey=sex,     i_lookupLib=work, i_lookupMem=test1,	i_lookupKey = sex hugo,	i_desc = Number of keys specified for lookup table not equal to number of keys given);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex,     i_lookupLib=work, i_lookupMem=test1,   i_lookupKey=sex hugo, i_desc=Number of keys specified for lookup table not equal to number of keys given);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-4)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,	i_mstKey=sex, 		i_lookupLib=work,	i_lookupMem=test1,	i_lookupKey = sex,	   i_desc =Invalid parameter for maxObsRprtFail,                                 o_maxObsRprtFail= hugo);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex,     i_lookupLib=work, i_lookupMem=test1,   i_lookupKey=sex,      i_desc=Invalid parameter for maxObsRprtFail,                                 o_maxObsRprtFail= hugo);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-19)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,	i_mstKey=sex, 		i_lookupLib=work,	i_lookupMem=test1,	i_lookupKey = sex,		i_desc =Invalid parameter for maxObsRprtFail,                                 o_maxObsRprtFail= -5);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex,     i_lookupLib=work, i_lookupMem=test1,   i_lookupKey=sex,      i_desc=Invalid parameter for maxObsRprtFail,                                 o_maxObsRprtFail= -5);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-20)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,	i_mstKey=sex, 		i_lookupLib=work,	i_lookupMem=test1,	i_lookupKey = sex,		i_desc = Invalid parameter l_listingVars: Column not found in master data set, o_listingVars=cars);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex,     i_lookupLib=work, i_lookupMem=test1,   i_lookupKey=sex,      i_desc=Invalid parameter l_listingVars: Column not found in master data set, o_listingVars=cars);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-21)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,	i_mstKey=sex, 		i_lookupLib=work,	i_lookupMem=test1,	i_lookupKey = sex,		i_desc = Test with invalid parameter treatMissingsMst,                          o_treatMissings=hugo);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex,     i_lookupLib=work, i_lookupMem=test1,   i_lookupKey=sex,      i_desc=Test with invalid parameter treatMissingsMst,                          o_treatMissings=hugo);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-22)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=work,    i_mstMem=test8,	i_mstKey=name, 	i_lookupLib=sashelp,	i_lookupMem=class,i_lookupKey = name,		i_desc = Test with treatMissingsMst=dissalow and missing key values in master data set, o_treatMissings=DISALLOW);
+%assertForeignKey(i_mstrLib=work,    i_mstMem=test8,  i_mstKey=name,    i_lookupLib=sashelp, i_lookupMem=class,i_lookupKey=name,     i_desc=Test with treatMissingsMst=dissalow and missing key values in master data set, o_treatMissings=DISALLOW);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-23)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,	i_mstKey=hugo, 	i_lookupLib=work,	i_lookupMem=test1,	i_lookupKey = sex,		i_desc = Key specified in i_mstKey not found in master table);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=hugo,    i_lookupLib=work, i_lookupMem=test1,   i_lookupKey=sex,      i_desc=Key specified in i_mstKey not found in master table);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-5)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,	i_mstKey=sex, 		i_lookupLib=work,	i_lookupMem=test1,	i_lookupKey = hugo,		i_desc = Key specified in i_lookupKey not found in lookup table);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex,     i_lookupLib=work, i_lookupMem=test1,   i_lookupKey=hugo,     i_desc=Key specified in i_lookupKey not found in lookup table);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-6)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,	i_mstKey=sex, 		i_lookupLib=work,	i_lookupMem=test2,	i_lookupKey = sex,		i_desc = Specified keys for tables with incompatible data type);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex,     i_lookupLib=work, i_lookupMem=test2,   i_lookupKey=sex,      i_desc=Specified keys for tables with incompatible data type);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-7)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,	i_mstKey=sex, 		i_lookupLib=work,	i_lookupMem=test1,	i_lookupKey = sex,		i_desc = Invalid parameter i_unique hugo,  i_unique=hugo);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex,     i_lookupLib=work, i_lookupMem=test1,   i_lookupKey=sex,      i_desc=Invalid parameter i_unique hugo,  i_unique=hugo);
    %markTest()
       %assertDBValue(tst,exp,HUGO)
       %assertDBValue(tst,act,-24)
@@ -143,7 +143,7 @@ run;
 /* test case 2 ------------------------------------ */
 %initTestcase(
     i_object=assertForeignKey.sas
-   ,i_desc=Key of lookup table not unique - must be red!
+   ,i_desc=Key of lookup table not unique
 )
 %endTestcall()
 data work.test3;
@@ -170,19 +170,19 @@ PROC SQL;
   where sex="F"
   ;
 QUIT;
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex, i_lookupLib=work, i_lookupMem=test3, i_lookupKey = sex, i_desc = Parameter i_unique set to true but column sex in lookup table test3 non unique);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=sex, i_lookupLib=work, i_lookupMem=test3, i_lookupKey=sex, i_desc=Parameter i_unique set to true but column sex in lookup table test3 non unique);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,-8)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=name,i_lookupLib=work, i_lookupMem=test7, i_lookupKey=name,  i_desc = test with o_maxObsRprtFail %str(=) 5,    o_maxObsRprtFail = 5);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class,  i_mstKey=name,i_lookupLib=work, i_lookupMem=test7, i_lookupKey=name,  i_desc=test with o_maxObsRprtFail %str(=) 5, o_maxObsRprtFail = 5);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,10)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%assertForeignKey(i_mstrLib=work,    i_mstMem=test9,  i_mstKey=name,i_lookupLib=work, i_lookupMem=test7, i_lookupKey=name,  i_desc = test with listingVars %str(=) age,       o_listingVars=age);
+%assertForeignKey(i_mstrLib=work,    i_mstMem=test9,  i_mstKey=name,i_lookupLib=work, i_lookupMem=test7, i_lookupKey=name,  i_desc=test with listingVars %str(=) age, o_listingVars=age);
    %markTest()
       %assertDBValue(tst,exp,TRUE)
       %assertDBValue(tst,act,6)
@@ -205,7 +205,7 @@ PROC SQL;
   ;
 QUIT;
 
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class, i_mstKey=sex age, i_lookupLib=work, i_lookupMem=test5, i_lookupKey = sex age, i_desc = Test with composite key, i_cmpKeyLen		= 2);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class, i_mstKey=sex age, i_lookupLib=work, i_lookupMem=test5, i_lookupKey=sex age, i_desc=Test with composite key, i_cmpKeyLen=2);
 
 PROC SQL;
   create table test6  (RENAME=(sex=gender age=years))  as
@@ -213,7 +213,7 @@ PROC SQL;
   FROM sashelp.class
   ;
 QUIT;
-%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class, i_mstKey=sex age, i_lookupLib=work, i_lookupMem=test6, i_lookupKey = gender years,	i_desc = Renaming of column names, i_cmpKeyLen	= 2);
+%assertForeignKey(i_mstrLib=sashelp, i_mstMem=class, i_mstKey=sex age, i_lookupLib=work, i_lookupMem=test6, i_lookupKey=gender years, i_desc=Renaming of column names, i_cmpKeyLen=2);
 
 
 PROC SQL;
@@ -223,11 +223,11 @@ PROC SQL;
   where age > 14
   ;
 QUIT;
-%assertForeignKey(i_mstrLib=work,   i_mstMem=test7, i_mstKey=name,i_lookupLib=sashelp, i_lookupMem=class, i_lookupKey=name, i_desc = test with listingVars %str(=) age,                                            o_listingVars=age);
-%assertForeignKey(i_mstrLib=work,   i_mstMem=test8, i_mstKey=name,i_lookupLib=sashelp,	i_lookupMem=class, i_lookupKey=name, i_desc = Test with treatMissings=ignore and missing key values in master data set,     o_treatMissings=ignore);
-%assertForeignKey(i_mstrLib=work,   i_mstMem=test9, i_mstKey=name,i_lookupLib=work,	   i_lookupMem=test8, i_lookupKey=name, i_desc = treat missing values in master table like any other value,                    o_treatMissings=VALUE);
-%assertForeignKey(i_mstrLib=sashelp,i_mstMem=class, i_mstKey=sex, i_lookupLib=work,    i_lookupMem=test3, i_lookupKey=sex,  i_desc = Column sex in lookup table test3 non unique and parameter i_unique set to false, i_unique=false);
-%assertForeignKey(i_mstrLib=work,   i_mstMem=test7, i_mstKey=name,i_lookupLib=sashelp, i_lookupMem=class, i_lookupKey=name, i_desc = test with i_unique %str(=) false%str(,) but lookup table is unique,            i_unique=false);
+%assertForeignKey(i_mstrLib=work,   i_mstMem=test7, i_mstKey=name,i_lookupLib=sashelp, i_lookupMem=class, i_lookupKey=name, i_desc=test with listingVars %str(=) age,                                               o_listingVars=age);
+%assertForeignKey(i_mstrLib=work,   i_mstMem=test8, i_mstKey=name,i_lookupLib=sashelp, i_lookupMem=class, i_lookupKey=name, i_desc=Test with treatMissings=ignore and missing key values in master data set,        o_treatMissings=ignore);
+%assertForeignKey(i_mstrLib=work,   i_mstMem=test9, i_mstKey=name,i_lookupLib=work,    i_lookupMem=test8, i_lookupKey=name, i_desc=treat missing values in master table like any other value,                       o_treatMissings=VALUE);
+%assertForeignKey(i_mstrLib=sashelp,i_mstMem=class, i_mstKey=sex, i_lookupLib=work,    i_lookupMem=test3, i_lookupKey=sex,  i_desc=Column sex in lookup table test3 non unique and parameter i_unique set to false, i_unique=false);
+%assertForeignKey(i_mstrLib=work,   i_mstMem=test7, i_mstKey=name,i_lookupLib=sashelp, i_lookupMem=class, i_lookupKey=name, i_desc=test with i_unique %str(=) false%str(,) but lookup table is unique,              i_unique=false);
 %assertLog (i_errors=0, i_warnings=0)
 %endTestcase();
 
