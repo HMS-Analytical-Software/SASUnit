@@ -54,8 +54,6 @@
       l_dorun 
       l_scndesc 
       l_sysrc
-      l_parms
-      l_parenthesis
       l_rc
       l_scnlogfullpath
       l_filled
@@ -67,9 +65,8 @@
       l_result2
       l_result
       l_nscncount
-      l_tcgFilePath
-      l_tcgOptionsString
-      l_tcgOptionsStringLINUX
+      l_c_scnid
+      l_sysrc
    ;
 
    %LET l_macname=&sysmacroname;
@@ -192,125 +189,15 @@
             WHERE scn_id = &l_scnid
             ;
          QUIT;
-    
-         /*-- prepare sasuser ---------------------------------------------------*/
-         DATA _null_;
-            FILE "%sysfunc(pathname(work))/x.cmd";
-            PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
-            PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
-         %IF %length(&g_sasuser) %THEN %DO;
-            PUT "&g_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
-         %END;
-         RUN;
-         %if &sysscp. = LINUX %then %do;
-             %_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
-         %end;
-         %_xcmd("%sysfunc(pathname(work))/x.cmd")
-         %LET l_rc=_delfile(%sysfunc(pathname(work))/x.cmd);
-            
-         /*-- run test scenario in a new process --------------------------------*/
-         %LET l_parms=;
-         %LET l_parenthesis=(;
-         %IF "&g_autoexec" NE "" %THEN %DO;
-            %LET l_parms=&l_parms -autoexec ""&g_autoexec"";
-         %END;
-         %IF &sysscp. = LINUX %THEN %DO;
-             %IF "&g_sascfg" NE "" %THEN %DO;
-                options SET=SASCFGPATH "&g_sascfg.";
-             %END;
-         %END;
-         %ELSE %DO;
-             %IF "&g_sascfg" NE "" %THEN %DO;
-                 %LET l_parms=&l_parms -config ""&g_sascfg"";
-             %END;
-             %ELSE %IF %length(%sysfunc(getoption(config))) NE 0 AND %index(%quote(%sysfunc(getoption(config))),%bquote(&l_parenthesis)) NE 1 %THEN %DO; 
-                %LET l_parms=&l_parms -config ""%sysfunc(getoption(config))"";
-             %END; 
-         %END;
-
-         %LET l_scnlogfullpath = &g_log/%substr(00&l_scnid.,%length(&l_scnid)).log;
-
-         %IF &g_testcoverage. EQ 1 %THEN %DO;
-            /*-- generate a local macro variable containing the 
-                 path to the generated coverage file if necessary ---------------*/
-            %LET   l_tcgFilePath           = &g_log/%substr(00&l_scnid.,%length(&l_scnid)).tcg;
-            %LET   l_tcgOptionsString      = -mcoverage -mcoverageloc = ""&l_tcgFilePath."";
-            %LET   l_tcgOptionsStringLINUX = options mcoverage mcoverageloc='%sysfunc(tranwrd(&l_tcgFilePath.,%str( ), %str(\ )))';
-        %END;
-
-
-         DATA _null_;
-            ATTRIB
-               _sCmdString LENGTH = $32000
-            ;
-            FILE 
-            "%sysfunc(pathname(work))/xx.cmd"
-               LRECL=32000
-            ;
-         %IF &sysscp. = LINUX %THEN %DO;
-            _sCmdString = 
-               "" !! &g_sasstart. 
-               !! " " 
-               !! "&l_parms. "
-               !! "-sysin %sysfunc(tranwrd(&&l_scnfile&i, %str( ), %str(\ ))) "
-               !! "-initstmt "" &l_tcgOptionsStringLINUX.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&l_scnid.;"" "
-               !! "-log   %sysfunc(tranwrd(&l_scnlogfullpath, %str( ), %str(\ ))) "
-               !! "-print %sysfunc(tranwrd(&g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst, %str( ), %str(\ ))) "
-               !! "-noovp "
-               !! "-nosyntaxcheck "
-               !! "-mautosource "
-               !! "-mcompilenote all "
-               !! "-sasautos %sysfunc(tranwrd(&g_sasunit, %str( ), %str(\ ))) "
-               !! "-sasuser %sysfunc(pathname(work))/sasuser "
-               !! "-termstmt ""%nrstr(%%_termScenario())"" "
-               !! "";
-         %END;
-         %ELSE %DO;
-            _sCmdString = 
-               """" !! &g_sasstart !! """"
-               !! " " 
-               !! "&l_parms. "
-               !! "-sysin ""&&l_scnfile&i"" "
-               !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&l_scnid.;"" "
-               !! "-log   ""&l_scnlogfullpath."" "
-               !! "-print ""&g_testout/%substr(00&l_scnid.,%length(&l_scnid)).lst"" "
-               !! "&g_splash "
-               !! "-noovp "
-               !! "-nosyntaxcheck "
-               !! "-mautosource "
-               !! "-mcompilenote all "
-               !! "-sasautos ""&g_sasunit"" "
-               !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
-               !! "-termstmt ""%nrstr(%%%_termScenario())"" "
-               !! "&l_tcgOptionsString. "
-               !! "";
-         %END;
-            PUT
-               _sCmdString
-            ;
-         RUN;
-         %IF &sysscp. = LINUX %THEN %DO;
-             %_xcmd(chmod u+x "%sysfunc(pathname(work))/xx.cmd");
-             %_xcmd(sed -i -e 's/\r//g' %sysfunc(pathname(work))/xx.cmd);
-         %END;
-         %_xcmd("%sysfunc(pathname(work))/xx.cmd")
-         
-         
-         %LET l_rc=_delfile(%sysfunc(pathname(work))/xx.cmd);
-         %LET l_sysrc = &sysrc;
-
-         /*-- delete sasuser ----------------------------------------------------*/
-         DATA _null_;
-            FILE "%sysfunc(pathname(work))/x.cmd";
-            PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
-         RUN;
-         %if &sysscp. = LINUX %then %do;
-             %_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
-         %end;
-
-         %_xcmd("%sysfunc(pathname(work))/x.cmd")
-         %LET l_rc=_delfile(%sysfunc(pathname(work))/x.cmd);
-
+       
+         %LET l_c_scnid        = %substr(00&l_scnid.,%length(&l_scnid));
+         %LET l_scnlogfullpath = &g_log/&l_c_scnid..log;
+         %_runProgramSpawned(i_program          =&&l_scnfile&i
+                            ,i_scnid            =&l_c_scnid.
+                            ,i_generateMcoverage=&g_testcoverage.
+                            ,i_sysrc            =l_sysrc
+                            );    
+                     
          /*-- delete listing if empty -------------------------------------------*/
          %LET l_filled=0;
          %LET l_lstfile=&g_testout/%substr(00&l_scnid,%length(&l_scnid)).lst;
@@ -354,7 +241,7 @@
                   ,scn_warningcount = &l_warning_count.
                   ,scn_res          = &l_result.
                WHERE 
-                  scn_id = &l_scnid
+                  scn_id = &l_scnid.
                ;
          QUIT;
 

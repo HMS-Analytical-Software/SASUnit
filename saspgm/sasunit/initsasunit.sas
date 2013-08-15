@@ -80,9 +80,9 @@
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
 
-   %LOCAL l_macname  l_first_temp   l_current_dbversion l_target_abs  l_newdb    l_rc l_project l_root    l_sasunit     l_abs l_autoexec l_autoexec_abs
-          l_sascfg   l_sascfg_abs   l_sasuser           l_sasuser_abs l_testdata l_testdata_abs l_refdata l_refdata_abs l_doc l_doc_abs  restore_sasautos 
-          l_sasautos l_sasautos_abs i                   l_work        l_parms
+   %LOCAL l_macname  l_current_dbversion l_target_abs  l_newdb       l_rc       l_project      l_root    l_sasunit     l_abs l_autoexec l_autoexec_abs
+          l_sascfg   l_sascfg_abs        l_sasuser     l_sasuser_abs l_testdata l_testdata_abs l_refdata l_refdata_abs l_doc l_doc_abs  restore_sasautos 
+          l_sasautos l_sasautos_abs      i             l_work        l_sysrc
    ;
 
    %LET l_current_dbversion=0;
@@ -95,6 +95,12 @@
 
    /*-- initialize error --------------------------------------------------------*/
    %_initErrorHandler;
+
+   /*-- check value of parameter i_verbose, if it has a value other than 0, 
+        it will be set to 1 in order to assure that it will have only value 0 or 1 ------*/
+   %IF (&i_verbose. NE 0) %THEN %DO;
+      %LET i_verbose = 1;
+   %END;
 
    /*-- check for operation system ----------------------------------------------*/
    %IF %_handleError(&l_macname.
@@ -131,12 +137,6 @@
                     ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
-   %END;
-
-   /*-- check value of parameter i_verbose, if it has a value other than 0, 
-        it will be set to 1 in order to assure that it will have only value 0 or 1 ------*/
-   %IF (&i_verbose. NE 0) %THEN %DO;
-      %LET i_verbose = 1;
    %END;
 
    /*-- check for target directory ----------------------------------------------*/
@@ -277,10 +277,7 @@
          PUT "&g_makedir ""&l_target_abs/tst""&g_endcommand";
          PUT "&g_makedir ""&l_target_abs/rep""&g_endcommand";
       RUN;
-      %if &sysscp. = LINUX %then %do;
-         %_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
-      %end;
-      %_xcmd("%sysfunc(pathname(work))/x.cmd")
+      %_executeCMDFile(%sysfunc(pathname(work))/x.cmd);
       %LET l_rc=_delfile(%sysfunc(pathname(work))/x.cmd);
    %END; /* %if &l_newdb */
 
@@ -511,16 +508,18 @@
    QUIT;
    %END; /* i=1 %TO 9 */
 
+   /*-- update parameters ----------------------------------------------------*/
+   PROC SQL NOPRINT;
+      UPDATE target.tsu SET tsu_testcoverage=&i_testcoverage;
+      UPDATE target.tsu SET tsu_verbose     =&i_verbose;
+   QUIT;
+
+
    /*-- load relevant information from test database to global macro symbols ----*/
    %_loadEnvironment (
        i_withLibrefs = 0
    )
    %IF "&g_error_code" NE "" %THEN %GOTO errexit;
-
-   %if &sysscp. = WIN %then %do; 
-      /*-- options for OS commands ----------------------------------------------*/
-      options noxwait xsync xmin;
-   %end;
 
    /*-- check spawning of a SAS process -----------------------------------------*/
    /* a file will be created in the work library of the parent (this) process 
@@ -531,95 +530,16 @@
    QUIT;
 
    DATA _null_;
-      FILE "%sysfunc(pathname(work))/x.cmd";
-      PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
-      PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
-   %IF %length(&g_sasuser) %THEN %DO;
-      PUT "&g_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
-   %END;
-   RUN;
-   %if &sysscp. = LINUX %then %do;
-      %_xcmd(chmod u+x "%sysfunc(pathname(work))/x.cmd")
-   %end;
-   %_xcmd("%sysfunc(pathname(work))/x.cmd")
-   %LET l_rc=_delfile(%sysfunc(pathname(work))/x.cmd);
-            
-   DATA _null_;
-      FILE "&l_work/run.sas";
+      FILE "&l_work/check_spawning.sas";
       PUT "LIBNAME awork ""&l_work"";";
       PUT "DATA awork.check; RUN;";
    RUN;
-   %IF "&g_autoexec" NE "" %THEN %DO;
-      %LET l_parms=&l_parms -autoexec ""&g_autoexec"";
-   %END;
-   %IF "&g_sascfg" NE "" %THEN %DO;
-      %IF &sysscp. = LINUX %THEN %DO;
-             %IF "&g_sascfg" NE "" %THEN %DO;
-                options SET=SASCFGPATH "&g_sascfg.";
-             %END;
-      %END;
-      %ELSE %DO;
-         %LET l_parms=&l_parms -config ""&g_sascfg"";
-      %END;
-   %END;
-
-      
-   DATA _null_;
-    ATTRIB
-      _sCmdString LENGTH = $32000
-    ;
-    FILE 
-      "%sysfunc(pathname(work))/xxx.cmd"
-      LRECL=32000
-    ;
-   %IF &sysscp. = LINUX %THEN %DO;
-      /* sasautos: the blank is part of the syntax and separates multiple directories from each other!!*/
-    _sCmdString = 
-         "" !! &g_sasstart. 
-           !! " " 
-           !! "&l_parms. " 
-           !! "-sysin &l_work./run.sas "
-           !! "-initstmt ""%nrstr(%%_scenario%(io_target=)&g_target%nrstr(%);)"" "
-           !! "-log  ""&g_log./000.log"" "
-           !! "-print ""&g_log./000.lst"" "
-           !! "-noovp "
-           !! "-nosyntaxcheck "
-           !! "-mautosource "
-           !! "-mcompilenote all "
-           !! "-sasautos %sysfunc(tranwrd(&g_sasunit, %str( ), %str(\ ))) "
-           !! "-sasuser %sysfunc(pathname(work))/sasuser "
-           !! "";
-   %END;
-   %ELSE %DO;
-    _sCmdString = 
-      """" !! &g_sasstart !! """"
-           !! " " 
-           !! "&l_parms. "
-           !! "-sysin ""&l_work./run.sas"" "
-           !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%);)"" "
-           !! "-log   ""&g_log./000.log"" "
-           !! "-print ""&g_log./000.lst"" "
-           !! "&g_splash "
-           !! "-noovp "
-           !! "-nosyntaxcheck "
-           !! "-mautosource "
-           !! "-mcompilenote all "
-           !! "-sasautos ""&g_sasunit"" "
-           !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
-           !! "";
-   %END;
-    PUT _sCmdString
-    ;
-   RUN;
-
-   %IF &sysscp. = LINUX %THEN %DO;
-     %_xcmd(chmod u+x "%sysfunc(pathname(work))/xxx.cmd");
-     %_xcmd(sed -i -e 's/\r//g' %sysfunc(pathname(work))/xxx.cmd);
-   %END;
-
-   %_xcmd("%sysfunc(pathname(work))/xxx.cmd")
-   %LET l_rc=_delfile(%sysfunc(pathname(work))/xxx.cmd);
-   %LET l_sysrc = &sysrc;
+   
+   %_runProgramSpawned(i_program          =&l_work./check_spawning.sas
+                      ,i_scnid            =000
+                      ,i_generateMcoverage=0
+                      ,i_sysrc            =l_sysrc
+                      );                
 
    %IF %_handleError(&l_macname.
                     ,ErrorSASCall2
