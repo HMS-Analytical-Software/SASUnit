@@ -32,17 +32,18 @@ OPTIONS
 
 /* open test repository or create when needed */
 %initSASUnit(
-   i_root       = %sysget(SASUNIT_ROOT)                                    /* root path, all other paths can then be relative paths */
-  ,io_target    = example/doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))  /* Output of SASUnit: test repository, logs, results, reports */
-  ,i_overwrite  = %sysget(SASUNIT_OVERWRITE)                               /* set to 1 to force all test scenarios to be run, else only changed 
+   i_root         = %sysget(SASUNIT_ROOT)                                    /* root path, all other paths can then be relative paths */
+  ,io_target      = example/doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))  /* Output of SASUnit: test repository, logs, results, reports */
+  ,i_overwrite    = %sysget(SASUNIT_OVERWRITE)                               /* set to 1 to force all test scenarios to be run, else only changed 
                                                                                 scenarios or scenarios with changed unit under test will be run*/
-  ,i_project    = SASUnit Examples                                           /* Name of project, for report */
-  ,i_sasunit    = saspgm/sasunit                                             /* SASUnit macro library */
-  ,i_sasautos   = example/saspgm                                             /* Search for units under test here */
-  ,i_testdata   = example/dat                                                /* test data, libref testdata */
-  ,i_refdata    = example/dat                                                /* reference data, libref refdata */
-  ,i_sascfg     = example/bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
+  ,i_project      = SASUnit Examples                                           /* Name of project, for report */
+  ,i_sasunit      = saspgm/sasunit                                             /* SASUnit macro library */
+  ,i_sasautos     = example/saspgm                                             /* Search for units under test here */
+  ,i_testdata     = example/dat                                                /* test data, libref testdata */
+  ,i_refdata      = example/dat                                                /* reference data, libref refdata */
+  ,i_sascfg       = example/bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
   ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)                      /* set to 1 to assess test coverage assessment */
+  ,i_verbose      =1
 )
 
 /* Run specified test scenarios. There can be more than one call to runSASUnit */
