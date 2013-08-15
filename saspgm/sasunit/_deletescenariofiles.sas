@@ -19,7 +19,7 @@
 */ /** \cond */  
 
 %MACRO _deletescenariofiles(i_scnid =
-                            );
+                           );
 
    %LOCAL l_nobs l_target;
    
@@ -71,16 +71,12 @@
    %LET l_nobs = &SYSNOBS;
    %*** Write and execute cmd file only if table foldersToDelete is not empty ***;
    %IF &l_nobs > 0 %THEN %DO;
-      %_oscmds;
       DATA _NULL_;
          FILE "%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd";
          SET foldersToDelete;
          PUT "&g_removedir ""&l_target./tst/_" tst_scnid +(-1)"_" tst_casid +(-1)"_" tst_id +(-1) "_" tst_type +(-1)"""&g_endcommand";
       RUN;
-      %IF &sysscp. = LINUX %THEN %DO;
-          %_xcmd(chmod u+x "%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd")
-      %END;
-      %_xcmd("%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd");
+     %_executeCMDFile("%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd");
    %END;
 
 %MEND _deletescenariofiles;

@@ -60,6 +60,7 @@ OPTIONS MAUTOSOURCE SASAUTOS=(SASAUTOS "&g_sasunit"
 /* flag for test cases */
 %GLOBAL g_inTestcase;
 %LET g_inTestcase=0;
+%_oscmds;
 
 %GOTO exit;
 %errexit:
