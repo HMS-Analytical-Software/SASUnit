@@ -89,6 +89,7 @@
             !! "-print %sysfunc(tranwrd(&g_testout/&i_scnid..lst, %str( ), %str(\ ))) "
             !! "-noovp "
             !! "-nosyntaxcheck "
+            !! "-noterminal "
             !! "-mautosource "
             !! "-mcompilenote all "
             !! "-sasautos %sysfunc(tranwrd(&g_sasunit, %str( ), %str(\ ))) "
