@@ -23,7 +23,7 @@
 					  
    %if &sysscp. = LINUX %then %do;
       %_xcmd(chmod u+x "&i_cmdFile.")
-      %_xcmd(sed -i -e 's/\r//g' "%sysfunc(pathname(work))/xx.cmd");
+      %_xcmd(sed -i -e 's/\r//g' "&i_cmdFile.");
    %end;
    %_xcmd("&i_cmdFile.")
 
