@@ -68,7 +68,7 @@
      ;
    QUIT;
 
-   %LET l_nobs = &SYSNOBS;
+   %LET l_nobs = %_nobs(foldersToDelete);
    %*** Write and execute cmd file only if table foldersToDelete is not empty ***;
    %IF &l_nobs > 0 %THEN %DO;
       DATA _NULL_;
