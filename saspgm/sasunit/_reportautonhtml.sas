@@ -66,7 +66,7 @@
 	  
 	  %let l_logpath=&g_log.;
 	  %if (&sysscp. = LINUX) %then %do;
-	     %let l_logpath = %sysfunc(tranwrd(&l_logpath., %str( ),%str(\ )))
+	     %let l_logpath = %sysfunc(tranwrd(&l_logpath., %str( ),%str(\ )));
 	  %end;
 
       FILENAME allfiles "&l_logpath./*.tcg";
