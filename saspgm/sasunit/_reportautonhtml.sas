@@ -27,7 +27,7 @@
 
    /*-- determine number of scenarios 
      and number of test cases per unit under test ----------------------------*/
-   %LOCAL d_rep1 d_rep2 l_tcg_res l_pgmLibraries l_pgmLib l_title;
+   %LOCAL d_rep1 d_rep2 l_tcg_res l_pgmLibraries l_pgmLib l_title l_logpath;
 
    %_tempFileName(d_rep1)
    %_tempFileName(d_rep2)
@@ -63,11 +63,16 @@
         of all calls to the macros under test -----------------------------------*/
 
       %let l_rc =%_delFile("&g_log/000.tcg");
+	  
+	  %let l_logpath=&g_log.;
+	  %if (&sysscp. = LINUX) %then %do;
+	     %let l_logpath = %sysfunc(tranwrd(&l_logpath., %str( ),%str(\ )))
+	  %end;
 
-      FILENAME allfiles "%sysfunc(tranwrd(&g_log, %str( ),%str(\ )))/*.tcg";
+      FILENAME allfiles "&l_logpath./*.tcg";
       DATA _null_;
        INFILE allfiles end=done dlm=',';
-       FILE "%sysfunc(tranwrd(&g_log, %str( ),%str(\ )))/000.tcg";
+       FILE "&l_logpath./000.tcg";
        INPUT row :$256.;
        PUT row;
       RUN;
@@ -177,14 +182,18 @@
    title j=c "&l_title.";
 
    %if (&o_html.) %then %do;
+      %PUT ----->Open HTML Start: %sysfunc (datetime());
+      %PUT ----->Open ODS HTML Start: %sysfunc (datetime());
       ods html file="&o_path./&o_file..html" 
                     (TITLE="&l_title.") 
                     headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
+      %PUT ----->Open ODS HTML Ende: %sysfunc (datetime());
       %_reportPageTopHTML(i_title   = &l_title.
                          ,i_current = 4
                          )
+      %PUT ----->Open HTML Ende: %sysfunc (datetime());
    %end;
 
    options missing=" ";
