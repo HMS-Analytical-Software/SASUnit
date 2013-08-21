@@ -52,6 +52,8 @@ OPTIONS
 /* Create or recreate HTML pages for report where needed */
 %reportSASUnit(
    i_language=%upcase(%sysget(SASUNIT_LANGUAGE))
+  ,o_html=1
+  ,o_junit=1
 );
 
 /** \endcond */
