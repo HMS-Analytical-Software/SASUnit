@@ -495,7 +495,7 @@
       FILENAME repgen;
    %END;
    %IF (&o_junit.=1) %THEN %DO;
-      %_reportJUnitXML(o_file=&l_output./JUnit.XML)
+      %_reportJUnitXML(o_file=&l_output./junit.xml)
    %END;
 
    /*-- save last report date ---------------------------------------------------*/
