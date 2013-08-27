@@ -6,7 +6,7 @@
 
 cd ..
 export SASUNIT_ROOT=$(readlink -f .)
-export SASUNIT_OVERWRITE=0
+export SASUNIT_OVERWRITE=1
 export SASUNIT_COVERAGEASSESSMENT=0
 export SASUNIT_LANGUAGE=en
 export SASUNIT_HOST_OS=linux
