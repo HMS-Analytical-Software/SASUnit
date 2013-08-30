@@ -27,22 +27,24 @@
                          ,i_sysrc             = 
                          );
 
-   %local l_cdmFile l_parms l_parenthesis l_tcgFilePath l_tcgOptionsString l_tcgOptionsStringLINUX l_rc;
-   %let l_cmdFile=%sysfunc(pathname(work))/_runprogramspawned.cmd;
+   %local l_cmdFile l_parms l_parenthesis l_tcgFilePath l_tcgOptionsString l_tcgOptionsStringLINUX l_rc l_macname;
+   %let l_macname=&sysmacroname.;
    
    /*-- prepare sasuser ---------------------------------------------------*/
+   %let l_cmdFile=%sysfunc(pathname(work))/prep_sasuser.cmd;
    DATA _null_;
-      FILE "%sysfunc(pathname(work))/x.cmd";
+      FILE "&l_cmdFile.";
       PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       %IF %length(&g_sasuser) %THEN %DO;
          PUT "&g_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       %END;
    RUN;
-   %_executeCMDFile(%sysfunc(pathname(work))/x.cmd);
-   %LET l_rc=_delfile(%sysfunc(pathname(work))/x.cmd);
+   %_executeCMDFile(&l_cmdFile.);
+   %LET l_rc=%_delfile(&l_cmdFile.);
 
    /*-- set config and autoexec -------------------------------------------*/
+   %let l_cmdFile=%sysfunc(pathname(work))/_runprogramspawned.cmd;
    %LET l_parms=;
    %LET l_parenthesis=(;
    %IF "&g_autoexec" NE "" %THEN %DO;
@@ -122,15 +124,17 @@
 
    %_executeCMDFile(&l_cmdFile.);
    %LET &i_sysrc. = &sysrc.;
-   %LET l_rc=_delfile(&l_cmdFile.);
+   %LET l_rc=%_delfile(&l_cmdFile.);
 
    /*-- delete sasuser ----------------------------------------------------*/
+   %let l_cmdFile=%sysfunc(pathname(work))/prep_sasuser.cmd;
    DATA _null_;
-      FILE "%sysfunc(pathname(work))/x.cmd";
+      FILE "&l_cmdFile.";
       PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
    RUN;
-   %_executeCMDFile(%sysfunc(pathname(work))/x.cmd);
-   %LET l_rc=_delfile(%sysfunc(pathname(work))/x.cmd);
+   %_executeCMDFile(&l_cmdFile.);
+   %LET l_rc=%_delfile(&l_cmdFile.);
+      
 %mend _runprogramspawned;   
 
 /** \endcond */
