@@ -22,10 +22,10 @@
                                 ,o_html=
                                 ,o_targetColumn=
                                 );
-   href     = catt (put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
+   href     = catt ('_',put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
    %if (&o_html.) %then %do;
-      href_act = catt (href,'_cmp_act.html');
-      href_rep = catt (href,'_cmp_rep.html');
+      href_act = catt (href,'_cmp_rep.html#Actual');
+      href_rep = catt (href,'_cmp_rep.html#Report');
    %end;
    &o_targetColumn. = catt ("^{style [flyover=""&g_nls_reportDetail_016"" url=""", href_act, """] &g_nls_reportDetail_038. } ^n ");
    &o_targetColumn. = catt (&o_targetColumn., " ^{style [flyover=""&g_nls_reportDetail_017"" url=""", href_rep, """] &&g_nls_reportDetail_039. } ^n ", &i_sourceColumn.);

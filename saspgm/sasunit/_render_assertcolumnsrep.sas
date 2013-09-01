@@ -45,30 +45,11 @@
 
    LIBNAME _acLib "&l_path";
 
-   %_reportFooter(o_html=&o_html.);
-
    %if (&o_html.) %then %do;
-      ODS HTML FILE="&o_path/&i_scnid._&i_casid._&i_tstid._cmp_act.html" stylesheet=(url="SAS_SASUnit.css");
+      ODS HTML FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._cmp_rep.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
+      ODS HTML anchor="Expected";
    %end;
 
-   TITLE "&g_nls_reportCmp_001";
-   %IF %sysfunc(exist(_acLib._columns_act)) %THEN %DO;
-      PROC PRINT DATA=_acLib._columns_act;
-      RUN;
-   %END;
-   %ELSE %DO;
-      DATA _null_;
-         FILE PRINT;
-         PUT "&g_nls_reportCmp_002";
-      RUN;
-   %END;
-   %if (&o_html.) %then %do;
-      ODS HTML CLOSE;
-   %end;
-
-   %if (&o_html.) %then %do;
-      ODS HTML FILE="&o_path/&i_scnid._&i_casid._&i_tstid._cmp_exp.html" stylesheet=(url="SAS_SASUnit.css");
-   %end;
    TITLE "&g_nls_reportCmp_003";
    %IF %sysfunc(exist(_acLib._columns_exp)) %THEN %DO;
       PROC PRINT DATA=_acLib._columns_exp;
@@ -80,12 +61,28 @@
          PUT "&g_nls_reportCmp_004";
       RUN;
    %END;
-   %if (&o_html.) %then %do;
-      ODS HTML CLOSE;
-   %end;
 
    %if (&o_html.) %then %do;
-      ODS HTML FILE="&o_path/&i_scnid._&i_casid._&i_tstid._cmp_rep.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
+      ODS HTML TEXT="^{RAW <hr size=""1"">}";
+      ODS HTML anchor="Actual";
+   %end;
+   TITLE "&g_nls_reportCmp_001";
+   %IF %sysfunc(exist(_acLib._columns_act)) %THEN %DO;
+      PROC PRINT DATA=_acLib._columns_act;
+      RUN;
+   %END;
+   %ELSE %DO;
+      DATA _null_;
+         FILE PRINT;
+         PUT "&g_nls_reportCmp_002";
+      RUN;
+   %END;
+
+   %_reportFooter(o_html=&o_html.);
+
+   %if (&o_html.) %then %do;
+      ODS HTML TEXT="^{RAW <hr size=""1"">}";
+      ODS HTML anchor="Report";
    %end;
       TITLE "&g_nls_reportCmp_005";
       PROC DOCUMENT NAME=_acLib._columns_rep;

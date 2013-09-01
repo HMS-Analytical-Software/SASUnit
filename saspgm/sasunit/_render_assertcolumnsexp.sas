@@ -22,9 +22,9 @@
                                 ,o_html=
                                 ,o_targetColumn=
                                 );
-   href     = catt (put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
+   href     = catt ('_',put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
    %if (&o_html.) %then %do;
-      href_exp = catt (href,'_cmp_exp.html');
+      href_exp = catt (href,'_cmp_rep.html#Expected');
    %end;
    &o_targetColumn. = catt ("^{style [flyover=""&g_nls_reportDetail_015"" url=""", href_exp, """] &g_nls_reportDetail_038. } ^n ^n ", &i_sourceColumn.);
 %mend _render_assertColumnsExp;

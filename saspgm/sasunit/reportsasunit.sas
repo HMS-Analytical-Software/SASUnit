@@ -460,6 +460,14 @@
                    "   ,i_title   = &g_nls_reportSASUnit_002 " scn_id z3. " (" cas_pgm +(-1) ")" /
                    "   ,o_html    = &l_output/" scn_id z3. "_log.html" /
                    ")";
+               /*-- compile detail information for test case -----------------------*/
+               PUT '%_reportDetailHTML('                   /
+                   "    i_repdata = &d_rep"                        /
+                   "   ,i_scnid   = " scn_id z3.                   /
+                   "   ,o_html    = &o_html."    /
+                   "   ,o_path    = &l_output."    /
+                   "   ,o_file    = cas_" scn_id z3.  /
+                   ")";
             END;
          END;
 
@@ -473,15 +481,6 @@
                    "    i_log     = &g_log/" scn_id z3. "_" cas_id z3. ".log" /
                    "   ,i_title   = &g_nls_reportSASUnit_003 " cas_id z3. " &g_nls_reportSASUnit_004 " scn_id z3. " (" cas_pgm +(-1) ")" /
                    "   ,o_html    = &l_output/" scn_id z3. "_" cas_id z3. "_log.html" /
-                   ")";
-               /*-- compile detail information for test case -----------------------*/
-               PUT '%_reportDetailHTML('                   /
-                   "    i_repdata = &d_rep"                        /
-                   "   ,i_scnid   = " scn_id z3.                   /
-                   "   ,i_casid   = " cas_id z3.                   /
-                   "   ,o_html    = &o_html."    /
-                   "   ,o_path    = &l_output."    /
-                   "   ,o_file    = cas_" scn_id z3. "_" cas_id z3.    /
                    ")";
             END;
 

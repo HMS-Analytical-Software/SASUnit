@@ -31,17 +31,20 @@
 
    %LOCAL
       l_nls_reportdetail_errors
+      _numCases
       _numAsserts
       l_NumAssert
       l_NumTests
       l_TestAssert
       l_cTestAssert
       l_Tests
+      l_c_casid
    ;
    %LET l_nls_reportdetail_errors   = %STR(error(s));
 
    proc sql noprint;
-      select count (distinct tst_type) into :_numAsserts from &i_repdata. where scn_id = &i_scnid AND cas_id = &i_casid;
+      select count (distinct tst_type) into :_numAsserts from &i_repdata. where scn_id = &i_scnid AND tst_type ne '^_'; * AND cas_id = &i_casid;
+      select count (distinct cas_id)   into :_numCases   from &i_repdata. where scn_id = &i_scnid AND tst_type ne '^_'; * AND cas_id = &i_casid;
    quit;
 
    %do l_NumAssert=1 %to &_numAsserts.;
@@ -50,13 +53,13 @@
    %end;
 
    proc sql noprint;
-      select distinct tst_type into :assertType1-:assertType%cmpres(&_numAsserts.) from &i_repdata. where scn_id = &i_scnid AND cas_id = &i_casid;
+      select distinct tst_type into :assertType1-:assertType%cmpres(&_numAsserts.) from &i_repdata. where scn_id = &i_scnid AND tst_type ne '^_'; * AND cas_id = &i_casid;
    quit;
 
 
    DATA work._test_report;* / view=work._test_report;
       SET &i_repdata. END=eof;
-      WHERE scn_id = &i_scnid AND cas_id = &i_casid;
+      WHERE scn_id = &i_scnid; * AND cas_id = &i_casid;
 
       LENGTH 
          scn_abs_path cas_abs_path $256 
@@ -224,43 +227,58 @@
                          )
    %end;
    
-   data work._test_overview;
-      set work._test_report (where=(tst_id=1));
-      length Name $20 Value $1000;
-      Name="&g_nls_reportDetail_028."; Value=c_scnid;output;
-      Name="&g_nls_reportDetail_029."; Value=scnDescriptionColumn;output;
-      Name="&g_nls_reportDetail_030."; Value=scnProgramColumn;output;
-      Name="&g_nls_reportDetail_031."; Value=scnLast_runColumn;output;
-      Name="&g_nls_reportDetail_032."; Value=scnDurationColumn;output;
-      Name="&g_nls_reportDetail_033."; Value=c_casid;output;
-      Name="&g_nls_reportDetail_034."; Value=casDescriptionColumn;output;
-      Name="&g_nls_reportDetail_035."; Value=casProgramColumn;output;
-      Name="&g_nls_reportDetail_031."; Value=casLast_runColumn;output;
-      keep Name Value;
-   run;
+   %do i_cas=1 %to &_numCases.;      
+      %if (&o_html. AND &i_cas. > 1) %then %do;
+         ods html text="^{RAW <hr size=""1"">}";
+      %end;
+      %LET l_c_scnid = %substr(00&i_cas.,%length(&i_cas));
 
-   proc print data=work._test_overview noobs label 
-         style(report)=blindTable [borderwidth=0]
-         style(column)=blindData
-         style(header)=blindHeader;
-   run;
+      data work._test_overview;
+        set work._test_report (where=(tst_id=1 AND cas_id=&i_cas.));
+        length Name $20 Value $1000;
+        Name="&g_nls_reportDetail_028."; Value=c_scnid;output;
+        Name="&g_nls_reportDetail_029."; Value=scnDescriptionColumn;output;
+        Name="&g_nls_reportDetail_030."; Value=scnProgramColumn;output;
+        Name="&g_nls_reportDetail_031."; Value=scnLast_runColumn;output;
+        Name="&g_nls_reportDetail_032."; Value=scnDurationColumn;output;
+        Name="&g_nls_reportDetail_033."; Value=c_casid;output;
+        Name="&g_nls_reportDetail_034."; Value=casDescriptionColumn;output;
+        Name="&g_nls_reportDetail_035."; Value=casProgramColumn;output;
+        Name="&g_nls_reportDetail_031."; Value=casLast_runColumn;output;
+        keep Name Value;
+      run;
 
-   title;
-   %_reportFooter(o_html=&o_html.);
+      *** Create specific HTML-Anchors ***;
+      %if (&o_html.) %then %do;
+         ods html anchor="CAS%sysfunc(putn(&i_cas.,z3.))_";
+      %end;
+      proc print data=work._test_overview noobs label 
+          style(report)=blindTable [borderwidth=0]
+          style(column)=blindData
+          style(header)=blindHeader;
+      run;
 
-   proc report data=work._test_report nowd missing
-         style(lines)=blindData
-         ;
+      %if (&i_cas. = 1) %then %do;
+         title;
+      %end;
+      %if (&i_cas. = &_numCases.) %then %do;
+         %_reportFooter(o_html=&o_html.);
+      %end;
 
-      columns idColumn assertTypeColumn descriptionColumn expectedColumn actualColumn resultColumn;
+      proc report data=work._test_report (where=(cas_id=&i_cas.)) nowd missing
+          style(lines)=blindData
+          ;
 
-      define idColumn     / display style(Column)=rowheader;
-      define resultColumn / display style(Column)=[background=white];
+        columns idColumn assertTypeColumn descriptionColumn expectedColumn actualColumn resultColumn;
 
-      compute before _page_;
-         line @1 "&g_nls_reportDetail_008."; 
-      endcomp;
-   run;
+        define idColumn     / display style(Column)=rowheader;
+        define resultColumn / display style(Column)=[background=white];
+
+        compute before _page_;
+          line @1 "&g_nls_reportDetail_008."; 
+        endcomp;
+      run;
+   %end;
 
    %if (&o_html.) %then %do;
       ods html close;
@@ -272,20 +290,26 @@
 
    options center;
 
-   *** Call all associated submacros for rendering specific assert reports ***;
    %do l_NumAssert=1 %to &_numAsserts;
+      *** Call all associated submacros for rendering specific assert reports ***;
       %let l_NumAssertSubstr = %lowcase(&&asserttype&l_NumAssert.);
       %if (%length(&l_NumAssertSubstr.) > 21) %then %do;
          %let l_NumAssertSubstr = %substr(&l_NumAssertSubstr.,1,21);
       %end;
       %if (%sysfunc (fileexist(&g_sasunit./_render_&l_NumAssertSubstr.rep.sas))) %then %do;
          proc sql noprint;
-            select count(*) into :l_NumTests from work._test_report where tst_type ="&&asserttype&l_NumAssert.";
-            select tst_id into :l_Tests separated by "§" from work._test_report where tst_type ="&&asserttype&l_NumAssert.";
+            select count(distinct cas_id) into :_numCases from work._test_report where tst_type = "&&asserttype&l_NumAssert.";
          quit;
-         %do l_TestAssert=1 %to &l_NumTests.;
-            %LET l_cTestAssert = %scan(&l_Tests.,&l_TestAssert.,§);
-            %_render_&l_NumAssertSubstr.rep(i_assertype=&&asserttype&l_NumAssert.,i_repdata=&i_repdata.,i_scnid=&i_scnid.,i_casid=&i_casid.,i_tstid=&l_cTestAssert.,o_html=&o_html.,o_path=&o_path.);
+         %do i_cas=1 %to &_numCases.;      
+            %LET l_c_casid = %substr(00&i_cas.,%length(&i_cas));
+            proc sql noprint;
+               select count(*) into :l_NumTests from work._test_report where tst_type = "&&asserttype&l_NumAssert." AND cas_id=&i_cas.;
+               select tst_id into   :l_Tests separated by "§" from work._test_report where tst_type = "&&asserttype&l_NumAssert." AND cas_id=&i_cas.;
+            quit;
+            %do l_TestAssert=1 %to &l_NumTests.;
+               %LET l_cTestAssert = %scan(&l_Tests.,&l_TestAssert.,§);
+               %_render_&l_NumAssertSubstr.rep(i_assertype=&&asserttype&l_NumAssert.,i_repdata=&i_repdata.,i_scnid=&i_scnid.,i_casid=&l_c_casid.,i_tstid=&l_cTestAssert.,o_html=&o_html.,o_path=&o_path.);
+            %end;
          %end;
       %end;
    %end;
