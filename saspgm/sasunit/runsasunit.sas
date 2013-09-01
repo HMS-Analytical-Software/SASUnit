@@ -195,7 +195,7 @@
          %_runProgramSpawned(i_program          =&&l_scnfile&i
                             ,i_scnid            =&l_c_scnid.
                             ,i_generateMcoverage=&g_testcoverage.
-                            ,i_sysrc            =l_sysrc
+                            ,r_sysrc            =l_sysrc
                             );    
                      
          /*-- delete listing if empty -------------------------------------------*/

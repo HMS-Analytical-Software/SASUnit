@@ -105,7 +105,7 @@
    /*-- check for operation system ----------------------------------------------*/
    %IF %_handleError(&l_macname.
                     ,WrongOS
-                    ,(&sysscp. NE WIN) AND (&sysscp. NE LINUX)
+                    ,(&sysscp. NE WIN) AND (&sysscp. NE LINUX) AND (&sysscp. NE LIN X64)
                     ,Invalid operating system - only WIN and LINUX
                     ,i_verbose=&i_verbose.
                     ) 
@@ -278,7 +278,7 @@
          PUT "&g_makedir ""&l_target_abs/rep""&g_endcommand";
       RUN;
       %_executeCMDFile(%sysfunc(pathname(work))/x.cmd);
-      %LET l_rc=_delfile(%sysfunc(pathname(work))/x.cmd);
+      %LET l_rc=%_delfile(%sysfunc(pathname(work))/x.cmd);
    %END; /* %if &l_newdb */
 
    /*-- check folders -----------------------------------------------------------*/
@@ -514,11 +514,12 @@
       UPDATE target.tsu SET tsu_verbose     =&i_verbose;
    QUIT;
 
-
+   /* Correct Termstring in Textfiles */
+   %_prepareTextFiles;
+   
    /*-- load relevant information from test database to global macro symbols ----*/
-   %_loadEnvironment (
-       i_withLibrefs = 0
-   )
+   %_loadEnvironment (i_withLibrefs = 0
+                     )
    %IF "&g_error_code" NE "" %THEN %GOTO errexit;
 
    /*-- check spawning of a SAS process -----------------------------------------*/
@@ -538,7 +539,7 @@
    %_runProgramSpawned(i_program          =&l_work./check_spawning.sas
                       ,i_scnid            =000
                       ,i_generateMcoverage=0
-                      ,i_sysrc            =l_sysrc
+                      ,r_sysrc            =l_sysrc
                       );                
 
    %IF %_handleError(&l_macname.

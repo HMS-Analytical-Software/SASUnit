@@ -4,7 +4,7 @@
    \brief      determines whether a certain variable, optionally of a certain type, 
                exists in a SAS dataset
 
-   \%existVar (dataset, variable, type)
+   \%_existVar (dataset, variable, type)
 
    \param   i_data     input dataset
    \param   i_var      name of the variable

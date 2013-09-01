@@ -214,7 +214,7 @@
       run;
       *** Create specific HTML-Anchors ***;
       %if (&o_html.) %then %do;
-         ods HTML anchor="SCN%sysfunc(putn(&l_scnid.,z3.))_";
+         ods html anchor="SCN%sysfunc(putn(&l_scnid.,z3.))_";
       %end;
       proc print data=work._current_scn_overview noobs label 
             style(report)=blindTable [borderwidth=0]

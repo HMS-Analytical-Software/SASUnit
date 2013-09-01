@@ -124,8 +124,8 @@
       %LET dirfile=%sysfunc(pathname(work))/.dir.txt;
       filename _dirfile "&dirfile" encoding=&encoding;
        
-      %put Directory search is: &i_path;
-      %let l_i_path=%qsysfunc(tranwrd(&i_path, %str( ), %str(\ )));
+      %put Directory search is: &i_path.;
+      %let l_i_path=%_escapeBlanks(&i_path.);
       %IF &i_recursive=0 %then %let s=-maxdepth 1; 
       %SYSEXEC(find -P &l_i_path. &s. -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null);
       

@@ -24,7 +24,7 @@
 %macro _runProgramSpawned(i_program           =
                          ,i_scnid             = 
                          ,i_generateMcoverage = 0
-                         ,i_sysrc             = 
+                         ,r_sysrc             = 
                          );
 
    %local l_cmdFile l_parms l_parenthesis l_tcgFilePath l_tcgOptionsString l_tcgOptionsStringLINUX l_rc l_macname;
@@ -69,7 +69,7 @@
            path to the generated coverage file if necessary ---------------*/
       %LET   l_tcgFilePath           = &g_log./&i_scnid..tcg;
       %LET   l_tcgOptionsString      = -mcoverage -mcoverageloc = %str(%")%str(%")&l_tcgFilePath.%str(%")%str(%");
-      %LET   l_tcgOptionsStringLINUX = options mcoverage mcoverageloc='%sysfunc(tranwrd(&l_tcgFilePath.,%str( ), %str(\ )))';
+      %LET   l_tcgOptionsStringLINUX = options mcoverage mcoverageloc='%_escapeBlanks(&l_tcgFilePath.)';
    %END;
 
    DATA _null_;
@@ -85,16 +85,16 @@
             "" !! &g_sasstart. 
             !! " " 
             !! "&l_parms. "
-            !! "-sysin %sysfunc(tranwrd(&i_program., %str( ), %str(\ ))) "
+            !! "-sysin %_escapeBlanks(&i_program.) "
             !! "-initstmt "" &l_tcgOptionsStringLINUX.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&i_scnid.;"" "
-            !! "-log   %sysfunc(tranwrd(&g_log/&i_scnid..log, %str( ), %str(\ ))) "
-            !! "-print %sysfunc(tranwrd(&g_testout/&i_scnid..lst, %str( ), %str(\ ))) "
+            !! "-log   %_escapeBlanks(&g_log/&i_scnid..log) "
+            !! "-print %_escapeBlanks(&g_testout/&i_scnid..lst) "
             !! "-noovp "
             !! "-nosyntaxcheck "
             !! "-noterminal "
             !! "-mautosource "
             !! "-mcompilenote all "
-            !! "-sasautos %sysfunc(tranwrd(&g_sasunit, %str( ), %str(\ ))) "
+            !! "-sasautos %_escapeBlanks(&g_sasunit) "
             !! "-sasuser %sysfunc(pathname(work))/sasuser "
             !! "-termstmt ""%nrstr(%%_termScenario())"" "
             !! "";
@@ -123,11 +123,11 @@
    RUN;
 
    %_executeCMDFile(&l_cmdFile.);
-   %LET &i_sysrc. = &sysrc.;
+   %LET &r_sysrc. = &sysrc.;
    %LET l_rc=%_delfile(&l_cmdFile.);
 
    /*-- delete sasuser ----------------------------------------------------*/
-   %let l_cmdFile=%sysfunc(pathname(work))/prep_sasuser.cmd;
+   %let l_cmdFile=%sysfunc(pathname(work))/del_sasuser.cmd;
    DATA _null_;
       FILE "&l_cmdFile.";
       PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";

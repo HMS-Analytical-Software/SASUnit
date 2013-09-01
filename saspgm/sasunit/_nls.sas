@@ -23,7 +23,7 @@
 */ /** \cond */ 
 
 data nls (drop=mark);
-   infile "&g_sasunit./_nls.txt" truncover termstr=crlf;
+   infile "&g_sasunit./_nls.txt" truncover;
    input mark $3. @;
    if mark ne '###' then do;
       if mark='---' then input @4 program $32.;

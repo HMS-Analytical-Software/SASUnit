@@ -3,7 +3,7 @@
 
    \brief      check whether directory exists 
 
-   \%existDir(directory)
+   \%_existDir(directory)
 
    \param   i_dir     complete path to directory to be checked
    \return  1 .. directory exists, 0 .. directory does not exists

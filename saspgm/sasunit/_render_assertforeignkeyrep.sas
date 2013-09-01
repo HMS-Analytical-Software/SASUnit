@@ -45,7 +45,7 @@
 
    LIBNAME _afkLib "&l_path";
 
-   %IF (1) %then %do;
+   %IF (&o_html.) %then %do;
       ODS HTML FILE="&o_path/&i_scnid._&i_casid._&i_tstid._foreignkey_report.html" stylesheet=(url="SAS_SASUnit.css");
    %END;
 
@@ -98,7 +98,7 @@
          RUN;
       %END; 
    
-   %IF (1) %then %do;
+   %IF (&o_html.) %then %do;
       ODS HTML CLOSE;
    %END;
 

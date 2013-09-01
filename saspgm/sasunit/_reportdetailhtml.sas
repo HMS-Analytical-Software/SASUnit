@@ -108,18 +108,7 @@
              href_exp="";
              href_rep="";
          end;
-/*         
-      *** Set default description per assert type ***;
-      SELECT(upcase(tst_type));
-         WHEN ('ASSERTLOG') DO; 
-            IF tst_desc=' ' THEN tst_desc="&g_nls_reportDetail_041";
-         END;
-         WHEN ('ASSERTLOGMSG') DO; 
-            IF tst_desc=' ' THEN tst_desc="&g_nls_reportDetail_047";
-         END;
-         OTHERWISE;
-      END;
-*/
+
       if tst_act="" then tst_act='^_';
       if tst_exp="" then tst_exp='^_';
 

@@ -54,8 +54,8 @@
    %end;
 
    %else %if &sysscp. = LINUX %then %do;
-      %let l_i_from = %qsysfunc(tranwrd(&i_from, %str( ), %str(\ )));
-      %let l_i_to   = %qsysfunc(tranwrd(&i_to, %str( ), %str(\ )));
+      %let l_i_from = %_escapeBlanks(&i_from.);
+      %let l_i_to   = %_escapeBlanks(&i_to.);
 
       %SYSEXEC(cp -R &l_i_from. &l_i_to.);
    %end;
