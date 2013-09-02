@@ -36,10 +36,10 @@
 
    %GLOBAL g_inTestcase;
    %LOCAL l_dsname l_libref_ok l_table_exist l_result l_date l_suffix l_errMsg;
-   %let l_dsname =%sysfunc(catx(., &i_libref, &i_memname));
-   %let l_table_exist = -1;
-   %let l_result=2;
-   %let l_date =;
+   %LET l_dsname =%sysfunc(catx(., &i_libref, &i_memname));
+   %LET l_table_exist = -1;
+   %LET l_result=2;
+   %LET l_date =;
     
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;
@@ -49,38 +49,38 @@
       %RETURN;
    %END;
    %LOCAL l_dsname l_libref_ok l_table_exist l_result l_date l_suffix l_errMsg;
-   %let l_dsname =%sysfunc(catx(., &i_libref, &i_memname));
-   %let l_table_exist = -1;
-   %let l_result=2;
-   %let l_date =;
+   %LET l_dsname =%sysfunc(catx(., &i_libref, &i_memname));
+   %LET l_table_exist = -1;
+   %LET l_result=2;
+   %LET l_date =;
 
    %*************************************************************;
    %*** Check preconditions                                   ***;
    %*************************************************************;
    
    %*** check for valid libref ***;
-   %let l_libref_ok=%sysfunc (libref (&i_libref.));
-   %if &l_libref_ok. NE 0 %then %do;
-      %let l_errMsg=Libref &i_libref. is invalid!;
+   %LET l_libref_ok=%sysfunc (libref (&i_libref.));
+   %IF &l_libref_ok. NE 0 %THEN %DO;
+      %LET l_errMsg=Libref &i_libref. is invalid!;
       %goto Update;
-   %end;
+   %END;
     
    %*** check if i_target is valid ***;
-   %let i_target=%sysfunc(upcase(&i_target));
-   %if not(&i_target=DATA or &i_target=VIEW or &i_target=CATALOG) %then %do;
-      %let l_table_exist = -2;
-      %let l_errMsg=%bquote(Invalid value for parameter i_target (&i_target.)!);
+   %LET i_target=%sysfunc(upcase(&i_target));
+   %IF not(&i_target=DATA or &i_target=VIEW or &i_target=CATALOG) %THEN %DO;
+      %LET l_table_exist = -2;
+      %LET l_errMsg=%bquote(Invalid value for parameter i_target (&i_target.)!);
       %goto Update;
-   %end;
+   %END;
 
    %*************************************************************;
    %*** start tests                                           ***;
    %*************************************************************;
    
-   %if %sysfunc(exist(&l_dsname, &i_target)) %then %do;
-      %let l_table_exist=1;
-      %put &i_target. &l_dsname. exists.;
-      %let l_errMsg=&i_target &l_dsname exists;
+   %IF %sysfunc(exist(&l_dsname, &i_target)) %THEN %DO;
+      %LET l_table_exist=1;
+      %PUT &i_target. &l_dsname. exists.;
+      %LET l_errMsg=&i_target &l_dsname exists;
 
       %*** get creation und modification date of tested member ***;
       data _null_ ;
@@ -91,25 +91,24 @@
          dsid=close(dsid) ;
          call symput('l_date',catt("#",_crdate,"#",_modate));
       run ;
-   %end;
-   %else %do;
-      %put &i_target. &l_dsname. does not exist.;
-      %let l_errMsg=&i_target &l_dsname does not exist;
-      %let l_table_exist=0;
-   %end;
+   %END;
+   %ELSE %DO;
+      %PUT &i_target. &l_dsname. does not exist.;
+      %LET l_errMsg=&i_target &l_dsname does not exist;
+      %LET l_table_exist=0;
+   %END;
 
-   %let l_result = %eval(1 - &l_table_exist.);
-   %let l_suffix=%str(, but it should exist!);
-   %if (&i_not) %then %do;
-      %let l_result = %eval(1 - &l_result.);
-      %let l_suffix=%str(, but it should not exist!);
-   %end;
-   %let l_errMsg =&l_errMsg.&l_suffix.;
-   %let l_result = %eval(&l_result.*2);
+   %LET l_result = %eval(1 - &l_table_exist.);
+   %LET l_suffix=%str(, but it should exist!);
+   %IF (&i_not) %THEN %DO;
+      %LET l_result = %eval(1 - &l_result.);
+      %LET l_suffix=%str(, but it should not exist!);
+   %END;
+   %LET l_errMsg =&l_errMsg.&l_suffix.;
+   %LET l_result = %eval(&l_result.*2);
 
    %Update:;
-   %_asserts(
-             i_type     = assertTableExists
+   %_asserts(i_type     = assertTableExists
             ,i_expected = %str(&i_target.:&l_dsname.:&i_not.)
             ,i_actual   = %str(&l_table_exist.&l_date.)
             ,i_desc     = &i_desc.

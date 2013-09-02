@@ -7,7 +7,7 @@
                It is possible to check for a foreign key relationship for composite keys. Number of specified keys in parameters i_mstKey and i_lookupKey
                must be the same and keys have to in the same order.
                If more than one key is specified please provide parameter i_cmpKeyLen with number of keys
-               Eventual needed renaming of key variables takes place automatically               
+               Eventualy needed renaming of key variables takes place automatically               
                      
                Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
@@ -272,7 +272,7 @@
 
    %*** Check whether specified key is unique for lookup table ***;
    PROC SQL noprint;
-     create table distKeysLookUp as
+      create table distKeysLookUp as
       SELECT distinct &l_LookupVars.
       FROM &l_dsLookupName.
       ;
@@ -308,11 +308,10 @@
       by &l_MstrVars;
    run;     
    data keyNotFndMstr keyNotFndLookUp;
-      /*merge distKeysLookUp(in=fndLookUp rename=(&l_renameLookup.)) mstrSorted(in=fndMstr);*/
       merge mstrSorted(in=fndMstr) distKeysLookUp(in=fndLookUp rename=(&l_renameLookup.));
       by &l_MstrVars.;
       if     fndLookUp AND not   fndMstr then output keyNotFndMstr;
-      IF not fndLookUp AND       fndMstr then output keyNotFndLookUp;
+      If not fndLookUp AND       fndMstr then output keyNotFndLookUp;
    run;
 
    %*** Who many keys from the master table were not found in the lookup table ***;
@@ -340,7 +339,7 @@
                          ,r_path       =l_path
                           );
 
-   /* copy data sets IF they exist  */
+   /* copy data sets if they exist  */
    %LET l_helper= %SYSFUNC(getoption(work));
    libname tar_afk "&l_path.";
    %IF %SYSFUNC(fileexist(&l_helper./keyNotFndLookUp.sas7bdat)) NE 0 %THEN %DO;

@@ -56,14 +56,13 @@
 
    %LET l_errMsg=%bquote(Expected run time was &i_expected. s, but test case took &l_cas_runtime. s!);
 
-   %_asserts(
-      i_type      = assertPerformance
-      ,i_expected = &i_expected
-      ,i_actual   = &l_cas_runtime
-      ,i_desc     = &i_desc
-      ,i_result   = &l_result
-      ,i_errMsg   = &l_errMsg
-   )
+   %_asserts(i_type      = assertPerformance
+		    ,i_expected = &i_expected
+		    ,i_actual   = &l_cas_runtime
+		    ,i_desc     = &i_desc
+		    ,i_result   = &l_result
+		    ,i_errMsg   = &l_errMsg
+   			)
 %MEND assertPerformance;
 /** \endcond */
 
