@@ -45,7 +45,7 @@
    
    href     = catt (put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
    %if (&o_html.) %then %do;
-      href_act = catt (href,'_foreignKey_report.html');
+      href_act = catt (href,'_foreignKey_rep.html');
    %end;
    
    &o_targetColumn. = catt ("^{style [flyover=""&g_nls_reportDetail_016"" url=""", href_act, """] &g_nls_reportDetail_038. } ^n ");
