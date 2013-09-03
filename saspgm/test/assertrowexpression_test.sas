@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertRowExpression.sas - has to fail! 4 assertRowExpression errors
+   \brief      Tests for assertRowExpression.sas - has to fail! 7 errors (6 assertRowExpression and one concernig variable name1)
 
    \version    \$Revision$
    \author     \$Author$
@@ -32,7 +32,7 @@
 %*** Testcase 2 ***;
 %initTestcase(i_object=assertRowExpression.sas, i_desc=Invalid dataset)
 %endTestcall()
-%assertRowExpression(i_libref=hugo, i_memname=class, i_where=%str(name ne ""), i_desc=Invalid dataset)
+%assertRowExpression(i_libref=work, i_memname=class, i_where=%str(name ne ""), i_desc=Invalid dataset)
 %markTest()
 %assertDBValue(tst,type,assertRowExpression)
 %assertDBValue(tst,desc,Invalid dataset)
@@ -43,19 +43,36 @@
 %endTestcase()
 
 %*** Testcase 3 ***;
+%initTestcase(i_object=assertRowExpression.sas, i_desc=Invalid value for o_maxReportObs)
+%endTestcall()
+%assertRowExpression(i_libref=sashelp
+                    ,i_memname=class
+                    ,i_where=%str(name ne "")
+                    ,i_desc=Invalid value for o_maxReportObs
+                    ,o_maxReportObs=123ABC
+                    )
+%markTest()
+%assertDBValue(tst,type,assertRowExpression)
+%assertDBValue(tst,desc,Invalid value for o_maxReportObs)
+%assertDBValue(tst,act,19)
+%assertDBValue(tst,exp,19)
+%assertDBValue(tst,res,0)
+%endTestcase()
+
+%*** Testcase 4 ***;
 %initTestcase(i_object=assertRowExpression.sas, i_desc=Invalid where expression)
 %endTestcall()
-%assertRowExpression(i_libref=hugo, i_memname=class, i_where=%str(name ne ""), i_desc=Invalid where expression)
+%assertRowExpression(i_libref=sashelp, i_memname=class, i_where=%str(name1 ne ""), i_desc=Invalid where expression)
 %markTest()
 %assertDBValue(tst,type,assertRowExpression)
 %assertDBValue(tst,desc,Invalid where expression)
 %assertDBValue(tst,act,-1)
-%assertDBValue(tst,exp,)
+%assertDBValue(tst,exp,19)
 %assertDBValue(tst,res,2)
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase()
 
-%*** Testcase 4 ***;
+%*** Testcase 5 ***;
 %initTestcase(i_object=assertRowExpression.sas, i_desc=Condition is violated)
 %endTestcall()
 %assertRowExpression(i_libref=sashelp, i_memname=class, i_where=%str(sex = "F"), i_desc=Condition is violated)
@@ -68,7 +85,25 @@
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase()
 
-%*** Testcase 5 ***;
+%*** Testcase 6 ***;
+%initTestcase(i_object=assertRowExpression.sas, i_desc=Condition is violated only 3 obs)
+%endTestcall()
+%assertRowExpression(i_libref=sashelp
+                    ,i_memname=class
+                    ,i_where=%str(sex = "F")
+                    ,i_desc=Condition is violated only 3 obs
+                    ,o_maxReportObs=3
+                    )
+%markTest()
+%assertDBValue(tst,type,assertRowExpression)
+%assertDBValue(tst,desc,Condition is violated only 3 obs)
+%assertDBValue(tst,act,9)
+%assertDBValue(tst,exp,19)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+%endTestcase()
+
+%*** Testcase 7 ***;
 %initTestcase(i_object=assertRowExpression.sas, i_desc=Column name contains no missings)
 %endTestcall()
 %assertRowExpression(i_libref=sashelp, i_memname=class, i_where=%str(name ne ""), i_desc=Column name contains no missings)
@@ -78,6 +113,25 @@
 %assertDBValue(tst,act,19)
 %assertDBValue(tst,exp,19)
 %assertDBValue(tst,res,0)
+%endTestcase()
+
+%*** Testcase 8 ***;
+%initTestcase(i_object=assertRowExpression.sas, i_desc=Condition is violated only 3 obs and only variable name)
+%endTestcall()
+%assertRowExpression(i_libref=sashelp
+                    ,i_memname=class
+                    ,i_where=%str(sex = "F")
+                    ,i_desc=Condition is violated only 3 obs and only variable name
+                    ,o_maxReportObs=3
+                    ,o_listVars=name
+                    )
+%markTest()
+%assertDBValue(tst,type,assertRowExpression)
+%assertDBValue(tst,desc,Condition is violated only 3 obs and only variable name)
+%assertDBValue(tst,act,9)
+%assertDBValue(tst,exp,19)
+%assertDBValue(tst,res,2)
+%assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase()
 
 /** \endcond */

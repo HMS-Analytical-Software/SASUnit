@@ -22,8 +22,14 @@
                                       ,o_html=
                                       ,o_targetColumn=
                                       );
-   %_render_dataColumn(i_sourceColumn=&i_sourceColumn.
-                      ,o_targetColumn=&o_targetColumn.
-                      );
+   href     = catt ('_',put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
+   %if (&o_html.) %then %do;
+      href_exp = catt (href,'_are_rep.html');
+   %end;
+   &o_targetColumn. = catt (&i_sourceColumn.
+                           ,"^n^{style [flyover=""&g_nls_reportRowExpression_005."" url="""
+                           ,href_exp
+                           , """] &g_nls_reportRowExpression_004.}"
+                           );
 %mend _render_assertRowExpressionact;
 /** \endcond */
