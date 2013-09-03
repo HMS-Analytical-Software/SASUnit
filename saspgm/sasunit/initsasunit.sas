@@ -514,12 +514,12 @@
       UPDATE target.tsu SET tsu_verbose     =&i_verbose;
    QUIT;
 
-   /* Correct Termstring in Textfiles */
-   %_prepareTextFiles;
-   
    /*-- load relevant information from test database to global macro symbols ----*/
    %_loadEnvironment (i_withLibrefs = 0
                      )
+   /* Correct Termstring in Textfiles */
+   %_prepareTextFiles;
+   
    %IF "&g_error_code" NE "" %THEN %GOTO errexit;
 
    /*-- check spawning of a SAS process -----------------------------------------*/
