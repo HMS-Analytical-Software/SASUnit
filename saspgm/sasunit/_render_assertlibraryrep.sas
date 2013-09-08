@@ -46,9 +46,11 @@
    libname _test "&l_path";
 
    %if (&o_html.) %then %do;
-      ODS HTML FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_rep.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
-      ODS HTML anchor="Expected";
+      ODS HTML FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_exp.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
    %end;
+
+   %_reportFooter(o_html=&o_html.);
+
    %if (%sysfunc (libref(_test))=0) %then %do;
       TITLE "&g_nls_reportLibrary_006";
       PROC DOCUMENT NAME=_test._library_exp;
@@ -62,8 +64,7 @@
    %end;
 
    %if (&o_html.) %then %do;
-      ODS HTML TEXT="^{RAW <hr size=""1"">}";
-      ODS HTML anchor="Actual";
+      ODS HTML FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_act.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
    %end;
    %if (%sysfunc (libref(_test))=0) %then %do;
       PROC DOCUMENT NAME=_test._library_act;
@@ -77,11 +78,8 @@
    %end;
 
    %if (&o_html.) %then %do;
-      ODS HTML TEXT="^{RAW <hr size=""1"">}";
-      ODS HTML anchor="Report";
+      ODS HTML FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_rep.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
    %end;
-   
-   %_reportFooter(o_html=&o_html.);
    
    %if (%sysfunc (exist (_test._library_rep, DATA))) %then %do;
       %local l_LibraryCheck l_CompareCheck l_id l_ExcludeList;

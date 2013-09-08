@@ -25,7 +25,7 @@
 
    href     = catt ('_',put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
    %if (&o_html.) %then %do;
-      href_exp = catt (href,'_library_rep.html#Expected');
+      href_exp = catt (href,'_library_exp.html');
    %end;
    &o_targetColumn. = catt ("^{style [flyover=""&g_nls_reportDetail_018."" url=""", href_exp, """] &g_nls_reportDetail_040. }^n^n", &i_sourceColumn.);
 %mend _render_assertLibraryExp;

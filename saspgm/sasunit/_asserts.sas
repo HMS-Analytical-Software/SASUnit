@@ -52,7 +52,6 @@
       %LET l_errMsg =&i_type.: assert passed, but manual check necessary.;
    %END;
    %ELSE %DO;
-      %LET l_errMsg=&i_errMsg.;
       %IF (%nrbquote(&i_errMsg.) eq _NONE_) %THEN %DO;
          %LET l_errMsg =%bquote(&i_type. failed: expected value equals &i_expected., but actual value equals &i_actual.);
       %END;

@@ -56,10 +56,9 @@
       select distinct tst_type into :assertType1-:assertType%cmpres(&_numAsserts.) from &i_repdata. where scn_id = &i_scnid AND tst_type ne '^_'; * AND cas_id = &i_casid;
    quit;
 
-
-   DATA work._test_report;* / view=work._test_report;
+   DATA work._test_report;
       SET &i_repdata. END=eof;
-      WHERE scn_id = &i_scnid; * AND cas_id = &i_casid;
+      WHERE scn_id = &i_scnid;
 
       LENGTH 
          scn_abs_path cas_abs_path $256 
@@ -130,10 +129,6 @@
       %_render_DataColumn (i_sourceColumn=cas_desc
                           ,o_targetColumn=casDescriptionColumn
                           );
-      %_render_IdColumn   (i_sourceColumn=tst_id
-                          ,i_format=z3.
-                          ,o_targetColumn=idColumn
-                          );
       %_render_DataColumn (i_sourceColumn=tst_desc
                           ,o_targetColumn=descriptionColumn
                           );
@@ -187,6 +182,7 @@
                              ,i_linkTitle=LinkTitle5
                              ,o_targetColumn=casLast_runColumn
                              );
+         idColumn ="^{style [PRETEXT=""<a name='TST" !! put (tst_id, z3.) !! "'></a>""]" !! put (tst_id, z3.) !! "}";
       %end;
 
       %do l_NumAssert=1 %to &_numAsserts;
@@ -207,63 +203,56 @@
       %end;
    run;
 
-   options nocenter;
-
    %*** Reset title and footnotes ***;
    title;
    footnote;
 
    %let l_title=%str(&g_nls_reportCas_001 | &g_project - &g_nls_reportCas_002);
    title j=c "&l_title.";
-
-   %if (&o_html.) %then %do;
-      ods html file="&o_path./&o_file..html" 
-                    (TITLE="&l_title.") 
-                    headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
-                    metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                    style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
-      %_reportPageTopHTML(i_title   = &l_title
-                         ,i_current = 0
-                         )
-   %end;
-   
    %do i_cas=1 %to &_numCases.;      
-      %if (&o_html. AND &i_cas. > 1) %then %do;
-         ods html text="^{RAW <hr size=""1"">}";
+      %if (&o_html.) %then %do;
+         ods html file="&o_path./&o_file._%sysfunc (putn (&i_cas., z3.)).html" 
+                       (TITLE="&l_title.") 
+                       headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
+                       metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
+                       style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
+         %_reportPageTopHTML(i_title   = &l_title.
+                            ,i_current = 0
+                            )
       %end;
       %LET l_c_scnid = %substr(00&i_cas.,%length(&i_cas));
 
+      *** Reset title and footnotes for each Testcase ***;
+      *** First print should contain title but no footnotes ***;
+      options center;
+      title &l_title.;
+      footnote;
+      options nocenter;
+
       data work._test_overview;
-        set work._test_report (where=(tst_id=1 AND cas_id=&i_cas.));
-        length Name $20 Value $1000;
-        Name="&g_nls_reportDetail_028."; Value=c_scnid;output;
-        Name="&g_nls_reportDetail_029."; Value=scnDescriptionColumn;output;
-        Name="&g_nls_reportDetail_030."; Value=scnProgramColumn;output;
-        Name="&g_nls_reportDetail_031."; Value=scnLast_runColumn;output;
-        Name="&g_nls_reportDetail_032."; Value=scnDurationColumn;output;
-        Name="&g_nls_reportDetail_033."; Value=c_casid;output;
-        Name="&g_nls_reportDetail_034."; Value=casDescriptionColumn;output;
-        Name="&g_nls_reportDetail_035."; Value=casProgramColumn;output;
-        Name="&g_nls_reportDetail_031."; Value=casLast_runColumn;output;
-        keep Name Value;
+         set work._test_report (where=(tst_id=1 AND cas_id=&i_cas.));
+         length Name $20 Value $1000;
+         Name="&g_nls_reportDetail_028."; Value=c_scnid;output;
+         Name="&g_nls_reportDetail_029."; Value=scnDescriptionColumn;output;
+         Name="&g_nls_reportDetail_030."; Value=scnProgramColumn;output;
+         Name="&g_nls_reportDetail_031."; Value=scnLast_runColumn;output;
+         Name="&g_nls_reportDetail_032."; Value=scnDurationColumn;output;
+         Name="&g_nls_reportDetail_033."; Value=c_casid;output;
+         Name="&g_nls_reportDetail_034."; Value=casDescriptionColumn;output;
+         Name="&g_nls_reportDetail_035."; Value=casProgramColumn;output;
+         Name="&g_nls_reportDetail_031."; Value=casLast_runColumn;output;
+         keep Name Value;
       run;
 
-      *** Create specific HTML-Anchors ***;
-      %if (&o_html.) %then %do;
-         ods html anchor="CAS%sysfunc(putn(&i_cas.,z3.))_";
-      %end;
       proc print data=work._test_overview noobs label 
           style(report)=blindTable [borderwidth=0]
           style(column)=blindData
           style(header)=blindHeader;
       run;
 
-      %if (&i_cas. = 1) %then %do;
-         title;
-      %end;
-      %if (&i_cas. = &_numCases.) %then %do;
-         %_reportFooter(o_html=&o_html.);
-      %end;
+      *** Second print should contain no title but footnotes ***;
+      title;
+      %_reportFooter(o_html=&o_html.);
 
       proc report data=work._test_report (where=(cas_id=&i_cas.)) nowd missing
           style(lines)=blindData

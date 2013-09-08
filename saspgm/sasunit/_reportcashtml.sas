@@ -152,7 +152,7 @@
             LinkTitle5  = "&g_nls_reportCas_006";
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
-               LinkColumn3 = "cas_" !! c_scnid !! ".html#CAS" !! c_casid !! "_";
+               LinkColumn3 = "cas_" !! c_scnid !! "_" !! c_casid !! ".html";
                LinkColumn4 = "file:///" !! abs_path;
                LinkColumn5 = c_scnid !! "_" !! c_casid !! "_log.html";
             %end;

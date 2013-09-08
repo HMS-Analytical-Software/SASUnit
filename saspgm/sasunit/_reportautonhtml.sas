@@ -27,7 +27,7 @@
 
    /*-- determine number of scenarios 
      and number of test cases per unit under test ----------------------------*/
-   %LOCAL d_rep1 d_rep2 l_tcg_res l_pgmLibraries l_pgmLib l_title l_logpath;
+   %LOCAL d_rep1 d_rep2 l_tcg_res l_pgmLibraries l_pgmLib l_title l_logpath l_cAuton;
 
    %_tempFileName(d_rep1)
    %_tempFileName(d_rep2)
@@ -193,6 +193,10 @@
    %LET l_listCount=%sysfunc(countw(&l_pgmLibraries.,'§'));
    %do i = 1 %to &l_listCount.;
       %LET l_pgmLib=%lowcase(%scan(&l_pgmLibraries,&i,§));
+      %LET l_cAuton=;
+      %IF (l_pgmLib ne .) %THEN %DO;
+         %LET l_cAuton=%sysfunc (putn(&l_pgmLib.,z3.))_;
+      %END;
       data work._current_auton;
          length pgmColumn scenarioColumn caseColumn assertColumn
                 %IF &g_testcoverage. EQ 1 %THEN %DO;
@@ -293,6 +297,10 @@
 
       %if (&i. = &l_listCount.) %then %do;
          %_reportFooter(o_html=&o_html.);
+      %end;
+      
+      %if (&o_html.) %then %do;
+         ods html anchor="AUTON&l_cAuton.";
       %end;
 
       proc report data=work._current_auton nowd missing spanrows

@@ -445,3 +445,14 @@
  24 EN Value for parameter unique not valid
  25 DE Schlüssel in der Nachschlagetabelle nicht gefunden
  25 EN key(s) in lookup table not found
+---reportRowExpression
+  1 DE Assert Row Expression - Ergebnisse
+  1 EN Assert Row Expression - Results
+  2 DE Tabelle mit bedingungsverletzenden Datensätzen
+  2 EN Data set containing condition violating observations
+  3 DE Keine bedingungsverletzenden Datensätze vorhanden
+  3 EN No condition violating observations present
+  4 DE Bedingungsverletzenden Datensätze
+  4 EN Condition violating observations
+  5 DE Öffnen der Tabelle mit bedingungsverletzenden Datensätze
+  5 EN Open table containing condition violating observations

@@ -80,8 +80,8 @@
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
 
-   %LOCAL l_macname  l_current_dbversion l_target_abs  l_newdb       l_rc       l_project      l_root    l_sasunit     l_abs l_autoexec l_autoexec_abs
-          l_sascfg   l_sascfg_abs        l_sasuser     l_sasuser_abs l_testdata l_testdata_abs l_refdata l_refdata_abs l_doc l_doc_abs  restore_sasautos 
+   %LOCAL l_macname  l_current_dbversion l_target_abs  l_newdb       l_rc       l_project      l_root    l_sasunit          l_abs l_autoexec      l_autoexec_abs
+          l_sascfg   l_sascfg_abs        l_sasuser     l_sasuser_abs l_testdata l_testdata_abs l_refdata l_refdata_abs      l_doc                 l_doc_abs  restore_sasautos 
           l_sasautos l_sasautos_abs      i             l_work        l_sysrc
    ;
 
@@ -268,17 +268,25 @@
 
 
       /*-- regenerate empty folders ------------------------------------------------*/
+      %LET l_cmdfile=%sysfunc(pathname(WORK))/remove_dir.cmd;
       DATA _null_;
-         FILE "%sysfunc(pathname(work))/x.cmd" encoding=pcoem850;/* wg. Umlauten in Pfaden */
+         FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
          PUT "&g_removedir ""&l_target_abs/log""&g_endcommand";
          PUT "&g_removedir ""&l_target_abs/tst""&g_endcommand";
          PUT "&g_removedir ""&l_target_abs/rep""&g_endcommand";
+      RUN;
+      %_executeCMDFile(&l_cmdfile.);
+      %LET l_rc=%_delfile(&l_cmdfile.);
+      %LET rc = %sysfunc (sleep(2,1));
+      %LET l_cmdfile=%sysfunc(pathname(WORK))/make_dir.cmd;
+      DATA _null_;
+         FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
          PUT "&g_makedir ""&l_target_abs/log""&g_endcommand";
          PUT "&g_makedir ""&l_target_abs/tst""&g_endcommand";
          PUT "&g_makedir ""&l_target_abs/rep""&g_endcommand";
       RUN;
-      %_executeCMDFile(%sysfunc(pathname(work))/x.cmd);
-      %LET l_rc=%_delfile(%sysfunc(pathname(work))/x.cmd);
+      %_executeCMDFile(&l_cmdfile.);
+      %LET l_rc=%_delfile(&l_cmdfile.);
    %END; /* %if &l_newdb */
 
    /*-- check folders -----------------------------------------------------------*/
@@ -490,22 +498,22 @@
    QUIT;
 
    %DO i=1 %TO 9;
-   PROC SQL NOPRINT;
+      PROC SQL NOPRINT;
       SELECT tsu_sasautos&i INTO :l_sasautos FROM target.tsu;
-   QUIT;
-   %LET l_sasautos=&l_sasautos;
-   %IF "&&i_sasautos&i" NE "" %THEN %LET l_sasautos=&&i_sasautos&i;
-   %LET l_sasautos_abs=%_abspath(&l_root,&l_sasautos);
-   %IF %_handleError(&l_macname.
-                    ,InvalidSASAutosN
-                    ,"&l_sasautos_abs" NE "" AND NOT %_existdir(&l_sasautos_abs)
-                    ,Error in parameter i_sasautos&i: folder not found
-                    ,i_verbose=&i_verbose.
-                    ) 
-      %THEN %GOTO errexit;
-   PROC SQL NOPRINT;
+      QUIT;
+      %LET l_sasautos=&l_sasautos;
+      %IF "&&i_sasautos&i" NE "" %THEN %LET l_sasautos=&&i_sasautos&i;
+      %LET l_sasautos_abs=%_abspath(&l_root,&l_sasautos);
+      %IF %_handleError(&l_macname.
+                       ,InvalidSASAutosN
+                       ,"&l_sasautos_abs" NE "" AND NOT %_existdir(&l_sasautos_abs)
+                       ,Error in parameter i_sasautos&i: folder not found
+                       ,i_verbose=&i_verbose.
+                       ) 
+         %THEN %GOTO errexit;
+      PROC SQL NOPRINT;
       UPDATE target.tsu SET tsu_sasautos&i = "&l_sasautos";
-   QUIT;
+      QUIT;
    %END; /* i=1 %TO 9 */
 
    /*-- update parameters ----------------------------------------------------*/
