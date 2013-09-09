@@ -22,7 +22,8 @@
                                       ,o_html=
                                       ,o_targetColumn=
                                       );
-   %_render_dataColumn(i_sourceColumn=&i_sourceColumn.
+   hlp = catt (&i_sourceColumn., "^n");
+   %_render_dataColumn(i_sourceColumn=hlp
                       ,o_targetColumn=&o_targetColumn.
                       );
 %mend _render_assertRowExpressionExp;

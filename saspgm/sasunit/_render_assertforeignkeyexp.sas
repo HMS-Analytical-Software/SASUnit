@@ -29,6 +29,7 @@
       when ("TRUE") hlp = "&g_nls_reportForeignKey_016. " || "&g_nls_reportForeignKey_017.";
       otherwise     hlp = "&g_nls_reportForeignKey_016. " || "&g_nls_reportForeignKey_018.";
    end;                    
+   hlp = catt (hlp,"^n");
       
    %_render_dataColumn (i_sourceColumn=hlp
                        ,o_targetColumn=&o_targetColumn.

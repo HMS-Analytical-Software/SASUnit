@@ -397,14 +397,14 @@
   5 DE Der Parameter i_operator ist nicht gültig
   5 EN Parameter i_operator not valid
 ---reportForeignKey
-  1 DE Libref der Stammtabelle nicht gültig oder data set existiert nicht
+  1 DE Libref der Stammtabelle nicht gültig oder die Datei existiert nicht
   1 EN Libref of master table not valid or data set does not exist
-  2 DE Libref der Nachschlagetabelle nicht gültig oder data set existiert nicht
+  2 DE Libref der Nachschlagetabelle nicht gültig oder die Datei existiert nicht
   2 EN Libref of lookup table not valid or data set does not exist
   3 DE Anzahl der gefundenen Schlüssel in i_mstKey ungleich der spezifizierten Anzahl
-  3 EN Number of keys found in i_mstKey not compatible to specified number
+  3 EN Number of keys found in i_mstKey not equal to specified number
   4 DE Anzahl der gefundenen Schlüssel in i_lookupKey ungleich der spezifizierten Anzahl
-  4 EN Number of found keys in i_lookupKey not compatible to specified number
+  4 EN Number of keys found in i_lookupKey not equal to specified number
   5 DE Schlüsselspalte in der Stammtabelle nicht gefunden
   5 EN Key in master table not found
   6 DE Schlüsselspalte in der Nachschlagetabelle nicht gefunden
@@ -412,12 +412,12 @@
   7 DE Variablentypen der Stamm- und Nachschlagetabelle stimmen nicht überein
   7 EN Variable types of keys in master and lookup table do not match
   8 DE Schlüssel der Nachschlagetabelle ist nicht eindeutig, bitte Parameter i_unique und die Nachschlagetabelle Tabelle prüfen
-  8 EN Specified key of lookup table not unique, check parameter i_unique or lookup table
+  8 EN Specified key of lookup table not unique, check parameter i_unique and lookup table
   9 DE Funktion open nicht erfolgreich
   9 EN Open function failed
  11 DE Assert Foreign Key - Ergebnisse
  11 EN Assert Foreign Key - Results
- 12 DE Es wurden kein SAS-Tabellen erzeugt
+ 12 DE Es wurde keine SAS-Tabelle erzeugt
  12 EN No SAS table created
  13 DE In der Stammtabelle als Schlüssel verwendete Werte, die nicht in der Nachschlagetabelle vorkommen
  13 EN Values that are used as keys in the master table, which were not found in lookup table
@@ -439,7 +439,7 @@
  21 EN i_listingVars not found in Master Table
  22 DE Ungültiges Argument für Parameter treatMissings
  22 EN Invalid argument for parameter treatMissings
- 23 DE Parameter treatMissingsMst auf disallow, aber fehlende Werte gefunden
+ 23 DE Parameter treatMissingsMst auf disallow gesetzt, aber fehlende Werte gefunden
  23 EN Parameter treatMissingsMst set to disallow, but missing values found in master table
  24 DE Wert für Parameter unique nicht gültig
  24 EN Value for parameter unique not valid

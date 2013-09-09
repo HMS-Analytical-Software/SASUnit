@@ -43,9 +43,9 @@
        otherwise hlp = catx(" ",hlp,"&g_nls_reportForeignKey_025.");
    end;
    
-   href     = catt (put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
+   href     = catt ('_', put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
    %if (&o_html.) %then %do;
-      href_act = catt (href,'_foreignKey_rep.html');
+      href_act = catt (href,'_foreignkey_rep.html');
    %end;
    
    &o_targetColumn. = catt ("^{style [flyover=""&g_nls_reportDetail_016"" url=""", href_act, """] &g_nls_reportDetail_038. } ^n ");
