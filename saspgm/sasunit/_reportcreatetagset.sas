@@ -35,11 +35,13 @@
                   trigger printScenario / if cmp($myRow["isScenario"], "1");
                   trigger printTestcase / if cmp($myRow["isScenario"], "0");
                   UNSET $myRow;
+                  UNSET $failuresUnformatted;
             end;
 
             define event data;
                /* Store the data of each cell of the current row in the associative array 'myRow' for outputing it in the row.finish-event */
                SET $myRow[NAME] VALUE;
+               SET $failuresUnformatted UNFORMATTEDVALUE / if cmp(NAME,"failures");
             end;
 
             define event handleOpenTestsuite;
@@ -73,7 +75,7 @@
                put '  time      ="' compress($myRow['time'])     '"' NL;
                put '  timestamp ="'          $myRow['timestamp'] '"' NL;
                put '  id        ="'          $myRow['id']        '"' NL;
-               DO / if ^cmp($myRow["failures"], "           0");
+               DO / if ^cmp($failuresUnformatted, "0");
                   put '>' NL;
                   trigger printFailure;
                   put '</testcase>' NL;

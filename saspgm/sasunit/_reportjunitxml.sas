@@ -45,7 +45,7 @@
    
       UPDATE Work.Combined SET time     = 0 WHERE time = .;
       UPDATE Work.Combined SET tests    = (SELECT COUNT(DISTINCT(cas_id)) FROM &d_rep. WHERE scn_id = Combined.scn_id);
-      UPDATE Work.Combined SET failures = (SELECT COUNT(*)                FROM &d_rep. WHERE scn_id = Combined.scn_id AND cas_res = &_SU_Error.);
+      UPDATE Work.Combined SET failures = (SELECT COUNT(*)                FROM &d_rep. WHERE scn_id = Combined.scn_id AND tst_res = &_SU_Error.);
 
       /* Insert testcases */
       INSERT INTO Work.Combined 
