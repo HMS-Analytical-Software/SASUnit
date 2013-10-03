@@ -120,9 +120,10 @@
       UPDATE Work.Junit SET message = TRANWRD(message, '<', '&lt;'  );
       UPDATE Work.Junit SET message = TRANWRD(message, '>', '&gt;'  );
       UPDATE Work.Junit SET message = TRANWRD(message, '"', '&quot;');
+      UPDATE Work.Junit SET message = '&nbsp;' where message = "";
 
-      UPDATE Work.Junit SET classname = TRANWRD(classname, '^_', ' ');
-      UPDATE Work.Junit SET type      = put(TRANWRD(type, '^_', ' '),$32.);
+      UPDATE Work.Junit SET classname = TRANWRD(classname, '^_', '&nbsp;');
+      UPDATE Work.Junit SET type      = TRANWRD(type, '^_', '&nbsp;');
    QUIT;
 
 
