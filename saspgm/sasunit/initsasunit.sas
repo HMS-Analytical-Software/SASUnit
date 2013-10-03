@@ -117,8 +117,8 @@
    /*-- check SAS version -------------------------------------------------------*/
    %IF %_handleError(&l_macname.
                     ,WrongVer
-                    ,(&sysver. NE 9.2) AND (&sysver. NE 9.3)
-                    ,Invalid SAS version - only SAS 9.2 to 9.3
+                    ,(&sysver. NE 9.2) AND (&sysver. NE 9.3) AND (&sysver. NE 9.4)
+                    ,Invalid SAS version - only SAS 9.2 to 9.4
                     ,i_verbose=&i_verbose.
                     ) 
    %THEN %GOTO errexit;
