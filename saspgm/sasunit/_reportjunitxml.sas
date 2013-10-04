@@ -123,7 +123,7 @@
       UPDATE Work.Junit SET message = '&#160;' where message = "";
 
       UPDATE Work.Junit SET classname = TRANWRD(classname, '^_', '&#160;');
-      UPDATE Work.Junit SET type      = TRANWRD(type, '^_', '&#160;');
+      UPDATE Work.Junit SET type      = put (TRANWRD(type, '^_', '&#160;'),$32.);
    QUIT;
 
 
