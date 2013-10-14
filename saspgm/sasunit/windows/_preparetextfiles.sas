@@ -1,5 +1,5 @@
 /** \file
-   \ingroup    SASUNIT_UTIL 
+   \ingroup    SASUNIT_UTIL_OS_WIN 
 
    \brief      corrects termstring in textfiles. Under Linux CRLF will be converted to CR
 
@@ -19,10 +19,6 @@
 */ /** \cond */ 
 
 %MACRO _prepareTextFiles; 
-
-   %IF (&sysscp = LINUX OR &sysscp. = LIN X64) %then %do;
-      %_xcmd(sed -i -e 's/\r//g' "&g_sasunit/_nls.txt");
-   %END;
    
 %MEND _prepareTextFiles;
 /** \endcond */

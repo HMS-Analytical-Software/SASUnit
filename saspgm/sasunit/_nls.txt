@@ -289,14 +289,16 @@
  17 EN Number of test cases
  18 DE Anzahl Prüfungen
  18 EN Number of assertions
- 19 EN SAS Version
  19 DE SAS Version
- 20 EN User ID
+ 19 EN SAS Version
  20 DE Benutzer ID
- 21 EN SASUnit Language
+ 20 EN User ID
  21 DE SASUnit Sprache
- 22 EN SASUnit Data Base Version
+ 21 EN SASUnit Language
  22 DE SASUnit Datenbankversion
+ 22 EN SASUnit Data Base Version
+ 23 DE Encoding der SAS-Sitzung
+ 23 EN Encoding of SAS session
 ---reportLibrary
   1 DE Prüfbericht - Vergleich der beiden Bibliotheken
   1 EN Test Report - Comparison of two Libraries

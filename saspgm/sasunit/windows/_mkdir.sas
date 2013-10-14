@@ -1,5 +1,5 @@
 /** \file
-   \ingroup    SASUNIT_UTIL
+   \ingroup    SASUNIT_UTIL_OS_WIN
 
    \brief      create a directory, if it does not exist
                The containing directory must exist. 
@@ -22,21 +22,16 @@
 %macro _mkdir (dir
               );
 
-   %if &sysscp. = WIN %then %do; 
-      %local xwait xsync xmin;
-      %let xwait=%sysfunc(getoption(xwait));
-      %let xsync=%sysfunc(getoption(xsync));
-      %let xmin =%sysfunc(getoption(xmin));
+   %local xwait xsync xmin;
+   %let xwait=%sysfunc(getoption(xwait));
+   %let xsync=%sysfunc(getoption(xsync));
+   %let xmin =%sysfunc(getoption(xmin));
 
-      options noxwait xsync xmin;
+   options noxwait xsync xmin;
 
-      %SYSEXEC(md "&dir");
+   %SYSEXEC(md "&dir");
 
-      options &xwait &xsync &xmin;
-   %end;
-   %else %if &sysscp. = LINUX %then %do;
-      %SYSEXEC(mkdir "&dir.");
-   %end;
+   options &xwait &xsync &xmin;
 
 %mend _mkdir; 
 

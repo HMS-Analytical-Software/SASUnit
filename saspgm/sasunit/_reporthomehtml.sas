@@ -123,12 +123,16 @@
             output;
          end;
          idColumn = "&g_nls_reportHome_015.";
-         parameterColumn='&SYSCPL';
-         valueColumn="&SYSSCPL.";
+         parameterColumn='&SYSSCP^n&SYSSCPL';
+         valueColumn="&SYSSCP.^n&SYSSCPL.";
          output;
          idColumn = "&g_nls_reportHome_019.";
          parameterColumn='&SYSVLONG4';
          valueColumn="&SYSVLONG4.";
+         output;
+         idColumn = "&g_nls_reportHome_023.";
+         parameterColumn='&SYSENCODING';
+         valueColumn="&SYSENCODING.";
          output;
          idColumn = "&g_nls_reportHome_020.";
          parameterColumn='&SYSUSERID';

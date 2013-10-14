@@ -1,7 +1,7 @@
 /** \file
-   \ingroup    SASUNIT_UTIL 
+   \ingroup    SASUNIT_UTIL_OS_LINUX
 
-   \brief      escapes blanks with backslashes if runnign under linux
+   \brief      escapes blanks with backslashes if runnign under linux or aix
 
    \version    \$Revision$
    \author     \$Author$
@@ -20,10 +20,7 @@
                      );
 
    %IF "&i_string" EQ "" %THEN %RETURN;
-
-   %if (&sysscp. = LINUX) %then %do;
-      %let i_string = %qsysfunc(tranwrd(&i_string., %str( ),%str(\ )));
-   %end;
+   %LET i_string = %sysfunc(tranwrd(&i_string., %str( ),%str(\ )));
    &i_string.
 
 %MEND _escapeblanks;

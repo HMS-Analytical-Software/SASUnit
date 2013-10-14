@@ -76,13 +76,13 @@
 
    %GLOBAL g_version g_revision;
 
-   %LET g_version   = 1.2.1;
+   %LET g_version   = 1.2.1_9;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
 
    %LOCAL l_macname  l_current_dbversion l_target_abs  l_newdb       l_rc       l_project      l_root    l_sasunit          l_abs l_autoexec      l_autoexec_abs
           l_sascfg   l_sascfg_abs        l_sasuser     l_sasuser_abs l_testdata l_testdata_abs l_refdata l_refdata_abs      l_doc                 l_doc_abs  restore_sasautos 
-          l_sasautos l_sasautos_abs      i             l_work        l_sysrc
+          l_sasautos l_sasautos_abs      i             l_work        l_sysrc    l_sasautos_os  l_cmdfile l_abspath_sasautos l_abspath_sasautos_os l_sasunitroot
    ;
 
    %LET l_current_dbversion=0;
@@ -91,6 +91,11 @@
    /*-- Resolve relative root path like .../. to an absolute root path ----------*/
    libname _tmp "&i_root.";
    %let i_root=%sysfunc (pathname(_tmp));
+   libname _tmp clear;
+
+   /*-- Get SASUnit root path from environement variable ----------*/
+   libname _tmp "%sysget(SASUNIT_ROOT)";
+   %let l_sasunitroot=%sysfunc (pathname(_tmp));
    libname _tmp clear;
 
    /*-- initialize error --------------------------------------------------------*/
@@ -105,13 +110,27 @@
    /*-- check for operation system ----------------------------------------------*/
    %IF %_handleError(&l_macname.
                     ,WrongOS
-                    ,(&sysscp. NE WIN) AND (&sysscp. NE LINUX) AND (&sysscp. NE LIN X64)
-                    ,Invalid operating system - only WIN and LINUX
+                    ,(%upcase(&sysscp.) NE WIN) AND (%upcase(&sysscpl.) NE LINUX) AND (%upcase(&sysscpl.) NE AIX)
+                    ,Invalid operating system - only WIN%str(,) LINUX AND AIX
                     ,i_verbose=&i_verbose.
                     ) 
    %THEN %GOTO errexit;
 
    /*-- set macro symbols for os commands ---------------------------------------*/
+   %IF (&sysscp. = WIN) %THEN %DO;
+      %LET l_sasautos_os = &i_sasunit./windows;
+   %END;
+   %ELSE %IF (%upcase(&sysscpl.) = LINUX) %THEN %DO;
+      %LET l_sasautos_os = &i_sasunit./linux;
+   %END;
+   %ELSE %IF (%upcase(&sysscpl.) = AIX) %THEN %DO;
+      %LET l_sasautos_os = &i_sasunit./unix_aix;
+   %END;
+   %LET l_abspath_sasautos   =%_abspath(&i_root.,&i_sasunit.);
+   %LET l_abspath_sasautos_os=%_abspath(&i_root.,&l_sasautos_os.);
+   OPTIONS SASAUTOS=(SASAUTOS "&l_abspath_sasautos." "&l_abspath_sasautos_os.");
+   OPTIONS NOQUOTELENMAX;
+
    %_oscmds;
 
    /*-- check SAS version -------------------------------------------------------*/
@@ -200,7 +219,9 @@
              tsu_project      CHAR(1000)        /* see i_project */
             ,tsu_root         CHAR(1000)        /* see i_root */
             ,tsu_target       CHAR(1000)        /* see io_target */
+            ,tsu_sasunitroot  CHAR(1000)        /* root path to sasunit files */
             ,tsu_sasunit      CHAR(1000)        /* see i_sasunit */
+            ,tsu_sasunit_os   CHAR(1000)        /* os-specific sasunit macros */
             ,tsu_sasautos     CHAR(1000)        /* see i_sasautos */
       %DO i=1 %TO 9;
             ,tsu_sasautos&i   CHAR(1000)        /* see i_sasautos<n> */
@@ -218,7 +239,7 @@
             ,tsu_verbose      INT FORMAT=8.     /* see i_verbose */
          );
          INSERT INTO target.tsu VALUES (
-         "","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,"",&i_verbose.
+         "","","","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,"",&i_verbose.
          );
 
          CREATE TABLE target.scn(COMPRESS=CHAR)
@@ -349,6 +370,19 @@
       UPDATE target.tsu SET tsu_root = "&l_root";
    QUIT;
 
+   /*-- sasunit root folder -------------------------------------------------------------*/
+   %LET l_sasunitroot=&l_sasunitroot;
+   %IF %_handleError(&l_macname.
+                    ,InvalidRoot
+                    ,"&l_sasunitroot" NE "" AND NOT %_existdir(&l_sasunitroot)
+                    ,%str(Error in parameter l_sasunitroot: folder must exist when specified)
+                    ,i_verbose=&i_verbose.
+                    ) 
+      %THEN %GOTO errexit;
+   PROC SQL NOPRINT;
+      UPDATE target.tsu SET tsu_sasunitroot = "&l_sasunitroot";
+   QUIT;
+
    /*-- sasunit folder ----------------------------------------------------------*/
    PROC SQL NOPRINT;
       SELECT tsu_sasunit INTO :l_sasunit FROM target.tsu;
@@ -367,6 +401,18 @@
       UPDATE target.tsu SET tsu_sasunit = "&l_sasunit";
    QUIT;
 
+   /*-- os-specific sasunit folder ----------------------------------------------------------*/
+   %LET l_sasautos_os=&l_sasautos_os;
+   %IF %_handleError(&l_macname.
+                    ,InvalidSASUnitDir
+                    ,"&l_abspath_sasautos_os." EQ "" OR NOT %sysfunc(fileexist(&l_abspath_sasautos_os./_oscmds.sas))
+                    ,Error in parameter i_sasunit: os-specific SASUnit macro programs not found
+                    ,i_verbose=&i_verbose.
+                    ) 
+      %THEN %GOTO errexit;
+   PROC SQL NOPRINT;
+      UPDATE target.tsu SET tsu_sasunit_os = "&l_sasautos_os";
+   QUIT;
    /*-- check if autoexec exists where specified --------------------------------*/
    PROC SQL NOPRINT;
       SELECT tsu_autoexec INTO :l_autoexec FROM target.tsu;
@@ -496,10 +542,10 @@
    PROC SQL NOPRINT;
       UPDATE target.tsu SET tsu_sasautos = "&l_sasautos";
    QUIT;
-
+   
    %DO i=1 %TO 9;
       PROC SQL NOPRINT;
-      SELECT tsu_sasautos&i INTO :l_sasautos FROM target.tsu;
+         SELECT tsu_sasautos&i. INTO :l_sasautos FROM target.tsu;
       QUIT;
       %LET l_sasautos=&l_sasautos;
       %IF "&&i_sasautos&i" NE "" %THEN %LET l_sasautos=&&i_sasautos&i;
@@ -512,7 +558,7 @@
                        ) 
          %THEN %GOTO errexit;
       PROC SQL NOPRINT;
-      UPDATE target.tsu SET tsu_sasautos&i = "&l_sasautos";
+         UPDATE target.tsu SET tsu_sasautos&i. = "&l_sasautos";
       QUIT;
    %END; /* i=1 %TO 9 */
 

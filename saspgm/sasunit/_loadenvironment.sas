@@ -21,14 +21,15 @@
  
    %LOCAL l_macname; %LET l_macname=&sysmacroname;
 
-   %GLOBAL g_target g_project g_root g_sasunit g_autoexec g_sascfg g_sasuser
-           g_sasautos g_sasautos1 g_sasautos2 g_sasautos3 g_sasautos4 g_sasautos5
-                      g_sasautos6 g_sasautos7 g_sasautos8 g_sasautos9 g_sasautos0
+   %GLOBAL g_target g_project g_root g_sasunit g_sasunit_os g_autoexec g_sascfg g_sasuser
+           g_sasautos g_sasautos0 g_sasautos1 g_sasautos2 g_sasautos3 g_sasautos4 
+           g_sasautos5 g_sasautos6 g_sasautos7 g_sasautos8 g_sasautos9 
            g_testdata g_refdata g_doc g_error g_warning g_note
            g_work g_testout g_log
            g_logfile g_printfile
            g_testcoverage
            g_verbose
+           g_sasunitroot
            ;
    %LOCAL i;
            
@@ -70,7 +71,9 @@
       SET target.tsu;
       call symput ('g_project'     , tsu_project);
       call symput ('g_root'        , tsu_root);
+      call symput ('g_sasunitroot' , tsu_sasunitroot);
       call symput ('g_sasunit'     , tsu_sasunit);
+      call symput ('g_sasunit_os'  , tsu_sasunit_os);
       call symput ('g_sasautos'    , tsu_sasautos);
       call symput ('g_sasautos0'   , tsu_sasautos);
    %DO i=1 %TO 9;
@@ -86,19 +89,21 @@
       call symput ('g_verbose'     , put (tsu_verbose, z1.));
    RUN;
 
-   %LET g_project  = &g_project;
-   %LET g_root     = &g_root;
-   %LET g_sasunit  = %_abspath(&g_root,&g_sasunit);
-   %LET g_sasautos = %_abspath(&g_root,&g_sasautos);
+   %LET g_project      = &g_project;
+   %LET g_root         = &g_root;
+   %LET g_sasunitroot  = %_abspath(&g_root,&g_sasunitroot);
+   %LET g_sasunit      = %_abspath(&g_root,&g_sasunit);
+   %LET g_sasunit_os   = %_abspath(&g_root,&g_sasunit_os);
+   %LET g_sasautos     = %_abspath(&g_root,&g_sasautos);
    %DO i=0 %TO 9;
       %LET g_sasautos&i = %_abspath(&g_root,&&g_sasautos&i);
    %END;
-   %LET g_autoexec = %_abspath(&g_root,&g_autoexec);
-   %LET g_sascfg   = %_abspath(&g_root,&g_sascfg);
-   %LET g_sasuser  = %_abspath(&g_root,&g_sasuser);
-   %LET g_testdata = %_abspath(&g_root,&g_testdata);
-   %LET g_refdata  = %_abspath(&g_root,&g_refdata);
-   %LET g_doc      = %_abspath(&g_root,&g_doc);
+   %LET g_autoexec     = %_abspath(&g_root,&g_autoexec);
+   %LET g_sascfg       = %_abspath(&g_root,&g_sascfg);
+   %LET g_sasuser      = %_abspath(&g_root,&g_sasuser);
+   %LET g_testdata     = %_abspath(&g_root,&g_testdata);
+   %LET g_refdata      = %_abspath(&g_root,&g_refdata);
+   %LET g_doc          = %_abspath(&g_root,&g_doc);
    %LET g_testcoverage = &g_testcoverage.;
 
    %LET g_work     = %sysfunc(pathname(work));

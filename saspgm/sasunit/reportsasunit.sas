@@ -249,6 +249,7 @@
          ,tsu_root       
          ,tsu_target       
          ,tsu_sasunit    
+         ,tsu_sasunit_os
          ,tsu_sasautos   
    %DO i=1 %TO 9;
          ,tsu_sasautos&i 
@@ -349,9 +350,9 @@
 
    *** Create formats used in reports ***;
    proc format lib=work;
-      value PictName     0 = "&g_root./resources/html/ok.png"
-                         1 = "&g_root./resources/html/manual.png"
-                         2 = "&g_root./resources/html/error.png"
+      value PictName     0 = "&g_sasunitroot./resources/html/ok.png"
+                         1 = "&g_sasunitroot./resources/html/manual.png"
+                         2 = "&g_sasunitroot./resources/html/error.png"
                          OTHER="?????";
       value PictNameHTML 0 = "ok.png"
                          1 = "manual.png"
@@ -366,7 +367,7 @@
    *** set options for ODS ****;
    ods escapechar="^";
 
-   libname _style "&g_root./resources/style";
+   libname _style "&g_sasunitroot./resources/style";
 
    *** create style ****;
    ods path reset;
@@ -389,7 +390,7 @@
             IF tsu_lastrep=0 OR &o_force THEN DO;
                /*-- copy static files - images, css etc. ---------------------------*/
                PUT '%_copydir(' /
-                   "    &g_root./resources" '/html/%str(*.*)' /
+                   "    &g_sasunitroot./resources" '/html/%str(*.*)' /
                    "   ,&l_output" /
                    ")";
                /*-- create frame HTML page -----------------------------------------*/

@@ -35,6 +35,18 @@
    \brief      Contains utility macros
    \ingroup    SASUNIT
 
+   \defgroup   SASUNIT_UTIL_OS_WIN   Utility Macros specific for Windows OS
+   \brief      Contains utility macros specific for Windows os
+   \ingroup    SASUNIT_UTIL
+
+   \defgroup   SASUNIT_UTIL_OS_LINUX   Utility Macros specific for Linux OS
+   \brief      Contains utility macros specific for Linux os
+   \ingroup    SASUNIT_UTIL
+
+   \defgroup   SASUNIT_UTIL_OS_UNIX_AIX  Utility Macros specific for Unix AIX OS
+   \brief      Contains utility macros specific for Unix AIX os
+   \ingroup    SASUNIT_UTIL
+
    \defgroup   SASUNIT_REPORT Reporting 
    \brief      Contains macros for reporting
    \ingroup    SASUNIT_UTIL

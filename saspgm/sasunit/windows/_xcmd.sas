@@ -1,5 +1,5 @@
 /** \file
-   \ingroup    SASUNIT_UTIL
+   \ingroup    SASUNIT_UTIL_OS_WIN
 
    \brief      run an operation system command
 
@@ -19,22 +19,16 @@
 
 %macro _xcmd(i_cmd);
 
-   %if &sysscp. = WIN %then %do; 
-      %local xwait xsync xmin;
-      %let xwait=%sysfunc(getoption(xwait));
-      %let xsync=%sysfunc(getoption(xsync));
-      %let xmin =%sysfunc(getoption(xmin));
+   %local xwait xsync xmin;
+   %let xwait=%sysfunc(getoption(xwait));
+   %let xsync=%sysfunc(getoption(xsync));
+   %let xmin =%sysfunc(getoption(xmin));
 
-      options noxwait xsync xmin;
+   options noxwait xsync xmin;
 
-      %SYSEXEC &i_cmd;
+   %SYSEXEC &i_cmd;
 
-      options &xwait &xsync &xmin;
-   %end;
-
-   %else %if &sysscp. = LINUX %then %do;
-      %SYSEXEC &i_cmd;
-   %end;
+   options &xwait &xsync &xmin;
 
 %mend _xcmd; 
 

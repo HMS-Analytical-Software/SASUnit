@@ -6,10 +6,10 @@
 
                Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
-               Ensure sequence
-               End redirection of SAS log
-               Reset ODS destinations
-               ODS-Destinations rücksetzen
+               internally:
+               - Ensure sequence
+               - End redirection of SAS log
+               - Reset ODS destinations
 
    \version    \$Revision$
    \author     \$Author$

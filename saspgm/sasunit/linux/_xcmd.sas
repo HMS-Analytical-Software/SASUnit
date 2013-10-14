@@ -1,7 +1,7 @@
 /** \file
-   \ingroup    SASUNIT_UTIL
+   \ingroup    SASUNIT_UTIL_OS_LINUX
 
-   \brief      execute an command file by operation system command
+   \brief      run an operation system command
 
    \version    \$Revision$
    \author     \$Author$
@@ -12,21 +12,16 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_cmdFile    Command file to be executed by the OS
+   \param   cmd     OS command with quotes where necessary 
    \return  error symbol &sysrc will be set to a value other than 0, if an error occurs.
 
-*/ 
-/** \cond */ 
+ */ /** \cond */ 
 
-%macro _executeCMDFile(i_cmdFile
-                      );
-					  
-   %if &sysscp. = LINUX %then %do;
-      %_xcmd(chmod u+x "&i_cmdFile.")
-      %_xcmd(sed -i -e 's/\r//g' "&i_cmdFile.");
-   %end;
-   %_xcmd("&i_cmdFile.")
+%macro _xcmd(i_cmd);
 
-%mend _executeCMDFile;   
+   %SYSEXEC &i_cmd;
+
+%mend _xcmd; 
 
 /** \endcond */
+

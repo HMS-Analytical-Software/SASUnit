@@ -22,22 +22,30 @@
 %MACRO _getAutocallNumber (i_object
                           );
 
-   %LOCAL l_path;
-   %LET l_path = &g_sasautos/&i_object;
+   %LOCAL i l_path;
+
+   %*** check all autocall paths ***;
+   %DO i=0 %TO 9;
+      %LET l_path = &&g_sasautos&i/&i_object;
+      %IF %sysfunc(fileexist(&l_path)) %THEN %DO;
+         %eval(&i+2)
+         %RETURN;
+      %END;
+   %END;
+
+   %*** check for SASUnit program path ***;
+   %LET l_path = &g_sasunit/&i_object;
    %IF %sysfunc(fileexist(&l_path)) %THEN %DO;
       0
       %RETURN;
    %END;
 
-   %LOCAL i;
-   %DO i=1 %TO 9;
-      %LET l_path = &&g_sasautos&i/&i_object;
-      %IF %sysfunc(fileexist(&l_path)) %THEN %DO;
-         &i
-         %RETURN;
-      %END;
+   %*** check for SASUnit os-specific program path ***;
+   %LET l_path = &g_sasunit_os/&i_object;
+   %IF %sysfunc(fileexist(&l_path)) %THEN %DO;
+      1
+      %RETURN;
    %END;
-
 .
 
 %MEND _getAutocallNumber;

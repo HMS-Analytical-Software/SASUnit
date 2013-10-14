@@ -43,7 +43,7 @@ OPTIONS
   ,i_refdata      = example/dat                                                /* reference data, libref refdata */
   ,i_sascfg       = example/bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
   ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)                      /* set to 1 to assess test coverage assessment */
-  ,i_verbose      =1
+  ,i_verbose      = 1
 )
 
 /* Run specified test scenarios. There can be more than one call to runSASUnit */

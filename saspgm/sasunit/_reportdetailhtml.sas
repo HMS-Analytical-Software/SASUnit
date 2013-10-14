@@ -225,8 +225,7 @@
 
          *** Reset title and footnotes for each Testcase ***;
          *** First print should contain title but no footnotes ***;
-         options center;
-         title &l_title.;
+         title j=c "&l_title.";
          footnote;
          options nocenter;
 

@@ -119,12 +119,26 @@
       %_dir(i_path=&l_auto.*.sas, o_out=&d_dir)
       data &d_examinee;
          set %IF &l_autonr>0 %THEN &d_examinee; &d_dir(in=indir);
-         if indir then auton=&l_autonr;
+         if indir then auton=&l_autonr.+2;
       run; 
       %LET l_autonr = %eval(&l_autonr+1);
       %LET l_auto=;
       %IF %symexist(g_sasautos&l_autonr) %THEN %LET l_auto=&&g_sasautos&l_autonr;
    %END;
+   %LET l_auto=&g_sasunit;
+   %LET l_auto=%quote(&l_auto/);
+   %_dir(i_path=&l_auto.*.sas, o_out=&d_dir)
+   data &d_examinee;
+      set &d_examinee &d_dir(in=indir);
+      if indir then auton=0;
+   run; 
+   %LET l_auto=&g_sasunit_os;
+   %LET l_auto=%quote(&l_auto/);
+   %_dir(i_path=&l_auto.*.sas, o_out=&d_dir)
+   data &d_examinee;
+      set &d_examinee &d_dir(in=indir);
+      if indir then auton=1;
+   run; 
 
    /*-- loop over all test scenarios --------------------------------------------*/
    %DO i=1 %TO &l_nscn;

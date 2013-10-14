@@ -1,5 +1,5 @@
 /** \file
-   \ingroup    SASUNIT_UTIL
+   \ingroup    SASUNIT_UTIL_OS_UNIX_AIX
 
    \brief      runs a program in a spawned process
 
@@ -15,7 +15,7 @@
    \param   i_program           Command file to be executed in a separate instance
    \param   i_scnid             Scenario id used to construct lognames
    \param   i_generateMcoverage Specifies whether to use mcoverage or not
-   \param   i_sysrc             Name of macro variable holding rc of spawning call
+   \param   r_sysrc             Name of macro variable holding rc of spawning call
 
    \return  error symbol &sysrc will be set to a value other than 0, if an error occurs.
 */ 
@@ -50,26 +50,15 @@
    %IF "&g_autoexec" NE "" %THEN %DO;
       %LET l_parms=&l_parms -autoexec ""&g_autoexec"";
    %END;
-   %IF &sysscp. = LINUX %THEN %DO;
-       %IF "&g_sascfg" NE "" %THEN %DO;
-          options SET=SASCFGPATH "&g_sascfg.";
-       %END;
-   %END;
-   %ELSE %DO;
-       %IF "&g_sascfg" NE "" %THEN %DO;
-           %LET l_parms=&l_parms -config ""&g_sascfg"";
-       %END;
-       %ELSE %IF %length(%sysfunc(getoption(config))) NE 0 AND %index(%quote(%sysfunc(getoption(config))),%bquote(&l_parenthesis)) NE 1 %THEN %DO; 
-          %LET l_parms=&l_parms -config ""%sysfunc(getoption(config))"";
-       %END; 
+   %IF "&g_sascfg" NE "" %THEN %DO;
+	  options SET=SASCFGPATH "&g_sascfg.";
    %END;
  
    %IF &i_generateMcoverage. EQ 1 %THEN %DO;
       /*-- generate a local macro variable containing the 
            path to the generated coverage file if necessary ---------------*/
-      %LET   l_tcgFilePath           = &g_log./&i_scnid..tcg;
-      %LET   l_tcgOptionsString      = -mcoverage -mcoverageloc = %str(%")%str(%")&l_tcgFilePath.%str(%")%str(%");
-      %LET   l_tcgOptionsStringLINUX = options mcoverage mcoverageloc='%_escapeBlanks(&l_tcgFilePath.)';
+      %LET   l_tcgFilePath      = &g_log./&i_scnid..tcg;
+      %LET   l_tcgOptionsString = options mcoverage mcoverageloc='%sysfunc(tranwrd(&l_tcgFilePath.,%str( ), %str(\ )))';
    %END;
 
    DATA _null_;
@@ -80,45 +69,22 @@
          "&l_cmdFile."
          LRECL=32000
       ;
-      %IF &sysscp. = LINUX %THEN %DO;
-         _sCmdString = 
-            "" !! &g_sasstart. 
-            !! " " 
-            !! "&l_parms. "
-            !! "-sysin %_escapeBlanks(&i_program.) "
-            !! "-initstmt "" &l_tcgOptionsStringLINUX.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&i_scnid.;"" "
-            !! "-log   %_escapeBlanks(&g_log/&i_scnid..log) "
-            !! "-print %_escapeBlanks(&g_testout/&i_scnid..lst) "
-            !! "-noovp "
-            !! "-nosyntaxcheck "
-            !! "-noterminal "
-            !! "-mautosource "
-            !! "-mcompilenote all "
-            !! "-sasautos %_escapeBlanks(&g_sasunit) "
-            !! "-sasuser %sysfunc(pathname(work))/sasuser "
-            !! "-termstmt ""%nrstr(%%_termScenario())"" "
-            !! "";
-      %END;
-      %ELSE %DO;
-         _sCmdString = 
-            """" !! &g_sasstart !! """"
-            !! " " 
-            !! "&l_parms. "
-            !! "-sysin ""&i_program."" "
-            !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&i_scnid.;"" "
-            !! "-log   ""&g_log/&i_scnid..log"" "
-            !! "-print ""&g_testout/&i_scnid..lst"" "
-            !! "&g_splash "
-            !! "-noovp "
-            !! "-nosyntaxcheck "
-            !! "-mautosource "
-            !! "-mcompilenote all "
-            !! "-sasautos ""&g_sasunit"" "
-            !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
-            !! "-termstmt ""%nrstr(%%%_termScenario())"" "
-            !! "&l_tcgOptionsString. "
-            !! "";
-      %END;
+	 _sCmdString = 
+		"" !! &g_sasstart. 
+		!! " " 
+		!! "&l_parms. "
+		!! "-sysin %sysfunc(tranwrd(&i_program., %str( ), %str(\ ))) "
+		!! "-initstmt "" &l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&i_scnid.;"" "
+		!! "-log   %sysfunc(tranwrd(&g_log/&i_scnid..log, %str( ), %str(\ ))) "
+		!! "-print %sysfunc(tranwrd(&g_testout/&i_scnid..lst, %str( ), %str(\ ))) "
+		!! "-noovp "
+		!! "-nosyntaxcheck "
+		!! "-mautosource "
+		!! "-mcompilenote all "
+		!! "-sasautos %sysfunc(tranwrd(&g_sasunit, %str( ), %str(\ ))) "
+		!! "-sasuser %sysfunc(pathname(work))/sasuser "
+		!! "-termstmt ""%nrstr(%%_termScenario())"" "
+		!! "";
       PUT _sCmdString;
    RUN;
 
@@ -134,7 +100,7 @@
    RUN;
    %_executeCMDFile(&l_cmdFile.);
    %LET l_rc=%_delfile(&l_cmdFile.);
-      
+   
 %mend _runprogramspawned;   
 
 /** \endcond */

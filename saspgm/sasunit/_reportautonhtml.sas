@@ -63,15 +63,15 @@
         of all calls to the macros under test -----------------------------------*/
 
       %let l_rc =%_delFile("&g_log/000.tcg");
-     
-     %let l_logpath=%_escapeBlanks(&g_log.);
+
+      %let l_logpath=%_escapeBlanks(&g_log.);
 
       FILENAME allfiles "&l_logpath./*.tcg";
       DATA _null_;
-       INFILE allfiles end=done dlm=',';
-       FILE "&l_logpath./000.tcg";
-       INPUT row :$256.;
-       PUT row;
+         INFILE allfiles end=done dlm=',';
+         FILE "&l_logpath./000.tcg";
+         INPUT row :$256.;
+         PUT row;
       RUN;
 
       /*-- for every unit under test (see ‘target’ database ): 
@@ -81,7 +81,7 @@
       
       PROC SQL NOPRINT;
          SELECT DISTINCT cas_pgm 
-         INTO:l_unitUnderTestList SEPARATED BY '*'
+         INTO :l_unitUnderTestList SEPARATED BY '*'
          FROM work._auton_report;
       QUIT;
       /* Add col tcg_pct to data set &d_rep1 to store coverage percentage for report generation*/
@@ -116,16 +116,23 @@
                      , o_pathWithoutName = l_currentUnitLocation
                      )
                %END;
-               %ELSE %DO; /*relative path in one of the sasautos dirs*/
-                  %IF (%SYSFUNC(FILEEXIST(&g_sasautos./&l_currentUnit.))) %THEN %DO;
+               %ELSE %DO; /*relative path in one of the sasautos dirs */
+                  %IF (%SYSFUNC(FILEEXIST(&g_sasunit./&l_currentUnit.))) %THEN %DO;
                       %_getAbsPathComponents(
-                       i_absPath         = &g_sasautos./&l_currentUnit.
+                       i_absPath         = &g_sasunit./&l_currentUnit.
+                     , o_fileName        = l_currentUnitFileName
+                     , o_pathWithoutName = l_currentUnitLocation
+                     )
+                  %END;
+                  %ELSE %IF (%SYSFUNC(FILEEXIST(&g_sasunit_os./&l_currentUnit.))) %THEN %DO;
+                      %_getAbsPathComponents(
+                       i_absPath         = &g_sasunit_os./&l_currentUnit.
                      , o_fileName        = l_currentUnitFileName
                      , o_pathWithoutName = l_currentUnitLocation
                      )
                   %END;
                   %ELSE %DO;
-                     %LET j = 1;
+                     %LET j = 0;
                      %DO %UNTIL ("&l_currentUnitLocation." NE "" OR &j. EQ 10);
                         %IF (%SYSFUNC(FILEEXIST(&&g_sasautos&j/&l_currentUnit.))) %THEN %DO;
                            %_getAbsPathComponents(
@@ -222,8 +229,14 @@
          IF cas_auton = . THEN DO;
             cas_abs_path = resolve ('%_abspath(&g_root,' !! trim(cas_pgm) !! ')');   
          END;
+         ELSE IF cas_auton = 0 THEN DO;
+            cas_abs_path = resolve ('%_abspath(&g_sasunit,' !! trim(cas_pgm) !! ')');   
+         END;
+         ELSE IF cas_auton = 1 THEN DO;
+            cas_abs_path = resolve ('%_abspath(&g_sasunit_os,' !! trim(cas_pgm) !! ')');   
+         END;
          ELSE DO;
-            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! put (cas_auton,1.) !! ',' !! trim(cas_pgm) !! ')');
+            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! put (cas_auton-2,1.) !! ',' !! trim(cas_pgm) !! ')');
          END;
          scn_abs_path = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
 
@@ -237,12 +250,22 @@
                             ,o_html=&o_html.
                             ,o_targetColumn=resultColumn
                             );
-         if (cas_auton < 0) then do;
+         if (cas_auton = .) then do;
             _autonColumn = "&g_nls_reportAuton_015.";
          end;
          else do;
-            _autonColumn = sa(cas_auton);
-            linkTitle0   =  symget("g_sasautos" !! put(cas_auton, z1.));
+            if (cas_auton = 0) then do;
+               _autonColumn = tsu_sasunit;
+               linkTitle0   = symget("g_sasunit");
+            end;
+            else if (cas_auton = 1) then do;
+               _autonColumn = tsu_sasunit_os;
+               linkTitle0   = symget("g_sasunit_os");
+            end;
+            else do;
+               _autonColumn = sa(cas_auton-2);
+               linkTitle0   = symget("g_sasautos" !! put(cas_auton, z1.));
+            end;
             linkColumn0  = "file:///" !! linkTitle0;
             linkTitle0   = "&g_nls_reportAuton_009. " !! linkTitle0;
          end;

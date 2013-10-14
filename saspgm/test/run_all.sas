@@ -16,7 +16,7 @@
 */ /** \cond */ 
 
 OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "%trim(%sysget(SASUNIT_ROOT))/saspgm/sasunit");
-%LET SASUNIIT_VERBOSE=1;
+%LET SASUNIT_VERBOSE=1;
 proc options option=logparm;run;
 
 %initSASUnit(
@@ -34,7 +34,7 @@ proc options option=logparm;run;
   ,i_doc          = doc/spec
   ,i_sascfg       = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
   ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose      = &SASUNIIT_VERBOSE.
+  ,i_verbose      = &SASUNIT_VERBOSE.
 );
 
 %runSASUnit(i_source = %str(saspgm/test/reportsasunit_inexisting_scenario_has_to_fail));
@@ -86,7 +86,7 @@ run;
   ,i_doc          = doc/spec
   ,i_sascfg       = &ConfigName.
   ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose      = &SASUNIIT_VERBOSE.
+  ,i_verbose      = &SASUNIT_VERBOSE.
 )
 
 %runSASUnit(i_source = saspgm/test/assert_i_config_usage_configtest.sas);
@@ -107,7 +107,7 @@ run;
   ,i_sascfg       = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
   ,i_autoexec     = &AutoexecName2.
   ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose      = &SASUNIIT_VERBOSE.
+  ,i_verbose      = &SASUNIT_VERBOSE.
 )
 
 %runSASUnit(i_source = saspgm/test/assert_i_autoexec_usage_configtest.sas);
@@ -130,7 +130,7 @@ run;
   ,i_sascfg       = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
   ,i_autoexec     = %str( )
   ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose      = &SASUNIIT_VERBOSE.
+  ,i_verbose      = &SASUNIT_VERBOSE.
 );
 
 %reportSASUnit(
