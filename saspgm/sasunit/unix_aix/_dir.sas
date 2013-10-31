@@ -55,7 +55,7 @@
       format changed datetime20.;
       infile _dirfile delimiter=' ' truncover;
       input dum1-dum7 $ dat1-dat3 $ fileall $;
-      filename = scan(fileall,-1,'/');
+      filename = fileall;
       if substr(dum3,1,1)='d' then delete;
       if index(dat3,':') gt 0 then do;
          changed = input(compress(dat2 || dat1 || year(today())) || " " || dat3, datetime.);

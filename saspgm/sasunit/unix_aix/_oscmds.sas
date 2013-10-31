@@ -30,7 +30,7 @@
    %LET g_makedir     = mkdir;
    %LET g_copydir     = cp -R;
    %LET g_endcommand  =%str(;);
-   %_sasunit_xcmd(umask 003);
+   %_xcmd(umask 003);
    %let g_sasstart =%sysfunc(pathname(sasroot))/sasexe/sas;
    %let g_splash =;
 

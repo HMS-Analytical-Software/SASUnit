@@ -21,7 +21,7 @@
                       );
 					  
    %_xcmd(chmod u+x "&i_cmdFile.")
-   %_xcmd(sed -i -e 's/\r//g' "&i_cmdFile.");
+   %_xcmd(sed -e 's/\r//g' "&i_cmdFile." > ~/temp.; mv ~/temp. "&i_cmdFile.");
    %_xcmd("&i_cmdFile.")
 
 %mend _executeCMDFile;   
