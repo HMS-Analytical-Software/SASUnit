@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertcolumns.sas - has to fail! 9 assertColumns errors and one warning
+   \brief      Test of assertColumns.sas - has to fail! 9 assertColumns errors and one warning
 
    \version    \$Revision$
    \author     \$Author$
@@ -22,7 +22,7 @@ data class0 class;
 run;
 
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=identical datasets)
+%initTestcase(i_object=assertColumns.sas, i_desc=identical datasets)
 %endTestcall()
 %assertColumns(i_actual=class0, i_expected=class, i_desc=the description)
 %markTest()
@@ -44,7 +44,7 @@ data class1;
    age2 = age+1;
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=identical datasets except for additional variable)
+%initTestcase(i_object=assertColumns.sas, i_desc=identical datasets except for additional variable)
 %endTestcall()
 %assertColumns(i_actual=class1, i_expected=class, i_desc=the description)
 %markTest()
@@ -66,7 +66,7 @@ data class3;
    IF _n_=12 THEN age=age+0.1;
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=different values for variable age)
+%initTestcase(i_object=assertColumns.sas, i_desc=different values for variable age)
 %endTestcall()
 %assertColumns(i_actual=class3, i_expected=class, i_desc=check on equality)
 %markTest()
@@ -76,7 +76,7 @@ run;
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=different value in variable age > fuzz)
+%initTestcase(i_object=assertColumns.sas, i_desc=different value in variable age > fuzz)
 %endTestcall()
 %assertColumns(i_actual=class3, i_expected=class, i_fuzz=0.09, i_desc=check on equality)
 %markTest()
@@ -86,7 +86,7 @@ run;
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=different value in variable age = fuzz)
+%initTestcase(i_object=assertColumns.sas, i_desc=different value in variable age = fuzz)
 %endTestcall()
 %assertColumns(i_actual=class3, i_expected=class,i_fuzz=0.1)
 %markTest()
@@ -95,7 +95,7 @@ run;
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=different value in variable age < fuzz)
+%initTestcase(i_object=assertColumns.sas, i_desc=different value in variable age < fuzz)
 %endTestcall()
 %assertColumns(i_actual=class3, i_expected=class,i_fuzz=0.11)
 %markTest()
@@ -113,7 +113,7 @@ data class4;
    end;
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=additional observation and compare with id)
+%initTestcase(i_object=assertColumns.sas, i_desc=additional observation and compare with id)
 %endTestcall()
 %assertColumns(i_actual=class4, i_expected=class,i_id=name, i_desc=check on equality)
 %markTest()
@@ -128,7 +128,7 @@ data class5;
    drop age;
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=missing column)
+%initTestcase(i_object=assertColumns.sas, i_desc=missing column)
 %endTestcall()
 %assertColumns(i_actual=class5, i_expected=class, i_desc=check on equality)
 %markTest()
@@ -138,7 +138,7 @@ run;
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=missing dataset i_actual)
+%initTestcase(i_object=assertColumns.sas, i_desc=missing dataset i_actual)
 %endTestcall()
 %assertColumns(i_actual=classxxx, i_expected=class, i_desc=check on equality)
 %markTest()
@@ -148,7 +148,7 @@ run;
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=missing dataset i_expected)
+%initTestcase(i_object=assertColumns.sas, i_desc=missing dataset i_expected)
 %endTestcall()
 %assertColumns(i_actual=class1, i_expected=classxxx, i_desc=check on equality)
 %markTest()
@@ -158,7 +158,7 @@ run;
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=both datasets are missing)
+%initTestcase(i_object=assertColumns.sas, i_desc=both datasets are missing)
 %endTestcall()
 %assertColumns(i_actual=classxxx, i_expected=classxxx, i_desc=check on equality!)
 %markTest()
@@ -172,7 +172,7 @@ data class6 / view=class6;
    set class;
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=compare a view with a dataset)
+%initTestcase(i_object=assertColumns.sas, i_desc=compare a view with a dataset)
 %endTestcall()
 %assertColumns(i_actual=class6, i_expected=class, i_desc=the description)
 %markTest()
@@ -194,13 +194,13 @@ data _null_;
    put "Dummy";
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=invalid value for i_allow)
+%initTestcase(i_object=assertColumns.sas, i_desc=invalid value for i_allow)
 %endTestcall()
 %assertColumns(i_actual=class1, i_expected=class, i_desc=the description, i_allow=XXX)
 %assertReport(i_actual=&g_work/1.txt, i_desc=look for a message in the scenario log regarding invalid value XXX for i_allow)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=additional observation and use id and i_allow)
+%initTestcase(i_object=assertColumns.sas, i_desc=additional observation and use id and i_allow)
 %endTestcall()
 %assertColumns(i_actual=class4, i_expected=class, i_id=name, i_allow=COMPOBS, i_desc=table comparison)
 %markTest()
@@ -214,7 +214,7 @@ data class7;
    label age='XXX';
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=different variable labels and not i_allow LABEL)
+%initTestcase(i_object=assertColumns.sas, i_desc=different variable labels and not i_allow LABEL)
 %endTestcall()
 %assertColumns(i_actual=class7, i_expected=class, i_desc=check on equality, i_allow=DSLABEL COMPVAR)
 %markTest()
@@ -224,7 +224,7 @@ run;
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=different variable labels with i_allow LABEL)
+%initTestcase(i_object=assertColumns.sas, i_desc=different variable labels with i_allow LABEL)
 %endTestcall()
 %assertColumns(i_actual=class7, i_expected=class, i_desc=the description)
 %markTest()
@@ -233,7 +233,7 @@ run;
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=limit maximum number of records with o_maxReportObs)
+%initTestcase(i_object=assertColumns.sas, i_desc=limit maximum number of records with o_maxReportObs)
 %endTestcall()
 %assertColumns(i_actual=class0, i_expected=class, i_desc=only 5 records, i_maxReportObs=5)
 %markTest()
@@ -242,7 +242,7 @@ run;
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=limit maximum number of records with o_maxReportObs=0)
+%initTestcase(i_object=assertColumns.sas, i_desc=limit maximum number of records with o_maxReportObs=0)
 %endTestcall()
 %assertColumns(i_actual=class0, i_expected=class, i_desc=no datasets copied, i_maxReportObs=0)
 %markTest()
@@ -251,7 +251,7 @@ run;
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=compares only columns in the include list)
+%initTestcase(i_object=assertColumns.sas, i_desc=compares only columns in the include list)
 %endTestcall()
 %assertColumns(i_actual=class1, i_expected=class, i_desc=only included columns, i_include=name height)
 %markTest()
@@ -264,7 +264,7 @@ data class8;
    height = 123;
 run;
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=compares only columns not in the exclude list)
+%initTestcase(i_object=assertColumns.sas, i_desc=compares only columns not in the exclude list)
 %endTestcall()
 %assertColumns(i_actual=class8, i_expected=class, i_desc=only not excluded columns, i_exclude=name height)
 %markTest()
@@ -272,7 +272,7 @@ run;
 %endTestcase(i_assertLog=0)
 
 
-%initTestcase(i_object=assertcolumns.sas, i_desc=exclude list is dropped if include list is present)
+%initTestcase(i_object=assertColumns.sas, i_desc=exclude list is dropped if include list is present)
 %endTestcall()
 %assertColumns(i_actual=class8, i_expected=class, i_desc=exclude list is dropped if include list is present, i_include=age weight, i_exclude=age weight)
 %markTest()

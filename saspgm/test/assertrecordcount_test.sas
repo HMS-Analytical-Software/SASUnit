@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertRecordCount.sas - has to fail! 10 errors (8 assertRecordCount errors, 2 subsequent error and 1 warning)
+   \brief      Test of assertRecordCount.sas - has to fail! 10 errors (8 assertRecordCount errors, 2 subsequent error and 1 warning)
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $

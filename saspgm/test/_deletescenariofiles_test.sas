@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for _deletescenariofiles.sas
+   \brief      Test of _deleteScenarioFiles.sas
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $
@@ -94,7 +94,7 @@
 %_createTestFiles();
 
 /* test case 1 ------------------------------------ */
-%initTestcase(i_object=_deletescenariofiles.sas, i_desc=Test the deletion of scenario files and folders)
+%initTestcase(i_object=_deleteScenarioFiles.sas, i_desc=Test the deletion of scenario files and folders)
 /*-- switch to example database -----------------------*/
 %_switch();
 %_deletescenariofiles(i_scnid=001);

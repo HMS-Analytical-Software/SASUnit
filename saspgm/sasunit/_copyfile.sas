@@ -20,7 +20,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */
 
-%MACRO _copyFile ( i_file  /* input file */
+%MACRO _copyFile (i_file  /* input file */
                  ,o_file  /* output file */
                  );
    DATA _null_;

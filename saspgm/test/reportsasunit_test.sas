@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for reportsasunit.sas - has to fail! 5 subsequent errors dealing with missing call of initTestcase.
+   \brief      Test of reportSASUnit.sas - has to fail! 5 subsequent errors dealing with missing call of initTestcase.
 
    \version    \$Revision$
    \author     \$Author$
@@ -18,7 +18,7 @@
 
 /* test case start ------------------------------------ */
 %initTestcase(
-    i_object = reportsasunit.sas,
+    i_object = reportSASUnit.sas,
    ,i_desc   = %STR(Syntax error in macro call, test case will not be shown in the report)
 );
 
@@ -35,7 +35,7 @@ run;
 
 /* test case start ------------------------------------ */
 %initTestcase(
-    i_object = reportsasunit.sas
+    i_object = reportSASUnit.sas
    ,i_desc   = %STR(dummy test case, must be shown in the report as OK (scenario contains other test with syntax errors))
 );
 

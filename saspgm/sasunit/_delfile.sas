@@ -3,7 +3,7 @@
 
    \brief      delete an external file if it exists
 
-   \%delfile (file)
+   \%let rc = \%delfile (file)
 
    \version    \$Revision$
    \author     \$Author$

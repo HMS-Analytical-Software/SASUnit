@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertlibrary.sas - has to fail! 11 assertLibrary errors
+   \brief      Test of assertLibrary.sas - has to fail! 11 assertLibrary errors
 
    \version    \$Revision$
    \author     \$Author$
@@ -18,7 +18,7 @@
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /* test case 1 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=i_actual is an invalid libref)
+%initTestcase(i_object=assertLibrary.sas, i_desc=i_actual is an invalid libref)
 %endTestcall()
 
 %assertLibrary (i_expected=WORK, i_actual=CTEMP, i_desc=Compare libraries)
@@ -32,7 +32,7 @@
 %assertLog (i_errors=0, i_warnings=0)
 
 /* test case 2 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=i_expected is an invalid libref)
+%initTestcase(i_object=assertLibrary.sas, i_desc=i_expected is an invalid libref)
 %endTestcall()
 
 %assertLibrary (i_expected=CTEMP, i_actual=WORK, i_desc=Compare libraries)
@@ -47,7 +47,7 @@
 
 
 /* test case 3 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=identical librefs)
+%initTestcase(i_object=assertLibrary.sas, i_desc=identical librefs)
 %endTestcall()
 
 %assertLibrary (i_expected=WORK, i_actual=WORK, i_desc=Compare libraries)
@@ -61,7 +61,7 @@
 %assertLog (i_errors=0, i_warnings=0)
 
 /* test case 4 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=identical paths)
+%initTestcase(i_object=assertLibrary.sas, i_desc=identical paths)
 %endTestcall();
 
 libname a "%sysfunc (pathname (WORK))";
@@ -78,7 +78,7 @@ libname b "%sysfunc (pathname (WORK))";
 %assertLog (i_errors=0, i_warnings=0);
 
 /* test case 5 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=diverse differences)
+%initTestcase(i_object=assertLibrary.sas, i_desc=diverse differences)
 %endTestcall();
 
 %_mkdir (%sysfunc (pathname (WORK))/_refdata);
@@ -175,7 +175,7 @@ run;
 %endTestcase()
 
 /* test case 6 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=libraries with identical contents)
+%initTestcase(i_object=assertLibrary.sas, i_desc=libraries with identical contents)
 %endTestcall();
 
 %_mkdir (%sysfunc (pathname (WORK))/_refdata1);
@@ -201,7 +201,7 @@ run;
 %endTestcase()
 
 /* test case 7 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=more tables in one library - otherwise identical!)
+%initTestcase(i_object=assertLibrary.sas, i_desc=more tables in one library - otherwise identical!)
 %endTestcall();
 
 %_mkdir (%sysfunc (pathname (WORK))/_refdata2);
@@ -229,7 +229,7 @@ run;
 %endTestcase()
 
 /* test case 8 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=test library has more observations!)
+%initTestcase(i_object=assertLibrary.sas, i_desc=test library has more observations!)
 %endTestcall();
 
 %_mkdir (%sysfunc (pathname (WORK))/_refdata3);
@@ -256,7 +256,7 @@ run;
 %endTestcase()
 
 /* test case 9 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=test library has more columns!)
+%initTestcase(i_object=assertLibrary.sas, i_desc=test library has more columns!)
 %endTestcall();
 
 %_mkdir (%sysfunc (pathname (WORK))/_refdata4);
@@ -283,7 +283,7 @@ run;
 %endTestcase()
 
 /* test case 10 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=test library has more observations and more columns!)
+%initTestcase(i_object=assertLibrary.sas, i_desc=test library has more observations and more columns!)
 %endTestcall();
 
 %_mkdir (%sysfunc (pathname (WORK))/_refdata5);
@@ -311,7 +311,7 @@ run;
 %endTestcase()
 
 /* test case 11 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=test with invalid value of i_libraryCheck)
+%initTestcase(i_object=assertLibrary.sas, i_desc=test with invalid value of i_libraryCheck)
 %endTestcall()
 
 %assertLibrary (i_expected=_ref, 
@@ -329,7 +329,7 @@ run;
 %assertLog (i_errors=0, i_warnings=0)
 
 /* test case 12 ------------------------------------*/
-%initTestcase(i_object=assertlibrary.sas, i_desc=test with invalid value of i_compareCheck)
+%initTestcase(i_object=assertLibrary.sas, i_desc=test with invalid value of i_compareCheck)
 %endTestcall()
 
 %assertLibrary (i_expected=_ref, 

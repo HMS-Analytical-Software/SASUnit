@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_UTIL
 
-   \brief      Tests for macro assertMustFail
+   \brief      Test of macro assertMustFail
 
    \version    \$Revision$
    \author     \$Author$

@@ -14,7 +14,7 @@ data test;
 run;
 
 /*-- first call: Everthing is ok ------------------------------------*/
-%initTestcase(i_object=reportsasunit.sas, i_desc=Correct assert)
+%initTestcase(i_object=reportSASUnit.sas, i_desc=Correct assert)
 %endTestcall()
 %assertLog(i_errors=0, i_warnings=0, i_desc=everything is OK)
 %endTestcase()

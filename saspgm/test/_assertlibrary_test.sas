@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for _assertLibrary.sas
+   \brief      Test of _assertLibrary.sas
 
    \version    \$Revision$
    \author     \$Author$

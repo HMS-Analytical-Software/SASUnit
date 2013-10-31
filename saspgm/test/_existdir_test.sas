@@ -18,19 +18,19 @@
 %let existing2 = %sysfunc(pathname(work))/;
 %let not_existing = y:\ljfdsö\jdsaö\jdsaöl\urewqio;
 
-%initTestcase(i_object=_existdir.sas, i_desc=existing folder)
+%initTestcase(i_object=_existDir.sas, i_desc=existing folder)
 %LET exists = %_existdir(&existing);
 %endTestcall;
 %assertEquals(i_expected=1, i_actual=&exists, i_desc=folder exists)
 %endTestcase;
 
-%initTestcase(i_object=_existdir.sas, i_desc=existing folder with terminating /)
+%initTestcase(i_object=_existDir.sas, i_desc=existing folder with terminating /)
 %LET exists = %_existdir(&existing2);
 %endTestcall;
 %assertEquals(i_expected=1, i_actual=&exists, i_desc=folder exists)
 %endTestcase;
 
-%initTestcase(i_object=_existdir.sas, i_desc=not existing folder)
+%initTestcase(i_object=_existDir.sas, i_desc=not existing folder)
 %LET exists = %_existdir(&not_existing);
 %endTestcall;
 %assertEquals(i_expected=0, i_actual=&exists, i_desc=folder does not exists)

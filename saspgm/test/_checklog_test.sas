@@ -1,7 +1,7 @@
 /** \file
    \ingroup    SASUNIT_TEST
 
-   \brief      Test of _checklog.sas
+   \brief      Test of _checkLog.sas
 
    \version    \$Revision$
    \author     \$Author$
@@ -33,7 +33,7 @@
 %LET l_warningcountvar  = l_warningcount;
 %LET l_fullfilepath     = &g_testdata./_checklog_t01_input.log;
 
-%initTestcase (   i_object = _checklog.sas
+%initTestcase (   i_object = _checkLog.sas
                 , i_desc   = %STR(log contains errors and warnings)
                );
 
@@ -68,7 +68,7 @@
 %LET l_warningcountvar  = l_warningcount;
 %LET l_fullfilepath     = &g_testdata./_checklog_t02_input.log;
 
-%initTestcase (   i_object = _checklog.sas
+%initTestcase (   i_object = _checkLog.sas
                 , i_desc   = %STR(log contains errors (one without colon) and no warnings)
                );
 
@@ -103,7 +103,7 @@
 %LET l_warningcountvar  = l_warningcount;
 %LET l_fullfilepath     = &g_testdata./_checklog_t03_input.log;
 
-%initTestcase (   i_object = _checklog.sas
+%initTestcase (   i_object = _checkLog.sas
                 , i_desc   = %STR(log contains no errors and warnings)
                );
 
@@ -138,7 +138,7 @@
 %LET l_warningcountvar  = l_warningcount;
 %LET l_fullfilepath     = &g_testdata./_checklog_txx_input.log;
 
-%initTestcase (   i_object = _checklog.sas
+%initTestcase (   i_object = _checkLog.sas
                 , i_desc   = %STR(inexistent log file)
                );
 
@@ -177,7 +177,7 @@
 %LET l_warningcountvar  = l_warningcount;
 %LET l_fullfilepath     = &g_testdata./_checklog_t01_input.log;
 
-%initTestcase (   i_object = _checklog.sas
+%initTestcase (   i_object = _checkLog.sas
                 , i_desc   = %STR(log contains errors and warnings, error/warning symbols passed in lowercase)
                );
 

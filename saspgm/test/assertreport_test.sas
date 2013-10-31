@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertreport.sas - has to fail! 49 assertReport errors (46 times not created anew.)
+   \brief      Test of assertReport.sas - has to fail! 49 assertReport errors (46 times not created anew.)
    
    \version    \$Revision$
    \author     \$Author$
@@ -19,7 +19,7 @@
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /* test case 1 ------------------------------------*/
-%initTestcase(i_object=assertreport.sas, i_desc=i_actual as well as i_expected specified)
+%initTestcase(i_object=assertReport.sas, i_desc=i_actual as well as i_expected specified)
 ods listing close;
 ods pdf file="&g_work/report1.pdf";
 proc print data=sashelp.class;
@@ -46,7 +46,7 @@ i_desc=%str(expected=.pdf, actual=.pdf, result grey/empty, correct title 'Report
 %endTestcase(i_assertLog=1)
 
 /* test case 2 ------------------------------------*/
-%initTestcase(i_object=assertreport.sas, i_desc=%str(only i_actual, not i_expected specified))
+%initTestcase(i_object=assertReport.sas, i_desc=%str(only i_actual, not i_expected specified))
 ods pdf file="&g_work/report2.pdf";
 proc print data=sashelp.class;
 title 'Report2 - actual';
@@ -66,7 +66,7 @@ ods pdf close;
 %endTestcase(i_assertLog=1)
 
 /* test case 3 ------------------------------------*/
-%initTestcase(i_object=assertreport.sas, i_desc=%str(only i_expected, not i_actual specified))
+%initTestcase(i_object=assertReport.sas, i_desc=%str(only i_expected, not i_actual specified))
 %endTestcall()
 %assertReport(i_expected=&g_work/report1.pdf, i_actual=, i_desc=%str(expected=.pdf, actual=missing(red)))
 %markTest()
@@ -81,7 +81,7 @@ ods pdf close;
 %endTestcase(i_assertLog=0)
 
 /* test case 4 ------------------------------------*/
-%initTestcase(i_object=assertreport.sas, i_desc=%str(neither i_expected nor i_actual specified))
+%initTestcase(i_object=assertReport.sas, i_desc=%str(neither i_expected nor i_actual specified))
 %endTestcall()
 %assertReport(i_actual=, i_expected=, i_desc=%str(expected=, actual=missing(red)))
 %markTest()
@@ -96,7 +96,7 @@ ods pdf close;
 %endTestcase(i_assertLog=0)
 
 /* test case 5 ------------------------------------*/
-%initTestcase(i_object=assertreport.sas, i_desc=%str(invalid file specified for i_actual))
+%initTestcase(i_object=assertReport.sas, i_desc=%str(invalid file specified for i_actual))
 %endTestcall()
 %assertReport(i_expected=&g_work/report1.pdf, i_actual=&g_work/report3.pdf, i_desc=%str(expected=.pdf, actual=missing(red)))
 %markTest()
@@ -111,7 +111,7 @@ ods pdf close;
 %endTestcase(i_assertLog=0)
 
 /* test case 6 ------------------------------------*/
-%initTestcase(i_object=assertreport.sas, i_desc=invalid file specified for i_expected)
+%initTestcase(i_object=assertReport.sas, i_desc=invalid file specified for i_expected)
 ods pdf file="&g_work/report2.pdf";
 proc print data=sashelp.class;
 title 'Report2 - actual';
@@ -130,7 +130,7 @@ ods pdf close;
 %endTestcase(i_assertLog=1)
 
 /* test case 7 ------------------------------------*/
-%initTestcase(i_object=assertreport.sas, i_desc=%str(i_actual older than current SAS session))
+%initTestcase(i_object=assertReport.sas, i_desc=%str(i_actual older than current SAS session))
 %endTestcall()
 %assertReport(i_expected=, i_actual=&g_testdata/Report.docx, i_desc=%str(expected=empty, actual=.docx - not generated anew))
 %markTest()
@@ -144,7 +144,7 @@ ods pdf close;
 %endTestcase(i_assertLog=1)
 
 /* test case 8 ------------------------------------*/
-%initTestcase(i_object=assertreport.sas, i_desc=%str(i_manual=0))
+%initTestcase(i_object=assertReport.sas, i_desc=%str(i_manual=0))
 ods pdf file="&g_work/report2.pdf";
 proc print data=sashelp.class;
 title 'Report2 - actual';
@@ -163,7 +163,7 @@ ods pdf close;
 
 /* test case 9 ------------------------------------*/
 *** Testcase for display of different filetypes ***;
-%initTestcase(i_object=assertreport.sas, i_desc=%str(is everthing displayed properly?))
+%initTestcase(i_object=assertReport.sas, i_desc=%str(is everthing displayed properly?))
 ods pdf file="&g_work/report2.pdf";
 proc print data=sashelp.class;
 title 'Report2 - actual';

@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertRowExpression.sas - has to fail! 7 errors (6 assertRowExpression and one concernig variable name1)
+   \brief      Test of assertRowExpression.sas - has to fail! 7 errors (6 assertRowExpression and one concernig variable name1)
 
    \version    \$Revision$
    \author     \$Author$
@@ -106,7 +106,10 @@
 %*** Testcase 7 ***;
 %initTestcase(i_object=assertRowExpression.sas, i_desc=Column name contains no missings)
 %endTestcall()
-%assertRowExpression(i_libref=sashelp, i_memname=class, i_where=%str(name ne ""), i_desc=Column name contains no missings)
+%assertRowExpression(i_libref=sashelp
+                    ,i_memname=class
+                    ,i_where=%str(name ne "")
+                    ,i_desc=Column name contains no missings)
 %markTest()
 %assertDBValue(tst,type,assertRowExpression)
 %assertDBValue(tst,desc,Column name contains no missings)
@@ -132,6 +135,28 @@
 %assertDBValue(tst,exp,19)
 %assertDBValue(tst,res,2)
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+%endTestcase()
+
+%*** Testcase 9 ***;
+%initTestcase(i_object=assertRowExpression.sas, i_desc=Empty input dataset)
+data work.class1;
+   set sashelp.class;
+   stop;
+run;
+%endTestcall()
+%assertRowExpression(i_libref=work
+                    ,i_memname=class1
+                    ,i_where=%str(sex = "F")
+                    ,i_desc=Dataset is empty
+                    ,o_maxReportObs=3
+                    ,o_listVars=name
+                    )
+%markTest()
+%assertDBValue(tst,type,assertRowExpression)
+%assertDBValue(tst,desc,Dataset is empty)
+%assertDBValue(tst,act,0)
+%assertDBValue(tst,exp,0)
+%assertDBValue(tst,res,0)
 %endTestcase()
 
 /** \endcond */

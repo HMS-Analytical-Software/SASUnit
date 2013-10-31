@@ -10,7 +10,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \brief      tests for _checkscenario.sas
+   \brief      Test of _checkScenario.sas
 
                check for many combinations where scenario and / or programs under test have been 
                changed or programs under test are missing, take into account programs 
@@ -109,7 +109,7 @@ ods listing close;
 
 /*-- Case 1: scenario changed after last run --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = scenario changed after last run 
 )
 %_switch()
@@ -130,7 +130,7 @@ ods listing close;
 
 /*-- Case 2: scenario still unknown --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = scenario still unknown
 )
 %_switch()
@@ -151,7 +151,7 @@ ods listing close;
 
 /*-- Case 3: scenario not changed, but one of two autocall programs --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = %str(scenario not changed, but one of two autocall programs)
 )
 %_switch()
@@ -172,7 +172,7 @@ ods listing close;
 
 /*-- Case 4: scenario not changed, but one of two autocall programs is missing --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = %str(scenario not changed, but one of two autocall programs is missing)
 )
 %_switch()
@@ -193,7 +193,7 @@ ods listing close;
 
 /*-- Case 5: scenario not changed, but the only autocall program is missing --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = %str(scenario not changed, but the only autocall program is missing)
 )
 %_switch()
@@ -214,7 +214,7 @@ ods listing close;
 
 /*-- Case 6: scenario not changed, but one program without autocall --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = %str(scenario not changed, but one program without autocall)
 )
 %_switch()
@@ -235,7 +235,7 @@ ods listing close;
 
 /*-- Fall 7: scenario not changed, but one program without autocall (abs. path) --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = %str(scenario not changed, but one program without autocall (abs. path))
 )
 %_switch()
@@ -256,7 +256,7 @@ ods listing close;
 
 /*-- Case 8: scenario not changed, but the only program without autocall is missing --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = %str(scenario not changed, but the only program without autocall is missing)
 )
 %_switch()
@@ -277,7 +277,7 @@ ods listing close;
 
 /*-- Case 9: scenario not changed, none of two autocall programs changed --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = %str(scenario not changed, none of two autocall programs changed)
 )
 %_switch()
@@ -298,7 +298,7 @@ ods listing close;
 
 /*-- Case 10: scenario not changed,  none of the two programs changed, one with, one without autocall --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = %str(scenario not changed,  none of the two programs changed, one with, one without autocall)
 )
 %_switch()
@@ -319,7 +319,7 @@ ods listing close;
 
 /*-- Case 11: scenario not changed, one program without autocall not changed --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = %str(scenario not changed, one program without autocall not changed)
 )
 %_switch()
@@ -340,7 +340,7 @@ ods listing close;
 
 /*-- Case 12: scenario not changed, one program without autocall not changed (abs. path) --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = %str(scenario not changed, one program without autocall not changed (abs. path))
 )
 %_switch()
@@ -361,7 +361,7 @@ ods listing close;
 
 /*-- Case 13: scenario changed (abs. path) --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = %str(scenario changed (abs. path))
 )
 %_switch()
@@ -382,7 +382,7 @@ ods listing close;
 
 /*-- Case 14: scenario (abs path) not changed, but one of two autocall programs --*/
 %initTestcase(
-   i_object = _checkscenario.sas
+   i_object = _checkScenario.sas
   ,i_desc   = %str(scenario (abs path) not changed, but one of two autocall programs)
 )
 %_switch()

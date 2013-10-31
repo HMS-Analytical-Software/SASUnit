@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Tests for assertrecordexists.sas - has to fail! 5 errors (4 assertRecordExists and one error concerning non-existing variable)
+   \brief      Test of assertRecordExists.sas - has to fail! 5 errors (4 assertRecordExists and one error concerning non-existing variable)
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $
@@ -16,7 +16,7 @@
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
-%initTestcase(i_object=assertrecordexists.sas, i_desc=%str(valid expression has to be found))
+%initTestcase(i_object=assertRecordExists.sas, i_desc=%str(valid expression has to be found))
 %endTestcall()
 %assertRecordExists(i_dataset=sashelp.class, i_whereExpr=%str(name="Alice"), i_desc=Alice is in dataset SASHELP.CLASS)
 %markTest()
@@ -26,7 +26,7 @@
 %endTestcase(i_assertLog=0)
 
 
-%initTestcase(i_object=assertrecordexists.sas, i_desc=%str(invalid expression has not to be found))
+%initTestcase(i_object=assertRecordExists.sas, i_desc=%str(invalid expression has not to be found))
 %endTestcall()
 %assertRecordExists(i_dataset=sashelp.class, i_whereExpr=%str(name="Hugo"), i_desc=Hugo is not in dataset SASHELP.CLASS)
 %markTest()
@@ -36,7 +36,7 @@
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertrecordexists.sas, i_desc=%str(invalid dataset parameter causes error))
+%initTestcase(i_object=assertRecordExists.sas, i_desc=%str(invalid dataset parameter causes error))
 %endTestcall()
 %assertRecordExists(i_dataset=sashelp._invalid_, i_whereExpr=%str(name="Alice"), i_desc=invalid dataset causes error)
 %markTest()
@@ -46,7 +46,7 @@
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-%initTestcase(i_object=assertrecordexists.sas, i_desc=%str(empty whereExpr parameter causes error))
+%initTestcase(i_object=assertRecordExists.sas, i_desc=%str(empty whereExpr parameter causes error))
 %endTestcall()
 %assertRecordExists(i_dataset=sashelp.class, i_whereExpr=%str(), i_desc=empty whereExpr parameter causes error)
 %markTest()
@@ -57,7 +57,7 @@
 %endTestcase(i_assertLog=0)
 
 
-%initTestcase(i_object=assertrecordexists.sas, i_desc=%str(invalid whereExpr parameter causes error))
+%initTestcase(i_object=assertRecordExists.sas, i_desc=%str(invalid whereExpr parameter causes error))
 %endTestcall()
 %assertRecordExists(i_dataset=sashelp.class, i_whereExpr=age_123=HUGO, i_desc=invalid whereExpr parameter causes error)
 %markTest()

@@ -2,12 +2,12 @@
    \ingroup    SASUNIT_UTIL 
 
    \brief      look for a specific program in all of the autocall libraries and return the 
-               number of the library (0..9) or 10 if not found.\n
+               number of the library (0..10) or . if not found.\n
                For autocall library numbering see initsasunit.sas.
 
    \param   i_object   program file name without path (for instance countobs.sas)
 
-   \return           number of autocall library 0..9 or 10 if program file cannot be found
+   \return           number of autocall library 0..10 or . if program file cannot be found
 
    \version    \$Revision$
    \author     \$Author$

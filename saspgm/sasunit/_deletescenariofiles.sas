@@ -14,7 +14,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_scnid  All files of this scenario are to be deleteded
+   \param      i_scnid  All files of this scenario are to be deleteded
 
 */ /** \cond */  
 
@@ -76,7 +76,7 @@
          SET foldersToDelete;
          PUT "&g_removedir ""&l_target./tst/_" tst_scnid +(-1)"_" tst_casid +(-1)"_" tst_id +(-1) "_" tst_type +(-1)"""&g_endcommand";
       RUN;
-     %_executeCMDFile("%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd");
+      %_executeCMDFile("%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd");
    %END;
 
 %MEND _deletescenariofiles;
