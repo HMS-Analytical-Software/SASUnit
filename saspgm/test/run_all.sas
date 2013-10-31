@@ -57,6 +57,7 @@ data _null_;
    input;
    put _INFILE_;
    if (eof) then do;
+      put '-SASAUTOS (SASAUTOS "\TEMP1\HUGO" "\TEMP1\FRITZ")';
       put "-autoexec ""&AutoexecName1.""";
    end;
 run;
