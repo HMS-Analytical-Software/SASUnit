@@ -47,15 +47,9 @@ LIBNAME target "&io_target";
    %THEN %GOTO errexit;
 
 /* set global macro symbols and librefs / filerefs  */
+/* includes creation of autocall paths */
 %_loadEnvironment()
 %IF &g_error_code NE %THEN %GOTO errexit;
-
-/* create autocall path */
-OPTIONS MAUTOSOURCE SASAUTOS=(SASAUTOS "&g_sasunit" "&g_sasunit_os"
-%IF "&g_sasautos" NE "" %THEN "&g_sasautos";
-%DO i=1 %TO 9;
-   %IF "&&g_sasautos&i" NE "" %THEN "&&g_sasautos&i";
-%END;     );
 
 /* flag for test cases */
 %GLOBAL g_inTestcase;

@@ -132,6 +132,12 @@
 
    %put _global_;
 
+   OPTIONS MAUTOSOURCE SASAUTOS=(SASAUTOS "&g_sasunit" "&g_sasunit_os"
+   %DO i=0 %TO 9;
+      %IF "&&g_sasautos&i" NE "" %THEN "&&g_sasautos&i";
+   %END;     );
+   
+   
    %GOTO exit;
 %errexit:
    LIBNAME target;
