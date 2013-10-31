@@ -264,7 +264,7 @@
             end;
             else do;
                _autonColumn = sa(cas_auton-2);
-               linkTitle0   = symget("g_sasautos" !! put(cas_auton, z1.));
+               linkTitle0   = symget("g_sasautos" !! put(cas_auton-2, z1.));
             end;
             linkColumn0  = "file:///" !! linkTitle0;
             linkTitle0   = "&g_nls_reportAuton_009. " !! linkTitle0;

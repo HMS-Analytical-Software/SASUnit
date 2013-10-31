@@ -121,7 +121,15 @@
          scn_duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid      = put (scn_id, z3.);
          c_casid      = put (cas_id, z3.);
-         cas_abs_path = resolve ('%_abspath(&g_sasautos' !! put (cas_auton,1.) !! ',' !! trim(cas_pgm) !! ')');
+         if (cas_auton = 0) then do;
+            cas_abs_path = resolve ('%_abspath(&g_sasunit,' !! trim(cas_pgm) !! ')');   
+         end;
+         else if (cas_auton = 1) then do;
+            cas_abs_path = resolve ('%_abspath(&g_sasunit_os,' !! trim(cas_pgm) !! ')');   
+         end;
+         else do;
+            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! put (cas_auton-2,1.) !! ',' !! trim(cas_pgm) !! ')');
+         end;
          cas_pgm      = resolve ('%_stdpath(&g_root./saspgm/,' !! trim(cas_abs_path) !! ')');
 
          %_render_DataColumn (i_sourceColumn=scn_duration
@@ -225,7 +233,6 @@
 
          *** Reset title and footnotes for each Testcase ***;
          *** First print should contain title but no footnotes ***;
-         title j=c "&l_title.";
          footnote;
          options nocenter;
 
