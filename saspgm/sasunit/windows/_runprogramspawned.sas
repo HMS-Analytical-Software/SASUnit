@@ -51,10 +51,10 @@
       %LET l_parms=&l_parms -autoexec ""&g_autoexec"";
    %END;
    %IF "&g_sascfg" NE "" %THEN %DO;
-	   %LET l_parms=&l_parms -config ""&g_sascfg"";
+      %LET l_parms=&l_parms -config ""&g_sascfg"";
    %END;
    %ELSE %IF %length(%sysfunc(getoption(config))) NE 0 AND %index(%quote(%sysfunc(getoption(config))),%bquote(&l_parenthesis)) NE 1 %THEN %DO; 
-	  %LET l_parms=&l_parms -config ""%sysfunc(getoption(config))"";
+     %LET l_parms=&l_parms -config ""%sysfunc(getoption(config))"";
    %END; 
  
    %IF &i_generateMcoverage. EQ 1 %THEN %DO;
@@ -72,24 +72,25 @@
          "&l_cmdFile."
          LRECL=32000
       ;
-	 _sCmdString = 
-		"""" !! &g_sasstart !! """"
-		!! " " 
-		!! "&l_parms. "
-		!! "-sysin ""&i_program."" "
-		!! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&i_scnid.;"" "
-		!! "-log   ""&g_log/&i_scnid..log"" "
-		!! "-print ""&g_testout/&i_scnid..lst"" "
-		!! "&g_splash "
-		!! "-noovp "
-		!! "-nosyntaxcheck "
-		!! "-mautosource "
-		!! "-mcompilenote all "
-		!! "-sasautos ""&g_sasunit"" "
-		!! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
-		!! "-termstmt ""%nrstr(%%%_termScenario())"" "
-		!! "&l_tcgOptionsString. "
-		!! "";
+    _sCmdString = 
+      """" !! &g_sasstart !! """"
+      !! " " 
+      !! "&l_parms. "
+      !! "-sysin ""&i_program."" "
+      !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&i_scnid.;"" "
+      !! "-log   ""&g_log/&i_scnid..log"" "
+      !! "-print ""&g_testout/&i_scnid..lst"" "
+      !! "&g_splash "
+      !! "-noovp "
+      !! "-icon "
+      !! "-nosyntaxcheck "
+      !! "-mautosource "
+      !! "-mcompilenote all "
+      !! "-sasautos ""&g_sasunit"" "
+      !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
+      !! "-termstmt ""%nrstr(%%%_termScenario())"" "
+      !! "&l_tcgOptionsString. "
+      !! "";
       PUT _sCmdString;
    RUN;
 
