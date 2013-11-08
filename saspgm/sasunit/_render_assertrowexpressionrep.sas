@@ -65,7 +65,7 @@
    %_reportFooter(o_html=&o_html.);
 
    %IF (&o_html.) %then %do;
-      ODS HTML CLOSE;
+      %_closeHtmlPage;
    %END;
 
   TITLE; FOOTNOTE;

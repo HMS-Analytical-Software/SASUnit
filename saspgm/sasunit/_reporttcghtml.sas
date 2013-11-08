@@ -366,7 +366,7 @@
    run;
 
    %if (&o_html.) %then %do;
-      ods html close;
+      %_closeHtmlPage;
    %end;
 
    options center;

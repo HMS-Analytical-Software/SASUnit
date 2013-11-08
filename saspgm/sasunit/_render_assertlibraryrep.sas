@@ -64,6 +64,7 @@
    %end;
 
    %if (&o_html.) %then %do;
+      %_closeHtmlPage;
       ODS HTML FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_act.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
    %end;
    %if (%sysfunc (libref(_test))=0) %then %do;
@@ -78,6 +79,7 @@
    %end;
 
    %if (&o_html.) %then %do;
+      %_closeHtmlPage;
       ODS HTML FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_rep.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
    %end;
    
@@ -127,7 +129,7 @@
       RUN;
    %end;
    %if (&o_html.) %then %do;
-      ODS HTML CLOSE;
+      %_closeHtmlPage;
    %end;
       
    LIBNAME _test;

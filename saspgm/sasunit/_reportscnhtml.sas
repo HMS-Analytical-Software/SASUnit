@@ -139,7 +139,7 @@
       var resultColumn     / style(column)=[background=white];
    run;
    %if (&o_html.) %then %do;
-      ods html close;
+      %_closeHtmlPage;
    %end;
    %if (&o_pdf.) %then %do;
       ods pdf close;

@@ -64,6 +64,7 @@
    %END;
 
    %if (&o_html.) %then %do;
+      %_closeHtmlPage;
       ODS HTML FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._cmp_act.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
    %end;
    TITLE "&g_nls_reportCmp_001";
@@ -80,6 +81,7 @@
 
 
    %if (&o_html.) %then %do;
+      %_closeHtmlPage;
       ODS HTML FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._cmp_rep.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
    %end;
       TITLE "&g_nls_reportCmp_005";
@@ -87,7 +89,7 @@
          REPLAY / ACTIVETITLE ACTIVEFOOTN;
       QUIT;
    %if (&o_html.) %then %do;
-      ODS HTML CLOSE;
+      %_closeHtmlPage;
    %end;
       
    LIBNAME _acLib;

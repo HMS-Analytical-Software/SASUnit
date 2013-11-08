@@ -259,7 +259,7 @@
    %end;
 
    %if (&o_html.) %then %do;
-      ods html close;
+      %_closeHtmlPage;
    %end;
 
    proc delete data=work._case_report;

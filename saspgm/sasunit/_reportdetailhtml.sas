@@ -277,7 +277,7 @@
       %end;
 
       %if (&o_html.) %then %do;
-         ods html close;
+         %_closeHtmlPage;
       %end;
 
       %*** Reset title and footnotes ***;

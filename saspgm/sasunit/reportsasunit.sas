@@ -380,6 +380,7 @@
    ods path (PREPEND) WORK.template(UPDATE);
 
    %IF (&o_html.=1) %THEN %DO;
+      %_openDummyHtmlPage;
       DATA _null_;
          SET &d_rep;
          BY scn_id cas_id;
@@ -490,6 +491,7 @@
       RUN;
 
       /*-- create report -----------------------------------------------------------*/
+      ODS HTML CLOSE;
       ODS LISTING CLOSE;
       %INCLUDE repgen / source2;
       FILENAME repgen;

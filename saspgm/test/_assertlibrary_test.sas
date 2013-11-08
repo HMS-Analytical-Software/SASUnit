@@ -13,7 +13,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-*/ /** \cond */  
+*//** \cond */  
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 %global sal_rc;

@@ -99,7 +99,7 @@
       %END; 
    
    %IF (&o_html.) %then %do;
-      ODS HTML CLOSE;
+      %_closeHtmlPage;
    %END;
 
   TITLE; FOOTNOTE;
