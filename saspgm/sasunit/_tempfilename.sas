@@ -33,7 +33,7 @@
 
    /* store to macro variable */
    %LET &r_TempFile=&syslast;
-   %PUT Temporary dataset %nrstr(&)&r_tempFile is &&&r_tempFile;
+   %PUT &g_note.(SASUNIT): Temporary dataset %nrstr(&)&r_tempFile is &&&r_tempFile;
 
    /* delete again, need only name */
    PROC SQL NOPRINT; 

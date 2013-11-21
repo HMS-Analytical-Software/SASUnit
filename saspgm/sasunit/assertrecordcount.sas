@@ -33,20 +33,22 @@
                         ,i_desc           = Check for a specific number of records
                         );
 
+   /*-- verify correct sequence of calls-----------------------------------------*/
    %GLOBAL g_inTestcase;
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;
    %END;
    %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error: assert must be called after initTestcase;
+      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
 
    %LOCAL l_dsname l_result l_actual;
-   %LET l_dsname =%sysfunc(catx(., &i_libref., &i_memname.));
-   %LET l_result = 2;
-   %LET l_actual = -999;
+   %LET l_dsname   = %sysfunc(catx(., &i_libref., &i_memname.));
+   %LET l_result   = 2;
+   %LET l_actual   = -999;
    %LET i_operator = %sysfunc(upcase(&i_operator.));
+   %LET l_errmsg   =;
   
    %*************************************************************;
    %*** Check preconditions                                   ***;
@@ -55,17 +57,18 @@
    %*** check for valid libref und existence of data set***;
    %IF ((%sysfunc (libref (&i_libref.)) NE 0) or (%sysfunc(exist(&l_dsname)) EQ 0)) %THEN %DO;
       %LET l_actual =-1;
+      %LET l_errmsg =Libref is invalid or table does not exist;
       %goto Update;
    %END;
 
-   %*** check for valid parameter i_recordsExp***;
+   %*** check for valid parameter i_recordsExp ***;
    DATA _NULL_;
       IF (INPUT(&i_recordsExp., 32.) =.)  then call symput('l_actual',"-3");
       ELSE IF (&i_recordsExp. < 0) then call symput('l_actual',"-4");;
    RUN;
    
    %IF (&l_actual. EQ -3 OR &l_actual. EQ -4) %THEN %DO;
-      %PUT Parameter not valid;
+      %LET l_errmsg =Parameter i_recordsExp does not contain a number;
       %goto Update;
    %END;
 
@@ -74,7 +77,7 @@
      IF NOT("&i_operator." IN ("EQ", "NE", "GT", "LT", "GE", "LE", "=", "<", ">", ">=", "<=", "~=")) THEN call symput('l_actual',"-5");
    RUN;     
    %IF (&l_actual. EQ -5) %THEN %DO;
-      %PUT Operator not found;
+      %LET l_errmsg =Parameter i_opertaor contains an invalid operator;
       %goto Update;
    %END;
 
@@ -107,6 +110,7 @@
             ,i_actual   = %str(&l_actual.)
             ,i_desc     = &i_desc.
             ,i_result   = &l_result.
+            ,i_errmsg   = &l_errmsg.;
             )
 %MEND;
 /** \endcond */

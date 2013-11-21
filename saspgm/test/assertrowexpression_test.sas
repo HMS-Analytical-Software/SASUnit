@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of assertRowExpression.sas - has to fail! 7 errors (6 assertRowExpression and one concernig variable name1)
+   \brief      Test of assertRowExpression.sas - has to fail! 1 errors (one error concernig non-existing variable name1)
 
    \version    \$Revision$
    \author     \$Author$

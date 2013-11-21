@@ -21,8 +21,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR: Please specify a value for i_scnid.);
+%assertLog(i_errors=0,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for i_scnid.);
 
 %endTestcase();
 
@@ -33,8 +33,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR: Please specify a value for r_casid.);
+%assertLog(i_errors=0,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for r_casid.);
 
 %endTestcase();
 
@@ -45,8 +45,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR: Please specify a value for r_tstid.);
+%assertLog(i_errors=0,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for r_tstid.);
 
 %endTestcase();
 
@@ -57,8 +57,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR: Macrovariable for return of test case id was not declared by a .local-statement.);
+%assertLog(i_errors=0,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Macrovariable for return of test case id was not declared by a .local-statement.);
 
 %endTestcase();
 
@@ -70,8 +70,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR: Macrovariable for return of test assert id was not declared by a .local-statement.);
+%assertLog(i_errors=0,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Macrovariable for return of test assert id was not declared by a .local-statement.);
 
 %endTestcase();
 
@@ -88,8 +88,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR: Table target.cas does not exist. Start this macro only within SASUnit.);
+%assertLog(i_errors=0,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Table target.cas does not exist. Start this macro only within SASUnit.);
 
 %endTestcase();
 
@@ -107,8 +107,8 @@ run;
 
 %endTestcall;
 
-%assertLog(i_errors=1,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR: Table target.tst does not exist. Start this macro only within SASUnit.);
+%assertLog(i_errors=0,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Table target.tst does not exist. Start this macro only within SASUnit.);
 
 %endTestcase();
 
@@ -126,9 +126,9 @@ run;
 
 %endTestcall;
 
-%assertLog(i_errors=2,i_warnings=0);
+%assertLog(i_errors=1,i_warnings=0);
 %assertEquals (i_actual=&ret_casid.,i_expected=_ERROR_, i_desc=Values must be equal);
-%assertLogmsg (i_logmsg=ERROR: Scenario was not found in the test database.);
+%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Scenario was not found in the test database.);
 %assertLogmsg (i_logmsg=Assert may not be called prior to initTestcase.);
 
 
@@ -152,8 +152,10 @@ run;
 
 %endTestcall;
 
-%assertLog(i_errors=1,i_warnings=0);
+%assertLog(i_errors=0,i_warnings=0);
 %assertEquals (i_actual=&ret_casid.,i_expected=_ERROR_,i_desc=Check that error occured);
+%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Scenario was not found in the test database.);
+%assertLogmsg (i_logmsg=Assert may not be called prior to initTestcase.);
 
 %endTestcase();
 

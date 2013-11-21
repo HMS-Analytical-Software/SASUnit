@@ -31,7 +31,7 @@
       SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid=&g_scnid;
    %LET l_casid = &l_casid;
    %IF &l_casid=. %THEN %DO;
-      %PUT &g_error: endTestcase muss nach InitTestcase aufgerufen werden;
+      %PUT &g_error.(SASUNIT): endTestcase muss nach InitTestcase aufgerufen werden;
       %RETURN;
    %END;
    %IF &i_assertLog %THEN %DO;
@@ -49,7 +49,7 @@
       %endTestcall;
    %END;
    %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error: endTestcase muss nach initTestcase aufgerufen werden;
+      %PUT &g_error.(SASUNIT): endTestcase muss nach initTestcase aufgerufen werden;
       %RETURN;
    %END;
    %LET g_inTestcase=0;

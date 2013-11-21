@@ -105,7 +105,7 @@
          %IF &l_symboli = &l_symbolj %THEN %goto label1;
          %LET l_potenz = &l_potenz*2;
       %END;
-      %PUT &g_error: assertColumns: invalid symbol &l_symboli in parameter i_allow;
+      %PUT &g_error.(SASUNIT): assertColumns: invalid symbol &l_symboli in parameter i_allow;
       %RETURN;
    %label1:
       %LET l_mask = %sysfunc(bor(&l_mask, &l_potenz));
@@ -116,18 +116,18 @@
 
    /*-- input from parameter i_include should override the input from i_exclude--*/
    %IF (%length(&i_include) > 0 AND %length(&i_exclude) > 0) %THEN %DO;
-     %PUT &g_warning: both parameters i_include and i_exclude have been set.;
-     %PUT &g_warning- I_exclude parameter will be dropped;
+     %PUT &g_warning.(SASUNIT): Both parameters i_include and i_exclude have been set.;
+     %PUT &g_warning.(SASUNIT): I_exclude parameter will be dropped;
      %LET i_exclude =;
    %END;
 
    /*-- verify correct sequence of calls-----------------------------------------*/
    %GLOBAL g_inTestcase;
    %IF &g_inTestcase EQ 1 %THEN %DO;
-      %endTestcall()
+      %endTestcall;
    %END;
    %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error: assert can only be called after initTestcase;
+      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
 
@@ -181,7 +181,7 @@
          %IF %quote(&i_id) NE %THEN %str(ID &i_id;);
          %IF %quote(&i_include) NE %THEN %str(VAR &i_include;);
       RUN;
-      %PUT sysinfo = &sysinfo;
+      %PUT &g_note.(SASUNIT): sysinfo = &sysinfo;
       %LET l_compResult = &sysinfo;
 
       ODS DOCUMENT CLOSE;
@@ -209,14 +209,13 @@
    %END; /* i_expected and i_actual exist */
 
    /*-- update comparison result in test database -------------------------------*/
-   %_asserts(
-       i_type     = assertColumns
-      ,i_expected = %upcase(&i_allow)
-      ,i_actual   = &l_actual.
-      ,i_desc     = &i_desc.
-      ,i_result   = &l_rc.
-      ,i_errMsg   = &l_errMsg.
-   );
+   %_asserts(i_type     = assertColumns
+            ,i_expected = %upcase(&i_allow)
+            ,i_actual   = &l_actual.
+            ,i_desc     = &i_desc.
+            ,i_result   = &l_rc.
+            ,i_errMsg   = &l_errMsg.
+            );
 
    /*-- write dataset set the target area ---------------------------------------*/
    %IF &o_maxreportobs NE 0 %THEN %DO;

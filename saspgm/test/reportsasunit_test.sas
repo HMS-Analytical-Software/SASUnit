@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of reportSASUnit.sas - has to fail! 5 subsequent errors dealing with missing call of initTestcase.
+   \brief      Test of reportSASUnit.sas - has to fail! 2 subsequent errors dealing with positional parameters.
 
    \version    \$Revision$
    \author     \$Author$

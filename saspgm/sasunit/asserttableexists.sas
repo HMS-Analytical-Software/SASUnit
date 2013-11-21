@@ -34,20 +34,16 @@
                          ,i_not     = 0
                          );
 
+   /*-- verify correct sequence of calls-----------------------------------------*/
    %GLOBAL g_inTestcase;
-   %LOCAL l_dsname l_libref_ok l_table_exist l_result l_date l_suffix l_errMsg;
-   %LET l_dsname =%sysfunc(catx(., &i_libref, &i_memname));
-   %LET l_table_exist = -1;
-   %LET l_result=2;
-   %LET l_date =;
-    
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;
    %END;
    %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error: assert must be called after initTestcase;
+      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
+
    %LOCAL l_dsname l_libref_ok l_table_exist l_result l_date l_suffix l_errMsg;
    %LET l_dsname =%sysfunc(catx(., &i_libref, &i_memname));
    %LET l_table_exist = -1;
@@ -79,7 +75,7 @@
    
    %IF %sysfunc(exist(&l_dsname, &i_target)) %THEN %DO;
       %LET l_table_exist=1;
-      %PUT &i_target. &l_dsname. exists.;
+      %PUT &g_note.(SASUNIT): &i_target. &l_dsname. exists.;
       %LET l_errMsg=&i_target &l_dsname exists;
 
       %*** get creation und modification date of tested member ***;
@@ -93,7 +89,7 @@
       run ;
    %END;
    %ELSE %DO;
-      %PUT &i_target. &l_dsname. does not exist.;
+      %PUT &g_note.(SASUNIT): &i_target. &l_dsname. does not exist.;
       %LET l_errMsg=&i_target &l_dsname does not exist;
       %LET l_table_exist=0;
    %END;

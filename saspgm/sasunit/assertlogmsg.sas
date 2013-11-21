@@ -32,12 +32,13 @@
                     ,i_not      = 0
                     );
 
+   /*-- verify correct sequence of calls-----------------------------------------*/
    %GLOBAL g_inTestcase;
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;
    %END;
    %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error: assert must be called after initTestcase;
+      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
 
@@ -48,7 +49,7 @@
    QUIT;
 
    %IF &l_casid = . OR &l_casid = %THEN %DO;
-      %PUT &g_error: assert must not be called before initTestcase;
+      %PUT &g_error.(SASUNIT): assert must not be called before initTestcase;
       %RETURN;
    %END;
 
@@ -83,13 +84,12 @@
       %LET l_assert_failed = %eval((NOT &l_msg_found)*2);
    %END;
 
-   %_asserts(
-       i_type     = assertLogMsg
-      ,i_expected = %str(&l_expected)
-      ,i_actual   = %str(&l_actual)
-      ,i_desc     = &i_desc
-      ,i_result   = &l_assert_failed
-   )
+   %_asserts(i_type     = assertLogMsg
+            ,i_expected = %str(&l_expected)
+            ,i_actual   = %str(&l_actual)
+            ,i_desc     = &i_desc
+            ,i_result   = &l_assert_failed
+            )
 
 %MEND assertLogMsg;
 /** \endcond */

@@ -22,14 +22,14 @@
                );
 
 %IF %LENGTH(&i_root) = 0 %THEN %DO;
-  %PUT &g_error: i_root parameter must not be blank;
+  %PUT &g_error.(SASUNIT): i_root parameter must not be blank;
   %RETURN;
 %END;
 
 %LET i_root = %sysfunc(translate(&i_root,/,\));
 
 %IF %LENGTH( %SYSFUNC(COMPRESS(&i_root,/)) ) = 0 %THEN %DO;
-  %PUT &g_error: i_root parameter must not be blank;
+  %PUT &g_error.(SASUNIT): i_root parameter must not be blank;
   %RETURN;
 %END;
 

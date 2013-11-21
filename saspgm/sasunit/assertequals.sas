@@ -30,12 +30,13 @@
                     ,i_fuzz     =      
                     );
 
+   /*-- verify correct sequence of calls-----------------------------------------*/
    %GLOBAL g_inTestcase;
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;
    %END;
    %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error: assert has to be called after initTestcase;
+      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
 

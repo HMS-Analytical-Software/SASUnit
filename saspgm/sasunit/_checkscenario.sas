@@ -64,7 +64,7 @@
 
    /*-- execute, if scenario not found or found and changed ---------------------*/
    %if &l_lastrun<&i_changed %then %do;
-      %put _checkScenario <1>;
+      %put &g_note.(SASUNIT): _checkScenario <1>;
       %let &r_scnid = &ll_scnid;
       %let &r_run = 1;
       %goto exit;
@@ -86,7 +86,7 @@
 
    /*-- execute, if at least one unit under test is newer or is missing ---------*/
    %if &l_pgmcount %then %do;
-      %put _checkScenario <2>;
+      %put &g_note.(SASUNIT): _checkScenario <2>;
       %let &r_scnid = &ll_scnid;
       %let &r_run = 1;
       %goto exit;
@@ -104,7 +104,7 @@
 
    /*-- do not execute if none found --------------------------------------------*/
    %if %_nobs(&d_pgm) = 0 %then %do;
-      %put _checkScenario <3>;
+      %put &g_note.(SASUNIT): _checkScenario <3>;
       %let &r_scnid = &ll_scnid;
       %let &r_run = 0;
       %goto exit;
@@ -133,7 +133,7 @@
 
       /*-- execute scenario, if unit under test newer or not found --------------*/
       %if &l_lastrun < &l_pgmchanged or &l_pgmchanged=0 %then %do;
-         %put _checkScenario <4>;
+         %put &g_note.(SASUNIT): _checkScenario <4>;
          %let &r_scnid = &ll_scnid;
          %let &r_run = 1;
          %goto exit;
@@ -142,7 +142,7 @@
    %end;
 
    /*-- do not execute scenario -------------------------------------------------*/
-   %put _checkScenario <5>;
+   %put &g_note.(SASUNIT): _checkScenario <5>;
    %let &r_scnid = &ll_scnid;
    %let &r_run = 0;
 

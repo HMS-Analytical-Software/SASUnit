@@ -28,12 +28,13 @@
                  ,i_desc     = Scan log for errors
                  );
 
+   /*-- verify correct sequence of calls-----------------------------------------*/
    %GLOBAL g_inTestcase;
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;
    %END;
    %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error: assert muss nach initTestcase aufgerufen werden;
+      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
 
@@ -46,7 +47,7 @@
    QUIT;
 
    %IF &l_casid = . OR &l_casid = %THEN %DO;
-      %PUT &g_error: Assert darf nicht vor initTestcase aufgerufen werden;
+      %PUT &g_error.(SASUNIT): assert must not be called before initTestcase;
       %RETURN;
    %END;
 
@@ -68,14 +69,13 @@
       %LET l_errmsg=%bquote(expected &i_errors. error(s) and &i_warnings. warning(s), but actually there are &l_error_count. error(s) and &l_warning_count warning(s));
    %END;
 
-   %_asserts(
-       i_type     = assertLog
-      ,i_expected = %str(&i_errors#&i_warnings)
-      ,i_actual   = %str(&l_error_count#&l_warning_count)
-      ,i_desc     = &i_desc
-      ,i_result   = &l_result
-      ,i_errMsg   = &l_errMsg
-   )
+   %_asserts(i_type     = assertLog
+            ,i_expected = %str(&i_errors#&i_warnings)
+            ,i_actual   = %str(&l_error_count#&l_warning_count)
+            ,i_desc     = &i_desc
+            ,i_result   = &l_result
+            ,i_errMsg   = &l_errMsg
+            )
 
 %MEND assertLog;
 /** \endcond */

@@ -31,5 +31,6 @@
 
    %SYSEXEC(cp -R &l_i_from. &l_i_to.);
 
+   %put &g_note.(SASUNIT): sysrc=&sysrc;
 %mend _copyDir;
 /** \endcond */

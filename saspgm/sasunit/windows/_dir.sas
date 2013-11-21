@@ -30,31 +30,31 @@
             ,o_out=dir
             );
 
-   %local dirindicator_en dirindicator_de encoding;
+   %local dirindicator_en dirindicator_de encoding s dirfile xwait xsync xmin l_i_path;
    %let dirindicator_en=Directory of;
    %let dirindicator_de=Verzeichnis von;
    %let encoding=pcoem850;
-   %let i_path = %sysfunc(translate(&i_path,\,/));
+   %let l_i_path = %sysfunc(translate(&i_path,\,/));
     
    proc sql noprint;
       create table &o_out (filename char(255));
    quit;
    %IF &syserr NE 0 %THEN %GOTO errexit;
 
-   %local xwait xsync xmin;
    %let xwait=%sysfunc(getoption(xwait));
    %let xsync=%sysfunc(getoption(xsync));
    %let xmin =%sysfunc(getoption(xmin));
 
    options noxwait xsync xmin;
    
-   %local dirfile;
    %let dirfile=%sysfunc(pathname(work))\___dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
-   %local s;
+
+   %put &g_note.(SASUNIT): Directory search is: &i_path;
+
    %IF &i_recursive %then %let s=/S;
-   %put SYSEXEC(dir &s "&i_path" > "&dirfile");
-   %SYSEXEC(dir &s /a-d "&i_path" > "&dirfile");
+
+   %SYSEXEC(dir &s /a-d "&l_i_path" > "&dirfile");
    
    options &xwait &xsync &xmin;
    

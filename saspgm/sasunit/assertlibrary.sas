@@ -44,12 +44,13 @@
                      ,i_ExcludeList  = _NONE_
                      );
 
+   /*-- verify correct sequence of calls-----------------------------------------*/
    %GLOBAL g_inTestcase;
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;
    %END;
    %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error: assert must be called after initTestcase;
+      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
 
@@ -130,13 +131,12 @@
 
 %Update:;
    *** update result in test database ***;
-   %_asserts(
-       i_type     = assertLibrary
-      ,i_expected = &i_expected.
-      ,i_actual   = &i_actual.
-      ,i_desc     = &i_desc.
-      ,i_result   = &l_rc.
-      ,i_errMsg   = &l_errMsg.
-   )
+   %_asserts(i_type     = assertLibrary
+            ,i_expected = &i_expected.
+            ,i_actual   = &i_actual.
+            ,i_desc     = &i_desc.
+            ,i_result   = &l_rc.
+            ,i_errMsg   = &l_errMsg.
+            )
 %MEND;
 /** \endcond */

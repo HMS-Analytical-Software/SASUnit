@@ -22,14 +22,15 @@
 
 %MACRO assertPerformance(i_expected=
                         ,i_desc    = Check for run time
-						);
+                  );
 
+   /*-- verify correct sequence of calls-----------------------------------------*/
    %GLOBAL g_inTestcase;
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;
    %END;
    %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error: assert has to be called after initTestcase;
+      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
 
@@ -40,6 +41,10 @@
       SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid=&g_scnid;
    QUIT;
    %LET l_casid = &l_casid;
+   %IF &l_casid = . OR &l_casid = %THEN %DO;
+      %PUT &g_error.(SASUNIT): assert must not be called before initTestcase;
+      %RETURN;
+   %END;
 
    PROC SQL NOPRINT;
       SELECT cas_end - cas_start
@@ -57,12 +62,12 @@
    %LET l_errMsg=%bquote(Expected run time was &i_expected. s, but test case took &l_cas_runtime. s!);
 
    %_asserts(i_type      = assertPerformance
-		    ,i_expected = &i_expected
-		    ,i_actual   = &l_cas_runtime
-		    ,i_desc     = &i_desc
-		    ,i_result   = &l_result
-		    ,i_errMsg   = &l_errMsg
-   			)
+            ,i_expected = &i_expected
+            ,i_actual   = &l_cas_runtime
+            ,i_desc     = &i_desc
+            ,i_result   = &l_result
+            ,i_errMsg   = &l_errMsg
+            )
 %MEND assertPerformance;
 /** \endcond */
 

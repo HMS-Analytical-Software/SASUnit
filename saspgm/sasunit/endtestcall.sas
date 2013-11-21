@@ -25,7 +25,7 @@
 
    %GLOBAL g_inTestcase;
    %IF &g_inTestcase NE 1 %THEN %DO;
-      %PUT &g_error: endTestcall muss nach InitTestcase aufgerufen werden;
+      %PUT &g_error.(SASUNIT): endTestcall muss nach InitTestcase aufgerufen werden;
       %RETURN;
    %END;
    %LET g_inTestcase=2;

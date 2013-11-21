@@ -42,11 +42,11 @@
 
    /*** Check existence of input files */
    %IF (NOT %SYSFUNC(FILEEXIST(&i_mCoverageLocation./&l_MCoverageName.)) OR &l_MCoverageName=) %THEN %DO;
-     %PUT  ERROR: Input file with coverage data does not exist.;
+     %PUT  ERROR(SASUNIT): Input file with coverage data does not exist.;
      %GOTO _macExit;
    %END;
    %IF (NOT %SYSFUNC(FILEEXIST(&i_macroLocation./&l_MacroName.)) OR &l_MacroName=) %THEN %DO;
-     %PUT  ERROR: Input file with macro code does not exist.;
+     %PUT  ERROR(SASUNIT): Input file with macro code does not exist.;
      %GOTO _macExit;
    %END;
 

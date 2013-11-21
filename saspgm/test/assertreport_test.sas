@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of assertReport.sas - has to fail! 49 assertReport errors (46 times not created anew.)
+   \brief      Test of assertReport.sas
    
    \version    \$Revision$
    \author     \$Author$

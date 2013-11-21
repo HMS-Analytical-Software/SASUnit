@@ -39,7 +39,6 @@
    %END;
 
    %let l_string=&l_string. </ul></div>};
-   %put l_string=&l_string.;
    title2 %sysfunc(quote(&l_string.));
 %MEND _reportTabsHTML;
 /** \endcond */

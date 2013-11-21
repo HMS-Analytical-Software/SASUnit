@@ -47,7 +47,7 @@
          "&i_to"
          /E /I /Y
    ;
-   %put sysrc=&sysrc;
+   %put &g_note.(SASUNIT): sysrc=&sysrc;
    options &xwait &xsync &xmin;
 
 %mend _copyDir;

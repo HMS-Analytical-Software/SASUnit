@@ -34,12 +34,13 @@
                           ,o_listVars       = _NONE_
                           );
 
+   /*-- verify correct sequence of calls-----------------------------------------*/
    %GLOBAL g_inTestcase;
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;
    %END;
    %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error: assert must be called after initTestcase;
+      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
 
@@ -66,7 +67,7 @@
       data _null_;
          num=input (symget ("o_maxReportObs"),??8.);
          if (num <= 0) then do;
-            PUT "&G_WARNING.: o_maxReportObs contains invalid valid and is set to MAX";
+            PUT "&G_WARNING.(SASUNIT): o_maxReportObs contains an invalid value and is set to MAX";
             call symputx ("o_maxReportObs", "MAX", 'L');
          end;
       run;

@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of assertPerformance.sas - has to fail! 2 assertPerformance errors
+   \brief      Test of assertPerformance.sas
 
    \version    \$Revision$
    \author     \$Author$

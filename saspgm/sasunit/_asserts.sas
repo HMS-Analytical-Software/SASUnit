@@ -62,10 +62,10 @@
 
    %IF (&g_verbose.) %THEN %DO;
       %IF (&i_result. NE 2) %THEN %DO;
-         %PUT &G_NOTE.: &l_errMsg.;
+         %PUT &G_NOTE.(SASUNIT): &l_errMsg.;
       %END;
       %ELSE %DO;
-         %PUT &G_ERROR.: &l_errMsg.;
+         %PUT &G_ERROR.(SASUNIT): &l_errMsg.;
       %END;
    %END;
 
@@ -73,7 +73,7 @@
       /* determine number of test case */
       SELECT max(cas_id) INTO :&r_casid FROM target.cas WHERE cas_scnid=&g_scnid;
       %IF &&&r_casid=. %THEN %DO;
-         %PUT &g_error: _asserts: Fehler beim Ermitteln der Testfall-Id;
+         %PUT &g_error.(SASUNIT): _asserts: Fehler beim Ermitteln der Testfall-Id;
          %RETURN;
       %END;
       /* generate a new check number */

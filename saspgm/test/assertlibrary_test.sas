@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of assertLibrary.sas - has to fail! 11 assertLibrary errors
+   \brief      Test of assertLibrary.sas
 
    \version    \$Revision$
    \author     \$Author$

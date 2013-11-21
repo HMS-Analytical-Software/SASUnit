@@ -19,7 +19,12 @@
                ,i_to
                );
 
+   %let l_i_from = %qsysfunc(tranwrd(&i_from, %str( ), %str(\ )));
+   %let l_i_to   = %qsysfunc(tranwrd(&i_to, %str( ), %str(\ )));
+
    %SYSEXEC(cp -R &i_from. &i_to.);
+
+   %put &g_note.(SASUNIT): sysrc=&sysrc;
 
 %mend _copyDir;
 /** \endcond */

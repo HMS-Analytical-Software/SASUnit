@@ -47,7 +47,7 @@
    1
    %PUT;
    %PUT --------------------------------------------------------------------------------;
-   %PUT ERROR &i_errorcode in Makro &i_macroname (Condition: &i_condition);
+   %PUT ERROR(SASUNIT) &i_errorcode in Makro &i_macroname (Condition: &i_condition);
    %IF "&i_text" NE ""
       %THEN %PUT &i_text;
    %PUT --------------------------------------------------------------------------------;

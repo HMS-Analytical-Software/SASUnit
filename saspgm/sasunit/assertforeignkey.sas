@@ -49,7 +49,7 @@
                         ,i_desc              = Check for foreign key relation
                         );
 
-   %GLOBAL g_inTestcase g_maxObsRprtFail g_listingVars;
+   %GLOBAL g_inTestcase;
    %LOCAL l_dsMstrName l_dsLookupName l_MstrVars l_LookupVars l_renameLookup l_actual l_helper l_helper1 l_vartypMstr 
           l_vartypLookup l_rc l_result l_cnt1 l_cnt2 l_casid l_tstid l_path i l_listingVars num_missing l_treatMissings
           l_treatMissing l_unique l_errMsg;
@@ -65,11 +65,12 @@
    %LET l_result           = 2;
    %LET l_errMsg           =;
 
+   /*-- verify correct sequence of calls-----------------------------------------*/
    %IF &g_inTestcase EQ 1 %THEN %DO;
       %endTestcall;
    %END;
    %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error: assert must be called after initTestcase;
+      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
    
@@ -98,7 +99,7 @@
    %END;
    %LET l_helper = %eval(%SYSFUNC(count(&i_lookupKey,%str( )))+1);
    %IF (&l_helper. NE &i_cmpKeyLen.) %THEN %DO;
-      %LET l_actual = -4;
+      %LET l_actual =-4;
       %LET l_errMsg =Number of found keys in i_lookupKey not compatible to specified number;
       %GOTO Update;
    %END;
@@ -300,7 +301,7 @@
    %END;
    %*** if parameter l_unique is set to false, put warning to log, but go on processing ***;
    %ELSE %IF (("&l_unique." EQ "FALSE") AND (&l_cnt1. NE &l_cnt2.))%THEN %DO;
-      %PUT WARNING: Parameter i_unique set to false and lookup table not unique;
+      %PUT g_warning.(SASUNIT): Parameter i_unique set to false and lookup table not unique;
    %END;
 
    %*** Check whether all keys in the master table are available in the lookup table***;

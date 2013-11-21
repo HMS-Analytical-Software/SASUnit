@@ -25,6 +25,8 @@
            ,o_out=dir
            );
 
+   %LOCAL dirfile encoding s l_i_path;
+
    proc sql noprint;
       create table &o_out (filename char(255));
    quit;
@@ -35,15 +37,22 @@
    %let s =;
    %let dirfile=%sysfunc(pathname(work))/&o_out..dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
+
+   %put &g_note.(SASUNIT): Directory search is: &i_path;
+
+   %let l_i_path=%qsysfunc(tranwrd(&i_path, %str( ), %str(\ )));
+
    %IF &i_recursive=0 %then
         %let s = -prune;
-   %let search = %qscan(&i_path.,-1,'/');
-   %let k = %index(&i_path.,%qtrim(&search.));
-   %let path = %qsubstr(&i_path.,1,%eval(&k.-2));
+
+   %let search = %qscan(&l_i_path.,-1,'/');
+   %let k = %index(&l_i_path.,%qtrim(&search.));
+   %let path = %qsubstr(&l_i_path.,1,%eval(&k.-2));
    %if %qsubstr(&path.,1,1) eq %str(%') %then
        %let path = &path.%str(%');
    %if %qsubstr(&path.,1,1) eq %str(%") %then
        %let path = &path.%str(%");
+
    %SYSEXEC(find &path. -name "&search." -ls &s. -type f > &dirfile.);
 
    data &o_out (keep=filename changed);

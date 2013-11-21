@@ -1,7 +1,7 @@
 /**
    \file
    \ingroup    SASUNIT_TEST 
-   \brief      Tests for calls to macros including special characters as parameter - has to fail! 3 assertReport errors
+   \brief      Tests for calls to macros including special characters as parameter
    \version    \$Revision: 101 $
    \author     \$Author: b-braun $
    \date       \$Date: 2013-01-08 11:24:50 +0100 (Di, 08 Jan 2013) $

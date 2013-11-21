@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of assertColumns.sas - has to fail! 9 assertColumns errors and one warning
+   \brief      Test of assertColumns.sas
 
    \version    \$Revision$
    \author     \$Author$

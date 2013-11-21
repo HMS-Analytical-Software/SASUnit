@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of assertRecordCount.sas - has to fail! 10 errors (8 assertRecordCount errors, 2 subsequent error and 1 warning)
+   \brief      Test of assertRecordCount.sas - has to fail! 3 errors (1 non-existing variable, 2 errors invalid where-syntax)
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $
