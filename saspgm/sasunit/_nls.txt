@@ -433,7 +433,7 @@
  17 EN unique
  18 DE nicht eindeutig
  18 EN non unique
- 19 DE Parameter maxObsRprtFail: MAX or numerisch GE 0 
+ 19 DE Parameter maxObsRprtFail: MAX oder numerisch GE 0 
  19 EN Parameter maxObsRprtFail: MAX or numeric GE 0
  20 DE Parameter maxObsRprtFail < 0
  20 EN Parameter maxObsRprtFail < 0
@@ -454,7 +454,54 @@
   2 EN Data set containing condition violating observations
   3 DE Keine bedingungsverletzenden Datensätze vorhanden
   3 EN No condition violating observations present
-  4 DE Bedingungsverletzenden Datensätze
+  4 DE Bedingungsverletzende Datensätze
   4 EN Condition violating observations
   5 DE Öffnen der Tabelle mit bedingungsverletzenden Datensätze
   5 EN Open table containing condition violating observations
+---reportPrimaryKey
+  1 DE Assert Primary Key - Ergebnisse
+  1 EN Assert Primary Key - Results
+  2 DE Tabelle mit bedingungsverletzenden Datensätzen
+  2 EN Data set containing condition violating observations
+  3 DE Keine bedingungsverletzenden Datensätze vorhanden
+  3 EN No condition violating observations present
+  4 DE Bedingungsverletzende Datensätze
+  4 EN Condition violating observations
+  5 DE Öffnen der Tabelle mit bedingungsverletzenden Datensätze
+  5 EN Open table containing condition violating observations
+  6 DE Schlüssel ist eindeutig
+  6 EN Key is unique
+  7 DE Schlüssel ist NICHT eindeutig
+  7 EN Key is NOT unique
+  8 DE Bitte einen Wert für Paramter i_library abgeben!
+  8 EN Please specify a value for parameter i_library!
+  9 DE Bitte einen Wert für Paramter i_dataset!abgeben!
+  9 EN Please specify a value for parameter i_dataset!
+ 10 DE Bitte einen Wert für Paramter i_variables!abgeben!
+ 10 EN Please specify a value for parameter i_variables!
+ 11 DE Der Wert für Parameter i_library ist kein gültiger Libref
+ 11 EN Value for parameter i_library is no valid libref!
+ 12 DE Die Inputdatei existiert!
+ 12 EN Input dataset does not exist!
+ 13 DE Es wurden keine Schlüsselvariablen angegeben!
+ 13 EN No variables specified to check primary key condition!
+ 14 DE Der Wert für Parameter o_maxReportObs muss MAX oder eine Zahl größer Null sein!
+ 14 EN Parameter o_maxReportObs must be MAX or numeric GE 0!
+ 15 DE Der Wert für Parameter o_maxReportObs muss eine Zahl größer Null sein!
+ 15 EN Parameter o_maxReportObs must be numeric GE 0!
+ 16 DE Es wurden keine Variables für die Ausgabedatei angegeben!
+ 16 EN No variables specified for printing the dataset!
+ 17 DE Der Wert für Parameter o_treatMissings muss IGNORE, DISALLOW oder VALUE sein!
+ 17 EN Parameter o_treatMissing must be IGNORE, DISALLOW or VALUE!
+ 18 DE Der Wert für Parameter i_variables enthält ungültige Spaltennamen!
+ 18 EN Parameter i_variables contains invalid column names!
+ 19 DE Der Wert für Parameter o_listingVars enthält ungültige Spaltennamen!
+ 19 EN Parameter o_listingVars contains invalid column names!
+ 20 DE Die Datei enthält fehlende Wert für die Schlüsselsüalten, obwohl o_treatMissings auf DISALLOW gesetzt ist!
+ 20 EN Dataset contains missing values for key columns despite o_treatMissings is set to DISALLOW!
+ 21 DE Tabelle nach Anwendung des Parameters o_treatMissings
+ 21 EN Dataset after applying parameter o_treatMissings.
+ 22 DE Alle Schlüsselvariablen enthälen fehlende Werte.
+ 22 EN All key variables contain missing values.
+ 23 DE Tabelle existiert nicht.
+ 23 EN Table does not exist.
