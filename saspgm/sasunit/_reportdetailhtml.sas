@@ -39,6 +39,9 @@
       l_cTestAssert
       l_Tests
       l_c_casid
+      i_cas
+      l_casid
+      l_casids
    ;
    %LET l_nls_reportdetail_errors   = %STR(error(s));
 
@@ -295,12 +298,14 @@
          %if (%sysfunc (fileexist(&g_sasunit./_render_&l_NumAssertSubstr.rep.sas))) %then %do;
             proc sql noprint;
                select count(distinct cas_id) into :_numCases from work._test_report where tst_type = "&&asserttype&l_NumAssert.";
+               select distinct cas_id        into :l_casids separated by "§" from work._test_report where tst_type = "&&asserttype&l_NumAssert.";
             quit;
             %do i_cas=1 %to &_numCases.;      
-               %LET l_c_casid = %substr(00&i_cas.,%length(&i_cas));
+               %LET l_casid   = %scan (&l_casids., &i_cas., §);
+               %LET l_c_casid = %substr(00&l_casid.,%length(&l_casid));
                proc sql noprint;
-                  select count(*) into :l_NumTests from work._test_report where tst_type = "&&asserttype&l_NumAssert." AND cas_id=&i_cas.;
-                  select tst_id into   :l_Tests separated by "§" from work._test_report where tst_type = "&&asserttype&l_NumAssert." AND cas_id=&i_cas.;
+                  select count(*) into :l_NumTests from work._test_report where tst_type = "&&asserttype&l_NumAssert." AND cas_id=&l_casid.;
+                  select tst_id into   :l_Tests separated by "§" from work._test_report where tst_type = "&&asserttype&l_NumAssert." AND cas_id=&l_casid.;
                quit;
                %do l_TestAssert=1 %to &l_NumTests.;
                   %LET l_cTestAssert = %scan(&l_Tests.,&l_TestAssert.,§);
