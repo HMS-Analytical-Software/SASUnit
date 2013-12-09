@@ -22,7 +22,7 @@
 
 */ /** \cond */ 
 
-%macro _render_assertrowexpressionrep (i_assertype =
+%macro _render_assertRowExpressionRep (i_assertype =
                                       ,i_repdata   =
                                       ,i_scnid     =
                                       ,i_casid     =

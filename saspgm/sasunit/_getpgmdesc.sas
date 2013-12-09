@@ -1,11 +1,12 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      Programmbeschreibung aus dem Doxygen-Brief-Tag ermitteln
+   \brief      Retrieve program description from Doxygen brief tag
 
-   \param   i_pgmfile Pfad zur Programmdatei
-   \param   r_desc Name der Makrovariable, in der die Beschreibung zurückgegeben wird
-   \return  Beschreibungstext
+   \param   i_pgmfile Name and path of source code file
+   \param   r_desc Name of the macro variable that holds the description
+
+   \return  descriptive text of program
 
    \version    \$Revision$
    \author     \$Author$

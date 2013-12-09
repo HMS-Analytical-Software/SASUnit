@@ -1,7 +1,7 @@
 /** \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      renders the layout of the actual column for assertTableExists
+   \brief      renders the layout of the actual column for assertForeignKey
 
    \version    \$Revision: 191 $
    \author     \$Author: b-braun $

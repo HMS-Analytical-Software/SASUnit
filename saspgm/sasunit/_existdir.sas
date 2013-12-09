@@ -1,7 +1,7 @@
 /** \file
    \ingroup    SASUNIT_UTIL 
 
-   \brief      check whether directory exists 
+   \brief      check whether a directory exists 
 
    \%_existDir(directory)
 

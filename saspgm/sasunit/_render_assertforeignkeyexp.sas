@@ -1,7 +1,7 @@
 /** \file
    \ingroup    SASUNIT_REPORT
     
-   \brief      renders the layout of the expected column for assertReport
+   \brief      renders the layout of the expected column for assertForeignKey
 
    \version    \$Revision: 191 $
    \author     \$Author: b-braun $

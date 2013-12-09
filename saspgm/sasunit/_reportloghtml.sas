@@ -1,11 +1,13 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      log-File in HTML umwandeln
+   \brief      convert log-File into HTML page
 
-               Fehler- und Warnmeldungen werden markiert und verlinkt
+               Error and warning messages will be hghlighted and a link is created at the top of the page.
 
    \todo render results using ODS. Technical implementation of links for multiple errors is difficult and must be redesigned for ODS.
+   \todo consolidate all logscan logic into datastep functions and use them throughout the project.\nThe SAS option CMPLIB must then be set for all sessions to use these functions.
 
    \param i_log     Logdatei mit kpl. Pfad
    \param i_title   String für Titel
@@ -27,8 +29,7 @@
 
 */ /** \cond */ 
 
-%MACRO _reportLogHTML(i_path    =
-                     ,i_log     =
+%MACRO _reportLogHTML(i_log     =
                      ,i_title   = SAS-Log
                      ,o_html    =
                      ,r_rc      = logrc

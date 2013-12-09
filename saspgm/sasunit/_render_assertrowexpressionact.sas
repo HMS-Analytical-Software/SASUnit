@@ -18,7 +18,7 @@
 
 */ /** \cond */  
 
-%macro _render_assertRowExpressionact (i_sourceColumn=
+%macro _render_assertRowExpressionAct (i_sourceColumn=
                                       ,o_html=
                                       ,o_targetColumn=
                                       );
