@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of reportSASUnit.sas - has to fail! 2 subsequent errors dealing with positional parameters.
+   \brief      Test of reportSASUnit.sas - has to fail! 2 errors (subsequent, dealing with positional parameters)
 
    \version    \$Revision$
    \author     \$Author$

@@ -1,7 +1,7 @@
 /**
    \file
    \ingroup    SASUNIT_TEST 
-   \brief      Testcall for scenario with error only in scenario log - has to fail! One error: file WORK.CLASS.DATA does not exist.
+   \brief      Testcall for scenario with error only in scenario log - has to fail! 1 error (file WORK.CLASS.DATA does not exist)
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$

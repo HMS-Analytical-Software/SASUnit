@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of assertRecordExists.sas - has to fail! 1 error (one error concerning non-existing variable)
+   \brief      Test of assertRecordExists.sas - has to fail! 1 error (concerning non-existing variable)
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $

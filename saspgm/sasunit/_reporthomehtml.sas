@@ -36,7 +36,7 @@
    %LET Reference=%nrbquote(^{style [url="http://sourceforge.net/projects/sasunit/" postimage="SASUnit_Logo.png"]SASUnit});
    %*** because in HTML we want to open the link to SASUnit in a new window, ***;
    %*** we need to insert raw HTML ***;
-   %LET HTML_Reference=%nrbquote(<a href="http://sourceforge.net/projects/sasunit/" class="link" target="_blank">SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" width=26px height=26px align="top" border="0"></a>);
+   %LET HTML_Reference=%nrbquote(<a href="http://sourceforge.net/projects/sasunit/" class="link" title="SASUnit" target="_blank">SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" title="SASUnit" width=26px height=26px align="top" border="0"></a>);
 
    DATA work._home_report;
       SET &i_repdata;
