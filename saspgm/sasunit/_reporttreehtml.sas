@@ -126,16 +126,22 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5);
 
    IF first.cas_auton THEN DO;
       SELECT (cas_auton);
-         WHEN (0) label = tsu_sasautos;
+         WHEN (0) label = tsu_sasunit;
+         WHEN (1) label = tsu_sasunit_os;
+         WHEN (2) label = tsu_sasautos;
 %DO i=1 %TO 9;
-         WHEN (&i) label = tsu_sasautos&i;
+         WHEN (&i+2) label = tsu_sasautos&i;
 %END;
          OTHERWISE label="&g_nls_reportAuton_015";
       END;
       IF cas_auton=0 THEN 
+         popup  = "&g_nls_reportTree_009 sasunit:" !! '&#x0D;' !! label;
+      ELSE IF cas_auton=1 THEN 
+         popup  = "&g_nls_reportTree_009 os_specific sasunit:" !! '&#x0D;' !! label;
+      ELSE IF cas_auton=2 THEN 
          popup  = "&g_nls_reportTree_009 sasautos:" !! '&#x0D;' !! label;
-      ELSE IF cas_auton>0 THEN 
-         popup  = "&g_nls_reportTree_009 sasautos" !! left(put(cas_auton,1.)) !! ':&#x0D;' !! label;
+      ELSE IF cas_auton>2 THEN 
+         popup  = "&g_nls_reportTree_009 sasautos" !! left(put(cas_auton-2,1.)) !! ':&#x0D;' !! label;
       ELSE 
          popup = "&g_nls_reportTree_010";
       target = "auton_overview.html#AUTON";
@@ -153,9 +159,11 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5);
    IF first.pgm_id THEN DO;
       label = cas_pgm;
       SELECT (cas_auton);
-         WHEN (0) popup = trim(tsu_sasautos) !! '/' !! cas_pgm;
+         WHEN (0) popup = trim(tsu_sasunit) !! '/' !! cas_pgm;
+         WHEN (1) popup = trim(tsu_sasunit_os) !! '/' !! cas_pgm;
+         WHEN (2) popup = trim(tsu_sasautos) !! '/' !! cas_pgm;
 %DO i=1 %TO 9;
-         WHEN (&i) popup = trim(tsu_sasautos&i) !! '/' !! cas_pgm;
+         WHEN (&i+2) popup = trim(tsu_sasautos&i) !! '/' !! cas_pgm;
 %END;
          OTHERWISE popup=cas_pgm;
       END;
