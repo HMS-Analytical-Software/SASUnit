@@ -2,7 +2,7 @@
 \file
 \ingroup    SASUNIT_EXAMPLES_TEST
 
-\brief      Tests for nobs.sas
+\brief      Tests for nobs.sas - has to fail!
 
             Examplpe for a test scenario with the following features:
             - create simple test scenario
