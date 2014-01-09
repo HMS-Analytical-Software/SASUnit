@@ -18,7 +18,7 @@
 
 %MACRO basedatasets;
 
-   data work.customer;
+   data work.Customer;
       do i=1 to 5;
          CustomerNumber=i;
          CustomerName="Customer " !! put (i,z2.);

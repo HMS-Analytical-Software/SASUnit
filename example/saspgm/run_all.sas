@@ -47,7 +47,7 @@ OPTIONS
 )
 
 /* Run specified test scenarios. There can be more than one call to runSASUnit */
-%runSASUnit(i_source = example/saspgm/%str(*)_test.sas)
+%runSASUnit(i_source = example/saspgm/%str(*)_test.sas);
 
 /* Create or recreate HTML pages for report where needed */
 %reportSASUnit(
