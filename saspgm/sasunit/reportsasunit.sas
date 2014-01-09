@@ -312,11 +312,11 @@
          cas_pgmucase = pcs_ucase AND
          cas_scnid    = pcs_scnid AND
          cas_id       = pcs_casid
-      ;
-      CREATE UNIQUE INDEX idx1 ON &d_rep (scn_id, cas_id, tst_id);
-      CREATE UNIQUE INDEX idx2 ON &d_rep (cas_auton, pgm_id, scn_id, cas_id, tst_id);
-
+         ;
+      CREATE UNIQUE INDEX idx1 ON &d_rep. (scn_id, cas_id, tst_id);
+      CREATE UNIQUE INDEX idx2 ON &d_rep. (cas_auton, pgm_id, scn_id, cas_id, tst_id);
    QUIT;
+
    %IF %_handleError(&l_macname.
                     ,ErrorTestDB
                     ,&syserr. NE 0
@@ -367,9 +367,12 @@
    *** set options for ODS ****;
    ods escapechar="^";
 
+   *** create style ****;
+   %local l_rc;
+   %let l_rc = %_delfile(&g_sasunitroot./resources/style/template.sas7bitm);
+
    libname _style "&g_sasunitroot./resources/style";
 
-   *** create style ****;
    ods path reset;
    ods path (PREPEND) _style.template(UPDATE);
    %_reportCreateStyle;

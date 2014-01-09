@@ -31,7 +31,7 @@
        when (-3) hlp = "&g_nls_reportRecordCount_003.";
        when (-4) hlp = "&g_nls_reportRecordCount_004.";
        when (-5) hlp = "&g_nls_reportRecordCount_005.";
-       otherwise hlp = cat("= ", hlp);
+       otherwise hlp = trim(hlp);
    end;
 
    %_render_dataColumn (i_sourceColumn=hlp

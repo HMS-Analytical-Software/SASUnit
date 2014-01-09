@@ -40,7 +40,10 @@
          if desc=' ' then desc = line;
          else desc = trim(desc) !! ' ' !! line;
       end;
-      if eof then call symput("&r_desc", trimn(desc));
+      if eof then do;
+         if desc = ' ' then desc ="&i_pgmfile.";
+         call symput("&r_desc", trimn(desc));
+      end;
    run;
 
 %MEND _getPgmDesc;
