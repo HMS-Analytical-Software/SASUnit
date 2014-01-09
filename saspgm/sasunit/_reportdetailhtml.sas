@@ -270,7 +270,7 @@
 
            columns idColumn assertTypeColumn descriptionColumn expectedColumn actualColumn resultColumn;
 
-           define idColumn     / display style(Column)=rowheader;
+           define idColumn     / order style(Column)=rowheader;
            define resultColumn / display style(Column)=[background=white];
 
            compute before _page_;
