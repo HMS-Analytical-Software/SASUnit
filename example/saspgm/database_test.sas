@@ -28,7 +28,7 @@
             or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */
 
-/*-- Creation of base dataets -----------------------------------------*/
+/*-- Creation of base datasets -----------------------------------------*/
 %initTestcase(i_object=basedatasets.sas, i_desc=Creation of base datasets)
 %basedatasets
 %endTestCall()
@@ -140,5 +140,4 @@
 
 %assertLog (i_errors=0, i_warnings=0)
 %endTestCase()
-*/
 /** \endcond */
