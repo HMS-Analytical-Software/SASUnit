@@ -312,7 +312,7 @@
          cas_pgmucase = pcs_ucase AND
          cas_scnid    = pcs_scnid AND
          cas_id       = pcs_casid
-         ;
+         order by scn_id, cas_id, tst_id;
       CREATE UNIQUE INDEX idx1 ON &d_rep. (scn_id, cas_id, tst_id);
       CREATE UNIQUE INDEX idx2 ON &d_rep. (cas_auton, pgm_id, scn_id, cas_id, tst_id);
    QUIT;
