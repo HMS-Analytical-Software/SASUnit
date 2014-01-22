@@ -86,7 +86,7 @@
       call symput ('g_refdata'     , tsu_refdata);
       call symput ('g_doc'         , tsu_doc);
       call symput ('g_testcoverage', put (tsu_testcoverage, z1.));
-      call symput ('g_verbose'     , put (tsu_verbose, z1.));
+      call symput ('g_verbose'     , put (tsu_verbose, z1.)); 
    RUN;
 
    %LET g_project      = &g_project;
@@ -110,7 +110,7 @@
    %LET g_testout  = &g_target/tst;
    %LET g_log      = &g_target/log;
 
-   %_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note)
+   %_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note);
 
    %IF &i_withlibrefs %THEN %DO;
          LIBNAME testout "&g_testout";
@@ -130,13 +130,14 @@
       %END;
    %END;
 
-   %put _global_;
-
    OPTIONS MAUTOSOURCE SASAUTOS=(SASAUTOS "&g_sasunit" "&g_sasunit_os"
    %DO i=0 %TO 9;
       %IF "&&g_sasautos&i" NE "" %THEN "&&g_sasautos&i";
    %END;     );
    
+   %_oscmds;
+
+   %put _global_;
    
    %GOTO exit;
 %errexit:

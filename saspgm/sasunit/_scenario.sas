@@ -49,12 +49,12 @@ LIBNAME target "&io_target";
 /* set global macro symbols and librefs / filerefs  */
 /* includes creation of autocall paths */
 %_loadEnvironment()
+
 %IF &g_error_code NE %THEN %GOTO errexit;
 
 /* flag for test cases */
 %GLOBAL g_inTestcase;
 %LET g_inTestcase=0;
-%_oscmds;
 
 %GOTO exit;
 %errexit:

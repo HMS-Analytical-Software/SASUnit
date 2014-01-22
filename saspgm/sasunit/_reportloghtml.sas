@@ -53,13 +53,12 @@
    %LET &r_rc=3;
 
    /*erster Log-Durchlauf zur Bestimmung von Fehler- und Warnungsanzahl*/  
-   %_checkLog(
-                      i_logfile  = &l_log
-                     ,i_error    = &g_error.
-                     ,i_warning  = &g_warning.
-                     ,r_errors   = l_error_count
-                     ,r_warnings = l_warning_count
-                  );
+   %_checkLog(i_logfile  = &l_log
+             ,i_error    = &g_error.
+             ,i_warning  = &g_warning.
+             ,r_errors   = l_error_count
+             ,r_warnings = l_warning_count
+             );
 
    %IF %_handleError(&l_macname
                     ,LogNotFound
@@ -94,12 +93,20 @@
          error_count          0
          warning_count        0
       ;
+      
+      /* undo macro quoting: convert 'can' to "/" and 'so' to ";" as well as delete 'bs', 'ack', 'SOH' and 'STX' */
+      logline = TRANSLATE(logline, "2F"x, "18"x);
+      logline = TRANSLATE(logline, "3B"x, "0E"x);
+      logline = transtrn(logline, "08"x, trimn(''));
+      logline = transtrn(logline, "06"x, trimn(''));
+      logline = transtrn(logline, "01"x, trimn(''));
+      logline = transtrn(logline, "02"x, trimn(''));
 
       IF _n_=1 THEN DO;
 
-         _errorPatternId = prxparse("/^%UPCASE(&g_error.)[: ]/");
-         _warningPatternId = prxparse("/^%UPCASE(&g_warning.)[: ]/");
-         _ignoreErrPatternId  = prxparse("/^&l_sIgnoreLogMessage01./");
+         _errorPatternId     = prxparse("/^%UPCASE(&g_error.)[: ]/");
+         _warningPatternId   = prxparse("/^%UPCASE(&g_warning.)[: ]/");
+         _ignoreErrPatternId = prxparse("/^&l_sIgnoreLogMessage01./");
 
          /*HTML-Header*/
          PUT '<html>';
