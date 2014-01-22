@@ -806,6 +806,33 @@
             borderwidth=0px
             borderspacing=0px
          ;
+         style tablesorterheader "Tablesorter-header for jQuery TableSorter" /
+            backgroundimage = "data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw=="
+            backgroundrepeat = NO_REPEAT
+            BACKGROUNDPOSITION = right
+            paddingtop    =  4px 
+            paddingleft   = 4px 
+            paddingright  =  18px 
+            paddingbottom =  4px
+         ;
+         style headerSortUp "HeaderSortUp for jQuery TableSorter" /
+            backgroundimage = "data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7"
+         ;
+         style tablesorterheaderSortUp "Ablesorter-headerSortUp for jQuery TableSorter" /
+            backgroundimage = "data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7"
+         ;
+         style tablesorterheaderAsc "Tablesorter-headerAsc for jQuery TableSorter" /
+            backgroundimage = "data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7"
+         ;
+         style headerSortDown "HeaderSortDown for jQuery TableSorter" /
+            backgroundimage = "data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7"
+         ;
+         style tablesorterheaderSortDown "Tablesorter-headerSortDown for jQuery TableSorter" /
+            backgroundimage = "data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7"
+         ;
+         style tablesorterheaderDesc "Tablesorter-headerDesc for jQuery TableSorter" /
+            backgroundimage = "data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7"
+         ;
       end;
    run;
 %mend;
