@@ -24,7 +24,7 @@
                 ,i_to
                 );
 
-   %LOCAL l_i_from l_i_to;
+   %LOCAL l_i_from l_i_to logfile;
 
    /* save and modify os command options */
    %local xwait xsync xmin;
@@ -35,19 +35,33 @@
 
    %let i_from = %qsysfunc(translate(&i_from,\,/));
    %let i_to   = %qsysfunc(translate(&i_to  ,\,/));
+   %let logfile=%sysfunc(pathname(work))\___log.txt;
 
    /*-- XCOPY
         /E copy directories (even empty ones) and files recursively 
         /I do not prompt before file or directory creation
         /Y do not prompt before overwriting target
      --*/
-   %sysexec 
-      xcopy
-         "&i_from"
-         "&i_to"
-         /E /I /Y
-   ;
-   %put &g_note.(SASUNIT): sysrc=&sysrc;
+   %sysexec (xcopy "&i_from" "&i_to" /E /I /Y > "&logfile" 2>&1);
+   
+   %if &g_verbose. %then %do;
+      %put ======== OS Command Start ========;
+       /* Evaluate sysexec´s return code*/
+      %if &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
+      %else %put &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
+
+      /* put sysexec command to log*/
+      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: xcopy "&i_from" "&i_to" /E /I /Y > "&logfile";
+      
+      /* write &logfile to the log*/
+      data _null_;
+         infile "&logfile" truncover lrecl=512;
+         input line $512.;
+         putlog line;
+      run;
+      %put ======== OS Command End ========;
+   %end;
+   
    options &xwait &xsync &xmin;
 
 %mend _copyDir;

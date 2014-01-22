@@ -74,11 +74,12 @@
                   ,i_verbose      = 0
                   );
 
-   %GLOBAL g_version g_revision;
+   %GLOBAL g_version g_revision g_verbose g_error g_warning g_note;
 
    %LET g_version   = 1.2.1_9;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
+   %LET g_verbose   = &i_verbose;
 
    %LOCAL l_macname  l_current_dbversion l_target_abs  l_newdb       l_rc       l_project      l_root    l_sasunit          l_abs l_autoexec      l_autoexec_abs
           l_sascfg   l_sascfg_abs        l_sasuser     l_sasuser_abs l_testdata l_testdata_abs l_refdata l_refdata_abs      l_doc                 l_doc_abs  restore_sasautos 
@@ -132,6 +133,8 @@
    OPTIONS NOQUOTELENMAX;
 
    %_oscmds;
+   
+   %_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note);
 
    /*-- check SAS version -------------------------------------------------------*/
    %IF %_handleError(&l_macname.

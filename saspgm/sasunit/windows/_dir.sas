@@ -1,7 +1,7 @@
 /** \file
    \ingroup    SASUNIT_UTIL_OS_WIN
 
-   \brief      generates a dataset with the names of all files in a directory or directory tree.
+   \brief      Generates a dataset with the names of all files in a directory or directory tree.
                Wildcards may be used to specify the files to be included
 
                Resulting SAS dataset has the columns
@@ -10,8 +10,8 @@
 
    \param   i_path       name of directory or file group (containing wildcards) with full path
    \param   i_recursive  1 .. search recursively in subdirectories, default is 0
-   \param   o_out        output dataset, default is work.dir. This dataset contains two columns
-                         named filename and changed
+   \param   o_out        output dataset, default is work.dir. This dataset contains three columns
+                         named membername, filename and changed
 
    \version    \$Revision$
    \author     \$Author$
@@ -50,16 +50,34 @@
    %let dirfile=%sysfunc(pathname(work))\___dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
 
-   %put &g_note.(SASUNIT): Directory search is: &i_path;
+   /* %put &g_note.(SASUNIT): Directory search is: &l_i_path; */
 
    %IF &i_recursive %then %let s=/S;
-
-   %SYSEXEC(dir &s /a-d "&l_i_path" > "&dirfile");
    
+   %if &g_verbose. %then %do;
+      %put ======== OS Command Start ========;
+      /* Evaluate sysexec´s return code */
+      %SYSEXEC(dir &s /a-d "&l_i_path" > "&dirfile" 2>&1);
+      %if &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
+      %else %put &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
+
+      /* put sysexec command to log*/
+      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: dir &s /a-d "&l_i_path" > "&dirfile";
+      
+      /* write &dirfile to the log*/
+      data _null_;
+         infile "&dirfile" truncover lrecl=512;
+         input line $512.;
+         putlog line;
+      run;
+      %put ======== OS Command End ========;
+   %end;
+   
+   %SYSEXEC(dir &s /a-d "&l_i_path" > "&dirfile");
    options &xwait &xsync &xmin;
    
-   data &o_out (keep=filename changed);
-      length dir filename $255 language $2;
+   data &o_out (keep=membername filename changed);
+      length membername dir filename $255 language $2;
       retain language "__" dir FilePos;
       infile _dirfile truncover;
       input line $char255. @;
@@ -100,7 +118,9 @@
          end;
          changed  = dhms (d, hour(t), minute(t), 0);
          format changed datetime20.;
-         filename = translate(trim(dir) !! '/' !! substr (line,FilePos),'/','\');
+         membername = translate(substr (line,FilePos),'/','\');
+         filename = translate(trim(dir),'/','\') !! '/' !! membername;
+         
          output;
       end;
    run;

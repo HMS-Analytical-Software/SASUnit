@@ -21,8 +21,29 @@
 
 %macro _mkdir (dir
               );
+   %LOCAL logfile;
+              
+   %let logfile=%sysfunc(pathname(work))/___mkdir.txt;
+   
+   %SYSEXEC(mkdir "&dir." > "&logfile" 2>&1);
+   %if &g_verbose. %then %do;
+      %put ======== OS Command Start ========;
 
-   %SYSEXEC(mkdir "&dir.");
+      /* Evaluate sysexec´s return code */
+      %if &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
+      %else %put ERROR: Sysrc : &sysrc -> An Error occured;
+
+      /* put sysexec command to log*/
+      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: mkdir "&dir." > "&logfile" 2>&1;
+      
+      /* write &logfile to the log*/
+      data _null_;
+         infile "&logfile" truncover lrecl=512;
+         input line $512.;
+         putlog line;
+      run;
+      %put ======== OS Command End ========;
+   %end;
 
 %mend _mkdir; 
 
