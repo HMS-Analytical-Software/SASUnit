@@ -49,6 +49,8 @@
    %LET l_actual   = -999;
    %LET i_operator = %sysfunc(upcase(&i_operator.));
    %LET l_errmsg   =;
+   
+   %IF &i_where = %THEN %LET i_where=1;
   
    %*************************************************************;
    %*** Check preconditions                                   ***;
