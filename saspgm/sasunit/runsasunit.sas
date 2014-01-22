@@ -44,6 +44,7 @@
       l_macname
       d_dir  
       d_examinee 
+      d_scn_pre
       l_source
       l_nscn 
       i
@@ -52,7 +53,7 @@
       l_scn 
       l_scnid 
       l_dorun 
-      l_scndesc 
+      l_scndesc
       l_sysrc
       l_rc
       l_scnlogfullpath
@@ -73,12 +74,13 @@
 
    %_tempFileName(d_dir);
    %_tempFileName(d_examinee);
+   %_tempFileName(d_scn_pre);
 
    /*-- check if testdatabase can be accessed -----------------------------------*/
    %IF %_handleError(&l_macname.
                     ,NoTestDB
                     ,NOT %sysfunc(exist(target.tsu)) OR NOT %symexist(g_project)
-                    ,%nrstr(test database cannot be accessed, call %initSASUnit before %runSASUnit)
+                    ,%nrstr(test database cannot be accessed, call initSASUnit before runSASUnit)
                     ,i_verbose=&g_verbose.
                     )
       %THEN %GOTO errexit;
@@ -110,6 +112,10 @@
       CALL symput ('l_scnchanged' !! left(put(_n_,8.)), compress(put(changed,12.)));
       CALL symput ('l_nscn', compress(put(_n_,8.)));
    RUN;
+   
+   data &d_scn_pre.;
+      set &d_dir.;
+   run;
 
    /*-- find out all possible units under test ----------------------------------*/
    %LET l_auto=&g_sasautos;
@@ -119,7 +125,10 @@
       %_dir(i_path=&l_auto.*.sas, o_out=&d_dir)
       data &d_examinee;
          set %IF &l_autonr>0 %THEN &d_examinee; &d_dir(in=indir);
-         if indir then auton=&l_autonr.+2;
+         if indir then DO;
+            auton=&l_autonr.+2;
+            source=symgetc ("l_auto");
+         end;
       run; 
       %LET l_autonr = %eval(&l_autonr+1);
       %LET l_auto=;
@@ -130,29 +139,45 @@
    %_dir(i_path=&l_auto.*.sas, o_out=&d_dir)
    data &d_examinee;
       set &d_examinee &d_dir(in=indir);
-      if indir then auton=0;
+      if indir then DO;
+         auton=0;
+         source=symgetc ("l_auto");
+      end;
    run; 
    %LET l_auto=&g_sasunit_os;
    %LET l_auto=%quote(&l_auto/);
    %_dir(i_path=&l_auto.*.sas, o_out=&d_dir)
    data &d_examinee;
       set &d_examinee &d_dir(in=indir);
-      if indir then auton=1;
+      if indir then DO;
+         auton=1;
+         source=symgetc ("l_auto");
+      end;
    run; 
+
+   %_crossreference(i_includeSASUnit        =0
+                   ,i_examinee              =&d_examinee.
+                   );
+
+   /* check which test scenarios must be run */
+   %_checkScenario(i_examinee  = &d_examinee.
+                  ,i_scn_pre   = &D_SCN_PRE.
+                  );
 
    /*-- loop over all test scenarios --------------------------------------------*/
    %DO i=1 %TO &l_nscn;
 
-      %LET l_scn = %_stdPath(&g_root, &&l_scnfile&i);
+      Data Scenariostorun;
+         Modify Scenariostorun(Where=(name NE ''));
+         Call Symputx('l_scnid',scn_id);
+         Call Symputx('l_dorun',dorun);
+         Call Symputx('l_filename',filename);
+         name ='';
+         Replace;
+         STOP;
+      RUN;
 
-      /* check if test scenario must be run */
-      %_checkScenario(
-         i_scnfile = &&l_scnfile&i
-        ,i_changed = &&l_scnchanged&i
-        ,i_dir     = &d_examinee
-        ,r_scnid   = l_scnid
-        ,r_run     = l_dorun
-      )
+      %let l_scn = %_stdPath(&g_root,&l_filename);
 
       /*-- if scenario not present in test database: create new scenario --------*/
       %IF &l_scnid = 0 %THEN %DO;
@@ -195,7 +220,7 @@
       %IF &l_dorun %THEN %DO;
 
          /*-- save description and start date and time of scenario --------------*/
-         %_getPgmDesc (i_pgmfile=&&l_scnfile&i, r_desc=l_scndesc)
+         %_getPgmDesc (i_pgmfile=&l_filename, r_desc=l_scndesc)
          PROC SQL NOPRINT;
             UPDATE target.scn SET
                scn_desc  = "&l_scndesc"
@@ -206,7 +231,7 @@
        
          %LET l_c_scnid        = %substr(00&l_scnid.,%length(&l_scnid));
          %LET l_scnlogfullpath = &g_log/&l_c_scnid..log;
-         %_runProgramSpawned(i_program          =&&l_scnfile&i
+         %_runProgramSpawned(i_program          =&l_filename
                             ,i_scnid            =&l_c_scnid.
                             ,i_generateMcoverage=&g_testcoverage.
                             ,r_sysrc            =l_sysrc
@@ -244,7 +269,7 @@
 
             SELECT max (cas_res) INTO :l_result FROM target.cas WHERE cas_scnid=&l_scnid;
 
-            %*** Treat missing scenario as failed and treat scenario wit errors in scenario log as failed ***;
+            %*** Treat missing scenario as failed and treat scenario with errors in scenario log as failed ***;
             %if (&l_result. = . or &l_error_count. > 0) %then %let l_result=2;
             
             UPDATE target.scn

@@ -67,7 +67,7 @@
    %IF %_handleError(&l_macname.
                     ,NoTestDB
                     ,NOT %sysfunc(exist(target.tsu)) OR NOT %symexist(g_project)
-                    ,%nrstr(Test database cannot be accessed, call %initSASUnit before %reportSASUnit)
+                    ,%nrstr(Test database cannot be accessed, call initSASUnit before reportSASUnit)
                     ,i_verbose=&g_verbose.
                     )
       %THEN %GOTO errexit;

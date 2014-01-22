@@ -1,0 +1,152 @@
+/**
+   \file
+   \ingroup    SASUNIT_TEST 
+
+   \brief      Test of _crossreference.sas
+
+   \version    \$Revision: 190 $
+   \author     \$Author: b-braun $
+   \date       \$Date: 2013-05-29 18:04:27 +0200 (Mi, 29 Mai 2013) $
+   \sa         \$HeadURL: https://menrath@svn.code.sf.net/p/sasunit/code/trunk/saspgm/test/assertequals_test.sas $
+   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+*/ /** \cond */
+
+/* Create test files */
+%MACRO _createtestfiles;
+   %LOCAL l_work;
+   
+   %LET l_work = %SYSFUNC(pathname(work));
+   
+   %*** Create test data base ***;
+   PROC SQL NOPRINT;
+      CREATE TABLE work.tsu(COMPRESS=CHAR)(                                      
+          tsu_sasunitroot  CHAR(1000)        /* root path to sasunit files */
+         ,tsu_sasunit      CHAR(1000)
+         ,tsu_sasunit_os   CHAR(1000)        /* os-specific sasunit macros */
+         ,tsu_sasautos     CHAR(1000)
+         %DO i=1 %TO 9;
+            ,tsu_sasautos&i   CHAR(1000)     /* auto call paths */
+         %END;
+      );
+
+      INSERT INTO work.tsu(tsu_sasunitroot,tsu_sasunit,tsu_sasunit_os,tsu_sasautos,tsu_sasautos1,tsu_sasautos2)
+      VALUES ("&l_work", 'saspgm/sasunit/', "saspgm/sasunit/linux/", 'saspgm/sasunit/', 'saspgm/testfolder1/', 'saspgm/testfolder2/');
+   QUIT;
+
+   %*** Create folder structure for the test ***;  
+
+   %_mkdir(&l_work./saspgm);
+   %_mkdir(&l_work./saspgm/sasunit);
+   %_mkdir(&l_work./saspgm/sasunit/linux);
+   %_mkdir(&l_work./saspgm/testfolder1);
+   %_mkdir(&l_work./saspgm/testfolder2);
+ 
+   %*** Copy test macros to folders created in work ***;
+   %_copyfile(i_file=%_abspath(&g_root.,saspgm/test/pgmlib1/Testmakro1.sas)
+             ,o_file=%_abspath(&l_work.,saspgm/sasunit/Testmakro1.sas)
+             );
+   %_copyfile(i_file=%_abspath(&g_root.,saspgm/test/pgmlib1/Testmakro2.sas)
+             ,o_file=%_abspath(&l_work.,saspgm/sasunit/linux/Testmakro2.sas)
+             );
+   %_copyfile(i_file=%_abspath(&g_root.,saspgm/test/pgmlib1/Testmakro3.sas)
+             ,o_file=%_abspath(&l_work.,saspgm/testfolder1/Testmakro3.sas)
+             );
+   %_copyfile(i_file=%_abspath(&g_root.,saspgm/test/pgmlib1/Testmakro4.sas)
+             ,o_file=%_abspath(&l_work.,saspgm/testfolder1/Testmakro4.sas)
+             );
+   
+%MEND _createtestfiles;
+
+/* create test files */
+%_createtestfiles; 
+
+/* test case 1 ------------------------------------ */
+%initTestcase(i_object=_crossreference.sas, i_desc=Testing if the test setup was successful)
+%endTestcall()
+   %markTest()
+      /* Files and folder test */
+      %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/saspgm/sasunit/Testmakro1.sas))       ,i_expected=1, i_desc=Test setup: file Testmakro1 copied successfully);
+      %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/saspgm/sasunit/linux/Testmakro2.sas)) ,i_expected=1, i_desc=Test setup: file Testmakro2 copied successfully);
+      %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/saspgm/testfolder1/Testmakro3.sas))   ,i_expected=1, i_desc=Test setup: file Testmakro3 copied successfully);
+      %assertEquals(i_actual=%_existDir(%sysfunc(pathname(work))/saspgm/testfolder2)                           ,i_expected=1, i_desc=Test setup: Create folder saspgm/testfolder2);
+      %assertLog (i_errors=0, i_warnings=0);
+%endTestcase(i_assertLog=0);
+
+/* test case 2 ------------------------------------ */
+%initTestcase(i_object=_crossreference.sas, i_desc=Test table listcalling with i_includeSASUnit = 1)
+/*-- switch to example database --------------------*/
+%_switch();
+   %_dir(i_path=%sysfunc(pathname(work))/saspgm, i_recursive=1, o_out=cr_dir);
+   %_crossreference(i_includeSASUnit  =1
+                   ,i_examinee        =cr_dir
+                   );
+
+   /*-- switch to real database -----------------------*/
+%_switch();
+%endTestcall();
+   %markTest();
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=5, i_where=                                                  , i_desc=Number of calling relationships);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro1"  and called="Testmakro2"), i_desc=Number of calling relationships);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro1"  and called="Testmakro4"), i_desc=Valid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro2"  and called="Testmakro3"), i_desc=Valid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro2"  and called="Testmakro4"), i_desc=Valid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro3"  and called="Testmakro4"), i_desc=Valid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro1"  and called="Testmakro3"), i_desc=Call in comment won%str(%')t be referenced);
+      %assertLog (i_errors=0, i_warnings=0);
+%endTestcase(i_assertLog=0);
+
+/* test case 3 ------------------------------------ */
+%initTestcase(i_object=_crossreference.sas, i_desc=Test table dependency with i_includeSASUnit = 1)
+/*-- switch to example database --------------------*/
+%endTestcall();
+   %markTest();
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=6, i_where=                                                  , i_desc=Number of expected collumns);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=3, i_where=%str(caller="Testmakro1.sas"),         i_desc=Number of calling relationships);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=2, i_where=%str(caller="Testmakro2.sas"),         i_desc=Result data set with expected observations?);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro3.sas"),         i_desc=Result data set with expected observations?);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro4.sas"),         i_desc=Result data set with expected observations?);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=3, i_where=%str(calledByCaller="Testmakro4.sas"), i_desc=Result data set with expected observations?);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=0, i_where=%str(calledByCaller="Testmakro1.sas"), i_desc=Result data set with expected observations?);
+      %assertLog (i_errors=0, i_warnings=0);
+%endTestcase(i_assertLog=0);
+
+/* test case 4 ------------------------------------ */
+%initTestcase(i_object=_crossreference.sas, i_desc=Test table listcalling with i_includeSASUnit = 0);
+/*-- switch to example database --------------------*/
+%_switch();
+   %let l_sasunit = &g_sasunit;
+   %let g_sasunit = saspgm/sasunit;
+   %_dir(i_path=%sysfunc(pathname(work))/saspgm, i_recursive=1, o_out=cr_dir);
+
+   %_crossreference(i_includeSASUnit  =0
+                   ,i_examinee        =cr_dir
+                   );
+   /*-- switch to real database -----------------------*/
+   %let g_sasunit = &l_sasunit;
+%_switch();
+%endTestcall();
+   %markTest();
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=                                                  , i_desc=Number of calling relationships);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro1" and called="Testmakro2"), i_desc=Invalid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro1" and called="Testmakro4"), i_desc=Invalid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro2" and called="Testmakro3"), i_desc=Invalid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro2" and called="Testmakro4"), i_desc=Invalid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro3" and called="Testmakro4"), i_desc=Valid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro1" and called="Testmakro3"), i_desc=Call in comment won%str(%')t be referenced);
+      %assertLog (i_errors=0, i_warnings=0);
+%endTestcase(i_assertLog=0);
+
+/* test case 5 ------------------------------------ */
+%initTestcase(i_object=_crossreference.sas, i_desc=Test table dependency with i_includeSASUnit = 0)
+/*-- switch to example database --------------------*/
+%endTestcall();
+   %markTest();
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=1, i_where=                                                                 , i_desc=Number of expected collumns);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro3.sas" and calledByCaller="Testmakro4.sas"), i_desc=Expected dependency found?);
+
+      %assertLog (i_errors=0, i_warnings=0);
+%endTestcase(i_assertLog=0);
+/** \endcond */

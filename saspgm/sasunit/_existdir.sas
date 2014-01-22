@@ -25,10 +25,12 @@
    %LET filrf=_tmpf;
    %LET rc=%sysfunc(filename(filrf,&i_dir));
    %LET did=%sysfunc(dopen(_tmpf));
+   /* directory opened successfully */
    %IF &did NE 0 %THEN %DO;
       1
       %LET rc=%sysfunc(dclose(&did));
    %END;
+   /* directory could not be opened */
    %ELSE %DO;
       0
    %END;
