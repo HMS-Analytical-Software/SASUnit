@@ -116,7 +116,7 @@
       ods html file="&o_path./&o_file..html" 
                     (TITLE="&l_title.")
                     /* Order of .js files in headtext attribute is essential */
-                    headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><script src="jquery-1.10.2.min.js"></script><script src="jquery.tablesorter.min.js"></script><script src="jquery.tablesorter.widgets.min.js"></script><script src="loadScripts.js"></script>'
+                    headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><script src="jq.js"></script><script src="jq.ts.js"></script><script src="jq.ts.w.js"></script><script src="ls.js"></script>'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
       %_reportPageTopHTML(
