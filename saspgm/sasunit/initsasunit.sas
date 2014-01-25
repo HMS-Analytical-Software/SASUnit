@@ -79,6 +79,11 @@
    %LET g_version   = 1.2.1_9;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
+   /*-- check value of parameter i_verbose, if it has a value other than 0, 
+        it will be set to 1 in order to assure that it will have only value 0 or 1 ------*/
+   %IF (&i_verbose. NE 0) %THEN %DO;
+      %LET i_verbose = 1;
+   %END;
    %LET g_verbose   = &i_verbose;
 
    %LOCAL l_macname  l_current_dbversion l_target_abs  l_newdb       l_rc       l_project      l_root    l_sasunit          l_abs l_autoexec      l_autoexec_abs
@@ -101,12 +106,6 @@
 
    /*-- initialize error --------------------------------------------------------*/
    %_initErrorHandler;
-
-   /*-- check value of parameter i_verbose, if it has a value other than 0, 
-        it will be set to 1 in order to assure that it will have only value 0 or 1 ------*/
-   %IF (&i_verbose. NE 0) %THEN %DO;
-      %LET i_verbose = 1;
-   %END;
 
    /*-- check for operation system ----------------------------------------------*/
    %IF %_handleError(&l_macname.
