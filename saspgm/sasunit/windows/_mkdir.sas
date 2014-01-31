@@ -37,7 +37,7 @@
 
       /* Evaluate sysexec´s return code */
       %if &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
-      %else %put ERROR: Sysrc : &sysrc -> An Error occured;
+      %else %put &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
 
       /* put sysexec command to log*/
       %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: md "&dir" > "&logfile";
