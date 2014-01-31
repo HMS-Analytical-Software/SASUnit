@@ -49,42 +49,48 @@
 */ /** \cond */ 
 
 
-%MACRO initSASUnit(i_root         = 
-                  ,io_target      = 
-                  ,i_overwrite    = 0
-                  ,i_project      = 
-                  ,i_sasunit      =
-                  ,i_sasautos     =
-                  ,i_sasautos1    =
-                  ,i_sasautos2    =
-                  ,i_sasautos3    =
-                  ,i_sasautos4    =
-                  ,i_sasautos5    =
-                  ,i_sasautos6    =
-                  ,i_sasautos7    =
-                  ,i_sasautos8    =
-                  ,i_sasautos9    =
-                  ,i_autoexec     =
-                  ,i_sascfg       =
-                  ,i_sasuser      =
-                  ,i_testdata     = 
-                  ,i_refdata      = 
-                  ,i_doc          = 
-                  ,i_testcoverage = 1
-                  ,i_verbose      = 0
+%MACRO initSASUnit(i_root            = 
+                  ,io_target         = 
+                  ,i_overwrite       = 0
+                  ,i_project         = 
+                  ,i_sasunit         =
+                  ,i_sasautos        =
+                  ,i_sasautos1       =
+                  ,i_sasautos2       =
+                  ,i_sasautos3       =
+                  ,i_sasautos4       =
+                  ,i_sasautos5       =
+                  ,i_sasautos6       =
+                  ,i_sasautos7       =
+                  ,i_sasautos8       =
+                  ,i_sasautos9       =
+                  ,i_autoexec        =
+                  ,i_sascfg          =
+                  ,i_sasuser         =
+                  ,i_testdata        = 
+                  ,i_refdata         = 
+                  ,i_doc             = 
+                  ,i_testcoverage    = 1
+                  ,i_verbose         = 0
+                  ,i_crossrefsasunit = 0
                   );
 
    %GLOBAL g_version g_revision g_verbose g_error g_warning g_note;
 
-   %LET g_version   = 1.2.1_9;
+   %LET g_version   = 1.8.0;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
-   /*-- check value of parameter i_verbose, if it has a value other than 0, 
-        it will be set to 1 in order to assure that it will have only value 0 or 1 ------*/
+   
+   /*-- check value of parameters i_verbose and i_crossrefsasunit, if one of them has a value other than 0, 
+        they will be set to 1 in order to assure that values will only be 0 or 1 ------*/
+   %IF (&i_crossrefsasunit. NE 0) %THEN %DO;
+      %LET i_crossrefsasunit = 1;
+   %END;
    %IF (&i_verbose. NE 0) %THEN %DO;
       %LET i_verbose = 1;
    %END;
    %LET g_verbose   = &i_verbose;
+   
 
    %LOCAL l_macname  l_current_dbversion l_target_abs  l_newdb       l_rc       l_project      l_root    l_sasunit          l_abs l_autoexec      l_autoexec_abs
           l_sascfg   l_sascfg_abs        l_sasuser     l_sasuser_abs l_testdata l_testdata_abs l_refdata l_refdata_abs      l_doc                 l_doc_abs  restore_sasautos 
@@ -217,31 +223,32 @@
    %IF &l_newdb %THEN %DO;
       PROC SQL NOPRINT;
          CREATE TABLE target.tsu(COMPRESS=CHAR)
-         (                                      /* test suite */
-             tsu_project      CHAR(1000)        /* see i_project */
-            ,tsu_root         CHAR(1000)        /* see i_root */
-            ,tsu_target       CHAR(1000)        /* see io_target */
-            ,tsu_sasunitroot  CHAR(1000)        /* root path to sasunit files */
-            ,tsu_sasunit      CHAR(1000)        /* see i_sasunit */
-            ,tsu_sasunit_os   CHAR(1000)        /* os-specific sasunit macros */
-            ,tsu_sasautos     CHAR(1000)        /* see i_sasautos */
-      %DO i=1 %TO 9;
-            ,tsu_sasautos&i   CHAR(1000)        /* see i_sasautos<n> */
-      %END;
-            ,tsu_autoexec     CHAR(1000)        /* see i_autoexec */
-            ,tsu_sascfg       CHAR(1000)        /* see i_sascfg */
-            ,tsu_sasuser      CHAR(1000)        /* see i_sasuser */
-            ,tsu_testdata     CHAR(1000)        /* see i_testdata */
-            ,tsu_refdata      CHAR(1000)        /* see i_refdata */
-            ,tsu_doc          CHAR(1000)        /* see i_doc */
-            ,tsu_lastinit     INT FORMAT=datetime21.2 /* date and time of last initialization */
-            ,tsu_lastrep      INT FORMAT=datetime21.2 /* date and time of last report generation*/
-            ,tsu_testcoverage INT FORMAT=8.     /* see i_testcoverage */
-            ,tsu_dbversion    CHAR(8)           /* Version String to force creation of a new test data base */
-            ,tsu_verbose      INT FORMAT=8.     /* see i_verbose */
+         (                                         /* test suite */
+             tsu_project         CHAR(1000)        /* see i_project */
+            ,tsu_root            CHAR(1000)        /* see i_root */
+            ,tsu_target          CHAR(1000)        /* see io_target */
+            ,tsu_sasunitroot     CHAR(1000)        /* root path to sasunit files */
+            ,tsu_sasunit         CHAR(1000)        /* see i_sasunit */
+            ,tsu_sasunit_os      CHAR(1000)        /* os-specific sasunit macros */
+            ,tsu_sasautos        CHAR(1000)        /* see i_sasautos */
+      %DO i=1 %TO 9;            
+            ,tsu_sasautos&i      CHAR(1000)        /* see i_sasautos<n> */
+      %END;                     
+            ,tsu_autoexec        CHAR(1000)        /* see i_autoexec */
+            ,tsu_sascfg          CHAR(1000)        /* see i_sascfg */
+            ,tsu_sasuser         CHAR(1000)        /* see i_sasuser */
+            ,tsu_testdata        CHAR(1000)        /* see i_testdata */
+            ,tsu_refdata         CHAR(1000)        /* see i_refdata */
+            ,tsu_doc             CHAR(1000)        /* see i_doc */
+            ,tsu_lastinit        INT FORMAT=datetime21.2 /* date and time of last initialization */
+            ,tsu_lastrep         INT FORMAT=datetime21.2 /* date and time of last report generation*/
+            ,tsu_testcoverage    INT FORMAT=8.     /* see i_testcoverage */
+            ,tsu_dbversion       CHAR(8)           /* Version String to force creation of a new test data base */
+            ,tsu_verbose         INT FORMAT=8.     /* see i_verbose */
+            ,tsu_crossrefsasunit INT FORMAT=8.     /* see i_crossrefsasunit */
          );
          INSERT INTO target.tsu VALUES (
-         "","","","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,"",&i_verbose.
+         "","","","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,"",&i_verbose.,&i_crossrefsasunit.
          );
 
          CREATE TABLE target.scn(COMPRESS=CHAR)
@@ -566,8 +573,9 @@
 
    /*-- update parameters ----------------------------------------------------*/
    PROC SQL NOPRINT;
-      UPDATE target.tsu SET tsu_testcoverage=&i_testcoverage;
-      UPDATE target.tsu SET tsu_verbose     =&i_verbose;
+      UPDATE target.tsu SET tsu_testcoverage    =&i_testcoverage;
+      UPDATE target.tsu SET tsu_verbose         =&i_verbose;
+      UPDATE target.tsu SET tsu_crossrefsasunit =&i_crossrefsasunit;
    QUIT;
 
    /*-- load relevant information from test database to global macro symbols ----*/

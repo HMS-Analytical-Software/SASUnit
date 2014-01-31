@@ -30,6 +30,7 @@
            g_testcoverage
            g_verbose
            g_sasunitroot
+           g_crossrefsasunit
            ;
    %LOCAL i;
            
@@ -69,24 +70,25 @@
 
    DATA _null_;
       SET target.tsu;
-      call symput ('g_project'     , tsu_project);
-      call symput ('g_root'        , tsu_root);
-      call symput ('g_sasunitroot' , tsu_sasunitroot);
-      call symput ('g_sasunit'     , tsu_sasunit);
-      call symput ('g_sasunit_os'  , tsu_sasunit_os);
-      call symput ('g_sasautos'    , tsu_sasautos);
-      call symput ('g_sasautos0'   , tsu_sasautos);
-   %DO i=1 %TO 9;
-      call symput ("g_sasautos&i"  , tsu_sasautos&i);
-   %END;
-      call symput ('g_autoexec'    , tsu_autoexec);
-      call symput ('g_sascfg'      , tsu_sascfg);
-      call symput ('g_sasuser'     , tsu_sasuser);
-      call symput ('g_testdata'    , tsu_testdata);
-      call symput ('g_refdata'     , tsu_refdata);
-      call symput ('g_doc'         , tsu_doc);
-      call symput ('g_testcoverage', put (tsu_testcoverage, z1.));
-      call symput ('g_verbose'     , put (tsu_verbose, z1.)); 
+      call symput ('g_project'        , tsu_project);
+      call symput ('g_root'           , tsu_root);
+      call symput ('g_sasunitroot'    , tsu_sasunitroot);
+      call symput ('g_sasunit'        , tsu_sasunit);
+      call symput ('g_sasunit_os'     , tsu_sasunit_os);
+      call symput ('g_sasautos'       , tsu_sasautos);
+      call symput ('g_sasautos0'      , tsu_sasautos);
+   %DO i=1 %TO 9;                     
+      call symput ("g_sasautos&i"     , tsu_sasautos&i);
+   %END;                              
+      call symput ('g_autoexec'       , tsu_autoexec);
+      call symput ('g_sascfg'         , tsu_sascfg);
+      call symput ('g_sasuser'        , tsu_sasuser);
+      call symput ('g_testdata'       , tsu_testdata);
+      call symput ('g_refdata'        , tsu_refdata);
+      call symput ('g_doc'            , tsu_doc);
+      call symput ('g_testcoverage'   , put (tsu_testcoverage, z1.));
+      call symput ('g_verbose'        , put (tsu_verbose, z1.));
+      call symput ('g_crossrefsasunit', put (tsu_crossrefsasunit, z1.));
    RUN;
 
    %LET g_project      = &g_project;

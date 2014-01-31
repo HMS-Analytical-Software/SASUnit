@@ -31,6 +31,7 @@
           l_filename
           l_includeSASUnit
           l_loop
+          l_nobs
           l_path
           l_sasunit 
           l_source
@@ -175,27 +176,34 @@
             END;
          RUN;
          
-         /* Neglect multiple calls to the same macro */
-         PROC sort DATA = helper nodupkey;
-            BY called;
-         RUN;
-
-         /* Put caller into concatenated macro variable  */
-         DATA _NULL_;
-            SET helper end=eof;
-            length cattVar $ 1000;
-            retain cattVar;
-            cattVar = called || cattVar;
-            IF eof THEN DO;
-               call symput("l_cattVar", trim(cattVar));
-               call symput("l_cattVarLen", trim(left(_N_)));
-            END;
+         DATA _null_;
+            SET helper nobs=cnt_obs;
+            call symput('l_nobs', cnt_obs);
          RUN;
          
-         /* Append data from helper to calling macro-data set */     
-         PROC append base=listCalling DATA=helper;
-            where caller ne called;
-         RUN;
+         %IF &l_nobs GT 0 %THEN %DO;
+            /* Neglect multiple calls to the same macro */
+            PROC sort DATA = helper nodupkey;
+               BY called;
+            RUN;
+
+            /* Put caller into concatenated macro variable  */
+            DATA _NULL_;
+               SET helper end=eof;
+               length cattVar $ 1000;
+               retain cattVar;
+               cattVar = called || cattVar;
+               IF eof THEN DO;
+                  call symput("l_cattVar", trim(cattVar));
+                  call symput("l_cattVarLen", trim(left(_N_)));
+               END;
+            RUN;
+            
+            /* Append data from helper to calling macro-data set */     
+            PROC append base=listCalling DATA=helper;
+               where caller ne called;
+            RUN;
+         %END;
       %END; /* %IF &l_loop %THEN %DO */
    %END;/* Loop over macros to find references*/
 

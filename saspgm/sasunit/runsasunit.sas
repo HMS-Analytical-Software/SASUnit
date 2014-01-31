@@ -99,20 +99,6 @@
                     ) 
       %THEN %GOTO errexit;
 
-   %DO i=1 %TO %_nobs(&d_dir); 
-      %LOCAL 
-         l_scnfile&i 
-         l_scnchanged&i
-      ;
-   %END;
-
-   DATA _null_;
-      SET &d_dir;
-      CALL symput ('l_scnfile' !! left(put(_n_,8.)), trim(filename));
-      CALL symput ('l_scnchanged' !! left(put(_n_,8.)), compress(put(changed,12.)));
-      CALL symput ('l_nscn', compress(put(_n_,8.)));
-   RUN;
-   
    data &d_scn_pre.;
       set &d_dir.;
    run;
@@ -155,14 +141,42 @@
       end;
    run; 
 
-   %_crossreference(i_includeSASUnit        =0
-                   ,i_examinee              =&d_examinee.
+   %_crossreference(i_includeSASUnit = &g_crossrefsasunit.
+                   ,i_examinee       = &d_examinee.
                    );
 
    /* check which test scenarios must be run */
-   %_checkScenario(i_examinee  = &d_examinee.
-                  ,i_scn_pre   = &D_SCN_PRE.
+   %_checkScenario(i_examinee        = &d_examinee.
+                  ,i_scn_pre         = &D_SCN_PRE.
                   );
+
+   /*-- if scenario already exists and has been changed: delete scenario files-----*/
+   options noxwait;
+   data _null_;
+      set scenariosToRun(where=(dorun=1));
+      call execute(resolve('%_deletescenariofiles(i_scnid=' || put(scn_id,z3.) || ')'));
+   run;
+
+   PROC SQL NOPRINT;
+      DELETE FROM target.cas WHERE cas_scnid in (select scn_id from scenariosToRun where dorun=1);
+      DELETE FROM target.tst WHERE tst_scnid in (select scn_id from scenariosToRun where dorun=1);
+   QUIT;
+
+   /*-- if scenario not present in test database: create new scenario --------*/
+   DATA target.scn;
+      SET target.scn scenariosToRun(where=(insertIntoDB=1) in=add);
+      IF add=1 THEN DO;
+         scn_path = resolve('%_stdPath(&g_root,' || filename || ')');
+         drop filename dorun insertIntoDB name;
+      END;
+   RUN;
+
+   /* Prepare Loop */
+   PROC SQL noprint;
+      select count(scn_id) into :l_nscn
+         from target.scn
+      ;
+   QUIT;
 
    /*-- loop over all test scenarios --------------------------------------------*/
    %DO i=1 %TO &l_nscn;
@@ -178,32 +192,6 @@
       RUN;
 
       %let l_scn = %_stdPath(&g_root,&l_filename);
-
-      /*-- if scenario not present in test database: create new scenario --------*/
-      %IF &l_scnid = 0 %THEN %DO;
-         PROC SQL NOPRINT;
-            SELECT max(scn_id) INTO :l_scnid FROM target.scn;
-            %IF &l_scnid=. %THEN %LET l_scnid=0;
-            %LET l_scnid = %eval(&l_scnid+1);
-            INSERT INTO target.scn VALUES (
-                &l_scnid
-               ,"&l_scn"
-               ,"",.,.,.,.,.,.
-            );
-         QUIT;
-      %END;
-      /*-- if scenario already exists and has been changed: delete scenario -----*/
-      %ELSE %IF &l_dorun %THEN %DO;
-         /*-- delete corresponding files -----*/
-         %_deletescenariofiles(i_scnid=&l_scnid.);  
-      
-         PROC SQL NOPRINT;
-            DELETE FROM target.cas WHERE cas_scnid = &l_scnid;
-            DELETE FROM target.tst WHERE tst_scnid = &l_scnid;
-         QUIT;
-       
-      %END;
-      
 
       %IF &l_dorun %THEN %DO;
          %PUT ======== test scenario &l_scnid (&l_scn) will be run ========;

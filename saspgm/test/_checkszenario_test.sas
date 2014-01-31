@@ -1,5 +1,5 @@
 /** \file
-   \ingroup    SASUNIT_TEST 
+   \ingroup    SASUNIT_TEST
 
    \version    \$Revision$
    \author     \$Author$
@@ -86,6 +86,15 @@ DATA examinee_dir;
    membername = "dummy7.sas"; changed = &scn_changed-60; filename = "dummypath/libs/Scenario1.sas"; output;
    membername = "dummy8.sas"; changed = &scn_changed-60; filename = "dummypath/libs/Scenario2.sas"; output;
 RUN;
+
+DATA cas;
+   format cas_scnid z3.;
+   cas_scnid = 1; cas_auton = 2; output;
+   cas_scnid = 2; cas_auton = 2; output;
+   cas_scnid = 3; cas_auton = 2; output;
+   cas_scnid = 4; cas_auton = 2; output;
+RUN;
+
 %MEND _createTestFiles;
 
 /*-- Case 1: Neither scenario nor dependend macros changed --*/
@@ -100,7 +109,7 @@ RUN;
 %endTestcall();
    %markTest();
       %assertRecordCount(i_libref=work, i_memname=Dependenciesbyscenario, i_operator=EQ, i_recordsExp=16, i_where=               , i_desc=14 dependencies expected for scenario 1-3 in data set dependenciesByScenario);
-      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=4 , i_where=               , i_desc=3 scenarios expected in data set scenariosToRunneed to be run);
+      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=4 , i_where=               , i_desc=3 scenarios expected in data set scenariosToRun need to be run);
       %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=0 , i_where=%str(dorun = 1), i_desc=Of which none needs to be run);
       %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);

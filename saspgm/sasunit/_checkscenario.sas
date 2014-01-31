@@ -32,55 +32,67 @@
 %MACRO _checkScenario(i_examinee=
                      ,i_scn_pre=
                      );
+   %LOCAL l_cntObs;
+   %LET l_cntObs = 0;
 
    /* Get Scenarios and their names from target.scn */
    DATA scenarios;
       IF _n_ = 1 THEN DO;
          retain pttrn;
          pttrn = prxparse('/\w+\.sas/');
+         call symput ('l_cntObs',put(cnt_obs, 3.));
       END;
       DROP pos pttrn;
-      SET target.scn(keep=scn_id scn_path scn_end);
+      SET target.scn(keep=scn_id scn_path scn_end) nobs=cnt_obs;
       pos = prxmatch(pttrn,scn_path);
       scn_name = substr(scn_path,pos);
    RUN;
 
    PROC SQL noprint;
       create table helper as
-      select s.scn_id, scn.changed as scn_changed, s.scn_end, scn.membername as name
+      select s.scn_id, scn.changed as scn_changed, s.scn_end, scn.membername as name,
+         CASE WHEN scn_id EQ . THEN 1
+              ELSE 0
+              END as insertIntoDB
       from scenarios as s
-      right join &i_scn_pre as scn
+      full join &i_scn_pre as scn
       on scn.membername=s.scn_name
-      ;
-      create table Dependenciesbyscenario as
-      select h.scn_id, h.name, h.scn_end, h.scn_changed, d.calledByCaller, s.changed as called_changed
-      from helper as h, dependency as d, &i_examinee as s
-      where h.name = d.caller and s.membername=d.calledByCaller
       ;
    QUIT;
 
-   /* Check if scenario needs to be run */
-   DATA Dependenciesbyscenario;
-      SET Dependenciesbyscenario;
-      IF scn_id =. THEN DO;
-         dorun = 1;
-         scn_id = 0;
-      END;
-      ELSE IF scn_end < scn_changed or scn_end < called_changed THEN DO;
-         dorun = 1;
-      END;
-      ELSE DO;
-         dorun = 0;
+   /* Create scn_id for new scenarios */
+   DATA helper;
+      retain index &l_cntObs;
+      SET helper;
+      IF scn_id EQ . THEN DO;
+         index+1;
+         scn_id=index;
       END;
    RUN;
-
-   PROC SQL;
+   
+   /* look for units under test not in autocall libraries */
+   PROC SQL noprint;
+      create table noAutocall as
+         select unique cas_scnid
+         from target.cas
+         where cas_auton= .
+      ;
+      /* Map dependencies for each test scenario and check which scenario needs to be run*/  
+      create table Dependenciesbyscenario as
+      select h.scn_id, h.name, h.scn_end, h.scn_changed, d.calledByCaller, s.changed as called_changed, h.insertIntoDB,
+         case WHEN scn_end < scn_changed OR scn_end < called_changed OR h.scn_id in (select cas_scnid from noAutocall) THEN 1
+              ELSE 0
+              END as dorun
+      from helper as h, dependency as d, &i_examinee as s
+      where h.name = d.caller AND s.membername=d.calledByCaller
+      ;
+      /* Condense information to one observation per scenario */
       create table scenariosToRun as
-      select distinct d1.scn_id, e.membername as name, e.filename, (select max(dorun) as dorun 
-                                                                      from Dependenciesbyscenario as d
-                                                                      where e.membername = d.name
-                                                                      group by d.name 
-                                                                   ) as dorun
+      select distinct d1.scn_id, e.membername as name, d1.insertIntoDB, e.filename, (select max(dorun) as dorun 
+                                                                                       from Dependenciesbyscenario as d
+                                                                                       where e.membername = d.name
+                                                                                       group by d.name 
+                                                                                    ) as dorun
       from &i_scn_pre. as e, Dependenciesbyscenario as d1
       where d1.name = e.membername
       ;
