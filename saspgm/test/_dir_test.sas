@@ -16,27 +16,28 @@
 
 /*-- Prepare file to check for correct results -------------------------------*/
 data dircheck; 
-   length filename $255; 
+   length membername filename $255; 
    format changed datetime20.; 
    stop; 
 run; 
 
 /*-- macro to add one entry to check file ------------------------------------*/
 %macro addentry(file);
-%local theTime;
-data _null_; file "&file"; put 'X'; run; 
-%let thetime=%sysfunc(datetime());
-data dircheck0; 
-   length filename $255; 
-   format changed datetime20.; 
-   changed = dhms(datepart(&thetime), hour(timepart(&thetime)), minute(timepart(&thetime)), 0); 
-   filename = translate("&file", '/', '\'); 
-   output; 
-run;
-data dircheck; 
-   set dircheck dircheck0; 
-run; 
-%mend; 
+   %local theTime;
+   data _null_; file "&file"; put 'X'; run; 
+   %let thetime=%sysfunc(datetime());
+   data dircheck0; 
+      length membername filename $255; 
+      format changed datetime20.; 
+      changed = dhms(datepart(&thetime), hour(timepart(&thetime)), minute(timepart(&thetime)), 0); 
+      filename = translate("&file", '/', '\');
+      membername = scan(filename, count(filename, "/")+1, "/");
+      output; 
+   run;
+   data dircheck; 
+      set dircheck dircheck0; 
+   run; 
+%mend addentry; 
 
 /*-- Empty directory ---------------------------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir;

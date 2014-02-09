@@ -18,69 +18,95 @@
 
 */ /** \cond */  
 
-%MACRO _deletescenariofiles(i_scnid =
-                           );
 
-   %LOCAL l_nobs l_target;
-   
+
+%MACRO _deletescenariofiles;
+   %LOCAL l_len l_nobs l_obs l_scnDel l_target;
    %LET l_target = %_abspath(&g_root, &g_target);
- 
-   %*** Deletion of /rep files *;
-   %_dir(i_path=&l_target./rep/%str(*.*), o_out=dir1);
-   DATA _NULL_;
-      FILE "%sysfunc(pathname(work))/_scenarioFilesToDelete.sas";
-      SET dir1;
-      IF prxmatch("/rep\/&i_scnid..*$/", filename) OR 
-         prxmatch("/rep\/_&i_scnid._.*$/", filename) OR 
-         prxmatch("/rep\/cas_&i_scnid._.*$/", filename) THEN DO;
-         PUT '%PUT Delete ' filename ' RC: %_delfile(' filename ');';
-      END;
-   RUN;
-
-   %*** Deletion of /log files ***;
-   %_dir(i_path=&l_target./log/&i_scnid.%str(*), o_out=dir2);
-   DATA _NULL_;
-      FILE "%sysfunc(pathname(work))/_scenarioFilesToDelete.sas" mod;
-      SET dir2;
-      IF prxmatch("/\/&i_scnid..*$/", filename) THEN DO; 
-         PUT '%LET rc=%_delfile(' filename ');' ;
-      END;
-   RUN;  
-
-   %*** Deletion of /tst files ***;
-   %_dir(i_path=&l_target./tst/&i_scnid.%str(*), o_out=dir3);
-   DATA _NULL_;
-      FILE "%sysfunc(pathname(work))/_scenarioFilesToDelete.sas" mod;
-      SET dir3;
-      IF prxmatch("/\/&i_scnid..*$/", filename) THEN DO;
-         PUT '%LET rc=%_delfile(' filename ');';
-      END;
-   RUN;
-
-   %include "%sysfunc(pathname(work))/_scenarioFilesToDelete.sas";
-
-   %*** Deletion of /tst folders ***;
-   PROC SQL;
-     CREATE TABLE foldersToDelete AS
-     SELECT distinct tst_scnid, tst_casid, tst_id, lowcase(tst_type) as tst_type
-     FROM target.tst
-     WHERE tst_scnid = &i_scnid.;
-     ;
+   
+   PROC SQL NOPRINT;
+      CREATE TABLE scenarioFilesToDelete AS
+      SELECT scn_id
+      FROM scenariosToRun AS s
+      WHERE s.dorun = 1 AND scn_id IN (SELECT scn_id FROM target.scn)
+      ;
+      SELECT scn_id into :l_scnDel separated by ','
+      FROM scenarioFilesToDelete
+      ;
+      SELECT count(scn_id) AS cnt into :l_obs
+      FROM scenarioFilesToDelete
+      ;
    QUIT;
 
-   %LET l_nobs = %_nobs(foldersToDelete);
-   %*** Write and execute cmd file only if table foldersToDelete is not empty ***;
-   %IF &l_nobs > 0 %THEN %DO;
-      DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd";
-         SET foldersToDelete;
-         PUT "&g_removedir ""&l_target./tst/_" tst_scnid +(-1)"_" tst_casid +(-1)"_" tst_id +(-1) "_" tst_type +(-1)"""&g_endcommand";
-      RUN;
-      %_executeCMDFile(%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd);
-   %END;
+   %IF &l_obs GT 0 %THEN %DO;
+      %*** Dir for deletion of /rep, /tst and /log files *;
+      %_dir(i_path=&l_target./rep/, o_out=rep);
+      %_dir(i_path=&l_target./log/, o_out=log);
+      %_dir(i_path=&l_target./tst/, o_out=tst);
 
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/_scenarioFilesToDelete.sas";
+         SET scenarioFilesToDelete nobs=numobs_dorun;
+
+         DO i=1 TO numobs_log;
+            SET log nobs=numobs_log point=i;
+            IF index(membername, put(scn_id,z3.)) = 1 THEN DO;
+               PUT '%PUT Delete ' filename ' RC: %_delfile(' filename ');';
+            END;
+         END;
+         DO j=1 TO numobs_rep;
+            SET rep nobs=numobs_rep point=j;
+            IF index(membername, put(scn_id,z3.)) = 1 OR
+               index(membername, catt("_", put(scn_id,z3.))) = 1 OR
+               index(membername, catt("cas_", put(scn_id,z3.),"_")) = 1 OR
+               index(membername, catt("tcg_", put(scn_id,z3.))) = 1
+            THEN DO;
+               PUT '%PUT Delete ' filename ' RC: %_delfile(' filename ');';
+            END;
+         END;
+         DO k=1 TO numobs_tst;
+            SET tst nobs=numobs_tst point=k;
+            IF index(membername, put(scn_id,z3.)) = 1 THEN DO;
+               PUT '%PUT Delete ' filename ' RC: %_delfile(' filename ');';
+            END;
+         END;
+      RUN;
+      %INCLUDE "%sysfunc(pathname(work))/_scenarioFilesToDelete.sas";
+
+      %*** Deletion of /tst folders ***;
+      %_dir(i_path=&l_target./tst/, i_recursive=1, o_out=tst_folder);
+      
+      %LET l_len = %sysfunc(length(&l_target./tst/));
+
+      DATA foldersToDelete;
+         SET tst_folder;
+         part = substr(filename, &l_len+1);
+         pos  = index(part, "/");
+         IF pos > 0 THEN DO;
+            folder = substr(part, 1, pos-1);
+            id = put(input(substr(folder,2,3),3.),z3.);
+            IF id IN (&l_scnDel) THEN DO;
+               OUTPUT;
+            END;
+         END;
+         KEEP id folder;
+      RUN;
+      
+      %LET l_nobs = %_nobs(foldersToDelete);
+      
+      %*** Write and execute cmd file only if table foldersToDelete is not empty ***;
+      %IF &l_nobs > 0 %THEN %DO;
+         PROC SORT DATA = foldersToDelete nodupkey;
+            BY folder;
+         RUN;
+      
+         DATA _NULL_;
+            FILE "%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd";
+            SET foldersToDelete;
+            PUT "&g_removedir ""&l_target./tst/" folder+(-1)"""&g_endcommand";
+         RUN;
+         %_executeCMDFile(%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd);
+      %END;
+   %END;
 %MEND _deletescenariofiles;
 /** \endcond */
-
-
-

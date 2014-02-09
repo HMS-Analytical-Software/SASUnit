@@ -19,23 +19,30 @@
    %LOCAL l_abs_path;
    %LET l_abs_path = %_abspath(&g_root, &g_target);
    
-   %*** Create test data base ***;
+   %*** Create tables needed ***;
    PROC SQL;
-      create table work.tst
-      (
-      tst_scnid   num   format=z3.,
-      tst_casid   num   format=z3.,
-      tst_id      num   format=z3.,
-      tst_type    char(35)
+      create table work.scn(COMPRESS=CHAR)
+      (                                          
+          scn_id  INT FORMAT=z3.   /* number of scenario */
+      );
+      create table work.scenariosToRun
+      (                                          
+          scn_id  INT FORMAT=z3.,   /* number of scenario */
+          dorun   INT
       );
    QUIT;
 
    PROC SQL;
-      insert into work.tst(tst_scnid,tst_casid,tst_id ,tst_type)
-      values(001,005,004,"assertlibrary")
-      values(001,009,001,"assertlibrary")
-      values(002,002,001,"assertreport")
-      values(003,002,001,"assertreport")
+      insert into work.scn(scn_id)
+      values(1)
+      values(2)
+      values(3)
+      ;
+      insert into work.scenariosToRun(scn_id, dorun)
+      values(1, 1)
+      values(2, 0)
+      values(3, 0)
+      values(4, 1)
       ;
    QUIT;
 
@@ -86,18 +93,34 @@
       DATA _NULL_;
          FILE "%sysfunc(pathname(work))/tst/_001_005_004_assertlibrary/test.sas7bdat";
          PUT "hugo&i.";
+      RUN;
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/tst/_001_009_001_assertlibrary/test1.sas7bdat";
+         PUT "hugo&i.";
+      RUN;
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/tst/_002_002_001_assertreport/test.sas7bdat";
+         PUT "hugo&i.";
+      RUN;
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/tst/_001_005_004_assertlibrary/test1.sas7bdat";
+         PUT "hugo&i.";
+      RUN;  
+      DATA _NULL_;
+         FILE "%sysfunc(pathname(work))/tst/_003_002_001_assertreport/test.sas7bdat";
+         PUT "hugo&i.";
       RUN;      
    %END;
 %MEND _deletescenariofiles_crtTstFls;
 
 %*** Initialize/create test files ***;
-%_deletescenariofiles_crtTstFls();
+%_deletescenariofiles_crtTstFls;
 
 /* test case 1 ------------------------------------ */
-%initTestcase(i_object=_deleteScenarioFiles.sas, i_desc=Test the deletion of scenario files and folders)
+%initTestcase(i_object=_deleteScenarioFiles.sas, i_desc=Test the deletion of scenario files and folders);
 /*-- switch to example database --------------------*/
 %_switch();
-%_deletescenariofiles(i_scnid=001);
+%_deletescenariofiles;
 /*-- switch to real database -----------------------*/
 %_switch();
 %endTestcall()

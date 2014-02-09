@@ -151,11 +151,8 @@
                   );
 
    /*-- if scenario already exists and has been changed: delete scenario files-----*/
-   options noxwait;
-   data _null_;
-      set scenariosToRun(where=(dorun=1));
-      call execute(resolve('%_deletescenariofiles(i_scnid=' || put(scn_id,z3.) || ')'));
-   run;
+   /* options noxwait; */
+   %_deletescenariofiles;
 
    PROC SQL NOPRINT;
       DELETE FROM target.cas WHERE cas_scnid in (select scn_id from scenariosToRun where dorun=1);
