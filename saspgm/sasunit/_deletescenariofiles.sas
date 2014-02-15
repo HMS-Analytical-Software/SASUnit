@@ -5,10 +5,10 @@
    \brief      Deletes all appendant files in the log, tst and rep folders.
                Called before a scenario is being executed in order to avoid disused files
 
-   \version    \$Revision: 216 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2013-07-31 09:03:21 +0200 (Mi, 31 Jul 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_deletescenariofiles.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -76,7 +76,7 @@
          SET foldersToDelete;
          PUT "&g_removedir ""&l_target./tst/_" tst_scnid +(-1)"_" tst_casid +(-1)"_" tst_id +(-1) "_" tst_type +(-1)"""&g_endcommand";
       RUN;
-      %_executeCMDFile("%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd");
+      %_executeCMDFile(%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd);
    %END;
 
 %MEND _deletescenariofiles;

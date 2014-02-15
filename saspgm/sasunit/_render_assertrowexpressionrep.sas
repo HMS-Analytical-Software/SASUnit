@@ -46,7 +46,7 @@
    LIBNAME _areLib "&l_path";
 
    %IF (&o_html.) %then %do;
-      ODS HTML FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._are_rep.html" stylesheet=(url="SAS_SASUnit.css");
+      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._are_rep.html" stylesheet=(url="SAS_SASUnit.css");
    %END;
 
    TITLE  "&g_nls_reportRowExpression_001.";

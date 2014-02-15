@@ -2,10 +2,10 @@
    \file
    \ingroup    SASUNIT_TEST 
    \brief      Tests for calls to macros including special characters as parameter
-   \version    \$Revision: 101 $
-   \author     \$Author: b-braun $
-   \date       \$Date: 2013-01-08 11:24:50 +0100 (Di, 08 Jan 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/test/assertcolumns_test.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
 
 */ /** \cond */ 
 

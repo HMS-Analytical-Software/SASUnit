@@ -3,10 +3,10 @@
 
    \brief      create HTML pages for assertForeignKey 
 
-   \version    \$Revision: 191 $
-   \author     \$Author: b-braun $
-   \date       \$Date: 2013-06-05 15:23:22 +0200 (Mi, 05 Jun 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_render_assertForeignKeyRep.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -46,7 +46,7 @@
    LIBNAME _afkLib "&l_path";
 
    %IF (&o_html.) %then %do;
-      ODS HTML FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._foreignkey_rep.html" stylesheet=(url="SAS_SASUnit.css");
+      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._foreignkey_rep.html" stylesheet=(url="SAS_SASUnit.css");
    %END;
 
       TITLE "&g_nls_reportForeignKey_011";

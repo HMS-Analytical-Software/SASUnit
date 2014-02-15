@@ -4,10 +4,10 @@
 
    \brief      Creation of XML-based test report according to the JUnit-Sepcification
 
-   \version    \$Revision: 191 $
-   \author     \$Author: thieleman $
-   \date       \$Date: 2013-07-31 09:01:22 +0200 (Mi, 31 Jul 2013) $
-   \sa         \$HeadURL: svn://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/reportsasunit.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt

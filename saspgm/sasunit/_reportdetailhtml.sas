@@ -223,7 +223,7 @@
       title j=c "&l_title.";
       %do i_cas=1 %to &_numCases.;      
          %if (&o_html.) %then %do;
-            ods html file="&o_path./&o_file._%sysfunc (putn (&i_cas., z3.)).html" 
+            ods html4 file="&o_path./&o_file._%sysfunc (putn (&i_cas., z3.)).html" 
                           (TITLE="&l_title.") 
                           headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                           metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"

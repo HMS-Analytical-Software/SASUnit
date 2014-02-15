@@ -186,7 +186,7 @@
    title j=c "&l_title.";
 
    %if (&o_html.) %then %do;
-      ods html file="&o_path./&o_file..html" 
+      ods html4 file="&o_path./&o_file..html" 
                     (TITLE="&l_title.") 
                     headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
@@ -323,7 +323,7 @@
       %end;
       
       %if (&o_html.) %then %do;
-         ods html anchor="AUTON&l_cAuton.";
+         ods html4 anchor="AUTON&l_cAuton.";
       %end;
 
       proc report data=work._current_auton nowd missing spanrows
@@ -359,7 +359,7 @@
 
       *** Render separation line between program libraries ***;
       %if (&o_html. AND &i. ne &l_listCount.) %then %do;
-         ods html text="^{RAW <hr size=""1"">}";
+         ods html4 text="^{RAW <hr size=""1"">}";
       %end;
 
       proc delete data=work._current_auton;

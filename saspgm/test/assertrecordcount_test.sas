@@ -4,10 +4,10 @@
 
    \brief      Test of assertRecordCount.sas - has to fail! 3 errors (1 non-existing variable, 2 errors invalid where-syntax)
 
-   \version    \$Revision: 190 $
-   \author     \$Author: b-braun $
-   \date       \$Date: 2013-05-29 18:04:27 +0200 (Mi, 29 Mai 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/test/asserttableexists_test.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt

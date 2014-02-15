@@ -494,7 +494,7 @@
       RUN;
 
       /*-- create report -----------------------------------------------------------*/
-      ODS HTML CLOSE;
+      ODS HTML4 CLOSE;
       ODS LISTING CLOSE;
       %INCLUDE repgen / source2;
       FILENAME repgen;

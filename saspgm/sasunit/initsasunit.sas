@@ -76,7 +76,7 @@
 
    %GLOBAL g_version g_revision;
 
-   %LET g_version   = 1.2.1_9;
+   %LET g_version   = 1.3.0;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
 

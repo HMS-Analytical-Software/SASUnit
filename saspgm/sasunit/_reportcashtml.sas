@@ -188,7 +188,7 @@
    title j=c "&l_title.";
 
    %if (&o_html.) %then %do;
-      ods html file="&o_path./&o_file..html" 
+      ods html4 file="&o_path./&o_file..html" 
                     (TITLE="&l_title.") 
                     headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
@@ -214,7 +214,7 @@
       run;
       *** Create specific HTML-Anchors ***;
       %if (&o_html.) %then %do;
-         ods html anchor="SCN%sysfunc(putn(&l_scnid.,z3.))_";
+         ods html4 anchor="SCN%sysfunc(putn(&l_scnid.,z3.))_";
       %end;
       proc print data=work._current_scn_overview noobs label 
             style(report)=blindTable [borderwidth=0]
@@ -249,7 +249,7 @@
 
       *** Render separation line between scenarios ***;
       %if (&o_html. AND &l_scnid. ne &l_anzScenarios.) %then %do;
-         ods html text="^{RAW <hr size=""1"">}";
+         ods html4 text="^{RAW <hr size=""1"">}";
       %end;
 
       proc delete data=work._current_scn_overview;
