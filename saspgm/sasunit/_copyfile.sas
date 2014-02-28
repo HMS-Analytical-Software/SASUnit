@@ -7,17 +7,19 @@
 
    \%copyfile (input, output)
 
-   \param   i_file   input file with complete path
-   \param   o_file   output file with complete path
-
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+
+   \param   i_file   input file with complete path
+   \param   o_file   output file with complete path
+
 */ /** \cond */
 
 %MACRO _copyFile (i_file  /* input file */

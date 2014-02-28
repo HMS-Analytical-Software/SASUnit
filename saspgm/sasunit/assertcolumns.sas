@@ -5,19 +5,20 @@
    \brief      Check whether there are differences between the values of 
                the columns of two sas data sets (PROC COMPARE).
 
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-
-               The values of the two data sets are considered to match each other
+               The values of the two data sets are considered to match each other 
                if all columns existing in data set i_expected are also existing in 
-               data set i_actual and if all coresponding values are deviating from
-               each other less than a maximal deviation of i_fuzz (Caution: this
-               corresponds to the parameter 'criterion' of PROC COMPARE, the 
-               parameter 'fuzz' has a different meaning in the context of PROC COMPARE)
+               data set i_actual. <br />
+               Optionally one can define a deviation for numerical values so that 
+               all corresponding values can be deviating from each other less than 
+               a maximal deviation of i_fuzz (Caution: this corresponds to the 
+               parameter 'criterion' of PROC COMPARE, the parameter 'fuzz' has 
+               a different meaning in the context of PROC COMPARE)
 
    
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -26,26 +27,27 @@
 
    \param   i_expected     data set with expected values
    \param   i_actual       data set with actual values
-   \param   i_desc         description of the assertion to be checked
+   \param   i_desc         description of the assertion to be checked \n
+                           default: "Compare datasets"
    \param   i_fuzz         optional: maximal deviation of expected and actual values, 
                            only for numerical values 
-   \param   i_allow        optional: accepted differences between data sets, default setting is DSLABEL LABEL COMPVAR
-                           DSLABEL  Data set labels differ 
-                           DSTYPE   Data set types differ 
-                           INFORMAT Variable has different informat 
-                           FORMAT   Variable has different format 
-                           LENGTH   Variable has different length 
-                           LABEL    Variable has different label 
-                           BASEOBS  Base data set has observation not in comparison 
-                           COMPOBS  Comparison data set has observation not in base 
-                           BASEBY   Base data set has BY group not in comparison 
-                           COMPBY   Comparison data set has BY group not in base 
-                           BASEVAR  Base data set has variable not in comparison 
-                           COMPVAR  Comparison data set has variable not in base 
-                           VALUE    A value comparison was unequal 
-                           TYPE     Conflicting variable types 
-                           BYVAR    BY variables do not match 
-                           ERROR    Fatal error: comparison not done
+   \param   i_allow        optional: accepted differences between data sets, default setting is DSLABEL LABEL COMPVAR<br />
+                           DSLABEL  Data set labels differ <br />
+                           DSTYPE   Data set types differ <br />
+                           INFORMAT Variable has different informat <br /> 
+                           FORMAT   Variable has different format <br />
+                           LENGTH   Variable has different length <br />
+                           LABEL    Variable has different label <br />
+                           BASEOBS  Base data set has observation not in comparison <br />
+                           COMPOBS  Comparison data set has observation not in base <br />
+                           BASEBY   Base data set has BY group not in comparison <br />
+                           COMPBY   Comparison data set has BY group not in base <br />
+                           BASEVAR  Base data set has variable not in comparison <br />
+                           COMPVAR  Comparison data set has variable not in base <br />
+                           VALUE    A value comparison was unequal <br />
+                           TYPE     Conflicting variable types <br />
+                           BYVAR    BY variables do not match <br />
+                           ERROR    Fatal error: comparison not done <br />
    \param   i_id           optional: Id-column for matching of observations    
    \param   o_maxReportObs optional: number of observations that are copied from the expected and actual
                                      data set. default setting is MAX
@@ -54,6 +56,7 @@
 
    \return  ODS-document containing a comparison report; moreover, if o_maxReportObs ne 0, the expected and 
             the actual data set are written to _acLib
+            
 */ /** \cond */ 
 
 %MACRO assertColumns (i_expected     =      

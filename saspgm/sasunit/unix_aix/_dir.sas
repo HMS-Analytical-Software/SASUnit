@@ -8,15 +8,16 @@
                filename (name of file with absolute path, path separator is slash) 
                changed (last modification data as SAS datetime).
 
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+   \sa         \$HeadURL$
+
    \param   i_path       name of directory or file group (containing wildcards) with full path
    \param   i_recursive  1 .. search recursively in subdirectories, default is 0
    \param   o_out        output dataset, default is work.dir. This dataset contains two columns
                          named filename and changed
-
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
-   \sa         \$HeadURL$
 
 */ /** \cond */
 

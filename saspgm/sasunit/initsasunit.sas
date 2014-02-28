@@ -4,13 +4,12 @@
 
    \brief      Initialization of a test suite that may comprise several test scenarios. 
 
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-
                An existing test repository is opened or a new test repository is created.
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the unit testing framework for SAS(R) programs.
@@ -46,6 +45,7 @@
    \param   i_verbose      optional: controls whether results of asserts are written to the SAS log
                            0 (default).. no results written to SAS log
                            1 .. results are written to SAS log
+                           
 */ /** \cond */ 
 
 
@@ -76,7 +76,7 @@
 
    %GLOBAL g_version g_revision;
 
-   %LET g_version   = 1.3.0;
+   %LET g_version   = 1.2.9;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
 

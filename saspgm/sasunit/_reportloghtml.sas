@@ -9,6 +9,16 @@
    \todo render results using ODS. Technical implementation of links for multiple errors is difficult and must be redesigned for ODS.
    \todo consolidate all logscan logic into datastep functions and use them throughout the project.\nThe SAS option CMPLIB must then be set for all sessions to use these functions.
 
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+   \sa         \$HeadURL$
+   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+
    \param i_log     Logdatei mit kpl. Pfad
    \param i_title   String für Titel
    \param o_html    html-Datei Ausgabe kpl. Pfad
@@ -17,15 +27,6 @@
                     1 ...  Warnungen aufgetreten
                     2 ...  Fehler (ggfs. auch Warnungen) aufgetreten
                     3 ...  Fehler im Ablauf dieses Makros
-
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
-   \sa         \$HeadURL$
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
 

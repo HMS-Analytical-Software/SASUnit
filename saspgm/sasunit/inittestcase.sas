@@ -5,8 +5,6 @@
    \brief      Start of a new test case that comprises an invocation of
                a program under test and one or more assertions.
 
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-
                internally: 
                - Insertion of relevant data into the test repository
                - Redirection of SAS log
@@ -15,6 +13,7 @@
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -26,7 +25,8 @@
                               file is given, without path information
    \param   i_desc            description of the test case
    \param   i_specdoc         optional: path of specification document
-   \return
+   \return  Information on current testcase in macro variables
+   
 */ /** \cond */ 
 
 %MACRO initTestcase(i_object   =  

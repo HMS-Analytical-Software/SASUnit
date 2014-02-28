@@ -3,6 +3,16 @@
     \ingroup  SASUNIT_UTIL
 
     \brief    determine the language dependant symbols used for NOTE, ERROR, WARNING in the SAS log
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+   \sa         \$HeadURL$
+   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+
     \param    r_note_symbol name of macro variable used to return the symbol for NOTE 
                             (default note_symbol)
     \param    r_warning_symbol name of macro variable used to return the symbol for WARNING
@@ -10,14 +20,6 @@
     \param    r_error_symbol name of macro variable used to return the symbol for ERROR
                             (default error_symbol)
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
-   \sa         \$HeadURL$
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
 %MACRO _detectSymbols(r_note_symbol    = note_symbol

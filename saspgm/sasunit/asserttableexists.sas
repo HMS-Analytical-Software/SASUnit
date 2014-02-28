@@ -2,35 +2,37 @@
    \file
    \ingroup    SASUNIT_ASSERT 
 
-   \brief      Check whether a certain data set, view or catalogue exists. Setting the optional parameter i_not to 1 allows tests whether a 
-               certain data set, view or catalogue does not exist.
-               Step 1: Check weather library has been assigned successfully.
+   \brief      Check whether a certain data set, view or catalogue exists. 
+   
+               Setting the optional parameter i_not to 1 allows to test whether a certain data set, view or catalogue does not exist. \n
+               Step 1: Check whether library has been assigned successfully. \n
                Step 2: Check for existence with exist function
                      
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_libref       Library in which the test candidate can be found
-   \param   i_memname      Name of data set, view or catalog to be tested
-   \param   i_target       Optional parameter: Explicit test for existens of a dataset,view or catalog (Possible arguments: data, view, catalog). 
+   \param   i_libref       library in which the test candidate can be found
+   \param   i_memname      name of data set, view or catalogue to be tested
+   \param   i_target       optional: Explicit test for existence of a dataset,view or catalogue (Possible arguments: data, view, catalog). 
                               If i_target is not given data will be used as default.
-   \param   i_desc         Optional Parameter: Description of the assertion to be checked
-   \param   i_not          Optional parameter: negates the assertion, if set to 1. Set to 0 no negation takes place. 
+   \param   i_desc         description of the assertion to be checked \n
+                           default: "Check for existence of a specific dataset"
+   \param   i_not          optional: negates the assertion, if set to 1. Set to 0 no negation takes place. 
                            If the library hasn't been assigned successfully parameter i_not has no effect.
+                           
 */ /** \cond */
 
 %MACRO assertTableExists (i_libref  =
                          ,i_memname =
                          ,i_target  = DATA
-                         ,i_desc    = Check for existance of a specific dataset
+                         ,i_desc    = Check for existence of a specific dataset
                          ,i_not     = 0
                          );
 

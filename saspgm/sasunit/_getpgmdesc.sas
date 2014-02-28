@@ -3,19 +3,20 @@
 
    \brief      Retrieve program description from Doxygen brief tag
 
-   \param   i_pgmfile Name and path of source code file
-   \param   r_desc Name of the macro variable that holds the description
-
-   \return  descriptive text of program
-
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+
+   \param   i_pgmfile Name and path of source code file
+   \param   r_desc Name of the macro variable that holds the description
+
+   \return  descriptive text of program
 
 */ /** \cond */ 
 

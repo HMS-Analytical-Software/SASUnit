@@ -4,11 +4,11 @@
 
    \brief      Check whether at least one record exists which satisfies a certain WHERE condition.
 
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -17,12 +17,14 @@
 
    \param   i_dataset      data set to check
    \param   i_whereExpr    data set where-expression to be checked
-   \param   i_desc         description of the assertion to be checked
+   \param   i_desc         description of the assertion to be checked \n
+                           default: "Check for existence of specific records"
+   
 */ /** \cond */ 
 
 %MACRO assertRecordExists (i_dataset      =      
                           ,i_whereExpr    =      
-                          ,i_desc         = Check for existance of specific records
+                          ,i_desc         = Check for existence of specific records
                           );
 
    /*-- verify correct sequence of calls-----------------------------------------*/

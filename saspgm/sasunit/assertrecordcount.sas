@@ -3,26 +3,29 @@
    \ingroup    SASUNIT_ASSERT 
 
    \brief      This assert checks whether a certain number of records exist in a data set specified by parameters i_libref and i_memname.
+   
                Furthermore a where condition can be specified (if not specified set to 1) as well as the number of expected records 
                in the data set that meet the given where condition.
-
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+     
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param     i_libref         Library containing the data set
-   \param     i_memname        Data set to be tested    
-   \param     i_operator       Optional Parameter: logical operator to compare i_recordsExp and l_actual; if not specified "EQ" is assumed as default.
-   \param     i_recordsExp     Number of records expected: a numeric value >= 0
-   \param     i_where          Optional Parameter: where condition to be checked. Set to 1 by default. 
-   \param     i_desc           Optional Parameter: description of the assertion to be checked
+   \param     i_libref         library containing the data set
+   \param     i_memname        data set to be tested    
+   \param     i_operator       optional: logical operator to compare i_recordsExp and l_actual; if not specified "EQ" is assumed as default.
+   \param     i_recordsExp     number of records expected: a numeric value >= 0
+   \param     i_where          optional: where condition to be checked. Set to 1 by default. 
+   \param     i_desc           description of the assertion to be checked \n
+                               default: "Check for a specific number of records"
+   
 */ /** \cond */ 
 
 %MACRO assertRecordCount(i_libref         = 

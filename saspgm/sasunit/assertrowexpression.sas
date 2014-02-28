@@ -2,34 +2,33 @@
    \file
    \ingroup    SASUNIT_ASSERT 
 
-   \brief      This assert checks whether a certain number of records exist in a data set specified by parameters i_libref and i_memname.
-               Furthermor a where condition can be specified (if not specified set to 1) as well as a the number of expected records 
-               in the dataset that meet the given where condition.
+   \brief      Checks if all observations meet a given WHERE expression.
 
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-
+               
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param     i_libref         Library containing the data set
-   \param     i_memname        Data set to be tested    
-   \param     i_where          Where condition that should be met by the variable 
-   \param     i_desc           Optional Parameter: Description of the assertion to be checked
-   \param     o_maxReportObs   Optional Parameter: Maximum number of invalid observations to printed in report (default: MAX)
-   \param     o_listVars       Optional Parameter: Names the variables to be listed in the report
+   \param     i_libref         library containing the data set
+   \param     i_memname        data set to be tested    
+   \param     i_where          where condition that should be met by the variable 
+   \param     i_desc           optional: Description of the assertion to be checked \n
+                               default: "Check if all observations meet the where expression"
+   \param     o_maxReportObs   optional: Maximum number of invalid observations to be printed in report (default: MAX) 
+   \param     o_listVars       optional: Names the variables to be listed in the report
    
 */ /** \cond */ 
 
 %MACRO assertRowExpression(i_libref         = 
                           ,i_memname        = 
                           ,i_where          =
-                          ,i_desc           = Check of all observations meet the where expression
+                          ,i_desc           = Check if all observations meet the where expression
                           ,o_maxReportObs   = MAX
                           ,o_listVars       = _NONE_
                           );

@@ -5,16 +5,14 @@
    \brief      Check whether a report file exists and was created during the current SAS session.
 
                It is possible to write an instruction into the test protocol indicating the need
-               to perform a manual check of the report.
-
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-
+               to perform a manual check of the report. \n
                Writes an entry into the test repository indicating the need to perform a manual 
                check of the report and copies the report and a given report template (optional).
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -23,10 +21,12 @@
 
    \param   i_expected           optional: file name for the expected file (full path or file in &g_refdata)
    \param   i_actual             file name for created report file (full path!)
-   \param   i_desc               description of the assertion to be checked 
-   \param   i_manual             1: in case of a positive check result write an entry indicating a manual check (empty rectangle). 
-                                 0: in case of a positive check result, write an entry indicating OK (green hook).
+   \param   i_desc               description of the assertion to be checked \n
+                                 default: "Compare documents"
+   \param   i_manual             1: in case of a positive check result, write an entry indicating a manual check (empty rectangle). \n
+                                 0: in case of a positive check result, write an entry indicating OK (green hook). \n
                                  default: 1
+                                 
 */ /** \cond */ 
 
 %MACRO assertReport (i_expected           =       

@@ -5,33 +5,33 @@
    \brief      Checks whether a foreign key relationship between the fields in two data sets exists.
 
                It is possible to check for a foreign key relationship for composite keys. Number of specified keys in parameters i_mstKey and i_lookupKey
-               must be the same and keys have to in the same order.
-               If more than one key is specified please provide parameter i_cmpKeyLen with number of keys
-               Eventualy needed renaming of key variables takes place automatically               
+               must be the same and keys have to be in the same order. If more than one key is specified please provide parameter i_cmpKeyLen with number of keys.
+               Eventually needed renaming of key variables takes place automatically.               
                      
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_mstrLib            Library of data set treated as master table
-   \param   i_mstMem             Member name of data set treated as master table
-   \param   i_mstKey             Key or keys of the master table. Multiple keys have to be separated by blank
-   \param   i_unique             Optional parameter: by default set to true
-   \param   i_lookupLib          Library of data set treated as lookup table
-   \param   i_lookupMem          Member name of data set treated as lookup table
-   \param   i_lookupKey          Key or keys of the master table. Multiple keys have to be separated by blank
-   \param   i_cmpKeyLen          Number of keys specified in i_mstKey and i_lookupKey
-   \param   o_maxObsRprtFail     Optional parameter: maximum number of records to be listed where lookup failed. By default set to MAX
-   \param   o_listingVars        Additional variables from master dataset to be listed. Additional variables have to be separated by blanks
-   \param   o_treatMissings      Optional parameter: Handling of missing values in the master data set: Possible parameters are IGNORE, DISALLOW, VALUE(default)
-   \param   i_desc               A description of the test                  
+   \param   i_mstrLib            library of data set treated as master table
+   \param   i_mstMem             member name of data set treated as master table
+   \param   i_mstKey             key or keys of the master table. Multiple keys have to be separated by blank
+   \param   i_unique             optional: by default set to true
+   \param   i_lookupLib          library of data set treated as lookup table
+   \param   i_lookupMem          member name of data set treated as lookup table
+   \param   i_lookupKey          key or keys of the lookup table. Multiple keys have to be separated by blank
+   \param   i_cmpKeyLen          number of keys specified in i_mstKey and i_lookupKey
+   \param   o_maxObsRprtFail     optional: maximum number of records to be listed where lookup failed. By default set to MAX
+   \param   o_listingVars        additional variables from master dataset to be listed. Additional variables have to be separated by blanks
+   \param   o_treatMissings      optional: Handling of missing values in the master data set: Possible parameters are IGNORE, DISALLOW, VALUE(default)
+   \param   i_desc               a description of the test \n
+                                 default: "Check for foreign key relation"
 
 */ /** \cond */ 
 

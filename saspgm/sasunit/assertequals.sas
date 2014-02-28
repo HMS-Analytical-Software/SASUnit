@@ -2,26 +2,28 @@
    \file
    \ingroup    SASUNIT_ASSERT
 
-   \brief      Check whether there are differences between the value of 
-               a macro variable and an expected character string.
-
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+   \brief      Check whether there are differences between the value of a macro variable and an expected value. 
+   
+               The values can be character string or numerical. <br />
+               Optionally one can define a deviation for numerical values so that the  values can be deviating from each other less than a maximal deviation of i_fuzz.
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_expected       expected value
-   \param   i_actual         actual value
-   \param   i_desc           description of the assertion to be checked
-   \param   i_fuzz           optional: maximal deviation of expected and actual values, 
-                             only for numerical values 
-
+   \param   i_expected     expected value
+   \param   i_actual       actual value
+   \param   i_desc         description of the assertion to be checked \n
+                           default: "Compare Values"
+   \param   i_fuzz         optional: maximal deviation of expected and actual values, 
+                           only for numerical values 
+                           
 */ /** \cond */ 
 
 %MACRO assertEquals (i_expected =      

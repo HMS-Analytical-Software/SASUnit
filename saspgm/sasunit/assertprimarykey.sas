@@ -2,27 +2,26 @@
    \file
    \ingroup    SASUNIT_ASSERT 
 
-   \brief      Checks whether a set columns can e used as primary key for the data set.
-
-                     
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+   \brief      Checks whether a set of columns can be used as primary key for the data set.
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_Library            Library of data set treated as master table
-   \param   i_Dataset            Member name of data set treated as master table
-   \param   i_Variables          Variables of the data set, that should be used as key. Multiple variables have to be separated by blank
-   \param   i_desc               A description of the test                  
-   \param   o_maxReportObs       Optional parameter: maximum number of records to be listed where lookup failed. By default set to MAX
-   \param   o_listingVars        Additional variables from master dataset to be listed. Additional variables have to be separated by blanks
-   \param   o_treatMissings      Optional parameter: Handling of missing values in the master data set: Possible parameters are IGNORE, DISALLOW, VALUE(default)
+   \param   i_Library            library of data set treated as master table
+   \param   i_Dataset            member name of data set treated as master table
+   \param   i_Variables          variables of the data set, that should be used as key. Multiple variables have to be separated by blank
+   \param   i_desc               a description of the test \n
+                                 default: "Check for primary key"
+   \param   o_maxReportObs       optional: maximum number of records to be listed where lookup failed. By default set to MAX
+   \param   o_listingVars        additional variables from master dataset to be listed. Additional variables have to be separated by blanks
+   \param   o_treatMissings      optional: Handling of missing values in the master data set: Possible parameters are IGNORE, DISALLOW, VALUE(default)
 
 */ /** \cond */ 
 

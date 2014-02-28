@@ -4,8 +4,6 @@
 
    \brief      Invokes one or more test scenarios.
 
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-
                Procedure:
                - Check whether test repository was already initialized with \%initSASUnit, if not: End.
                - Determination of the test scenarios to be invoked.
@@ -21,6 +19,7 @@
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -34,6 +33,7 @@
                            \%initSASUnit will be used as prefix to the specified path
    \param   i_recursive    if a search pattern is specified: 1 .. subdirectories of &i_source are searched, too.
                            default 0 ... do not search subdirectories.
+                           
 */ /** \cond */ 
 
 %MACRO runSASUnit(i_source     =

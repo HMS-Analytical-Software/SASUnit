@@ -4,14 +4,13 @@
 
    \brief      Check whether errors or warnings appear in the log.
 
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-
                If number of errors and warnings does not appear in the log as expected, 
                the check of the assertion will fail.
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -20,7 +19,9 @@
 
    \param   i_errors       number of errors, default 0
    \param   i_warnings     number of warnings, default 0
-   \param   i_desc         description of the assertion to be checked, default value: "Scan log for erros"
+   \param   i_desc         description of the assertion to be checked \n
+                           default: "Scan log for errors"
+   
 */ /** \cond */ 
 
 %MACRO assertLog (i_errors   = 0

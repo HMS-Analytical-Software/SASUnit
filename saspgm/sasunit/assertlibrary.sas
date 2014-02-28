@@ -2,15 +2,15 @@
    \file
    \ingroup    SASUNIT_ASSERT 
 
-   \brief      Check whether all files are identical in the libraries i_expcected and i_actual.
+   \brief      Check whether all files are identical in the libraries i_expected and i_actual.
                
                The comparison report is created later, as PROC REPORT does not support ODS Document.
 
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -19,19 +19,23 @@
 
    \param     i_actual       library with created files
    \param     i_expected     library with expected files
-   \param     i_desc         description of the assertion to be checked, default value: "Bibliotheken prüfen"
-   \param     i_LibraryCheck stringency of the library check: STRICT (default) -> Contents of libraries have to be identical. \n
+   \param     i_desc         description of the assertion to be checked \n
+                             default value: "Compare libraries"
+   \param     i_LibraryCheck stringency of the library check: \n
+                             STRICT (default) -> Contents of libraries have to be identical. \n
                              MORETABLES -> Library i_actual is allowed to have more tables as library i_expected. 
-   \param     i_CompareCheck stringency of the table check: STRICT (default) -> Tables have to be identical. \n
+   \param     i_CompareCheck stringency of the table check: \n
+                             STRICT (default) -> Tables have to be identical. \n
                              MORECOLUMNS -> Tables in library i_actual are allowed to have more columns as tables in library i_expected. \n
                              MOREOBS -> Tables in library i_actual are allowed to have more rows as tables in library i_expected. \n
                              MORECOLSNOBS -> Tables in library i_actual are allowed to have more columns and to have more rows as tables in library i_expected.
    \param     i_fuzz         optional: maximal deviation of expected and actual values, 
                              only for numerical values  
    \param     i_id           optional: Id-column for matching of observations   
-   \param     i_ExcludeList  optional: Names of files to be exluded from the comparison.
+   \param     i_ExcludeList  optional: Names of files to be excluded from the comparison.
 
    \return    ODS documents with the contents of the libraries and a SAS file with the comparison result.
+   
 */ /** \cond */ 
 
 %MACRO assertLibrary (i_actual       = _NONE_

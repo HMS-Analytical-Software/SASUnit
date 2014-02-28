@@ -4,8 +4,6 @@
 
    \brief      Check whether a certain message appears in the log.
 
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-
                If the message does not appear in the log as expected, 
                the check of the assertion will fail.
                If i_not is set to 1, the check of the assertion will fail in case the 
@@ -14,17 +12,20 @@
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_logmsg       message of interest (Perl Regular Expression),non-case-sensitive log scan
+   \param   i_logmsg       message of interest (Perl Regular Expression), non-case-sensitive log scan,
                            special characters have to be quoted with a prefixed single backslash,
                            see http://support.sas.com/onlinedoc/913/getDoc/de/lrdict.hlp/a002288677.htm#a002405779
-   \param   i_desc         description of the assertion to be checked, default value: "Scan for log messages"
+   \param   i_desc         description of the assertion to be checked \n
+                           default: "Scan for log messages"
    \param   i_not          negates the assertion, if set to 1
+   
 */ /** \cond */ 
 
 %MACRO assertLogMsg (i_logmsg   =       
