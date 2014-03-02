@@ -2,10 +2,10 @@
    \file
    \ingroup    SASUNIT_ASSERT 
 
-   \brief      Checks whether a foreign key relationship between the fields in two data sets exists.
+   \brief      Checks whether a foreign key relationship between the columns of two data sets exists.
 
-               It is possible to check for a foreign key relationship for composite keys. Number of specified keys in parameters i_mstKey and i_lookupKey
-               must be the same and keys have to be in the same order. If more than one key is specified please provide parameter i_cmpKeyLen with number of keys.
+               This assert supports simple and composite keys. The number of specified columns in parameters i_mstKey and i_lookupKey
+               must be the same and columns have to be in the same order. If more than one column is specified the parameter i_cmpKeyLen has to be provided containing the number of columns.
                Eventually needed renaming of key variables takes place automatically.               
                      
 
@@ -13,6 +13,7 @@
    \author     \$Author$
    \date       \$Date$
    \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+					Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
