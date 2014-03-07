@@ -129,7 +129,10 @@
       end;
    run;
    
-   /*** Read all lines not explicitly marked as covered ***/
+   /*** Read all lines not explicitly marked as covered          ***/
+   /*** This can result in selecting no rows! So we need to      ***/
+   /*** preassign a value to missinglines. Does zero sound okay? ***/
+   %let MissingLines=0;
    proc sql noprint;
       select distinct nCounter into :MissingLines separated by ' ' from WORK.rowsOfInputFile 
       where nCounter not in (select distinct _line_ from WORK._MCoverage5  where _line_ not eq .);
