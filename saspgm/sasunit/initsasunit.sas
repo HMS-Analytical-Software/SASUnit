@@ -77,7 +77,7 @@
 
    %GLOBAL g_version g_revision;
 
-   %LET g_version   = 1.2.9;
+   %LET g_version   = 1.3.0;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
 
@@ -111,8 +111,8 @@
    /*-- check for operation system ----------------------------------------------*/
    %IF %_handleError(&l_macname.
                     ,WrongOS
-                    ,(%upcase(&sysscp.) NE WIN) AND (%upcase(&sysscpl.) NE LINUX) AND (%upcase(&sysscpl.) NE AIX)
-                    ,Invalid operating system - only WIN%str(,) LINUX AND AIX
+                    ,(%upcase(&sysscp.) NE WIN) AND (%upcase(&sysscpl.) NE LINUX) /*AND (%upcase(&sysscpl.) NE AIX)*/
+                    ,Invalid operating system - only WIN%str(,) LINUX/* AND AIX*/
                     ,i_verbose=&i_verbose.
                     ) 
    %THEN %GOTO errexit;
