@@ -31,7 +31,7 @@
 */ /** \cond */ 
 
 %MACRO _reportTreeHTML (i_repdata = 
-                       ,o_html    =
+                       ,o_html    = 0
                        );
 
 %LOCAL l_title;

@@ -22,7 +22,7 @@
 
 %macro _render_assertReportAct (i_sourceColumn=
                                ,i_expectedColumn=tst_exp
-                               ,o_html=
+                               ,o_html=0
                                ,o_targetColumn=
                                );
    IF &i_sourceColumn. EQ '^_' OR &i_sourceColumn. EQ '' THEN DO;

@@ -20,7 +20,7 @@
 */ /** \cond */ 
 
 %macro _render_assertPrimaryKeyAct (i_sourceColumn=
-                                   ,o_html=
+                                   ,o_html=0
                                    ,o_targetColumn=
                                    );
 

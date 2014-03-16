@@ -13,9 +13,11 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
+   \param   o_html         Test report in HTML-format?
+
 */ /** \cond */ 
 
-%MACRO _reportFooter (o_html=
+%MACRO _reportFooter (o_html=0
                      );
    %local l_footnote;
    %if (&o_html.) %then %do;

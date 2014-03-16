@@ -20,7 +20,7 @@
 */ /** \cond */  
 
 %macro _render_assertLogMsgExp (i_sourceColumn=
-                               ,o_html=
+                               ,o_html=0
                                ,o_targetColumn=
                                );
    hlp  = substr(&i_sourceColumn.,1,1); 

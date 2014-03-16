@@ -32,7 +32,7 @@
 
 %MACRO _reportLogHTML(i_log     =
                      ,i_title   = SAS-Log
-                     ,o_html    =
+                     ,o_html    = 0
                      ,r_rc      = logrc
                      );
 

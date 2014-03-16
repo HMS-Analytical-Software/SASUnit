@@ -20,7 +20,7 @@
 */ /** \cond */ 
 
 %macro _render_assertLogAct (i_sourceColumn=
-                            ,o_html=
+                            ,o_html=0
                             ,o_targetColumn=
                             );
    hlp="";

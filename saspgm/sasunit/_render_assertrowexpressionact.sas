@@ -20,7 +20,7 @@
 */ /** \cond */  
 
 %macro _render_assertRowExpressionAct (i_sourceColumn=
-                                      ,o_html=
+                                      ,o_html=0
                                       ,o_targetColumn=
                                       );
    href     = catt ('_',put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));

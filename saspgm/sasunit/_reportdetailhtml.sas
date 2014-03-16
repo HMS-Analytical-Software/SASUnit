@@ -25,7 +25,7 @@
 %MACRO _reportDetailHTML (i_repdata =
                          ,i_scnid   =
                          ,i_casid   = 
-                         ,o_html    =
+                         ,o_html    = 0
                          ,o_path    =
                          ,o_file    =
                          );

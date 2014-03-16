@@ -14,14 +14,13 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param      i_sourceColumn   name of the column holding the value
-   \param      i_expectedColumn name of the column holding the expected value.<em>(optional: Default=tst_exp)</em>
    \param      o_html           Test report in HTML-format?
    \param      o_targetColumn   name of the target column holding the ODS formatted value
 
 */ /** \cond */ 
 
 %macro _render_assertTableExistsAct (i_sourceColumn=
-                                    ,o_html=
+                                    ,o_html=0
                                     ,o_targetColumn=
                                     );
                                    

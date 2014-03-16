@@ -36,7 +36,7 @@
                      ,o_outputFile=
                      ,o_outputPath=
                      ,o_resVarName=
-                     ,o_html=
+                     ,o_html=0
                      );
 
    %local l_MacroName;

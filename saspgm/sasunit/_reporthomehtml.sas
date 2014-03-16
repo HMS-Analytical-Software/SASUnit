@@ -22,7 +22,7 @@
 */ /** \cond */ 
 
 %MACRO _reportHomeHTML (i_repdata = 
-                       ,o_html    =
+                       ,o_html    = 0
                        ,o_path    =
                        ,o_file    =
                        );

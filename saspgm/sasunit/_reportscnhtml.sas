@@ -21,7 +21,7 @@
 */ /** \cond */ 
 
 %MACRO _reportScnHTML (i_repdata = 
-                      ,o_html    =
+                      ,o_html    = 0
                       ,o_pdf     = 0
                       ,o_rtf     = 0
                       ,o_path    =

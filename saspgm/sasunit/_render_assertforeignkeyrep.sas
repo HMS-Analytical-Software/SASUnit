@@ -28,7 +28,7 @@
                                    ,i_scnid     =
                                    ,i_casid     =
                                    ,i_tstid     =
-                                   ,o_html      =
+                                   ,o_html      = 0
                                    ,o_path      =
                                    );
 

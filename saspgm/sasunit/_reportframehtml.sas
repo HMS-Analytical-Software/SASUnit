@@ -19,7 +19,7 @@
 */ /** \cond */ 
 
 %MACRO _reportFrameHTML (i_repdata = 
-                        ,o_html    =
+                        ,o_html    = 0
                         );
 
 DATA _null_;

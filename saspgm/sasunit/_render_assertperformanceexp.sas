@@ -22,7 +22,7 @@
 
 %macro _render_assertPerformanceExp (i_sourceColumn=
                                     ,i_format=_NONE_
-                                    ,o_html=
+                                    ,o_html=0
                                     ,o_targetColumn=
                                     );
    %_render_dataColumn (i_sourceColumn=&i_sourceColumn.

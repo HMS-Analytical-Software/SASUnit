@@ -14,12 +14,13 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param   i_sourceColumnname name of the column holding the value
+   \param   o_html             Test report in HTML-format?
    \param   i_targetColumn     name of the column holding the ODS formatted value
 
 */ /** \cond */ 
 
 %macro _render_iconcolumn (i_sourceColumn=
-                          ,o_html=
+                          ,o_html=0
                           ,o_targetColumn=
                           );
 
