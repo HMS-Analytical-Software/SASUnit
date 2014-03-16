@@ -638,4 +638,5 @@
     endsas;
 %exit:
 %MEND initSASUnit;
+
 /** \endcond */
