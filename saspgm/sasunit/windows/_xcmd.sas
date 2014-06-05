@@ -17,40 +17,42 @@
 
  */ /** \cond */ 
 
-%macro _xcmd(i_cmd);
+%MACRO _xcmd(i_cmd);
 
-   %local xwait xsync xmin logfile;
-   %let xwait=%sysfunc(getoption(xwait));
-   %let xsync=%sysfunc(getoption(xsync));
-   %let xmin =%sysfunc(getoption(xmin));
+   %LOCAL xwait xsync xmin logfile;
+   %LET xwait=%sysfunc(getoption(xwait));
+   %LET xsync=%sysfunc(getoption(xsync));
+   %LET xmin =%sysfunc(getoption(xmin));
 
-   options noxwait xsync xmin;
+   OPTIONS noxwait xsync xmin;
    
    %LET logfile=%sysfunc(pathname(work))\___log.txt;
 
-   %SYSEXEC (&i_cmd > "&logfile");
+   %SYSEXEC &i_cmd > "&logfile"; 
 
-   %if &g_verbose. %then %do;
-      %put ======== OS Command Start ========;
+
+   %IF &g_verbose. %THEN %DO;
+      %PUT ======== OS Command Start ========;
        /* Evaluate sysexec´s return code*/
-      %if &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
-      %else %put &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
+      %IF &sysrc. = 0 %THEN %PUT &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
+      %ELSE %PUT &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
 
       /* put sysexec command to log*/
-      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: &i_cmd > "&logfile";
+      %PUT &g_note.(SASUNIT): SYSEXEC COMMAND IS: &i_cmd > "&logfile";
       
       /* write &logfile to the log*/
-      data _null_;
-         infile "&logfile" truncover lrecl=512;
-         input line $512.;
-         putlog line;
-      run;
-      %put ======== OS Command End ========;
-   %end;
+      DATA _NULL_;
+         infile "&logfile" truncover;
+         input;
+         putlog _infile_;
+      RUN;
+      
+      %PUT ======== OS Command End ========;
+   %END;
 
-   options &xwait &xsync &xmin;
+   OPTIONS &xwait &xsync &xmin;
 
-%mend _xcmd; 
+%MEND _xcmd; 
 
 /** \endcond */
 

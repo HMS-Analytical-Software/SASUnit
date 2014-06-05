@@ -17,22 +17,22 @@
 %macro _oscmds;
 
    %global 
-      g_removedir 
-      g_makedir
       g_copydir
       g_endcommand
+      g_makedir
+      g_removedir
+      g_removefile
       g_sasstart
       g_splash
       ;
 
-     %LET g_removedir   = rd /S /Q;
-     %LET g_removefile  = del /S /Q;
-     %LET g_makedir     = md;
      %LET g_copydir     = xcopy /E /I /Y;
      %LET g_endcommand  =%str( );
+     %LET g_makedir     = md;
+     %LET g_removedir   = rd /S /Q;
+     %LET g_removefile  = del /S /Q;
      %LET g_sasstart    ="%sysget(sasroot)/sas.exe";
      %LET g_splash      = -nosplash;
-
 
 %mend _oscmds;
 
