@@ -31,7 +31,9 @@
           l_filename
           l_includeSASUnit
           l_loop
+          l_mprint
           l_nobs
+          l_notes
           l_path
           l_sasunit 
           l_source
@@ -42,9 +44,9 @@
           nobs_old;
    
    %IF &g_verbose =0 %THEN %DO;
-      %let source =%sysfunc(getoption(source));
-      %let notes  =%sysfunc(getoption(notes));
-      %let mprint =%sysfunc(getoption(mprint));
+      %let l_source =%sysfunc(getoption(source));
+      %let l_notes  =%sysfunc(getoption(notes));
+      %let l_mprint =%sysfunc(getoption(mprint));
       
       options nomprint nonotes nosource;
    %END;
@@ -263,7 +265,7 @@
    RUN;
    
    %IF &g_verbose =0 %THEN %DO;
-      options &source &notes &mprint;
+      options &l_source &l_notes &l_mprint;
    %END;
 %MEND _crossreference;
 /** \endcond */

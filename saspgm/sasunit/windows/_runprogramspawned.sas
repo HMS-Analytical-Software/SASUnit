@@ -61,7 +61,7 @@
       /*-- generate a local macro variable containing the 
            path to the generated coverage file if necessary ---------------*/
       %LET   l_tcgFilePath      = &g_log./&i_scnid..tcg;
-      %LET   l_tcgOptionsString = -mcoverage -mcoverageloc = ""&l_tcgFilePath."";
+      %LET   l_tcgOptionsString = -mcoverage -mcoverageloc = "" &l_tcgFilePath."";
    %END;
 
    DATA _null_;
@@ -78,7 +78,7 @@
       !! "&l_parms. "
       !! "-sysin ""&i_program."" "
       !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&i_scnid.;"" "
-      !! "-log   ""&g_log/&i_scnid..log"" "
+      !! "-log ""&g_log/&i_scnid..log"" "
       !! "-print ""&g_testout/&i_scnid..lst"" "
       !! "&g_splash "
       !! "-noovp "
