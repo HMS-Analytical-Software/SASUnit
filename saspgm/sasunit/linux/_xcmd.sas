@@ -18,9 +18,10 @@
  */ /** \cond */ 
 
 %MACRO _xcmd(i_cmd);
-   %LOCAL logfile;
+   %LOCAL logfile l_cmd rc filrf;
 
    %LET logfile=%sysfunc(pathname(work))/___log.txt;
+   %let rc = %_delfile(&logfile);
    %sysexec &i_cmd > "&logfile";
    
    %IF &g_verbose. %THEN %DO;
@@ -33,18 +34,22 @@
       %PUT &g_note.(SASUNIT): SYSEXEC COMMAND IS: &i_cmd > "&logfile";
       
       /* write &logfile to the log */
-      /* for the followin commands "cd", "pwd", "setenv" or "umask" SAS executes
+      /* for the following commands "cd", "pwd", "setenv" or "umask" SAS executes
          SAS equivalent of these commands -> no files are generated that could be read */
-      %IF %sysfunc(index(&i_cmd, "umask"))  EQ 0 OR 
-          %sysfunc(index(&i_cmd, "setenv")) EQ 0 OR 
-          %sysfunc(index(&i_cmd, "pwd"))    EQ 0 OR 
-          %sysfunc(index(&i_cmd, "cd"))     EQ 0 %THEN %DO;
+      %LET filrf=_tmpf;
+      %LET rc=%sysfunc(filename(filrf,&logfile));
+      %LET rc = %sysfunc(fexist(&filrf));
+
+      %IF (&rc) %THEN %DO;
          DATA _NULL_;
             infile "&logfile" truncover;
             input;
             putlog _infile_;
          RUN;
       %END;
+      %ELSE %PUT No File Redirection for Commands cd, pwd, setenv and umask;
+      %LET rc=%sysfunc(filename(filrf));
+      
       %PUT ======== OS Command End ========;
    %END;
 %MEND _xcmd; 

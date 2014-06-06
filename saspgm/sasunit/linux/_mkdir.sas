@@ -23,7 +23,7 @@
               );
    %LOCAL logfile;
               
-   %let logfile=%sysfunc(pathname(work))/___mkdir.txt;
+   %let logfile=%sysfunc(pathname(work))/___log.txt;
    
    %SYSEXEC(mkdir "&dir." > "&logfile" 2>&1);
    %if &g_verbose. %then %do;
