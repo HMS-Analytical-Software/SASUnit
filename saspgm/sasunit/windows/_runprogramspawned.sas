@@ -61,7 +61,7 @@
       /*-- generate a local macro variable containing the 
            path to the generated coverage file if necessary ---------------*/
       %LET   l_tcgFilePath      = &g_log./&i_scnid..tcg;
-      %LET   l_tcgOptionsString = -mcoverage -mcoverageloc = "" &l_tcgFilePath."";
+      %LET   l_tcgOptionsString = -mcoverage -mcoverageloc = ""&l_tcgFilePath."";
    %END;
 
    DATA _null_;
