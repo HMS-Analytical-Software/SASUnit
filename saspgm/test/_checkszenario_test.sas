@@ -102,8 +102,10 @@ RUN;
 %_createTestFiles;
 %_switch();
 /* check which test scenarios must be run */
-%_checkScenario(i_examinee  = examinee_dir
-               ,i_scn_pre   = scn_dir
+%_checkScenario(i_examinee       = examinee_dir
+               ,i_scn_pre        = scn_dir
+               ,i_dependency     = dependency
+               ,i_scenariosToRun = scenariosToRun
                );
 %_switch();
 %endTestcall();
@@ -131,8 +133,10 @@ QUIT;
 
 %_switch();
 /* check which test scenarios must be run */
-%_checkScenario(i_examinee  = examinee_dir
-               ,i_scn_pre   = scn_dir
+%_checkScenario(i_examinee       = examinee_dir
+               ,i_scn_pre        = scn_dir
+               ,i_dependency     = dependency
+               ,i_scenariosToRun = scenariosToRun
                );
 %_switch();
 
@@ -161,8 +165,10 @@ QUIT;
 
 %_switch();
 /* check which test scenarios must be run */
-%_checkScenario(i_examinee  = examinee_dir
-               ,i_scn_pre   = scn_dir
+%_checkScenario(i_examinee       = examinee_dir
+               ,i_scn_pre        = scn_dir
+               ,i_dependency     = dependency
+               ,i_scenariosToRun = scenariosToRun
                );
 %_switch();
 
@@ -187,8 +193,10 @@ QUIT;
 
 %_switch();
 /* check which test scenarios must be run */
-%_checkScenario(i_examinee  = examinee_dir
-               ,i_scn_pre   = scn_dir
+%_checkScenario(i_examinee       = examinee_dir
+               ,i_scn_pre        = scn_dir
+               ,i_dependency     = dependency
+               ,i_scenariosToRun = scenariosToRun
                );
 %_switch();
 

@@ -14,20 +14,21 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param      i_scnid  All files of this scenario are to be deleteded
+   \param      i_scenariosToRun  Data set containing all scenarios that have to run
 
 */ /** \cond */  
 
 
 
-%MACRO _deletescenariofiles;
-   %LOCAL l_len l_nobs l_obs l_scnDel l_target;
+%MACRO _deletescenariofiles(i_scenariosToRun=
+                           );
+   %LOCAL l_len l_nobs l_obs l_scnDel l_target l_foldersToDelete l_filesToDelete;
    %LET l_target = %_abspath(&g_root, &g_target);
    
    PROC SQL NOPRINT;
       CREATE TABLE scenarioFilesToDelete AS
       SELECT scn_id
-      FROM scenariosToRun AS s
+      FROM &i_scenariosToRun AS s
       WHERE s.dorun = 1 AND scn_id IN (SELECT scn_id FROM target.scn)
       ;
       SELECT scn_id into :l_scnDel separated by ','
@@ -44,8 +45,9 @@
       %_dir(i_path=&l_target./log/, o_out=log);
       %_dir(i_path=&l_target./tst/, o_out=tst);
 
+      %let l_filesToDelete = %sysfunc(pathname(work))/_scenarioFilesToDelete.sas;
       DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/_scenarioFilesToDelete.sas";
+         FILE "&l_filesToDelete";
          SET scenarioFilesToDelete nobs=numobs_dorun;
 
          DO i=1 TO numobs_log;
@@ -71,7 +73,8 @@
             END;
          END;
       RUN;
-      %INCLUDE "%sysfunc(pathname(work))/_scenarioFilesToDelete.sas";
+      %INCLUDE "&l_filesToDelete.";
+      %LET l_rc=%_delfile(&l_filesToDelete.);
 
       %*** Deletion of /tst folders ***;
       %_dir(i_path=&l_target./tst/, i_recursive=1, o_out=tst_folder);
@@ -84,7 +87,7 @@
          pos  = index(part, "/");
          IF pos > 0 THEN DO;
             folder = substr(part, 1, pos-1);
-            id = put(input(substr(folder,2,3),3.),z3.);
+            id = input(substr(folder,2,3),3.);
             IF id IN (&l_scnDel) THEN DO;
                OUTPUT;
             END;
@@ -100,12 +103,16 @@
             BY folder;
          RUN;
       
+         %let l_foldersToDelete = %sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd;
          DATA _NULL_;
-            FILE "%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd";
+            FILE "&l_foldersToDelete";
             SET foldersToDelete;
             PUT "&g_removedir ""&l_target./tst/" folder+(-1)"""&g_endcommand";
          RUN;
-         %_executeCMDFile(%sysfunc(pathname(work))/_scenarioFoldersToDelete.cmd);
+         %_executeCMDFile(&l_foldersToDelete);
+         %LET l_rc=%_delfile(&l_foldersToDelete);
+         
+         
       %END;
    %END;
 %MEND _deletescenariofiles;

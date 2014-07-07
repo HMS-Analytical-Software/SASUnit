@@ -120,7 +120,8 @@
 %initTestcase(i_object=_deleteScenarioFiles.sas, i_desc=Test the deletion of scenario files and folders);
 /*-- switch to example database --------------------*/
 %_switch();
-%_deletescenariofiles;
+%_deletescenariofiles(i_scenariosToRun=scenariosToRun
+                     );
 /*-- switch to real database -----------------------*/
 %_switch();
 %endTestcall()

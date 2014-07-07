@@ -16,17 +16,21 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
                
    \param      i_includeSASUnit  Include the SASUnit core macros in scan or not, default set to 0
-   \param      i_examinee        Name of data set containing content of autocall libraries 
-
-*/ /** \cond */ 
+   \param      i_examinee        Data set containing content of autocall libraries 
+   \param      i_listcalling     Data set with columns caller and called representing the calling hierarchy
+   \param      i_dependency      Data set holding results of this macro needed in macro _checkScenario
+   \param      i_macroList       Data set with list of all macros, needed for visualization of calling hierarchy
+   
+   */ /** \cond */ 
 
 %MACRO _crossreference(i_includeSASUnit  =0
                       ,i_examinee        =
+                      ,i_listcalling     =
+                      ,i_dependency      =
+                      ,i_macroList       =
                       );
 
    %LOCAL l_callVar
-          l_cattVar
-          l_cattVarLen
           l_DoxyHeader
           l_filename
           l_includeSASUnit
@@ -56,7 +60,7 @@
    %ELSE %LET l_includeSASUnit=0;
    
    /* Keep all .sas files and get macro names*/
-   DATA dir;
+   DATA &i_macroList;
       length name $ 80;
       SET &i_examinee.;
       IF index(filename,'.sas') = 0 THEN delete;
@@ -65,13 +69,17 @@
       name = substr(name, 1, length(name)-4);
       drop loca changed;
    RUN;
+   
+   PROC SORT DATA=&i_macroList NODUPKEY;
+      BY membername;
+   RUN;
 
-   /* Generate macro variable with name of each macro in dir */
-   Data dir;
+   /* Generate macro variable with name of each macro in &i_macroList */
+   Data &i_macroList;
       IF _N_ = 1 THEN DO;
          i=0;
       END;
-      SET dir end=eof;
+      SET &i_macroList end=eof;
       Call Symputx(catt("var",i), name);
       Call Symputx('l_name',name);
   
@@ -80,7 +88,7 @@
    RUN;
 
    /* Generate result data set */
-   DATA listCalling;
+   DATA &i_listcalling;
       length caller called $ 80
              line $ 256;
       STOP;
@@ -97,8 +105,8 @@
       %LET l_path1 = %_abspath(&g_root,&g_sasunit)/%;
       %LET l_path2 = %_abspath(&g_root,&l_sasunit_os)/%;
    
-      DATA dir;
-         SET dir(WHERE=(filename not like "&l_path1" AND filename not like "&l_path2"));
+      DATA &i_macroList;
+         SET &i_macroList(WHERE=(filename not like "&l_path1" AND filename not like "&l_path2"));
       RUN;
    %END;
  
@@ -107,8 +115,8 @@
    %DO %WHILE (&l_loop);
       %LET l_loop = 0;
 
-      Data dir;
-         Modify dir(Where=(filename NE ''));
+      Data &i_macroList;
+         Modify &i_macroList(Where=(filename NE ''));
          Call Symputx('l_filename',filename);
          Call Symputx('l_name',name);
          Call Symputx('l_loop' ,1);
@@ -180,7 +188,7 @@
          
          DATA _null_;
             SET helper nobs=cnt_obs;
-            call symput('l_nobs', cnt_obs);
+            call symput('l_nobs', put(cnt_obs, 4.));
          RUN;
          
          %IF &l_nobs GT 0 %THEN %DO;
@@ -188,21 +196,8 @@
             PROC sort DATA = helper nodupkey;
                BY called;
             RUN;
-
-            /* Put caller into concatenated macro variable  */
-            DATA _NULL_;
-               SET helper end=eof;
-               length cattVar $ 1000;
-               retain cattVar;
-               cattVar = called || cattVar;
-               IF eof THEN DO;
-                  call symput("l_cattVar", trim(cattVar));
-                  call symput("l_cattVarLen", trim(left(_N_)));
-               END;
-            RUN;
-            
             /* Append data from helper to calling macro-data set */     
-            PROC append base=listCalling DATA=helper;
+            PROC append base=&i_listcalling DATA=helper;
                where caller ne called;
             RUN;
          %END;
@@ -213,8 +208,8 @@
    PROC SQL noprint;
       create table stage1 as
       select distinct caller, called
-      from listcalling as l1
-      where called not in (select distinct caller from listcalling as l2)
+      from &i_listcalling as l1
+      where called not in (select distinct caller from &i_listcalling as l2)
       ;
       select count(caller) into: nobs
       from stage1
@@ -232,7 +227,7 @@
       PROC SQL noprint;
          create table stage&n. as
          select l.caller, trim(s.caller)||','||trim(s.called) as called
-         from listcalling as l
+         from &i_listcalling as l
          join stage%eval(&n.-1) as s
          on l.called = s.caller
          union
@@ -249,7 +244,7 @@
    %END;
 
    /* Get dependency information for scenarios and all called macros */
-   DATA dependency;
+   DATA &i_dependency;
       SET stage%eval(&n.-1);
       keep caller calledByCaller;
       caller = catt(caller,".sas");
@@ -260,7 +255,7 @@
       END;
    RUN;
    
-   PROC SORT DATA=dependency NODUPKEY;
+   PROC SORT DATA=&i_dependency NODUPKEY;
       BY caller calledByCaller;
    RUN;
    

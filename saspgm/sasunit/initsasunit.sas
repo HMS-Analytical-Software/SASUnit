@@ -46,6 +46,15 @@
    \param   i_verbose      optional: controls whether results of asserts are written to the SAS log
                            0 (default).. no results written to SAS log
                            1 .. results are written to SAS log
+   \param   i_crossref     optional: controlls wether the crossreference is created in overwrite mode
+                           0 (default) .. crossreference will not be created 
+                           1 .. crossreference will be created
+   \param   i_crossrefsasunit    optional: controls wether the SASUnit core macros are included in the
+                                 scan for dependencies
+                                 0 (default) .. SASUnit core macros are not included
+                                 1 .. SASUnit core macros are included
+                           
+                           
 */ /** \cond */ 
 
 
@@ -72,6 +81,7 @@
                   ,i_doc             = 
                   ,i_testcoverage    = 1
                   ,i_verbose         = 0
+                  ,i_crossref        = 1
                   ,i_crossrefsasunit = 0
                   );
 
@@ -81,10 +91,13 @@
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
    
-   /*-- check value of parameters i_verbose and i_crossrefsasunit, if one of them has a value other than 0, 
+   /*-- check value of parameters i_verbose, i_crossref and i_crossrefsasunit, if one of them has a value other than 0, 
         they will be set to 1 in order to assure that values will only be 0 or 1 ------*/
    %IF (&i_crossrefsasunit. NE 0) %THEN %DO;
       %LET i_crossrefsasunit = 1;
+   %END;
+   %IF (&i_crossref. NE 0) %THEN %DO;
+      %LET i_crossref = 1;
    %END;
    %IF (&i_verbose. NE 0) %THEN %DO;
       %LET i_verbose = 1;
@@ -246,9 +259,10 @@
             ,tsu_dbversion       CHAR(8)           /* Version String to force creation of a new test data base */
             ,tsu_verbose         INT FORMAT=8.     /* see i_verbose */
             ,tsu_crossrefsasunit INT FORMAT=8.     /* see i_crossrefsasunit */
+            ,tsu_crossref        INT FORMAT=8.     /* see i_crossref */
          );
          INSERT INTO target.tsu VALUES (
-         "","","","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,"",&i_verbose.,&i_crossrefsasunit.
+         "","","","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,"",&i_verbose.,&i_crossrefsasunit.,&i_crossref.
          );
 
          CREATE TABLE target.scn(COMPRESS=CHAR)
@@ -303,6 +317,7 @@
          FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
          PUT "&g_removedir ""&l_target_abs/log""&g_endcommand";
          PUT "&g_removedir ""&l_target_abs/tst""&g_endcommand";
+         *PUT "&g_removedir ""&l_target_abs/tst/json""&g_endcommand";
          PUT "&g_removedir ""&l_target_abs/rep""&g_endcommand";
       RUN;
       %_executeCMDFile(&l_cmdfile.);
@@ -313,12 +328,30 @@
          FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
          PUT "&g_makedir ""&l_target_abs/log""&g_endcommand";
          PUT "&g_makedir ""&l_target_abs/tst""&g_endcommand";
+         *PUT "&g_makedir ""&l_target_abs/tst/json""&g_endcommand";
          PUT "&g_makedir ""&l_target_abs/rep""&g_endcommand";
       RUN;
       %_executeCMDFile(&l_cmdfile.);
       %LET l_rc=%_delfile(&l_cmdfile.);
    %END; /* %if &l_newdb */
 
+   /*-- folder for crossreference json files has to be always recreated -----------*/
+   %LET l_cmdfile=%sysfunc(pathname(WORK))/remove_dir.cmd;
+   DATA _null_;
+      FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
+      PUT "&g_removedir ""&l_target_abs/tst/crossreference""&g_endcommand";
+   RUN;
+   %_executeCMDFile(&l_cmdfile.);
+   %LET l_rc=%_delfile(&l_cmdfile.);
+   %LET rc = %sysfunc (sleep(2,1));
+   %LET l_cmdfile=%sysfunc(pathname(WORK))/make_dir.cmd;
+   DATA _null_;
+      FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
+      PUT "&g_makedir ""&l_target_abs/tst/crossreference""&g_endcommand";
+   RUN;
+   %_executeCMDFile(&l_cmdfile.);
+   %LET l_rc=%_delfile(&l_cmdfile.);
+   
    /*-- check folders -----------------------------------------------------------*/
    %IF %_handleError(&l_macname.
                     ,NoLogDir

@@ -397,6 +397,11 @@
                    "    &g_sasunitroot./resources" '/html/%str(*.*)' /
                    "   ,&l_output" /
                    ")";
+               /*-- copy json files for crossreference -----------------------------*/
+               PUT '%_copydir(' /
+                   "    &G_TESTOUT./crossreference" '/%str(*.*)' /
+                   "   ,&l_output/json" /
+                   ")";
                /*-- create frame HTML page -----------------------------------------*/
                PUT '%_reportFrameHTML('             /
                    "    i_repdata = &d_rep"                 /

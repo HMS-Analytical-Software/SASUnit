@@ -82,6 +82,9 @@
    %_dir(i_path=%sysfunc(pathname(work))/saspgm, i_recursive=1, o_out=cr_dir);
    %_crossreference(i_includeSASUnit  =1
                    ,i_examinee        =cr_dir
+                   ,i_listcalling     =listcalling
+                   ,i_dependency      =dependency
+                   ,i_macroList       =macrolist
                    );
 
    /*-- switch to real database -----------------------*/
@@ -123,6 +126,9 @@
 
    %_crossreference(i_includeSASUnit  =0
                    ,i_examinee        =cr_dir
+                   ,i_listcalling     =listcalling
+                   ,i_dependency      =dependency
+                   ,i_macroList       =macrolist
                    );
    /*-- switch to real database -----------------------*/
    %let g_sasunit = &l_sasunit;
@@ -141,7 +147,6 @@
 
 /* test case 5 ------------------------------------ */
 %initTestcase(i_object=_crossreference.sas, i_desc=Test table dependency with i_includeSASUnit = 0)
-/*-- switch to example database --------------------*/
 %endTestcall();
    %markTest();
       %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=1, i_where=                                                                 , i_desc=Number of expected collumns);

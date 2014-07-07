@@ -39,41 +39,51 @@
 %MACRO runSASUnit(i_source     =
                  ,i_recursive  = 0
                  );
-
+   %GLOBAL
+      d_macroList
+      d_listcalling
+   ;
    %LOCAL 
-      l_macname
-      d_dir  
+      d_dependency
+      d_dir
       d_examinee 
+      d_scenariosToRun
       d_scn_pre
-      l_source
-      l_nscn 
       i
       l_auto 
       l_autonr
-      l_scn 
-      l_scnid 
+      l_c_scnid
       l_dorun 
-      l_scndesc
-      l_sysrc
-      l_rc
-      l_scnlogfullpath
+      l_error_count 
+      l_filename
       l_filled
       l_lstfile
-      l_error_count 
-      l_warning_count
+      l_macname
+      l_nscn 
+      l_nscncount
+      l_rc
+      l_result
       l_result0 
       l_result1 
       l_result2
-      l_result
-      l_nscncount
-      l_c_scnid
+      l_scn 
+      l_scndesc
+      l_scnid 
+      l_scnlogfullpath
+      l_source
       l_sysrc
+      l_sysrc
+      l_warning_count
    ;
 
    %LET l_macname=&sysmacroname;
 
+   %_tempFileName(d_dependency);
    %_tempFileName(d_dir);
    %_tempFileName(d_examinee);
+   %_tempFileName(d_listcalling);
+   %_tempFileName(d_macroList);
+   %_tempFileName(d_scenariosToRun);
    %_tempFileName(d_scn_pre);
 
    /*-- check if testdatabase can be accessed -----------------------------------*/
@@ -141,27 +151,33 @@
       end;
    run; 
 
+   /* Create cross-reference */
    %_crossreference(i_includeSASUnit = &g_crossrefsasunit.
                    ,i_examinee       = &d_examinee.
+                   ,i_listcalling    = &d_listcalling.
+                   ,i_dependency     = &d_dependency.
+                   ,i_macroList      = &d_macroList.
                    );
 
    /* check which test scenarios must be run */
    %_checkScenario(i_examinee        = &d_examinee.
                   ,i_scn_pre         = &D_SCN_PRE.
+                  ,i_dependency      = &d_dependency.
+                  ,i_scenariosToRun  = &d_scenariosToRun.
                   );
 
    /*-- if scenario already exists and has been changed: delete scenario files-----*/
-   /* options noxwait; */
-   %_deletescenariofiles;
+   %_deletescenariofiles(i_scenariosToRun=&d_scenariosToRun.
+                        );
 
    PROC SQL NOPRINT;
-      DELETE FROM target.cas WHERE cas_scnid in (select scn_id from scenariosToRun where dorun=1);
-      DELETE FROM target.tst WHERE tst_scnid in (select scn_id from scenariosToRun where dorun=1);
+      DELETE * FROM target.cas WHERE cas_scnid in (select scn_id from &d_scenariosToRun where dorun=1);
+      DELETE * FROM target.tst WHERE tst_scnid in (select scn_id from &d_scenariosToRun where dorun=1);
    QUIT;
 
    /*-- if scenario not present in test database: create new scenario --------*/
    DATA target.scn;
-      SET target.scn scenariosToRun(where=(insertIntoDB=1) in=add);
+      SET target.scn &d_scenariosToRun(where=(insertIntoDB=1) in=add);
       IF add=1 THEN DO;
          scn_path = resolve('%_stdPath(&g_root,' || filename || ')');
          drop filename dorun insertIntoDB name;
@@ -171,24 +187,23 @@
    /* Prepare Loop */
    PROC SQL noprint;
       select count(scn_id) into :l_nscn
-         from target.scn
+         from &d_scenariosToRun
       ;
    QUIT;
 
    /*-- loop over all test scenarios --------------------------------------------*/
    %DO i=1 %TO &l_nscn;
 
-      Data Scenariostorun;
-         Modify Scenariostorun(Where=(name NE ''));
-         Call Symputx('l_scnid',scn_id);
-         Call Symputx('l_dorun',dorun);
-         Call Symputx('l_filename',filename);
-         name ='';
-         Replace;
-         STOP;
+      DATA _NULL_;
+         in = &i.;
+         set &d_scenariosToRun point=in;
+         Call Symputx('l_scnid',scn_id, 'L');
+         Call Symputx('l_dorun',dorun, 'L');
+         Call Symputx('l_filename',filename, 'L');
+         stop;
       RUN;
 
-      %let l_scn = %_stdPath(&g_root,&l_filename);
+      %LET l_scn = %_stdPath(&g_root,&l_filename);
 
       %IF &l_dorun %THEN %DO;
          %PUT ======== test scenario &l_scnid (&l_scn) will be run ========;
@@ -267,7 +282,13 @@
                WHERE 
                   scn_id = &l_scnid.
                ;
-         QUIT;
+
+            UPDATE &d_scenariosToRun
+               SET 
+                   dorun          = 0
+               WHERE 
+                  scn_id = &l_scnid.
+               ;         QUIT;
 
       %END; /* run scenario */
    %END; /* loop for all scenarios */
@@ -327,15 +348,16 @@
                   )
                ;
             QUIT;
-
          %END; /* if scenario is not present in database */
-
       %END;
 
 %exit:
-   PROC DATASETS NOLIST NOWARN LIB=%scan(&d_dir,1,.);
+   PROC DATASETS NOLIST NOWARN LIB=%scan(&d_dependency,1,.);
+      DELETE %scan(&d_dependency,2,.);
       DELETE %scan(&d_dir,2,.);
       DELETE %scan(&d_examinee,2,.);
+      DELETE %scan(&d_scenariosToRun,2,.);
+      DELETE %scan(&d_scn_pre,2,.);
    QUIT;
 %MEND runSASUnit;
 /** \endcond */

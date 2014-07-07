@@ -13,9 +13,11 @@
               (scenario has to be executed so that this will be noticed)
             - a calling program of units under test has been changed
 
-\param      i_examinee  Data set containing all SASUnit macros, test scenarios and units under test
-\param      i_scn_pre   Data set containing all test scenarios
-            (both data sets created in runsasunit)
+\param      i_examinee        Data set containing all SASUnit macros, test scenarios and units under test
+\param      i_scn_pre         Data set containing all test scenarios
+\param      i_dependency      Data set containing information about the calling hierarchy
+\param      i_scenariosToRun  Data set created in this macro holding information about scenarios that have to run
+            (all data sets created in runsasunit)
 
             Further more the result data set dependency from macro _crossreference in work is used
 
@@ -29,8 +31,10 @@
             or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%MACRO _checkScenario(i_examinee=
-                     ,i_scn_pre=
+%MACRO _checkScenario(i_examinee       =
+                     ,i_scn_pre        =
+                     ,i_dependency     =
+                     ,i_scenariosToRun =
                      );
    %LOCAL l_cntObs;
    %LET l_cntObs = 0;
@@ -38,13 +42,11 @@
    /* Get Scenarios and their names from target.scn */
    DATA scenarios;
       IF _n_ = 1 THEN DO;
-         retain pttrn;
-         pttrn = prxparse('/\w+\.sas/');
          call symput ('l_cntObs',put(cnt_obs, 3.));
       END;
-      DROP pos pttrn;
+      DROP pos;
       SET target.scn(keep=scn_id scn_path scn_end) nobs=cnt_obs;
-      pos = prxmatch(pttrn,scn_path);
+      pos = find(scn_path,'/',-200)+1;
       scn_name = substr(scn_path,pos);
    RUN;
 
@@ -61,7 +63,7 @@
    QUIT;
 
    /* Create scn_id for new scenarios */
-   DATA helper;
+   DATA helper1;
       retain index &l_cntObs;
       SET helper;
       IF scn_id EQ . THEN DO;
@@ -83,11 +85,11 @@
          case WHEN scn_end < scn_changed OR scn_end < called_changed OR h.scn_id in (select cas_scnid from noAutocall) THEN 1
               ELSE 0
               END as dorun
-      from helper as h, dependency as d, &i_examinee as s
+      from helper1 as h, &i_dependency as d, &i_examinee as s
       where h.name = d.caller AND s.membername=d.calledByCaller
       ;
       /* Condense information to one observation per scenario */
-      create table scenariosToRun as
+      create table &i_scenariosToRun as
       select distinct d1.scn_id, e.membername as name, d1.insertIntoDB, e.filename, (select max(dorun) as dorun 
                                                                                        from Dependenciesbyscenario as d
                                                                                        where e.membername = d.name

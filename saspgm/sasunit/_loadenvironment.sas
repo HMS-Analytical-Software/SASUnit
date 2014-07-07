@@ -31,6 +31,7 @@
            g_verbose
            g_sasunitroot
            g_crossrefsasunit
+           g_crossref
            ;
    %LOCAL i;
            
@@ -89,6 +90,7 @@
       call symput ('g_testcoverage'   , put (tsu_testcoverage, z1.));
       call symput ('g_verbose'        , put (tsu_verbose, z1.));
       call symput ('g_crossrefsasunit', put (tsu_crossrefsasunit, z1.));
+      call symput ('g_crossref'       , put (tsu_crossref, z1.));
    RUN;
 
    %LET g_project      = &g_project;
