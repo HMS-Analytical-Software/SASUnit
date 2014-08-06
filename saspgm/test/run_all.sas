@@ -17,7 +17,7 @@
 
 OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "%trim(%sysget(SASUNIT_ROOT))/saspgm/sasunit");
 %LET SASUNIT_VERBOSE=1;
-%LET CROSSREFSASUNIT=0;
+%LET CROSSREFSASUNIT=1;
 proc options option=logparm;run;
 
 %initSASUnit(

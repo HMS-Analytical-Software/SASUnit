@@ -21,7 +21,7 @@
 */ /** \cond */ 
 
 %MACRO _writeJsonNode(i_node=, i_dependencies=, i_direction=, i_parentList=);
-   %LOCAL l_child l_children l_cntChildren l_i l_node l_direction l_column l_parentList l_len l_this_node;
+   %LOCAL l_child l_children l_cntChildren l_i l_node l_direction l_column l_parentList l_len l_this_node l_children_inner;
    %LET l_children =;
    
    /* handle direction */
@@ -49,7 +49,14 @@
       put '{ "name": "' "&i_node" '"';
    RUN;
    
-   %IF "&l_children" NE "" %THEN %DO;
+   %IF "&l_children" NE "" %THEN %DO; 
+   /*
+      DATA _NULL_;
+         FILE json_out mod;
+         PUT ', "children": [';
+      RUN;
+   */
+
       /* prepare loop over all children */
       %LET l_cntChildren = %SYSFUNC(countw("&l_children."));
       %DO l_i=1 %TO &l_cntChildren.;
@@ -66,13 +73,25 @@
             %END; 
          %END;
          
-         DATA _NULL_;
-            FILE json_out mod;
-            PUT ', "children": [';
-         RUN;
+         %IF &l_i EQ 1 %THEN %DO;
+            DATA _NULL_;
+               FILE json_out mod;
+               PUT ', "children": [';
+            RUN;
+         %END;
+         
+         /* get children of node*/
+         PROC SQL noprint;
+            select distinct &l_direction 
+            into :l_children_inner separated by ' '
+            from &i_dependencies 
+            where &l_column="&i_node."
+            ;
+         QUIT;
          
          /* Child node found: recursive call to macro */
          %_writeJsonNode(i_node=&l_node., i_dependencies=&i_dependencies., i_parentList=&l_parentList., i_direction=&i_direction.);
+
          /* Separate children with curly bracket + comma */
          %IF &l_i LT &l_cntChildren. %THEN %DO;
             DATA _NULL_;
@@ -87,11 +106,13 @@
                PUT '}';
             RUN;
          %END;
+
       %END; /* End do i to l_cntChildren */
       /* Add closing bracket after last child */
       DATA _NULL_;
          FILE json_out mod;
          PUT "]";
       RUN;
+
    %END; /* End if */
 %MEND _writeJsonNode;

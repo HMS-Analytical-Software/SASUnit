@@ -56,6 +56,24 @@
       merge work._auton_report &d_rep2.;
       by cas_auton pgm_id scn_id;
    run;
+   
+   /* Visualize crossreference data */
+   %IF &g_crossref. EQ 1 %THEN %DO;
+      /* Create .json Files for visualisation with D3 */
+      %_dependencyJsonBuilder(i_dependencies = &d_listcalling.
+                             ,i_macroList    = &d_macrolist.
+                              );
+      /*-- copy json files for crossreference -----------------------------*/
+      %_copydir(i_from = &G_TESTOUT./crossreference/%str(*.*)
+               ,i_to   = &l_output/json
+               );
+   %END;
+   
+   /* Delete data sets after json files have been created */
+   PROC DATASETS NOLIST NOWARN LIB=%scan(&d_listcalling,1,.);
+      DELETE %scan(&d_macrolist,2,.);
+      DELETE %scan(&d_listcalling,2,.);
+   QUIT;
 
    %IF &g_testcoverage. EQ 1 %THEN %DO;
        /*-- in the log subdir: append all *.tcg files to one file named 000.tcg
@@ -209,9 +227,12 @@
                 %IF &g_testcoverage. EQ 1 %THEN %DO;
                    coverageColumn
                 %END;
+                %IF &g_crossref. EQ 1 %THEN %DO;
+                   crossrefColumn
+                %END;
                 resultColumn
-                linkTitle0  linkTitle1  LinkTitle2  LinkTitle3
-                linkColumn0 linkColumn1 LinkColumn2 LinkColumn3 $1000
+                linkTitle0  linkTitle1  LinkTitle2  LinkTitle3  LinkTitle4  LinkTitle5
+                linkColumn0 linkColumn1 LinkColumn2 LinkColumn3 LinkColumn4 LinkColumn5 $1000
                 _autonColumn autonColumn cas_abs_path scn_abs_path $400;
          set work._auton_report (where=(cas_auton=&l_pgmLib.));
          ARRAY sa(0:9) tsu_sasautos tsu_sasautos1-tsu_sasautos9;
@@ -222,6 +243,9 @@
             assertColumn="&g_nls_reportAuton_014."
             %IF &g_testcoverage. EQ 1 %THEN %DO;
                coverageColumn="&g_nls_reportAuton_016." [%]
+            %END;
+            %IF &g_crossref. EQ 1 %THEN %DO;
+               crossrefColumn="&g_nls_reportAuton_022."
             %END;
             resultColumn="&g_nls_reportAuton_008.";
 
@@ -281,19 +305,23 @@
             LinkTitle1 = "&g_nls_reportAuton_009." !! byte(13) !! cas_abs_path;
             LinkTitle2 = "&g_nls_reportAuton_010." !! byte(13) !! scn_abs_path;
             LinkTitle3 = "&g_nls_reportAuton_017. " !! cas_pgm;
-
+            LinkTitle4 = trim(cas_pgm) !! " &g_nls_reportAuton_025.";
+            LinkTitle5 = trim(cas_pgm) !! " &g_nls_reportAuton_026.";
+            
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
                LinkColumn1 = "file:///" !! cas_abs_path;
-               LinkColumn2 = catt("cas_overview.html#SCN", put(scn_id,z3.), "_");
-               if compress(cas_pgm) ne '' then do;
-                  if index(cas_pgm,'/') GT 0 then do;
-                     LinkColumn3 =  'tcg_'||trim(left(scan(substr(cas_pgm, findw(cas_pgm, scan(cas_pgm, countw(cas_pgm,'/'),'/'))),1,".") !! ".html"));
-                  end;
-                  else do;
-                     LinkColumn3 =  'tcg_'||trim(left(scan(cas_pgm,1,".") !! ".html"));
-                  end;
-               end;
+               LinkColumn2 = CATT("cas_overview.html#SCN", PUT(scn_id,z3.), "_");
+               IF compress(cas_pgm) ne '' THEN DO;
+                  IF index(cas_pgm,'/') GT 0 THEN DO;
+                     LinkColumn3 =  'tcg_'||trim(LEFT(SCAN(SUBSTR(cas_pgm, findw(cas_pgm, SCAN(cas_pgm, countw(cas_pgm,'/'),'/'))),1,".") !! ".html"));
+                  END;
+                  ELSE DO;
+                     LinkColumn3 =  'tcg_'||TRIM(LEFT(SCAN(cas_pgm,1,".") !! ".html"));
+                  END;
+               END;
+               LinkColumn4 = "&g_nls_reportAuton_023.";
+               LinkColumn5 = "&g_nls_reportAuton_024.";
             %end;
 
             %_render_dataColumn(i_sourceColumn=cas_pgm
@@ -315,18 +343,35 @@
                                   ,o_targetColumn=coverageColumn
                                   );
             %END;
-         %end;
-      run;
+            %IF &g_crossref. EQ 1 %THEN %DO;            
+               %_render_crossrefColumn (i_sourceColumn       = %sysfunc(trim(cas_pgm))
+                                       ,o_targetColumn       = crossrefColumn
+                                       ,i_linkColumn_caller  = LinkColumn4
+                                       ,i_linkTitle_caller   = LinkTitle4
+                                       ,i_linkColumn_called  = LinkColumn5
+                                       ,i_linkTitle_called   = LinkTitle5
+                                       );
+            %END;
+         %END;
+      RUN;
 
-      %if (&i. = &l_listCount.) %then %do;
+      %IF (&i. = &l_listCount.) %THEN %DO;
          %_reportFooter(o_html=&o_html.);
-      %end;
+      %END;
       
-      %if (&o_html.) %then %do;
+      %IF (&o_html.) %THEN %DO;
          ods html anchor="AUTON&l_cAuton.";
-      %end;
+      %END;
+      
+      /*
+      libname backup "c:\temp";
+      
+      data backup.temp;
+         set work._current_auton;
+      run;
+      */
 
-      proc report data=work._current_auton nowd missing spanrows
+      PROC REPORT DATA=work._current_auton nowd missing spanrows
             style(lines)=blindData
             ;
 
@@ -334,50 +379,56 @@
             %IF &g_testcoverage. EQ 1 %THEN %DO;
                 coverageColumn
             %END;
+            %IF &g_crossref. EQ 1 %THEN %DO;
+               crossrefColumn
+            %END;
                 resultColumn autonColumn;
 
          define autonColumn    / noprint;
-         define pgm_id         / group noprint;
-         define pgmColumn      / group;
-         define scenarioColumn / group style(column)=[just=right];
-         define caseColumn     / group style(column)=[just=right];
-         define assertColumn   / group style(column)=[just=right];
+         define pgm_id         / order noprint;
+         define pgmColumn      / order;
+         define scenarioColumn / order style(column)=[just=right];
+         define caseColumn     / order style(column)=[just=right];
+         define assertColumn   / order style(column)=[just=right];
          %IF &g_testcoverage. EQ 1 %THEN %DO;
-             define coverageColumn / group style(column)=[just=right];
+            define coverageColumn / order style(column)=[just=right];
          %END;
-         define resultColumn / group style(COLUMN)=[background=white];
+         %IF &g_crossref. EQ 1 %THEN %DO;
+            define crossrefColumn / order style(column)=[just=right];
+         %END;
+         define resultColumn / order style(COLUMN)=[background=white];
 
          compute before _page_;
             line @1 autonColumn $;
          endcomp;
-      run;
+      RUN;
 
       *** Supress title between testcases ***;
-      %if (&i. = 1) %then %do;
+      %IF (&i. = 1) %THEN %DO;
          title;
-      %end;
+      %END;
 
       *** Render separation line between program libraries ***;
-      %if (&o_html. AND &i. ne &l_listCount.) %then %do;
+      %IF (&o_html. AND &i. ne &l_listCount.) %THEN %DO;
          ods html text="^{RAW <hr size=""1"">}";
-      %end;
+      %END;
 
-      proc delete data=work._current_auton;
-      run;
-   %end;
-   options missing=.;
+      PROC DELETE data=work._current_auton;
+      RUN;
+   %END;
+   OPTIONS missing=.;
 
 
-   %if (&o_html.) %then %do;
+   %IF (&o_html.) %THEN %DO;
       %_closeHtmlPage;
-   %end;
+   %END;
 
-   title;
-   footnote;
-   options center;
+   TITLE;
+   FOOTNOTE;
+   OPTIONS center;
    
 
-   proc delete data=work._auton_report;
-   run;
+   PROC DELETE DATA=work._auton_report;
+   RUN;
 %MEND _reportAutonHTML;
 /** \endcond */

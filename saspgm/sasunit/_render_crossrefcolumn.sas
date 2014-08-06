@@ -29,10 +29,14 @@
                               ,i_linkColumn_called  =
                               ,i_linkTitle_called   =
                               );
-   href     = "crossref.html";
+   len = length(trim(cas_pgm));
+   cas_pgm_strip = substrn(cas_pgm, 1, len-4);
+   
+   href_caller     = "crossref.html?casPgm="||trim(cas_pgm_strip)||'%nrstr(&)call=caller';
+   href_called     = "crossref.html?casPgm="||trim(cas_pgm_strip)||'%nrstr(&)call=called';
 
-   &o_targetColumn. = catt ('^{style [flyover="', &i_linkTitle_caller., '" url="' !! href !! '"] ', &i_linkColumn_caller.,'} ^n ');
-   &o_targetColumn. = catt (&o_targetColumn., '^{style [flyover="', &i_linkTitle_called., '" url="' !! href !! '"] ', &i_linkColumn_called., '} ^n ');
+   &o_targetColumn. = catt ('^{style [flyover="', &i_linkTitle_caller., '" url="' !! href_caller !! '"] ', &i_linkColumn_caller.,'} ^n ');
+   &o_targetColumn. = catt (&o_targetColumn., '^{style [flyover="', &i_linkTitle_called., '" url="' !! href_called !! '"] ', &i_linkColumn_called., '}');
    
 %mend _render_crossrefColumn;
 /** \endcond */
