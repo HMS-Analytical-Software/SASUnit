@@ -209,43 +209,75 @@
       create table stage1 as
       select distinct caller, called
       from &i_listcalling as l1
-      where called not in (select distinct caller from &i_listcalling as l2)
       ;
       select count(caller) into: nobs
       from stage1
       ;
    QUIT;
 
-   %LET n = 2;
+   %LET n = 1;
    %LET l_loop = 1;
 
    /* Iterate over stageX data sets till no more observations are appended and all
      dependencies are found */
    %DO %while (&l_loop);
       %LET nobs_old = &nobs.;
+      %LET n = %eval(&n. + 1);
 
-      PROC SQL noprint;
+      proc sql noprint;
          create table stage&n. as
-         select l.caller, trim(s.caller)||','||trim(s.called) as called
-         from &i_listcalling as l
-         join stage%eval(&n.-1) as s
-         on l.called = s.caller
-         union
-         select s2.caller, s2.called
-         from stage%eval(&n.-1) as s2
-         order by caller
+         select distinct s.caller, l.called
+         from stage%eval(&n.-1) as s
+         join &i_listcalling. as l
+         on s.called = l.caller
          ;
+      quit;
+      data stage&n.;
+         set stage&n. stage%eval(&n.-1);
+      run;
+      proc sort data=stage&n. noduplicate;
+         by caller called;
+      run;
+      PROC SQL noprint;
          select count(caller) into: nobs
          from stage&n.
          ;
       QUIT;
-      %LET n = %eval(&n. + 1);
       %IF &nobs eq &nobs_old %THEN %LET l_loop=0;
    %END;
+/*
+   data _stages;
+      length all_called $32000;
+      set stage&n.;
+      retain all_called "";
+      by caller;
+      if first.caller then do;
+         all_called=called;
+      end;
+      if not first.caller then do;
+         all_called = catt (all_called, ',', called);
+      end;
+      if (last.caller);
+   run;
+   proc sql noprint;
+      create table _caller as
+         select t.all_called, s.*
+         from stage1 as s left join _stages as t 
+         on s.called=t.caller
+         order by s.caller;
+   quit;
+   data stage&n.;
+      length caller $32000;
+      set _caller;
+      drop all_called;
+      if (not missing(all_called)) then do;
+         called = catt (called, ',', all_called);
+      end;
+   run;
 
    /* Get dependency information for scenarios and all called macros */
    DATA &i_dependency;
-      SET stage%eval(&n.-1);
+      SET stage&n.;
       keep caller calledByCaller;
       caller = catt(caller,".sas");
       cnt = count(called,',');
