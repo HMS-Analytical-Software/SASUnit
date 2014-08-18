@@ -386,7 +386,7 @@ treeJSON = d3.json("json/" + getUrlVars()["casPgm"] + "_" + getUrlVars()["call"]
             // d.y = (d.depth * 500); //500px per level.
         });
 
-        // Update the nodesâ€¦
+        // Update the nodes…
         node = svgGroup.selectAll("g.node")
             .data(nodes, function(d) {
                 return d.id || (d.id = ++i);
@@ -490,7 +490,7 @@ treeJSON = d3.json("json/" + getUrlVars()["casPgm"] + "_" + getUrlVars()["call"]
         nodeExit.select("text")
             .style("fill-opacity", 0);
 
-        // Update the linksâ€¦
+        // Update the links…
         var link = svgGroup.selectAll("path.link")
             .data(links, function(d) {
                 return d.target.id;
