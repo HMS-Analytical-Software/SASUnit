@@ -5,12 +5,12 @@
 # or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 cd ..
-export SASUNIT_ROOT=$(readlink -f .)
+export SASUNIT_ROOT=$(readlink -f ../.)
 export SASUNIT_OVERWRITE=1
-export SASUNIT_COVERAGEASSESSMENT=0
+export SASUNIT_COVERAGEASSESSMENT=1
 export SASUNIT_LANGUAGE=de
 export SASUNIT_HOST_OS=linux
-export SASUNIT_SAS_VERSION=9.2
+export SASUNIT_SAS_VERSION=9.3
 export SASCFGPATH=./bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg
 
 # Check if SASUnit Jenkins Plugin is present and use given SASUnit root path
@@ -29,8 +29,8 @@ echo Overwrite         = $SASUNIT_OVERWRITE
 echo Testcoverage      = $SASUNIT_COVERAGEASSESSMENT
 echo
 
-echo "Starting SASUnit in Overwrite Mode ..."
-/usr/local/SAS/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE -nosyntaxcheck -noovp
+echo "Starting SASUnit Examples in Overwrite Mode ..."
+/usr/local/SASHome/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE -nosyntaxcheck -noovp
 
 # Show SAS exit status
 RETVAL=$?
