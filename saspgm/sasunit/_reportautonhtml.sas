@@ -63,10 +63,16 @@
       %_dependencyJsonBuilder(i_dependencies = &d_listcalling.
                              ,i_macroList    = &d_macrolist.
                               );
-      /*-- copy json files for crossreference -----------------------------*/
-      %_copydir(i_from = &G_TESTOUT./crossreference/%str(*.*)
-               ,i_to   = &l_output/json
-               );
+      /* Use Json Files to create JavaScript file containing dependency information */
+      %_dependencyJsonAggToJs(i_path = &g_target/tst/crossreference
+                             ,o_file = &l_output/js/data.refs.js
+                             );
+   
+      /* JavaScript file containing dependency information to rep/js 
+      %_copyfile(i_file = &G_TESTOUT./crossreference/data.refs.js
+                ,o_file = &l_output/js/data.refs.js
+                );
+      */
    %END;
    
    /* Delete data sets after json files have been created */

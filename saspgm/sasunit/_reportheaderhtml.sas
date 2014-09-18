@@ -23,7 +23,7 @@
 
       PUT "<html xmlns=""http://www.w3.org/1999/xhtml"" xml:lang=""en"" lang=""en"">";
       PUT "  <head>";
-      PUT "    <meta http-equiv=""Content-Type"" content=""text/xhtml;charset=windows-1252"" />";
+      PUT "    <meta http-equiv=""Content-Type"" content=""text/xhtml;charset=utf-8"" />";
       PUT "    <meta http-equiv=""Content-Style-Type"" content=""text/css"" />";
       PUT "    <meta http-equiv=""Content-Language"" content=""de"" />";
       PUT "    <link href=""sasunit.css"" rel=""stylesheet"" type=""text/css"">";
