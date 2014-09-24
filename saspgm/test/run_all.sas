@@ -21,15 +21,14 @@ OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "%trim(%sysget(SASUNIT_ROOT))/sasp
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root            = %sysget(SASUNIT_ROOT)
+   i_root            = .\
   ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
   ,i_overwrite       = %sysget(SASUNIT_OVERWRITE)
   ,i_project         = SASUnit Self Test
-  ,i_sasunit         = saspgm/sasunit
-  ,i_sasautos        = saspgm/sasunit
-  ,i_sasautos1       = saspgm/test
-  ,i_sasautos2       = saspgm/test/pgmlib1
-  ,i_sasautos3       = saspgm/test/pgmlib2
+  ,i_sasunit         = %sysget(SASUNIT_ROOT)/saspgm/sasunit
+  ,i_sasautos        = saspgm/test
+  ,i_sasautos1       = saspgm/test/pgmlib1
+  ,i_sasautos2       = saspgm/test/pgmlib2
   ,i_testdata        = dat
   ,i_refdata         = dat
   ,i_doc             = doc/spec
