@@ -36,6 +36,7 @@
    %local l_MacroName;
    %local l_MCoverageName;
    %local l_linesize;
+   %local l_MissingLines;
 
    %let l_MacroName=%lowcase(&i_macroName.);
    %let l_MCoverageName=%lowcase(&i_mCoverageName.);
@@ -124,8 +125,9 @@
    run;
    
    /*** Read all lines not explicitly marked as covered ***/
+   %let l_MissingLines = 0;
    proc sql noprint;
-      select distinct nCounter into :MissingLines separated by ' ' from WORK.rowsOfInputFile 
+      select distinct nCounter into :l_MissingLines separated by ' ' from WORK.rowsOfInputFile 
       where nCounter not in (select distinct _line_ from WORK._MCoverage5  where _line_ not eq .);
    quit;
 
@@ -141,7 +143,7 @@
       infile "&i_macroLocation./&l_MacroName.";
       input;
       if (index (upcase (_INFILE_), "%nrstr(%MACRO )%scan(%upcase(&l_MacroName.),1,.)")) then do;
-        if not(1 in (&MissingLines.)) then do;
+        if not(1 in (&l_MissingLines.)) then do;
            inExecutedMBlock = inExecutedMBlock + 1;
        end;
          nCounter=0;
@@ -153,7 +155,7 @@
       srcRowCopy = _INFILE_;
       covered = 1;
      
-      if (nCounter in (&MissingLines.)) then do;
+      if (nCounter in (&l_MissingLines.)) then do;
          srcrow = cats ("", _INFILE_, "");
          covered = 0;
          _temp_row = compress (upcase (_INFILE_));
