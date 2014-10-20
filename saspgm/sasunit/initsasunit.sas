@@ -47,8 +47,8 @@
                            0 (default).. no results written to SAS log
                            1 .. results are written to SAS log
    \param   i_crossref     optional: controlls wether the crossreference is created in overwrite mode
-                           0 (default) .. crossreference will not be created 
-                           1 .. crossreference will be created
+                           0  .. crossreference will not be created 
+                           1 (default).. crossreference will be created
    \param   i_crossrefsasunit    optional: controls wether the SASUnit core macros are included in the
                                  scan for dependencies
                                  0 (default) .. SASUnit core macros are not included
