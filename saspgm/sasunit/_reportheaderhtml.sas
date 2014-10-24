@@ -3,10 +3,10 @@
 
    \brief      create HTML header for a page in the HTML report
 
-   \version    \$Revision$ - KL Added favicon.\n
-               Revision: 9 - AM: created.
+   \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -27,7 +27,6 @@
       PUT "    <meta http-equiv=""Content-Style-Type"" content=""text/css"" />";
       PUT "    <meta http-equiv=""Content-Language"" content=""de"" />";
       PUT "    <link href=""sasunit.css"" rel=""stylesheet"" type=""text/css"">";
-      PUT "    <link href=""tabs.css""    rel=""stylesheet"" type=""text/css"">";
       PUT "    <link rel=""shortcut icon"" href=""./favicon.ico"" type=""image/x-icon"" />";
       PUT "    <title>&i_title</title>";
       PUT "  </head>";
