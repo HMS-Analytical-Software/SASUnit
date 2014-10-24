@@ -78,9 +78,9 @@
    
    data &o_out (keep=membername filename changed);
       length membername dir filename $255 language $2;
-      retain language "__" dir FilePos;
+      retain language "__" dir FilePos dateformat timeformat;
       infile _dirfile truncover;
-      input line $char255. @;
+      input line $char255.;
       if index (line, "&dirindicator_en") or index (line, "&dirindicator_de") then do;
          if index (line, "&dirindicator_en") then do;
             dir = substr(line, index (line, "&dirindicator_en")+length("&dirindicator_en")+1);
@@ -97,25 +97,22 @@
                Filenamepart = scan (line,5, " ");
                Filepos      = index (line, trim(Filenamepart));
                language     = "EN";
+               dateformat   = "mmddyy10.";
+               timeformat   = "time9.";
             end;
             else do;
                Filenamepart = scan (line,4, " ");
                Filepos      = index (line, trim(Filenamepart));
                language     = "DE";
+               dateformat   = "ddmmyy10.";
+               timeformat   = "time5.";
             end;
          end;
-         if language='DE' then do;
-            input @1
-               d ddmmyy10. +2
-               t time5.
-            ;
+         if ("&G_DATEFORMAT." ne "_NONE_") then do;
+            dateformat   = "&G_DATEFORMAT.";
          end;
-         else do;
-            input @1
-               d mmddyy10. +2
-               t time9.
-            ;
-         end;
+         d = inputn (scan (line,1,' '), dateformat);
+         t = inputn (scan (line,2,' '), timeformat);
          changed  = dhms (d, hour(t), minute(t), 0);
          format changed datetime20.;
          membername = translate(substr (line,FilePos),'/','\');

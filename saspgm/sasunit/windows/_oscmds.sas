@@ -24,16 +24,51 @@
       g_removefile
       g_sasstart
       g_splash
+      g_dateformat
       ;
 
-     %LET g_copydir     = xcopy /E /I /Y;
-     %LET g_endcommand  =%str( );
-     %LET g_makedir     = md;
-     %LET g_removedir   = rd /S /Q;
-     %LET g_removefile  = del /S /Q;
-     %LET g_sasstart    ="%sysget(sasroot)/sas.exe";
-     %LET g_splash      = -nosplash;
+   %local
+      l_filename
+      ;
 
+      %LET g_copydir     = xcopy /E /I /Y;
+      %LET g_endcommand  =%str( );
+      %LET g_makedir     = md;
+      %LET g_removedir   = rd /S /Q;
+      %LET g_removefile  = del /S /Q;
+      %LET g_sasstart    ="%sysget(sasroot)/sas.exe";
+      %LET g_splash      = -nosplash;
+
+      * retrieve dateformat from WINDOWS registry *;
+      * Set default if anything goes wrong *;
+      %LET g_dateformat  = _NONE_;
+
+   %let xwait=%sysfunc(getoption(xwait));
+   %let xsync=%sysfunc(getoption(xsync));
+   %let xmin =%sysfunc(getoption(xmin));
+
+   options noxwait xsync xmin;
+
+   %let l_filename = %sysfunc (pathname (work))\retrive_dateformat.txt;
+   %sysexec (reg query "HKCU\Control Panel\International" /v sShortDate > "&l_filename.");
+
+   options &xwait &xsync &xmin;
+
+   data _null_;
+      infile "&l_filename.";
+      input;
+      if index (upcase (_INFILE_), "REG_SZ") then do;
+         dateformat = lowcase (scan (_INFILE_,3," "));
+         * Get rid of separators *;
+         dateformat = compress (dateformat, '.-/');
+         * make sure that year is displayed ohnly with to characters *;
+         dateformat = tranwrd (dateformat, "yyyy", "yy");
+         dateformat = tranwrd (dateformat, "jjjj", "jj");
+         * Add suffix for length *;
+         dateformat = catt (dateformat, "10.");
+         call symputx ("G_DATEFORMAT", trim (dateformat));
+      end;
+   run;
 %mend _oscmds;
 
 /** \endcond */
