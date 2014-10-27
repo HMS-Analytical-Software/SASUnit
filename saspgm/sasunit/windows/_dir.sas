@@ -77,8 +77,8 @@
    options &xwait &xsync &xmin;
    
    data &o_out (keep=membername filename changed);
-      length membername dir filename $255 language $2;
-      retain language "__" dir FilePos dateformat timeformat;
+      length membername dir filename $255 language $2 tstring dateformat timeformat $40;
+      retain language "__" dir FilePos dateformat timeformat Detect_AM_PM;
       infile _dirfile truncover;
       input line $char255.;
       if index (line, "&dirindicator_en") or index (line, "&dirindicator_de") then do;
@@ -110,13 +110,18 @@
          end;
          if ("&G_DATEFORMAT." ne "_NONE_") then do;
             dateformat   = "&G_DATEFORMAT.";
+            line         = tranwrd (line, "Mrz", "Mär");
          end;
-         d = inputn (scan (line,1,' '), dateformat);
-         t = inputn (scan (line,2,' '), timeformat);
-         changed  = dhms (d, hour(t), minute(t), 0);
+         d          = inputn (scan (line,1,' '), dateformat);
+         tstring    = trim (scan (line,2,' '));
+         if (Detect_AM_PM in ("AM", "PM")) then do;
+            tstring = trim (scan (line,2,' ')) !! ' ' !! trim (scan (line, 3, ' '));
+         end;
+         t          = inputn (tstring,           timeformat);
+         changed    = dhms (d, hour(t), minute(t), 0);
          format changed datetime20.;
          membername = translate(substr (line,FilePos),'/','\');
-         filename = translate(trim(dir),'/','\') !! '/' !! membername;
+         filename   = translate(trim(dir),'/','\') !! '/' !! membername;
          
          output;
       end;

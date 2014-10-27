@@ -1,4 +1,5 @@
-/** \file
+/** 
+   \file
    \ingroup    SASUNIT_UTIL_OS_WIN
 
    \brief      set global macro variables for OS commands.
@@ -55,18 +56,35 @@
    options &xwait &xsync &xmin;
 
    data _null_;
+      length g_dateformat $40;
       infile "&l_filename.";
       input;
       if index (upcase (_INFILE_), "REG_SZ") then do;
          dateformat = lowcase (scan (_INFILE_,3," "));
+         * Building SAS-format name from WIN-Dateformat *;
          * Get rid of separators *;
-         dateformat = compress (dateformat, '.-/');
-         * make sure that year is displayed ohnly with to characters *;
-         dateformat = tranwrd (dateformat, "yyyy", "yy");
-         dateformat = tranwrd (dateformat, "jjjj", "jj");
-         * Add suffix for length *;
-         dateformat = catt (dateformat, "10.");
-         call symputx ("G_DATEFORMAT", trim (dateformat));
+         g_dateformat = "nldate.";
+         * Chekc if monthname is displayed *;
+         if (index (dateformat,"mmm")=0) then do;
+            * Check order of day month year *;
+            index_d=index (dateformat,"d");
+            index_m=index (dateformat,"m");
+            index_y=index (dateformat,"y");
+            if (index_y < index_m) then do;
+               if (index_d < index_m) then do;
+                  g_dateformat = "yyddmm10.";
+               end;
+               else do;
+                  g_dateformat = "yymmdd10.";
+               end;
+            end;
+            else do;
+               if (index_d > index_m) then do;
+                  g_dateformat = "mmddyy10.";
+               end;
+            end;
+         end;
+         call symputx ("G_DATEFORMAT", trim (g_dateformat));
       end;
    run;
 %mend _oscmds;
