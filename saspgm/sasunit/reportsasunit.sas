@@ -242,6 +242,7 @@
 
    /*-- create reporting dataset ------------------------------------------------*/
    %LOCAL i;
+   
    PROC SQL NOPRINT;
       CREATE TABLE &d_rep (COMPRESS=YES) AS
       SELECT 
@@ -394,7 +395,7 @@
             IF tsu_lastrep=0 OR &o_force THEN DO;
                /*-- copy static files - images, css etc. ---------------------------*/
                PUT '%_copydir(' /
-                   "    &g_sasunitroot./resources" '/html/%str(*.*)' /
+                   "    &g_sasunitroot./resources" '/html/%str(*)' /
                    "   ,&l_output" /
                    ")";
                /*-- create frame HTML page -----------------------------------------*/

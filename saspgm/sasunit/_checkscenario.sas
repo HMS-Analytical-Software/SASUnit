@@ -51,7 +51,7 @@
    RUN;
 
    PROC SQL noprint;
-      create table helper as
+      create table findScenariosToInsertInDB as
       select s.scn_id, scn.changed as scn_changed, s.scn_end, scn.membername as name,
          CASE WHEN scn_id EQ . THEN 1
               ELSE 0
@@ -65,7 +65,7 @@
    /* Create scn_id for new scenarios */
    DATA helper1;
       retain index &l_cntObs;
-      SET helper;
+      SET findScenariosToInsertInDB;
       IF scn_id EQ . THEN DO;
          index+1;
          scn_id=index;
@@ -79,15 +79,18 @@
          from target.cas
          where cas_auton= .
       ;
-      /* Map dependencies for each test scenario and check which scenario needs to be run*/  
+      /* Map dependencies for each test scenario and check which scenario needs to be run*/
       create table Dependenciesbyscenario as
       select h.scn_id, h.name, h.scn_end, h.scn_changed, d.calledByCaller, s.changed as called_changed, h.insertIntoDB,
          case WHEN scn_end < scn_changed OR scn_end < called_changed OR h.scn_id in (select cas_scnid from noAutocall) THEN 1
               ELSE 0
               END as dorun
-      from helper1 as h, &i_dependency as d, &i_examinee as s
-      where h.name = d.caller AND s.membername=d.calledByCaller
+      from helper1 as h 
+      left join &i_dependency as d on h.name = d.caller
+      left join &i_examinee as s on s.membername=d.calledByCaller
+      order by scn_id;
       ;
+      
       /* Condense information to one observation per scenario */
       create table &i_scenariosToRun as
       select distinct d1.scn_id, e.membername as name, d1.insertIntoDB, e.filename, (select max(dorun) as dorun 

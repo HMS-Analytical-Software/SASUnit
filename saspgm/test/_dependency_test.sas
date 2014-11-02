@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of _dependencyJsonBuilder.sas
+   \brief      Test of _dependency.sas
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $
@@ -163,9 +163,9 @@
 %_createtestfiles;
 
 /* test case 1 ------------------------------------ */
-%initTestcase(i_object=_dependencyJsonBuilder.sas, i_desc=Test if JSON files have been created);
+%initTestcase(i_object=_dependency.sas, i_desc=Test if JSON files have been created);
 %_switch();
-   %_dependencyJsonBuilder(i_dependencies=listcalling_test, i_macroList=dir_test);
+   %_dependency(i_dependencies=listcalling_test, i_macroList=dir_test);
 %_switch();
 %endTestcall();
    %markTest();
@@ -212,7 +212,7 @@ RUN;
 
 filename in;
 
-%initTestcase(i_object=_dependencyJsonBuilder.sas, i_desc=Test correct representation of parent-child relationship);
+%initTestcase(i_object=_dependency.sas, i_desc=Test correct representation of parent-child relationship);
 %endTestcall();
    %markTest();
       /* Test correct representation of sibling relationships */
@@ -224,9 +224,9 @@ filename in;
 %endTestcase(i_assertLog=0);
 
 /* test case 3 ------------------------------------ */
-%initTestcase(i_object=_dependencyJsonBuilder.sas, i_desc=Test correct representation of sibling relationships);
+%initTestcase(i_object=_dependency.sas, i_desc=Test correct representation of sibling relationships);
 %_switch();
-   %_dependencyJsonBuilder(i_dependencies=siblings, i_macroList=siblings_dir);
+   %_dependency(i_dependencies=siblings, i_macroList=siblings_dir);
 %_switch();
 
 filename in "%sysfunc(pathname(work))/tst/crossreference/parent_caller.json";

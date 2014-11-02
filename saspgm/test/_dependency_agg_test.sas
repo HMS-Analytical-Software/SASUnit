@@ -2,12 +2,12 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of _dependencyJsonAggToJs
+   \brief      Test of _dependency_agg
 
    \version    \$Revision: 190 $
    \author     \$Author: b-braun $
    \date       \$Date: 2013-05-29 18:04:27 +0200 (Mi, 29 Mai 2013) $
-   \sa         \$HeadURL: https://menrath@svn.code.sf.net/p/sasunit/code/trunk/saspgm/test/assertequals_test.sas $
+   \sa         \$HeadURL: https://menrath@svn.code.sf.net/p/sasunit/code/trunk/saspgm/test/_dependency_agg_test.sas $
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -132,10 +132,10 @@
 %_createtestfiles;
 
 /* test case 1 ------------------------------------ */
-%initTestcase(i_object=_dependencyJsonAggToJs.sas, i_desc=Test if JSON and JavaScript files have been created and json object is well formed);
+%initTestcase(i_object=_dependency_agg.sas, i_desc=Test if JSON and JavaScript files have been created and json object is well formed);
 %_switch();
-   %_dependencyJsonAggToJs(i_path = %SYSFUNC(PATHNAME(work))/tst/jsonFolder
-                          ,o_file = %SYSFUNC(PATHNAME(work))/result/data.refs.js);
+   %_dependency_agg(i_path = %SYSFUNC(PATHNAME(work))/tst/jsonFolder
+                   ,o_file = %SYSFUNC(PATHNAME(work))/result/data.refs.js);
 %_switch();
 %endTestcall();
    %markTest();

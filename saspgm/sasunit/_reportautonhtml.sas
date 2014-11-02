@@ -42,43 +42,55 @@
       OUTPUT OUT=&d_rep2. (rename=(_FREQ_=scn_cas)) sum(scn_tst)=scn_tst;
    RUN;
 
-   proc sort data=&i_repdata. out=work._auton_report;
-      by cas_auton pgm_id scn_id;
-   run;
+   PROC SORT DATA=&i_repdata. out=work._auton_report;
+      BY cas_auton pgm_id scn_id;
+   RUN;
 
-   data work._auton_report;
-      set work._auton_report;
-      by cas_auton pgm_id scn_id;
-      if (first.scn_id);
-   run;
+   DATA work._auton_report;
+      SET work._auton_report;
+      BY cas_auton pgm_id scn_id;
+      IF (first.scn_id);
+   RUN;
 
-   data work._auton_report;
-      merge work._auton_report &d_rep2.;
-      by cas_auton pgm_id scn_id;
-   run;
+   DATA work._auton_report;
+      MERGE work._auton_report &d_rep2.;
+      BY cas_auton pgm_id scn_id;
+   RUN;
    
    /* Visualize crossreference data */
    %IF &g_crossref. EQ 1 %THEN %DO;
+      PROC SQL;
+         create view prepareDependency as
+         select distinct cas_pgm as name
+         from target.cas
+      QUIT;
+
+      DATA macrolistDependency;
+         SET prepareDependency;
+         /* remove .sas extension */
+         name = substr(name, 1, length(name)-4);
+         /* get program name in case absolute path has been specified */
+         pos = find(name,'/',-999);
+         IF pos GT 0 THEN DO;
+            len = length(trim(name));
+            name = substr(name,pos+1,len-pos);
+         END;
+      RUN;
+
       /* Create .json Files for visualisation with D3 */
-      %_dependencyJsonBuilder(i_dependencies = &d_listcalling.
-                             ,i_macroList    = &d_macrolist.
-                              );
+      %_dependency(i_dependencies = &d_listcalling.
+                  ,i_macroList    = macrolistDependency
+                  );
       /* Use Json Files to create JavaScript file containing dependency information */
-      %_dependencyJsonAggToJs(i_path = &g_target/tst/crossreference
-                             ,o_file = &l_output/js/data.refs.js
-                             );
-   
-      /* JavaScript file containing dependency information to rep/js 
-      %_copyfile(i_file = &G_TESTOUT./crossreference/data.refs.js
-                ,o_file = &l_output/js/data.refs.js
-                );
-      */
+      %_dependency_agg(i_path = &g_target/tst/crossreference
+                      ,o_file = &l_output/js/data.refs.js
+                      );
    %END;
    
    /* Delete data sets after json files have been created */
    PROC DATASETS NOLIST NOWARN LIB=%scan(&d_listcalling,1,.);
-      DELETE %scan(&d_macrolist,2,.);
-      DELETE %scan(&d_listcalling,2,.);
+      DELETE %SCAN(&d_macrolist,2,.);
+      DELETE %SCAN(&d_listcalling,2,.);
    QUIT;
 
    %IF &g_testcoverage. EQ 1 %THEN %DO;
@@ -86,12 +98,12 @@
         This is done in order to get one file containing coverage data 
         of all calls to the macros under test -----------------------------------*/
 
-      %let l_rc =%_delFile("&g_log/000.tcg");
+      %LET l_rc =%_delFile("&g_log/000.tcg");
 
-      %let l_logpath=%_escapeBlanks(&g_log.);
+      %LET l_logpath=%_escapeBlanks(&g_log.);
 
       FILENAME allfiles "&l_logpath./*.tcg";
-      DATA _null_;
+      DATA _NULL_;
          INFILE allfiles end=done dlm=',';
          FILE "&l_logpath./000.tcg";
          INPUT row :$256.;

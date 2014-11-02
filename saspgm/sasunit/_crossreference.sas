@@ -145,7 +145,7 @@
 
             /* Scan for comment: IF found delete it */
             fnt_o = prxmatch(ptrn_Com_1_o, line);
-            /* Beginn of comment found */
+            /* Begin of comment found */
             IF fnt_o > 0 and comment = 0 THEN DO;
                fnt_c = prxmatch(ptrn_Com_1_c, line);
                /* Comment closed on same line */
@@ -177,16 +177,23 @@
                DO x=0 to &l_count;
                   called      = resolve(catt('&var',x));
                   calledMacro = catt('%',called);
-                  IF find(line, trim(calledMacro), 'i') gt 0 THEN DO;
-                     caller = resolve("&l_name");
-                     keep line caller called;
-                     output;
+                  findpos = find(line, trim(calledMacro), 'i');
+                  /* candidate found */
+                  IF findpos gt 0 THEN DO;
+                     len = length(trim(calledMacro));
+                     /* make sure found string is whole macro name and not only a substring */
+                     substring = substr(line, findpos+len,1);
+                     IF substring in ('(',' ',';')  THEN DO;
+                        caller = resolve("&l_name");
+                        KEEP line caller called;
+                        OUTPUT;
+                     END;
                   END;
                END;
             END;
          RUN;
          
-         DATA _null_;
+         DATA _NULL_;
             SET helper nobs=cnt_obs;
             call symput('l_nobs', put(cnt_obs, 4.));
          RUN;

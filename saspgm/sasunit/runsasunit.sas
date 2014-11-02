@@ -118,7 +118,7 @@
    %LET l_autonr=0;
    %DO %WHILE("&l_auto" ne "");  
       %LET l_auto=%quote(&l_auto/);
-      %_dir(i_path=&l_auto.*.sas, o_out=&d_dir)
+      %_dir(i_path=&l_auto.*.sas, o_out=&d_dir);
       data &d_examinee;
          set %IF &l_autonr>0 %THEN &d_examinee; &d_dir(in=indir);
          if indir then DO;
@@ -132,7 +132,7 @@
    %END;
    %LET l_auto=&g_sasunit;
    %LET l_auto=%quote(&l_auto/);
-   %_dir(i_path=&l_auto.*.sas, o_out=&d_dir)
+   %_dir(i_path=&l_auto.*.sas, o_out=&d_dir);
    data &d_examinee;
       set &d_examinee &d_dir(in=indir);
       if indir then DO;
@@ -142,7 +142,7 @@
    run; 
    %LET l_auto=&g_sasunit_os;
    %LET l_auto=%quote(&l_auto/);
-   %_dir(i_path=&l_auto.*.sas, o_out=&d_dir)
+   %_dir(i_path=&l_auto.*.sas, o_out=&d_dir);
    data &d_examinee;
       set &d_examinee &d_dir(in=indir);
       if indir then DO;
@@ -183,7 +183,7 @@
          drop filename dorun insertIntoDB name;
       END;
    RUN;
-
+   
    /* Prepare Loop */
    PROC SQL noprint;
       select count(scn_id) into :l_nscn

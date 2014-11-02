@@ -7,7 +7,7 @@
    \version    \$Revision: 282 $
    \author     \$Author: klandwich $
    \date       \$Date: 2013-11-21 11:32:48 +0100 (DO, 21 Nov 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/windows/_dir.sas $
+   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_dependency.sas $
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -15,15 +15,15 @@
                
    \param      i_dependencies    Data set containing all dependencies with columns caller and called. In the context
                                  of SASUnit this will be the data set listcalling.
-   \param      i_macroList       A data set with the column name containing the names of macros in the autocall libraries.
+   \param      i_macroList       A data set with the column membername containing the names of macros in the autocall libraries.
                                  For all of these files .json files will be created.
 
 */ /** \cond */ 
 
-%MACRO _dependencyJsonBuilder(i_dependencies=
-                             ,i_macroList=dir
-                             );
-   %LOCAL l_countObs l_name l_children;
+%MACRO _dependency(i_dependencies =
+                  ,i_macroList    = dir
+                  );
+   %LOCAL l_countObs l_name l_children; 
 
    %** get number of obs;
    PROC SQL noprint;
@@ -48,7 +48,7 @@
          FILE json_out;
       RUN;
       /* Call writeJsonNode to write json */
-      %_writeJsonNode(i_node=&l_name, i_direction=1, i_dependencies=&i_dependencies);
+      %_dependency_wr(i_node=&l_name, i_direction=1, i_dependencies=&i_dependencies);
       /* Finalize json by adding curly bracket */
       DATA _NULL_;
          FILE json_out mod;
@@ -61,7 +61,7 @@
          FILE json_out;
       RUN;
       /* Call writeJsonNode to write json */
-      %_writeJsonNode(i_node=&l_name, i_direction=0, i_dependencies=&i_dependencies);
+      %_dependency_wr(i_node=&l_name, i_direction=0, i_dependencies=&i_dependencies);
       /* Finalize json by adding curly bracket */
       DATA _NULL_;
          FILE json_out mod;
@@ -70,4 +70,4 @@
       
       FILENAME json_out;
    %END;
-%MEND _dependencyJsonBuilder;
+%MEND _dependency;

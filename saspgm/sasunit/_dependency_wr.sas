@@ -5,7 +5,7 @@
    \version    \$Revision: 282 $
    \author     \$Author: klandwich $
    \date       \$Date: 2013-11-21 11:32:48 +0100 (DO, 21 Nov 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/windows/_dir.sas $
+   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_dependency_wr.sas $
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -20,7 +20,11 @@
                                  a loop is detected the macro return to the parent node.
 */ /** \cond */ 
 
-%MACRO _writeJsonNode(i_node=, i_dependencies=, i_direction=, i_parentList=);
+%MACRO _dependency_wr(i_node=
+                     , i_dependencies=
+                     , i_direction=
+                     , i_parentList=
+                     );
    %LOCAL l_child l_children l_cntChildren l_i l_node l_direction l_column l_parentList l_len l_this_node l_children_inner;
    %LET l_children =;
    
@@ -90,7 +94,7 @@
          QUIT;
          
          /* Child node found: recursive call to macro */
-         %_writeJsonNode(i_node=&l_node., i_dependencies=&i_dependencies., i_parentList=&l_parentList., i_direction=&i_direction.);
+         %_dependency_wr(i_node=&l_node., i_dependencies=&i_dependencies., i_parentList=&l_parentList., i_direction=&i_direction.);
 
          /* Separate children with curly bracket + comma */
          %IF &l_i LT &l_cntChildren. %THEN %DO;
@@ -115,4 +119,4 @@
       RUN;
 
    %END; /* End if */
-%MEND _writeJsonNode;
+%MEND _dependency_wr;

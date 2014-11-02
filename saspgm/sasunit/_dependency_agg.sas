@@ -6,7 +6,7 @@
    \version    \$Revision: 328 $
    \author     \$Author: b-braun $
    \date       \$Date: 2014-08-06 19:24:55 +0200 (Mi, 06 Aug 2014) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/branches/v20_BB/saspgm/sasunit/_reportautonhtml.sas $
+   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/branches/v20_BB/saspgm/sasunit/_dependency_agg.sas $
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -17,15 +17,18 @@
 
 */ /** \cond */ 
 
-%MACRO _dependencyJsonAggToJs(i_path =
-                             ,o_file =
-                             );
+%MACRO _dependency_agg(i_path =
+                      ,o_file =
+                      );
+                      
+                      
+                      
    %LOCAL l_countObs json_dir l_pgmName l_filename;
    
    %_tempFileName(json_dir);
    %_dir(i_path   = &i_path
         ,o_out    = &json_dir);
-   
+
    /* get number of obs */
    PROC SQL NOPRINT;
       SELECT count(*)
@@ -101,4 +104,4 @@
    
    FILENAME aggregJS;
 
-%MEND _dependencyJsonAggToJs;
+%MEND _dependency_agg;
