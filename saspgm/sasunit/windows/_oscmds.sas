@@ -82,6 +82,9 @@
                if (index_d > index_m) then do;
                   g_dateformat = "mmddyy10.";
                end;
+               else do;
+                  g_dateformat = "ddmmyy10.";
+               end;
             end;
          end;
          call symputx ("G_DATEFORMAT", trim (g_dateformat));
