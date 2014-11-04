@@ -11,6 +11,32 @@ text-decoration:none;
 a:active {
 text-decoration:none;
 }
+.tablesorterheader
+{
+  background-image: url('data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==');
+  background-position: right;
+  background-repeat: no-repeat;
+  padding-bottom: 4px;
+  padding-left: 4px;
+  padding-right: 18px;
+  padding-top: 4px;
+}
+.tablesorterheaderasc
+{
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7');
+}
+.tablesorterheaderdesc
+{
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+}
+.tablesorterheadersortdown
+{
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+}
+.tablesorterheadersortup
+{
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7');
+}
 
 /* tabs styles, based on http://webdesign.about.com/od/layout/ss/css-3-tabs.htm */
 .tabs
