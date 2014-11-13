@@ -1,8 +1,8 @@
 @echo off
-rem 				Copyright 2010, 2012 HMS Analytical Software GmbH.
-rem         This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-rem         For terms of usage under the GPL license see included file readme.txt
-rem         or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+rem Copyright 2010, 2012 HMS Analytical Software GmbH.
+rem This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+rem For terms of usage under the GPL license see included file readme.txt
+rem or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 @echo on
 
 cd ..
@@ -12,6 +12,8 @@ SET SASUNIT_LANGUAGE=de
 SET SASUNIT_HOST_OS=windows
 SET SASUNIT_SAS_VERSION=9.2_32
 SET SASUNIT_COVERAGEASSESSMENT=0
+
+echo "Starting SASUnit Examples ..."
 "C:\Program Files\SAS\SASFoundation\9.2(32-bit)\sas.exe" -CONFIG "bin\sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg" -no$syntaxcheck -noovp -nosplash
 
 @echo off
