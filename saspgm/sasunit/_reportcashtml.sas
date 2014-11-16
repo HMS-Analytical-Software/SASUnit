@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_REPORT
 
    \brief      create a list of test cases for HTML report
@@ -240,7 +241,7 @@
          columns idColumn descriptionColumn programColumn last_runColumn durationColumn resultColumn;
 
          define idColumn         / display style(Column)=rowheader;
-             define durationColumn  / display style(Column)=[just=right];
+         define durationColumn  / display style(Column)=[just=right];
          define resultColumn     / display style(Column)=[background=white];
 
          compute before _page_;

@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_REPORT
 
    \brief      create HTML header for a page in the HTML report
@@ -27,7 +28,6 @@
       PUT "    <meta http-equiv=""Content-Style-Type"" content=""text/css"" />";
       PUT "    <meta http-equiv=""Content-Language"" content=""de"" />";
       PUT "    <link href=""sasunit.css"" rel=""stylesheet"" type=""text/css"">";
-      PUT "    <link href=""tabs.css""    rel=""stylesheet"" type=""text/css"">";
       PUT "    <link rel=""shortcut icon"" href=""./favicon.ico"" type=""image/x-icon"" />";
       PUT "    <title>&i_title</title>";
       PUT "  </head>";

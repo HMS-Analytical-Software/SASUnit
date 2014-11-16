@@ -1,157 +1,108 @@
 /**
-\file
-\ingroup    SASUNIT_UTIL
+   \file
+   \ingroup    SASUNIT_UTIL
 
-\brief      determine whether a test scenario has to be executed
+   \brief      determine whether a test scenario has to be executed
 
-            conditions when test scenario has to be executed
-            - new test scenario
-            - test scenario has been changed since last run 
-            - test scenario contains a test case, where the unit under test (SAS program to 
-              be tested) has been changed since last execution of the scenario. 
-            - test scenario contains a unit under test which does not exist 
-              (scenario has to be executed so that this will be noticed)
+               conditions when test scenario has to be executed
+               - new test scenario
+               - test scenario has been changed since last run 
+               - test scenario contains a test case, where the unit under test (SAS program to 
+                 be tested) has been changed since last execution of the scenario 
+               - test scenario contains a unit under test which does not exist 
+                 (scenario has to be executed so that this will be noticed)
+               - a calling program of units under test has been changed
 
-\param      i_scnfile absolute path to test scenario program
-\param      i_changed last modification date and time of test scenario (SAS date time value)
-\param      i_dir SAS dataset with all programs in all autocall libraries.
-                  The data set contains the following variables: 
-                  - filename absolute path to program 
-                  - changed  datetime of last modification
-                  - auton    autocall number 0..9
-                  (dataset should be created with _dir)
-\param      r_scnid name of macro variable to return scenario id, if scenario can be found, 
-                    0 otherwise
-\param      r_run name of macro variable to return 1 for execute or 0 for do not execute
-\return     &r_scnid and &r_run
+   \param      i_examinee        Data set containing all SASUnit macros, test scenarios and units under test
+   \param      i_scn_pre         Data set containing all test scenarios
+   \param      i_dependency      Data set containing information about the calling hierarchy
+   \param      i_scenariosToRun  Data set created in this macro holding information about scenarios that have to run
+               (all data sets created in runsasunit)
 
-\version    \$Revision$
-\author     \$Author$
-\date       \$Date$
-\sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-\sa         \$HeadURL$
-\copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-            This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-            For terms of usage under the GPL license see included file readme.txt
-            or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+               Further more the result data set dependency from macro _crossreference in work is used
+
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+   \sa         \$HeadURL$
+   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%MACRO _checkScenario(i_scnfile = 
-                     ,i_changed = 
-                     ,i_dir     = 
-                     ,r_scnid   = l_scnid
-                     ,r_run     = l_run
+%MACRO _checkScenario(i_examinee       =
+                     ,i_scn_pre        =
+                     ,i_dependency     =
+                     ,i_scenariosToRun =
                      );
+   %LOCAL l_cntObs;
+   %LET l_cntObs = 0;
 
-   %local d_pgm l_scnfile ll_scnid l_lastrun l_pgmcount i l_pgmchanged;
+   /* Get Scenarios and their names from target.scn */
+   DATA scenarios;
+      IF _n_ = 1 THEN DO;
+         call symput ('l_cntObs',put(cnt_obs, 3.));
+      END;
+      DROP pos;
+      SET target.scn(keep=scn_id scn_path scn_end) nobs=cnt_obs;
+      pos = find(scn_path,'/',-200)+1;
+      scn_name = substr(scn_path,pos);
+   RUN;
 
-   %_tempFileName(d_pgm)
-
-   /*-- set default return value ------------------------------------------------*/
-   %let &r_scnid=;
-   %let &r_run=0; 
-
-   /*-- standardize absolute path -----------------------------------------------*/
-   %let l_scnfile = %_stdPath (&g_root, &i_scnfile);
-
-   /*-- determine time of last execution of test scenario -----------------------*/
-   %let l_lastrun=0;
-   %let ll_scnid=0;
-   proc sql noprint;
-      select scn_id, compress(put(scn_start,best32.)) into :ll_scnid, :l_lastrun
-      from target.scn
-      where upcase(scn_path) = "%upcase(&l_scnfile)";
-   quit;
-
-   /*-- execute, if scenario not found or found and changed ---------------------*/
-   %if &l_lastrun<&i_changed %then %do;
-      %put &g_note.(SASUNIT): _checkScenario <1>;
-      %let &r_scnid = &ll_scnid;
-      %let &r_run = 1;
-      %goto exit;
-   %end;
-
-   /*-- determine units under test in autocall libraries and their change dtime -*/
-   %let l_pgmcount=0;
-   proc sql noprint;
-      select count(*) into :l_pgmcount
-      from target.cas
-         left join &i_dir dir 
-            on upcase(cas.cas_pgm) = upcase(scan(dir.filename,-1,'/'))
-               and cas.cas_auton = dir.auton
-      where cas.cas_scnid = &ll_scnid
-         and (&l_lastrun<dir.changed or dir.changed=.)
-         and cas.cas_auton ne .
+   PROC SQL noprint;
+      create table findScenariosToInsertInDB as
+      select s.scn_id, scn.changed as scn_changed, s.scn_end, scn.membername as name,
+         CASE WHEN scn_id EQ . THEN 1
+              ELSE 0
+              END as insertIntoDB
+      from scenarios as s
+      full join &i_scn_pre as scn
+      on scn.membername=s.scn_name
       ;
-   quit;
+   QUIT;
 
-   /*-- execute, if at least one unit under test is newer or is missing ---------*/
-   %if &l_pgmcount %then %do;
-      %put &g_note.(SASUNIT): _checkScenario <2>;
-      %let &r_scnid = &ll_scnid;
-      %let &r_run = 1;
-      %goto exit;
-   %end;
-
-   /*-- look for units under test not in autocall libraries ---------------------*/
-   proc sql noprint;
-      create table &d_pgm as
-         select cas.cas_pgm
+   /* Create scn_id for new scenarios */
+   DATA helper1;
+      retain index &l_cntObs;
+      SET findScenariosToInsertInDB;
+      IF scn_id EQ . THEN DO;
+         index+1;
+         scn_id=index;
+      END;
+   RUN;
+   
+   /* look for units under test not in autocall libraries */
+   PROC SQL noprint;
+      create table noAutocall as
+         select unique cas_scnid
          from target.cas
-         where cas.cas_scnid = &ll_scnid
-            and cas.cas_auton=.
+         where cas_auton= .
       ;
-   quit;
-
-   /*-- do not execute if none found --------------------------------------------*/
-   %if %_nobs(&d_pgm) = 0 %then %do;
-      %put &g_note.(SASUNIT): _checkScenario <3>;
-      %let &r_scnid = &ll_scnid;
-      %let &r_run = 0;
-      %goto exit;
-   %end;
-
-   /*-- determine last modification dtime for those units under test ------------*/
-   %do i=1 %to %_nobs(&d_pgm);
-      %local l_pgm&i;
-   %end;
-   data _null_;
-      set &d_pgm;
-      call symput ('l_pgm' !! compress(put(_n_,8.)), trim(cas_pgm));
-      call symput ('l_pgmcount', compress(put(_n_,8.)));
-   run;
-
-   %do i=1 %to &l_pgmcount;
-      %let l_pgm&i = %_absPath(&g_root,&&l_pgm&i);
-      %_dir(i_path=&&l_pgm&i, o_out=&d_pgm)
+      /* Map dependencies for each test scenario and check which scenario needs to be run*/
+      create table Dependenciesbyscenario as
+      select h.scn_id, h.name, h.scn_end, h.scn_changed, d.calledByCaller, s.changed as called_changed, h.insertIntoDB,
+         case WHEN scn_end < scn_changed OR scn_end < called_changed OR h.scn_id in (select cas_scnid from noAutocall) THEN 1
+              ELSE 0
+              END as dorun
+      from helper1 as h 
+      left join &i_dependency as d on h.name = d.caller
+      left join &i_examinee as s on s.membername=d.calledByCaller
+      order by scn_id;
+      ;
       
-      %let l_pgmchanged=0;
-      proc sql noprint;
-         select compress(put(changed,best32.)) into :l_pgmchanged
-            from &d_pgm
-         ;
-      quit;
-
-      /*-- execute scenario, if unit under test newer or not found --------------*/
-      %if &l_lastrun < &l_pgmchanged or &l_pgmchanged=0 %then %do;
-         %put &g_note.(SASUNIT): _checkScenario <4>;
-         %let &r_scnid = &ll_scnid;
-         %let &r_run = 1;
-         %goto exit;
-      %end;
-
-   %end;
-
-   /*-- do not execute scenario -------------------------------------------------*/
-   %put &g_note.(SASUNIT): _checkScenario <5>;
-   %let &r_scnid = &ll_scnid;
-   %let &r_run = 0;
-
-%exit:
-   /*-- tidy up -----------------------------------------------------------------*/
-   proc datasets nolist nowarn;
-      delete %scan(&d_pgm,2,.);
-   quit;
+      /* Condense information to one observation per scenario */
+      create table &i_scenariosToRun as
+      select distinct d1.scn_id, e.membername as name, d1.insertIntoDB, e.filename, (select max(dorun) as dorun 
+                                                                                       from Dependenciesbyscenario as d
+                                                                                       where e.membername = d.name
+                                                                                       group by d.name 
+                                                                                    ) as dorun
+      from &i_scn_pre. as e, Dependenciesbyscenario as d1
+      where d1.name = e.membername
+      ;
+   QUIT;
 
 %MEND _checkScenario;
 /** \endcond */

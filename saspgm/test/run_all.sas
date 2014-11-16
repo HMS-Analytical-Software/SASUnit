@@ -20,21 +20,20 @@ OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "%trim(%sysget(SASUNIT_ROOT))/sasp
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root         = %sysget(SASUNIT_ROOT)
-  ,io_target      = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
-  ,i_overwrite    = %sysget(SASUNIT_OVERWRITE)
-  ,i_project      = SASUnit Self Test
-  ,i_sasunit      = saspgm/sasunit
-  ,i_sasautos     = saspgm/sasunit
-  ,i_sasautos1    = saspgm/test
-  ,i_sasautos2    = saspgm/test/pgmlib1
-  ,i_sasautos3    = saspgm/test/pgmlib2
-  ,i_testdata     = dat
-  ,i_refdata      = dat
-  ,i_doc          = doc/spec
-  ,i_sascfg       = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
-  ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose      = &SASUNIT_VERBOSE.
+   i_root            = .\
+  ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
+  ,i_overwrite       = %sysget(SASUNIT_OVERWRITE)
+  ,i_project         = SASUnit Self Test
+  ,i_sasunit         = %sysget(SASUNIT_ROOT)/saspgm/sasunit
+  ,i_sasautos        = saspgm/test
+  ,i_sasautos1       = saspgm/test/pgmlib1
+  ,i_sasautos2       = saspgm/test/pgmlib2
+  ,i_testdata        = dat
+  ,i_refdata         = dat
+  ,i_doc             = doc/spec
+  ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
+  ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
+  ,i_verbose         = &SASUNIT_VERBOSE.
 );
 
 %runSASUnit(i_source = %str(saspgm/test/reportsasunit_inexisting_scenario_has_to_fail));
@@ -73,42 +72,42 @@ data _null_;
 run;
 
 %initSASUnit(
-   i_root         = %sysget(SASUNIT_ROOT)
-  ,io_target      = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
-  ,i_overwrite    = 0
-  ,i_project      = SASUnit Self Test
-  ,i_sasunit      = saspgm/sasunit
-  ,i_sasautos     = saspgm/sasunit
-  ,i_sasautos1    = saspgm/test
-  ,i_sasautos2    = saspgm/test/pgmlib1
-  ,i_sasautos3    = saspgm/test/pgmlib2
-  ,i_testdata     = dat
-  ,i_refdata      = dat
-  ,i_doc          = doc/spec
-  ,i_sascfg       = &ConfigName.
-  ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose      = &SASUNIT_VERBOSE.
+   i_root            = %sysget(SASUNIT_ROOT)
+  ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
+  ,i_overwrite       = 0
+  ,i_project         = SASUnit Self Test
+  ,i_sasunit         = saspgm/sasunit
+  ,i_sasautos        = saspgm/sasunit
+  ,i_sasautos1       = saspgm/test
+  ,i_sasautos2       = saspgm/test/pgmlib1
+  ,i_sasautos3       = saspgm/test/pgmlib2
+  ,i_testdata        = dat
+  ,i_refdata         = dat
+  ,i_doc             = doc/spec
+  ,i_sascfg          = &ConfigName.
+  ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
+  ,i_verbose         = &SASUNIT_VERBOSE.
 )
 
 %runSASUnit(i_source = saspgm/test/assert_i_config_usage_configtest.sas);
 
 %initSASUnit(
-   i_root         = %sysget(SASUNIT_ROOT)
-  ,io_target      = doc/sasunit/%lowcase(%cmpres(%sysget(SASUNIT_LANGUAGE)))
-  ,i_overwrite    = 0
-  ,i_project      = SASUnit Self Test
-  ,i_sasunit      = saspgm/sasunit
-  ,i_sasautos     = saspgm/sasunit
-  ,i_sasautos1    = saspgm/test
-  ,i_sasautos2    = saspgm/test/pgmlib1
-  ,i_sasautos3    = saspgm/test/pgmlib2
-  ,i_testdata     = dat
-  ,i_refdata      = dat
-  ,i_doc          = doc/spec
-  ,i_sascfg       = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
-  ,i_autoexec     = &AutoexecName2.
-  ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose      = &SASUNIT_VERBOSE.
+   i_root            = %sysget(SASUNIT_ROOT)
+  ,io_target         = doc/sasunit/%lowcase(%cmpres(%sysget(SASUNIT_LANGUAGE)))
+  ,i_overwrite       = 0
+  ,i_project         = SASUnit Self Test
+  ,i_sasunit         = saspgm/sasunit
+  ,i_sasautos        = saspgm/sasunit
+  ,i_sasautos1       = saspgm/test
+  ,i_sasautos2       = saspgm/test/pgmlib1
+  ,i_sasautos3       = saspgm/test/pgmlib2
+  ,i_testdata        = dat
+  ,i_refdata         = dat
+  ,i_doc             = doc/spec
+  ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
+  ,i_autoexec        = &AutoexecName2.
+  ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
+  ,i_verbose         = &SASUNIT_VERBOSE.
 )
 
 %runSASUnit(i_source = saspgm/test/assert_i_autoexec_usage_configtest.sas);
@@ -116,22 +115,22 @@ run;
 *** Recreate the old config and autoexec to ensure the right settings ***;
 *** if you use SASUnit without overwrite afterwards                   ***;
 %initSASUnit(
-   i_root         = %sysget(SASUNIT_ROOT)
-  ,io_target      = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
-  ,i_overwrite    = 0
-  ,i_project      = SASUnit Self Test
-  ,i_sasunit      = saspgm/sasunit
-  ,i_sasautos     = saspgm/sasunit
-  ,i_sasautos1    = saspgm/test
-  ,i_sasautos2    = saspgm/test/pgmlib1
-  ,i_sasautos3    = saspgm/test/pgmlib2
-  ,i_testdata     = dat
-  ,i_refdata      = dat
-  ,i_doc          = doc/spec
-  ,i_sascfg       = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
-  ,i_autoexec     = %str( )
-  ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose      = &SASUNIT_VERBOSE.
+   i_root            = %sysget(SASUNIT_ROOT)
+  ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
+  ,i_overwrite       = 0
+  ,i_project         = SASUnit Self Test
+  ,i_sasunit         = saspgm/sasunit
+  ,i_sasautos        = saspgm/sasunit
+  ,i_sasautos1       = saspgm/test
+  ,i_sasautos2       = saspgm/test/pgmlib1
+  ,i_sasautos3       = saspgm/test/pgmlib2
+  ,i_testdata        = dat
+  ,i_refdata         = dat
+  ,i_doc             = doc/spec
+  ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
+  ,i_autoexec        = %str( )
+  ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
+  ,i_verbose         = &SASUNIT_VERBOSE.
 );
 
 %reportSASUnit(
@@ -139,5 +138,4 @@ run;
    ,o_html    =1
    ,o_junit   =1
 );
-
 /** \endcond */

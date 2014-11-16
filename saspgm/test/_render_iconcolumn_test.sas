@@ -42,7 +42,7 @@ run;
 data work.expected;
    set work.input;
    _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
-                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! """] }";
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
 run;
 %initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with missing value);
 data work.actual;
@@ -66,7 +66,7 @@ run;
 data work.expected;
    set work.input;
    _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
-                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! """] }";
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
 run;
 %initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with negative value);
 data work.actual;
@@ -90,7 +90,7 @@ run;
 data work.expected;
    set work.input;
    _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
-                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! """] }";
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
 run;
 %initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with result OK);
 data work.actual;
@@ -114,7 +114,7 @@ run;
 data work.expected;
    set work.input;
    _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
-                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! """] }";
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
 run;
 %initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with result Manual);
 data work.actual;
@@ -138,7 +138,7 @@ run;
 data work.expected;
    set work.input;
    _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
-                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! """] }";
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
 run;
 %initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with result Error);
 data work.actual;
@@ -162,7 +162,7 @@ run;
 data work.expected;
    set work.input;
    _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
-                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! """] }";
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
 run;
 %initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with high value);
 data work.actual;

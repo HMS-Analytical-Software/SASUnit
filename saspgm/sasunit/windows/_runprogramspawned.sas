@@ -79,7 +79,7 @@
       !! "&l_parms. "
       !! "-sysin ""&i_program."" "
       !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&i_scnid.;"" "
-      !! "-log   ""&g_log/&i_scnid..log"" "
+      !! "-log ""&g_log/&i_scnid..log"" "
       !! "-print ""&g_testout/&i_scnid..lst"" "
       !! "&g_splash "
       !! "-noovp "

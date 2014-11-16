@@ -83,6 +83,16 @@
  20 EN Comments
  21 DE Quelltext der von der Option MCOVERAGE als nicht abgedeckt markiert wurde
  21 EN Code marked as non contributing by option mcoverage
+ 22 DE Aufrufhierarchie
+ 22 EN Calling Sequence
+ 23 DE Ruft auf
+ 23 EN Calling
+ 24 DE Aufgerufen von 
+ 24 EN Called by
+ 25 DE ruft folgende Programme auf
+ 25 EN calls these programs
+ 26 DE wird von folgenden Programmen aufgerufen
+ 26 EN is called by these programs
 ---reportCas
   1 DE Testfälle nach Szenarien
   1 EN Test Cases by Scenario

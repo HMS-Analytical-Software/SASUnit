@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL
 
    \brief      initialize a test scenario, see initSASUnit.sas.
@@ -21,46 +22,46 @@
 %MACRO _scenario(io_target  = 
                 );
 
-%LOCAL l_macname; 
+   %LOCAL l_macname; 
 
-%LET l_macname=&sysmacroname;
+   %LET l_macname=&sysmacroname;
 
-OPTIONS MAUTOSOURCE MPRINT LINESIZE=MAX;
+   OPTIONS MAUTOSOURCE MPRINT LINESIZE=MAX;
 
-/* initialize error handling */
-%_initErrorHandler;
+   /* initialize error handling */
+   %_initErrorHandler;
 
-/* check for target directory*/
-%IF %_handleError(&l_macname
-                 ,InvalidTargetDir
-                 ,"&io_target" EQ "" OR NOT %_existDir(&io_target)
-                 ,target directory &io_target does not exist
-                 ) 
-   %THEN %GOTO errexit;
+   /* check for target directory*/
+   %IF %_handleError(&l_macname
+                    ,InvalidTargetDir
+                    ,"&io_target" EQ "" OR NOT %_existDir(&io_target)
+                    ,target directory &io_target does not exist
+                    ) 
+      %THEN %GOTO errexit;
 
-/* create libref for test database*/
-LIBNAME target "&io_target";
-%IF %_handleError(&l_macname
-                 ,ErrorNoTargetDirLib
-                 ,%quote(&syslibrc.) NE 0
-                 ,test database cannot be opened
-                 ) 
-   %THEN %GOTO errexit;
+   /* create libref for test database*/
+   LIBNAME target "&io_target";
+   %IF %_handleError(&l_macname
+                    ,ErrorNoTargetDirLib
+                    ,%quote(&syslibrc.) NE 0
+                    ,test database cannot be opened
+                    ) 
+      %THEN %GOTO errexit;
 
-/* set global macro symbols and librefs / filerefs  */
-/* includes creation of autocall paths */
-%_loadEnvironment()
-%IF &g_error_code NE %THEN %GOTO errexit;
+   /* set global macro symbols and librefs / filerefs  */
+   /* includes creation of autocall paths */
+   %_loadEnvironment()
 
-/* flag for test cases */
-%GLOBAL g_inTestcase;
-%LET g_inTestcase=0;
-%_oscmds;
+   %IF &g_error_code NE %THEN %GOTO errexit;
 
-%GOTO exit;
-%errexit:
-   %PUT ========================== Error! Test scenario will be aborted! ================================;
-LIBNAME target;
-%exit:
+   /* flag for test cases */
+   %GLOBAL g_inTestcase;
+   %LET g_inTestcase=0;
+
+   %GOTO exit;
+   %errexit:
+      %PUT ========================== Error! Test scenario will be aborted! ================================;
+   LIBNAME target;
+   %exit:
 %MEND _scenario;
 /** \endcond */

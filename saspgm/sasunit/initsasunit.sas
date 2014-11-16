@@ -10,7 +10,7 @@
    \author     \$Author$
    \date       \$Date$
    \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-					Here you can find the SASUnit documentation, release notes and license information.
+               Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the unit testing framework for SAS(R) programs.
@@ -46,6 +46,9 @@
    \param   i_verbose      optional: controls whether results of asserts are written to the SAS log
                            0 (default).. no results written to SAS log
                            1 .. results are written to SAS log
+   \param   i_crossref     optional: controlls wether the crossreference is created in overwrite mode
+                           0  .. crossreference will not be created 
+                           1 (default).. crossreference will be created                           
                            
 */ /** \cond */ 
 
@@ -73,13 +76,25 @@
                   ,i_doc          = 
                   ,i_testcoverage = 1
                   ,i_verbose      = 0
+                  ,i_crossref     = 1
                   );
 
-   %GLOBAL g_version g_revision;
+   %GLOBAL g_version g_revision g_verbose g_error g_warning g_note;
 
-   %LET g_version   = 1.3.0;
+   %LET g_version   = 1.4.9;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
+   
+   /*-- check value of parameters i_verbose and i_crossref, if one of them has a value other than 0, 
+        they will be set to 1 in order to assure that values will only be 0 or 1 ------*/
+   %IF (&i_crossref. NE 0) %THEN %DO;
+      %LET i_crossref = 1;
+   %END;
+   %IF (&i_verbose. NE 0) %THEN %DO;
+      %LET i_verbose = 1;
+   %END;
+   %LET g_verbose   = &i_verbose;
+   
 
    %LOCAL l_macname  l_current_dbversion l_target_abs  l_newdb       l_rc       l_project      l_root    l_sasunit          l_abs l_autoexec      l_autoexec_abs
           l_sascfg   l_sascfg_abs        l_sasuser     l_sasuser_abs l_testdata l_testdata_abs l_refdata l_refdata_abs      l_doc                 l_doc_abs  restore_sasautos 
@@ -101,12 +116,6 @@
 
    /*-- initialize error --------------------------------------------------------*/
    %_initErrorHandler;
-
-   /*-- check value of parameter i_verbose, if it has a value other than 0, 
-        it will be set to 1 in order to assure that it will have only value 0 or 1 ------*/
-   %IF (&i_verbose. NE 0) %THEN %DO;
-      %LET i_verbose = 1;
-   %END;
 
    /*-- check for operation system ----------------------------------------------*/
    %IF %_handleError(&l_macname.
@@ -133,6 +142,8 @@
    OPTIONS NOQUOTELENMAX;
 
    %_oscmds;
+   
+   %_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note);
 
    /*-- check SAS version -------------------------------------------------------*/
    %IF %_handleError(&l_macname.
@@ -177,8 +188,6 @@
                     ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
-   data target._test;
-   run;
    %IF %_handleError(&l_macname.
                     ,ErrorTargetLibNotWritable
                     ,%quote(&syserr.) NE 0
@@ -186,9 +195,6 @@
                     ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
-   PROC SQL;
-      DROP TABLE target._test;
-   QUIT;
 
    /*-- does the test database exist already? -----------------------------------*/
    %IF "&i_overwrite" NE "1" %then %LET i_overwrite=0;
@@ -224,9 +230,9 @@
             ,tsu_sasunit      CHAR(1000)        /* see i_sasunit */
             ,tsu_sasunit_os   CHAR(1000)        /* os-specific sasunit macros */
             ,tsu_sasautos     CHAR(1000)        /* see i_sasautos */
-      %DO i=1 %TO 9;
+      %DO i=1 %TO 9;            
             ,tsu_sasautos&i   CHAR(1000)        /* see i_sasautos<n> */
-      %END;
+      %END;                     
             ,tsu_autoexec     CHAR(1000)        /* see i_autoexec */
             ,tsu_sascfg       CHAR(1000)        /* see i_sascfg */
             ,tsu_sasuser      CHAR(1000)        /* see i_sasuser */
@@ -238,9 +244,10 @@
             ,tsu_testcoverage INT FORMAT=8.     /* see i_testcoverage */
             ,tsu_dbversion    CHAR(8)           /* Version String to force creation of a new test data base */
             ,tsu_verbose      INT FORMAT=8.     /* see i_verbose */
+            ,tsu_crossref     INT FORMAT=8.     /* see i_crossref */
          );
          INSERT INTO target.tsu VALUES (
-         "","","","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,"",&i_verbose.
+         "","","","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,"",&i_verbose.,&i_crossref.
          );
 
          CREATE TABLE target.scn(COMPRESS=CHAR)
@@ -295,6 +302,7 @@
          FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
          PUT "&g_removedir ""&l_target_abs/log""&g_endcommand";
          PUT "&g_removedir ""&l_target_abs/tst""&g_endcommand";
+         *PUT "&g_removedir ""&l_target_abs/tst/json""&g_endcommand";
          PUT "&g_removedir ""&l_target_abs/rep""&g_endcommand";
       RUN;
       %_executeCMDFile(&l_cmdfile.);
@@ -305,12 +313,30 @@
          FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
          PUT "&g_makedir ""&l_target_abs/log""&g_endcommand";
          PUT "&g_makedir ""&l_target_abs/tst""&g_endcommand";
+         *PUT "&g_makedir ""&l_target_abs/tst/json""&g_endcommand";
          PUT "&g_makedir ""&l_target_abs/rep""&g_endcommand";
       RUN;
       %_executeCMDFile(&l_cmdfile.);
       %LET l_rc=%_delfile(&l_cmdfile.);
    %END; /* %if &l_newdb */
 
+   /*-- folder for crossreference json files has to be always recreated -----------*/
+   %LET l_cmdfile=%sysfunc(pathname(WORK))/remove_dir.cmd;
+   DATA _null_;
+      FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
+      PUT "&g_removedir ""&l_target_abs/tst/crossreference""&g_endcommand";
+   RUN;
+   %_executeCMDFile(&l_cmdfile.);
+   %LET l_rc=%_delfile(&l_cmdfile.);
+   %LET rc = %sysfunc (sleep(2,1));
+   %LET l_cmdfile=%sysfunc(pathname(WORK))/make_dir.cmd;
+   DATA _null_;
+      FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
+      PUT "&g_makedir ""&l_target_abs/tst/crossreference""&g_endcommand";
+   RUN;
+   %_executeCMDFile(&l_cmdfile.);
+   %LET l_rc=%_delfile(&l_cmdfile.);
+   
    /*-- check folders -----------------------------------------------------------*/
    %IF %_handleError(&l_macname.
                     ,NoLogDir
@@ -565,8 +591,9 @@
 
    /*-- update parameters ----------------------------------------------------*/
    PROC SQL NOPRINT;
-      UPDATE target.tsu SET tsu_testcoverage=&i_testcoverage;
-      UPDATE target.tsu SET tsu_verbose     =&i_verbose;
+      UPDATE target.tsu SET tsu_testcoverage =&i_testcoverage;
+      UPDATE target.tsu SET tsu_verbose      =&i_verbose;
+      UPDATE target.tsu SET tsu_crossref    =&i_crossref;
    QUIT;
 
    /*-- load relevant information from test database to global macro symbols ----*/

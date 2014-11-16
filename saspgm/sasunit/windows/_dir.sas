@@ -1,7 +1,7 @@
 /** \file
    \ingroup    SASUNIT_UTIL_OS_WIN
 
-   \brief      generates a dataset with the names of all files in a directory or directory tree.
+   \brief      Generates a dataset with the names of all files in a directory or directory tree.
                Wildcards may be used to specify the files to be included
 
                Resulting SAS dataset has the columns
@@ -50,19 +50,37 @@
    %let dirfile=%sysfunc(pathname(work))\___dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
 
-   %put &g_note.(SASUNIT): Directory search is: &i_path;
+   /* %put &g_note.(SASUNIT): Directory search is: &l_i_path; */
 
    %IF &i_recursive %then %let s=/S;
-
-   %SYSEXEC(dir &s /a-d "&l_i_path" > "&dirfile");
    
+   %if &g_verbose. %then %do;
+      %put ======== OS Command Start ========;
+      /* Evaluate sysexec´s return code */
+      %SYSEXEC(dir &s /a-d "&l_i_path" > "&dirfile" 2>&1);
+      %if &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
+      %else %put &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
+
+      /* put sysexec command to log*/
+      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: dir &s /a-d "&l_i_path" > "&dirfile";
+      
+      /* write &dirfile to the log*/
+      data _null_;
+         infile "&dirfile" truncover lrecl=512;
+         input line $512.;
+         putlog line;
+      run;
+      %put ======== OS Command End ========;
+   %end;
+   
+   %SYSEXEC(dir &s /a-d "&l_i_path" > "&dirfile");
    options &xwait &xsync &xmin;
    
-   data &o_out (keep=filename changed);
-      length dir filename $255 language $2;
-      retain language "__" dir FilePos;
+   data &o_out (keep=membername filename changed);
+      length membername dir filename $255 language $2 tstring dateformat timeformat $40;
+      retain language "__" dir FilePos dateformat timeformat Detect_AM_PM;
       infile _dirfile truncover;
-      input line $char255. @;
+      input line $char255.;
       if index (line, "&dirindicator_en") or index (line, "&dirindicator_de") then do;
          if index (line, "&dirindicator_en") then do;
             dir = substr(line, index (line, "&dirindicator_en")+length("&dirindicator_en")+1);
@@ -79,28 +97,32 @@
                Filenamepart = scan (line,5, " ");
                Filepos      = index (line, trim(Filenamepart));
                language     = "EN";
+               dateformat   = "mmddyy10.";
+               timeformat   = "time9.";
             end;
             else do;
                Filenamepart = scan (line,4, " ");
                Filepos      = index (line, trim(Filenamepart));
                language     = "DE";
+               dateformat   = "ddmmyy10.";
+               timeformat   = "time5.";
             end;
          end;
-         if language='DE' then do;
-            input @1
-               d ddmmyy10. +2
-               t time5.
-            ;
+         if ("&G_DATEFORMAT." ne "_NONE_") then do;
+            dateformat   = "&G_DATEFORMAT.";
+            line         = tranwrd (line, "Mrz", "Mär");
          end;
-         else do;
-            input @1
-               d mmddyy10. +2
-               t time9.
-            ;
+         d          = inputn (scan (line,1,' '), dateformat);
+         tstring    = trim (scan (line,2,' '));
+         if (Detect_AM_PM in ("AM", "PM")) then do;
+            tstring = trim (scan (line,2,' ')) !! ' ' !! trim (scan (line, 3, ' '));
          end;
+         t          = inputn (tstring,           timeformat);
          changed  = dhms (d, hour(t), minute(t), 0);
          format changed datetime20.;
-         filename = translate(trim(dir) !! '/' !! substr (line,FilePos),'/','\');
+         membername = translate(substr (line,FilePos),'/','\');
+         filename   = translate(trim(dir),'/','\') !! '/' !! membername;
+         
          output;
       end;
    run;

@@ -16,27 +16,28 @@
 
 /*-- Prepare file to check for correct results -------------------------------*/
 data dircheck; 
-   length filename $255; 
+   length membername filename $255; 
    format changed datetime20.; 
    stop; 
 run; 
 
 /*-- macro to add one entry to check file ------------------------------------*/
 %macro addentry(file);
-%local theTime;
-data _null_; file "&file"; put 'X'; run; 
-%let thetime=%sysfunc(datetime());
-data dircheck0; 
-   length filename $255; 
-   format changed datetime20.; 
-   changed = dhms(datepart(&thetime), hour(timepart(&thetime)), minute(timepart(&thetime)), 0); 
-   filename = translate("&file", '/', '\'); 
-   output; 
-run;
-data dircheck; 
-   set dircheck dircheck0; 
-run; 
-%mend; 
+   %local theTime;
+   data _null_; file "&file"; put 'X'; run; 
+   %let thetime=%sysfunc(datetime());
+   data dircheck0; 
+      length membername filename $255; 
+      format changed datetime20.; 
+      changed = dhms(datepart(&thetime), hour(timepart(&thetime)), minute(timepart(&thetime)), 0); 
+      filename = translate("&file", '/', '\');
+      membername = substr(filename,length(filename) - length(scan(filename,-1,'/')) + 1);      
+      output; 
+   run;
+   data dircheck; 
+      set dircheck dircheck0; 
+   run; 
+%mend addentry; 
 
 /*-- Empty directory ---------------------------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir;
@@ -49,12 +50,12 @@ run;
 %assertColumns(i_expected=dircheck, i_actual=dir, i_desc=check for empty dir file)
 %endTestcase;
 
-/*-- Simple directory with two files -----------------------------------------*/
+/*-- Simple directory with three files -----------------------------------------*/
 %addentry(&path/file with blank.dat)
 %addentry(&path/file1.txt)
 %addentry(&path/filemitü.dat)
 
-%initTestcase(i_object=_dir.sas, i_desc=directory with two files)
+%initTestcase(i_object=_dir.sas, i_desc=directory with three files)
 %_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
 %endTestcall;
 

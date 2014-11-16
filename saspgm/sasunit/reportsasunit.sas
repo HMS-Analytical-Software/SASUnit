@@ -8,7 +8,7 @@
    \author     \$Author$
    \date       \$Date$
    \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-					Here you can find the SASUnit documentation, release notes and license information.
+               Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -67,7 +67,7 @@
    %IF %_handleError(&l_macname.
                     ,NoTestDB
                     ,NOT %sysfunc(exist(target.tsu)) OR NOT %symexist(g_project)
-                    ,%nrstr(Test database cannot be accessed, call %initSASUnit before %reportSASUnit)
+                    ,%nrstr(Test database cannot be accessed, call initSASUnit before reportSASUnit)
                     ,i_verbose=&g_verbose.
                     )
       %THEN %GOTO errexit;
@@ -242,6 +242,7 @@
 
    /*-- create reporting dataset ------------------------------------------------*/
    %LOCAL i;
+   
    PROC SQL NOPRINT;
       CREATE TABLE &d_rep (COMPRESS=YES) AS
       SELECT 
@@ -394,7 +395,7 @@
             IF tsu_lastrep=0 OR &o_force THEN DO;
                /*-- copy static files - images, css etc. ---------------------------*/
                PUT '%_copydir(' /
-                   "    &g_sasunitroot./resources" '/html/%str(*.*)' /
+                   "    &g_sasunitroot./resources" '/html/%str(*)' /
                    "   ,&l_output" /
                    ")";
                /*-- create frame HTML page -----------------------------------------*/

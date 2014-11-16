@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_REPORT
 
    \brief      create tabs on HTML page for report
@@ -26,20 +27,20 @@
                        ,i_current = 1
                        );
 
-   %let l_string=^{RAW <div class="tabs"><ul>;
+   %let l_string=^{RAW <ul class="tabs">;
    
    %LOCAL i l_class l_string;
    %LET i=1;
    %DO %WHILE(%sysfunc(scanq(&i_tabnames, &i)) NE );
       %LET l_class=;
       %IF &i=&i_current %THEN %DO;
-         %let l_class=class="current";
+         %let l_class=id="current";
       %END;
-      %let l_string=&l_string. <li &l_class.><a href="%sysfunc(compress(%sysfunc(scanq(&i_pages, &i)),%str(%")))"><span>%sysfunc(compress(%sysfunc(scanq(&i_tabnames, &i)),%str(%")))</span></a></li>;
+      %let l_string=&l_string. <li &l_class.><a href="%sysfunc(compress(%sysfunc(scanq(&i_pages, &i)),%str(%")))">%sysfunc(compress(%sysfunc(scanq(&i_tabnames, &i)),%str(%")))</a></li>;
       %LET i=%eval(&i+1);
    %END;
 
-   %let l_string=&l_string. </ul></div>};
+   %let l_string=&l_string. </ul>};
    title2 %sysfunc(quote(&l_string.));
 %MEND _reportTabsHTML;
 /** \endcond */

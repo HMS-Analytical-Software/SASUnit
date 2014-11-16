@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_REPORT
 
    \brief      renders the layout of the icon column
@@ -31,6 +32,6 @@
       %let l_pictNameFmt=PictNameHTML.;
    %end;
 
-   &o_targetColumn. = '^{style [postimage="' !! trim(put (&i_sourceColumn., &l_pictNameFmt.)) !! '" flyover="' !! trim(put (&i_sourceColumn., PictDesc.)) !! '"] }';
+   &o_targetColumn. = '^{style [postimage="' !! trim(put (&i_sourceColumn., &l_pictNameFmt.)) !! '" flyover="' !! trim(put (&i_sourceColumn., PictDesc.)) !! '" fontsize=0pt]' !! &i_sourceColumn !! '}';
 %mend _render_iconcolumn;
 /** \endcond */

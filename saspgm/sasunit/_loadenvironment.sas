@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL 
 
    \brief      Initialize runtime environment (macro symbols and librefs / / filerefs)
@@ -31,6 +32,7 @@
            g_testcoverage
            g_verbose
            g_sasunitroot
+           g_crossref
            ;
    %LOCAL i;
            
@@ -70,24 +72,25 @@
 
    DATA _null_;
       SET target.tsu;
-      call symput ('g_project'     , tsu_project);
-      call symput ('g_root'        , tsu_root);
-      call symput ('g_sasunitroot' , tsu_sasunitroot);
-      call symput ('g_sasunit'     , tsu_sasunit);
-      call symput ('g_sasunit_os'  , tsu_sasunit_os);
-      call symput ('g_sasautos'    , tsu_sasautos);
-      call symput ('g_sasautos0'   , tsu_sasautos);
-   %DO i=1 %TO 9;
-      call symput ("g_sasautos&i"  , tsu_sasautos&i);
-   %END;
-      call symput ('g_autoexec'    , tsu_autoexec);
-      call symput ('g_sascfg'      , tsu_sascfg);
-      call symput ('g_sasuser'     , tsu_sasuser);
-      call symput ('g_testdata'    , tsu_testdata);
-      call symput ('g_refdata'     , tsu_refdata);
-      call symput ('g_doc'         , tsu_doc);
-      call symput ('g_testcoverage', put (tsu_testcoverage, z1.));
-      call symput ('g_verbose'     , put (tsu_verbose, z1.));
+      call symput ('g_project'        , tsu_project);
+      call symput ('g_root'           , tsu_root);
+      call symput ('g_sasunitroot'    , tsu_sasunitroot);
+      call symput ('g_sasunit'        , tsu_sasunit);
+      call symput ('g_sasunit_os'     , tsu_sasunit_os);
+      call symput ('g_sasautos'       , tsu_sasautos);
+      call symput ('g_sasautos0'      , tsu_sasautos);
+   %DO i=1 %TO 9;                     
+      call symput ("g_sasautos&i"     , tsu_sasautos&i);
+   %END;                              
+      call symput ('g_autoexec'       , tsu_autoexec);
+      call symput ('g_sascfg'         , tsu_sascfg);
+      call symput ('g_sasuser'        , tsu_sasuser);
+      call symput ('g_testdata'       , tsu_testdata);
+      call symput ('g_refdata'        , tsu_refdata);
+      call symput ('g_doc'            , tsu_doc);
+      call symput ('g_testcoverage'   , put (tsu_testcoverage, z1.));
+      call symput ('g_verbose'        , put (tsu_verbose, z1.));
+      call symput ('g_crossref'       , put (tsu_crossref, z1.));
    RUN;
 
    %LET g_project      = &g_project;
@@ -111,7 +114,7 @@
    %LET g_testout  = &g_target/tst;
    %LET g_log      = &g_target/log;
 
-   %_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note)
+   %_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note);
 
    %IF &i_withlibrefs %THEN %DO;
          LIBNAME testout "&g_testout";
@@ -131,13 +134,14 @@
       %END;
    %END;
 
-   %put _global_;
-
    OPTIONS MAUTOSOURCE SASAUTOS=(SASAUTOS "&g_sasunit" "&g_sasunit_os"
    %DO i=0 %TO 9;
       %IF "&&g_sasautos&i" NE "" %THEN "&&g_sasautos&i";
    %END;     );
    
+   %_oscmds;
+
+   %put _global_;
    
    %GOTO exit;
 %errexit:

@@ -18,11 +18,42 @@
 
  */ /** \cond */ 
 
-%macro _xcmd(i_cmd);
+%MACRO _xcmd(i_cmd);
+   %LOCAL logfile l_cmd rc filrf;
 
-   %SYSEXEC &i_cmd;
+   %LET logfile=%sysfunc(pathname(work))/___log.txt;
+   %let rc = %_delfile(&logfile);
+   %sysexec &i_cmd > "&logfile";
+   
+   %IF &g_verbose. %THEN %DO;
+      %PUT ======== OS Command Start ========;
+       /* Evaluate sysexec´s return code*/
+      %IF &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
+      %ELSE %PUT &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
 
-%mend _xcmd; 
+      /* put sysexec command to log*/
+      %PUT &g_note.(SASUNIT): SYSEXEC COMMAND IS: &i_cmd > "&logfile";
+      
+      /* write &logfile to the log */
+      /* for the following commands "cd", "pwd", "setenv" or "umask" SAS executes
+         SAS equivalent of these commands -> no files are generated that could be read */
+      %LET filrf=_tmpf;
+      %LET rc=%sysfunc(filename(filrf,&logfile));
+      %LET rc = %sysfunc(fexist(&filrf));
+
+      %IF (&rc) %THEN %DO;
+         DATA _NULL_;
+            infile "&logfile" truncover;
+            input;
+            putlog _infile_;
+         RUN;
+      %END;
+      %ELSE %PUT No File Redirection for Commands cd, pwd, setenv and umask;
+      %LET rc=%sysfunc(filename(filrf));
+      
+      %PUT ======== OS Command End ========;
+   %END;
+%MEND _xcmd; 
 
 /** \endcond */
 

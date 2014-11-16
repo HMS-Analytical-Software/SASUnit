@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_REPORT
 
    \brief      create list of test scenarios for HTML report
@@ -43,67 +44,67 @@
              durationColumn $1000
              resultColumn $1000;
              ;
-         label idColumn="&g_nls_reportScn_003."
-               descriptionColumn="&g_nls_reportScn_004."
-               programColumn="&g_nls_reportScn_005."
-               last_runColumn="&g_nls_reportScn_006."
-               durationColumn="&g_nls_reportScn_007."
-               resultColumn="&g_nls_reportScn_008."
-               ;
+      label idColumn="&g_nls_reportScn_003."
+            descriptionColumn="&g_nls_reportScn_004."
+            programColumn="&g_nls_reportScn_005."
+            last_runColumn="&g_nls_reportScn_006."
+            durationColumn="&g_nls_reportScn_007."
+            resultColumn="&g_nls_reportScn_008."
+            ;
 
-         abs_path    = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
-         scn_pgm     = resolve ('%_stdpath(&g_root./saspgm/test,' !! trim(abs_path) !! ')');
-         duration    = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
-         c_scnid     = put (scn_id, z3.);
+      abs_path    = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
+      scn_pgm     = resolve ('%_stdpath(&g_root./saspgm/test,' !! trim(abs_path) !! ')');
+      duration    = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
+      c_scnid     = put (scn_id, z3.);
 
 
-         %_render_IdColumn   (i_sourceColumn=scn_id
-                                     ,i_format=z3.
-                                     ,o_targetColumn=idColumn
-                                     );
-         %_render_DataColumn (i_sourceColumn=duration
-                                     ,o_targetColumn=durationColumn
-                                     );
-         %_render_IconColumn (i_sourceColumn=scn_res
-                                     ,o_html=&o_html.
-                                     ,o_targetColumn=resultColumn
-                                     );
+      %_render_IdColumn   (i_sourceColumn=scn_id
+                          ,i_format=z3.
+                          ,o_targetColumn=idColumn
+                          );
+      %_render_DataColumn (i_sourceColumn=duration
+                          ,o_targetColumn=durationColumn
+                          );
+      %_render_IconColumn (i_sourceColumn=scn_res
+                          ,o_html=&o_html.
+                          ,o_targetColumn=resultColumn
+                          );
 
-         *** Any destination that renders links shares this if-clause ***;
-         %if (&o_html. OR &o_pdf. OR &o_rtf.) %then %do;
-            LinkTitle1  = "&g_nls_reportScn_009 " !! c_scnid;
-            LinkTitle2  = "&g_nls_reportScn_010" !! byte(13) !! abs_path;
-            LinkTitle3  = "&g_nls_reportScn_011";
-            *** HTML-links are destinations specific ***;
-            %if (&o_html.) %then %do;
-               LinkColumn1 = catt ("cas_overview.html#SCN", c_scnid, "_");
-               LinkColumn2 = "file:///" !! abs_path;
-               LinkColumn3 = c_scnid !! "_log.html";
-            %end;
-            *** PDF- and RTF-links are not destination specific ***;
-            %if (&o_pdf. OR &o_rtf.) %then %do;
-               LinkColumn1 = catt ("SCN", c_scnid, "_");
-               LinkColumn2 = "pgm_" !! scn_pgm !! "_";
-               LinkColumn3 = c_scnid !! "_log";
-            %end;
-            %_render_DataColumn (i_sourceColumn=scn_desc
-                                        ,i_linkColumn=LinkColumn1
-                                        ,i_linkTitle=LinkTitle1
-                                        ,o_targetColumn=descriptionColumn
-                                        );
-            %_render_DataColumn (i_sourceColumn=scn_path
-                                        ,i_linkColumn=LinkColumn2
-                                        ,i_linkTitle=LinkTitle2
-                                        ,o_targetColumn=programColumn
-                                        );
-            %_render_DataColumn (i_sourceColumn=scn_start
-                                        ,i_format=&g_nls_reportScn_012.
-                                        ,i_linkColumn=LinkColumn3
-                                        ,i_linkTitle=LinkTitle3
-                                        ,o_targetColumn=last_runColumn
-                                        );
+      *** Any destination that renders links shares this if-clause ***;
+      %if (&o_html. OR &o_pdf. OR &o_rtf.) %then %do;
+         LinkTitle1  = "&g_nls_reportScn_009 " !! c_scnid;
+         LinkTitle2  = "&g_nls_reportScn_010" !! byte(13) !! abs_path;
+         LinkTitle3  = "&g_nls_reportScn_011";
+         *** HTML-links are destinations specific ***;
+         %if (&o_html.) %then %do;
+            LinkColumn1 = catt ("cas_overview.html#SCN", c_scnid, "_");
+            LinkColumn2 = "file:///" !! abs_path;
+            LinkColumn3 = c_scnid !! "_log.html";
          %end;
-         if (first.scn_id);
+         *** PDF- and RTF-links are not destination specific ***;
+         %if (&o_pdf. OR &o_rtf.) %then %do;
+            LinkColumn1 = catt ("SCN", c_scnid, "_");
+            LinkColumn2 = "pgm_" !! scn_pgm !! "_";
+            LinkColumn3 = c_scnid !! "_log";
+         %end;
+         %_render_DataColumn (i_sourceColumn=scn_desc
+                             ,i_linkColumn=LinkColumn1
+                             ,i_linkTitle=LinkTitle1
+                             ,o_targetColumn=descriptionColumn
+                             );
+         %_render_DataColumn (i_sourceColumn=scn_path
+                             ,i_linkColumn=LinkColumn2
+                             ,i_linkTitle=LinkTitle2
+                             ,o_targetColumn=programColumn
+                             );
+         %_render_DataColumn (i_sourceColumn=scn_start
+                             ,i_format=&g_nls_reportScn_012.
+                             ,i_linkColumn=LinkColumn3
+                             ,i_linkTitle=LinkTitle3
+                             ,o_targetColumn=last_runColumn
+                             );
+      %end;
+      if (first.scn_id);
    RUN; 
 
    %let l_title=%str(&g_nls_reportScn_001 | &g_project - &g_nls_reportScn_002);
@@ -115,8 +116,9 @@
 
    %if (&o_html.) %then %do;
       ods html4 file="&o_path./&o_file..html" 
-                    (TITLE="&l_title.") 
-                    headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
+                    (TITLE="&l_title.")
+                    /* Order of .js files in headtext attribute is essential */
+                    headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><script src="js/jq.js"></script><script src="js/jq.ts.js"></script><script src="js/jq.ts.w.js"></script><script src="js/ls.js"></script>'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
       %_reportPageTopHTML(
@@ -139,6 +141,7 @@
       var durationColumn   / style(column)=[just=right];
       var resultColumn     / style(column)=[background=white];
    run;
+   
    %if (&o_html.) %then %do;
       %_closeHtmlPage;
    %end;
