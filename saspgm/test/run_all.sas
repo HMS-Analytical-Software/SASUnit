@@ -20,7 +20,7 @@ OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "%trim(%sysget(SASUNIT_ROOT))/sasp
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root            = .\
+   i_root            = .
   ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
   ,i_overwrite       = %sysget(SASUNIT_OVERWRITE)
   ,i_project         = SASUnit Self Test
