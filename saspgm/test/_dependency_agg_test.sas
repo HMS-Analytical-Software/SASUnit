@@ -17,6 +17,7 @@
 %MACRO _createtestfiles;  
  
    /* Create folders */
+   %_mkdir(%SYSFUNC(PATHNAME(work))/tst);
    %_mkdir(%SYSFUNC(PATHNAME(work))/tst/jsonFolder);
    %_mkdir(%SYSFUNC(PATHNAME(work))/result);
    

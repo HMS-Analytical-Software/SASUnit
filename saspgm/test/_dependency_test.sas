@@ -54,6 +54,7 @@
    RUN;
    
    /* Create folders */
+   %_mkdir(%SYSFUNC(PATHNAME(work))/tst);
    %_mkdir(%SYSFUNC(PATHNAME(work))/tst/crossreference);
    
  /* Create expected json files for assert columns */
