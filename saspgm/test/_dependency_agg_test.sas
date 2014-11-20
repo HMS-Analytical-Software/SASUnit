@@ -141,7 +141,7 @@
 %endTestcall();
    %markTest();
       /* Files and folder test */
-      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file1_caller.json)) ,i_expected=1, i_desc=Json file file1_caller created successfully );
+      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file1_caller.json)) ,i_expected=1, i_desc=Json file file1_caller.json created successfully );
       %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file1_called.json)) ,i_expected=1, i_desc=Json file file1_called.json created successfully );
       %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file2_caller.json)) ,i_expected=1, i_desc=Json file file2_caller.json created successfully );
       %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file2_called.json)) ,i_expected=1, i_desc=Json file file2_called.json created successfully );

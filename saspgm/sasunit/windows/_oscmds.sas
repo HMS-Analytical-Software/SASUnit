@@ -33,17 +33,17 @@
       l_filename
       ;
 
-      %LET g_copydir     = xcopy /E /I /Y;
-      %LET g_endcommand  =%str( );
-      %LET g_makedir     = md;
-      %LET g_removedir   = rd /S /Q;
-      %LET g_removefile  = del /S /Q;
-      %LET g_sasstart    ="%sysget(sasroot)/sas.exe";
-      %LET g_splash      = -nosplash;
+   %LET g_copydir     = xcopy /E /I /Y;
+   %LET g_endcommand  =%str( );
+   %LET g_makedir     = md;
+   %LET g_removedir   = rd /S /Q;
+   %LET g_removefile  = del /S /Q;
+   %LET g_sasstart    ="%sysget(sasroot)/sas.exe";
+   %LET g_splash      = -nosplash;
 
-      * retrieve dateformat from WINDOWS registry *;
-      * Set default if anything goes wrong *;
-      %LET g_dateformat  = _NONE_;
+   * retrieve dateformat from WINDOWS registry *;
+   * Set default if anything goes wrong *;
+   %LET g_dateformat  = _NONE_;
 
    %let xwait=%sysfunc(getoption(xwait));
    %let xsync=%sysfunc(getoption(xsync));
@@ -63,9 +63,9 @@
       if index (upcase (_INFILE_), "REG_SZ") then do;
          dateformat = lowcase (scan (_INFILE_,3," "));
          * Building SAS-format name from WIN-Dateformat *;
-         * Get rid of separators *;
+         * Set default for dateformat *;
          g_dateformat = "nldate.";
-         * Chekc if monthname is displayed *;
+         * Check if monthname is displayed *;
          if (index (dateformat,"mmm")=0) then do;
             * Check order of day month year *;
             index_d=index (dateformat,"d");
