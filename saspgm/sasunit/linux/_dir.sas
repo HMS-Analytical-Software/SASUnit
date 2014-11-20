@@ -67,14 +67,18 @@
       %put ======== OS Command End ========;
    %end;
    
-   data &o_out (keep=membername filename changed);
+   data &o_out. (keep=membername filename changed);
       length membername filename $255;
-       format changed datetime20.;
-       infile _dirfile delimiter='09'x truncover;
-       input filename $ d:mmddyy8. t:time8.; 
-       changed = dhms (d, hour(t), minute(t), 0);
+      format changed datetime20.;
+      infile _dirfile delimiter='09'x truncover;
+      input filename $ d:mmddyy8. t:time8.; 
+      changed = dhms (d, hour(t), minute(t), 0);
       loca = length(filename) - length(scan(filename,-1,'/')) + 1;
       membername = substr(filename,loca);
+   run;
+
+   proc sort data=&o_out.;
+      by filename;
    run;
 
 %errexit:
