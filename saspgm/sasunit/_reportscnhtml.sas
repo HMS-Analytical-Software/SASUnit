@@ -130,7 +130,7 @@
       ods pdf file="&o_path./&o_file..pdf" style=styles.SASUnit cssstyle="&g_target./SAS_SASUnit.css";
    %end;
    %if (&o_rtf.) %then %do;
-      ods rtf file="&o_path./&o_file..rtf" style=styles.SASUnit cssstyle="&g_target./html/SAS_SASUnit.css";
+      ods rtf file="&o_path./&o_file..rtf" style=styles.SASUnit cssstyle="&g_target./SAS_SASUnit.css";
    %end;
 
    proc print data=work._scenario_report noobs label;

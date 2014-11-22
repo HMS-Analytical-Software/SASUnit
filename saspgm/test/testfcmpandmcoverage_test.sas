@@ -1,6 +1,6 @@
 /** 
   \file
-  \brief Test Scenario for MCOVERAGE and FCMP
+  \brief Test Scenario for MCOVERAGE and FCMP, will always be run because macro Gest_VarianceFormulaType is generated on the fly
 
 */
 /** \cond */
