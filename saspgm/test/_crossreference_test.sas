@@ -99,7 +99,6 @@
       %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="testmakro3"  and called="testmakro4"), i_desc=Valid call);
       %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="testmakro1"  and called="testmakro3"), i_desc=Call in comment won%str(%')t be referenced);
       %assertLog (i_errors=0, i_warnings=0);
-      %assertColumns (i_expected=refdata.test, i_actual=work.listcalling); 
 %endTestcase(i_assertLog=0);
 
 /* test case 3 ------------------------------------ */

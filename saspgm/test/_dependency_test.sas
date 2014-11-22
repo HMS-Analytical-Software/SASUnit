@@ -63,7 +63,7 @@
       array macro_1_called[2] $100 _temporary_ ('{ "name": "macro_1"' '}');
       drop i;
       DO i=1 TO dim(macro_1_called);
-         line = macro_1_called[i];
+         line = lowcase (macro_1_called[i]);
          OUTPUT;
       END;
    RUN;
@@ -83,7 +83,7 @@
       );
       drop i;
       DO i=1 TO dim(macro_1_caller);
-         line = macro_1_caller[i];
+         line = lowcase (macro_1_caller[i]);
          OUTPUT;
       END;
    RUN;
@@ -100,7 +100,7 @@
       );
       drop i;
       DO i=1 TO dim(macro_A_called);
-         line = macro_A_called[i];
+         line = lowcase (macro_A_called[i]);
          OUTPUT;
       END;
    RUN;
@@ -117,7 +117,7 @@
       );
       drop i;
       DO i=1 TO dim(macro_A_caller);
-         line = macro_A_caller[i];
+         line = lowcase (macro_A_caller[i]);
          OUTPUT;
       END;
    RUN;
@@ -140,7 +140,7 @@
       );
       drop i;
       DO i=1 TO dim(parent_caller);
-         line = parent_caller[i];
+         line = lowcase (parent_caller[i]);
          OUTPUT;
       END;
    RUN;
@@ -153,7 +153,7 @@
       );
       drop i;
       DO i=1 TO dim(parent_called);
-         line = parent_called[i];
+         line = lowcase (parent_called[i]);
          OUTPUT;
       END;
    RUN;
