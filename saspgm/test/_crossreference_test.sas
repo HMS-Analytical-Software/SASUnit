@@ -45,17 +45,17 @@
    %_mkdir(&l_work./saspgm/testfolder2);
  
    %*** Copy test macros to folders created in work ***;
-   %_copyfile(i_file=%_abspath(&g_root.,saspgm/test/pgmlib1/Testmakro1.sas)
-             ,o_file=%_abspath(&l_work.,saspgm/sasunit/Testmakro1.sas)
+   %_copyfile(i_file=%_abspath(&g_root.,saspgm/test/pgmlib1/testmakro1.sas)
+             ,o_file=%_abspath(&l_work.,saspgm/sasunit/testmakro1.sas)
              );
-   %_copyfile(i_file=%_abspath(&g_root.,saspgm/test/pgmlib1/Testmakro2.sas)
-             ,o_file=%_abspath(&l_work.,saspgm/sasunit/linux/Testmakro2.sas)
+   %_copyfile(i_file=%_abspath(&g_root.,saspgm/test/pgmlib1/testmakro2.sas)
+             ,o_file=%_abspath(&l_work.,saspgm/sasunit/linux/testmakro2.sas)
              );
-   %_copyfile(i_file=%_abspath(&g_root.,saspgm/test/pgmlib1/Testmakro3.sas)
-             ,o_file=%_abspath(&l_work.,saspgm/testfolder1/Testmakro3.sas)
+   %_copyfile(i_file=%_abspath(&g_root.,saspgm/test/pgmlib1/testmakro3.sas)
+             ,o_file=%_abspath(&l_work.,saspgm/testfolder1/testmakro3.sas)
              );
-   %_copyfile(i_file=%_abspath(&g_root.,saspgm/test/pgmlib1/Testmakro4.sas)
-             ,o_file=%_abspath(&l_work.,saspgm/testfolder1/Testmakro4.sas)
+   %_copyfile(i_file=%_abspath(&g_root.,saspgm/test/pgmlib1/testmakro4.sas)
+             ,o_file=%_abspath(&l_work.,saspgm/testfolder1/testmakro4.sas)
              );
    
 %MEND _createtestfiles;
@@ -68,9 +68,9 @@
 %endTestcall()
    %markTest()
       /* Files and folder test */
-      %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/saspgm/sasunit/Testmakro1.sas))       ,i_expected=1, i_desc=Test setup: file Testmakro1 copied successfully);
-      %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/saspgm/sasunit/linux/Testmakro2.sas)) ,i_expected=1, i_desc=Test setup: file Testmakro2 copied successfully);
-      %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/saspgm/testfolder1/Testmakro3.sas))   ,i_expected=1, i_desc=Test setup: file Testmakro3 copied successfully);
+      %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/saspgm/sasunit/testmakro1.sas))       ,i_expected=1, i_desc=Test setup: file Testmakro1 copied successfully);
+      %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/saspgm/sasunit/linux/testmakro2.sas)) ,i_expected=1, i_desc=Test setup: file Testmakro2 copied successfully);
+      %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/saspgm/testfolder1/testmakro3.sas))   ,i_expected=1, i_desc=Test setup: file Testmakro3 copied successfully);
       %assertEquals(i_actual=%_existDir(%sysfunc(pathname(work))/saspgm/testfolder2)                           ,i_expected=1, i_desc=Test setup: Create folder saspgm/testfolder2);
       %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);
@@ -92,13 +92,14 @@
 %endTestcall();
    %markTest();
       %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=5, i_where=                                                  , i_desc=Number of calling relationships);
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro1"  and called="Testmakro2"), i_desc=Number of calling relationships);
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro1"  and called="Testmakro4"), i_desc=Valid call);
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro2"  and called="Testmakro3"), i_desc=Valid call);
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro2"  and called="Testmakro4"), i_desc=Valid call);
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro3"  and called="Testmakro4"), i_desc=Valid call);
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro1"  and called="Testmakro3"), i_desc=Call in comment won%str(%')t be referenced);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="testmakro1"  and called="testmakro2"), i_desc=Number of calling relationships);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="testmakro1"  and called="testmakro4"), i_desc=Valid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="testmakro2"  and called="testmakro3"), i_desc=Valid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="testmakro2"  and called="testmakro4"), i_desc=Valid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="testmakro3"  and called="testmakro4"), i_desc=Valid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="testmakro1"  and called="testmakro3"), i_desc=Call in comment won%str(%')t be referenced);
       %assertLog (i_errors=0, i_warnings=0);
+      %assertColumns (i_expected=refdata.test, i_actual=work.listcalling); 
 %endTestcase(i_assertLog=0);
 
 /* test case 3 ------------------------------------ */
@@ -106,13 +107,13 @@
 /*-- switch to example database --------------------*/
 %endTestcall();
    %markTest();
-      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=6, i_where=                                                  , i_desc=Number of expected collumns);
-      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=3, i_where=%str(caller="Testmakro1.sas"),         i_desc=Number of calling relationships);
-      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=2, i_where=%str(caller="Testmakro2.sas"),         i_desc=Result data set with expected observations?);
-      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro3.sas"),         i_desc=Result data set with expected observations?);
-      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro4.sas"),         i_desc=Result data set with expected observations?);
-      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=3, i_where=%str(calledByCaller="Testmakro4.sas"), i_desc=Result data set with expected observations?);
-      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=0, i_where=%str(calledByCaller="Testmakro1.sas"), i_desc=Result data set with expected observations?);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=6, i_where=                             ,         i_desc=Number of expected collumns);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=3, i_where=%str(caller="testmakro1.sas"),         i_desc=Number of calling relationships);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=2, i_where=%str(caller="testmakro2.sas"),         i_desc=Result data set with expected observations?);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="testmakro3.sas"),         i_desc=Result data set with expected observations?);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="testmakro4.sas"),         i_desc=Result data set with expected observations?);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=3, i_where=%str(calledByCaller="testmakro4.sas"), i_desc=Result data set with expected observations?);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=0, i_where=%str(calledByCaller="testmakro1.sas"), i_desc=Result data set with expected observations?);
       %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);
 
@@ -135,13 +136,13 @@
 %_switch();
 %endTestcall();
    %markTest();
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=                                                  , i_desc=Number of calling relationships);
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro1" and called="Testmakro2"), i_desc=Invalid call);
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro1" and called="Testmakro4"), i_desc=Invalid call);
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro2" and called="Testmakro3"), i_desc=Invalid call);
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro2" and called="Testmakro4"), i_desc=Invalid call);
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro3" and called="Testmakro4"), i_desc=Valid call);
-      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="Testmakro1" and called="Testmakro3"), i_desc=Call in comment won%str(%')t be referenced);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=                                                 , i_desc=Number of calling relationships);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="testmakro1" and called="testmakro2"), i_desc=Invalid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="testmakro1" and called="testmakro4"), i_desc=Invalid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="testmakro2" and called="testmakro3"), i_desc=Invalid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="testmakro2" and called="testmakro4"), i_desc=Invalid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="testmakro3" and called="testmakro4"), i_desc=Valid call);
+      %assertRecordCount(i_libref=work, i_memname=Listcalling, i_operator=EQ, i_recordsExp=0, i_where=%str(caller="testmakro1" and called="testmakro3"), i_desc=Call in comment won%str(%')t be referenced);
       %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);
 
@@ -150,7 +151,7 @@
 %endTestcall();
    %markTest();
       %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=1, i_where=                                                                 , i_desc=Number of expected collumns);
-      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="Testmakro3.sas" and calledByCaller="Testmakro4.sas"), i_desc=Expected dependency found?);
+      %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=1, i_where=%str(caller="testmakro3.sas" and calledByCaller="testmakro4.sas"), i_desc=Expected dependency found?);
 
       %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);

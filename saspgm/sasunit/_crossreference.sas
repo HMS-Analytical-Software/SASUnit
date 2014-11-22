@@ -48,7 +48,7 @@
           nobs
           nobs_old;
    
-   %IF &g_verbose =0 %THEN %DO;
+   %IF &g_verbose. =0 %THEN %DO;
       %let l_source =%sysfunc(getoption(source));
       %let l_notes  =%sysfunc(getoption(notes));
       %let l_mprint =%sysfunc(getoption(mprint));
@@ -57,11 +57,11 @@
    %END;
 
    /* Decide which macros to scan: 1 = all macros, 0 = skip SASUnit macros */
-   %IF &i_includeSASUnit ne 0 %THEN %LET l_includeSASUnit=1;
+   %IF &i_includeSASUnit. ne 0 %THEN %LET l_includeSASUnit=1;
    %ELSE %LET l_includeSASUnit=0;
    
    /* Keep all .sas files and get macro names*/
-   DATA &i_macroList;
+   DATA &i_macroList.;
       length name $ 80;
       SET &i_examinee.;
       IF index(filename,'.sas') = 0 THEN delete;
@@ -71,16 +71,16 @@
       drop loca changed;
    RUN;
    
-   PROC SORT DATA=&i_macroList NODUPKEY;
+   PROC SORT DATA=&i_macroList. NODUPKEY;
       BY membername;
    RUN;
 
    /* Generate macro variable with name of each macro in &i_macroList */
-   Data &i_macroList;
+   Data &i_macroList.;
       IF _N_ = 1 THEN DO;
          i=0;
       END;
-      SET &i_macroList end=eof;
+      SET &i_macroList. end=eof;
       Call Symputx(catt("var",i), name);
       Call Symputx('l_name',name);
   
@@ -89,14 +89,15 @@
    RUN;
 
    /* Generate result data set */
-   DATA &i_listcalling;
+   DATA &i_listcalling.;
       length caller called $ 80
              line $ 256;
       STOP;
    RUN;
 
    /* l_includeSASUnit = 1: include sasunit macros in scan   */
-   %IF &l_includeSASUnit = 0 %THEN %DO;
+   /* Paths for SASUnit macros will be omitted if l_includeSASUnit = 0 */
+   %IF &l_includeSASUnit. = 0 %THEN %DO;
       PROC SQL noprint;
          select tsu_sasunit_os into: l_sasunit_os
          from target.tsu
@@ -105,9 +106,9 @@
       
       %LET l_path1 = %_abspath(&g_root,&g_sasunit)/%;
       %LET l_path2 = %_abspath(&g_root,&l_sasunit_os)/%;
-   
-      DATA &i_macroList;
-         SET &i_macroList(WHERE=(filename not like "&l_path1" AND filename not like "&l_path2"));
+      *** Omit SASUnit macropaths ***;  
+      DATA &i_macroList.;
+         SET &i_macroList.(WHERE=(filename not like "&l_path1" AND filename not like "&l_path2"));
       RUN;
    %END;
  
@@ -116,8 +117,8 @@
    %DO %WHILE (&l_loop);
       %LET l_loop = 0;
 
-      Data &i_macroList;
-         Modify &i_macroList(Where=(filename NE ''));
+      Data &i_macroList.;
+         Modify &i_macroList.(Where=(filename NE ''));
          Call Symputx('l_filename',filename);
          Call Symputx('l_name',name);
          Call Symputx('l_loop' ,1);

@@ -131,9 +131,31 @@
       %LET l_auto=;
       %IF %symexist(g_sasautos&l_autonr) %THEN %LET l_auto=&&g_sasautos&l_autonr;
    %END;
+   %IF (&g_crossrefsasunit.) %THEN %DO;
+      %LET l_auto=&g_sasunit;
+      %LET l_auto=%quote(&l_auto/);
+      %_dir(i_path=&l_auto.*.sas, o_out=&d_dir);
+      data &d_examinee;
+         set &d_examinee &d_dir(in=indir);
+         if indir then DO;
+            auton=0;
+            source=symgetc ("l_auto");
+         end;
+      run; 
+      %LET l_auto=&g_sasunit_os;
+      %LET l_auto=%quote(&l_auto/);
+      %_dir(i_path=&l_auto.*.sas, o_out=&d_dir);
+      data &d_examinee;
+         set &d_examinee &d_dir(in=indir);
+         if indir then DO;
+            auton=1;
+            source=symgetc ("l_auto");
+         end;
+      run; 
+   %END;
 
    /* Create cross-reference */
-   %_crossreference(i_includeSASUnit = 0
+   %_crossreference(i_includeSASUnit = &g_crossrefsasunit.
                    ,i_examinee       = &d_examinee.
                    ,i_listcalling    = &d_listcalling.
                    ,i_dependency     = &d_dependency.
