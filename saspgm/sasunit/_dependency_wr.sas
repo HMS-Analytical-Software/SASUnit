@@ -22,10 +22,11 @@
 */ /** \cond */ 
 
 %MACRO _dependency_wr(i_node=
-                     , i_dependencies=
-                     , i_direction=
-                     , i_parentList=
+                     ,i_dependencies=
+                     ,i_direction=
+                     ,i_parentList=
                      );
+
    %LOCAL l_child l_children l_cntChildren l_i l_node l_direction l_column l_parentList l_len l_this_node l_children_inner;
    %LET l_children =;
    
@@ -44,7 +45,7 @@
       select distinct &l_direction 
       into :l_children separated by ' '
       from &i_dependencies 
-      where &l_column="&i_node."
+      where lowcase (&l_column)="%lowcase(&i_node.)"
       ;
    QUIT;
 
@@ -83,7 +84,7 @@
             select distinct &l_direction 
             into :l_children_inner separated by ' '
             from &i_dependencies 
-            where &l_column="&i_node."
+            where lowcase (&l_column)="%lowcase(&i_node.)"
             ;
          QUIT;
          

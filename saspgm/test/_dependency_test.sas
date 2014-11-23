@@ -28,7 +28,7 @@
       
       *self referrential call;
       caller = "macro_A"; called = "macro_B"; OUTPUT;
-      caller = "macro_B"; called = "macro_A"; OUTPUT;
+      caller = "macro_b"; called = "macro_a"; OUTPUT;
    RUN;
 
    DATA dir_test;
@@ -63,7 +63,7 @@
       array macro_1_called[2] $100 _temporary_ ('{ "name": "macro_1"' '}');
       drop i;
       DO i=1 TO dim(macro_1_called);
-         line = lowcase (macro_1_called[i]);
+         line = macro_1_called[i];
          OUTPUT;
       END;
    RUN;
@@ -83,7 +83,7 @@
       );
       drop i;
       DO i=1 TO dim(macro_1_caller);
-         line = lowcase (macro_1_caller[i]);
+         line = macro_1_caller[i];
          OUTPUT;
       END;
    RUN;
@@ -93,14 +93,14 @@
       array macro_A_called[10] $100 _temporary_ (
          '{ "name": "macro_A"'
          ', "children": ['
-         '{ "name": "macro_B"'
+         '{ "name": "macro_b"'
          ', "children": ['
          '{ "name": "macro_A"'
          '}' ']' '}' ']' '}'
       );
       drop i;
       DO i=1 TO dim(macro_A_called);
-         line = lowcase (macro_A_called[i]);
+         line = macro_A_called[i];
          OUTPUT;
       END;
    RUN;
@@ -112,12 +112,12 @@
          ', "children": ['
          '{ "name": "macro_B"'
          ', "children": ['
-         '{ "name": "macro_A"'
+         '{ "name": "macro_a"'
          '}' ']' '}' ']' '}'
       );
       drop i;
       DO i=1 TO dim(macro_A_caller);
-         line = lowcase (macro_A_caller[i]);
+         line = macro_A_caller[i];
          OUTPUT;
       END;
    RUN;
@@ -140,7 +140,7 @@
       );
       drop i;
       DO i=1 TO dim(parent_caller);
-         line = lowcase (parent_caller[i]);
+         line = parent_caller[i];
          OUTPUT;
       END;
    RUN;
@@ -153,7 +153,7 @@
       );
       drop i;
       DO i=1 TO dim(parent_called);
-         line = lowcase (parent_called[i]);
+         line = parent_called[i];
          OUTPUT;
       END;
    RUN;

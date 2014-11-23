@@ -24,6 +24,7 @@
 %MACRO _dependency(i_dependencies =
                   ,i_macroList    = dir
                   );
+
    %LOCAL l_countObs l_name l_children; 
 
    %** get number of obs;
@@ -40,7 +41,7 @@
       DATA _NULL_;
          * read one observation;
          SET &i_macroList. (firstobs=&l_i. obs=&l_i.); 
-         CALL SYMPUT("l_name", lowcase (trim(name)));
+         CALL SYMPUT("l_name", trim(name));
       RUN;
 
       /* Create Json for calling hierachy (macros called by A) */
