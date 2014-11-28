@@ -19,7 +19,7 @@ echo Overwrite             = %SASUNIT_OVERWRITE%
 echo Testcoverage          = %SASUNIT_COVERAGEASSESSMENT%
 echo.
 
-echo "Starting SASUnit Examples ..."
+echo "Starting SASUnit ..."
 "C:\Program Files\SASHome\SASFoundation\9.3\sas.exe" -CONFIG "bin\sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg" -no$syntaxcheck -noovp -nosplash
 
 if %ERRORLEVEL%==0 goto normalexit

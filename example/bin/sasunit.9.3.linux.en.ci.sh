@@ -34,7 +34,7 @@ echo Deleting SASUnit styles
 echo rm -f $SASUNIT_ROOT/resources/style/*.sas7bitm
 rm -f $SASUNIT_ROOT/resources/style/*.sas7bitm
 
-echo "Starting SASUnit Examples ..."
+echo "Starting SASUnit ..."
 /usr/local/SASHome/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE -nosyntaxcheck -noovp
 
 # Show SAS exit status

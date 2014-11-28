@@ -34,7 +34,7 @@ echo Deleting SASUnit styles
 echo on
 del %SASUNIT_ROOT%\resources\style\*.sas7bitm
 
-echo "Starting SASUnit Examples ..."
+echo "Starting SASUnit ..."
 "C:\Program Files\SAS\SASFoundation\9.2(32-bit)\sas.exe" -CONFIG "bin\sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg" -no$syntaxcheck -noovp -nosplash
 
 @echo off

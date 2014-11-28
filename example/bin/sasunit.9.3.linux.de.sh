@@ -19,7 +19,7 @@ echo Overwrite             = $SASUNIT_OVERWRITE
 echo Testcoverage          = $SASUNIT_COVERAGEASSESSMENT
 echo
 
-echo "Starting SASUnit Examples ..."
+echo "Starting SASUnit ..."
 /usr/local/SASHome/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE -nosyntaxcheck -noovp
 
 # Show SAS exit status
