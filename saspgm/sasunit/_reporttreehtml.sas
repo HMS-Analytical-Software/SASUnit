@@ -45,7 +45,7 @@
 %_tempFilename(d_la)
 
 /*-- generate tree structure 1 for test scenarios ----------------------------*/
-DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5);
+DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5 rc);
    LENGTH label popup target $255 lvl term lst1-lst5 8;
    RETAIN lst1-lst5 0;
    SET &i_repdata;
@@ -76,6 +76,7 @@ DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5);
       lst2   = scn_last;
       lst3   = 0;
       lst4   = 0;
+      rc     = scn_res;
       OUTPUT;
    END;
 
@@ -87,6 +88,7 @@ DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5);
       term   = 0;
       lst3   = cas_last;
       lst4   = 0;
+      rc     = cas_res;
       OUTPUT;
    END;
 
@@ -96,12 +98,13 @@ DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5);
    lvl    = 4;
    term   = 1;
    lst4   = last.cas_id;
+   rc     = tst_res;
    OUTPUT;
 
 RUN;
 
 /*-- generate tree structure 2 for units under test --------------------------*/
-DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5);
+DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5 rc);
    LENGTH label popup target $255 lvl term lst1-lst5 8;
    RETAIN lst1-lst5 0;
    SET &i_repdata;
@@ -177,6 +180,7 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5);
       lst3   = pgm_last;
       lst4   = 0;
       lst5   = 0;
+      rc     = pgm_res;
       OUTPUT;
    END;
 
@@ -188,6 +192,7 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5);
       term   = 0;
       lst4   = pcs_last;
       lst5   = 0;
+      rc     = cas_res;
       OUTPUT;
    END;
 
@@ -197,6 +202,7 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5);
    lvl    = 5;
    term   = 1;
    lst5   = last.cas_id;
+   rc     = tst_res;
    OUTPUT;
 
 RUN;
@@ -216,105 +222,41 @@ DATA &d_tree;
    MERGE &d_tree &d_la;
 RUN;
 
-
 /*-- generate HTML and javascript code ---------------------------------------*/
 DATA _null_;
    SET &d_tree END=eof;
    FILE "&o_html" LRECL=1024;
+   length class_suffix $20;
 
    IF _n_=1 THEN DO;
       %_reportHeaderHTML(&l_title)
-      PUT "    <script type=""text/javascript"">";
-      PUT "    <!-- // Hide script from old browsers";
-      PUT "    ";
-      PUT "    function toggleFolder(id, imageNode) ";
-      PUT "    {";
-      PUT "      var folder = document.getElementById(id);";
-      PUT "      var l = imageNode.src.length;";
-      PUT "      if (imageNode.src.substring(l-20,l)==""ftv2folderclosed.png"" || ";
-      PUT "          imageNode.src.substring(l-18,l)==""ftv2folderopen.png"")";
-      PUT "      {";
-      PUT "        imageNode = imageNode.previousSibling;";
-      PUT "        l = imageNode.src.length;";
-      PUT "      }";
-      PUT "      if (folder == null) ";
-      PUT "      {";
-      PUT "      } ";
-      PUT "      else if (folder.style.display == ""block"") ";
-      PUT "      {";
-      PUT "        if (imageNode != null) ";
-      PUT "        {";
-      PUT "          imageNode.nextSibling.src = ""ftv2folderclosed.png"";";
-      PUT "          if (imageNode.src.substring(l-13,l) == ""ftv2mnode.png"")";
-      PUT "          {";
-      PUT "            imageNode.src = ""ftv2pnode.png"";";
-      PUT "          }";
-      PUT "          else if (imageNode.src.substring(l-17,l) == ""ftv2mlastnode.png"")";
-      PUT "          {";
-      PUT "            imageNode.src = ""ftv2plastnode.png"";";
-      PUT "          }";
-      PUT "        }";
-      PUT "        folder.style.display = ""none"";";
-      PUT "      } ";
-      PUT "      else ";
-      PUT "      {";
-      PUT "        if (imageNode != null) ";
-      PUT "        {";
-      PUT "          imageNode.nextSibling.src = ""ftv2folderopen.png"";";
-      PUT "          if (imageNode.src.substring(l-13,l) == ""ftv2pnode.png"")";
-      PUT "          {";
-      PUT "            imageNode.src = ""ftv2mnode.png"";";
-      PUT "          }";
-      PUT "          else if (imageNode.src.substring(l-17,l) == ""ftv2plastnode.png"")";
-      PUT "          {";
-      PUT "            imageNode.src = ""ftv2mlastnode.png"";";
-      PUT "          }";
-      PUT "        }";
-      PUT "        folder.style.display = ""block"";";
-      PUT "      }";
-      PUT "    }";
-      PUT "    ";
-      PUT "    // End script hiding -->";
-      PUT "    </script>";
-      PUT "  </head>";
-      PUT "  ";
-      PUT "  <body class=""ftvtree"">";
-      PUT "    <div class=""directory"">";
-      PUT '      <h3><a class="el" href="overview.html" title="' "&g_nls_reportTree_015 &g_project" '" target="basefrm">' "&g_project" '</a></h3>';
-      PUT "      <div style=""display: block;"">";
+      PUT "<a href=""overview.html"" title=""&g_nls_reportTree_015 &g_project"" target=""basefrm"" class=""hms-treeview"">&g_project.</a>";
+      PUT "<ol class=""hms-treeview"">";
    END;
 
-   ARRAY lst{5} lst1-lst5;
-   RETAIN folder 0;
-   PUT "<p>" @;
-   DO i=1 TO lvl-1;
-      IF lst{i} THEN PUT '<img src="ftv2blank.png"        width=16 height=22 />' @;
-      ELSE           PUT '<img src="ftv2vertline.png"     width=16 height=22 />' @;
-   END;
-   IF term THEN DO;
-      IF lst{i} THEN PUT '<img src="ftv2lastnode.png"     width=16 height=22 />' @;
-      ELSE           PUT '<img src="ftv2node.png"         width=16 height=22 />' @;
-                     PUT '<img src="ftv2doc.png"          width=24 height=22 />' @;
-   END;
-   ELSE DO;
-      folder+1;
-      IF lst{i} THEN PUT '<img src="ftv2plastnode.png"    width=16 height=22 '
-                         'onclick="toggleFolder(''folder' folder +(-1) ''', this)"/>' @;
-      ELSE           PUT '<img src="ftv2pnode.png"        width=16 height=22 '
-                         'onclick="toggleFolder(''folder' folder +(-1) ''', this)"/>' @;
-                     PUT '<img src="ftv2folderclosed.png" width=24 height=22 '
-                         'onclick="toggleFolder(''folder' folder +(-1) ''', this)"/>' @;
-   END;
-   PUT '<a class="el" href="' target +(-1) '" title="' popup +(-1) '" target="basefrm">' label +(-1) '</a></p>';
-   IF NOT term AND lvl<nextlvl THEN PUT '<div id="folder' folder +(-1) '">';
+   if (not missing (rc)) then do;
+      class_suffix = scan (put (rc, PictNameHTML.), 1, '.');
+   end;
+   if (term) then do;
+      PUT "<li>" @;
+      PUT "<label class=""file" class_suffix +(-1) """><a href=""" target +(-1) """ title=""" popup +(-1) """ target=""basefrm"">" label +(-1) "</a></label>" @;
+      PUT "</li>";
+   end;
+   else do;
+      PUT "<li>";
+      PUT "<input type=""checkbox"" id=""folder" _N_ z8. """/><label class=""node" class_suffix +(-1) """ for=""folder" _N_ z8. """><a href=""" target +(-1) """ title=""" popup +(-1) """ target=""basefrm"">" label +(-1) "</a></label>";
+   end;
+   if (lvl < nextlvl) then do;
+      PUT "<ol>";
+   end;
    DO i=nextlvl+1 TO lvl;
-      PUT "</DIV>"; 
+      PUT "</ol>"; 
+      PUT "</li>";
    END;
 
    IF eof THEN DO;
-      PUT '</div></div></body></html>';
+      PUT '</ol></body></html>';
    END;
-
 RUN;
 
 PROC DATASETS NOLIST NOWARN LIB=work;

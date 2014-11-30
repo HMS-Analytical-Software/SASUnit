@@ -293,12 +293,12 @@
  14 EN SAS log of reporting job
  15 DE Plattform
  15 EN Platform
- 16 DE Anzahl Testszenarien
- 16 EN Number of test scenarios
- 17 DE Anzahl Testfälle
- 17 EN Number of test cases
- 18 DE Anzahl Prüfungen
- 18 EN Number of assertions
+ 16 DE Anzahl Testszenarien (fehlerhaft)
+ 16 EN Number of test scenarios (failed)
+ 17 DE Anzahl Testfälle (fehlerhaft)
+ 17 EN Number of test cases (failed)
+ 18 DE Anzahl Prüfungen (fehlerhaft)
+ 18 EN Number of assertions (failed)
  19 DE SAS Version
  19 EN SAS Version
  20 DE Benutzer ID
@@ -309,14 +309,32 @@
  22 EN SASUnit Data Base Version
  23 DE Encoding der SAS-Sitzung
  23 EN Encoding of SAS session
+ 24 DE Eigenschaften des Projekts
+ 24 EN Properties of project
+ 25 DE SASUnit - Konfiguration
+ 25 EN Configuration of SASUnit
+ 26 DE Eigenschaften der Laufzeitumgebung
+ 26 EN Properties of run-time environment
+ 27 DE Ja
+ 27 EN Yes
+ 28 DE Nein
+ 28 EN No
+ 29 DE Testabdeckung ermitteln:
+ 29 EN SASUnit started with test coverage:
+ 30 DE SASUnit mit Überschreiben gestartet:
+ 30 EN SASUnit started in overwrite mode:
+ 31 DE Aufrufhierarchie erstellen:
+ 31 EN Document call hierarchy:
+ 32 DE Aufrufhierarchie mit SASUnit Makros:
+ 32 EN Call hierarchy includes SASUnit macros:
 ---reportLibrary
   1 DE Prüfbericht - Vergleich der beiden Bibliotheken
   1 EN Test Report - Comparison of two Libraries
   2 DE Nicht verglichene Dateien
   2 EN Datasets not compared
-  3 DE erwartete Bibliothek
+  3 DE Erwartete Bibliothek
   3 EN Expected library
-  4 DE tatsächliche Bibliothek
+  4 DE Tatsächliche Bibliothek
   4 EN Actual library
   5 DE Ergebnis
   5 EN Result
