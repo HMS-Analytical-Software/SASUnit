@@ -18,17 +18,17 @@
                
    \param      i_includeSASUnit  Include the SASUnit core macros in scan or not, default set to 0
    \param      i_examinee        Data set containing content of autocall libraries 
-   \param      i_listcalling     Data set with columns caller and called representing the calling hierarchy
-   \param      i_dependency      Data set holding results of this macro needed in macro _checkScenario
-   \param      i_macroList       Data set with list of all macros, needed for visualization of calling hierarchy
+   \param      o_listcalling     Output data set with columns caller and called representing the calling hierarchy
+   \param      o_dependency      Output data set holding results of this macro needed in macro _checkScenario
+   \param      o_macroList       Output data set with list of all macros, needed for visualization of calling hierarchy
    
 */ /** \cond */ 
 
 %MACRO _crossreference(i_includeSASUnit  =0
                       ,i_examinee        =
-                      ,i_listcalling     =
-                      ,i_dependency      =
-                      ,i_macroList       =
+                      ,o_listcalling     =
+                      ,o_dependency      =
+                      ,o_macroList       =
                       );
 
    %LOCAL l_callVar
@@ -61,7 +61,7 @@
    %ELSE %LET l_includeSASUnit=0;
    
    /* Keep all .sas files and get macro names*/
-   DATA &i_macroList.;
+   DATA &o_macroList.;
       length name $ 80;
       SET &i_examinee.;
       IF index(filename,'.sas') = 0 THEN delete;
@@ -71,16 +71,16 @@
       drop loca changed;
    RUN;
    
-   PROC SORT DATA=&i_macroList. NODUPKEY;
+   PROC SORT DATA=&o_macroList. NODUPKEY;
       BY membername;
    RUN;
 
-   /* Generate macro variable with name of each macro in &i_macroList */
-   Data &i_macroList.;
+   /* Generate macro variable with name of each macro in &o_macroList */
+   Data &o_macroList.;
       IF _N_ = 1 THEN DO;
          i=0;
       END;
-      SET &i_macroList. end=eof;
+      SET &o_macroList. end=eof;
       Call Symputx(catt("var",i), name);
       Call Symputx('l_name',name);
   
@@ -89,7 +89,7 @@
    RUN;
 
    /* Generate result data set */
-   DATA &i_listcalling.;
+   DATA &o_listcalling.;
       length caller called $ 80
              line $ 256;
       STOP;
@@ -107,8 +107,8 @@
       %LET l_path1 = %_abspath(&g_root,&g_sasunit)/%;
       %LET l_path2 = %_abspath(&g_root,&l_sasunit_os)/%;
       *** Omit SASUnit macropaths ***;  
-      DATA &i_macroList.;
-         SET &i_macroList.(WHERE=(filename not like "&l_path1" AND filename not like "&l_path2"));
+      DATA &o_macroList.;
+         SET &o_macroList.(WHERE=(filename not like "&l_path1" AND filename not like "&l_path2"));
       RUN;
    %END;
  
@@ -117,8 +117,8 @@
    %DO %WHILE (&l_loop);
       %LET l_loop = 0;
 
-      Data &i_macroList.;
-         Modify &i_macroList.(Where=(filename NE ''));
+      Data &o_macroList.;
+         Modify &o_macroList.(Where=(filename NE ''));
          Call Symputx('l_filename',filename);
          Call Symputx('l_name',name);
          Call Symputx('l_loop' ,1);
@@ -206,7 +206,7 @@
                BY called;
             RUN;
             /* Append data from helper to calling macro-data set */     
-            PROC append base=&i_listcalling DATA=helper;
+            PROC append base=&o_listcalling DATA=helper;
                where caller ne called;
             RUN;
          %END;
@@ -217,7 +217,7 @@
    PROC SQL noprint;
       create table stage1 as
       select distinct caller, called
-      from &i_listcalling as l1
+      from &o_listcalling as l1
       ;
       select count(caller) into: nobs
       from stage1
@@ -237,7 +237,7 @@
          create table stage&n. as
          select distinct s.caller, l.called
          from stage%eval(&n.-1) as s
-         join &i_listcalling. as l
+         join &o_listcalling. as l
          on s.called = l.caller
          ;
       quit;
@@ -256,7 +256,7 @@
    %END;
 
    /* Get dependency information for scenarios and all called macros */
-   DATA &i_dependency;
+   DATA &o_dependency;
       SET stage&n.;
       keep caller calledByCaller;
       caller = catt(caller,".sas");
@@ -267,7 +267,7 @@
       END;
    RUN;
    
-   PROC SORT DATA=&i_dependency NODUPKEY;
+   PROC SORT DATA=&o_dependency NODUPKEY;
       BY caller calledByCaller;
    RUN;
    

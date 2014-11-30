@@ -105,7 +105,7 @@
     DATA jsFile_expected;
       length line $1000;
       array jsFile_expected[123] $1000 _temporary_ (
-         'var myjson = [' '{ "id"     :  "file1"' ',   "called" :' '{ "name": "macro_A"' ', "children": ['
+         'var allGraphs = [' '{ "id"     :  "file1"' ',   "called" :' '{ "name": "macro_A"' ', "children": ['
          '{ "name": "macro_B"' ', "children": [' '{ "name": "macro_A"' '}' ']' '}' ']' '}' ', "caller" :'
          '{ "name": "macro_1"' ', "children": [' '{ "name": "macro_2"' ', "children": [' '{ "name": "macro_3"' ', "children": ['
          '{ "name": "macro_4"' ', "children": [' '{ "name": "macro_5"' ', "children": [' '{ "name": "macro_6"' ', "children": ['

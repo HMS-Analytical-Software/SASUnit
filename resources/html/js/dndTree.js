@@ -1,32 +1,34 @@
 // Get JSON data
 
-function getUrlVars(){
-   var vars = [], hash;
-   var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-   for(var i = 0; i < hashes.length; i++){
-      hash = hashes[i].split('=');
-      vars.push(hash[0]);
-      vars[hash[0]] = hash[1];
-   }
-   return vars;
-}
-
-function getNodeData(casPgm, callRole){
-   for (var i = 0; i < myjson.length; i++) {
-      if(myjson[i].id.toUpperCase() == casPgm.toUpperCase()){
-         if("called" == callRole){
-            return myjson[i].called;
-         }
-         else{
-            return myjson[i].caller;
-         }
-      }
-   }
-}
-
 $(document).ready( function() {
 
-   // Calculate total nodes, max label length
+    // Reading parameter vakues from URL
+	function readParameterFromURL(){
+	   var value = [], parameter;
+	   var parameters = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	   for(var i = 0; i < parameters.length; i++){
+		  parameter = parameters[i].split('=');
+		  value.push(parameter[0]);
+		  value[parameter[0]] = parameter[1];
+	   }
+	   return value;
+	}
+
+	// Selecting current call graph (JSON-Subobject) 
+	function getCurrentGraph(casPgm, callRole){
+	   for (var i = 0; i < allGraphs.length; i++) {
+		  if(allGraphs[i].id.toUpperCase() == casPgm.toUpperCase()){
+			 if("called" == callRole){
+				return allGraphs[i].called;
+			 }
+			 else{
+				return allGraphs[i].caller;
+			 }
+		  }
+	   }
+	}
+
+	// Calculate total nodes, max label length
    var totalNodes = 0;
    var maxLabelLength = 0;
    // variables for drag/drop
@@ -40,11 +42,11 @@ $(document).ready( function() {
    var duration = 750;
    var root;
    
-   var callRole = getUrlVars()["call"];
-   var casPgm = getUrlVars()["casPgm"];
-   var myjson = JSON.stringify(getNodeData(casPgm, callRole));
+   var callRole = readParameterFromURL()["call"];
+   var casPgm = readParameterFromURL()["casPgm"];
+   var currentGraph = JSON.stringify(getCurrentGraph(casPgm, callRole));
    
-   treeData=JSON.parse(myjson);
+   treeData=JSON.parse(currentGraph);
    //treeJSON = d3.json("flare.json", function(error, treeData) {
    // size of the diagram
    var viewerWidth = $(document).width();

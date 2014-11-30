@@ -43,7 +43,7 @@
    /* Create JavaScript file */
    DATA _NULL_;
       FILE aggregJS;
-      put 'var myjson = [';
+      PUT 'var allGraphs = [';
    RUN;
    
    /* initiate loop over all data sets referenced in data set */
