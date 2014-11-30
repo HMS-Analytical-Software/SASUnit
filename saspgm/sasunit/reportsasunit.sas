@@ -213,29 +213,42 @@
       auton_last = eof;
    RUN;
 
-   data &d_pgm;
+   DATA &d_pgm;
       SET &d_cas (KEEP=cas_auton cas_pgm RENAME=(cas_auton=pgm_auton cas_pgm=pgm_ucase));
       pgm_ucase = upcase(pgm_ucase);
    RUN;
    PROC SORT DATA=&d_pgm NODUPKEY;
       BY pgm_auton pgm_ucase;
    RUN;
-   DATA &d_pgm;
-      SET &d_pgm;
+   DATA &d_pgm._;
+      SET &d_pgm.;
       BY pgm_auton;
       IF first.pgm_auton THEN pgm_id=0;
       pgm_id+1;
       pgm_last = last.pgm_auton;
    RUN;
+   PROC SQL NOPRINT;
+      create table work.pgm_res as
+         select upcase (cas_pgm) as pgm_ucase
+               ,max (cas_res) as pgm_res
+         from &d_cas.
+         group by cas_pgm;
+      create table &d_pgm. as
+         select a.*
+               ,b.pgm_res
+         from &d_pgm._ a left join work.pgm_res b
+         on a.pgm_ucase = b.pgm_ucase;
+   quit;
 
    DATA &d_pcs;
       SET &d_cas (KEEP=cas_auton cas_pgm cas_scnid cas_id RENAME=(cas_auton=pcs_auton cas_pgm=pcs_ucase cas_scnid=pcs_scnid cas_id=pcs_casid));
       pcs_ucase = upcase(pcs_ucase);
+   RUN;
    PROC SORT DATA=&d_pcs OUT=&d_pcs NODUPKEY;
       BY pcs_auton pcs_ucase pcs_scnid pcs_casid;
    RUN;
-   DATA &d_pcs;
-      SET &d_pcs;
+   DATA &d_pcs.;
+      SET &d_pcs.;
       BY pcs_auton pcs_ucase;
       pcs_last = last.pcs_ucase;
    RUN;
@@ -281,6 +294,7 @@
          ,pgm_id
          ,pgm_last
          ,pcs_last
+         ,pgm_res
          ,cas_desc  
          ,cas_spec  
          ,cas_start 

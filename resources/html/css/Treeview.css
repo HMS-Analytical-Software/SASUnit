@@ -1,0 +1,148 @@
+/* CSS Tree menu styles */
+/* Inspired by The CSS Ninja Treeview Example */
+.hms-treeview
+{
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+    color: #1A41A8;
+	font-weight: bold;
+	padding: 0;
+	font-size: 11pt;
+}
+
+a.hms-treeview,
+ol.hms-treeview
+{
+	margin: 2px 0px 2px 0px;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+    color: #1A41A8;
+	font-weight: bold;
+	padding: 0;
+	font-size: 11pt;
+}
+
+.hms-treeview ol
+{
+	margin: 2px 0px 2px 0px;
+	padding: 0;
+}
+
+.hms-treeview li
+{
+	margin: 2px 0px 2px 10px;
+	list-style: none;
+	font-size: 9pt;
+    white-space:nowrap;
+}
+
+.hms-treeview input
+{
+	position: absolute;
+	opacity: 0;
+}
+
+.hms-treeview a
+{
+    color: #1A41A8;
+	text-decoration: none;
+}
+
+.hms-treeview input + label + ol
+{
+	margin: 2px 0px 2px 10px;
+}
+
+.hms-treeview input ~ ol
+{
+	display: none;
+}
+
+.hms-treeview label::before
+{
+	content: "";
+	width: 19px;
+	vertical-align: middle;
+}
+
+.hms-treeview label,
+.hms-treeview label::before
+{
+	cursor: pointer;
+}
+
+.hms-treeview input:disabled + label
+{
+	cursor: default;
+	opacity: .6;
+}
+
+.hms-treeview input:checked ~ label ~ ol
+{
+	display: block;
+}
+
+.hms-treeview  input:not(:checked) + label.nodemanual::before
+{
+	background: url("../FolderClosedMANUAL.png") no-repeat;
+}
+
+.hms-treeview  input:not(:checked) + label.nodeok::before
+{
+	background: url("../FolderClosedOK.png") no-repeat;
+}
+
+.hms-treeview  input:not(:checked) + label.nodeerror::before
+{
+	background: url("../FolderClosedERROR.png") no-repeat;
+}
+
+.hms-treeview  input:not(:checked) + label.node::before
+{
+	background: url("../FolderClosed.png") no-repeat;
+}
+
+.hms-treeview input:checked + label.nodemanual::before
+{
+	background: url("../FolderOpenedMANUAL.png") no-repeat;
+}
+
+.hms-treeview input:checked + label.nodeok::before
+{
+	background: url("../FolderOpenedOK.png") no-repeat;
+}
+
+.hms-treeview input:checked + label.nodeerror::before
+{
+	background: url("../FolderOpenedERROR.png") no-repeat;
+}
+
+.hms-treeview input:checked + label.node::before
+{
+	background: url("../FolderOpened.png") no-repeat;
+}
+
+label.fileok
+{
+	background: url("../FileOK.png") no-repeat;
+}
+
+label.filemanual
+{
+	background: url("../FileMANUAL.png") no-repeat;
+}
+
+label.fileerror
+{
+	background: url("../FileERROR.png") no-repeat;
+}
+
+.hms-treeview label,
+.hms-treeview a,
+.hms-treeview label::before
+{
+	display: inline-block;
+	height: 12px;
+	line-height: 12px;
+}

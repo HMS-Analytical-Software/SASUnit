@@ -24,7 +24,7 @@
 
 %_mkdir (%sysfunc (pathname (WORK))/_refdata);
 %_mkdir (%sysfunc (pathname (WORK))/_tstdata);
-libname _ref  "%sysfunc (pathname (WORK))/_refdata";
+libname _ref "%sysfunc (pathname (WORK))/_refdata";
 libname _tst "%sysfunc (pathname (WORK))/_tstdata";
 data _ref.class1                              _tst.class1 
      _ref.class2(drop=height)                 _tst.class2 

@@ -104,8 +104,9 @@
    
 
    %LOCAL l_macname  l_current_dbversion l_target_abs  l_newdb       l_rc       l_project      l_root    l_sasunit          l_abs l_autoexec      l_autoexec_abs
-          l_sascfg   l_sascfg_abs        l_sasuser     l_sasuser_abs l_testdata l_testdata_abs l_refdata l_refdata_abs      l_doc                 l_doc_abs  restore_sasautos 
-          l_sasautos l_sasautos_abs      i             l_work        l_sysrc    l_sasautos_os  l_cmdfile l_abspath_sasautos l_abspath_sasautos_os l_sasunitroot
+          l_sascfg   l_sascfg_abs        l_sasuser     l_sasuser_abs l_testdata l_testdata_abs l_refdata l_refdata_abs      l_doc                 l_doc_abs  
+          l_sasautos l_sasautos_abs      i             l_work        l_sysrc    l_sasunit_os   l_cmdfile l_abspath_sasautos l_abspath_sasunit_os  l_sasunitroot
+          restore_sasautos 
    ;
 
    %LET l_current_dbversion=0;
@@ -113,12 +114,17 @@
 
    /*-- Resolve relative root path like .../. to an absolute root path ----------*/
    libname _tmp "&i_root.";
-   %let i_root=%sysfunc (pathname(_tmp));
+   %let l_root=%sysfunc (pathname(_tmp));
    libname _tmp clear;
 
    /*-- Get SASUnit root path from environement variable ----------*/
    libname _tmp "%sysget(SASUNIT_ROOT)";
    %let l_sasunitroot=%sysfunc (pathname(_tmp));
+   libname _tmp clear;
+
+   /*-- Get SASUnit macro paths ----------*/
+   libname _tmp "&i_sasunit";
+   %let l_sasunit=%sysfunc (pathname(_tmp));
    libname _tmp clear;
 
    /*-- initialize error --------------------------------------------------------*/
@@ -135,17 +141,17 @@
 
    /*-- set macro symbols for os commands ---------------------------------------*/
    %IF (&sysscp. = WIN) %THEN %DO;
-      %LET l_sasautos_os = &i_sasunit./windows;
+      %LET l_sasunit_os = &l_sasunit./windows;
    %END;
    %ELSE %IF (%upcase(&sysscpl.) = LINUX) %THEN %DO;
-      %LET l_sasautos_os = &i_sasunit./linux;
+      %LET l_sasunit_os = &l_sasunit./linux;
    %END;
    %ELSE %IF (%upcase(&sysscpl.) = AIX) %THEN %DO;
-      %LET l_sasautos_os = &i_sasunit./unix_aix;
+      %LET l_sasunit_os = &l_sasunit./unix_aix;
    %END;
-   %LET l_abspath_sasautos   =%_abspath(&i_root.,&i_sasunit.);
-   %LET l_abspath_sasautos_os=%_abspath(&i_root.,&l_sasautos_os.);
-   OPTIONS SASAUTOS=(SASAUTOS "&l_abspath_sasautos." "&l_abspath_sasautos_os.");
+   %LET l_abspath_sasunit   =%_abspath(&i_root.,&i_sasunit.);
+   %LET l_abspath_sasunit_os=%_abspath(&i_root.,&l_sasunit_os.);
+   OPTIONS SASAUTOS=(SASAUTOS "&l_abspath_sasunit." "&l_abspath_sasunit_os.");
    OPTIONS NOQUOTELENMAX;
 
    %_oscmds;
@@ -370,11 +376,15 @@
    QUIT;
 
    /*-- project name ------------------------------------------------------------*/
-   PROC SQL NOPRINT;
-      SELECT tsu_project INTO :l_project FROM target.tsu;
-   QUIT;
-   %LET l_project=&l_project;
-   %IF "&i_project" NE "" %THEN %LET l_project=&i_project;
+   %IF "&i_project" = "" %THEN %DO;
+      PROC SQL NOPRINT;
+         SELECT tsu_project INTO :l_project FROM target.tsu;
+      QUIT;
+      %LET l_project=&l_project;
+   %END;
+   %ELSE %DO;
+      %LET l_project=&i_project;
+   %END;
    %IF %_handleError(&l_macname.
                     ,MissingProjectName
                     ,"&l_project" EQ ""
@@ -387,11 +397,12 @@
    QUIT;
 
    /*-- root folder -------------------------------------------------------------*/
-   PROC SQL NOPRINT;
-      SELECT tsu_root INTO :l_root FROM target.tsu;
-   QUIT;
-   %LET l_root=&l_root;
-   %IF "&i_root" NE "" %THEN %LET l_root=&i_root;
+   %IF "&l_root" = "" %THEN %DO;
+      PROC SQL NOPRINT;
+         SELECT tsu_root INTO :l_root FROM target.tsu;
+      QUIT;
+      %LET l_root=&l_root;
+   %END;
    %IF %_handleError(&l_macname.
                     ,InvalidRoot
                     ,"&l_root" NE "" AND NOT %_existdir(&l_root)
@@ -417,11 +428,12 @@
    QUIT;
 
    /*-- sasunit folder ----------------------------------------------------------*/
-   PROC SQL NOPRINT;
-      SELECT tsu_sasunit INTO :l_sasunit FROM target.tsu;
-   QUIT;
-   %LET l_sasunit=&l_sasunit;
-   %IF "&i_sasunit" NE "" %THEN %LET l_sasunit=&i_sasunit;
+   %IF "&l_sasunit" = "" %THEN %DO;
+      PROC SQL NOPRINT;
+         SELECT tsu_sasunit INTO :l_sasunit FROM target.tsu;
+      QUIT;
+      %LET l_sasunit=&l_sasunit;
+   %END;
    %LET l_abs=%_abspath(&l_root.,&l_sasunit.);
    %IF %_handleError(&l_macname.
                     ,InvalidSASUnitDir
@@ -435,16 +447,16 @@
    QUIT;
 
    /*-- os-specific sasunit folder ----------------------------------------------------------*/
-   %LET l_sasautos_os=&l_sasautos_os;
+   %LET l_sasunit_os=&l_sasunit_os;
    %IF %_handleError(&l_macname.
                     ,InvalidSASUnitDir
-                    ,"&l_abspath_sasautos_os." EQ "" OR NOT %sysfunc(fileexist(&l_abspath_sasautos_os./_oscmds.sas))
+                    ,"&l_abspath_sasunit_os." EQ "" OR NOT %sysfunc(fileexist(&l_abspath_sasunit_os./_oscmds.sas))
                     ,Error in parameter i_sasunit: os-specific SASUnit macro programs not found
                     ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
    PROC SQL NOPRINT;
-      UPDATE target.tsu SET tsu_sasunit_os = "&l_sasautos_os";
+      UPDATE target.tsu SET tsu_sasunit_os = "&l_sasunit_os";
    QUIT;
    /*-- check if autoexec exists where specified --------------------------------*/
    PROC SQL NOPRINT;

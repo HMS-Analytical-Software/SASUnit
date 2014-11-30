@@ -47,7 +47,7 @@
    LIBNAME _acLib "&l_path";
 
    %if (&o_html.) %then %do;
-      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._cmp_exp.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
+      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._cmp_exp.html" style=styles.SASUnit stylesheet=(url="css/SAS_SASUnit.css");
    %end;
 
    %_reportFooter(o_html=&o_html.);
@@ -66,7 +66,7 @@
 
    %if (&o_html.) %then %do;
       %_closeHtmlPage;
-      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._cmp_act.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
+      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._cmp_act.html" style=styles.SASUnit stylesheet=(url="css/SAS_SASUnit.css");
    %end;
    TITLE "&g_nls_reportCmp_001";
    %IF %sysfunc(exist(_acLib._columns_act)) %THEN %DO;
@@ -83,7 +83,7 @@
 
    %if (&o_html.) %then %do;
       %_closeHtmlPage;
-      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._cmp_rep.html" style=styles.SASUnit stylesheet=(url="SAS_SASUnit.css");
+      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._cmp_rep.html" style=styles.SASUnit stylesheet=(url="css/SAS_SASUnit.css");
    %end;
       TITLE "&g_nls_reportCmp_005";
       PROC DOCUMENT NAME=_acLib._columns_rep;

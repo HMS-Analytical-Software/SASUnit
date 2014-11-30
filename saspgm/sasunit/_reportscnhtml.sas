@@ -118,9 +118,9 @@
       ods html4 file="&o_path./&o_file..html" 
                     (TITLE="&l_title.")
                     /* Order of .js files in headtext attribute is essential */
-                    headtext='<link href="tabs.css" rel="stylesheet" type="text/css"/><script src="js/jq.js"></script><script src="js/jq.ts.js"></script><script src="js/jq.ts.w.js"></script><script src="js/ls.js"></script>'
+                    headtext='<script src="js/jquery-1.11.1.min.and.tablesorter.min.js"></script><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                    style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
+                    style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css");
       %_reportPageTopHTML(
          i_title   = &l_title.
         ,i_current = 2

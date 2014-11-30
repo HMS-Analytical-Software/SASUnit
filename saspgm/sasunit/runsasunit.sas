@@ -157,9 +157,9 @@
    /* Create cross-reference */
    %_crossreference(i_includeSASUnit = &g_crossrefsasunit.
                    ,i_examinee       = &d_examinee.
-                   ,i_listcalling    = &d_listcalling.
-                   ,i_dependency     = &d_dependency.
-                   ,i_macroList      = &d_macroList.
+                   ,o_listcalling    = &d_listcalling.
+                   ,o_dependency     = &d_dependency.
+                   ,o_macroList      = &d_macroList.
                    );
 
    /* check which test scenarios must be run */

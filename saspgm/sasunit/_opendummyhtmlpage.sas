@@ -28,6 +28,6 @@
 */ /** \cond */ 
 
 %macro _opendummyhtmlpage;
-   ods html4 file="%sysfunc(pathname(work))/dummyhtml.html" style=styles.SASUnit stylesheet=(URL="SAS_SASUnit.css");
+   ods html4 file="%sysfunc(pathname(work))/dummyhtml.html" style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css");
 %mend;
 /** \endcond */

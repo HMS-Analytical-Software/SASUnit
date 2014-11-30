@@ -47,7 +47,7 @@
    LIBNAME _apk "&l_path";
 
    %IF (&o_html.) %then %do;
-      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._primarykey_rep.html" stylesheet=(url="SAS_SASUnit.css");
+      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._primarykey_rep.html" stylesheet=(url="css/SAS_SASUnit.css");
    %END;
 
       TITLE "&g_nls_reportPrimaryKey_001";
