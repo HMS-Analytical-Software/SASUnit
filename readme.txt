@@ -1,4 +1,4 @@
-This is the readme file for version 1.2.1 of SASUnit, the Unit testing 
+This is the readme file for version 1.3 of SASUnit, the Unit testing 
 framework for SAS(R) programs, copyright 2010, 2012 HMS Analytical 
 Software GmbH, http://www.analytical-software.de
 
@@ -18,8 +18,6 @@ http://www.gnu.org/licenses/.
 
 SASUnit requires SAS. SAS is a product and registered trademark of SAS 
 Institute, Cary, NC (http://www.sas.com).
-
-SASUnit contains parts of Doxygen (http://www.doxygen.org).
 
 Release notes (changes since previous version, supported and tested 
 environments) can be found at 
