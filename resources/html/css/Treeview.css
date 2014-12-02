@@ -41,6 +41,7 @@ ol.hms-treeview
 {
 	position: absolute;
 	opacity: 0;
+	cursor: pointer;
 }
 
 .hms-treeview a
@@ -62,14 +63,8 @@ ol.hms-treeview
 .hms-treeview label::before
 {
 	content: "";
-	width: 19px;
+	width: 16px;
 	vertical-align: middle;
-}
-
-.hms-treeview label,
-.hms-treeview label::before
-{
-	cursor: pointer;
 }
 
 .hms-treeview input:disabled + label
@@ -86,56 +81,67 @@ ol.hms-treeview
 .hms-treeview  input:not(:checked) + label.nodemanual::before
 {
 	background: url("../FolderClosedMANUAL.png") no-repeat;
+	background-position: center center;
 }
 
 .hms-treeview  input:not(:checked) + label.nodeok::before
 {
 	background: url("../FolderClosedOK.png") no-repeat;
+	background-position: center center;
 }
 
 .hms-treeview  input:not(:checked) + label.nodeerror::before
 {
 	background: url("../FolderClosedERROR.png") no-repeat;
+	background-position: center center;
 }
 
 .hms-treeview  input:not(:checked) + label.node::before
 {
 	background: url("../FolderClosed.png") no-repeat;
+	background-position: center center;
 }
 
 .hms-treeview input:checked + label.nodemanual::before
 {
 	background: url("../FolderOpenedMANUAL.png") no-repeat;
+	background-position: center center;
 }
 
 .hms-treeview input:checked + label.nodeok::before
 {
 	background: url("../FolderOpenedOK.png") no-repeat;
+	background-position: center center;
 }
 
 .hms-treeview input:checked + label.nodeerror::before
 {
 	background: url("../FolderOpenedERROR.png") no-repeat;
+	background-position: center center;
 }
 
 .hms-treeview input:checked + label.node::before
 {
 	background: url("../FolderOpened.png") no-repeat;
+	background-position: center center;
 }
 
 label.fileok
 {
 	background: url("../FileOK.png") no-repeat;
+	background-position: center left;
 }
 
 label.filemanual
 {
 	background: url("../FileMANUAL.png") no-repeat;
+	background-position: center left;
 }
 
 label.fileerror
 {
 	background: url("../FileERROR.png") no-repeat;
+	background-position: center left;
 }
 
 .hms-treeview label,
@@ -143,6 +149,5 @@ label.fileerror
 .hms-treeview label::before
 {
 	display: inline-block;
-	height: 12px;
-	line-height: 12px;
+	height: 15px;
 }
