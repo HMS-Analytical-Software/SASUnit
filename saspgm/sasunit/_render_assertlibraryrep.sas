@@ -47,7 +47,10 @@
    libname _test "&l_path";
 
    %if (&o_html.) %then %do;
-      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_exp.html" style=styles.SASUnit stylesheet=(url="css/SAS_SASUnit.css");
+      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_exp.html" 
+                style=styles.SASUnit 
+                stylesheet=(url="css/SAS_SASUnit.css")
+                encoding="UTF8";
    %end;
 
    %_reportFooter(o_html=&o_html.);
@@ -66,7 +69,10 @@
 
    %if (&o_html.) %then %do;
       %_closeHtmlPage;
-      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_act.html" style=styles.SASUnit stylesheet=(url="css/SAS_SASUnit.css");
+      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_act.html" 
+                style=styles.SASUnit 
+                stylesheet=(url="css/SAS_SASUnit.css")
+                encoding="UTF8";
    %end;
    %if (%sysfunc (libref(_test))=0) %then %do;
       PROC DOCUMENT NAME=_test._library_act;
@@ -81,7 +87,10 @@
 
    %if (&o_html.) %then %do;
       %_closeHtmlPage;
-      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_rep.html" style=styles.SASUnit stylesheet=(url="css/SAS_SASUnit.css");
+      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_rep.html" 
+                style=styles.SASUnit 
+                stylesheet=(url="css/SAS_SASUnit.css")
+                encoding="UTF8";
    %end;
    
    %if (%sysfunc (exist (_test._library_rep, DATA))) %then %do;

@@ -68,18 +68,21 @@ text-decoration:none;
 .tabs li {
     float:left; 
     margin-right:0; 	
+	margin-bottom: -1px;
+	border-bottom:1px solid #84B0C7;
+    font-size: x-small;
+    font-weight: bold;
+    color: #1A419D;
 }
 
 .tabs li a {
     display:block;
-    padding: 5px 9px;
     border-left:0.06em solid #84B0C7;
     border-right:0.06em solid #84B0C7;
     border-top:0.06em solid #84B0C7;
-    font-size: x-small;
-    font-weight: bold;
-    color: #1A419D;
+    padding: 5px 9px;
     text-decoration:none;
+	height: 16px;
 	
     /* CSS 3 elements */
     -webkit-border-top-right-radius:0.50em;

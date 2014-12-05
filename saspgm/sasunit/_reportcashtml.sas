@@ -194,7 +194,8 @@
                     (TITLE="&l_title.") 
                     headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                    style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css");
+                    style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css")
+                    encoding="UTF8";
       %_reportPageTopHTML(i_title   = &l_title.
                          ,i_current = 3
                          )

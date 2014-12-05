@@ -44,20 +44,28 @@
             'GraphTitleFont' = ("Arial",14pt,Bold);
          style color_list
             "Colors used in the default style" /
-            'fgA'        = cx002288
+            /* Notes, Titles, Document */
+            'fgA'        = cx002288 
             'bgA'        = white
+            /* Table */
             'fgA1'       = cx000000
             'bgA1'       = white
+            /* Header */
             'fgA2'       = cx0033AA
             'bgA2'       = cxe8eef2
+            /* Data Cells */
             'fgA3'       = dark red
             'bgA3'       = cxe8eef2
+            /* not used */
             'fgA4'       = cx000080
             'bgA4'       = cxe8eef2
+            /* Links */
             'fgB1'       = cx000080
             'bgB1'       = cxe8eef2
+            /* not used */
             'fgB2'       = cx0066AA
             'bgB2'       = cxe8eef2
+            /* Testcoverage */
             'fgTcgCovered'    = cx00BE00
             'fgTcgNonCovered' = cxFF8020
             'fgTcgComment'    = cx828282
