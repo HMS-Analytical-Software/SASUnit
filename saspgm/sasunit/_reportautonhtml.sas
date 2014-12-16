@@ -329,7 +329,7 @@
             LinkTitle4 = trim(cas_pgm) !! " &g_nls_reportAuton_025.";
             LinkTitle5 = trim(cas_pgm) !! " &g_nls_reportAuton_026.";
             
-            *** HTML-links are destinations specific ***;
+            *** HTML-links are destination specific ***;
             %if (&o_html.) %then %do;
                LinkColumn1 = "file:///" !! cas_abs_path;
                LinkColumn2 = CATT("cas_overview.html#SCN", PUT(scn_id,z3.), "_");
@@ -384,14 +384,6 @@
          ods html4 anchor="AUTON&l_cAuton.";
       %END;
       
-      /*
-      libname backup "c:\temp";
-      
-      data backup.temp;
-         set work._current_auton;
-      run;
-      */
-
       PROC REPORT DATA=work._current_auton nowd missing spanrows
             style(lines)=blindData
             ;
