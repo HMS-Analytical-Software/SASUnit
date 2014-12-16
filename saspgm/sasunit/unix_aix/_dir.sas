@@ -39,12 +39,9 @@
    %let dirfile=%sysfunc(pathname(work))/&o_out..dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
 
-   %put &g_note.(SASUNIT): Directory search is: &i_path;
+/*   %put &g_note.(SASUNIT): Directory search is: &i_path;*/
 
    %let l_i_path=%qsysfunc(tranwrd(&i_path, %str( ), %str(\ )));
-
-   %IF &i_recursive=0 %then
-        %let s = -prune;
 
    %let search = %qscan(&l_i_path.,-1,'/');
    %let k = %index(&l_i_path.,%qtrim(&search.));
@@ -54,12 +51,31 @@
    %if %qsubstr(&path.,1,1) eq %str(%") %then
        %let path = &path.%str(%");
 
-   %SYSEXEC(find &path. -name "&search." -ls &s. -type f > &dirfile.);
+   %SYSEXEC(find -L &path. ! -name &path -name "&search." -ls -type f > &dirfile.);
 
-   data &o_out (keep=filename changed);
+   %if &g_verbose. %then %do;
+      %put ======== OS Command Start ========;
+      /* Evaluate sysexec´s return code */
+      %if &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
+      %else %put &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
+
+      /* put sysexec command to log*/
+      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: find -L &path. ! -name &path -name "&search." -ls -type f > &dirfile.;
+      
+      /* write &dirfile to the log*/
+      data _null_;
+         infile "&dirfile" truncover lrecl=512;
+         input line $512.;
+         putlog line;
+      run;
+      %put ======== OS Command End ========;
+   %end;
+   
+   data &o_out (keep=filename changed );
       array dum{7} $;
       array dat{3} $;
       length filename $255
+             temp_path temp_file $255
              fileall  $1024
              ;
       format changed datetime20.;
@@ -76,9 +92,50 @@
       else do;
          changed =input(compress( dat2 || dat1 || dat3) || " 00:00", datetime.);
       end;
+      %if &i_recursive=0 %then %do;
+         temp_path = dequote("&path");
+         temp_file = scan(filename,-1,"/");
+         if (trim(temp_path) !! "/" !! trim(temp_file) = filename) then output;
+      %end;
    run;
 
 %errexit:
 %MEND _dir;
 /** \endcond */
 
+%let g_note = SASUNIT NOTE;
+%_dir(i_path='/project/telef/src/makros/*.sas'
+     ,i_recursive=0
+     ,o_out=dir
+     );
+
+title Nicht rekursiv /project/telef/src/makros/ mit einfachen Hochkommas;
+proc print data=dir;
+run;
+
+%_dir(i_path='/project/telef/src/makros/*.sas'
+     ,i_recursive=1
+     ,o_out=dir
+     );
+
+title rekursiv /project/telef/src/makros/ mit einfachen Hochkommas;
+proc print data=dir;
+run;
+
+%_dir(i_path="/project/telef/src/makros/*.sas"
+     ,i_recursive=0
+     ,o_out=dir
+     );
+
+title Nicht rekursiv /project/telef/src/makros/ mit doppelten Hochkommas;
+proc print data=dir;
+run;
+
+%_dir(i_path="/project/telef/src/makros/*.sas"
+     ,i_recursive=1
+     ,o_out=dir
+     );
+
+title rekursiv /project/telef/src/makros/ mit doppelten Hochkommas;
+proc print data=dir;
+run;
