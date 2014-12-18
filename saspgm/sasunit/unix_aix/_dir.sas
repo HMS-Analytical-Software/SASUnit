@@ -71,10 +71,10 @@
       %put ======== OS Command End ========;
    %end;
    
-   data &o_out (keep=filename changed );
+   data &o_out (keep=membername filename changed );
       array dum{7} $;
       array dat{3} $;
-      length filename $255
+      length filename membername $255
              temp_path temp_file $255
              fileall  $1024
              ;
@@ -85,13 +85,16 @@
       if substr(dum3,1,1)='d' then delete;
       if index(dat3,':') gt 0 then do;
          changed = input(compress(dat2 || dat1 || year(today())) || " " || dat3, datetime.);
-         if changed gt today() then do;
+         if datepart(changed) gt today() then do;
             changed = input(compress(dat2 || dat1 || year(today())-1) || " " || dat3, datetime.);
          end;
       end;
       else do;
          changed =input(compress( dat2 || dat1 || dat3) || " 00:00", datetime.);
       end;
+      loca = length(filename) - length(scan(filename,-1,'/')) + 1;
+      membername = substr(filename,loca);
+
       %if &i_recursive=0 %then %do;
          temp_path = dequote("&path");
          temp_file = scan(filename,-1,"/");
@@ -103,39 +106,3 @@
 %MEND _dir;
 /** \endcond */
 
-%let g_note = SASUNIT NOTE;
-%_dir(i_path='/project/telef/src/makros/*.sas'
-     ,i_recursive=0
-     ,o_out=dir
-     );
-
-title Nicht rekursiv /project/telef/src/makros/ mit einfachen Hochkommas;
-proc print data=dir;
-run;
-
-%_dir(i_path='/project/telef/src/makros/*.sas'
-     ,i_recursive=1
-     ,o_out=dir
-     );
-
-title rekursiv /project/telef/src/makros/ mit einfachen Hochkommas;
-proc print data=dir;
-run;
-
-%_dir(i_path="/project/telef/src/makros/*.sas"
-     ,i_recursive=0
-     ,o_out=dir
-     );
-
-title Nicht rekursiv /project/telef/src/makros/ mit doppelten Hochkommas;
-proc print data=dir;
-run;
-
-%_dir(i_path="/project/telef/src/makros/*.sas"
-     ,i_recursive=1
-     ,o_out=dir
-     );
-
-title rekursiv /project/telef/src/makros/ mit doppelten Hochkommas;
-proc print data=dir;
-run;

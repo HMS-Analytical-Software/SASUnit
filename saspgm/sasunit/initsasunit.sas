@@ -133,8 +133,8 @@
    /*-- check for operation system ----------------------------------------------*/
    %IF %_handleError(&l_macname.
                     ,WrongOS
-                    ,(%upcase(&sysscp.) NE WIN) AND (%upcase(&sysscpl.) NE LINUX) /*AND (%upcase(&sysscpl.) NE AIX)*/
-                    ,Invalid operating system - only WIN%str(,) LINUX/* AND AIX*/
+                    ,(%upcase(&sysscp.) NE WIN) AND (%upcase(&sysscpl.) NE LINUX) AND (%upcase(&sysscpl.) NE AIX)
+                    ,Invalid operating system - only WIN%str(,) LINUX AND AIX
                     ,i_verbose=&i_verbose.
                     ) 
    %THEN %GOTO errexit;

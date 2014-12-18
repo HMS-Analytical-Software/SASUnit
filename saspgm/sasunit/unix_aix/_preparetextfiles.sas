@@ -21,7 +21,6 @@
 
 %MACRO _prepareTextFiles; 
 
-      %_xcmd(sed -i -e 's/\r//g' "&g_sasunit/_nls.txt");
-   
+   %_xcmd(sed -e 's/\r//g' "&g_sasunit/_nls.txt" > ~/temp.; mv ~/temp. "&g_sasunit/_nls.txt");   
 %MEND _prepareTextFiles;
 /** \endcond */
