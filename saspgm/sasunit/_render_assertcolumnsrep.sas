@@ -48,7 +48,7 @@
 
    %if (&o_html.) %then %do;
       ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._cmp_exp.html" style=styles.SASUnit stylesheet=(url="css/SAS_SASUnit.css")
-                encoding="UTF8";
+                encoding="&g_rep_encoding.";
    %end;
 
    %_reportFooter(o_html=&o_html.);

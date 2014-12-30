@@ -304,9 +304,9 @@
  20 DE Benutzer ID
  20 EN User ID
  21 DE SASUnit Sprache
- 21 EN SASUnit Language
+ 21 EN SASUnit language
  22 DE SASUnit Datenbankversion
- 22 EN SASUnit Data Base Version
+ 22 EN SASUnit data base version
  23 DE Encoding der SAS-Sitzung
  23 EN Encoding of SAS session
  24 DE Eigenschaften des Projekts
@@ -327,6 +327,8 @@
  31 EN Document call hierarchy:
  32 DE Aufrufhierarchie mit SASUnit Makros:
  32 EN Call hierarchy includes SASUnit macros:
+ 33 DE Encoding der HTML-Berichte
+ 33 EN Encoding of HTML reports
 ---reportLibrary
   1 DE Prüfbericht - Vergleich der beiden Bibliotheken
   1 EN Test Report - Comparison of two Libraries

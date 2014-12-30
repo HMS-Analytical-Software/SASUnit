@@ -29,6 +29,6 @@
 
 %macro _opendummyhtmlpage;
    ods html4 file="%sysfunc(pathname(work))/dummyhtml.html" style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css")
-             encoding="UTF8";
+             encoding="&g_rep_encoding.";
 %mend;
 /** \endcond */

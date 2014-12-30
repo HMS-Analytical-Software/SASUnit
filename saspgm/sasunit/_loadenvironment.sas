@@ -23,18 +23,14 @@
  
    %LOCAL l_macname; %LET l_macname=&sysmacroname;
 
-   %GLOBAL g_target g_project g_root g_sasunit g_sasunit_os g_autoexec g_sascfg g_sasuser
+   %GLOBAL g_sasunitroot g_target g_project g_root g_sasunit g_sasunit_os g_autoexec g_sascfg g_sasuser
            g_sasautos g_sasautos0 g_sasautos1 g_sasautos2 g_sasautos3 g_sasautos4 
            g_sasautos5 g_sasautos6 g_sasautos7 g_sasautos8 g_sasautos9 
            g_testdata g_refdata g_doc g_error g_warning g_note
-           g_work g_testout g_log
-           g_logfile g_printfile
-           g_testcoverage
-           g_verbose
-           g_sasunitroot
-           g_crossref
-           g_crossrefsasunit
+           g_work g_testout g_log g_logfile g_printfile
+           g_testcoverage g_verbose g_crossref g_crossrefsasunit g_rep_encoding
            ;
+
    %LOCAL i;
            
    %LET g_target    = %sysfunc(pathname(target));
@@ -111,6 +107,7 @@
    %LET g_refdata      = %_abspath(&g_root,&g_refdata);
    %LET g_doc          = %_abspath(&g_root,&g_doc);
    %LET g_testcoverage = &g_testcoverage.;
+   %LET g_rep_encoding = UTF8;
 
    %LET g_work     = %sysfunc(pathname(work));
    %LET g_testout  = &g_target/tst;

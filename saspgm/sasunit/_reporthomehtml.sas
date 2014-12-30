@@ -188,6 +188,11 @@
          valueColumn="%sysget(SASUNIT_LANGUAGE)";
          Category="SASUnit";
          output;
+         idColumn = "&g_nls_reportHome_033.";
+         parameterColumn='&g_rep_encoding.';
+         valueColumn="&g_rep_encoding.";
+         Category="SASUnit";
+         output;
          idColumn = "&g_nls_reportHome_029.";
          parameterColumn="SASUNIT_COVERAGEASSESSMENT";
          valueColumn=put (%sysget(SASUNIT_COVERAGEASSESSMENT), YESNO.);
@@ -244,7 +249,7 @@
                     headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css")
-                    encoding="UTF8";
+                    encoding="&g_rep_encoding.";
       %_reportPageTopHTML(
          i_title   = %str(&g_project | &g_nls_reportHome_001.);
         ,i_current = 1

@@ -225,7 +225,7 @@ RUN;
 /*-- generate HTML and javascript code ---------------------------------------*/
 DATA _null_;
    SET &d_tree END=eof;
-   FILE "&o_html" LRECL=1024 encoding="UTF8";
+   FILE "&o_html" LRECL=1024 encoding="&g_rep_encoding.";
    length class_suffix $20;
 
    IF _n_=1 THEN DO;
