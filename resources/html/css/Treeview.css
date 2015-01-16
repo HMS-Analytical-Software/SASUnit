@@ -80,7 +80,7 @@ ol.hms-treeview
 
 .hms-treeview  input:not(:checked) + label.nodemanual::before
 {
-	background: url("../FolderClosedMANUAL.png") no-repeat;
+	background: url("../FolderClosedManual.png") no-repeat;
 	background-position: center center;
 }
 
@@ -104,7 +104,7 @@ ol.hms-treeview
 
 .hms-treeview input:checked + label.nodemanual::before
 {
-	background: url("../FolderOpenedMANUAL.png") no-repeat;
+	background: url("../FolderOpenedManual.png") no-repeat;
 	background-position: center center;
 }
 
