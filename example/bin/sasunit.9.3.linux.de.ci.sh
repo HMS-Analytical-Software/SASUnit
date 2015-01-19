@@ -18,7 +18,7 @@ if [ -z "$1" ] ; then
    echo ... parameter not found. Using SASUnit root path from skript
    echo
 else 
-   export SASUNIT_ROOT=$1
+   export SASUNIT_ROOT="$(eval echo $1)"
    echo ...plugin found. Using plugin provided SASUnit root path
    echo
 fi
@@ -34,7 +34,7 @@ echo Deleting SASUnit styles
 echo rm -f $SASUNIT_ROOT/resources/style/*.sas7bitm
 rm -f $SASUNIT_ROOT/resources/style/*.sas7bitm
 
-echo "Starting SASUnit ..."
+echo "Starting SASUnit Examples ..."
 /usr/local/SASHome/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE -nosyntaxcheck -noovp
 
 # Show SAS exit status

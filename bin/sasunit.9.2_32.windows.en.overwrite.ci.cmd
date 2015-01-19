@@ -18,21 +18,19 @@ if [%1] == [] (
    echo ... parameter not found. Using SASUnit root path from skript
    echo.
 ) else (
-   SET SASUNIT_ROOT=%1
+   SET SASUNIT_ROOT=%~1
    echo ...plugin found. Using plugin provided SASUnit root path
    echo.
 )
-echo.
 echo SASUnit root path     = %SASUNIT_ROOT%
 echo SASUnit config        = bin\sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg
 echo Overwrite             = %SASUNIT_OVERWRITE%
 echo Testcoverage          = %SASUNIT_COVERAGEASSESSMENT%
-echo.
 
 rem Deletion of SASUnit styles ot avoid incompatabilites between 32 and 64 bit systems
 echo Deleting SASUnit styles
 echo on
-del %SASUNIT_ROOT%\resources\style\*.sas7bitm
+del "%SASUNIT_ROOT%\resources\style\*.sas7bitm"
 
 echo "Starting SASUnit in Overwrite Mode ..."
 "C:\Program Files\SAS\SASFoundation\9.2(32-bit)\sas.exe" -CONFIG "bin\sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg" -no$syntaxcheck -noovp -nosplash
