@@ -18,7 +18,7 @@ if [%1] == [] (
    echo ... parameter not found. Using SASUnit root path from skript
    echo.
 ) else (
-   SET SASUNIT_ROOT=%1
+   SET SASUNIT_ROOT=%~1
    echo ...plugin found. Using plugin provided SASUnit root path
    echo.
 )
@@ -30,7 +30,7 @@ echo Testcoverage          = %SASUNIT_COVERAGEASSESSMENT%
 rem Deletion of SASUnit styles ot avoid incompatabilites between 32 and 64 bit systems
 echo Deleting SASUnit styles
 echo on
-del %SASUNIT_ROOT%\resources\style\*.sas7bitm
+del "%SASUNIT_ROOT%\resources\style\*.sas7bitm"
 
 echo "Starting SASUnit Examples ..."
 "C:\Program Files\SASHome\x86\SASFoundation\9.3\sas.exe" -CONFIG "bin\sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg" -no$syntaxcheck -noovp -nosplash

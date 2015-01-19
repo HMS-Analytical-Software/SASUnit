@@ -18,7 +18,7 @@ if [ -z "$1" ] ; then
    echo ... parameter not found. Using SASUnit root path from skript
    echo
 else 
-   export SASUNIT_ROOT=$1
+   export SASUNIT_ROOT="$(eval echo $1)"
    echo ...plugin found. Using plugin provided SASUnit root path
    echo
 fi
