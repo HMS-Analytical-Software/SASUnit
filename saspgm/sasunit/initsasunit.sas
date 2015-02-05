@@ -85,7 +85,7 @@
 
    %GLOBAL g_version g_revision g_verbose g_error g_warning g_note;
 
-   %LET g_version   = 1.4.99;
+   %LET g_version   = 1.5.0;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
    
