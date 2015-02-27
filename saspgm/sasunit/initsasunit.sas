@@ -46,10 +46,10 @@
    \param   i_verbose      optional: controls whether results of asserts are written to the SAS log
                            0 (default).. no results written to SAS log
                            1 .. results are written to SAS log
-   \param   i_crossref     optional: controlls wether the crossreference is created in overwrite mode
-                           0  .. crossreference will not be created 
-                           1 (default).. crossreference will be created                                                      
-   \param   i_crossrefsasunit    optional: controls wether the SASUnit core macros are included in the
+   \param   i_crossref     optional: controls whether the cross reference is created
+                           0  .. cross reference will not be created 
+                           1 (default).. cross reference will be created                                                      
+   \param   i_crossrefsasunit    optional: controls whether the SASUnit core macros are included in the
                                  scan for dependencies
                                  0 (default) .. SASUnit core macros are not included
                                  1 .. SASUnit core macros are included
