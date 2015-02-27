@@ -296,6 +296,26 @@
       %END; /* run scenario */
    %END; /* loop for all scenarios */
 
+   *** Get program name in notation as in target.cas ***;
+   proc sql noprint;
+      create table work.cas as
+         select distinct (substr (cas_pgm,1,index(lowcase (cas_pgm),'.sas')-1)) as cas_pgm
+         from target.cas;
+      create table work.dep as 
+         select dep.caller as lowcase_caller
+               ,coalesce (cas.cas_pgm, dep.caller) as caller
+               ,dep.called
+         from &d_listcalling. as dep left join work.cas
+         on lowcase (dep.caller)=lowcase(cas.cas_pgm);
+      create table &d_listcalling. as 
+         select dep.lowcase_caller
+               ,dep.caller
+               ,dep.called as lowcase_calledByCaller
+               ,coalesce (cas.cas_pgm, dep.called) as called
+         from work.dep left join work.cas
+         on lowcase (dep.called)=lowcase(cas.cas_pgm);
+   quit;
+
    %GOTO exit;
 %errexit:
       %PUT;
@@ -354,6 +374,7 @@
          %END; /* if scenario is not present in database */
       %END;
 
+     
 %exit:
    PROC DATASETS NOLIST NOWARN LIB=%scan(&d_dependency,1,.);
       DELETE %scan(&d_dependency,2,.);
