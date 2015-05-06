@@ -28,8 +28,7 @@
    
    %LET logfile=%sysfunc(pathname(work))\___log.txt;
 
-   %SYSEXEC &i_cmd > "&logfile"; 
-
+   %SYSEXEC &i_cmd > "&logfile";
 
    %IF &g_verbose. %THEN %DO;
       %PUT ======== OS Command Start ========;
