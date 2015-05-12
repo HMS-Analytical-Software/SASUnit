@@ -535,3 +535,46 @@
  22 EN All key variables contain missing values.
  23 DE Tabelle existiert nicht.
  23 EN Table does not exist.
+---reportText
+  1 DE Erwarteter Text
+  1 EN Expected text
+  2 DE Erwarteten Text öffnen
+  2 EN Show expected text
+  3 DE Vergleich
+  3 EN Comparison
+  4 DE Tatsächlicher Text
+  4 EN Actual text
+  5 DE Tatsächlichen Text öffnen
+  5 EN Show actual text
+  6 DE Vergleichsbericht öffnen
+  6 EN Open comparison report
+  7 DE Shell-Script nicht gefunden!
+  7 EN Shell script not found!
+  8 DE Input Textdokument i_expected nicht gefunden!
+  8 EN Input text file i_expected not found!
+  9 DE Input Textdokument i_actual nicht gefunden!
+  9 EN Input text file i_actual not found!
+---reportExternal
+  1 DE Shell-Script nicht gefunden!
+  1 EN Shell script not found!
+  2 DE Der Pfad in Param1 existiert nicht
+  2 EN Param1 is path, but was not found
+  3 DE Der Pfad in Param2 existiert nicht
+  3 EN Param2 is path, but was not found
+---reportImage
+  1 DE Shell-Script nicht gefunden!
+  1 EN Shell script not found!
+  2 DE Das in i_image1 spezifizierte Bild wurde nicht gefunden
+  2 EN The image specified in i_image1 was not found
+  3 DE Das in i_image2 spezifizierte Bild wurde nicht gefunden
+  3 EN The image specified in i_image2 was not found
+  4 DE Tatsächliches Bild
+  4 EN Actual image
+  5 DE Tatsächliches Bild öffnen
+  5 EN Show actual image
+  6 DE Bildvergleich öffnen
+  6 EN Open image comparison
+  7 DE Erwartetes Bild
+  7 EN Expected image
+  8 DE Erwartetes Bild öffnen
+  8 EN Open expected image
