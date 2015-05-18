@@ -16,27 +16,27 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param     i_script               Path of shell script
-   \param     i_param1               First parameter for script
-   \param     i_param2               Second parameter for script
+   \param     i_expected               First parameter for script
+   \param     i_actual               Second parameter for script
    \param     i_expected_shell_rc    Expected return code of scipt. The shell return code and i_expected_shell_rc are compared to determined 
                                      success of assert
    \param     i_modifier             Optional parameter: modifier used in script
    \param     i_threshold            Optional parameter: threshold above which the test is successful
-   \param     i_param1IsPath         If put to Y, i_param1 is checked if it is a valid path
-   \param     i_param2IsPath         If put to Y, i_param2 is checked if it is a valid path
+   \param     i_expectedIsPath         If set to Y, i_expected is checked if it is a valid path
+   \param     i_actualIsPath         If put to Y, i_actual is checked if it is a valid path
    \param     i_desc                 Optional parameter: description of the assertion to be checked
 
 */ /** \cond */ 
 
 %MACRO assertExternal (i_script             =
-                      ,i_param1             =
-                      ,i_param2             =
+                      ,i_expected           =
+                      ,i_actual             =
                       ,i_expected_shell_rc  =0
                       ,i_modifier           =
-                      ,i_threshold          = NONE
-                      ,i_param1IsPath       =N
-                      ,i_param2IsPath       =N
-                      ,i_desc               = External comparison
+                      ,i_threshold          =NONE
+                      ,i_expectedIsPath     =N
+                      ,i_actualIsPath       =N
+                      ,i_desc               =External comparison
                       );
 
    %*** verify correct sequence of calls ***/
@@ -75,20 +75,20 @@
       %GOTO Update;
    %END;
 
-   %*** Check if i_param1 is a path and if so, whether it exists ***;
-   %IF &i_param1IsPath. EQ Y %THEN %DO; 
-      %IF NOT %SYSFUNC(FILEEXIST(&i_param1.)) %THEN %DO;
+   %*** Check if i_expected is a path and if so, whether it exists ***;
+   %IF &i_expectedIsPath. EQ Y %THEN %DO; 
+      %IF NOT %SYSFUNC(FILEEXIST(&i_expected.)) %THEN %DO;
          %LET l_rc = -3;
-         %LET l_errMsg=Path &i_param1. does not exist!;
+         %LET l_errMsg=Path &i_expected. does not exist!;
          %GOTO Update;
       %END;
    %END;
 
-   %*** Check if i_param2 is a path and if so, whether it exists ***;
-   %IF &i_param2IsPath. EQ Y %THEN %DO; 
-      %IF NOT %SYSFUNC(FILEEXIST(&i_param2.)) %THEN %DO;
+   %*** Check if i_actual is a path and if so, whether it exists ***;
+   %IF &i_actualIsPath. EQ Y %THEN %DO; 
+      %IF NOT %SYSFUNC(FILEEXIST(&i_actual.)) %THEN %DO;
          %LET l_rc = -4;
-         %LET l_errMsg=Path &i_param2. does not exist!;
+         %LET l_errMsg=Path &i_actual. does not exist!;
          %GOTO Update;
       %END;
    %END;
@@ -108,19 +108,11 @@
    %*** Start tests                                           ***;
    %*************************************************************;
    
-   %IF %lowcase(%sysget(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
-      %LET xwait=%sysfunc(getoption(xwait));
-      %LET xsync=%sysfunc(getoption(xsync));
-      %LET xmin =%sysfunc(getoption(xmin));
-      OPTIONS noxwait xsync xmin;
-   %END;
-   %SYSEXEC("&i_script." "&i_param1." "&i_param2." "&i_modifier." "&i_threshold.");
-   %LET l_rc = &sysrc.;
-   
-   %IF %lowcase(%sysget(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
-      OPTIONS &xwait &xsync &xmin;
-   %END;
-   
+   %_xcmdWithPath(i_cmd_path ="&i_script." "&i_expected." "&i_actual."
+                 ,i_cmd      ="&i_modifier." "&i_threshold."
+                 ,r_rc       =l_rc
+                 );
+
    %IF &l_rc. = &i_expected_shell_rc. %THEN %DO;
       %LET l_result = 0;
    %END;

@@ -90,7 +90,7 @@
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
-/* test case 1 ------------------------------------ */
+%*** test case 1 ------------------------------------ ***;
 %initTestcase(
              i_object   = assertImage.sas
             ,i_desc     = Check test setup
@@ -101,20 +101,20 @@
 %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./rose_copy.jpg))  , i_expected=1, i_desc=File successful copied);
 %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./reconstruct.jpg)), i_expected=1, i_desc=File successful modified);
 
-/* test case 2 ------------------------------------ */
+%*** test case 2 ------------------------------------ ***;
 %initTestcase(
              i_object   = assertImage.sas
             ,i_desc     = Texts with invalid input parameters
    )
 %endTestcall()
 
-%assertImage(i_script          =&assertImage_NotExistend.
-            ,i_image1          =&assertImage_image1.  
-            ,i_image2          =&assertImage_image2.    
-            ,i_expected        =1
-            ,i_modifier        =-metric RMSE
-            ,i_threshold       =
-            ,i_desc            =Scipt does not exist
+%assertImage(i_script             =&assertImage_NotExistend.
+            ,i_expected           =&assertImage_image1.  
+            ,i_actual             =&assertImage_image2.    
+            ,i_expected_shell_rc  =1
+            ,i_modifier           =-metric RMSE
+            ,i_threshold          =
+            ,i_desc               =Scipt does not exist
             );                        
            
    %markTest()
@@ -123,13 +123,13 @@
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
-%assertImage(i_script          =&assertImage_script.
-            ,i_image1          =&assertImage_NotExistend.  
-            ,i_image2          =&assertImage_image2.    
-            ,i_expected        =1                   
-            ,i_modifier        =-metric RMSE
-            ,i_threshold       =
-            ,i_desc            =Image1 does not exist
+%assertImage(i_script             =&assertImage_script.
+            ,i_expected           =&assertImage_NotExistend.  
+            ,i_actual             =&assertImage_image2.    
+            ,i_expected_shell_rc  =1                   
+            ,i_modifier           =-metric RMSE
+            ,i_threshold          =
+            ,i_desc               =Image1 does not exist
             );
    %markTest()
       %assertDBValue(tst,exp,1#)
@@ -137,13 +137,13 @@
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
            
-%assertImage(i_script          =&assertImage_script.
-            ,i_image1          =&assertImage_image1.  
-            ,i_image2          =&assertImage_NotExistend.    
-            ,i_expected        =1                   
-            ,i_modifier        =-metric RMSE
-            ,i_threshold       =
-            ,i_desc            =Image2 does not exist
+%assertImage(i_script             =&assertImage_script.
+            ,i_expected           =&assertImage_image1.  
+            ,i_actual             =&assertImage_NotExistend.    
+            ,i_expected_shell_rc  =1                   
+            ,i_modifier           =-metric RMSE
+            ,i_threshold          =
+            ,i_desc               =Image2 does not exist
             );
    %markTest()
       %assertDBValue(tst,exp,1#)
@@ -153,47 +153,47 @@
            
    %assertLog (i_errors=0, i_warnings=0);
 
-   /* test case 3 ------------------------------------ */
+%*** test case 3 ------------------------------------ ***;
 %initTestcase(
              i_object   = assertImage.sas
             ,i_desc     = Texts with invalid input parameters
    )
 %endTestcall()
 
-%assertImage(i_script          =&assertImage_script.
-            ,i_image1          =&assertImage_image1.  
-            ,i_image2          =&assertImage_image2.    
-            ,i_expected        =0                   
-            ,i_modifier        =-metric RMSE                  
-            ,i_threshold       =
-            ,i_desc            =Images match
+%assertImage(i_script             =&assertImage_script.
+            ,i_expected           =&assertImage_image1.  
+            ,i_actual             =&assertImage_image2.    
+            ,i_expected_shell_rc  =0                   
+            ,i_modifier           =-metric RMSE                  
+            ,i_threshold          =
+            ,i_desc               =Images match
             );
             
-%assertImage(i_script          =&assertImage_script.
-            ,i_image1          =&assertImage_image1.  
-            ,i_image2          =&assertImage_image3.    
-            ,i_expected        =1                   
-            ,i_modifier        =-metric RMSE                  
-            ,i_threshold       =
-            ,i_desc            =Images do not match
+%assertImage(i_script             =&assertImage_script.
+            ,i_expected           =&assertImage_image1.  
+            ,i_actual             =&assertImage_image3.    
+            ,i_expected_shell_rc  =1                   
+            ,i_modifier           =-metric RMSE                  
+            ,i_threshold          =
+            ,i_desc               =Images do not match
             );
 
-%assertImage(i_script          =&assertImage_script.
-            ,i_image1          =&assertImage_image1.  
-            ,i_image2          =&assertImage_image3.    
-            ,i_expected        =0                   
-            ,i_modifier        =-metric ae                  
-            ,i_threshold       =%nrbquote(-fuzz 25%)
-            ,i_desc            =%str(Images do not match, but threshold param used with fuzz)
+%assertImage(i_script             =&assertImage_script.
+            ,i_expected           =&assertImage_image1.  
+            ,i_actual             =&assertImage_image3.    
+            ,i_expected_shell_rc  =0                   
+            ,i_modifier           =-metric ae                  
+            ,i_threshold          =%nrbquote(-fuzz 25%)
+            ,i_desc               =%str(Images do not match, but threshold param used with fuzz)
             );
-            
-%assertImage(i_script          =&assertImage_script.
-            ,i_image1          =&assertImage_image4.  
-            ,i_image2          =&assertImage_image5.
-            ,i_expected        =1                   
-            ,i_modifier        =-metric RMSE                  
-            ,i_threshold       =
-            ,i_desc            =%str(Comparence of pngs, images do not match)
+     
+%assertImage(i_script             =&assertImage_script.
+            ,i_expected           =&assertImage_image4.  
+            ,i_actual             =&assertImage_image5.
+            ,i_expected_shell_rc  =1                   
+            ,i_modifier           =-metric RMSE                  
+            ,i_threshold          =
+            ,i_desc               =%str(Comparence of pngs, images do not match)
             );
 
 /** \endcond */

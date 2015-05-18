@@ -21,9 +21,9 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param     i_script               Path of shell script
-   \param     i_image1               Path of first image file (expected)
-   \param     i_image2               Path of second image file (actual)
-   \param     i_expected             Expected return value of called script i_script 
+   \param     i_expected             Path of first image file (expected)
+   \param     i_actual               Path of second image file (actual)
+   \param     i_expected_shell_rc    Expected return value of called script i_script 
                                        0: image match 
                                        >0: images do not match
    \param     i_modifier             Optional parameter: modifiers for the compare
@@ -32,13 +32,13 @@
 
 */ /** \cond */ 
 
-   %MACRO assertImage (i_script            =
-                      ,i_image1            =
-                      ,i_image2            =
-                      ,i_expected          =0
-                      ,i_modifier          =-metric RMSE
-                      ,i_threshold         =1
-                      ,i_desc              =Comparison of texts
+   %MACRO assertImage (i_script             =
+                      ,i_expected           =
+                      ,i_actual             =
+                      ,i_expected_shell_rc  =0
+                      ,i_modifier           =-metric RMSE
+                      ,i_threshold          =1
+                      ,i_desc               =Comparison of texts
                       );
 
    %*** verify correct sequence of calls ***;
@@ -82,17 +82,17 @@
       %GOTO Update;
    %END;
 
-   %*** Check if i_image1 is a path and if so, whether it exists ***;
-   %IF NOT %SYSFUNC(FILEEXIST(&i_image1.)) %THEN %DO;
+   %*** Check if i_expected is a path and if so, whether it exists ***;
+   %IF NOT %SYSFUNC(FILEEXIST(&i_expected.)) %THEN %DO;
       %LET l_rc = -3;
-      %LET l_errMsg=Image &i_image1. does not exist!;
+      %LET l_errMsg=Image &i_expected. does not exist!;
       %GOTO Update;
    %END;
    
-   %*** Check if i_image2 is a path and if so, whether it exists ***;
-   %IF NOT %SYSFUNC(FILEEXIST(&i_image2.)) %THEN %DO;
+   %*** Check if i_actual is a path and if so, whether it exists ***;
+   %IF NOT %SYSFUNC(FILEEXIST(&i_actual.)) %THEN %DO;
       %LET l_rc = -4;
-      %LET l_errMsg=Image &i_image2. does not exist!;
+      %LET l_errMsg=Image &i_actual. does not exist!;
       %GOTO Update;
    %END;
    
@@ -108,13 +108,13 @@
                          );
 
    %*** get image file extension + copy files ***;
-   %let l_image1_extension = %sysfunc(substr(&i_image1.,%sysfunc(length(&i_image1.))-%sysfunc(length(%sysfunc(scan(&i_image1.,-1,"."))))));
-   %let l_image2_extension = %sysfunc(substr(&i_image2.,%sysfunc(length(&i_image2.))-%sysfunc(length(%sysfunc(scan(&i_image2.,-1,"."))))));
+   %let l_image1_extension = %sysfunc(substr(&i_expected.,%sysfunc(length(&i_expected.))-%sysfunc(length(%sysfunc(scan(&i_expected.,-1,"."))))));
+   %let l_image2_extension = %sysfunc(substr(&i_actual.,%sysfunc(length(&i_actual.))-%sysfunc(length(%sysfunc(scan(&i_actual.,-1,"."))))));
 
-   %_copyFile(&i_image1.                                         /* input file */
+   %_copyFile(&i_expected.                                         /* input file */
              ,&l_path./_image_exp&l_image1_extension.            /* output file */
              )
-   %_copyFile(&i_image2.                                         /* input file */
+   %_copyFile(&i_actual.                                         /* input file */
              ,&l_path./_image_act&l_image2_extension.            /* output file */
              );
 
@@ -126,30 +126,24 @@
    %IF %SYSFUNC(FILEEXIST(&l_path./_image_diff.png)) %THEN %DO;
       %_delFile(&l_path./_image_diff.png);
    %END;
-   
-   %IF %lowcase(%sysget(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
-      %LET xwait=%sysfunc(getoption(xwait));
-      %LET xsync=%sysfunc(getoption(xsync));
-      %LET xmin =%sysfunc(getoption(xmin));
-      OPTIONS noxwait xsync xmin;
-   %END;
 
-   %SYSEXEC("&i_script." "&i_image1." "&i_image2." "&i_modifier." "&l_path./_image_diff.png" "&i_threshold.");
-   %LET l_rc = &sysrc.;
-   %IF %lowcase(%sysget(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
-      OPTIONS &xwait &xsync &xmin;
-   %END;
+  OPTIONS sgen; 
+   %_xcmdWithPath(i_cmd_path ="&i_script." "&i_expected." "&i_actual." "&l_path./_image_diff.png"
+                 ,i_cmd      ="&i_modifier." "&i_threshold."
+                 ,r_rc       =l_rc
+                 );
 
-   %IF &l_rc. = &i_expected. %THEN %DO;
+   %IF &l_rc. = &i_expected_shell_rc. %THEN %DO;
       %LET l_result = 0;
    %END;
+options nosgen;
 
 %UPDATE:
    %*** update result in test database ***;
    %_ASSERTS(i_type     = assertImage
-            ,i_expected = &i_expected.#&l_image1_extension.
+            ,i_expected = &i_expected_shell_rc.#&l_image1_extension.
             ,i_actual   = &l_rc.#&l_image2_extension.
-            ,i_desc     = &i_desc. ^nCompared files:^n&i_image1.^nand^n&i_image2.
+            ,i_desc     = &i_desc. ^nCompared files:^n&i_expected.^nand^n&i_actual.
             ,i_result   = &l_result.
             ,i_errmsg   = &l_errmsg.
             );

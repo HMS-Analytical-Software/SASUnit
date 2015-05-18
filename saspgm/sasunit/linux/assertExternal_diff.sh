@@ -1,7 +1,7 @@
 #!/bin/bash
 
-sasunit_actual=$1
-sasunit_expected=$2
+sasunit_expected=$1
+sasunit_actual=$2
 sasunit_mod=$3
 sasunit_threshold=$4
 
@@ -12,9 +12,9 @@ echo "sasunit_threshold: $sasunit_threshold"
 echo "sasunit_diff_dest: $sasunit_diff_dest"
 
 if [ "$sasunit_mod" = "" ]; then
-   diff $sasunit_actual $sasunit_expected
+   diff "$sasunit_expected" "$sasunit_actual"
 else 
-   diff $sasunit_mod $sasunit_actual $sasunit_expected
+   diff $sasunit_mod "$sasunit_expected" "$sasunit_actual"
 fi
 
 rc=$?

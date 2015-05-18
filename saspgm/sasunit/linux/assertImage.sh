@@ -2,8 +2,8 @@
 
 sasunit_image1=$1
 sasunit_image2=$2
-sasunit_mod=$3
-sasunit_dest=$4
+sasunit_dest=$3
+sasunit_mod=$4
 sasunit_threshold=$5
 
 echo "sasunit_image1: $sasunit_image1"

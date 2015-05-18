@@ -54,9 +54,6 @@
            l_result
            l_rc
            l_tstid
-           xmin
-           xsync
-           xwait
    ;
 
   %LET l_errmsg =;
@@ -108,25 +105,16 @@
    %*************************************************************;
    %*** Start tests                                           ***;
    %*************************************************************;
-   
+
    %*** Delete diff if exists ***;
    %IF %SYSFUNC(FILEEXIST(&l_path./_text_diff.txt)) %THEN %DO;
       %_delFile(&l_path./_text_diff.txt);
    %END;
-
-   %IF %lowcase(%sysget(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
-      %LET xwait=%sysfunc(getoption(xwait));
-      %LET xsync=%sysfunc(getoption(xsync));
-      %LET xmin =%sysfunc(getoption(xmin));
-      OPTIONS noxwait xsync xmin;
-   %END;
-
-   %PUT ------>"&i_script." "&i_expected." "&i_actual." "&i_modifier." "&i_threshold." "&l_path./_text_diff.txt"<----;
-   %SYSEXEC("&i_script." "&i_expected." "&i_actual." "&i_modifier." "&i_threshold." "&l_path./_text_diff.txt");
-   %LET l_rc = &sysrc.;
-   %IF %lowcase(%sysget(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
-      OPTIONS &xwait &xsync &xmin;
-   %END;   
+   
+   %_xcmdWithPath(i_cmd_path ="&i_script." "&i_expected." "&i_actual." "&l_path./_text_diff.txt"
+                 ,i_cmd      ="&i_modifier." "&i_threshold."
+                 ,r_rc       =l_rc
+                 );
    
    %IF &l_rc. = &i_expected_shell_rc. %THEN %DO;
       %LET l_result = 0;

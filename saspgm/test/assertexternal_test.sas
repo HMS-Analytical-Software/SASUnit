@@ -65,7 +65,7 @@
    ;
    /* Prepare macro variables to adapt to OS specific test */
    %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
-      %LET assertExternal_script1        =%sysfunc(translate(&g_sasunit_os.\assertExternal_cnt.bat,\,/));
+      %LET assertExternal_script1        =%sysfunc(translate(&g_sasunit_os.\assertExternal_cnt.cmd,\,/));
       %LET assertExternal_script2        =%sysfunc(translate(&g_sasunit_os.\assertExternal_fc.cmd,\,/));
       %LET assertExternal_NotExistend    = NotExistendFile.cmd;
       %LET assertExternal_CompTool       = fc;
@@ -102,10 +102,10 @@
 %endTestcall()
 
 %assertExternal (i_script             = &assertExternal_NotExistend.
-                ,i_param1             = &assertExternal_work1.
-                ,i_param2             = whatever
+                ,i_expected           = &assertExternal_work1.
+                ,i_actual             = whatever
                 ,i_expected_shell_rc  =Shell-Script nicht gefunden!
-                ,i_param1IsPath       =Y
+                ,i_expectedIsPath     =Y
                 ,i_desc               = Scipt does not exist
                 ,i_threshold          = NONE
                 );
@@ -114,26 +114,26 @@
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
                 
-%assertExternal (i_script             = &assertExternal_script1.
-                ,i_param1             = &assertExternal_NotExistend.
-                ,i_param2             = whatever
+%assertExternal (i_script             =&assertExternal_script1.
+                ,i_expected           =&assertExternal_NotExistend.
+                ,i_actual             =whatever
                 ,i_expected_shell_rc  =-3
-                ,i_param1IsPath       =Y
-                ,i_desc               = Param1 is path and does not exist
-                ,i_threshold          = NONE
+                ,i_expectedIsPath     =Y
+                ,i_desc               =Param1 is path and does not exist
+                ,i_threshold          =NONE
                 );
    %markTest()
       %assertDBValue(tst,act,-3)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
                 
-%assertExternal (i_script             = &assertExternal_script1.
-                ,i_param1             = whatever
-                ,i_param2             = &assertExternal_NotExistend.
+%assertExternal (i_script             =&assertExternal_script1.
+                ,i_expected           =whatever
+                ,i_actual             =&assertExternal_NotExistend.
                 ,i_expected_shell_rc  =-4
-                ,i_param2IsPath       =Y
-                ,i_desc               = Param2 is path and does not exist
-                ,i_threshold          = NONE
+                ,i_actualIsPath       =Y
+                ,i_desc               =Param2 is path and does not exist
+                ,i_threshold          =NONE
                 );
    %markTest()
       %assertDBValue(tst,act,-4)
@@ -151,13 +151,22 @@
             );
 %endTestcall()
 
-%assertExternal (i_script             = &assertExternal_script1.
-                ,i_param1             = &assertExternal_work1.
-                ,i_param2             =2
+%assertExternal (i_script             =&assertExternal_script1.
+                ,i_expected           =&assertExternal_work1.
+                ,i_actual             =2
                 ,i_expected_shell_rc  =0
-                ,i_param1IsPath       =Y
-                ,i_desc               = Word count of "Lorem" equals 2
-                ,i_threshold          = NONE
+                ,i_expectedIsPath     =Y
+                ,i_desc               =Word count of "Lorem" equals 2
+                ,i_threshold          =NONE
+                );
+                
+%assertExternal (i_script             =&assertExternal_script1.
+                ,i_expected           =&assertExternal_work1.
+                ,i_actual             =3
+                ,i_expected_shell_rc  =1
+                ,i_expectedIsPath     =Y
+                ,i_desc               =%str(Word count of "Lorem" equals 2, but i_actual=3, so i_expected_shell_rc must be)
+                ,i_threshold          =NONE
                 );
 
 /* test case 3 ------------------------------------ */
@@ -168,31 +177,31 @@
 %endTestcall()
 
 %assertExternal (i_script             = &assertExternal_script2.
-                ,i_param1             = &assertExternal_work1.
-                ,i_param2             = &assertExternal_work1Copy.
+                ,i_expected           = &assertExternal_work1.
+                ,i_actual             = &assertExternal_work1Copy.
                 ,i_expected_shell_rc  =0
-                ,i_param1IsPath       =Y
-                ,i_param2IsPath       =Y
+                ,i_expectedIsPath     =Y
+                ,i_actualIsPath       =Y
                 ,i_desc               = Compared files match
                 ,i_threshold          = NONE
                 );
                 
 %assertExternal (i_script             = &assertExternal_script2.
-                ,i_param1             = &assertExternal_work1.
-                ,i_param2             = &assertExternal_work2.
+                ,i_expected           = &assertExternal_work1.
+                ,i_actual             = &assertExternal_work2.
                 ,i_expected_shell_rc  =1
-                ,i_param1IsPath       =Y
-                ,i_param2IsPath       =Y
+                ,i_expectedIsPath     =Y
+                ,i_actualIsPath       =Y
                 ,i_desc               = Compared files do not match
                 ,i_threshold          = NONE
                 );
                 
 %assertExternal (i_script             = &assertExternal_script2.
-                ,i_param1             = &assertExternal_work1.
-                ,i_param2             = &assertExternal_work2.
+                ,i_expected           = &assertExternal_work1.
+                ,i_actual             = &assertExternal_work2.
                 ,i_expected_shell_rc  =0
-                ,i_param1IsPath       =Y
-                ,i_param2IsPath       =Y
+                ,i_expectedIsPath     =Y
+                ,i_actualIsPath       =Y
                 ,i_modifier           =&assertExternal_mod1.
                 ,i_desc               = %str(Compared files do not match, but modifier ignore case used -> test is OK)
                 ,i_threshold          = NONE

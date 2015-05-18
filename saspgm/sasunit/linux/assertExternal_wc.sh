@@ -1,12 +1,12 @@
 #!/bin/bash 
 
-sasunit_file=$1
+sasunit_actual=$1
 sasunit_expected=$2
 
-echo "sasunit_file: $sasunit_file"
+echo "sasunit_actual: $sasunit_actual"
 echo "sasunit_expected: $sasunit_expected"
 
-sasunit_actual=`grep -o "Lorem" $sasunit_file | wc -w`
+sasunit_actual=`grep -o "Lorem" $sasunit_actual | wc -w`
 
 echo "sasunit_actual: $sasunit_actual"
 

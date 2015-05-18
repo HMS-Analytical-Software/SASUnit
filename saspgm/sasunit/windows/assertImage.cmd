@@ -1,8 +1,8 @@
 @echo off
 SET sasunit_image1=%1%
 SET sasunit_image2=%2%
-SET sasunit_mod=%~3
-SET sasunit_dest=%4%
+SET sasunit_dest=%3%
+SET sasunit_mod=%~4
 SET sasunit_threshold=%~5
 
 ECHO sasunit_image1: %sasunit_image1%

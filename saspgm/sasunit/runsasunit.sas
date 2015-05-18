@@ -73,7 +73,6 @@
       l_scnlogfullpath
       l_source
       l_sysrc
-      l_sysrc
       l_warning_count
    ;
 

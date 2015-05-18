@@ -1,21 +1,21 @@
 @echo off
-SET sasunit_actual=%1%
-SET sasunit_expected=%2%
-SET sasunit_mod=%~3%
-SET sasunit_threshold=%4%
-SET sasunit_diff_dest=%5%
+SET sasunit_expected=%1%
+SET sasunit_actual=%2%
+SET sasunit_diff_dest=%3%
+SET sasunit_mod=%~4%
+SET sasunit_threshold=%5%
 
-ECHO sasunit_actual: %sasunit_actual%
 ECHO sasunit_expected: %sasunit_expected%
+ECHO sasunit_actual: %sasunit_actual%
 ECHO sasunit_mod: %sasunit_mod%
 ECHO sasunit_threshold: %sasunit_threshold%
 ECHO sasunit_diff_dest: %sasunit_diff_dest%
 
 IF [%sasunit_mod%] EQU [] (
-   fc %sasunit_actual% %sasunit_expected% > %sasunit_diff_dest%
+   fc %sasunit_expected% %sasunit_actual% > %sasunit_diff_dest%
 
 )ELSE (
-   fc %sasunit_mod% %sasunit_actual% %sasunit_expected% > %sasunit_diff_dest%
+   fc %sasunit_mod% %sasunit_expected% %sasunit_actual% > %sasunit_diff_dest%
 )
 
 IF errorlevel 1 (
