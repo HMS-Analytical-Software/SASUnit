@@ -121,11 +121,6 @@
    %*************************************************************;
    %*** Start tests                                           ***;
    %*************************************************************;
-   
-   %*** Delete diff if exists ***;
-   %IF %SYSFUNC(FILEEXIST(&l_path./_image_diff.png)) %THEN %DO;
-      %_delFile(&l_path./_image_diff.png);
-   %END;
 
   OPTIONS sgen; 
    %_xcmdWithPath(i_cmd_path ="&i_script." "&i_expected." "&i_actual." "&l_path./_image_diff.png"

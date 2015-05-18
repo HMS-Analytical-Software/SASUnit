@@ -53,11 +53,8 @@
            l_cmdFile
            l_errmsg
            l_expected
-           retVal
            l_rc
-           l_casid
-           l_tstid
-           l_path
+           l_result
    ;
   
   %LET l_errmsg   =;
@@ -92,17 +89,6 @@
          %GOTO Update;
       %END;
    %END;
-
-   %*** get current ids for test case and test ***;
-   %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
-
-   %*** create subfolder ***;
-   %_createTestSubfolder (i_assertType   =assertexternal
-                         ,i_scnid        =&g_scnid.
-                         ,i_casid        =&l_casid.
-                         ,i_tstid        =&l_tstid.
-                         ,r_path         =l_path
-                         );
 
    %*************************************************************;
    %*** Start tests                                           ***;

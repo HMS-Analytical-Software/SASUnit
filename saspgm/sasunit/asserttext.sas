@@ -105,11 +105,6 @@
    %*************************************************************;
    %*** Start tests                                           ***;
    %*************************************************************;
-
-   %*** Delete diff if exists ***;
-   %IF %SYSFUNC(FILEEXIST(&l_path./_text_diff.txt)) %THEN %DO;
-      %_delFile(&l_path./_text_diff.txt);
-   %END;
    
    %_xcmdWithPath(i_cmd_path ="&i_script." "&i_expected." "&i_actual." "&l_path./_text_diff.txt"
                  ,i_cmd      ="&i_modifier." "&i_threshold."
