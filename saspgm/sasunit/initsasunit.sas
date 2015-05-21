@@ -17,13 +17,14 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_root         optional: root path for all other paths, is used for paths that do not begin 
+   \param   i_root         optional: root path for all other paths except i_sasunit, is used for paths that do not begin 
                            with a drive letter or a slash/backslash
    \param   io_target      Path for the test repository and the generated documentation, has to exist
    \param   i_overwrite    0 (default) .. create test repository only in case it does not already exist
                            1 .. test repository is always created newly 
-   \param   i_project      optional (in case test repository already exists): name of project
-   \param   i_sasunit      optional (in case test repository already exists): path of SAS programs from SASUnit
+   \param   i_project      optional: (in case test repository already exists): name of project
+   \param   i_sasunit      optional: absolute installation path of SAS programs from SASUnit. It is checked whether installationpath
+                           is starting with path in environment variable SASUNIT_ROOT set by script file
    \param   i_sasautos     optional: i_sasautos, i_sasautos1 .. i_sasautos9: search paths for the programs 
                            under test and other sas macros invoked in test scenarios or programs under test
                            (the filename SASAUTOS predefined by SAS is always included at the beginning of
@@ -60,7 +61,7 @@
                   ,io_target         = 
                   ,i_overwrite       = 0
                   ,i_project         = 
-                  ,i_sasunit         =
+                  ,i_sasunit         =%sysget(SASUNIT_ROOT)/saspgm/sasunit
                   ,i_sasautos        =
                   ,i_sasautos1       =
                   ,i_sasautos2       =
@@ -117,13 +118,13 @@
    %let l_root=%sysfunc (pathname(_tmp));
    libname _tmp clear;
 
-   /*-- Get SASUnit root path from environement variable ----------*/
+   /*-- Get SASUnit root path from environment variable ----------*/
    libname _tmp "%sysget(SASUNIT_ROOT)";
    %let l_sasunitroot=%sysfunc (pathname(_tmp));
    libname _tmp clear;
 
    /*-- Get SASUnit macro paths ----------*/
-   libname _tmp "&i_sasunit";
+   libname _tmp "&i_sasunit.";
    %let l_sasunit=%sysfunc (pathname(_tmp));
    libname _tmp clear;
 
@@ -139,6 +140,15 @@
                     ) 
    %THEN %GOTO errexit;
 
+   /*-- check for correct sasunit path ----------------------------------------------*/
+   %IF %_handleError(&l_macname.
+                    ,WrongSASUnitPath
+                    ,%index (&l_sasunit.,&l_sasunitroot.) NE 1
+                    ,Invalid path to SASUnit - SASUnit root is &l_sasunitroot. - SASUnit path is &l_sasunit.
+                    ,i_verbose=&i_verbose.
+                    ) 
+   %THEN %GOTO errexit;
+
    /*-- set macro symbols for os commands ---------------------------------------*/
    %IF (&sysscp. = WIN) %THEN %DO;
       %LET l_sasunit_os = &l_sasunit./windows;
@@ -149,9 +159,8 @@
    %ELSE %IF (%upcase(&sysscpl.) = AIX) %THEN %DO;
       %LET l_sasunit_os = &l_sasunit./unix_aix;
    %END;
-   %LET l_abspath_sasunit   =%_abspath(&i_root.,&i_sasunit.);
-   %LET l_abspath_sasunit_os=%_abspath(&i_root.,&l_sasunit_os.);
-   OPTIONS SASAUTOS=(SASAUTOS "&l_abspath_sasunit." "&l_abspath_sasunit_os.");
+   %LET l_abspath_sasunit_os=%_abspath(&l_sasunitroot.,&l_sasunit_os.);
+   OPTIONS SASAUTOS=(SASAUTOS "&l_sasunit." "&l_abspath_sasunit_os.");
    OPTIONS NOQUOTELENMAX;
 
    %_oscmds;
