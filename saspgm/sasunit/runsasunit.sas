@@ -103,7 +103,7 @@
    run;
 
    /* check which test scenarios must be run */
-   %_checkScenario(i_examinee        = &d_examinee.
+   %_checkScenario(i_examinee        = target.exa
                   ,i_scn_pre         = &D_SCN_PRE.
                   ,o_scenariosToRun  = &d_scenariosToRun.
                   );

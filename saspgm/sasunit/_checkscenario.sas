@@ -116,13 +116,13 @@
    /* Create cross-reference and mark dependent scenarios as to be run */
    %if (&g_crossref. = 1) %then %do;
       %_crossreference(i_includeSASUnit = &g_crossrefsasunit.
-                      ,i_examinee       = &d_examinee.
+                      ,i_examinee       = &i_examinee.
                       ,o_listcalling    = &d_listcalling.
                       ,o_dependency     = &d_dependency.
                       ,o_macroList      = &d_macroList.
                       );
 
-      *** Update d_scenariosToRun with dependency information vom _crossrefrence ***;
+      *** Update d_scenariosToRun with dependency information by _crossrefrence ***;
       proc sql noprint;
          *** Get modified examinees with callers ***;
          create table work._modifiedExaWithCaller as 
