@@ -28,10 +28,12 @@
 
    %*** check all autocall paths ***;
    %DO i=0 %TO 9;
-      %LET l_path = &&g_sasautos&i/&i_object;
-      %IF %sysfunc(fileexist(&l_path)) %THEN %DO;
-         %eval(&i+2)
-         %RETURN;
+      %IF ("%cmpres (&&g_sasautos&i)" ne "") %THEN %DO;
+         %LET l_path = &&g_sasautos&i/&i_object;
+         %IF %sysfunc(fileexist(&l_path)) %THEN %DO;
+            %eval(&i+2)
+            %RETURN;
+         %END;
       %END;
    %END;
 
@@ -49,7 +51,6 @@
       %RETURN;
    %END;
 .
-
 %MEND _getAutocallNumber;
 /** \endcond */
 /*

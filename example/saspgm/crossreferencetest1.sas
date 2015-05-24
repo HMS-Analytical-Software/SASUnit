@@ -30,7 +30,7 @@
       set sashelp.class;
    run;
    
-   /* Call macro %Testmakro2 */
+   /* Call macro %CrossReferenceTest2 */
    %CrossReferenceTest2(i_obs=&l_obs.
                        ,i_title =&l_title.
                        );

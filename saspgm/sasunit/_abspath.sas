@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL 
 
    \brief      check whether &i_path is absolute or empty. If not, append to &i_root.
