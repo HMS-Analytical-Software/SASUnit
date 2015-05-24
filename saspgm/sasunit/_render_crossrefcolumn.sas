@@ -31,8 +31,8 @@
                               ,i_linkColumn_called  =
                               ,i_linkTitle_called   =
                               );
-   len = length(trim(cas_pgm));
-   cas_pgm_strip = substrn(cas_pgm, 1, len-4);
+   len = length(trim(cas_obj));
+   cas_pgm_strip = substrn(cas_obj, 1, len-4);
    
    href_caller     = "crossref.html?casPgm="||trim(cas_pgm_strip)||'%nrstr(&)call=caller';
    href_called     = "crossref.html?casPgm="||trim(cas_pgm_strip)||'%nrstr(&)call=called';

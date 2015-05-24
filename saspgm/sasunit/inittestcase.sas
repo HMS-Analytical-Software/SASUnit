@@ -14,7 +14,7 @@
    \author     \$Author$
    \date       \$Date$
    \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-					Here you can find the SASUnit documentation, release notes and license information.
+               Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -28,7 +28,7 @@
    \param   i_specdoc         optional: path of specification document
    \return  Information on current testcase in macro variables
    
-	
+   
 */ /** \cond */ 
 
 %MACRO initTestcase(i_object   =  
@@ -47,31 +47,43 @@
    %LET g_inTestcase=1;
 
    /* handle absolute and relative paths for programs */
-   %LOCAL l_pgm l_auton l_object l_casid;
+   %LOCAL l_pgm l_auton l_object l_casid l_exaid l_num;
+
    %LET l_object = %lowcase (&i_object.);
-   %IF %index(%sysfunc(translate(&l_object,/,\)),/) %THEN %DO;
-      %LET l_pgm = %_stdPath(&g_root,&i_object);
-      %LET l_auton=.;
+%PUT ----->l_object=&l_object.;
+   %LET l_auton = %_getAutocallNumber(&l_object.);
+%PUT ----->l_auton=&l_auton.;
+   %IF (&l_auton. >= 2) %THEN %DO;
+       %LET l_num = %eval (&l_auton.-2);
+       %LET l_pgm = &&g_sasautos&l_num\&l_object.;
+   %END;
+   %ELSE %IF (&l_auton. =0) %THEN %DO;
+       %LET l_pgm = &g_sasunit.\&l_object.;
    %END;
    %ELSE %DO;
-      %LET l_pgm = &i_object;
-      %LET l_auton = %_getAutocallNumber(&l_object);
+       %LET l_pgm = &g_sasunit_os.\&l_object.;
    %END;
+%PUT ----->l_pgm=&l_pgm.;
+   %LET l_pgm = %_stdPath(&g_root,&l_pgm.);
+%PUT ----->l_pgm=&l_pgm.;
 
    /* determine next test case id */
    %LET l_casid=0;
+   %LET l_exaid=0;
    PROC SQL NOPRINT;
       SELECT max(cas_id) INTO :l_casid FROM target.cas
       WHERE cas_scnid = &g_scnid;
+      SELECT exa_id INTO :l_exaid FROM target.exa
+      WHERE lowcase (exa_path) = "%lowcase(&l_pgm.)" and exa_auton=&l_auton.;
    %IF &l_casid=. %THEN %LET l_casid=1;
    %ELSE                %LET l_casid=%eval(&l_casid+1);
    /* save metadata for this test case  */
       INSERT INTO target.cas VALUES (
-          &g_scnid
-         ,&l_casid
-         ,&l_auton
-         ,"&l_pgm"
-         ,"&i_desc"
+          &g_scnid.
+         ,&l_casid.
+         ,&l_exaid.
+         ,"&i_object."
+         ,"&i_desc."
          ,"%_abspath(&g_doc,&i_specdoc)"
          ,%sysfunc(datetime())
          ,.

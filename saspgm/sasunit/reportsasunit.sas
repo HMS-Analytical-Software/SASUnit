@@ -116,7 +116,6 @@
       ;
    QUIT;
 
-
    PROC SQL NOPRINT;
       CREATE TABLE &d_cas. AS
          SELECT
@@ -127,8 +126,7 @@
       (
          cas_scnid
         ,cas_id
-        ,cas_auton
-        ,cas_pgm
+        ,cas_obj
         ,cas_desc
         ,cas_spec
         ,cas_start
@@ -139,7 +137,6 @@
          SELECT
              scn_id
             ,1
-            ,.
             ,'^_'
             ,"&l_sEmptyScnDummyCasDesc."
             ,'^_'
@@ -194,30 +191,45 @@
       scn_last = eof;
    RUN;
 
-   PROC SORT DATA=&d_cas OUT=&d_cas01;
-      BY cas_scnid cas_id;
-   RUN;
-   DATA &d_cas01;
-      SET &d_cas01;
+   PROC SQL noprint;
+      create table &d_cas01. as
+         select %scan (&d_cas.,2,.).*
+               ,exa_pgm
+               ,exa_filename
+               ,exa_auton
+               ,exa_path
+         from &d_cas. left join target.exa
+         on %scan (&d_cas.,2,.).cas_exaid = exa.exa_id
+         order by cas_scnid, cas_id;
+   quit;
+
+   DATA &d_cas01.;
+      SET &d_cas01.;
       BY cas_scnid;
       cas_last = last.cas_scnid;
-      cas_pgmucase = upcase(cas_pgm);
+      cas_objucase = upcase(exa_pgm);
    RUN;
 
-   PROC SORT DATA=&d_cas (KEEP=cas_auton RENAME=(cas_auton=auton_id)) 
-             OUT=&d_auton NODUPKEY;
-      BY auton_id;
-   RUN;
-   DATA &d_auton;
-      SET &d_auton END=eof;
+   PROC SQL noprint;
+      create table &d_auton. as
+         select distinct exa_auton as auton_id
+            from &d_cas. left join target.exa
+            on cas_exaid = exa_id
+            order by auton_id;
+   QUIT;
+   DATA &d_auton.;
+      SET &d_auton. END=eof;
       auton_last = eof;
    RUN;
 
-   DATA &d_pgm;
-      SET &d_cas (KEEP=cas_auton cas_pgm RENAME=(cas_auton=pgm_auton cas_pgm=pgm_ucase));
-      pgm_ucase = upcase(pgm_ucase);
-   RUN;
-   PROC SORT DATA=&d_pgm NODUPKEY;
+   PROC SQL noprint;
+      create table &d_pgm. as 
+         select exa_auton as pgm_auton
+               ,upcase (exa_pgm) as pgm_ucase
+         from &d_cas. left join target.exa
+         on cas_exaid = exa_id;
+   QUIT;
+   PROC SORT DATA=&d_pgm. NODUPKEY;
       BY pgm_auton pgm_ucase;
    RUN;
    DATA &d_pgm._;
@@ -229,21 +241,26 @@
    RUN;
    PROC SQL NOPRINT;
       create table work.pgm_res as
-         select upcase (cas_pgm) as pgm_ucase
+         select upcase (cas_obj) as pgm_ucase
                ,max (cas_res) as pgm_res
          from &d_cas.
-         group by cas_pgm;
+         group by cas_obj;
       create table &d_pgm. as
          select a.*
                ,b.pgm_res
          from &d_pgm._ a left join work.pgm_res b
          on a.pgm_ucase = b.pgm_ucase;
-   quit;
+   QUIT;
 
-   DATA &d_pcs;
-      SET &d_cas (KEEP=cas_auton cas_pgm cas_scnid cas_id RENAME=(cas_auton=pcs_auton cas_pgm=pcs_ucase cas_scnid=pcs_scnid cas_id=pcs_casid));
-      pcs_ucase = upcase(pcs_ucase);
-   RUN;
+   PROC SQL noprint;
+      create table &d_pcs. as 
+         select exa_auton as pcs_auton
+               ,upcase (exa_pgm) as pcs_ucase
+               ,cas_scnid as pcs_scnid
+               ,cas_id as pcs_casid
+         from &d_cas. left join target.exa
+         on cas_exaid = exa_id;
+   QUIT;
    PROC SORT DATA=&d_pcs OUT=&d_pcs NODUPKEY;
       BY pcs_auton pcs_ucase pcs_scnid pcs_casid;
    RUN;
@@ -288,9 +305,12 @@
          ,scn_warningcount 
          ,scn_last
          ,cas_id    
-         ,cas_auton
+         ,exa_auton
+         ,exa_pgm
+         ,exa_filename
+         ,exa_path
          ,auton_last
-         ,cas_pgm  
+         ,cas_obj  
          ,pgm_id
          ,pgm_last
          ,pcs_last
@@ -301,11 +321,11 @@
          ,cas_end   
          ,cas_res 
          ,cas_last 
-         ,tst_id    
-         ,tst_type  
-         ,tst_desc  
-         ,tst_exp   
-         ,tst_act   
+         ,tst_id
+         ,tst_type
+         ,tst_desc
+         ,tst_exp
+         ,tst_act
          ,tst_res
          ,tst_errmsg
       FROM 
@@ -317,19 +337,18 @@
          ,&d_pgm
          ,&d_pcs
       WHERE 
-         scn_id       = cas_scnid AND
-         cas_scnid    = tst_scnid AND
+         scn_id       = cas_scnid AND         
+         scn_id       = tst_scnid AND
          cas_id       = tst_casid AND
-         cas_auton    = auton_id  AND
-         cas_auton    = pgm_auton AND
-         cas_pgmucase = pgm_ucase AND
-         cas_auton    = pcs_auton AND
-         cas_pgmucase = pcs_ucase AND
-         cas_scnid    = pcs_scnid AND
+         auton_id     = exa_auton AND
+         cas_objucase = pgm_ucase AND
+         exa_auton    = pgm_auton AND
+         cas_objucase = pcs_ucase AND
+         scn_id       = pcs_scnid AND
          cas_id       = pcs_casid
-         order by scn_id, cas_id, tst_id;
+      ORDER BY scn_id, cas_id, tst_id;
       CREATE UNIQUE INDEX idx1 ON &d_rep. (scn_id, cas_id, tst_id);
-      CREATE UNIQUE INDEX idx2 ON &d_rep. (cas_auton, pgm_id, scn_id, cas_id, tst_id);
+      CREATE UNIQUE INDEX idx2 ON &d_rep. (exa_auton, pgm_id, scn_id, cas_id, tst_id);
    QUIT;
 
    %IF %_handleError(&l_macname.
@@ -462,8 +481,8 @@
                    "   ,o_path    = &l_output."    /
                    "   ,o_file    = auton_overview"    /
                    ")";
-      /*
-               PUT '%_reportpgmdoc('                /
+      /* Creates Report Lists Only
+               PUT '%_reportpgmlists('                /
                    "    i_language = &i_language."          /
                    ")";
       /**/
@@ -477,7 +496,7 @@
                /*-- convert logfile of scenario ------------------------------------*/
                PUT '%_reportLogHTML(' / 
                    "    i_log     = &g_log/" scn_id z3. ".log"  /
-                   "   ,i_title   = &g_nls_reportSASUnit_002 " scn_id z3. " (" cas_pgm +(-1) ")" /
+                   "   ,i_title   = &g_nls_reportSASUnit_002 " scn_id z3. " (" cas_obj +(-1) ")" /
                    "   ,o_html    = &l_output/" scn_id z3. "_log.html" /
                    ")";
                /*-- compile detail information for test case -----------------------*/
@@ -488,6 +507,11 @@
                    "   ,o_path    = &l_output."    /
                    "   ,o_file    = cas_" scn_id z3.  /
                    ")";
+/* Needs modification to create PGMDOC for ONE(!) examinee
+               PUT '%_reportpgmdoc('                /
+                   "    i_language = &i_language."          /
+                   ")";
+*/
             END;
          END;
 
@@ -499,7 +523,7 @@
                /*-- convert logfile of test case -----------------------------------*/
                PUT '%_reportLogHTML(' /
                    "    i_log     = &g_log/" scn_id z3. "_" cas_id z3. ".log" /
-                   "   ,i_title   = &g_nls_reportSASUnit_003 " cas_id z3. " &g_nls_reportSASUnit_004 " scn_id z3. " (" cas_pgm +(-1) ")" /
+                   "   ,i_title   = &g_nls_reportSASUnit_003 " cas_id z3. " &g_nls_reportSASUnit_004 " scn_id z3. " (" cas_obj +(-1) ")" /
                    "   ,o_html    = &l_output/" scn_id z3. "_" cas_id z3. "_log.html" /
                    ")";
             END;

@@ -58,7 +58,7 @@
          ,        cas_id                        AS cas_id
          ,        scn_id                        AS scn_id
          ,        cas_desc                      AS name
-         ,        cas_pgm                       AS classname 
+         ,        cas_obj                       AS classname 
          ,        cas_start                     AS timestamp FORMAT = e8601dt.
          ,        (cas_end-cas_start)           AS time
          ,        1                             AS tests

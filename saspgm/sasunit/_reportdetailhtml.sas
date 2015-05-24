@@ -125,16 +125,16 @@
          scn_duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid      = put (scn_id, z3.);
          c_casid      = put (cas_id, z3.);
-         if (cas_auton = 0) then do;
-            cas_abs_path = resolve ('%_abspath(&g_sasunit,' !! trim(cas_pgm) !! ')');   
+         if (exa_auton = 0) then do;
+            cas_abs_path = resolve ('%_abspath(&g_sasunit,' !! trim(cas_obj) !! ')');   
          end;
-         else if (cas_auton = 1) then do;
-            cas_abs_path = resolve ('%_abspath(&g_sasunit_os,' !! trim(cas_pgm) !! ')');   
+         else if (exa_auton = 1) then do;
+            cas_abs_path = resolve ('%_abspath(&g_sasunit_os,' !! trim(cas_obj) !! ')');   
          end;
          else do;
-            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! put (cas_auton-2,1.) !! ',' !! trim(cas_pgm) !! ')');
+            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! put (exa_auton-2,1.) !! ',' !! trim(cas_obj) !! ')');
          end;
-         cas_pgm      = resolve ('%_stdpath(&g_root./saspgm/,' !! trim(cas_abs_path) !! ')');
+         cas_obj      = resolve ('%_stdpath(&g_root./saspgm/,' !! trim(cas_abs_path) !! ')');
 
          %_render_DataColumn (i_sourceColumn=scn_duration
                              ,o_targetColumn=scnDurationColumn
@@ -165,7 +165,7 @@
                LinkColumn1  = catt("cas_overview.html#SCN", c_scnid, "_");
                LinkColumn2  = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
                LinkColumn3  = c_scnid !! "_log.html";
-               LinkColumn4  = "pgm_" !! tranwrd (cas_pgm, ".sas", ".html");
+               LinkColumn4  = "pgm_" !! tranwrd (cas_obj, ".sas", ".html");
                LinkColumn5  = c_scnid !! "_" !! c_casid !! "_log.html";
             %end;
             %_render_DataColumn (i_sourceColumn=scn_desc
@@ -184,7 +184,7 @@
                                 ,i_linkTitle=LinkTitle3
                                 ,o_targetColumn=scnLast_runColumn
                                 );
-            %_render_DataColumn (i_sourceColumn=cas_pgm
+            %_render_DataColumn (i_sourceColumn=cas_obj
                                 ,i_linkColumn=cas_abs_path
                                 ,i_linkTitle=LinkTitle4
                                 ,o_targetColumn=casProgramColumn

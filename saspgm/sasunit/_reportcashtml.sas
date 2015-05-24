@@ -125,12 +125,12 @@
          %end;
 
          *** Columns for test cases ***;
-         if (cas_pgm="^_") then cas_pgm="";
-         IF cas_auton = . THEN DO;
-            abs_path = resolve ('%_abspath(&g_root,' !! trim(cas_pgm) !! ')');   
+         if (cas_obj="^_") then cas_obj="";
+         IF exa_auton = . THEN DO;
+            abs_path = resolve ('%_abspath(&g_root,' !! trim(cas_obj) !! ')');   
          END;
          ELSE DO;
-            abs_path = resolve ('%_abspath(&g_sasautos' !! put (cas_auton,1.) !! ',' !! trim(cas_pgm) !! ')');
+            abs_path = resolve ('%_abspath(&g_sasautos' !! put (exa_auton,1.) !! ',' !! trim(cas_obj) !! ')');
          END;
 
          duration = put (cas_end - cas_start, ??&g_nls_reportScn_013.) !! " s";
@@ -164,7 +164,7 @@
                                 ,i_linkTitle=LinkTitle3
                                 ,o_targetColumn=descriptionColumn
                                 );
-            %_render_dataColumn (i_sourceColumn=cas_pgm
+            %_render_dataColumn (i_sourceColumn=cas_obj
                                 ,i_linkColumn=LinkColumn4
                                 ,i_linkTitle=LinkTitle4
                                 ,o_targetColumn=programColumn

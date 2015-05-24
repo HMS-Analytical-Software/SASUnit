@@ -41,34 +41,6 @@ DATA scn_dir;
    membername = "Scenario4.sas"; changed = &scn_changed-60; filename = "dummypath/test/Scenario4.sas"; output;
 RUN;
 
-DATA dependency;
-   length caller calledByCaller $30;
-   caller = "Scenario1.sas"; calledByCaller = "dummy1.sas"; output;
-   caller = "Scenario1.sas"; calledByCaller = "dummy2.sas"; output;
-   caller = "Scenario1.sas"; calledByCaller = "dummy3.sas"; output;
-   caller = "Scenario1.sas"; calledByCaller = "dummy4.sas"; output;
-
-   caller = "Scenario2.sas"; calledByCaller = "dummy2.sas"; output;
-   caller = "Scenario2.sas"; calledByCaller = "dummy3.sas"; output;
-   caller = "Scenario2.sas"; calledByCaller = "dummy4.sas"; output;
-   caller = "Scenario2.sas"; calledByCaller = "dummy5.sas"; output;
-   caller = "Scenario2.sas"; calledByCaller = "dummy6.sas"; output;
-
-   caller = "Scenario3.sas"; calledByCaller = "dummy1.sas"; output;
-   caller = "Scenario3.sas"; calledByCaller = "dummy5.sas"; output;
-   caller = "Scenario3.sas"; calledByCaller = "dummy6.sas"; output;
-   caller = "Scenario3.sas"; calledByCaller = "dummy7.sas"; output;
-   caller = "Scenario3.sas"; calledByCaller = "dummy8.sas"; output;
-   
-   caller = "Scenario4.sas"; calledByCaller = "dummy5.sas"; output;
-   caller = "Scenario4.sas"; calledByCaller = "dummy6.sas"; output;
-
-   caller = "dummy2.sas"; calledByCaller = "dummy3.sas"; output;
-   caller = "dummy2.sas"; calledByCaller = "dummy4.sas"; output;
-   caller = "dummy5.sas"; calledByCaller = "dummy6.sas"; output;
-   caller = "dummy7.sas"; calledByCaller = "dummy8.sas"; output;
-RUN;
-
 DATA examinee_dir;
    length membername $80 filename $255;
    format changed datetime20.;
@@ -89,28 +61,34 @@ RUN;
 
 DATA cas;
    format cas_scnid z3.;
-   cas_scnid = 1; cas_auton = 2; output;
-   cas_scnid = 2; cas_auton = 2; output;
-   cas_scnid = 3; cas_auton = 2; output;
-   cas_scnid = 4; cas_auton = 2; output;
+   cas_scnid = 1; exa_auton = 2; cas_exaid=1; output;
+   cas_scnid = 2; exa_auton = 2; cas_exaid=2; output;
+   cas_scnid = 3; exa_auton = 2; cas_exaid=7; output;
+   cas_scnid = 4; exa_auton = 2; cas_exaid=4; output;
+RUN;
+
+DATA exa;
+   format exa_id z3.;
+   exa_id = 1; exa_auton = 2; exa_changed = &scn_changed-60; output;
+   exa_id = 2; exa_auton = 2; exa_changed = &scn_changed-60; output;
+   exa_id = 3; exa_auton = 2; exa_changed = &scn_changed-60; output;
+   exa_id = 4; exa_auton = 2; exa_changed = &scn_changed-60; output;
 RUN;
 
 %MEND _createTestFiles;
 
 /*-- Case 1: Neither scenario nor dependend macros changed --*/
-%initTestcase(i_object = _checkScenario.sas, i_desc = Neither scenario nor dependend macros changed)
 %_createTestFiles;
+%initTestcase(i_object = _checkScenario.sas, i_desc = Neither scenario nor dependend macros changed)
 %_switch();
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = examinee_dir
                ,i_scn_pre        = scn_dir
-               ,i_dependency     = dependency
-               ,i_scenariosToRun = scenariosToRun
+               ,o_scenariosToRun = scenariosToRun
                );
 %_switch();
 %endTestcall();
    %markTest();
-      %assertRecordCount(i_libref=work, i_memname=Dependenciesbyscenario, i_operator=EQ, i_recordsExp=16, i_where=               , i_desc=14 dependencies expected for scenario 1-3 in data set dependenciesByScenario);
       %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=4 , i_where=               , i_desc=3 scenarios expected in data set scenariosToRun need to be run);
       %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=0 , i_where=%str(dorun = 1), i_desc=Of which none needs to be run);
       %assertLog (i_errors=0, i_warnings=0);
@@ -118,7 +96,6 @@ RUN;
 
 
 /* test case 2 ------------------------------------ */
-%initTestcase(i_object = _checkScenario.sas, i_desc = 2 scenarios and 1 dependend macro changed since last run);
 /* Modifiy results of _dir macro */
 PROC SQL;
    update scn_dir
@@ -131,26 +108,22 @@ PROC SQL;
    ;
 QUIT;
 
+%initTestcase(i_object = _checkScenario.sas, i_desc = 2 scenarios and 1 dependend macro changed since last run);
 %_switch();
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = examinee_dir
                ,i_scn_pre        = scn_dir
-               ,i_dependency     = dependency
-               ,i_scenariosToRun = scenariosToRun
+               ,o_scenariosToRun = scenariosToRun
                );
 %_switch();
 
 %endTestcall();
    %markTest();
-      %assertRecordCount(i_libref=work, i_memname=Dependenciesbyscenario, i_operator=EQ, i_recordsExp=7, i_where=%str(dorun = 1),                                                              i_desc=7 observations with %str(dorun=1) expected);
-      %assertRecordCount(i_libref=work, i_memname=Dependenciesbyscenario, i_operator=EQ, i_recordsExp=2, i_where=%str(calledByCaller = "dummy4.sas" and dorun = 1),                            i_desc=5 observations with %str(dorun=1) expected);
-      %assertRecordCount(i_libref=work, i_memname=Dependenciesbyscenario, i_operator=EQ, i_recordsExp=4, i_where=%str(name = "Scenario1.sas" and dorun = 1),                                   i_desc=All entries for scenario 1 with %str(dorun=1));
-      %assertRecordCount(i_libref=work, i_memname=Dependenciesbyscenario, i_operator=EQ, i_recordsExp=1, i_where=%str(name = "Scenario2.sas" and dorun = 1 and calledByCaller = "dummy4.sas"), i_desc=Only one entry for scenario 2 with %str(dorun=1));
-      %assertRecordCount(i_libref=work, i_memname=Dependenciesbyscenario, i_operator=EQ, i_recordsExp=2, i_where=%str(name = "Scenario4.sas" and dorun = 1),                                   i_desc=All Entries for scenario 4 with %str(dorun=1));
       %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=3, i_where=%str(dorun = 1),                                                              i_desc=3 scenarios expected with %str(dorun=1));
-      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=1, i_where=%str(name = "Scenario3.sas" and dorun = 0),                                   i_desc=Scenario 3 will not be run);
-      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=1, i_where=%str(name = "Scenario4.sas" and dorun = 1),                                   i_desc=Scenario 4 will be run);
+      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=1, i_where=%str(scn_path = "dummypath/test/Scenario3.sas" and dorun = 0),                                   i_desc=Scenario 3 will not be run);
+      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=1, i_where=%str(scn_path = "dummypath/test/Scenario4.sas" and dorun = 1),                                   i_desc=Scenario 4 will be run);
       %assertLog (i_errors=0, i_warnings=0);
+	  %assertColumns (i_actual=scenariosToRun, i_expected=TEST);
 %endTestcase(i_assertLog=0);
 
 /* test case 3 ------------------------------------ */
@@ -167,17 +140,15 @@ QUIT;
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = examinee_dir
                ,i_scn_pre        = scn_dir
-               ,i_dependency     = dependency
-               ,i_scenariosToRun = scenariosToRun
+               ,o_scenariosToRun = scenariosToRun
                );
 %_switch();
 
 %endTestcall();
    %markTest();
       %assertRecordCount(i_libref=work, i_memname=scn,                    i_operator=EQ, i_recordsExp=3, i_where=,                                            i_desc=3 observations in test db expected);
-      %assertRecordCount(i_libref=work, i_memname=Dependenciesbyscenario, i_operator=EQ, i_recordsExp=2, i_where=%str(name = "Scenario4.sas" and dorun = 1),  i_desc=2 observations with %str(dorun=1) expected);
-      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=1, i_where=%str(name = "Scenario4.sas" and dorun = 1),  i_desc=Scenario 4 expected with %str(dorun=1));
-      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=3, i_where=%str(name ne "Scenario4.sas" and dorun = 0), i_desc=Scenario 1%str(,) 2 and 3 will not be run);
+      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=1, i_where=%str(scn_path =  "dummypath/test/Scenario4.sas" and dorun = 1),  i_desc=Scenario 4 expected with %str(dorun=1));
+      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=3, i_where=%str(scn_path ne "dummypath/test/Scenario4.sas" and dorun = 0), i_desc=Scenario 1%str(,) 2 and 3 will not be run);
       %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);
 
@@ -195,18 +166,16 @@ QUIT;
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = examinee_dir
                ,i_scn_pre        = scn_dir
-               ,i_dependency     = dependency
-               ,i_scenariosToRun = scenariosToRun
+               ,o_scenariosToRun = scenariosToRun
                );
 %_switch();
 
 %endTestcall();
    %markTest();
       %assertRecordCount(i_libref=work, i_memname=scn                   , i_operator=EQ, i_recordsExp=2, i_where=%str(scn_id = 1 or scn_id = 2),             i_desc=2 observations in test db expected);
-      %assertRecordCount(i_libref=work, i_memname=Dependenciesbyscenario, i_operator=EQ, i_recordsExp=5, i_where=%str(name = "Scenario3.sas" and dorun = 1), i_desc=5 observations with %str(dorun=1) expected);
-      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=1, i_where=%str(name = "Scenario3.sas" and dorun = 1), i_desc=Scenario 3 expected with %str(dorun=1));
-      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=1, i_where=%str(name = "Scenario1.sas" and dorun = 0), i_desc=Scenario 1 will not be run);
-      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=1, i_where=%str(name = "Scenario2.sas" and dorun = 0), i_desc=Scenario 2 will not be run);
+      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=1, i_where=%str(scn_path = "dummypath/test/Scenario3.sas" and dorun = 1), i_desc=Scenario 3 expected with %str(dorun=1));
+      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=1, i_where=%str(scn_path = "dummypath/test/Scenario1.sas" and dorun = 0), i_desc=Scenario 1 will not be run);
+      %assertRecordCount(i_libref=work, i_memname=ScenariosToRun,         i_operator=EQ, i_recordsExp=1, i_where=%str(scn_path = "dummypath/test/Scenario2.sas" and dorun = 0), i_desc=Scenario 2 will not be run);
       
       %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);

@@ -40,14 +40,7 @@
 %MACRO runSASUnit(i_source     =
                  ,i_recursive  = 0
                  );
-   %GLOBAL
-      d_macroList
-      d_listcalling
-   ;
    %LOCAL 
-      d_dependency
-      d_dir
-      d_examinee 
       d_scenariosToRun
       d_scn_pre
       i
@@ -74,15 +67,11 @@
       l_source
       l_sysrc
       l_warning_count
+      l_max_exaid
    ;
 
    %LET l_macname=&sysmacroname;
 
-   %_tempFileName(d_dependency);
-   %_tempFileName(d_dir);
-   %_tempFileName(d_examinee);
-   %_tempFileName(d_listcalling);
-   %_tempFileName(d_macroList);
    %_tempFileName(d_scenariosToRun);
    %_tempFileName(d_scn_pre);
 
@@ -96,7 +85,7 @@
       %THEN %GOTO errexit;
 
    /*-- parameter i_recursive ---------------------------------------------------*/
-   %IF "&i_recursive" NE "1" %THEN %LET i_recursive=0;
+   %IF "&i_recursive." NE "1" %THEN %LET i_recursive=0;
 
    /*-- find out all test scenarios ---------------------------------------------*/
    %LET l_source = %_abspath(&g_root, &i_source);
@@ -113,59 +102,10 @@
       set &d_dir.;
    run;
 
-   /*-- find out all possible units under test ----------------------------------*/
-   %LET l_auto=&g_sasautos;
-   %LET l_autonr=0;
-   %DO %WHILE("&l_auto" ne "");  
-      %LET l_auto=%quote(&l_auto/);
-      %_dir(i_path=&l_auto.*.sas, o_out=&d_dir);
-      data &d_examinee;
-         set %IF &l_autonr>0 %THEN &d_examinee; &d_dir(in=indir);
-         if indir then DO;
-            auton=&l_autonr.+2;
-            source=symgetc ("l_auto");
-         end;
-      run; 
-      %LET l_autonr = %eval(&l_autonr+1);
-      %LET l_auto=;
-      %IF %symexist(g_sasautos&l_autonr) %THEN %LET l_auto=&&g_sasautos&l_autonr;
-   %END;
-   %IF (&g_crossrefsasunit.) %THEN %DO;
-      %LET l_auto=&g_sasunit;
-      %LET l_auto=%quote(&l_auto/);
-      %_dir(i_path=&l_auto.*.sas, o_out=&d_dir);
-      data &d_examinee;
-         set &d_examinee &d_dir(in=indir);
-         if indir then DO;
-            auton=0;
-            source=symgetc ("l_auto");
-         end;
-      run; 
-      %LET l_auto=&g_sasunit_os;
-      %LET l_auto=%quote(&l_auto/);
-      %_dir(i_path=&l_auto.*.sas, o_out=&d_dir);
-      data &d_examinee;
-         set &d_examinee &d_dir(in=indir);
-         if indir then DO;
-            auton=1;
-            source=symgetc ("l_auto");
-         end;
-      run; 
-   %END;
-
-   /* Create cross-reference */
-   %_crossreference(i_includeSASUnit = &g_crossrefsasunit.
-                   ,i_examinee       = &d_examinee.
-                   ,o_listcalling    = &d_listcalling.
-                   ,o_dependency     = &d_dependency.
-                   ,o_macroList      = &d_macroList.
-                   );
-
    /* check which test scenarios must be run */
    %_checkScenario(i_examinee        = &d_examinee.
                   ,i_scn_pre         = &D_SCN_PRE.
-                  ,i_dependency      = &d_dependency.
-                  ,i_scenariosToRun  = &d_scenariosToRun.
+                  ,o_scenariosToRun  = &d_scenariosToRun.
                   );
 
    /*-- if scenario already exists and has been changed: delete scenario files-----*/
@@ -179,41 +119,36 @@
 
    /*-- if scenario not present in test database: create new scenario --------*/
    DATA target.scn;
-      SET target.scn &d_scenariosToRun(where=(insertIntoDB=1) in=add);
-      IF add=1 THEN DO;
-         scn_path = resolve('%_stdPath(&g_root,' || filename || ')');
-         drop filename dorun insertIntoDB name;
-      END;
+      SET target.scn &d_scenariosToRun.(where=(insertIntoDB=1) in=add);
+         drop dorun insertIntoDB;
    RUN;
-   
+
    /* Prepare Loop */
    PROC SQL noprint;
       select count(scn_id) into :l_nscn
-         from &d_scenariosToRun
+         from &d_scenariosToRun.
       ;
    QUIT;
 
    /*-- loop over all test scenarios --------------------------------------------*/
-   %DO i=1 %TO &l_nscn;
+   %DO i=1 %TO &l_nscn.;
 
       DATA _NULL_;
          in = &i.;
-         set &d_scenariosToRun point=in;
+         set &d_scenariosToRun. point=in;
          Call Symputx('l_scnid',scn_id, 'L');
          Call Symputx('l_dorun',dorun, 'L');
-         Call Symputx('l_filename',filename, 'L');
+         Call Symputx('l_filename',scn_path, 'L');
          stop;
       RUN;
 
-      %LET l_scn = %_stdPath(&g_root,&l_filename);
-
-      %IF &l_dorun %THEN %DO;
-         %PUT ======== test scenario &l_scnid (&l_scn) will be run ========;
+      %IF &l_dorun. %THEN %DO;
+         %PUT ======== test scenario &l_scnid (&l_filename.) will be run ========;
          %PUT;
          %PUT;
       %END;
       %ELSE %DO;
-         %PUT ======== test scenario &l_scnid (&l_scn) will not be run ==;
+         %PUT ======== test scenario &l_scnid (&l_filename.) will not be run ==;
          %PUT;
          %PUT;
       %END;
@@ -295,26 +230,6 @@
       %END; /* run scenario */
    %END; /* loop for all scenarios */
 
-   *** Get program name in notation as in target.cas ***;
-   proc sql noprint;
-      create table work.cas as
-         select distinct (substr (cas_pgm,1,index(lowcase (cas_pgm),'.sas')-1)) as cas_pgm
-         from target.cas;
-      create table work.dep as 
-         select dep.caller as lowcase_caller
-               ,coalesce (cas.cas_pgm, dep.caller) as caller
-               ,dep.called
-         from &d_listcalling. as dep left join work.cas
-         on lowcase (dep.caller)=lowcase(cas.cas_pgm);
-      create table &d_listcalling. as 
-         select dep.lowcase_caller
-               ,dep.caller
-               ,dep.called as lowcase_calledByCaller
-               ,coalesce (cas.cas_pgm, dep.called) as called
-         from work.dep left join work.cas
-         on lowcase (dep.called)=lowcase(cas.cas_pgm);
-   quit;
-
    %GOTO exit;
 %errexit:
       %PUT;
@@ -375,8 +290,7 @@
 
      
 %exit:
-   PROC DATASETS NOLIST NOWARN LIB=%scan(&d_dependency,1,.);
-      DELETE %scan(&d_dependency,2,.);
+   PROC DATASETS NOLIST NOWARN LIB=%scan(&d_examinee,1,.);
       DELETE %scan(&d_dir,2,.);
       DELETE %scan(&d_examinee,2,.);
       DELETE %scan(&d_scenariosToRun,2,.);
