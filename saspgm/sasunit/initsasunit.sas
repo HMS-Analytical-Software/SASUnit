@@ -305,8 +305,8 @@
          (                                      /* test case */
              cas_scnid INT FORMAT=z3.           /* reference to test scenario */
             ,cas_id    INT FORMAT=z3.           /* sequential number of test case within test scenario */
-            ,cas_auton INT                      /* number of autocall path where program under test has been found or ., if not found */
-            ,cas_pgm   CHAR(255)                /* file name of program under test: only name if found in autocall paths, or fully qualified path otherwise */ 
+            ,cas_exaid INT FORMAT=z3.           /* reference to examinee */ 
+            ,cas_obj   CHAR(255)                /* file name of program under test: only name if found in autocall paths, or fully qualified path otherwise */ 
             ,cas_desc  CHAR(1000)               /* description of test case */
             ,cas_spec  CHAR(1000)               /* optional: specification document, fully qualified path or only filename to be found in folder &g_doc */
             ,cas_start INT FORMAT=datetime21.2  /* starting date and time of the last run */
@@ -324,6 +324,16 @@
             ,tst_act    CHAR(255)             /* actual result */
             ,tst_res    INT                   /* test result of the last run: 0 .. OK, 1 .. manual, 2 .. not OK */
             ,tst_errmsg CHAR(1000)            /* custom error message for asserts */
+         );
+         CREATE TABLE target.exa(COMPRESS=CHAR)
+         (                                        /* all possible examinees */
+             exa_id       INT FORMAT=z3.          /* number of examinees */
+            ,exa_auton    INT                     /* Number of autocall path */
+            ,exa_pgm      CHAR(1000)              /* name of program file */ 
+            ,exa_changed  INT FORMAT=datetime21.2 /* Change Datetime value of examinee */
+            ,exa_filename CHAR(1000)              /* absolute path and name of program file */
+            ,exa_path     CHAR(1000)              /* path of program file relative to SASUnit Root */ 
+            ,exa_tcg_pct  INT FORMAT=NLPCT.     
          );
       QUIT;
       %IF %_handleError(&l_macname.
@@ -695,6 +705,8 @@
          SET tsu_dbVersion = "&g_version."
       ;
    QUIT;
+
+   %_createExamineeTable;
 
    %PUT;
    %PUT ============================ SASUnit has been initialized successfully ==========================;
