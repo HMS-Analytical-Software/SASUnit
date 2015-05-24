@@ -86,7 +86,7 @@
 
    %GLOBAL g_version g_revision g_verbose g_error g_warning g_note;
 
-   %LET g_version   = 1.5.0;
+   %LET g_version   = 1.5.1;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
    
@@ -102,12 +102,18 @@
       %LET i_verbose = 1;
    %END;
    %LET g_verbose   = &i_verbose;
-   
+   %IF (&i_testcoverage. NE 1)%THEN %DO;
+      %LET i_testcoverage = 0;
+   %END;
+   %IF (&i_overwrite NE 1) %THEN %DO;
+      %LET i_overwrite=0;
+   %END;
 
    %LOCAL l_macname  l_current_dbversion l_target_abs  l_newdb       l_rc       l_project      l_root    l_sasunit          l_abs l_autoexec      l_autoexec_abs
           l_sascfg   l_sascfg_abs        l_sasuser     l_sasuser_abs l_testdata l_testdata_abs l_refdata l_refdata_abs      l_doc                 l_doc_abs  
           l_sasautos l_sasautos_abs      i             l_work        l_sysrc    l_sasunit_os   l_cmdfile l_abspath_sasautos l_abspath_sasunit_os  l_sasunitroot
           restore_sasautos 
+          l_overwrite l_testcoverage
    ;
 
    %LET l_current_dbversion=0;
@@ -167,6 +173,20 @@
    
    %_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note);
 
+   /*-- check shell values vs. parameters ------------------------------------------*/
+   %LET l_testcoverage=%sysget (SASUNIT_COVERAGEASSESSMENT);
+   %IF (&l_testcoverage. ne ) %THEN %DO;
+      %IF (&l_testcoverage. ne &i_testcoverage.) %THEN %DO;
+          %PUT &G_WARNING.:(SASUNIT) Shell variable SASUNIT_COVERAGEASSESSMENT not passed correctly to parameter i_testcoverage!;
+      %END;
+   %END;
+   %LET l_overwrite=%sysget(SASUNIT_OVERWRITE);
+   %IF (&l_overwrite. ne ) %THEN %DO;
+      %IF (&l_overwrite. ne &i_overwrite.) %THEN %DO;
+          %PUT &G_WARNING.:(SASUNIT) Shell variable SASUNIT_OVERWRITE not passed correctly to parameter i_overwrite!;
+      %END;
+   %END;
+
    /*-- check SAS version -------------------------------------------------------*/
    %IF %_handleError(&l_macname.
                     ,WrongVer
@@ -178,10 +198,7 @@
 
    /*-- check value of parameter i_testcoverage, if it has an other value than 1, 
         set it to 0 in order to assure that it will have only value 0 or 1 ------*/
-   %IF &i_testcoverage. NE 1 %THEN %DO;
-      %LET i_testcoverage = 0;
-   %END;
-   %ELSE %DO;
+   %IF (&i_testcoverage. EQ 1) %THEN %DO;
       /*-- if test coverage should be assessed: check SAS version --------------*/
       %IF %_handleError(&l_macname.
                     ,ErrorTargetLib
@@ -219,7 +236,6 @@
       %THEN %GOTO errexit;
 
    /*-- does the test database exist already? -----------------------------------*/
-   %IF "&i_overwrite" NE "1" %then %LET i_overwrite=0;
    %IF &i_overwrite %THEN %LET l_newdb=1;
    %ELSE %LET l_newdb=%eval(NOT %sysfunc(exist(target.tsu)));
 

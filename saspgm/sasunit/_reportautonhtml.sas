@@ -19,6 +19,8 @@
    \param   o_path         path for output file
    \param   o_file         name of the outputfile without extension
 
+   \todo Check which statements are still necessary with new repdata
+
 */ /** \cond */ 
 
 %MACRO _reportAutonHTML (i_repdata = 
@@ -34,36 +36,36 @@
    %_tempFileName(d_rep1)
    %_tempFileName(d_rep2)
 
-   PROC MEANS NOPRINT NWAY missing DATA=&i_repdata(KEEP=cas_auton pgm_id scn_id cas_id);
-      class cas_auton pgm_id scn_id cas_id;
+   PROC MEANS NOPRINT NWAY missing DATA=&i_repdata(KEEP=exa_auton pgm_id scn_id cas_id);
+      class exa_auton pgm_id scn_id cas_id;
       OUTPUT OUT=&d_rep1. (rename=(_FREQ_=scn_tst));
    RUN;
 
-   PROC MEANS NOPRINT NWAY missing DATA=&d_rep1.(KEEP=cas_auton pgm_id scn_id scn_tst);
-      class cas_auton pgm_id scn_id;
+   PROC MEANS NOPRINT NWAY missing DATA=&d_rep1.(KEEP=exa_auton pgm_id scn_id scn_tst);
+      class exa_auton pgm_id scn_id;
       OUTPUT OUT=&d_rep2. (rename=(_FREQ_=scn_cas)) sum(scn_tst)=scn_tst;
    RUN;
 
    PROC SORT DATA=&i_repdata. out=work._auton_report;
-      BY cas_auton pgm_id scn_id;
+      BY exa_auton pgm_id scn_id;
    RUN;
 
    DATA work._auton_report;
       SET work._auton_report;
-      BY cas_auton pgm_id scn_id;
+      BY exa_auton pgm_id scn_id;
       IF (first.scn_id);
    RUN;
 
    DATA work._auton_report;
       MERGE work._auton_report &d_rep2.;
-      BY cas_auton pgm_id scn_id;
+      BY exa_auton pgm_id scn_id;
    RUN;
    
    /* Visualize crossreference data */
    %IF &g_crossref. EQ 1 %THEN %DO;
       PROC SQL;
          create view prepareDependency as
-         select distinct cas_pgm as name
+         select distinct cas_obj as name
          from target.cas
       QUIT;
 
@@ -118,11 +120,13 @@
        use the 000.tcg file as coverage analysis text file ---------------------*/
       
       PROC SQL NOPRINT;
-         SELECT DISTINCT cas_pgm 
+         SELECT DISTINCT cas_obj 
          INTO :l_unitUnderTestList SEPARATED BY '*'
          FROM work._auton_report;
       QUIT;
-      /* Add col tcg_pct to data set &d_rep1 to store coverage percentage for report generation*/
+
+      /* Add col tcg_pct to data set &d_rep1 to store coverage percentage for report generation */
+      /* ToDo: Update target.examinee */
       DATA work._auton_report (COMPRESS=YES);
          LENGTH tcg_pct 8;
          SET work._auton_report;
@@ -199,19 +203,23 @@
                                 ,o_html                     = &o_html.
                                 );
             %END;
-         %END; /*%ELSE %DO;*/
-         /*store coverage percentage for report generation*/
+         %END; /* %ELSE %DO; */
+         /* store coverage percentage for report generation */
+         /* ToDo: Kill obsolete statements for work._auton_report */
          PROC SQL NOPRINT;
            UPDATE work._auton_report
              SET tcg_pct=&l_tcg_res.
-            WHERE upcase(cas_pgm) EQ "%upcase(&l_currentUnit.)";
+             WHERE upcase(cas_obj) EQ "%upcase(&l_currentUnit.)";
+           UPDATE target.exa
+             SET exa_tcg_pct=&l_tcg_res./100
+             WHERE upcase(exa_pgm) EQ "%upcase(&l_currentUnit.)";
          QUIT;
       %end; /*do i = 1 to &l_listCount*/
       
    %END;
 
    PROC SQL NOPRINT;
-      SELECT DISTINCT cas_auton 
+      SELECT DISTINCT exa_auton 
       INTO :l_pgmLibraries SEPARATED BY '§'
       FROM work._auton_report;
    QUIT;
@@ -255,7 +263,7 @@
                 linkTitle0  linkTitle1  LinkTitle2  LinkTitle3  LinkTitle4  LinkTitle5
                 linkColumn0 linkColumn1 LinkColumn2 LinkColumn3 LinkColumn4 LinkColumn5 $1000
                 _autonColumn autonColumn cas_abs_path scn_abs_path $400;
-         set work._auton_report (where=(cas_auton=&l_pgmLib.));
+         set work._auton_report (where=(exa_auton=&l_pgmLib.));
          ARRAY sa(0:9) tsu_sasautos tsu_sasautos1-tsu_sasautos9;
          label 
             pgmColumn="&g_nls_reportAuton_005."
@@ -270,18 +278,18 @@
             %END;
             resultColumn="&g_nls_reportAuton_008.";
 
-         if (cas_pgm="^_") then cas_pgm="";
-         IF cas_auton = . THEN DO;
-            cas_abs_path = resolve ('%_abspath(&g_root,' !! trim(cas_pgm) !! ')');   
+         if (cas_obj="^_") then cas_obj="";
+         IF exa_auton = . THEN DO;
+            cas_abs_path = resolve ('%_abspath(&g_root,' !! trim(cas_obj) !! ')');   
          END;
-         ELSE IF cas_auton = 0 THEN DO;
-            cas_abs_path = resolve ('%_abspath(&g_sasunit,' !! trim(cas_pgm) !! ')');   
+         ELSE IF exa_auton = 0 THEN DO;
+            cas_abs_path = resolve ('%_abspath(&g_sasunit,' !! trim(cas_obj) !! ')');   
          END;
-         ELSE IF cas_auton = 1 THEN DO;
-            cas_abs_path = resolve ('%_abspath(&g_sasunit_os,' !! trim(cas_pgm) !! ')');   
+         ELSE IF exa_auton = 1 THEN DO;
+            cas_abs_path = resolve ('%_abspath(&g_sasunit_os,' !! trim(cas_obj) !! ')');   
          END;
          ELSE DO;
-            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! put (cas_auton-2,1.) !! ',' !! trim(cas_pgm) !! ')');
+            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! put (exa_auton-2,1.) !! ',' !! trim(cas_obj) !! ')');
          END;
          scn_abs_path = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
 
@@ -295,21 +303,21 @@
                             ,o_html=&o_html.
                             ,o_targetColumn=resultColumn
                             );
-         if (cas_auton = .) then do;
+         if (exa_auton = .) then do;
             _autonColumn = "&g_nls_reportAuton_015.";
          end;
          else do;
-            if (cas_auton = 0) then do;
+            if (exa_auton = 0) then do;
                _autonColumn = tsu_sasunit;
                linkTitle0   = symget("g_sasunit");
             end;
-            else if (cas_auton = 1) then do;
+            else if (exa_auton = 1) then do;
                _autonColumn = tsu_sasunit_os;
                linkTitle0   = symget("g_sasunit_os");
             end;
             else do;
-               _autonColumn = sa(cas_auton-2);
-               linkTitle0   = symget("g_sasautos" !! put(cas_auton-2, z1.));
+               _autonColumn = sa(exa_auton-2);
+               linkTitle0   = symget("g_sasautos" !! put(exa_auton-2, z1.));
             end;
             linkColumn0  = "file:///" !! linkTitle0;
             linkTitle0   = "&g_nls_reportAuton_009. " !! linkTitle0;
@@ -325,31 +333,35 @@
          %if (&o_html.) %then %do;
             LinkTitle1 = "&g_nls_reportAuton_009." !! byte(13) !! cas_abs_path;
             LinkTitle2 = "&g_nls_reportAuton_010." !! byte(13) !! scn_abs_path;
-            LinkTitle3 = "&g_nls_reportAuton_017. " !! cas_pgm;
-            LinkTitle4 = trim(cas_pgm) !! " &g_nls_reportAuton_025.";
-            LinkTitle5 = trim(cas_pgm) !! " &g_nls_reportAuton_026.";
+            LinkTitle3 = "&g_nls_reportAuton_017. " !! cas_obj;
+            LinkTitle4 = trim(cas_obj) !! " &g_nls_reportAuton_025.";
+            LinkTitle5 = trim(cas_obj) !! " &g_nls_reportAuton_026.";
             
             *** HTML-links are destination specific ***;
             %if (&o_html.) %then %do;
                LinkColumn1 = "file:///" !! cas_abs_path;
                LinkColumn2 = CATT("cas_overview.html#SCN", PUT(scn_id,z3.), "_");
-               IF compress(cas_pgm) ne '' THEN DO;
-                  IF index(cas_pgm,'/') GT 0 THEN DO;
-                     LinkColumn3 =  'tcg_'||trim(LEFT(SCAN(SUBSTR(cas_pgm, findw(cas_pgm, SCAN(cas_pgm, countw(cas_pgm,'/'),'/'))),1,".") !! ".html"));
+               IF compress(cas_obj) ne '' THEN DO;
+                  IF index(cas_obj,'/') GT 0 THEN DO;
+                     LinkColumn3 =  'tcg_'||trim(LEFT(SCAN(SUBSTR(cas_obj, findw(cas_obj, SCAN(cas_obj, countw(cas_obj,'/'),'/'))),1,".") !! ".html"));
                   END;
                   ELSE DO;
-                     LinkColumn3 =  'tcg_'||TRIM(LEFT(SCAN(cas_pgm,1,".") !! ".html"));
+                     LinkColumn3 =  'tcg_'||TRIM(LEFT(SCAN(cas_obj,1,".") !! ".html"));
                   END;
                END;
                LinkColumn4 = "&g_nls_reportAuton_023.";
                LinkColumn5 = "&g_nls_reportAuton_024.";
             %end;
 
-            %_render_dataColumn(i_sourceColumn=cas_pgm
+            %_render_dataColumn(i_sourceColumn=cas_obj
                                ,i_linkColumn=LinkColumn1
                                ,i_linkTitle=LinkTitle1
                                ,o_targetColumn=pgmColumn
                                );
+/*
+            pgmColumn=catt ('^{style [url="pgm_', cas_obj, '" flyover="Program Documentation"]',cas_obj,'}');
+            pgmColumn=catt (pgmColumn, ' ^{style [url="', LinkColumn1, '" flyover="', LinkTitle1, '"] [Download Sourcecode]}');
+*/
             %_render_dataColumn(i_sourceColumn=scn_id
                                ,i_format=z3.
                                ,i_linkColumn=LinkColumn2
@@ -365,7 +377,7 @@
                                   );
             %END;
             %IF &g_crossref. EQ 1 %THEN %DO;            
-               %_render_crossrefColumn (i_sourceColumn       = %sysfunc(trim(cas_pgm))
+               %_render_crossrefColumn (i_sourceColumn       = %sysfunc(trim(cas_obj))
                                        ,o_targetColumn       = crossrefColumn
                                        ,i_linkColumn_caller  = LinkColumn4
                                        ,i_linkTitle_caller   = LinkTitle4
