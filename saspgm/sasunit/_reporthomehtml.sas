@@ -194,8 +194,11 @@
          Category="SASUnit";
          output;
          idColumn = "&g_nls_reportHome_029.";
-         parameterColumn="SASUNIT_COVERAGEASSESSMENT";
-         valueColumn=put (%sysget(SASUNIT_COVERAGEASSESSMENT), YESNO.);
+         parameterColumn='SASUNIT_COVERAGEASSESSMENT^n&g_testcoverage';
+         valueColumn=catt (put (%sysget(SASUNIT_COVERAGEASSESSMENT), YESNO.)
+                          ,"^n"
+                          ,put (&G_TESTCOVERAGE., YESNO.)
+                          );
          Category="SASUnit";
          output;
          idColumn = "&g_nls_reportHome_030.";
