@@ -1,6 +1,6 @@
 /** 
    \file
-   \ingroup    none
+   \ingroup    SASUNIT_TEST
 
    \brief      Testmacro for listcalling
 
@@ -15,12 +15,11 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-
-   \retval    o_result       Return code of the assert 0: OK / 1: ERROR
 */ /** \cond */ 
 
 %macro Testmakro2(i_obs=
-                 ,i_title =);
+                 ,i_title=
+                 );
 
    %local l_calc;
    

@@ -61,7 +61,7 @@
       DROP pos;
       SET target.scn (keep=scn_id scn_path scn_end) nobs=cnt_obs;
       pos = find(scn_path,'/',-200)+1;
-      scn_name = substr(scn_path,pos);
+      scn_name = lowcase (substr(scn_path,pos));
    RUN;
 
    PROC SQL noprint;
@@ -77,7 +77,7 @@
                  END as insertIntoDB
       from scenarios as s
       full join &i_scn_pre. as scn
-      on scn.membername=s.scn_name
+      on lowcase (scn.membername)=s.scn_name
       ;
    QUIT;
 
@@ -122,7 +122,7 @@
                       ,o_macroList      = &d_macroList.
                       );
 
-      *** Update d_scenariosToRun with dependency information by _crossrefrence ***;
+      *** Update o_scenariosToRun with dependency information by _crossrefrence ***;
       proc sql noprint;
          *** Get modified examinees with callers ***;
          create table work._modifiedExaWithCaller as 
@@ -143,7 +143,7 @@
                on cas_exaid = exa_id_caller
                where not missing (cas_scnid);
          *** Update scenariosToRun ***;
-         update &d_scenariosToRun.
+         update &o_scenariosToRun.
             set dorun = 1 where scn_id in (select distinct cas_scnid from work._modifiedExaWithCallerScnID);
 
          *** Get program name in notation as in target.cas ***;
