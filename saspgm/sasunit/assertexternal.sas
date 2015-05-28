@@ -2,27 +2,28 @@
    \file
    \ingroup    SASUNIT_ASSERT 
 
-   \brief      AssertExternal allows to specify a script file that holds the logic of this assert.
-               The expected return code of the script is specified in i_expected_shell_rc. All other
+   \brief      assertExternal allows to specify a script file that holds the logic of this assert.
+
+   \deatils    The expected return code of the script is specified in i_expected_shell_rc. All other
                return codes are treated as failed tests.
 
-   \version    \$Revision: 191 $
-   \author     \$Author: b-braun $
-   \date       \$Date: 2013-06-05 15:23:22 +0200 (Mi, 05 Jun 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/assertRecordCount.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
    \param     i_script               Path of shell script
-   \param     i_expected               First parameter for script
+   \param     i_expected             First parameter for script
    \param     i_actual               Second parameter for script
    \param     i_expected_shell_rc    Expected return code of scipt. The shell return code and i_expected_shell_rc are compared to determined 
                                      success of assert
    \param     i_modifier             Optional parameter: modifier used in script
    \param     i_threshold            Optional parameter: threshold above which the test is successful
-   \param     i_expectedIsPath         If set to Y, i_expected is checked if it is a valid path
+   \param     i_expectedIsPath       If set to Y, i_expected is checked if it is a valid path
    \param     i_actualIsPath         If put to Y, i_actual is checked if it is a valid path
    \param     i_desc                 Optional parameter: description of the assertion to be checked
 

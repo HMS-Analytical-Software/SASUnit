@@ -1,12 +1,13 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_REPORT
 
    \brief      renders the layout of the expected column for assertText
 
-   \version    \$Revision: 260 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2013-09-08 20:47:54 +0200 (So, 08 Sep 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_render_assertcolumnsexp.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt

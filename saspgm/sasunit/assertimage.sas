@@ -3,7 +3,8 @@
    \ingroup    SASUNIT_ASSERT
 
    \brief      This assert does an image compare. 
-               As compare tool imageMagick is used. Make shure to use version 6.9 or above since before the
+
+   \details    As compare tool imageMagick is used. Make shure to use version 6.9 or above since before the
                compare method always returned 0.
                Beginning with ImageMagick 6.9 the following return codes are used:
                   0: images match
@@ -11,35 +12,37 @@
 
                Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
-   \version    \$Revision: 191 $
-   \author     \$Author: b-braun $
-   \date       \$Date: 2013-06-05 15:23:22 +0200 (Mi, 05 Jun 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/assertRecordCount.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param     i_script               Path of shell script
-   \param     i_expected             Path of first image file (expected)
-   \param     i_actual               Path of second image file (actual)
-   \param     i_expected_shell_rc    Expected return value of called script i_script 
-                                       0: image match 
+   \todo OPTIONS SYMBOLGEN noch vom testen?
+
+   \param      i_script               Path of shell script
+   \param      i_expected             Path of first image file (expected)
+   \param      i_actual               Path of second image file (actual)
+   \param      i_expected_shell_rc    Expected return value of called script i_script 
+                                       0 : image match 
                                        >0: images do not match
-   \param     i_modifier             Optional parameter: modifiers for the compare
-   \param     i_threshold            Optional parameter: further parameter to be passed to the script
-   \param     i_desc                 Optional parameter: description of the assertion to be checked
+   \param      i_modifier             Optional parameter: modifiers for the compare
+   \param      i_threshold            Optional parameter: further parameter to be passed to the script
+   \param      i_desc                 Optional parameter: description of the assertion to be checked
 
 */ /** \cond */ 
 
-   %MACRO assertImage (i_script             =
-                      ,i_expected           =
-                      ,i_actual             =
-                      ,i_expected_shell_rc  =0
-                      ,i_modifier           =-metric RMSE
-                      ,i_threshold          =1
-                      ,i_desc               =Comparison of texts
-                      );
+%MACRO assertImage (i_script             =
+                   ,i_expected           =
+                   ,i_actual             =
+                   ,i_expected_shell_rc  =0
+                   ,i_modifier           =-metric RMSE
+                   ,i_threshold          =1
+                   ,i_desc               =Comparison of images
+                   );
 
    %*** verify correct sequence of calls ***;
    %GLOBAL g_inTestcase;
@@ -68,8 +71,8 @@
            l_image2_extension
    ;
 
-  %LET l_errmsg =;
-  %LET l_result = 2;
+   %LET l_errmsg =;
+   %LET l_result = 2;
 
    %*************************************************************;
    %*** Check preconditions                                   ***;
@@ -78,7 +81,7 @@
    %*** Check if i_script file exists ***;
    %IF NOT %SYSFUNC(FILEEXIST(&i_script.)) %THEN %DO;
       %LET l_rc = -2;
-      %LET l_errMsg=Image &i_script. does not exist!;
+      %LET l_errMsg=Script &i_script. does not exist!;
       %GOTO Update;
    %END;
 
@@ -111,7 +114,7 @@
    %let l_image1_extension = %sysfunc(substr(&i_expected.,%sysfunc(length(&i_expected.))-%sysfunc(length(%sysfunc(scan(&i_expected.,-1,"."))))));
    %let l_image2_extension = %sysfunc(substr(&i_actual.,%sysfunc(length(&i_actual.))-%sysfunc(length(%sysfunc(scan(&i_actual.,-1,"."))))));
 
-   %_copyFile(&i_expected.                                         /* input file */
+   %_copyFile(&i_expected.                                       /* input file */
              ,&l_path./_image_exp&l_image1_extension.            /* output file */
              )
    %_copyFile(&i_actual.                                         /* input file */
@@ -122,7 +125,8 @@
    %*** Start tests                                           ***;
    %*************************************************************;
 
-  OPTIONS sgen; 
+   %*** KL: Wozu SYMBOLGEN? ***;
+   OPTIONS sgen; 
    %_xcmdWithPath(i_cmd_path ="&i_script." "&i_expected." "&i_actual." "&l_path./_image_diff.png"
                  ,i_cmd      ="&i_modifier." "&i_threshold."
                  ,r_rc       =l_rc
@@ -131,7 +135,7 @@
    %IF &l_rc. = &i_expected_shell_rc. %THEN %DO;
       %LET l_result = 0;
    %END;
-options nosgen;
+   OPTIONS nosgen;
 
 %UPDATE:
    %*** update result in test database ***;

@@ -539,13 +539,13 @@
   1 DE Erwarteter Text
   1 EN Expected text
   2 DE Erwarteten Text öffnen
-  2 EN Show expected text
+  2 EN Open expected text
   3 DE Vergleich
   3 EN Comparison
   4 DE Tatsächlicher Text
   4 EN Actual text
   5 DE Tatsächlichen Text öffnen
-  5 EN Show actual text
+  5 EN Open actual text
   6 DE Vergleichsbericht öffnen
   6 EN Open comparison report
   7 DE Shell-Script nicht gefunden!
@@ -571,7 +571,7 @@
   4 DE Tatsächliches Bild
   4 EN Actual image
   5 DE Tatsächliches Bild öffnen
-  5 EN Show actual image
+  5 EN Open actual image
   6 DE Bildvergleich öffnen
   6 EN Open image comparison
   7 DE Erwartetes Bild

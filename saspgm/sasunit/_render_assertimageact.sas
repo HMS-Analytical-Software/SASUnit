@@ -1,12 +1,13 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_REPORT
 
    \brief      renders the layout of the actual column for assertImage
 
-   \version    \$Revision: 260 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2013-09-08 20:47:54 +0200 (So, 08 Sep 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_render_assertcolumnsact.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -27,9 +28,9 @@
    extension = SCAN(TRIM(LEFT(&i_sourceColumn.)),2,"#");
 
    SELECT (hlp);
-       WHEN (-2)  hlp = "&g_nls_reportText_001.";
-       WHEN (-3)  hlp = "&g_nls_reportText_002.";
-       WHEN (-4)  hlp = "&g_nls_reportText_003.";
+       WHEN (-2)  hlp = "&g_nls_reportImage_001.";
+       WHEN (-3)  hlp = "&g_nls_reportImage_002.";
+       WHEN (-4)  hlp = "&g_nls_reportImage_003.";
 
        otherwise hlp = hlp;
    end;

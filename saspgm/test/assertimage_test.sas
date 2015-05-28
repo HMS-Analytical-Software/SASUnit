@@ -58,21 +58,21 @@
    /* Prepare macro variables to adapt to OS specific test */
    %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
       %LET assertImage_script        =%sysfunc(translate(&g_sasunit_os.\assertImage.cmd,\,/));
-      %LET assertImage_NotExistend   = NotExistendFile.cmd;
-      %LET assertImage_CompTool      = fc;
+      %LET assertImage_NotExistend   =NotExistendFile.cmd;
+      %LET assertImage_CompTool      =fc;
       %LET assertImage_OS            =Windows;
       %LET assertImage_mod1          =/C;
       %LET assertImage_mod2          =/W;
-      %LET assertImage_image1         =%sysfunc(translate(&g_work.\rose.jpg        ,\ ,/));
-      %LET assertImage_image2         =%sysfunc(translate(&g_work.\rose_copy.jpg   ,\ ,/));
-      %LET assertImage_image3         =%sysfunc(translate(&g_work.\reconstruct.jpg ,\ ,/));
-      %LET assertImage_image4         =%sysfunc(translate(&g_work.\class.png       ,\ ,/));
-      %LET assertImage_image5         =%sysfunc(translate(&g_work.\class1.png      ,\ ,/));
+      %LET assertImage_image1        =%sysfunc(translate(&g_work.\rose.jpg        ,\ ,/));
+      %LET assertImage_image2        =%sysfunc(translate(&g_work.\rose_copy.jpg   ,\ ,/));
+      %LET assertImage_image3        =%sysfunc(translate(&g_work.\reconstruct.jpg ,\ ,/));
+      %LET assertImage_image4        =%sysfunc(translate(&g_work.\class.png       ,\ ,/));
+      %LET assertImage_image5        =%sysfunc(translate(&g_work.\class1.png      ,\ ,/));
    %END;
    %ELSE %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ linux %THEN %DO;
-      %LET assertImage_script        = %_abspath(&g_sasunit_os.,assertImage.sh);
-      %LET assertImage_NotExistend   = NotExistendFile.sh;
-      %LET assertImage_CompTool      = diff;
+      %LET assertImage_script        =%_abspath(&g_sasunit_os.,assertImage.sh);
+      %LET assertImage_NotExistend   =NotExistendFile.sh;
+      %LET assertImage_CompTool      =diff;
       %LET assertImage_OS            =Linux;
       %LET assertImage_mod1          =-i;
       %LET assertImage_mod2          =-b;
@@ -91,10 +91,9 @@
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 %*** test case 1 ------------------------------------ ***;
-%initTestcase(
-             i_object   = assertImage.sas
-            ,i_desc     = Check test setup
-   )
+%initTestcase(i_object   = assertImage.sas
+             ,i_desc     = Check test setup
+             )
 %endTestcall()
 
 %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./rose.jpg))       , i_expected=1, i_desc=File successful copied);
@@ -102,10 +101,9 @@
 %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./reconstruct.jpg)), i_expected=1, i_desc=File successful modified);
 
 %*** test case 2 ------------------------------------ ***;
-%initTestcase(
-             i_object   = assertImage.sas
-            ,i_desc     = Texts with invalid input parameters
-   )
+%initTestcase(i_object   = assertImage.sas
+             ,i_desc     = Tests with invalid input parameters
+             )
 %endTestcall()
 
 %assertImage(i_script             =&assertImage_NotExistend.
@@ -114,7 +112,7 @@
             ,i_expected_shell_rc  =1
             ,i_modifier           =-metric RMSE
             ,i_threshold          =
-            ,i_desc               =Scipt does not exist
+            ,i_desc               =Script does not exist
             );                        
            
    %markTest()
@@ -154,10 +152,9 @@
    %assertLog (i_errors=0, i_warnings=0);
 
 %*** test case 3 ------------------------------------ ***;
-%initTestcase(
-             i_object   = assertImage.sas
-            ,i_desc     = Texts with invalid input parameters
-   )
+%initTestcase(i_object   = assertImage.sas
+             ,i_desc     = Tests with invalid input parameters
+             )
 %endTestcall()
 
 %assertImage(i_script             =&assertImage_script.

@@ -1,12 +1,13 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_REPORT
 
    \brief      create reports for assertText 
 
-   \version    \$Revision: 281 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2013-11-08 14:06:01 +0100 (Fr, 08 Nov 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_render_assertcolumnsrep.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -23,13 +24,13 @@
 */ /** \cond */ 
 
 %MACRO _render_assertTextRep (i_assertype=
-                                ,i_repdata  =
-                                ,i_scnid    =
-                                ,i_casid    = 
-                                ,i_tstid    = 
-                                ,o_html     =
-                                ,o_path     =
-                                );
+                             ,i_repdata  =
+                             ,i_scnid    =
+                             ,i_casid    = 
+                             ,i_tstid    = 
+                             ,o_html     =
+                             ,o_path     =
+                             );
 
    %local l_ifile l_ofile l_path ;
 

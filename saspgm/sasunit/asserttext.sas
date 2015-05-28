@@ -2,26 +2,30 @@
    \file
    \ingroup    SASUNIT_ASSERT
 
-   \brief      This assert does a text compare 
+   \brief      This assert does a text compare with fc.exe
+
+   \details    Tell me more
 
                Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
-   \version    \$Revision: 191 $
-   \author     \$Author: b-braun $
-   \date       \$Date: 2013-06-05 15:23:22 +0200 (Mi, 05 Jun 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/assertRecordCount.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param     i_script               Path of shell script
-   \param     i_expected             Path of first text file (expected)
-   \param     i_actual               Path of second text file (actual)
-   \param     i_expected_shell_rc    Expected return value of called script i_script
-   \param     i_desc                 Optional parameter: description of the assertion to be checked
-   \param     i_threshold            Optional parameter: further parameter to be passed to the script
-   \param     i_modifier             Optional parameter: modifiers for the compare
+   \todo       Brief and details
+
+   \param      i_script               Path of shell script
+   \param      i_expected             Path of first text file (expected)
+   \param      i_actual               Path of second text file (actual)
+   \param      i_expected_shell_rc    Expected return value of called script i_script
+   \param      i_desc                 Optional parameter: description of the assertion to be checked
+   \param      i_threshold            Optional parameter: further parameter to be passed to the script
+   \param      i_modifier             Optional parameter: modifiers for the compare
 
 */ /** \cond */ 
 

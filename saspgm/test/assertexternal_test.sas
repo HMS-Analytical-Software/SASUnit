@@ -101,13 +101,13 @@
             );
 %endTestcall()
 
-%assertExternal (i_script             = &assertExternal_NotExistend.
-                ,i_expected           = &assertExternal_work1.
-                ,i_actual             = whatever
+%assertExternal (i_script             =&assertExternal_NotExistend.
+                ,i_expected           =&assertExternal_work1.
+                ,i_actual             =whatever
                 ,i_expected_shell_rc  =Shell-Script nicht gefunden!
                 ,i_expectedIsPath     =Y
-                ,i_desc               = Scipt does not exist
-                ,i_threshold          = NONE
+                ,i_desc               =Script does not exist
+                ,i_threshold          =NONE
                 );
    %markTest()
       %assertDBValue(tst,act,-2)
@@ -176,35 +176,35 @@
             );
 %endTestcall()
 
-%assertExternal (i_script             = &assertExternal_script2.
-                ,i_expected           = &assertExternal_work1.
-                ,i_actual             = &assertExternal_work1Copy.
+%assertExternal (i_script             =&assertExternal_script2.
+                ,i_expected           =&assertExternal_work1.
+                ,i_actual             =&assertExternal_work1Copy.
                 ,i_expected_shell_rc  =0
                 ,i_expectedIsPath     =Y
                 ,i_actualIsPath       =Y
-                ,i_desc               = Compared files match
-                ,i_threshold          = NONE
+                ,i_desc               =Compared files match
+                ,i_threshold          =NONE
                 );
                 
-%assertExternal (i_script             = &assertExternal_script2.
-                ,i_expected           = &assertExternal_work1.
-                ,i_actual             = &assertExternal_work2.
+%assertExternal (i_script             =&assertExternal_script2.
+                ,i_expected           =&assertExternal_work1.
+                ,i_actual             =&assertExternal_work2.
                 ,i_expected_shell_rc  =1
                 ,i_expectedIsPath     =Y
                 ,i_actualIsPath       =Y
-                ,i_desc               = Compared files do not match
-                ,i_threshold          = NONE
+                ,i_desc               =Compared files do not match
+                ,i_threshold          =NONE
                 );
                 
-%assertExternal (i_script             = &assertExternal_script2.
-                ,i_expected           = &assertExternal_work1.
-                ,i_actual             = &assertExternal_work2.
+%assertExternal (i_script             =&assertExternal_script2.
+                ,i_expected           =&assertExternal_work1.
+                ,i_actual             =&assertExternal_work2.
                 ,i_expected_shell_rc  =0
                 ,i_expectedIsPath     =Y
                 ,i_actualIsPath       =Y
                 ,i_modifier           =&assertExternal_mod1.
-                ,i_desc               = %str(Compared files do not match, but modifier ignore case used -> test is OK)
-                ,i_threshold          = NONE
+                ,i_desc               =%str(Compared files do not match, but modifier ignore case used -> test is OK)
+                ,i_threshold          =NONE
                 );
                 
 /** \endcond */

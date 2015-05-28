@@ -90,8 +90,8 @@
    /* Prepare macro variables to adapt to OS specific test */
    %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
       %LET assertText_script        =%sysfunc(translate(&g_sasunit_os.\assertText_fc.cmd,\,/));
-      %LET assertText_NotExistend   = NotExistendFile.cmd;
-      %LET assertText_CompTool      = fc;
+      %LET assertText_NotExistend   =NotExistendFile.cmd;
+      %LET assertText_CompTool      =fc;
       %LET assertText_OS            =Windows;
       %LET assertText_mod1          =/C;
       %LET assertText_mod2          =/W;
@@ -99,9 +99,9 @@
       %LET assertText_work2         =%sysfunc(translate(&g_work.\text2.txt,\,/));
    %END;
    %ELSE %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ linux %THEN %DO;
-      %LET assertText_script        = %_abspath(&g_sasunit_os.,assertText_diff.sh);
-      %LET assertText_NotExistend   = NotExistendFile.sh;
-      %LET assertText_CompTool      = diff;
+      %LET assertText_script        =%_abspath(&g_sasunit_os.,assertText_diff.sh);
+      %LET assertText_NotExistend   =NotExistendFile.sh;
+      %LET assertText_CompTool      =diff;
       %LET assertText_OS            =Linux;
       %LET assertText_mod1          =-i;
       %LET assertText_mod2          =-b;
@@ -118,10 +118,9 @@
 
 /* test case 1 ------------------------------------ */
 
-%initTestcase(
-             i_object   = asserttext.sas
-            ,i_desc     = Texts with invalid input parameters
-   )
+%initTestcase(i_object   =asserttext.sas
+             ,i_desc     =Texts with invalid input parameters
+             )
 %endTestcall()
 
 %assertText(i_script            =&g_sasunit_os./&assertText_NotExistend.
@@ -173,10 +172,9 @@
       
 /* test case 2 ------------------------------------ */
 
-%initTestcase(
-             i_object   = asserttext.sas
-            ,i_desc     = Successfull tests
-   )
+%initTestcase(i_object   =asserttext.sas
+             ,i_desc     =Successfull tests
+             )
 %endTestcall()
 
    %assertText(i_script            =&assertText_script.
