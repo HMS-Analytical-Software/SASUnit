@@ -89,7 +89,7 @@
    quit;
 
    data &d_examinee.;
-      merge work._examinee (in=inWork) target.exa (in=inTarget);
+      merge work._examinee (in=inWork) target.exa (in=inTarget drop=exa_changed);
       by exa_auton exa_pgm;
       retain max_exaid &l_max_exaid.;
       if (inWORK and not inTarget) then do;
