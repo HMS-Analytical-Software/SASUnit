@@ -62,19 +62,23 @@
    %END;
 
    %IF (&g_verbose.) %THEN %DO;
+         %PUT --------------------------------------------------------------------------------;
       %IF (&i_result. NE 2) %THEN %DO;
          %PUT &G_NOTE.(SASUNIT): &l_errMsg.;
       %END;
       %ELSE %DO;
          %PUT &G_ERROR.(SASUNIT): &l_errMsg.;
       %END;
+         %PUT --------------------------------------------------------------------------------;
    %END;
 
    PROC SQL NOPRINT;
       /* determine number of test case */
       SELECT max(cas_id) INTO :&r_casid FROM target.cas WHERE cas_scnid=&g_scnid;
       %IF &&&r_casid=. %THEN %DO;
-         %PUT &g_error.(SASUNIT): _asserts: Fehler beim Ermitteln der Testfall-Id;
+         %PUT --------------------------------------------------------------------------------;
+         %PUT &g_error.(SASUNIT): _asserts: Error retrieving testcase id;
+         %PUT --------------------------------------------------------------------------------;
          %RETURN;
       %END;
       /* generate a new check number */
