@@ -21,8 +21,6 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \todo OPTIONS SYMBOLGEN noch vom testen?
-
    \param      i_script               Path of shell script
    \param      i_expected             Path of first image file (expected)
    \param      i_actual               Path of second image file (actual)
@@ -125,8 +123,6 @@
    %*** Start tests                                           ***;
    %*************************************************************;
 
-   %*** KL: Wozu SYMBOLGEN? ***;
-   OPTIONS sgen; 
    %_xcmdWithPath(i_cmd_path ="&i_script." "&i_expected." "&i_actual." "&l_path./_image_diff.png"
                  ,i_cmd      ="&i_modifier." "&i_threshold."
                  ,r_rc       =l_rc
@@ -135,7 +131,6 @@
    %IF &l_rc. = &i_expected_shell_rc. %THEN %DO;
       %LET l_result = 0;
    %END;
-   OPTIONS nosgen;
 
 %UPDATE:
    %*** update result in test database ***;

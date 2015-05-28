@@ -4,8 +4,9 @@
 
    \brief      assertExternal allows to specify a script file that holds the logic of this assert.
 
-   \deatils    The expected return code of the script is specified in i_expected_shell_rc. All other
+   \details    The expected return code of the script is specified in i_expected_shell_rc. All other
                return codes are treated as failed tests.
+               The assert checks if the return code of the script matches the expected return code.
 
    \version    \$Revision$
    \author     \$Author$

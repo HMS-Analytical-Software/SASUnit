@@ -2,9 +2,12 @@
    \file
    \ingroup    SASUNIT_ASSERT
 
-   \brief      This assert does a text compare with fc.exe
+   \brief      This assert does a text compare for text files. The logic doing the compare is found in a script file.
 
-   \details    Tell me more
+   \details    The actual compare is done via a script file found in folder saspgm/sasunit/OS.
+               For windows the script file is assertText_fc.cmd. The fc command is used to do the compare.
+               For Linux the scipt file is called assertText_diff.sh. Here the diff command is used to do the compare.
+               Usage of other diff-tools is possible by changing the implementation of the script file.
 
                Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
@@ -16,8 +19,6 @@
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-
-   \todo       Brief and details
 
    \param      i_script               Path of shell script
    \param      i_expected             Path of first text file (expected)
