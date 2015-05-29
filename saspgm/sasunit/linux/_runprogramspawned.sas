@@ -28,7 +28,22 @@
                          ,r_sysrc             = 
                          );
 
-   %local l_cmdFile l_parms l_parenthesis l_tcgFilePath l_tcgOptionsString l_tcgOptionsStringLINUX l_rc l_macname;
+   %local 
+      l_cmdFile 
+      l_parms 
+      l_parenthesis 
+      l_tcgFilePath 
+      l_tcgOptionsString 
+      l_tcgOptionsStringLINUX 
+      l_rc 
+      l_macname
+      l_program
+      l_target
+      l_log
+      l_testout
+      l_sasunit
+   ;
+
    %let l_macname=&sysmacroname.;
    
    /*-- prepare sasuser ---------------------------------------------------*/
@@ -55,11 +70,18 @@
      options SET=SASCFGPATH "&g_sascfg.";
    %END;
  
+   %*** Need to escape blanks in various paths ***;
+   %LET l_program=%_escapblanks(&i_program.);
+   %LET l_target =%_escapblanks(&g_target.);
+   %LET l_log    =%_escapblanks(&g_log.);
+   %LET l_testout=%_escapblanks(&g_testout.);
+   %LET l_sasunit=%_escapblanks(&g_sasunit.);
+
    %IF &i_generateMcoverage. EQ 1 %THEN %DO;
       /*-- generate a local macro variable containing the 
            path to the generated coverage file if necessary ---------------*/
-      %LET   l_tcgFilePath      = &g_log./&i_scnid..tcg;
-      %LET   l_tcgOptionsString = options mcoverage mcoverageloc='%sysfunc(tranwrd(&l_tcgFilePath.,%str( ), %str(\ )))';
+      %LET   l_tcgFilePath      = &l_log./&i_scnid..tcg;
+      %LET   l_tcgOptionsString = options mcoverage mcoverageloc='&l_tcgFilePath.';
    %END;
 
    DATA _null_;
@@ -74,7 +96,7 @@
       "" !! &g_sasstart. 
       !! " " 
       !! "&l_parms. "
-      !! "-sysin %sysfunc(tranwrd(&i_program., %str( ), %str(\ ))) "
+      !! "-sysin &l_program. "
       !! "-initstmt "" &l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&i_scnid.;"" "
       !! "-log   %sysfunc(tranwrd(&g_log/&i_scnid..log, %str( ), %str(\ ))) "
       !! "-print %sysfunc(tranwrd(&g_testout/&i_scnid..lst, %str( ), %str(\ ))) "
