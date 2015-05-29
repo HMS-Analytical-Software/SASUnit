@@ -28,22 +28,7 @@
                          ,r_sysrc             = 
                          );
 
-   %local 
-      l_cmdFile 
-      l_parms 
-      l_parenthesis 
-      l_tcgFilePath 
-      l_tcgOptionsString 
-      l_tcgOptionsStringLINUX 
-      l_rc 
-      l_macname
-      l_program
-      l_target
-      l_log
-      l_testout
-      l_sasunit
-   ;
-
+   %local l_cmdFile l_parms l_parenthesis l_tcgFilePath l_tcgOptionsString l_tcgOptionsStringLINUX l_rc l_macname;
    %let l_macname=&sysmacroname.;
    
    /*-- prepare sasuser ---------------------------------------------------*/
@@ -70,18 +55,11 @@
      options SET=SASCFGPATH "&g_sascfg.";
    %END;
  
-   %*** Need to escape blanks in various paths ***;
-   %LET l_program=%_escapeblanks(&i_program.);
-   %LET l_target =%_escapeblanks(&g_target.);
-   %LET l_log    =%_escapeblanks(&g_log.);
-   %LET l_testout=%_escapeblanks(&g_testout.);
-   %LET l_sasunit=%_escapeblanks(&g_sasunit.);
-
    %IF &i_generateMcoverage. EQ 1 %THEN %DO;
       /*-- generate a local macro variable containing the 
            path to the generated coverage file if necessary ---------------*/
-      %LET   l_tcgFilePath      = &l_log./&i_scnid..tcg;
-      %LET   l_tcgOptionsString = options mcoverage mcoverageloc='&l_tcgFilePath.';
+      %LET   l_tcgFilePath      = &g_log./&i_scnid..tcg;
+      %LET   l_tcgOptionsString = options mcoverage mcoverageloc='%sysfunc(tranwrd(&l_tcgFilePath.,%str( ), %str(\ )))';
    %END;
 
    DATA _null_;
@@ -96,15 +74,15 @@
       "" !! &g_sasstart. 
       !! " " 
       !! "&l_parms. "
-      !! "-sysin &l_program. "
-      !! "-initstmt "" &l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)%nrstr(&l_target)%nrstr(%);%%let g_scnid=)&i_scnid.;"" "
-      !! "-log   &l_log/&i_scnid..log "
-      !! "-print &l_testout/&i_scnid..lst "
+      !! "-sysin %sysfunc(tranwrd(&i_program., %str( ), %str(\ ))) "
+      !! "-initstmt "" &l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&i_scnid.;"" "
+      !! "-log   %sysfunc(tranwrd(&g_log/&i_scnid..log, %str( ), %str(\ ))) "
+      !! "-print %sysfunc(tranwrd(&g_testout/&i_scnid..lst, %str( ), %str(\ ))) "
       !! "-noovp "
       !! "-nosyntaxcheck "
       !! "-mautosource "
       !! "-mcompilenote all "
-      !! "-sasautos &l_sasunit "
+      !! "-sasautos %sysfunc(tranwrd(&g_sasunit, %str( ), %str(\ ))) "
       !! "-sasuser %sysfunc(pathname(work))/sasuser "
       !! "-termstmt ""%nrstr(%%_termScenario())"" "
       !! "";
