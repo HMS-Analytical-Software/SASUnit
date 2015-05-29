@@ -80,6 +80,10 @@
 /*-- switch to example database --------------------*/
 %_switch();
    %_dir(i_path=%sysfunc(pathname(work))/saspgm, i_recursive=1, o_out=cr_dir);
+   data cr_dir;
+      set cr_dir;
+      exa_filename=filename;
+   run;
    %_crossreference(i_includeSASUnit  =1
                    ,i_examinee        =cr_dir
                    ,o_listcalling     =work.listcalling
@@ -140,7 +144,10 @@
    %let l_sasunit = &g_sasunit;
    %let g_sasunit = saspgm/sasunit;
    %_dir(i_path=%sysfunc(pathname(work))/saspgm, i_recursive=1, o_out=cr_dir);
-
+   data cr_dir;
+      set cr_dir;
+      exa_filename=filename;
+   run;
    %_crossreference(i_includeSASUnit  =0
                    ,i_examinee        =cr_dir
                    ,o_listcalling     =work.listcalling
