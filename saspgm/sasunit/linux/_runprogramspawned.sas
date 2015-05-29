@@ -97,7 +97,7 @@
       !! " " 
       !! "&l_parms. "
       !! "-sysin &l_program. "
-      !! "-initstmt "" &l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)&l_target%nrstr(%);%%let g_scnid=)&i_scnid.;"" "
+      !! "-initstmt "" &l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)%nrstr(&l_target)%nrstr(%);%%let g_scnid=)&i_scnid.;"" "
       !! "-log   &l_log/&i_scnid..log "
       !! "-print &l_testout/&i_scnid..lst "
       !! "-noovp "
