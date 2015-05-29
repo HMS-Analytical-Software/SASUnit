@@ -71,11 +71,11 @@
    %END;
  
    %*** Need to escape blanks in various paths ***;
-   %LET l_program=%_escapblanks(&i_program.);
-   %LET l_target =%_escapblanks(&g_target.);
-   %LET l_log    =%_escapblanks(&g_log.);
-   %LET l_testout=%_escapblanks(&g_testout.);
-   %LET l_sasunit=%_escapblanks(&g_sasunit.);
+   %LET l_program=%_escapeblanks(&i_program.);
+   %LET l_target =%_escapeblanks(&g_target.);
+   %LET l_log    =%_escapeblanks(&g_log.);
+   %LET l_testout=%_escapeblanks(&g_testout.);
+   %LET l_sasunit=%_escapeblanks(&g_sasunit.);
 
    %IF &i_generateMcoverage. EQ 1 %THEN %DO;
       /*-- generate a local macro variable containing the 
