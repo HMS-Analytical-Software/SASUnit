@@ -50,9 +50,7 @@
    %LOCAL l_pgm l_auton l_object l_casid l_exaid l_num;
 
    %LET l_object = %lowcase (&i_object.);
-%PUT ----->l_object=&l_object.;
    %LET l_auton = %_getAutocallNumber(&l_object.);
-%PUT ----->l_auton=&l_auton.;
    %IF (&l_auton. >= 2) %THEN %DO;
        %LET l_num = %eval (&l_auton.-2);
        %LET l_pgm = &&g_sasautos&l_num\&l_object.;
@@ -63,9 +61,7 @@
    %ELSE %DO;
        %LET l_pgm = &g_sasunit_os.\&l_object.;
    %END;
-%PUT ----->l_pgm=&l_pgm.;
    %LET l_pgm = %_stdPath(&g_root,&l_pgm.);
-%PUT ----->l_pgm=&l_pgm.;
 
    /* determine next test case id */
    %LET l_casid=0;
