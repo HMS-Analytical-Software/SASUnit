@@ -19,6 +19,7 @@
 /*-- Testcase 1 ---------------------------------------------*/
 %initTestcase(i_object=CrossReferenceTest1.sas, i_desc=example for cross refence reports)
 
+ods listing;
 %CrossReferenceTest1;
 
 %endTestcall()
@@ -28,6 +29,7 @@
 /*-- Testcase 2 ---------------------------------------------*/
 %initTestcase(i_object=CrossReferenceTest2.sas, i_desc=example for cross refence reports)
 
+ods listing;
 %CrossReferenceTest2(i_obs=8
                     ,i_title=My Second Test Case
                     );
@@ -39,6 +41,7 @@
 /*-- Testcase 3 ---------------------------------------------*/
 %initTestcase(i_object=CrossReferenceTest3.sas, i_desc=example for cross refence reports)
 
+ods listing;
 %CrossReferenceTest3 (5);
 
 %endTestcall()
@@ -48,6 +51,7 @@
 /*-- Testcase 4 ---------------------------------------------*/
 %initTestcase(i_object=CrossReferenceTest4.sas, i_desc=example for cross refence reports)
 
+ods listing;
 %put result=%CrossReferenceTest4 (var1 =2
                                  ,var2 =9
                                  );
