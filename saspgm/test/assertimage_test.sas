@@ -153,7 +153,7 @@
 
 %*** test case 3 ------------------------------------ ***;
 %initTestcase(i_object   = assertImage.sas
-             ,i_desc     = Tests with invalid input parameters
+             ,i_desc     = Tests with valid input parameters
              )
 %endTestcall()
 
