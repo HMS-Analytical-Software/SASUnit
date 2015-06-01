@@ -59,10 +59,10 @@ RUN;
 
 DATA cas;
    format cas_scnid z3.;
-   cas_scnid = 1; exa_auton = 2; cas_exaid=1; cas_obj="TestMakro1"; output;
-   cas_scnid = 2; exa_auton = 2; cas_exaid=2; cas_obj="TestMakro2"; output;
-   cas_scnid = 3; exa_auton = 2; cas_exaid=3; cas_obj="TestMakro3"; output;
-   cas_scnid = 4; exa_auton = 2; cas_exaid=4; cas_obj="TestMakro4"; output;
+   cas_scnid = 1; cas_exaid=1; cas_obj="TestMakro1"; output;
+   cas_scnid = 2; cas_exaid=2; cas_obj="TestMakro2"; output;
+   cas_scnid = 3; cas_exaid=3; cas_obj="TestMakro3"; output;
+   cas_scnid = 4; cas_exaid=4; cas_obj="TestMakro4"; output;
 RUN;
 
 data tsu;
@@ -86,7 +86,7 @@ run;
       %assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ 
                         ,i_recordsExp=4 
                         ,i_where=               
-                        ,i_desc=4 scenarios expected in data set scenariosToRun need to be run
+                        ,i_desc=4 scenarios expected in data set scenariosToRun
                         );
       %assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
                         ,i_recordsExp=0 
@@ -97,6 +97,7 @@ run;
 
 
 /* test case 2 ------------------------------------ */
+%_createTestFiles;
 /* Modifiy results of _dir macro */
 PROC SQL;
    update exa
@@ -107,7 +108,7 @@ QUIT;
 %LET _G_CROSSREF=&G_CROSSREF.;
 %LET _G_CROSSREFSASUNIT=&G_CROSSREFSASUNIT.;
 %LET G_CROSSREF=0;
-%LET G_CROSSREFSASUNIT=0;
+%LET G_CROSSREFSASUNIT=1;
 
 %initTestcase(i_object = _checkScenario.sas, i_desc = 1 scenarios and 0 dependend macro changed since last run);
 %_switch();
