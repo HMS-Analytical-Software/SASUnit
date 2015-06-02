@@ -34,7 +34,7 @@
 
    DATA _null_;
 
-      INFILE "&i_logfile" TRUNCOVER end=eof;
+      INFILE "&i_logfile" TRUNCOVER end=eof &g_infile_options.;
       INPUT logline $char255.;
 
       ATTRIB

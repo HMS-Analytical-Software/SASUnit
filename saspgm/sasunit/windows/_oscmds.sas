@@ -27,19 +27,21 @@
       g_sasstart
       g_splash
       g_dateformat
+      g_infile_options
       ;
 
    %local
       l_filename
       ;
 
-   %LET g_copydir     = xcopy /E /I /Y;
-   %LET g_endcommand  =%str( );
-   %LET g_makedir     = md;
-   %LET g_removedir   = rd /S /Q;
-   %LET g_removefile  = del /S /Q;
-   %LET g_sasstart    ="%sysget(sasroot)/sas.exe";
-   %LET g_splash      = -nosplash;
+   %LET g_copydir       =xcopy /E /I /Y;
+   %LET g_endcommand    =%str( );
+   %LET g_makedir       =md;
+   %LET g_removedir     =rd /S /Q;
+   %LET g_removefile    =del /S /Q;
+   %LET g_sasstart      ="%sysget(sasroot)/sas.exe";
+   %LET g_splash        =-nosplash;
+   %LET g_infile_options=IGNOREDOSEOF;
 
    * retrieve dateformat from WINDOWS registry *;
    * Set default if anything goes wrong *;

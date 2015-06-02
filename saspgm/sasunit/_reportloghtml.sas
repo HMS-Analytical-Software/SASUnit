@@ -76,7 +76,7 @@
 
    DATA _NULL_;
 
-      INFILE "&l_log" END=eof TRUNCOVER;
+      INFILE "&l_log" END=eof TRUNCOVER &g_infile_options.;
       FILE "&l_html";
       INPUT logline $char255.;
 
@@ -95,11 +95,30 @@
          warning_count        0
       ;
       
-      /* Undo macro quoting: convert 'CAN' to "/", 'SYN' to "-" and 'SO' to ";"
+      /* Undo macro quoting: convert 
+         'CAN' -> "/"
+         'SYN' -> "-" 
+         'SO'  -> ";",
+         'RS'  -> ","
+         'DLE' -> "%"
+         'NAK' -> "+"
+         'DC3' -> "("
+         'DC4' -> ")"
+         'EM'  -> "<"
+         'SUB' -> ">"
+         'FS'  -> "="
          as well as delete 'BS', 'ACK', 'SOH' 'FF' and 'STX' */
-      logline = TRANSLATE(logline, "2F"x, "18"x);
-      logline = TRANSLATE(logline, "3B"x, "0E"x);
-      logline = TRANSLATE(logline, "2D"x, "17"x);
+      logline = TRANSLATE(logline, '/', "18"x); * CAN *;
+      logline = TRANSLATE(logline, '-', "16"x); * SYN *;
+      logline = TRANSLATE(logline, ';', "0E"x); * SO  *;
+      logline = TRANSLATE(logline, ',', "1E"x); * RS  *;
+      logline = TRANSLATE(logline, '%', "10"x); * DLE *;
+      logline = TRANSLATE(logline, '+', "15"x); * NAK *;
+      logline = TRANSLATE(logline, '(', "13"x); * DC3 *;
+      logline = TRANSLATE(logline, ')', "14"x); * DC4 *;
+      logline = TRANSLATE(logline, '<', "19"x); * EM  *;
+      logline = TRANSLATE(logline, '>', "1A"x); * SUB *;
+      logline = TRANSLATE(logline, '=', "1C"x); * FS  *;
       logline = transtrn(logline, "08"x, trimn(''));
       logline = transtrn(logline, "06"x, trimn(''));
       logline = transtrn(logline, "01"x, trimn(''));

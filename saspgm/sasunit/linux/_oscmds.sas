@@ -24,16 +24,18 @@
       g_endcommand
       g_sasstart
       g_splash
+      g_infile_options
       ;
 
-   %LET g_removedir   = rm -r -f;
-   %LET g_removefile  = rm;
-   %LET g_makedir     = mkdir;
-   %LET g_copydir     = cp -R;
-   %LET g_endcommand  =%str(;);
+   %LET g_removedir     =rm -r -f;
+   %LET g_removefile    =rm;
+   %LET g_makedir       =mkdir;
+   %LET g_copydir       =cp -R;
+   %LET g_endcommand    =%str(;);
    %_xcmd(umask 0033);
-   %LET g_sasstart    ="%sysfunc(pathname(sasroot))/bin/sas_%sysget(SASUNIT_LANGUAGE)";
-   %LET g_splash      =;   
+   %LET g_sasstart      ="%sysfunc(pathname(sasroot))/bin/sas_%sysget(SASUNIT_LANGUAGE)";
+   %LET g_splash        =;   
+   %LET g_infile_options=;
 
 %mend _oscmds;
 

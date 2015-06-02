@@ -12,8 +12,8 @@
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
-	\sa			For further details refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>. 
-					Here you can find the SASUnit documentation, release notes and license information.
+   \sa         For further details refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>. 
+               Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -62,7 +62,7 @@
       IF _n_=1 THEN DO;
          pattern_id = prxparse("/%upcase(&i_logmsg)/");
       END;
-      INFILE "&g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log" END=eof TRUNCOVER;
+      INFILE "&g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log" END=eof TRUNCOVER &g_infile_options.;
       INPUT logrec $char256.;
       logrec = upcase(logrec);
       IF prxmatch (pattern_id, logrec) THEN DO;
