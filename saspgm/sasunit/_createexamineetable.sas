@@ -80,7 +80,7 @@
 
    data work._examinee;
       set work._examinee_v;
-      exa_path = resolve('%_stdPath(&g_root,' || exa_filename || ')');
+      exa_path = resolve('%_stdPath(&g_root.,' || exa_filename || ')');
    run;     
 
    %let l_max_exaid=0;
