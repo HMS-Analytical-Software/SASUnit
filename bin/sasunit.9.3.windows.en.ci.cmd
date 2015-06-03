@@ -27,9 +27,8 @@ echo SASUnit config        = bin\sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%
 echo Overwrite             = %SASUNIT_OVERWRITE%
 echo Testcoverage          = %SASUNIT_COVERAGEASSESSMENT%
 
-rem Deletion of SASUnit styles ot avoid incompatabilites between 32 and 64 bit systems
+rem Deletion of SASUnit styles to avoid incompatibilites between 32 and 64 bit systems
 echo Deleting SASUnit styles
-echo on
 del "%SASUNIT_ROOT%\resources\style\*.sas7bitm"
 
 echo "Starting SASUnit ..."
