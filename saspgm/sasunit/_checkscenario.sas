@@ -59,7 +59,7 @@
          call symput ('l_cntObs',put(cnt_obs, 3.));
       END;
       DROP pos;
-      SET target.scn (keep=scn_id scn_path scn_end) nobs=cnt_obs;
+      SET target.scn (keep=scn_id scn_path scn_end scn_changed) nobs=cnt_obs;
       pos = find(scn_path,'/',-200)+1;
       scn_name = lowcase (substr(scn_path,pos));
    RUN;
@@ -70,9 +70,9 @@
             ,CASE WHEN not missing (filename) THEN resolve('%_stdPath(&g_root,' || filename || ')')
                  ELSE scn_path
                  END as scn_path
-            ,scn.changed as scn_changed
+            ,coalesce (scn.changed,s.scn_changed) as scn_changed
             ,s.scn_end
-            ,CASE WHEN scn_id EQ . THEN 1
+            ,CASE WHEN s.scn_id EQ . THEN 1
                  ELSE 0
                  END as insertIntoDB
       from scenarios as s
