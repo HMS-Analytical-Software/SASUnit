@@ -51,17 +51,6 @@
 
    %LET l_object = %lowcase (&i_object.);
    %LET l_auton = %_getAutocallNumber(&l_object.);
-   %IF (&l_auton. >= 2) %THEN %DO;
-       %LET l_num = %eval (&l_auton.-2);
-       %LET l_pgm = &&g_sasautos&l_num\&l_object.;
-   %END;
-   %ELSE %IF (&l_auton. =0) %THEN %DO;
-       %LET l_pgm = &g_sasunit.\&l_object.;
-   %END;
-   %ELSE %DO;
-       %LET l_pgm = &g_sasunit_os.\&l_object.;
-   %END;
-   %LET l_pgm = %_stdPath(&g_root,&l_pgm.);
 
    /* determine next test case id */
    %LET l_casid=0;
@@ -70,7 +59,7 @@
       SELECT max(cas_id) INTO :l_casid FROM target.cas
       WHERE cas_scnid = &g_scnid;
       SELECT exa_id INTO :l_exaid FROM target.exa
-      WHERE lowcase (exa_path) = "%lowcase(&l_pgm.)" and exa_auton=&l_auton.;
+      WHERE lowcase (exa_pgm) = "&l_object." and exa_auton=&l_auton.;
    %IF &l_casid=. %THEN %LET l_casid=1;
    %ELSE                %LET l_casid=%eval(&l_casid+1);
    /* save metadata for this test case  */

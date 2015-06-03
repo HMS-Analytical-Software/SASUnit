@@ -86,7 +86,7 @@
 
    %GLOBAL g_version g_revision g_verbose g_error g_warning g_note;
 
-   %LET g_version   = 1.5.01;
+   %LET g_version   = 1.5.02;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
    
@@ -296,6 +296,7 @@
             ,scn_desc         CHAR(1000)              /* description of program (brief tag in comment header) */
             ,scn_start        INT FORMAT=datetime21.2 /* starting date and time of the last run */
             ,scn_end          INT FORMAT=datetime21.2 /* ending date and time of the last run */
+            ,scn_changed      INT FORMAT=datetime21.2 /* modification date and time of the last run */
             ,scn_rc           INT                     /* return code of SAS session of last run */
             ,scn_errorcount   INT                     /* number of detected errors in the scenario log */
             ,scn_warningcount INT                     /* number of detected warnings in the scenario log */
