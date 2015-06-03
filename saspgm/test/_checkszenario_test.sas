@@ -26,10 +26,10 @@
 DATA scn;
    length scn_path $255;
    format scn_end datetime20.;
-   scn_id = 1; scn_path = "saspgm/test/pgmlib1/scenario1.sas"; scn_end = &scn_changed.; output;
-   scn_id = 2; scn_path = "saspgm/test/pgmlib1/scenario2.sas"; scn_end = &scn_changed.; output;
-   scn_id = 3; scn_path = "saspgm/test/pgmlib1/scenario3.sas"; scn_end = &scn_changed.; output;
-   scn_id = 4; scn_path = "saspgm/test/pgmlib1/scenario4.sas"; scn_end = &scn_changed.; output;
+   scn_id = 1; scn_path = "saspgm/test/pgmlib1/scenario1.sas"; scn_end = &scn_changed.; scn_changed=&scn_changed.;output;
+   scn_id = 2; scn_path = "saspgm/test/pgmlib1/scenario2.sas"; scn_end = &scn_changed.; scn_changed=&scn_changed.;output;
+   scn_id = 3; scn_path = "saspgm/test/pgmlib1/scenario3.sas"; scn_end = &scn_changed.; scn_changed=&scn_changed.;output;
+   scn_id = 4; scn_path = "saspgm/test/pgmlib1/scenario4.sas"; scn_end = &scn_changed.; scn_changed=&scn_changed.;output;
 RUN;
 
 /* Create data set i_examinee */
