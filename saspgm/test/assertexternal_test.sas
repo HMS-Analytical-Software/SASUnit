@@ -95,10 +95,9 @@
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /* test case 1 ------------------------------------ */
-%initTestcase(
-             i_object   = assertexternal.sas
-            ,i_desc     = Check of parameters
-            );
+%initTestcase(i_object   = assertexternal.sas
+             ,i_desc     = Check of parameters
+             );
 %endTestcall()
 
 %assertExternal (i_script             =&assertExternal_NotExistend.
@@ -145,10 +144,9 @@
 %endTestcase();
 
 /* test case 2 ------------------------------------ */
-%initTestcase(
-             i_object   = assertexternal.sas
-            ,i_desc     = Successful test with one path and one variable
-            );
+%initTestcase(i_object   = assertexternal.sas
+             ,i_desc     = Successful test with one path and one variable
+             );
 %endTestcall()
 
 %assertExternal (i_script             =&assertExternal_script1.
@@ -165,15 +163,14 @@
                 ,i_actual             =3
                 ,i_expected_shell_rc  =1
                 ,i_expectedIsPath     =Y
-                ,i_desc               =%str(Word count of "Lorem" equals 2, but i_actual=3, so i_expected_shell_rc must be)
+                ,i_desc               =%str(Word count of "Lorem" equals 2, but i_actual=3, so i_expected_shell_rc must be 1)
                 ,i_threshold          =NONE
                 );
 
 /* test case 3 ------------------------------------ */
-%initTestcase(
-             i_object   = assertexternal.sas
-            ,i_desc     = Tests with with two paths as params und file compare command 
-            );
+%initTestcase(i_object   = assertexternal.sas
+             ,i_desc     = Tests with with two paths as params und file compare command 
+             );
 %endTestcall()
 
 %assertExternal (i_script             =&assertExternal_script2.
