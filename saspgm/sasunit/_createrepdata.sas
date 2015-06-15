@@ -23,26 +23,22 @@
    /*-- generate temporary datasets ---------------------------------------------*/
    %LOCAL 
       d_scn 
-      d_cas01 
-      d_auton 
       d_pgm 
-      d_pcs 
       d_emptyscn 
       d_cas
       d_tst
+      d_exa
       l_macname
    ;
 
    %LET l_macname=&sysmacroname;
 
    %_tempFilename(d_scn)
-   %_tempFilename(d_cas01)
-   %_tempFilename(d_auton)
    %_tempFilename(d_pgm)
-   %_tempFilename(d_pcs)
    %_tempFilename(d_emptyscn)
    %_tempFilename(d_cas)
    %_tempFilename(d_tst)
+   %_tempFilename(d_exa)
 
 
    /*-- check for empty scenarios and generate entries in temporary copies of cas and tst datasets,
@@ -132,12 +128,41 @@
      ;  
    QUIT;
 
+   PROC SQL NOPRINT;
+     CREATE TABLE &d_exa. AS
+       SELECT
+         t1.*
+         FROM target.exa t1
+     ;
+     INSERT INTO &d_exa.
+     (
+          exa_id
+         ,exa_auton
+         ,exa_pgm
+         ,exa_changed
+         ,exa_filename
+         ,exa_path
+         ,exa_tcg_pct
+     )
+     VALUES(
+          .
+         ,.
+         ,'^_'
+         ,.
+         ,'^_'
+         ,'^_'
+         ,.
+     )
+     ;  
+   QUIT;
+
+
    /*-- determine return code per examinee ---------------------------------------*/
    PROC SQL NOPRINT;
       create table &d_pgm. as
          select max (cas_res) as exa_res
                 ,cas_exaid as pgm_exaid
-         from target.cas
+         from &d_cas.
          group by cas_exaid;
    QUIT;
 
@@ -198,9 +223,9 @@ PROC SQL NOPRINT;
       FROM 
           target.tsu
          ,target.scn
-         ,target.cas
-         ,target.tst
-         ,target.exa
+         ,&d_cas.
+         ,&d_tst.
+         ,&d_exa.
          ,&d_pgm.
       WHERE 
          scn_id       = cas_scnid AND         
@@ -224,7 +249,7 @@ PROC SQL NOPRINT;
 
 %errexit:
    PROC DATASETS NOWARN NOLIST LIB=work;
-      *DELETE %scan(&d_reporting,2,.);
+      DELETE %scan(&d_reporting,2,.);
    QUIT;
 
 %exit:
