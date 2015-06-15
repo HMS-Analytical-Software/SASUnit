@@ -95,7 +95,7 @@
    %end;
 
    proc sql noprint;
-      select exa_filename into :l_macroFileName1- 
+      select exa_filename into :l_macroFileName1-:l_macroFileName%cmpres(&l_anzMacros.)
          from target.exa
          %if (&o_pgmdoc_sasunit. = 0) %then %do;
             where exa_auton >= 2
@@ -111,7 +111,7 @@
                where exa_auton >= 2
             %end;
          ;
-      select coalesce (trim (cas_obj), trim(exa_pgm)) into :l_macroName1-    
+      select coalesce (trim (cas_obj), trim(exa_pgm)) into :l_macroName1-:l_macroName%cmpres(&l_anzMacros.)
          from work._macros
          order by exa_id
          ;

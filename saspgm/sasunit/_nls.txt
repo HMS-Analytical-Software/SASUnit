@@ -46,6 +46,8 @@
  17 EN Files
  18 DE Programmdokumentation für Prüfling
  18 EN Program documentation for unit under test
+ 19 DE Zusätzlich Informationen
+ 19 EN Additional information
 ---reportAuton
   1 DE Prüflinge
   1 EN Units under Test
@@ -625,8 +627,8 @@
  17 EN Program Documentation for Program
  18 DE Quellcode des Programms
  18 EN Source Code of Program
- 19 DE Verwandte Seiten
- 19 EN Related Pages
+ 19 DE Zusätzlich Informationen
+ 19 EN Additional information
  20 DE Veraltete Elemente
  20 EN Deprecated List
  21 DE SASUnit Testdokumentation
