@@ -26,6 +26,7 @@
                               
    hlp       = SCAN(TRIM(LEFT(&i_sourceColumn.)),1,"#");
    extension = SCAN(TRIM(LEFT(&i_sourceColumn.)),2,"#");
+   imagepath = SCAN(TRIM(LEFT(&i_sourceColumn.)),3,"#");
 
    SELECT (hlp);
        WHEN (-2)  hlp = "&g_nls_reportImage_001.";
@@ -35,12 +36,17 @@
        otherwise hlp = hlp;
    end;
 
-   href     = CATT ('_',PUT (scn_id, z3.),'_',PUT (cas_id, z3.),'_',PUT (tst_id, z3.));
+   href         = CATT ('_',PUT (scn_id, z3.),'_',PUT (cas_id, z3.),'_',PUT (tst_id, z3.));
+   
    %IF (&o_html.) %THEN %DO;
       href_act = CATT (href,'_image_act',extension);
       href_rep = CATT (href,'_image_diff.png');
    %END;
-   &o_targetColumn. = CATT ("^{style [flyover=""&g_nls_reportImage_005"" url=""", href_act, """] &g_nls_reportImage_004. } ^n ");
-   &o_targetColumn. = CATT (&o_targetColumn., " ^{style [flyover=""&g_nls_reportImage_005"" url=""", href_rep, """] &&g_nls_reportImage_006. } ^n ", hlp);
+   
+   tooltip_act  = catx(" ","&g_nls_reportImage_005.:", imagepath);
+   tooltip_cmp  = "&g_nls_reportImage_006.";
+
+   &o_targetColumn. = CATT ("^{style [flyover=""", tooltip_act , """ url=""", href_act, """] &g_nls_reportImage_004. } ^n ");
+   &o_targetColumn. = CATT (&o_targetColumn., " ^{style [flyover=""", tooltip_cmp , """ url=""", href_rep, """] &&g_nls_reportImage_006. } ^n ", hlp);
 %MEND _render_assertImageAct;
 /** \endcond */

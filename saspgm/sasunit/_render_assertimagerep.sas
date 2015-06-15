@@ -23,13 +23,13 @@
 */ /** \cond */ 
 
 %MACRO _render_assertImageRep (i_assertype=
-                             ,i_repdata  =
-                             ,i_scnid    =
-                             ,i_casid    = 
-                             ,i_tstid    = 
-                             ,o_html     =
-                             ,o_path     =
-                             );
+                              ,i_repdata  =
+                              ,i_scnid    =
+                              ,i_casid    = 
+                              ,i_tstid    = 
+                              ,o_html     =
+                              ,o_path     =
+                              );
 
    %local l_ifile l_ofile l_path ;
 
@@ -60,17 +60,6 @@ DATA _NULL_;
       CALL EXECUTE('%_copyfile('||filename||','||"&l_ofile."||membername||')');
    END;
 RUN;
-   
-/*
-   %if %sysfunc(fileexist(%nrbquote(&l_ifile.exp.*))) %then %do;
-      %_copyFile (%nrbquote(&l_ifile.exp.*), &l_ofile.exp%nrbquote(.txt));
-   %end;   
-   %if %sysfunc(fileexist(%nrbquote(&l_ifile.act.*))) %then %do;
-      %_copyFile (%nrbquote(&l_ifile.act.*), &l_ofile.act%nrbquote(.txt));
-   %end;
-  %if %sysfunc(fileexist(%nrbquote(&l_ifile.diff.*))) %then %do;
-      %_copyFile (%nrbquote(&l_ifile.diff.*), &l_ofile.diff%nrbquote(.txt));
-   %end;
-  */ 
+
 %MEND _render_assertImageRep;
 /** \endcond */

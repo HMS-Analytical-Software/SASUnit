@@ -26,11 +26,13 @@
                               
    hlp       = SCAN(TRIM(LEFT(&i_sourceColumn.)),1,"#");
    extension = SCAN(TRIM(LEFT(&i_sourceColumn.)),2,"#");
+   imagepath = SCAN(TRIM(LEFT(&i_sourceColumn.)),3,"#");
                               
    href     = catt ('_',put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
+   tooltip  = catx(" ","&g_nls_reportImage_008.:", imagepath);
    %IF (&o_html.) %THEN %DO;
       href_exp = catt (href,'_image_exp',extension);
    %END;
-   &o_targetColumn. = catt ("^{style [flyover=""&g_nls_reportImage_008"" url=""", href_exp, """] &g_nls_reportImage_007. } ^n ^n ", hlp);
+   &o_targetColumn. = catt ("^{style [flyover=""", tooltip , """ url=""", href_exp, """] &g_nls_reportImage_007. } ^n ", hlp);
 %MEND _render_assertImageExp;
 /** \endcond */

@@ -70,10 +70,6 @@
          y=7;
       end;
    run;
-   
-   
-   
-   
 %MEND comparison;
 
 /** \endcond */

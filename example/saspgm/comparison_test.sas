@@ -124,10 +124,10 @@ ods html;
 %assertImage(i_script             =&assertImage_script.
             ,i_expected           =%sysfunc(pathname(work))/graph1.png  
             ,i_actual             =%sysfunc(pathname(work))/graph2.png
-            ,i_expected_shell_rc  =0                   
+            ,i_expected_shell_rc  =1                   
             ,i_modifier           =-metric RMSE                  
             ,i_threshold          =
-            ,i_desc               =Graphs do not match
+            ,i_desc               =Graphs do not match%str(,) i_expected_shell_rc is set to 1
             );
 
    data class;
@@ -137,22 +137,29 @@ ods html;
 
    options printerpath=png nodate;
    ods html close;
+   footnote .j=r "%sysfunc(today(), ddmmyy10.)";
    ods printer file="%sysfunc(pathname(work))/class1.png";
       proc print data=sashelp.class;
       run;
    ods printer file="%sysfunc(pathname(work))/class2.png";
       proc print data=class;
       run;
+   %let date = %eval(%sysfunc(today()) - 1);
+   footnote .j=r "%sysfunc(putn(&date,ddmmyy10.))";
+   ods printer file="%sysfunc(pathname(work))/class3.png";
+      proc print data=sashelp.class;
+      run;
+   footnote;
    ods printer close;
    ods html;
    
 %assertImage(i_script             =&assertImage_script.
             ,i_expected           =%sysfunc(pathname(work))/class1.png  
             ,i_actual             =%sysfunc(pathname(work))/class2.png
-            ,i_expected_shell_rc  =0                   
+            ,i_expected_shell_rc  =1                   
             ,i_modifier           =-metric RMSE                  
             ,i_threshold          =
-            ,i_desc               =Graphs do not match
+            ,i_desc               =Graphs do not match%str(,) i_expected_shell_rc is set to 1
             );
 
 %assertLog (i_errors=0, i_warnings=0);
@@ -180,6 +187,5 @@ ods html;
                 ,i_desc               =%str(Word count of "Lorem" equals 4, but i_actual=3, so i_expected_shell_rc must be 1 to make test green)
                 ,i_threshold          =NONE
                 );
-   
-
+  
 /** \endcond */

@@ -135,9 +135,9 @@
 %UPDATE:
    %*** update result in test database ***;
    %_ASSERTS(i_type     = assertImage
-            ,i_expected = &i_expected_shell_rc.#&l_image1_extension.
-            ,i_actual   = &l_rc.#&l_image2_extension.
-            ,i_desc     = &i_desc. ^nCompared files:^n&i_expected.^nand^n&i_actual.
+            ,i_expected = &i_expected_shell_rc.#&l_image1_extension.#&i_expected.
+            ,i_actual   = &l_rc.#&l_image2_extension.#&i_actual.
+            ,i_desc     = &i_desc.
             ,i_result   = &l_result.
             ,i_errmsg   = &l_errmsg.
             );
