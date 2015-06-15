@@ -44,6 +44,7 @@
    %local l_MCoverageName;
    %local l_linesize;
    %local l_MissingLines;
+   %local l_title;
 
    %let l_MacroName=%lowcase(&i_macroName.);
    %let l_MCoverageName=%lowcase(&i_mCoverageName.);
@@ -302,43 +303,44 @@
       SET WORK.MCoverage;
       RowNumber = _N_;
       outputRow = trim(srcRowCopy);
-      outputRow = tranwrd (outputRow,'^{','^[');
+      outputRow = tranwrd (outputRow,'^{','°[');
       outputRow = tranwrd (outputRow,'}',']');
       %_render_dataColumn (i_sourceColumn=RowNumber
-                                  ,i_format=Z5.
-                                  ,i_columnType=tcgCommentData 
-                                  ,o_targetColumn=RowNumberOut
-                                  );
+                          ,i_format=Z5.
+                          ,i_columnType=tcgCommentData 
+                          ,o_targetColumn=RowNumberOut
+                          );
       IF covered   = -1 THEN DO;
          %_render_dataColumn (i_sourceColumn=outputRow
-                                     ,i_columnType=tcgCommentData 
-                                     ,o_targetColumn=pgmSourceColumn
-                                     );
+                             ,i_columnType=tcgCommentData 
+                             ,o_targetColumn=pgmSourceColumn
+                             );
       END;
       ELSE IF covered   = 1 THEN DO;
          %_render_dataColumn (i_sourceColumn=outputRow
-                                     ,i_columnType=tcgCoveredData 
-                                     ,o_targetColumn=pgmSourceColumn
-                                     );
+                             ,i_columnType=tcgCoveredData 
+                             ,o_targetColumn=pgmSourceColumn
+                             );
       END;
       ELSE IF covered   = 0 THEN DO;
          %_render_dataColumn (i_sourceColumn=outputRow
-                                     ,i_columnType=tcgNonCoveredData 
-                                     ,o_targetColumn=pgmSourceColumn
-                                     );
+                             ,i_columnType=tcgNonCoveredData 
+                             ,o_targetColumn=pgmSourceColumn
+                             );
       END;
       ELSE DO; 
          %_render_dataColumn (i_sourceColumn=outputRow
-                                     ,i_columnType=tcgNonContribData 
-                                     ,o_targetColumn=pgmSourceColumn
-                                     );
+                             ,i_columnType=tcgNonContribData 
+                             ,o_targetColumn=pgmSourceColumn
+                             );
       END;
    RUN;
 
    options nocenter;
    title;footnote;
 
-   title  j=c "&g_nls_reportAuton_005.: &i_macroName";
+   %let l_title=&g_nls_reportAuton_017. &i_macroName. | &g_project - &g_nls_reportAuton_002.;
+   title  j=c "&l_title.";
    title2 "&g_nls_reportAuton_016.: &CoveragePCT.";
 
    %if (&o_html.) %then %do;
@@ -351,10 +353,11 @@
    %end;
 
    proc report data=work._tcg_legend nowd
-            style(report)=blindTable [borderwidth=0]
-            style(column)=blindData
-            style(lines) =blindData
-            style(header)=blindHeader;
+      style(report)=blindTable [borderwidth=0]
+      style(column)=blindData
+      style(lines) =blindData
+      style(header)=blindHeader;
+
       columns dummy Text;
 
       compute before _page_;

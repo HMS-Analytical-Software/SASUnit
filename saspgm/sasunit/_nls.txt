@@ -12,19 +12,19 @@
 ---reportTree
   1 DE Szenarien
   1 EN Scenarios
-  2 DE alle Testszenarien
+  2 DE Alle Testszenarien
   2 EN All test scenarios
   3 DE Testfälle des Testszenarios
-  3 EN Test cases of the test scenario
+  3 EN Test cases of test scenario
   4 DE Prüfungen zu Testfall
   4 EN Assertions for test case
   5 DE Prüfung
   5 EN Assertion
   6 DE Prüflinge
   6 EN Units under Test
-  7 DE alle Prüflinge nach Suchpfaden
+  7 DE Alle Prüflinge nach Suchpfaden
   7 EN All units under test by program library 
-  8 DE sonstige
+  8 DE Sonstige
   8 EN Others
   9 DE Prüflinge in Programmbibliothek
   9 EN Units under test in program library
@@ -40,11 +40,17 @@
  14 EN Assertion
  15 DE SASUnit - Hauptseite des Projekts
  15 EN SASUnit - main page of project
+ 16 DE Programmdokumentation
+ 16 EN Program documentation
+ 17 DE Dateien
+ 17 EN Files
+ 18 DE Programmdokumentation für Prüfling
+ 18 EN Program documentation for unit under test
 ---reportAuton
   1 DE Prüflinge
   1 EN Units under Test
-  2 DE Testdokumentation
-  2 EN Test Documentation
+  2 DE SASUnit Testdokumentation
+  2 EN SASUnit Test Documentation
   3 DE Programmbibliothek
   3 EN Program Library
   4 DE Programmbibliothek unter
@@ -57,7 +63,7 @@
   7 EN Test Cases
   8 DE Ergebnis
   8 EN Result
-  9 DE zu prüfendes Programm unter
+  9 DE Zu prüfendes Programm unter
   9 EN Unit under test at
  10 DE Details zu Testszenario
  10 EN Details for test scenario
@@ -93,6 +99,10 @@
  25 EN calls these programs
  26 DE wird von folgenden Programmen aufgerufen
  26 EN is called by these programs
+ 27 DE Quelltext herunterladen
+ 27 EN Download Sourcecode
+ 28 DE Programmdokumentation
+ 28 EN Program Documentation
 ---reportCas
   1 DE Testfälle nach Szenarien
   1 EN Test Cases by Scenario
@@ -578,3 +588,51 @@
   7 EN Expected image
   8 DE Erwartetes Bild öffnen
   8 EN Open expected image
+---reportPgmDoc
+  1 DE Ausführliche Beschreibung
+  1 EN Detailed description
+  2 DE Autor
+  2 EN Author
+  3 DE Datum
+  3 EN Date
+  4 DE Siehe auch
+  4 EN See also
+  5 DE Fehler
+  5 EN Bug
+  6 DE Austehende Tests
+  6 EN Test
+  7 DE Austehende Aufgaben
+  7 EN To Do
+  8 DE Version
+  8 EN Version
+  9 DE Parameter
+  9 EN Parameters
+ 10 DE Rückgabe
+ 10 EN Return
+ 11 DE Rückgabewert
+ 11 EN Return value
+ 12 DE Kommentar
+ 12 EN Comment
+ 13 DE Copyright
+ 13 EN Copyright
+ 14 DE Austehende Aufgaben
+ 14 EN To Do List
+ 15 DE Austehende Tests
+ 15 EN Test List
+ 16 DE Bekannte Fehler
+ 16 EN Bug List
+ 17 DE Programmdokumentation für Programm
+ 17 EN Program Documentation for Program
+ 18 DE Quellcode des Programms
+ 18 EN Source Code of Program
+ 19 DE Verwandte Seiten
+ 19 EN Related Pages
+ 20 DE Veraltete Elemente
+ 20 EN Deprecated List
+ 21 DE SASUnit Testdokumentation
+ 21 EN SASUnit Test Documentation
+ 22 DE Programmdokumentation
+ 22 EN Program Documentation
+ 23 DE Veraltet
+ 23 EN Deprecated
+ 

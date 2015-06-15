@@ -71,6 +71,14 @@
             'fgTcgComment'    = cx828282
             'fgTcgNonContrib' = cx8020FF
             'fgErrorCount'    = red
+            /* Program documentation */
+            'bgPgmDocTodo'   = Bisque
+            'bgPgmDocTest'   = LightBlue
+            'bgPgmDocBug'    = LightCoral
+            'bgPgmDocRemark' = LightGreen
+            'fgPgmDocDep'    = white
+            'bgPgmDocDep'    = cx808080
+            'fgPgmDocSource' = cx606060
             ;
          style colors
             "Abstract colors used in the default style" /
@@ -82,7 +90,7 @@
             'headerbg' = cxd7dde1
             'datafgemph' = color_list('fgA1')
             'databgemph' = color_list('bgA3')
-            'datafgstrong' = color_list('fgA3')
+            'datafgstrong' = color_list('fgB1')
             'databgstrong' = color_list('bgA3')
             'datafg' = color_list('fgA1')
             'databg' = color_list('bgA3')
@@ -788,8 +796,10 @@
             font=fonts('TitleFont2')
             color=colors('captionfg')
          ;
-         style blindStrongData from blindData "Strong data cell in a blind Table" /
+         style blindDataStrong from DataStrong "Strong data cell in a blind Table" /
             color=colors('datafgstrong')
+            borderwidth=0px
+            backgroundcolor=colors('docbg')
          ;
          style tcgCoveredData "data cell with covered code in tcg report" /
             color=color_list('fgTcgCovered')
@@ -820,7 +830,7 @@
             backgroundrepeat = NO_REPEAT
             BACKGROUNDPOSITION = right
             paddingtop    =  4px 
-            paddingleft   = 4px 
+            paddingleft   =  4px 
             paddingright  =  18px 
             paddingbottom =  4px
          ;
@@ -841,6 +851,59 @@
          ;
          style tablesorterheaderDesc "Tablesorter-headerDesc for jQuery TableSorter" /
             backgroundimage = "data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7"
+         ;
+         style pgmDocTodoData "data cell of ToDo section in pgmdoc report" /
+            backgroundcolor=color_list('bgPgmDocTodo')
+         ;
+         style pgmDocTestData "data cell of Test section in pgmdoc report" /
+            backgroundcolor=color_list('bgPgmDocTest')
+         ;
+         style pgmDocBugData "data cell of Bug section in pgmdoc report" /
+            backgroundcolor=color_list('bgPgmDocBug')
+         ;
+         style pgmDocRemarkData "data cell of Remark section in pgmdoc report" /
+            backgroundcolor=color_list('bgPgmDocRemark')
+         ;
+         style pgmDocDepData "data cell of Remark section in pgmdoc report" /
+            foreground=color_list('fgPgmDocDep')
+            background=color_list('bgPgmDocDep')
+         ;
+         style pgmDocTodoHeader from Header "Header of ToDo section in pgmdoc report" /
+            background=color_list('bgPgmDocTodo')
+         ;
+         style pgmDocTestHeader from Header "Header of Test section in pgmdoc report" /
+            background=color_list('bgPgmDocTest')
+         ;
+         style pgmDocBugHeader from Header "Header of Bug section in pgmdoc report" /
+            background=color_list('bgPgmDocBug')
+         ;
+         style pgmDocRemarkHeader from Header "Header of remark section in pgmdoc report" /
+            background=color_list('bgPgmDocRemark')
+         ;
+         style pgmDocDepHeader from Header "Header of deprecated section in pgmdoc report" /
+            foreground=color_list('fgPgmDocDep')
+            background=color_list('bgPgmDocDep')
+         ;
+         style pgmDocHeader from Header "Header of pgmdoc report" /
+            foreground    = colors('datafg')
+            background    = colors('databg')
+         ;
+         style pgmDocData from Data "data cell of pgmdoc report" /
+           foreground = color_list('fgB1')
+           background = colors('docbg')
+         ;
+         style pgmDocDataStrong from DataStrong "strong data cell of pgmdoc report" /
+           background = colors('docbg')
+         ;
+         style pgmDocSource from blindFixedFontData "strong data cell of pgmdoc report" /
+           foreground = color_list('fgPgmDocSource')
+         ;
+         style pgmDocBlindData from blindData "data cell of pgmdoc report" /
+           foreground = color_list('fgB1')
+           background = colors('docbg')
+         ;
+         style pgmDocBlindDataStrong from blindDataStrong "strong data cell of pgmdoc report" /
+           background = colors('docbg')
          ;
       end;
    run;

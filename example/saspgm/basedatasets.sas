@@ -4,7 +4,7 @@
 
 \brief      Create base datasets for a database
 
-            
+
 \version    \$Revision$
 \author     \$Author$
 \date       \$Date$

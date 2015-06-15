@@ -15,8 +15,8 @@
 
 */ /** \cond */
 %let g_root=C:\projects\sasunit;
-%include "C:\projects\sasunit\saspgm\sasunit\_sasunit_reportcreatestyle.sas";
-%_sasunit_reportCreateStyle;
+%include "C:\projects\sasunit\saspgm\sasunit\_reportcreatestyle.sas";
+%_reportCreateStyle;
 libname target "C:\projects\sasunit\doc\sasunit\en" access=readonly;
 
 ods escapechar="^";
@@ -54,7 +54,7 @@ ods listing close;
 *ods html(3)    file="C:\TEMP\SASUNIT_HTML_mit_Styleangabe.html" style=styles.sasunit stylesheet=(url="SAS_SASUnit.css");
 *ods htmlcss(4) file="C:\TEMP\SASUNIT_HTMLCSS_mit_Styleangabe.html" style=styles.sasunit stylesheet=(url="SAS_SASUnit.css");
 * writing Stylesheet *;
-ods html(5)     file="C:\TEMP\SASUNIT.html" style=styles.sasunit stylesheet="C:\projects\sasunit\resources\html\css\SAS_SASUnit.css"(url="SAS_SASUnit_PROC_TEMPLATE.css");
+ods html(5)     file="C:\TEMP\SASUNIT.html" style=styles.sasunit stylesheet="C:\projects\sasunit\resources\html\css\SAS_SASUnit_PROC_TEMPLATE.css"(url="SAS_SASUnit_PROC_TEMPLATE.css");
 proc compare base=sashelp.class compare=work.class;
 run;quit;
 proc report data=scenarios nowd;
@@ -77,4 +77,3 @@ run;
 ods _all_ close;
 ods listing;
 ods path reset;
-libname _style clear;

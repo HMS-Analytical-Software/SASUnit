@@ -18,6 +18,7 @@
    \param   i_language     Language of the report (DE, EN) - refer to _nls
    \param   o_html         Test report in HTML-format?
    \param   o_junit        Test report in JUNIT-XML-format?
+   \param   o_pgmdoc       Creates source code documentation per examinee (0 / 1)
    \param   o_force        0 .. (default) incremental, 1 .. create complete report
    \param   o_output       (optional) full path of the directory in which the test report is created. 
                            If the parameter is not set, the subdirectory rep of the test repository is used.
@@ -26,24 +27,37 @@
            
 */ /** \cond */ 
 
-%MACRO reportSASUnit (i_language   = EN
-                     ,o_html       = 1
-                     ,o_junit      = 0
-                     ,o_force      = 0
-                     ,o_output     =
+%MACRO reportSASUnit (i_language       = EN
+                     ,o_html           = 1
+                     ,o_pdf            = 0
+                     ,o_junit          = 0
+                     ,o_pgmdoc         = _DEFAULT_
+                     ,o_pgmdoc_sasunit = _DEFAULT_
+                     ,o_force          = 0
+                     ,o_output         =
                      );
 
    %LOCAL l_macname; 
    %LET l_macname=&sysmacroname;
 
    /*-- check parameters --------------------------------------------------------*/
-   %IF "&o_html" NE "1" %THEN %LET o_html=0;
+   %IF "&o_html"  NE "1" %THEN %LET o_html =0;
+
+   %IF "&o_pdf"   NE "0" %THEN %LET o_pdf  =1;
+
+   %IF "&o_junit" NE "0" %THEN %LET o_junit=1;
+
+   %IF "&o_pgmdoc" EQ "_DEFAULT_" %THEN %LET o_pgmdoc=%sysget(SASUNIT_OVERWRITE);
+
+   %IF "&o_pgmdoc" NE "1" %THEN %LET o_pgmdoc=0;
+
+   %IF "&o_pgmdoc_sasunit" EQ "_DEFAULT_" %THEN %LET o_pgmdoc_sasunit=&o_pgmdoc.;
+
+   %IF "&o_pgmdoc_sasunit" NE "1" %THEN %LET o_pgmdoc_sasunit=0;
 
    %IF "&o_force" NE "1" %THEN %LET o_force=0;
 
-   %IF "&o_junit" NE "1" %THEN %LET o_junit=0;
-
-   %IF ("&o_html" NE "1" AND "&o_junit" NE "1") %THEN %DO;
+   %IF (&o_html. NE 1 AND &o_junit. NE 1 AND &o_pdf. NE 1) %THEN %DO;
       %GOTO exit;
    %END;
 
@@ -72,292 +86,14 @@
                     )
       %THEN %GOTO errexit;
 
-   /*-- generate temporary datasets ---------------------------------------------*/
    %LOCAL 
       d_rep 
-      d_scn 
-      d_cas01 
-      d_auton 
-      d_pgm 
-      d_pcs 
-      d_emptyscn 
-      d_cas
-      d_tst
    ;
    %_tempFilename(d_rep)
-   %_tempFilename(d_scn)
-   %_tempFilename(d_cas01)
-   %_tempFilename(d_auton)
-   %_tempFilename(d_pgm)
-   %_tempFilename(d_pcs)
-   %_tempFilename(d_emptyscn)
-   %_tempFilename(d_cas)
-   %_tempFilename(d_tst)
 
+   %_createRepData(d_reporting=&d_rep.);
 
-   /*-- check for empty scenarios and generate entries in temporary copies of cas and tst datasets,
-        in order to make scenario appear in report with a dummy test case --------------------------- */
-   %LOCAL
-      l_sEmptyScnDummyCasDesc
-   ;
-   %LET l_sEmptyScnDummyCasDesc = %STR(no valid test case found - must be red!);
-
-   PROC SQL NOPRINT;
-      CREATE TABLE &d_emptyscn. AS
-         SELECT
-            t1.scn_id
-            FROM target.scn t1
-            WHERE t1.scn_id NOT IN
-            (
-               SELECT
-                  Distinct cas_scnid
-                  FROM target.cas
-            )
-      ;
-   QUIT;
-
-   PROC SQL NOPRINT;
-      CREATE TABLE &d_cas. AS
-         SELECT
-           t1.*
-          FROM target.cas t1
-      ;
-      INSERT INTO &d_cas.
-      (
-         cas_scnid
-        ,cas_id
-        ,cas_obj
-        ,cas_desc
-        ,cas_spec
-        ,cas_start
-        ,cas_end
-        ,cas_res
-      )
-      (
-         SELECT
-             scn_id
-            ,1
-            ,'^_'
-            ,"&l_sEmptyScnDummyCasDesc."
-            ,'^_'
-            ,.
-            ,.
-            ,2
-            FROM &d_emptyscn.
-      )
-      ;
-   QUIT;
-
-   PROC SQL NOPRINT;
-     CREATE TABLE &d_tst. AS
-       SELECT
-         t1.*
-         FROM target.tst t1
-     ;
-     INSERT INTO &d_tst.
-     (
-       tst_scnid
-      ,tst_casid
-      ,tst_id
-      ,tst_type
-      ,tst_desc
-      ,tst_exp
-      ,tst_act
-      ,tst_res
-      ,tst_errmsg
-     )
-     (
-       SELECT
-          scn_id
-         ,1
-         ,0
-         ,'^_'
-         ,'^_'
-         ,'^_'
-         ,'^_'
-         ,2
-         ,''
-         FROM &d_emptyscn.
-     )
-     ;  
-   QUIT;
-
-   /*-- generate a last-flag for treeview ---------------------------------------*/
-   PROC SORT DATA=target.scn OUT=&d_scn;
-      BY scn_id;
-   RUN;
-   DATA &d_scn;
-      SET &d_scn END=eof;
-      scn_last = eof;
-   RUN;
-
-   PROC SQL noprint;
-      create table &d_cas01. as
-         select %scan (&d_cas.,2,.).*
-               ,exa_pgm
-               ,exa_filename
-               ,exa_auton
-               ,exa_path
-         from &d_cas. left join target.exa
-         on %scan (&d_cas.,2,.).cas_exaid = exa.exa_id
-         order by cas_scnid, cas_id;
-   quit;
-
-   DATA &d_cas01.;
-      SET &d_cas01.;
-      BY cas_scnid;
-      cas_last = last.cas_scnid;
-      cas_objucase = upcase(exa_pgm);
-   RUN;
-
-   PROC SQL noprint;
-      create table &d_auton. as
-         select distinct exa_auton as auton_id
-            from &d_cas. left join target.exa
-            on cas_exaid = exa_id
-            order by auton_id;
-   QUIT;
-   DATA &d_auton.;
-      SET &d_auton. END=eof;
-      auton_last = eof;
-   RUN;
-
-   PROC SQL noprint;
-      create table &d_pgm. as 
-         select exa_auton as pgm_auton
-               ,upcase (exa_pgm) as pgm_ucase
-         from &d_cas. left join target.exa
-         on cas_exaid = exa_id;
-   QUIT;
-   PROC SORT DATA=&d_pgm. NODUPKEY;
-      BY pgm_auton pgm_ucase;
-   RUN;
-   DATA &d_pgm._;
-      SET &d_pgm.;
-      BY pgm_auton;
-      IF first.pgm_auton THEN pgm_id=0;
-      pgm_id+1;
-      pgm_last = last.pgm_auton;
-   RUN;
-   PROC SQL NOPRINT;
-      create table work.pgm_res as
-         select upcase (cas_obj) as pgm_ucase
-               ,max (cas_res) as pgm_res
-         from &d_cas.
-         group by cas_obj;
-      create table &d_pgm. as
-         select a.*
-               ,b.pgm_res
-         from &d_pgm._ a left join work.pgm_res b
-         on a.pgm_ucase = b.pgm_ucase;
-   QUIT;
-
-   PROC SQL noprint;
-      create table &d_pcs. as 
-         select exa_auton as pcs_auton
-               ,upcase (exa_pgm) as pcs_ucase
-               ,cas_scnid as pcs_scnid
-               ,cas_id as pcs_casid
-         from &d_cas. left join target.exa
-         on cas_exaid = exa_id;
-   QUIT;
-   PROC SORT DATA=&d_pcs OUT=&d_pcs NODUPKEY;
-      BY pcs_auton pcs_ucase pcs_scnid pcs_casid;
-   RUN;
-   DATA &d_pcs.;
-      SET &d_pcs.;
-      BY pcs_auton pcs_ucase;
-      pcs_last = last.pcs_ucase;
-   RUN;
-
-   /*-- create reporting dataset ------------------------------------------------*/
-   %LOCAL i;
-   
-   PROC SQL NOPRINT;
-      CREATE TABLE &d_rep (COMPRESS=YES) AS
-      SELECT 
-          tsu_project    
-         ,tsu_root       
-         ,tsu_target       
-         ,tsu_sasunit    
-         ,tsu_sasunit_os
-         ,tsu_sasautos   
-   %DO i=1 %TO 9;
-         ,tsu_sasautos&i 
-   %END;
-         ,tsu_autoexec   
-         ,tsu_sascfg     
-         ,tsu_sasuser    
-         ,tsu_testdata   
-         ,tsu_refdata    
-         ,tsu_doc        
-         ,tsu_lastinit
-         ,tsu_lastrep
-         ,tsu_dbversion
-         ,scn_id     
-         ,scn_path   
-         ,scn_desc   
-         ,scn_start  
-         ,scn_end    
-         ,scn_rc     
-         ,scn_res 
-         ,scn_errorcount
-         ,scn_warningcount 
-         ,scn_last
-         ,cas_id    
-         ,exa_auton
-         ,exa_pgm
-         ,exa_filename
-         ,exa_path
-         ,auton_last
-         ,cas_obj  
-         ,pgm_id
-         ,pgm_last
-         ,pcs_last
-         ,pgm_res
-         ,cas_desc  
-         ,cas_spec  
-         ,cas_start 
-         ,cas_end   
-         ,cas_res 
-         ,cas_last 
-         ,tst_id
-         ,tst_type
-         ,tst_desc
-         ,tst_exp
-         ,tst_act
-         ,tst_res
-         ,tst_errmsg
-      FROM 
-          target.tsu
-         ,&d_scn
-         ,&d_cas01.
-         ,&d_tst
-         ,&d_auton
-         ,&d_pgm
-         ,&d_pcs
-      WHERE 
-         scn_id       = cas_scnid AND         
-         scn_id       = tst_scnid AND
-         cas_id       = tst_casid AND
-         auton_id     = exa_auton AND
-         cas_objucase = pgm_ucase AND
-         exa_auton    = pgm_auton AND
-         cas_objucase = pcs_ucase AND
-         scn_id       = pcs_scnid AND
-         cas_id       = pcs_casid
-      ORDER BY scn_id, cas_id, tst_id;
-      CREATE UNIQUE INDEX idx1 ON &d_rep. (scn_id, cas_id, tst_id);
-      CREATE UNIQUE INDEX idx2 ON &d_rep. (exa_auton, pgm_id, scn_id, cas_id, tst_id);
-   QUIT;
-
-   %IF %_handleError(&l_macname.
-                    ,ErrorTestDB
-                    ,&syserr. NE 0
-                    ,%nrstr(Fehler beim Zugriff auf die Testdatenbank)
-                    ,i_verbose=&g_verbose.
-                    )
-      %THEN %GOTO errexit;
+   %IF (%sysfunc(exist (d_rep.))) %THEN %GOTO errexit;
 
    /*-- determine last run ------------------------------------------------------*/
    %LOCAL 
@@ -440,52 +176,50 @@
             /*-- only if testsuite has been initialized anew after last report -----*/
             IF tsu_lastinit > tsu_lastrep OR &o_force THEN DO;
                /*-- convert SAS-log from initSASUnit -------------------------------*/
-               PUT '%_reportLogHTML('                   /
-                   "    i_log     = &g_log/000.log"             /
+               PUT '%_reportLogHTML('                            /
+                   "    i_log     = &g_log/000.log"              /
                    "   ,i_title   = &g_nls_reportSASUnit_001"    /
-                   "   ,o_html    = &l_output/000_log.html" /
+                   "   ,o_html    = &l_output/000_log.html"      /
                    ")";
                /*-- create overview page -------------------------------------------*/
-               PUT '%_reportHomeHTML('                   /
-                   "    i_repdata = &d_rep"                      /
-                   "   ,o_html    = &o_html."    /
+               PUT '%_reportHomeHTML('             /
+                   "    i_repdata = &d_rep"        /
+                   "   ,o_html    = &o_html."      /
                    "   ,o_path    = &l_output."    /
-                   "   ,o_file    = overview"    /
+                   "   ,o_file    = overview"      /
                    ")";
             END;
             /*-- only if a test scenario has been run since last report ------------*/
             IF &l_lastrun > tsu_lastrep OR &l_bOnlyInexistingScnFound. OR &o_force. THEN DO;
                /*-- create table of contents ---------------------------------------*/
-               PUT '%_reportTreeHTML('                  /
-                   "    i_repdata = &d_rep"                     /
-                   "   ,o_html    = &l_output/tree.html"    /
+               PUT '%_reportTreeHTML('                           /
+                   "    i_repdata        = &d_rep"               /
+                   "   ,o_html           = &l_output/tree.html"  /
+                   "   ,o_pgmdoc         = &o_pgmdoc"            /
+                   "   ,o_pgmdoc_sasunit = &o_pgmdoc_sasunit"    /
                    ")";
                /*-- create list of test scenarios ----------------------------------*/
-               PUT '%_reportScnHTML('                   /
-                   "    i_repdata = &d_rep."                     /
-                   "   ,o_html    = &o_html."    /
+               PUT '%_reportScnHTML('              /
+                   "    i_repdata = &d_rep."       /
+                   "   ,o_html    = &o_html."      /
                    "   ,o_path    = &l_output."    /
-                   "   ,o_file    = scn_overview"    /
+                   "   ,o_file    = scn_overview"  /
                    ")";
                /*-- create list of test cases --------------------------------------*/
-               PUT '%_reportCasHTML('                   /
-                   "    i_repdata = &d_rep"                     /
-                   "   ,o_html    = &o_html."    /
+               PUT '%_reportCasHTML('              /
+                   "    i_repdata = &d_rep"        /
+                   "   ,o_html    = &o_html."      /
                    "   ,o_path    = &l_output."    /
-                   "   ,o_file    = cas_overview"    /
+                   "   ,o_file    = cas_overview"  /
                    ")";
                /*-- create list of units under test --------------------------------*/
-               PUT '%_reportAutonHTML('                   /
-                   "    i_repdata = &d_rep"                     /
-                   "   ,o_html    = &o_html."    /
-                   "   ,o_path    = &l_output."    /
-                   "   ,o_file    = auton_overview"    /
+               PUT '%_reportAutonHTML('              /
+                   "    i_repdata = &d_rep"          /
+                   "   ,o_html    = &o_html."        /
+                   "   ,o_path    = &l_output."      /
+                   "   ,o_file    = auton_overview"  /
+                   "   ,o_pgmdoc  = &o_pgmdoc."      /
                    ")";
-      /* Creates Report Lists Only
-               PUT '%_reportpgmlists('                /
-                   "    i_language = &i_language."          /
-                   ")";
-      /**/
             END;
          END;
 
@@ -500,18 +234,13 @@
                    "   ,o_html    = &l_output/" scn_id z3. "_log.html" /
                    ")";
                /*-- compile detail information for test case -----------------------*/
-               PUT '%_reportDetailHTML('                   /
-                   "    i_repdata = &d_rep"                        /
-                   "   ,i_scnid   = " scn_id z3.                   /
-                   "   ,o_html    = &o_html."    /
-                   "   ,o_path    = &l_output."    /
+               PUT '%_reportDetailHTML('              /
+                   "    i_repdata = &d_rep"           /
+                   "   ,i_scnid   = " scn_id z3.      /
+                   "   ,o_html    = &o_html."         /
+                   "   ,o_path    = &l_output."       /
                    "   ,o_file    = cas_" scn_id z3.  /
                    ")";
-/* Needs modification to create PGMDOC for ONE(!) examinee
-               PUT '%_reportpgmdoc('                /
-                   "    i_language = &i_language."          /
-                   ")";
-*/
             END;
          END;
 
@@ -541,6 +270,14 @@
    %IF (&o_junit.=1) %THEN %DO;
       %_reportJUnitXML(o_file=&l_output./junit.xml)
    %END;
+   %IF (&o_pgmdoc.=1) %THEN %DO;
+      %_reportPgmDoc(i_language      =&i_language.
+                    ,o_html          =&o_html.
+                    ,o_pdf           =&o_pdf.
+                    ,o_path          =&l_output.
+                    ,o_pgmdoc_sasunit=&o_pgmdoc_sasunit.
+                    );
+   %END;
 
    /*-- save last report date ---------------------------------------------------*/
    PROC SQL NOPRINT;
@@ -557,8 +294,8 @@
       %PUT;
 %exit:
    PROC DATASETS NOWARN NOLIST LIB=work;
-      DELETE %scan(&d_rep,2,.) %scan(&d_scn,2,.) %scan(&d_cas01.,2,.) %scan(&d_cas.,2,.) %scan(&d_auton,2,.) 
-             %scan(&d_pgm,2,.) %scan(&d_pcs,2,.) %scan(&d_emptyscn.,2,.);
+      DELETE %scan(&d_rep.,2,.)
+             ;
    QUIT;
 %MEND reportSASUnit;
 /** \endcond */

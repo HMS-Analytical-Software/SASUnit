@@ -27,6 +27,7 @@
                         ,o_html    = 0
                         ,o_path    =
                         ,o_file    =
+                        ,o_pgmdoc  =
                         );
 
    /*-- determine number of scenarios 
@@ -36,29 +37,29 @@
    %_tempFileName(d_rep1)
    %_tempFileName(d_rep2)
 
-   PROC MEANS NOPRINT NWAY missing DATA=&i_repdata(KEEP=exa_auton pgm_id scn_id cas_id);
-      class exa_auton pgm_id scn_id cas_id;
+   PROC MEANS NOPRINT NWAY missing DATA=&i_repdata(KEEP=exa_auton exa_id scn_id cas_id);
+      class exa_auton exa_id scn_id cas_id;
       OUTPUT OUT=&d_rep1. (rename=(_FREQ_=scn_tst));
    RUN;
 
-   PROC MEANS NOPRINT NWAY missing DATA=&d_rep1.(KEEP=exa_auton pgm_id scn_id scn_tst);
-      class exa_auton pgm_id scn_id;
+   PROC MEANS NOPRINT NWAY missing DATA=&d_rep1.(KEEP=exa_auton exa_id scn_id scn_tst);
+      class exa_auton exa_id scn_id;
       OUTPUT OUT=&d_rep2. (rename=(_FREQ_=scn_cas)) sum(scn_tst)=scn_tst;
    RUN;
 
    PROC SORT DATA=&i_repdata. out=work._auton_report;
-      BY exa_auton pgm_id scn_id;
+      BY exa_auton exa_id scn_id;
    RUN;
 
    DATA work._auton_report;
       SET work._auton_report;
-      BY exa_auton pgm_id scn_id;
+      BY exa_auton exa_id scn_id;
       IF (first.scn_id);
    RUN;
 
    DATA work._auton_report;
       MERGE work._auton_report &d_rep2.;
-      BY exa_auton pgm_id scn_id;
+      BY exa_auton exa_id scn_id;
    RUN;
    
    /* Visualize crossreference data */
@@ -126,7 +127,6 @@
       QUIT;
 
       /* Add col tcg_pct to data set &d_rep1 to store coverage percentage for report generation */
-      /* ToDo: Update target.examinee */
       DATA work._auton_report (COMPRESS=YES);
          LENGTH tcg_pct 8;
          SET work._auton_report;
@@ -228,7 +228,7 @@
    footnote;
    options nocenter;
 
-   %let l_title=%str(&g_nls_reportAuton_001 | &g_project - SASUnit &g_nls_reportAuton_002);
+   %let l_title=%str(&g_nls_reportAuton_001. | &g_project. - &g_nls_reportAuton_002.);
    title j=c "&l_title.";
 
    %if (&o_html.) %then %do;
@@ -262,7 +262,7 @@
                 resultColumn
                 linkTitle0  linkTitle1  LinkTitle2  LinkTitle3  LinkTitle4  LinkTitle5
                 linkColumn0 linkColumn1 LinkColumn2 LinkColumn3 LinkColumn4 LinkColumn5 $1000
-                _autonColumn autonColumn cas_abs_path scn_abs_path $400;
+                _autonColumn autonColumn cas_abs_path scn_abs_path pgmdoc_name $400;
          set work._auton_report (where=(exa_auton=&l_pgmLib.));
          ARRAY sa(0:9) tsu_sasautos tsu_sasautos1-tsu_sasautos9;
          label 
@@ -353,15 +353,15 @@
                LinkColumn5 = "&g_nls_reportAuton_024.";
             %end;
 
-            %_render_dataColumn(i_sourceColumn=cas_obj
-                               ,i_linkColumn=LinkColumn1
-                               ,i_linkTitle=LinkTitle1
-                               ,o_targetColumn=pgmColumn
-                               );
-/*
-            pgmColumn=catt ('^{style [url="pgm_', cas_obj, '" flyover="Program Documentation"]',cas_obj,'}');
-            pgmColumn=catt (pgmColumn, ' ^{style [url="', LinkColumn1, '" flyover="', LinkTitle1, '"] [Download Sourcecode]}');
-*/
+            pgmdoc_name = tranwrd (exa_pgm, ".sas", ".html");
+            if (&o_pgmdoc. = 1) then do;
+               pgmColumn=catt ('^{style [url="pgm_', pgmdoc_name, '" flyover="&g_nls_reportAuton_028."]',cas_obj,'}');
+            end;
+            else do;
+               pgmColumn=catt (cas_obj);
+            end;
+            pgmColumn=catt (pgmColumn, ' ^{style [url="', LinkColumn1, '" flyover="', LinkTitle1, """ Fontsize=7pt] [&g_nls_reportAuton_027.]}");
+
             %_render_dataColumn(i_sourceColumn=scn_id
                                ,i_format=z3.
                                ,i_linkColumn=LinkColumn2
@@ -400,7 +400,7 @@
             style(lines)=blindData
             ;
 
-         columns pgm_id pgmColumn scenarioColumn caseColumn assertColumn
+         columns exa_id pgmColumn scenarioColumn caseColumn assertColumn
             %IF &g_testcoverage. EQ 1 %THEN %DO;
                 coverageColumn
             %END;
@@ -410,7 +410,7 @@
                 resultColumn autonColumn;
 
          define autonColumn    / noprint;
-         define pgm_id         / order noprint;
+         define exa_id         / order noprint;
          define pgmColumn      / order;
          define scenarioColumn / order style(column)=[just=right];
          define caseColumn     / order style(column)=[just=right];

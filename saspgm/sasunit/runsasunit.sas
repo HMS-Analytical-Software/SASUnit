@@ -47,6 +47,7 @@
       l_auto 
       l_autonr
       l_c_scnid
+      l_changed
       l_dorun 
       l_error_count 
       l_filename
@@ -136,9 +137,10 @@
       DATA _NULL_;
          in = &i.;
          set &d_scenariosToRun. point=in;
-         Call Symputx('l_scnid',scn_id, 'L');
-         Call Symputx('l_dorun',dorun, 'L');
-         Call Symputx('l_filename',scn_path, 'L');
+         Call Symputx('l_scnid',    scn_id,      'L');
+         Call Symputx('l_dorun',    dorun,       'L');
+         Call Symputx('l_filename', scn_path,    'L');
+         Call Symputx('l_changed',  scn_changed, 'L');
          stop;
       RUN;
 
@@ -160,8 +162,9 @@
          %_getPgmDesc (i_pgmfile=&l_filename, r_desc=l_scndesc)
          PROC SQL NOPRINT;
             UPDATE target.scn SET
-               scn_desc  = "&l_scndesc"
-              ,scn_start = %sysfunc(datetime())
+               scn_desc    = "&l_scndesc"
+              ,scn_start   = %sysfunc(datetime())
+              ,scn_changed = &l_changed.
             WHERE scn_id = &l_scnid
             ;
          QUIT;

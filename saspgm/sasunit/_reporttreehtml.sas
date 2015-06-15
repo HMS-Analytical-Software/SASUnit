@@ -30,40 +30,38 @@
    \return results will be written to folder &g_target/rep 
 */ /** \cond */ 
 
-%MACRO _reportTreeHTML (i_repdata = 
-                       ,o_html    = 0
+%MACRO _reportTreeHTML (i_repdata        = 
+                       ,o_html           =0
+                       ,o_pgmdoc         =0
+                       ,o_pgmdoc_sasunit =0
                        );
 
 %LOCAL l_title;
-%LOCAL d_tree d_tree1 d_tree2 d_la i; 
+%LOCAL d_tree d_tree1 d_tree2 d_tree3 d_la i; 
 
 %LET l_title = &g_project | SASUnit;
 
 %_tempFilename(d_tree)
 %_tempFilename(d_tree1)
 %_tempFilename(d_tree2)
+%_tempFilename(d_tree3)
 %_tempFilename(d_la)
 
 /*-- generate tree structure 1 for test scenarios ----------------------------*/
-DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5 rc);
-   LENGTH label popup target $255 lvl term lst1-lst5 8;
-   RETAIN lst1-lst5 0;
+DATA &d_tree1 (KEEP=label popup target lvl leaf rc);
+   LENGTH label popup target $255 lvl leaf 8;
    SET &i_repdata;
    BY scn_id cas_id tst_id;
     
-    tst_type=tranwrd(tst_type,"^_","");
-    tst_desc=tranwrd(tst_desc,"^_","");
+   tst_type=tranwrd(tst_type,"^_","");
+   tst_desc=tranwrd(tst_desc,"^_","");
 
    IF _n_=1 THEN DO;
       label  = "&g_nls_reportTree_001";
       popup  = "&g_nls_reportTree_002";
       target = "scn_overview.html";
       lvl    = 1;
-      term   = 0;
-      lst1   = 0;
-      lst2   = 0;
-      lst3   = 0;
-      lst4   = 0;
+      leaf   = 0;
       OUTPUT;
    END;
 
@@ -72,10 +70,7 @@ DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5 rc);
       popup  = "&g_nls_reportTree_003 " !! put(scn_id,z3.) !! ': &#x0D;' !! scn_desc;
       target = "cas_overview.html#SCN" !! put(scn_id,z3.) !! "_";
       lvl    = 2;
-      term   = 0;
-      lst2   = scn_last;
-      lst3   = 0;
-      lst4   = 0;
+      leaf   = 0;
       rc     = scn_res;
       OUTPUT;
    END;
@@ -85,9 +80,7 @@ DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5 rc);
       popup  = "&g_nls_reportTree_004 " !! put (cas_id,z3.) !! ': &#x0D;' !! cas_desc;
       target = 'cas_' !! put(scn_id,z3.) !! "_" !! put (cas_id,z3.) !! ".html";
       lvl    = 3;
-      term   = 0;
-      lst3   = cas_last;
-      lst4   = 0;
+      leaf   = 0;
       rc     = cas_res;
       OUTPUT;
    END;
@@ -96,34 +89,28 @@ DATA &d_tree1 (KEEP=label popup target lvl term lst1-lst5 rc);
    popup  = "&g_nls_reportTree_005 " !! put (tst_id,z3.) !! ': &#x0D;' !! tst_desc;
    target = 'cas_' !! put(scn_id,z3.) !! "_" !! put (cas_id,z3.) !! ".html#TST" !! put (tst_id,z3.);
    lvl    = 4;
-   term   = 1;
-   lst4   = last.cas_id;
+   leaf   = 1;
    rc     = tst_res;
    OUTPUT;
 RUN;
 
 /*-- generate tree structure 2 for units under test --------------------------*/
-DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5 rc);
-   LENGTH label popup target $255 lvl term lst1-lst5 8;
-   RETAIN lst1-lst5 0;
-   SET &i_repdata;
-   BY exa_auton pgm_id scn_id cas_id tst_id;
+DATA &d_tree2 (KEEP=label popup target lvl leaf rc);
+   LENGTH label popup target $255 lvl leaf  8;
+   SET &i_repdata.;
+   BY exa_auton exa_id scn_id cas_id tst_id;
 
    tst_type=tranwrd(tst_type,"^_","");
    tst_desc=tranwrd(tst_desc,"^_","");
    cas_obj =tranwrd(cas_obj,"^_","");
 
+   leaf = 0;
    IF _n_=1 THEN DO;
       label  = "&g_nls_reportTree_006";
       popup  = "&g_nls_reportTree_007";
       target = "auton_overview.html";
       lvl    = 1;
-      term   = 0;
-      lst1   = 1;
-      lst2   = 0;
-      lst3   = 0;
-      lst4   = 0;
-      lst5   = 0;
+      leaf   = 0;
       OUTPUT;
    END;
 
@@ -131,8 +118,7 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5 rc);
       SELECT (exa_auton);
          WHEN (0) label = tsu_sasunit;
          WHEN (1) label = tsu_sasunit_os;
-         WHEN (2) label = tsu_sasautos;
-%DO i=1 %TO 9;
+%DO i=0 %TO 9;
          WHEN (&i+2) label = tsu_sasautos&i;
 %END;
          OTHERWISE label="&g_nls_reportAuton_015";
@@ -151,21 +137,16 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5 rc);
       IF exa_auton NE . THEN target = trim(target) !! put(exa_auton,z3.);
       target = trim(target) !! '_';
       lvl    = 2;
-      term   = 0;
-      lst2   = auton_last;
-      lst3   = 0;
-      lst4   = 0;
-      lst5   = 0;
+      leaf   = 0;
       OUTPUT;
    END;
 
-   IF first.pgm_id THEN DO;
+   IF first.exa_id THEN DO;
       label = cas_obj;
       SELECT (exa_auton);
          WHEN (0) popup = trim(tsu_sasunit) !! '/' !! cas_obj;
          WHEN (1) popup = trim(tsu_sasunit_os) !! '/' !! cas_obj;
-         WHEN (2) popup = trim(tsu_sasautos) !! '/' !! cas_obj;
-%DO i=1 %TO 9;
+%DO i=0 %TO 9;
          WHEN (&i+2) popup = trim(tsu_sasautos&i) !! '/' !! cas_obj;
 %END;
          OTHERWISE popup=cas_obj;
@@ -173,13 +154,10 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5 rc);
       popup = "&g_nls_reportTree_011: " !! '&#x0D;' !! popup;
       target = "auton_overview.html#AUTON";
       IF exa_auton NE . THEN target = trim(target) !! put(exa_auton,z3.);
-      target = trim(target) !! '_' !! put(pgm_id,z3.) !! "_";
+      target = trim(target) !! '_' !! put(exa_id,z3.) !! "_";
       lvl    = 3;
-      term   = 0;
-      lst3   = pgm_last;
-      lst4   = 0;
-      lst5   = 0;
-      rc     = pgm_res;
+      leaf   = 0;
+      rc     = exa_res;
       OUTPUT;
    END;
 
@@ -188,9 +166,7 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5 rc);
       popup  = "&g_nls_reportTree_012 " !! put(scn_id,z3.) !! ", &g_nls_reportTree_013 " !! put (cas_id,z3.) !! ': &#x0D;' !! cas_desc;
       target = 'cas_' !! put(scn_id,z3.) !! "_" !! put (cas_id,z3.) !! ".html";
       lvl    = 4;
-      term   = 0;
-      lst4   = pcs_last;
-      lst5   = 0;
+      leaf   = 0;
       rc     = cas_res;
       OUTPUT;
    END;
@@ -199,16 +175,107 @@ DATA &d_tree2 (KEEP=label popup target lvl term lst1-lst5 rc);
    popup  = "&g_nls_reportTree_014 " !! put (tst_id,z3.) !! '&#x0D;' !! tst_desc;
    target = 'cas_' !! put(scn_id,z3.) !! "_" !! put (cas_id,z3.) !! ".html#TST" !! put (tst_id,z3.);
    lvl    = 5;
-   term   = 1;
-   lst5   = last.cas_id;
+   leaf   = 1;
    rc     = tst_res;
    OUTPUT;
 
 RUN;
 
+/*-- generate tree structure 3 Part I for profram documentation --------------------------*/
+%if (&o_pgmdoc.) %then %do;
+   proc sql noprint;
+      create table work._repdata2 as 
+         select distinct exa.*
+                ,tsu.*
+                ,tsu_sasautos as tsu_sasautos0
+                ,cas.cas_obj
+         from target.exa left join target.cas
+              on exa.exa_id=cas.cas_exaid
+              ,target.tsu;
+   quit;
+
+   DATA &d_tree3 (KEEP=label popup target lvl leaf rc);
+      LENGTH label popup target $255 lvl leaf  8;
+      SET work._repdata2
+      %if (&o_pgmdoc_sasunit. ne 1) %then %do;
+         (where=(exa_auton >= 2))
+      %end;
+      ;
+      BY exa_auton exa_id;
+
+      leaf = 0;
+      IF _n_=1 THEN DO;
+         label  = "&g_nls_reportTree_016";
+         popup  = "";
+         target = "";
+         lvl    = 1;
+         leaf   = 0;
+         OUTPUT;
+         label  = "&g_nls_reportTree_017";
+         popup  = "";
+         target = "";
+         lvl    = 2;
+         leaf   = 0;
+         OUTPUT;
+      END;
+
+      IF first.exa_auton THEN DO;
+         SELECT (exa_auton);
+            WHEN (0) label = tsu_sasunit;
+            WHEN (1) label = tsu_sasunit_os;
+   %DO i=0 %TO 9;
+            WHEN (&i+2) label = tsu_sasautos&i;
+   %END;
+            OTHERWISE label="&g_nls_reportAuton_015";
+         END;
+         IF exa_auton=0 THEN 
+            popup  = "&g_nls_reportTree_009 sasunit:" !! '&#x0D;' !! label;
+         ELSE IF exa_auton=1 THEN 
+            popup  = "&g_nls_reportTree_009 os_specific sasunit:" !! '&#x0D;' !! label;
+         ELSE IF exa_auton=2 THEN 
+            popup  = "&g_nls_reportTree_009 sasautos:" !! '&#x0D;' !! label;
+         ELSE IF exa_auton>2 THEN 
+            popup  = "&g_nls_reportTree_009 sasautos" !! left(put(exa_auton-2,1.)) !! ':&#x0D;' !! label;
+         ELSE 
+            popup = "";
+         target = "";
+         lvl    = 3;
+         leaf   = 0;
+         OUTPUT;
+      END;
+
+      IF first.exa_id THEN DO;   
+         if (missing (cas_obj)) then do;
+            label = exa_pgm;
+         end;
+         else do;
+            label = cas_obj;
+         end;
+         SELECT (exa_auton);
+            WHEN (0) popup = trim(tsu_sasunit) !! '/' !! cas_obj;
+            WHEN (1) popup = trim(tsu_sasunit_os) !! '/' !! cas_obj;
+   %DO i=0 %TO 9;
+            WHEN (&i+2) popup = trim(tsu_sasautos&i) !! '/' !! cas_obj;
+   %END;
+            OTHERWISE popup=cas_obj;
+         END;
+         popup = "&g_nls_reportTree_018: " !! '&#x0D;' !! popup;
+         target = catt ("pgm_", tranwrd (trim (exa_pgm), ".sas", ".html"));
+         lvl    = 4;
+         leaf   = 1;
+         rc     = .;
+         OUTPUT;
+      END;
+   RUN;
+%end;
+
 /*-- Lookahead für Level -----------------------------------------------------*/
-DATA &d_tree &d_la(KEEP=lvl RENAME=(lvl=nextlvl));
-   SET &d_tree1 &d_tree2 END=eof;
+DATA &d_tree. &d_la. (KEEP=lvl RENAME=(lvl=nextlvl));
+   SET &d_tree1. &d_tree2. 
+   %if (&o_pgmdoc.) %then %do;
+      &d_tree3.
+   %end;
+       END=eof;
    OUTPUT &d_tree;
    IF _n_>1 THEN OUTPUT &d_la;
    IF eof THEN DO; 
@@ -221,7 +288,7 @@ DATA &d_tree;
    MERGE &d_tree &d_la;
 RUN;
 
-/*-- generate HTML and javascript code ---------------------------------------*/
+/*-- generate HTML code ---------------------------------------*/
 DATA _null_;
    SET &d_tree END=eof;
    FILE "&o_html" LRECL=1024 encoding="&g_rep_encoding.";
@@ -236,7 +303,7 @@ DATA _null_;
    if (not missing (rc)) then do;
       class_suffix = scan (put (rc, PictNameHTML.), 1, '.');
    end;
-   if (term) then do;
+   if (leaf) then do;
       PUT "<li>" @;
       PUT "<label class=""file" class_suffix +(-1) """><a href=""" target +(-1) """ title=""" popup +(-1) """ target=""basefrm"">" label +(-1) "</a></label>" @;
       PUT "</li>";
@@ -247,7 +314,7 @@ DATA _null_;
    end;
    if (lvl < nextlvl) then do;
       PUT "<ol>";
-   end;
+   end; 
    DO i=nextlvl+1 TO lvl;
       PUT "</ol>"; 
       PUT "</li>";
@@ -259,7 +326,14 @@ DATA _null_;
 RUN;
 
 PROC DATASETS NOLIST NOWARN LIB=work;
-   DELETE %scan(&d_tree,1,.) %scan(&d_tree1,1,.) %scan(&d_tree2,1,.) %scan(&d_la,1,.);
+   DELETE 
+      %scan(&d_tree,1,.) 
+      %scan(&d_tree1,1,.) 
+      %scan(&d_tree2,1,.) 
+      %if (&o_pgmdoc.) %then %do;
+         %scan(&d_tree3,1,.) 
+      %end;
+      %scan(&d_la,1,.);
 QUIT;
 
 %MEND _reportTreeHTML;
