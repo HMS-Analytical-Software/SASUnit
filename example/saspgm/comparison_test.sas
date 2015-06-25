@@ -94,7 +94,6 @@
              );
 %endTestcall()
 options printerpath=png nodate;
-ods html close;
 ods printer file="%sysfunc(pathname(work))/graph1.png";
    proc reg data=testdata1;
       model y = x / noprint;
@@ -111,7 +110,6 @@ ods printer file="%sysfunc(pathname(work))/graph2.png";
       plot y * x / cframe=ligr;; 
    run;
 ods printer close;
-ods html;
 %assertImage(i_script             =&assertImage_script.
             ,i_expected           =%sysfunc(pathname(work))/graph1.png  
             ,i_actual             =%sysfunc(pathname(work))/graph1_copy.png
@@ -136,7 +134,6 @@ ods html;
    run;
 
    options printerpath=png nodate;
-   ods html close;
    footnote .j=r "%sysfunc(today(), ddmmyy10.)";
    ods printer file="%sysfunc(pathname(work))/class1.png";
       proc print data=sashelp.class;
@@ -151,7 +148,6 @@ ods html;
       run;
    footnote;
    ods printer close;
-   ods html;
    
 %assertImage(i_script             =&assertImage_script.
             ,i_expected           =%sysfunc(pathname(work))/class1.png  

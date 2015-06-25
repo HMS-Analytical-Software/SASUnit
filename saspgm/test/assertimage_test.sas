@@ -20,12 +20,10 @@
    %_copyfile(&g_root/dat/reconstruct.jpg, &g_work./reconstruct.jpg);
    
    options printerpath=png nodate;
-   ods html close;
    ods printer file="%sysfunc(pathname(work))/class.png";
       proc print data=sashelp.class;
       run;
    ods printer close;
-   ods html;
 
    data class;
       set sashelp.class;
@@ -33,12 +31,11 @@
    run;
 
    options printerpath=png nodate;
-   ods html close;
    ods printer file="%sysfunc(pathname(work))/class1.png";
       proc print data=class;
       run;
    ods printer close;
-   ods html;
+
 %MEND _createtestfiles;
 
 %MACRO _adaptToOS();
@@ -116,8 +113,8 @@
             );                        
            
    %markTest()
-      %assertDBValue(tst,exp,1#)
-      %assertDBValue(tst,act,-2#)
+      %assertDBValue(tst,exp,1# #&assertImage_image1.)
+      %assertDBValue(tst,act,-2# #&assertImage_image2.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
@@ -130,8 +127,8 @@
             ,i_desc               =Image1 does not exist
             );
    %markTest()
-      %assertDBValue(tst,exp,1#)
-      %assertDBValue(tst,act,-3#)
+      %assertDBValue(tst,exp,1# #NotExistendFile.cmd)
+      %assertDBValue(tst,act,-3# #&assertImage_image2.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
            
@@ -144,8 +141,8 @@
             ,i_desc               =Image2 does not exist
             );
    %markTest()
-      %assertDBValue(tst,exp,1#)
-      %assertDBValue(tst,act,-4#)
+      %assertDBValue(tst,exp,1# #&assertImage_image1.)
+      %assertDBValue(tst,act,-4# #NotExistendFile.cmd)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
            
