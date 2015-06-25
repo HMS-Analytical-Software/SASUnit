@@ -18,6 +18,7 @@
    \param   o_html         flag to output file in HTML format
    \param   o_path         path for output file
    \param   o_file         name of the outputfile without extension
+   \param   o_pgmdoc       Switch for generartion of program_documentation (0/1)
 
    \todo Check which statements are still necessary with new repdata
 
@@ -47,6 +48,7 @@
       OUTPUT OUT=&d_rep2. (rename=(_FREQ_=scn_cas)) sum(scn_tst)=scn_tst;
    RUN;
 
+   /*-- Keep only one observation per examiniee and scenario ---*/
    PROC SORT DATA=&i_repdata. out=work._auton_report;
       BY exa_auton exa_id scn_id;
    RUN;
@@ -61,6 +63,15 @@
       MERGE work._auton_report &d_rep2.;
       BY exa_auton exa_id scn_id;
    RUN;
+
+   PROC SORT DATA=work._auton_report;
+      BY exa_auton exa_pgm scn_id;
+   RUN;
+
+   PROC DATASETS NOLIST NOWARN LIB=%scan(&d_rep1.,1,.);
+      DELETE %SCAN(&d_rep1.,2,.);
+      DELETE %SCAN(&d_rep2.,2,.);
+   QUIT;
    
    /* Visualize crossreference data */
    %IF &g_crossref. EQ 1 %THEN %DO;
@@ -262,7 +273,7 @@
                 resultColumn
                 linkTitle0  linkTitle1  LinkTitle2  LinkTitle3  LinkTitle4  LinkTitle5
                 linkColumn0 linkColumn1 LinkColumn2 LinkColumn3 LinkColumn4 LinkColumn5 $1000
-                _autonColumn autonColumn cas_abs_path scn_abs_path pgmdoc_name $400;
+                _autonColumn autonColumn scn_abs_path pgmdoc_name $400;
          set work._auton_report (where=(exa_auton=&l_pgmLib.));
          ARRAY sa(0:9) tsu_sasautos tsu_sasautos1-tsu_sasautos9;
          label 
@@ -279,18 +290,6 @@
             resultColumn="&g_nls_reportAuton_008.";
 
          if (cas_obj="^_") then cas_obj="";
-         IF exa_auton = . THEN DO;
-            cas_abs_path = resolve ('%_abspath(&g_root,' !! trim(cas_obj) !! ')');   
-         END;
-         ELSE IF exa_auton = 0 THEN DO;
-            cas_abs_path = resolve ('%_abspath(&g_sasunit,' !! trim(cas_obj) !! ')');   
-         END;
-         ELSE IF exa_auton = 1 THEN DO;
-            cas_abs_path = resolve ('%_abspath(&g_sasunit_os,' !! trim(cas_obj) !! ')');   
-         END;
-         ELSE DO;
-            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! put (exa_auton-2,1.) !! ',' !! trim(cas_obj) !! ')');
-         END;
          scn_abs_path = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
 
          %_render_dataColumn(i_sourceColumn=scn_cas
@@ -331,7 +330,7 @@
 
          *** Any destination that renders links shares this if ***;
          %if (&o_html.) %then %do;
-            LinkTitle1 = "&g_nls_reportAuton_009." !! byte(13) !! cas_abs_path;
+            LinkTitle1 = "&g_nls_reportAuton_009." !! byte(13) !! exa_filename;
             LinkTitle2 = "&g_nls_reportAuton_010." !! byte(13) !! scn_abs_path;
             LinkTitle3 = "&g_nls_reportAuton_017. " !! cas_obj;
             LinkTitle4 = trim(cas_obj) !! " &g_nls_reportAuton_025.";
@@ -339,7 +338,7 @@
             
             *** HTML-links are destination specific ***;
             %if (&o_html.) %then %do;
-               LinkColumn1 = "file:///" !! cas_abs_path;
+               LinkColumn1 = "file:///" !! exa_filename;
                LinkColumn2 = CATT("cas_overview.html#SCN", PUT(scn_id,z3.), "_");
                IF compress(cas_obj) ne '' THEN DO;
                   IF index(cas_obj,'/') GT 0 THEN DO;
@@ -354,13 +353,15 @@
             %end;
 
             pgmdoc_name = tranwrd (exa_pgm, ".sas", ".html");
-            if (&o_pgmdoc. = 1) then do;
+            if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/pgm_"!!trim(pgmdoc_name))) then do;
                pgmColumn=catt ('^{style [url="pgm_', pgmdoc_name, '" flyover="&g_nls_reportAuton_028."]',cas_obj,'}');
             end;
             else do;
                pgmColumn=catt (cas_obj);
             end;
-            pgmColumn=catt (pgmColumn, ' ^{style [url="', LinkColumn1, '" flyover="', LinkTitle1, """ Fontsize=7pt] [&g_nls_reportAuton_027.]}");
+            if (fileexist (exa_filename)) then do;
+               pgmColumn=catt (pgmColumn, ' ^{style [url="', LinkColumn1, '" flyover="', LinkTitle1, """ Fontsize=7pt] [&g_nls_reportAuton_027.]}");
+            end;
 
             %_render_dataColumn(i_sourceColumn=scn_id
                                ,i_format=z3.
@@ -400,7 +401,7 @@
             style(lines)=blindData
             ;
 
-         columns exa_id pgmColumn scenarioColumn caseColumn assertColumn
+         columns autonColumn exa_pgm pgmColumn scenarioColumn caseColumn assertColumn
             %IF &g_testcoverage. EQ 1 %THEN %DO;
                 coverageColumn
             %END;
@@ -410,7 +411,7 @@
                 resultColumn autonColumn;
 
          define autonColumn    / noprint;
-         define exa_id         / order noprint;
+         define exa_pgm        / order noprint;
          define pgmColumn      / order;
          define scenarioColumn / order style(column)=[just=right];
          define caseColumn     / order style(column)=[just=right];

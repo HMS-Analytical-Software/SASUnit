@@ -23,11 +23,11 @@
 \param      Parameters can be specified here
 
 \return     this tag holds returns of the unit under test
-\retval     Values that are passed backe from the unit under test
+\retval     Values that are passed back from the unit under test
 
 \remark     You can add remarks to units under test.
             Remarks include <b>bold</b> and <em>emphasized</em> text as well as line breaks.
-            No explicit \n ist necessary for line breaks, but can be used. 
+            No explicit \\n ist necessary for line breaks, but can be used. 
             As soon as SAS can render nested ODS directives they will be line breaks.
 
 \todo       Set a reminder for future implementations

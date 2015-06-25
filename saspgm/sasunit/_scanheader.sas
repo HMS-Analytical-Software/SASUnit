@@ -7,7 +7,7 @@
    \author     \$Author: klandwich $
    \date       \$Date: 2013-03-19 07:31:32 +0100 (Di, 19 Mrz 2013) $
    \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_sasunit_reportscnhtml.sas $
+   \SA         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_sasunit_reportscnhtml.sas $
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
@@ -33,6 +33,8 @@
                    ,DataOutBug  = _BugDoc
                    ,LibOutDep   = WORK
                    ,DataOutDep  = _DepDoc
+                   ,LibOutGrp   = WORK
+                   ,DataOutGrp  = _GrpDoc
                    ,i_language  = EN
                    );
 
@@ -40,13 +42,13 @@
    %LET l_sHeaderStartTag       = %str(/)%str(** );
    %LET l_sHeaderEndTag         = %str(*)%str(/);
 
-   Data WORK.__programHeader (keep=macroname tag name description);
+   Data WORK.__programHeader (keep=macroname tag name description groupname grouptext);
       Length macroname $80
              tag $20
              name $100
              description $1000
-             headerStmtOpen tagStmtOpen emptyLines 8;
-      Retain headerStmtOpen tagStmtOpen emptyLines 0 
+             headerStmtOpen tagStmtOpen emptyLines defGroupOpen 8;
+      Retain headerStmtOpen tagStmtOpen emptyLines defGroupOpen 0 
              tag name;
 
       *** Compile Perl RegEx with PRXPARSE;
@@ -54,6 +56,7 @@
       patternBrief      = PRXPARSE("/^\\brief/");
       patternCopyright  = PRXPARSE("/^\\copyright/");
       patternDate       = PRXPARSE("/^\\date/");
+      patternDefGroup   = PRXPARSE("/^\\defgroup/");
       patternDetails    = PRXPARSE("/^\\details/");
       patternFile       = PRXPARSE("/^\\file/");
       patternInGroup    = PRXPARSE("/^\\ingroup/");
@@ -69,7 +72,7 @@
       patternVersion    = PRXPARSE("/^\\version/");
       patternDeprecated = PRXPARSE("/^\\deprecated/");
 
-      pattern           = "/^\\author|\\brief|\\copyright|\\date|\\details|\\file|\\ingroup|\\link|\\param|\\return|\\retval|\\sa|\\todo|\\test|\\bug|\\version|\\remark|\\deprecated/";
+      pattern           = "/^\\author|\\brief|\\copyright|\\date|\\defgroup|\\details|\\file|\\ingroup|\\link|\\param|\\return|\\retval|\\sa|\\todo|\\test|\\bug|\\version|\\remark|\\deprecated/";
       patternTag        = PRXPARSE(pattern);
       patternComment    = PRXPARSE("/\*\//");
               
@@ -130,6 +133,22 @@
             name        = "";
             description = "";
          End;
+         ***Complex sequence of tags around doxygen groups ;
+         Else If (PRXMATCH(patternDefGroup,   l_zeile) = 1) Then Do;
+            ***reset variables;
+            tag          = "";
+            name         = "";
+            description  = "";
+            tagStmtOpen  = 1;
+            defGroupOpen = 1;
+            blankPos = Index(l_zeile, ' ');   
+            tag = Substr(l_zeile, 1, blankPos);
+            l_zeile = Substr(l_zeile, blankPos+1);
+            description = Strip(l_zeile);
+            groupname = scan (description, 1);
+            blankPos = Index(description, ' ');   
+            grouptext = Substr(description, blankPos+1);
+         End;
          ***Complex tags with more than one line, 2 columns;
          Else If (PRXMATCH(patternBrief, l_zeile)      = 1 OR
                   PRXMATCH(patternCopyright, l_zeile)  = 1 OR
@@ -151,7 +170,20 @@
             description = "";
             tagStmtOpen = 1;
             blankPos = Index(l_zeile, ' ');   
-            tag = Substr(l_zeile, 1, blankPos);
+            if (defGroupOpen 
+                AND not (PRXMATCH(patternBrief, l_zeile) = 1 
+                         OR PRXMATCH(patternInGroup, l_zeile) = 1
+                         OR PRXMATCH(patternDefGroup, l_zeile) = 1
+                        )
+               ) then do;
+               defGroupOpen = 0;
+            end;
+            if (defGroupOpen = 1 AND PRXMATCH(patternBrief, l_zeile) = 1) then do;
+               tag = "\groupdesc";
+            end;
+            else do;
+               tag = Substr(l_zeile, 1, blankPos);
+            end;
             l_zeile = Substr(l_zeile, blankPos+1);
             description = Strip(l_zeile);
          End;
@@ -183,17 +215,42 @@
       set WORK.__programHeader (where=(not missing(tag)));
       obs_sort = _N_;
       tag_sort = put (tag, $TagSort.);
-      tag_text = put (tag, $HeaderText.);
-      dummy = "   ";
-      new_description = tranwrd (description, "<b>", "^{style [font_weight=bold]");
+      dummy    = "   ";
+      new_description = tranwrd (description, "^{", "°[");
+      new_description = tranwrd (new_description, "}", "]");
+      new_description = tranwrd (new_description, "<b>", "^{style [font_weight=bold]");
       new_description = tranwrd (new_description, "</b>", "}");
       new_description = tranwrd (new_description, "<em>", "^{style [font_style=italic]");
       new_description = tranwrd (new_description, "</em>", "}");
       new_description = tranwrd (new_description, "\n", "^n");
+      new_description = tranwrd (new_description, "\^n", "\n");
       new_description = tranwrd (new_description, "~ ", "- ");
       new_description = tranwrd (new_description, "~", "^_^_^_");
-      new_description = tranwrd (new_description, "^{", "°[");
-      new_description = tranwrd (new_description, "}", "]");
+   run;
+
+   data work._GroupInfo;
+      length parent child childtext childdesc $256 Type $8 NewGroup 8;
+      set WORK.__programHeader (where=(tag in ("\defgroup", "\ingroup", "\groupdesc") AND not missing (new_description)));
+      retain parent child "&macroname" childtext childdesc "" Type "Macro" NewGroup 1;
+      if (tag = "\defgroup") then do;
+         if (newGroup=1) then do;
+            output;
+         end;
+         child     = groupname;
+         childtext = grouptext;
+         newGroup  = 1;
+         parent    = child;
+         Type="Group";
+      end;
+      if (tag = "\groupdesc") then do;
+         childdesc = new_description;
+      end;
+      if (tag = "\ingroup") then do;
+         parent = new_description;
+         newGroup = 0;
+         output;
+         Type = "Macro";
+      end;
    run;
 
    proc sort data=WORK.__programHeader;
@@ -212,23 +269,15 @@
    proc append base=&LibOutDep..&DataOutDep.   data=WORK.__programHeader (where=(tag="\deprecated"));
    run;
 
-   data &LibOutDoc..&DataOutDoc.;
-      set WORK.__programHeader;
-      if (tag="\todo") then do;
-         new_description ="^{style pgmDocTodoData " !! trim (new_description) !! "}";
-      end;
-      if (tag="\test") then do;
-         new_description ="^{style pgmDocTestData " !! trim (new_description) !! "}";
-      end;
-      if (tag="\bug") then do;
-         new_description ="^{style pgmDocBugData " !! trim (new_description) !! "}";
-      end;
-      if (tag="\remark") then do;
-         new_description ="^{style pgmDocRemarkData " !! trim (new_description) !! "}";
-      end;
-      if (tag="\deprecated") then do;
-         new_description ="^{style pgmDocDepData " !! trim (new_description) !! "}";
-      end;
+   proc append base=&LibOutGrp..&DataOutGrp.   data=WORK._GroupInfo;
    run;
+
+   data &LibOutDoc..&DataOutDoc.;
+      set WORK.__programHeader (where=(tag_sort ne "___")  keep=macroname tag tag_sort name description new_description);
+   run;
+
+   proc datasets lib=work nolist;
+      delete __programHeader _GrpInfo;
+   run;quit;
 %MEND _scanHeader;
 /** \endcond */

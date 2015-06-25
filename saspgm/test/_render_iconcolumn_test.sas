@@ -19,9 +19,9 @@
 %LET g_nls_reportDetail_026=Manual check;
 %LET g_nls_reportDetail_027=Undefined result;
 proc format lib=work;
-   value PictName     0 = "&g_sasunit./saspgm/sasunit/html/ok.png"
-                      1 = "&g_sasunit./saspgm/sasunit/html/manual.png"
-                      2 = "&g_sasunit./saspgm/sasunit/html/error.png"
+   value PictName     0 = "&g_sasunit./resources/html/ok.png"
+                      1 = "&g_sasunit./resources/sasunit/html/manual.png"
+                      2 = "&g_sasunit./resources/sasunit/html/error.png"
                       OTHER="?????";
    value PictNameHTML 0 = "ok.png"
                       1 = "manual.png"

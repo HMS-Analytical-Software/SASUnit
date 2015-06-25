@@ -1,6 +1,6 @@
 /** 
    \file
-   \ingroup    none
+   \ingroup    SASUNIT_EXAMPLES_TEST
 
    \brief      Testmacro for listcalling
 

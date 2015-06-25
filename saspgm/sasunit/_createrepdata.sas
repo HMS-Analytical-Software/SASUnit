@@ -147,10 +147,10 @@
      VALUES(
           .
          ,.
-         ,'^_'
+         ,''
          ,.
-         ,'^_'
-         ,'^_'
+         ,''
+         ,''
          ,.
      )
      ;  
@@ -234,6 +234,9 @@ PROC SQL NOPRINT;
          cas_exaid    = exa_id    AND
          exa_id       = pgm_exaid
       ORDER BY scn_id, cas_id, tst_id;
+   QUIT;
+
+   PROC SQL NOPRINT;
       CREATE UNIQUE INDEX idx1 ON &d_reporting. (scn_id, cas_id, tst_id);
       CREATE UNIQUE INDEX idx2 ON &d_reporting. (exa_auton, exa_id, scn_id, cas_id, tst_id);
    QUIT;

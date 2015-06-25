@@ -2,26 +2,27 @@
    \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      
+   \brief      Renders layout of cross reference column.
+               Two links are render:
+               - who is calling this module
+               - which modules are called by this module
 
-   \version    \$Revision: 260 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2013-09-08 20:47:54 +0200 (So, 08 Sep 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_render_assertcolumnsact.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_sourceColumn 
-   \param   o_targetColumn 
-   \param   i_linkColumn_caller
-   \param   i_linkTitle_caller 
-   \param   i_linkColumn_called
-   \param   i_linkTitle_called 
+   \param   i_sourceColumn       SourceColumn with basic contents
+   \param   o_targetColumn       Name of output column
+   \param   i_linkColumn_caller  Link to HTML page with calling sequence of module
+   \param   i_linkTitle_caller   Flyover for this link
+   \param   i_linkColumn_called  Link to HTML page with called sequence of module
+   \param   i_linkTitle_called   Flyover for this link
    
-   \todo header
-
 */ /** \cond */ 
 
 %macro _render_crossrefColumn (i_sourceColumn       =

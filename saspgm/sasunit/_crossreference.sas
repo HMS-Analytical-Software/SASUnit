@@ -110,84 +110,86 @@
    /* Loop over macros to find references*/
    %DO l_macro = 1 %to &l_count.;
       /* Find all macro calls in a macro */
-      DATA helper;
-         IF _N_ = 1 THEN DO;
-            retain pattern1 ptrn_Com_1_o ptrn_Com_1_c;
-            retain l_DoxyHeader 0 comment 0;
-            length line $ 256
-                   caller called $ 80;
-            pattern1 = prxparse('/%/');
-            ptrn_Com_1_o = prxparse('/\/\*/');
-            ptrn_Com_1_c = prxparse('/\*\//');
-         END;
+      %IF %SYSFUNC(FILEEXIST(&&l_filename&l_macro.)) %THEN %DO;
+         DATA helper;
+            IF _N_ = 1 THEN DO;
+               retain pattern1 ptrn_Com_1_o ptrn_Com_1_c;
+               retain l_DoxyHeader 0 comment 0;
+               length line $ 256
+                      caller called $ 80;
+               pattern1 = prxparse('/%/');
+               ptrn_Com_1_o = prxparse('/\/\*/');
+               ptrn_Com_1_c = prxparse('/\*\//');
+            END;
 
-         INFILE "&&l_filename&l_macro." truncover;
-         INPUT;
-         line = lowcase (trim(left(_INFILE_)));
-         /* Scan for comment: IF found delete it */
-         fnt_o = prxmatch(ptrn_Com_1_o, line);
-         /* Begin of comment found */
-         IF fnt_o > 0 and comment = 0 THEN DO;
-            fnt_c = prxmatch(ptrn_Com_1_c, line);
-            /* Comment closed on same line */
-            IF fnt_c > 0 THEN DO;
-               IF fnt_o = 1 THEN line = substr(line, fnt_c+2);
-               ELSE line = catt(substr(line,1,fnt_o-1), substr(line, fnt_c+2));
-               comment=0;
+            INFILE "&&l_filename&l_macro." truncover;
+            INPUT;
+            line = lowcase (trim(left(_INFILE_)));
+            /* Scan for comment: IF found delete it */
+            fnt_o = prxmatch(ptrn_Com_1_o, line);
+            /* Begin of comment found */
+            IF fnt_o > 0 and comment = 0 THEN DO;
+               fnt_c = prxmatch(ptrn_Com_1_c, line);
+               /* Comment closed on same line */
+               IF fnt_c > 0 THEN DO;
+                  IF fnt_o = 1 THEN line = substr(line, fnt_c+2);
+                  ELSE line = catt(substr(line,1,fnt_o-1), substr(line, fnt_c+2));
+                  comment=0;
+               END;
+               /* Comment not closed on same line */
+               ELSE IF fnt_c = 0 THEN DO;
+                  IF fnt_o = 1 THEN line = "";
+                  ELSE line = substr(line,1,fnt_o-1);
+                  comment = 1;
+               END;
             END;
-            /* Comment not closed on same line */
-            ELSE IF fnt_c = 0 THEN DO;
-               IF fnt_o = 1 THEN line = "";
-               ELSE line = substr(line,1,fnt_o-1);
-               comment = 1;
+            /* Line following an opened comment */
+            ELSE IF comment = 1 THEN DO;
+               fnt_c = prxmatch(ptrn_Com_1_c, line);
+               /* Comment not closed on line */
+               IF fnt_c = 0 THEN line = "";
+               ELSE DO;
+                  line = substr(line, fnt_c+2);
+                  comment = 0;
+               END;
             END;
-         END;
-         /* Line following an opened comment */
-         ELSE IF comment = 1 THEN DO;
-            fnt_c = prxmatch(ptrn_Com_1_c, line);
-            /* Comment not closed on line */
-            IF fnt_c = 0 THEN line = "";
-            ELSE DO;
-               line = substr(line, fnt_c+2);
-               comment = 0;
-            END;
-         END;
 
-         /* '%' found in line: look for macro call */
-         IF prxmatch(pattern1, line) THEN DO;
-            DO x=1 to &l_count.;
-               called      = resolve(catt('&var',x));
-               calledMacro = catt('%',called);
-               findpos = find(line, trim(calledMacro), 'i');
-               /* candidate found */
-               IF findpos gt 0 THEN DO;
-                  len = length(trim(calledMacro));
-                  /* make sure found string is whole macro name and not only a substring */
-                  substring = substr(line, findpos+len,1);
-                  IF substring in ('(',' ',';')  THEN DO;
-                     caller = "&&var&l_macro.";
-                     KEEP line caller called;
-                     OUTPUT;
+            /* '%' found in line: look for macro call */
+            IF prxmatch(pattern1, line) THEN DO;
+               DO x=1 to &l_count.;
+                  called      = resolve(catt('&var',x));
+                  calledMacro = catt('%',called);
+                  findpos = find(line, trim(calledMacro), 'i');
+                  /* candidate found */
+                  IF findpos gt 0 THEN DO;
+                     len = length(trim(calledMacro));
+                     /* make sure found string is whole macro name and not only a substring */
+                     substring = substr(line, findpos+len,1);
+                     IF substring in ('(',' ',';')  THEN DO;
+                        caller = "&&var&l_macro.";
+                        KEEP line caller called;
+                        OUTPUT;
+                     END;
                   END;
                END;
             END;
-         END;
-      RUN;
-      
-      DATA _NULL_;
-         SET helper nobs=cnt_obs;
-         call symput('l_nobs', put(cnt_obs, 4.));
-      RUN;
+         RUN;
+         
+         DATA _NULL_;
+            SET helper nobs=cnt_obs;
+            call symput('l_nobs', put(cnt_obs, 4.));
+         RUN;
 
-      %IF &l_nobs GT 0 %THEN %DO;
-         /* Neglect multiple calls to the same macro */
-         PROC sort DATA = helper nodupkey;
-            BY called;
-         RUN;
-         /* Append data from helper to calling macro-data set */     
-         PROC append base=&o_listcalling DATA=helper;
-            where caller ne called;
-         RUN;
+         %IF &l_nobs GT 0 %THEN %DO;
+            /* Neglect multiple calls to the same macro */
+            PROC sort DATA = helper nodupkey;
+               BY called;
+            RUN;
+            /* Append data from helper to calling macro-data set */     
+            PROC append base=&o_listcalling DATA=helper;
+               where caller ne called;
+            RUN;
+         %END;
       %END;
    %END;/* Loop over macros to find references*/
 

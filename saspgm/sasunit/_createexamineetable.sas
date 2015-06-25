@@ -1,6 +1,6 @@
 /**
    \file
-   \ingroup    SASUNIT_CNTL
+   \ingroup    SASUNIT_UTIL
 
    \brief      Creates table target.exa with all possible examinees.
 
@@ -71,7 +71,7 @@
       create view work._examinee_v as
          select auton as exa_auton
                ,membername as exa_pgm length=1000
-               ,changed as exa_changed format=datetime21.2
+               ,changed format=datetime21.2
                ,filename as exa_filename length=1000
                ,source as exa_path length=1000
          from &d_examinee.
@@ -88,15 +88,20 @@
       select max (exa_id) into :l_max_exaid from target.exa;
    quit;
 
+   proc sort data=target.exa;
+      by exa_auton exa_pgm;
+   run;
+
    data &d_examinee.;
-      merge work._examinee (in=inWork) target.exa (in=inTarget drop=exa_changed);
+      merge work._examinee (in=inWork) target.exa (in=inTarget);
       by exa_auton exa_pgm;
       retain max_exaid &l_max_exaid.;
       if (inWORK and not inTarget) then do;
          max_exaid=sum (max_exaid,1);
          exa_id=max_exaid;
       end;
-      drop max_exaid;
+      exa_changed = coalesce (exa_changed, changed);
+      drop max_exaid changed;
    run;
 
    data target.exa;

@@ -1,11 +1,32 @@
 /**
    \file
-   \todo title statment lanuguage specific
-   \todo Header
-   \test Hugo
-   \bug Fritz
+
+   \brief   Create program documentation
+
+   \details Loops over all examinees. SASUnit macros may be included by specifying o_pdmdoc_sasunit.
+            Each examinee is scaned for specific tags. This information is gather in a seperate documentation per examinee
+
+            The following tags will be collect into lists on an additional page:
+            - todo
+            - bug
+            - test
+            - remark
+            - deprecated
+
+   \version    \$Revision: 315 $
+   \author     \$Author: klandwich $
+   \date       \$Date: 2014-02-28 10:25:18 +0100 (Fr, 28 Feb 2014) $
+   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_termscenario.sas $   
+   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+
+   \return program documentation
 */ /** \cond */
 %macro _reportpgmdoc (i_language=
+                     ,i_repdata=
                      ,o_html=
                      ,o_pdf=
                      ,o_path=
@@ -35,6 +56,14 @@
    %end;
    %if (%sysfunc(exist (WORK._tododoc))) %then %do;
       proc delete data=WORK._tododoc;
+      run;
+   %end;
+   %if (%sysfunc(exist (WORK._depdoc))) %then %do;
+      proc delete data=WORK._depdoc;
+      run;
+   %end;
+   %if (%sysfunc(exist (WORK._grpdoc))) %then %do;
+      proc delete data=WORK._grpdoc;
       run;
    %end;
 
@@ -77,6 +106,7 @@
          "\copyright"  = "00B"
          "\param"      = "011"
          "\retval"     = "012"
+         other         = "___"
          ;
    run;
 
@@ -91,7 +121,7 @@
    quit;
 
    %do i=1 %to &l_anzMacros.;
-      %local l_macroFileName&i. l_macroName&i.;
+      %local l_macroFileName&i. l_macroName&i. l_macroDisplayName&i.;
    %end;
 
    proc sql noprint;
@@ -111,82 +141,85 @@
                where exa_auton >= 2
             %end;
          ;
-      select coalesce (trim (cas_obj), trim(exa_pgm)) into :l_macroName1-:l_macroName%cmpres(&l_anzMacros.)
+      select trim(exa_pgm) into :l_macroName1-:l_macroName%cmpres(&l_anzMacros.)
+         from work._macros
+         order by exa_id
+         ;
+      select trim (cas_obj) into :l_macroDisplayName1-:l_macroDisplayName%cmpres(&l_anzMacros.)
          from work._macros
          order by exa_id
          ;
    quit;
-   %put _local_;
 
    options nocenter;
    ods listing close;
 
    %do i=1 %to &l_anzMacros;
+      %if (%sysfunc (fileexist(&&l_macroFileName&i.))) %then %do;
+         %_scanHeader (MacroName        = &&l_macroName&i.
+                      ,FilePath         = &&l_macroFileName&i.
+                      ,LiboutDoc        = WORK
+                      ,DataOutDoc       = _Pgm&i.
+                      ,i_language       = &i_language.
+                      );
 
-      %_scanHeader (MacroName  = &&l_macroName&i.
-                   ,FilePath   = &&l_macroFileName&i.
-                   ,LiboutDoc  = WORK
-                   ,DataOutDoc = _Pgm&i.
-                   ,i_language = &i_language.
-                   );
+         data work._pgmsrc&i.;
+            length Text $400 CommentOpen idxCommentOpen idxCommentClose 8;
+            retain CommentOpen 0;
+            infile "&&l_macroFileName&i.";
+            input;
+            Text=_INFILE_;
+            idxCommentOpen=index (Text, '/** ');
+            if (idxCommentOpen > 0) then do;
+               CommentOpen=1;
+            end;
+            if (not CommentOpen) then do;
+               Text = tranwrd (Trim(Text), "^{", "°["); 
+               Text = tranwrd (Trim(Text), "}", "]"); 
+               output;
+            end;
+            idxCommentClose=index (Text, '*/');
+            if (idxCommentClose > 0) then do;
+               CommentOpen=0;
+            end;
+            keep Text;
+         run;
 
-      data work._pgmsrc&i.;
-         length Text $400 CommentOpen idxCommentOpen idxCommentClose 8;
-         retain CommentOpen 0;
-         infile "&&l_macroFileName&i.";
-         input;
-         Text=_INFILE_;
-         idxCommentOpen=index (Text, '/** ');
-         if (idxCommentOpen > 0) then do;
-            CommentOpen=1;
-         end;
-         if (not CommentOpen) then do;
-            Text = tranwrd (Trim(Text), "^{", "°["); 
-            Text = tranwrd (Trim(Text), "}", "]"); 
-            output;
-         end;
-         idxCommentClose=index (Text, '*/');
-         if (idxCommentClose > 0) then do;
-            CommentOpen=0;
-         end;
-         keep Text;
-      run;
+         data work._pgmsrc_view / view=work._pgmsrc_view;
+            set work._pgmsrc&i.;
+            length ObsNum $80;
+            ObsNum = put (_N_,z5.);
+         run;
 
-      data work._pgmsrc_view / view=work._pgmsrc_view;
-         set work._pgmsrc&i.;
-         length ObsNum $80;
-         ObsNum = put (_N_,z5.);
-      run;
+         %let l_title=&g_nls_reportPgmDoc_022. | &g_project - &g_nls_reportPgmDoc_021.;
+         title j=c "&l_title.";
+         title2 j=c "&&g_nls_reportPgmDoc_017. &&l_macroDisplayName&i..";
 
-      %let l_title=&g_nls_reportPgmDoc_022. | &g_project - &g_nls_reportPgmDoc_021.;
-      title j=c "&l_title.";
-      title2 j=c "&&g_nls_reportPgmDoc_017. &&l_macroName&i..";
+         %let l_pageName = %sysfunc (tranwrd (&&l_macroName&i..,%str(.sas),%str()));
+         %if (&o_html.) %then %do;
+            ods html4 file="&o_Path./pgm_&l_pageName..html"
+                       (TITLE="&l_title.") 
+                       headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
+                       metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
+                       style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css")
+                       encoding="&g_rep_encoding.";
+         %end;
 
-      %let l_pageName = %sysfunc (tranwrd (&&l_macroName&i..,%str(.sas),%str()));
-      %if (&o_html.) %then %do;
-         ods html4 file="&o_Path./pgm_&l_pageName..html"
-                    (TITLE="&l_title.") 
-                    headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
-                    metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                    style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css")
-                    encoding="&g_rep_encoding.";
+         %_reportPgmHeader (i_lib=WORK, i_data=_Pgm&i., i_language=&i_language.);
+
+         title2 j=c "&g_nls_reportPgmDoc_018. &&l_macroDisplayName&i..";
+
+         proc print data=work._pgmsrc_view noobs
+            style(report)=blindTable [borderwidth=0]
+            style(column)=pgmDocSource
+            style(header)=blindHeader;
+
+            var ObsNum Text;
+         run;
+         %if (&o_html.) %then %do;
+            %_closeHtmlPage;
+         %end;
       %end;
-
-      %_reportPgmHeader (i_lib=WORK, i_data=_Pgm&i., i_language=&i_language.);
-
-      title2 j=c "&g_nls_reportPgmDoc_018. &&l_macroName&i..";
-
-      proc print data=work._pgmsrc_view noobs
-         style(report)=blindTable [borderwidth=0]
-         style(column)=pgmDocSource
-         style(header)=blindHeader;
-
-         var ObsNum Text;
-      run;
-      %if (&o_html.) %then %do;
-         %_closeHtmlPage;
-      %end;
-
    %end;
 
    %if (&o_html.) %then %do;
@@ -233,7 +266,7 @@
       data test;
          Text="";output;
       run;
-      proc print data=test
+      proc print data=test noobs label
             style(report)=blindTable [borderwidth=0]
             style(column)=blindHeader
             style(header)=blindHeader;
@@ -245,6 +278,36 @@
    %if (&o_html.) %then %do;
       %_closeHtmlPage;
    %end;
+
+   %*** eliminate empty groups              ***;
+   %*** Loop until no more rows are deleted ***;
+   %let l_sqlobs=1;
+   %do %until (&l_sqlobs. = 0);
+      proc sql noprint;
+         create table work._GrpDoc2Delete as 
+            select distinct parent 
+            from work._GrpDoc;
+         delete * from work._GrpDoc where Type="Group" and child not in (select distinct parent from work._GrpDoc2Delete);
+      quit;
+      %let l_sqlobs=&sqlobs.;
+      proc sql noprint;
+         drop table work._GrpDoc2Delete;
+      quit;
+   %end;
+
+   proc sort data=work._GrpDoc;
+      by parent child;
+   run;
+
+   data work._GrpDoc;
+      set work._GrpDoc;
+      by parent child;
+      if (missing (childText)) then do;
+         childText=child;
+      end;
+      keep parent child childText ChildDesc;
+      if last.child;
+   run;
 
    options center;
    ods listing;

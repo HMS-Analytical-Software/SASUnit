@@ -47,10 +47,26 @@
    %LET g_inTestcase=1;
 
    /* handle absolute and relative paths for programs */
-   %LOCAL l_pgm l_auton l_object l_casid l_exaid l_num;
+   %LOCAL l_pgm l_auton l_object l_casid l_exaid l_num l_exafilename l_exapath l_exapgm;
 
-   %LET l_object = %lowcase (&i_object.);
-   %LET l_auton = %_getAutocallNumber(&l_object.);
+   %LET l_object      = %lowcase (&i_object.);
+   %LET l_auton       = %_getAutocallNumber(&l_object.);
+   %IF (&l_auton. >= 2) %THEN %DO;
+      %LET l_exafilename = &&g_sasautos.%eval(&l_auton.-2)/&l_object.;
+   %END;
+   %ELSE %IF (&l_auton. = 0) %THEN %DO;
+      %LET l_exafilename = &g_sasunit./&l_object.;
+   %END;
+   %ELSE %IF (&l_auton. = 1) %THEN %DO;
+      %LET l_exafilename = &g_sasunit_os./&l_object.;
+   %END;
+   %ELSE %DO;
+      %LET l_exafilename = %_abspath(&g_root.,&l_object.);
+   %END;
+   %LET l_exafilename = %lowcase(&l_exafilename.);
+   %LET l_exapath     = %_stdpath(&g_root.,&l_exafilename.);
+   %LET l_num         = %sysfunc (find (&l_exafilename., /, -1200));
+   %LET l_exapgm      = %substr  (&l_exafilename., %eval (&l_num+1));
 
    /* determine next test case id */
    %LET l_casid=0;
@@ -59,10 +75,22 @@
       SELECT max(cas_id) INTO :l_casid FROM target.cas
       WHERE cas_scnid = &g_scnid;
       SELECT exa_id INTO :l_exaid FROM target.exa
-      WHERE lowcase (exa_pgm) = "&l_object." and exa_auton=&l_auton.;
+      WHERE lowcase (exa_pgm) = "&l_exapgm." and exa_auton=&l_auton.;
    %IF &l_casid=. %THEN %LET l_casid=1;
    %ELSE                %LET l_casid=%eval(&l_casid+1);
    /* save metadata for this test case  */
+      %IF &l_exaid. = 0 %THEN %DO;
+         SELECT sum (max (exa_id),0)+1 INTO :l_exaid FROM target.exa;
+         INSERT INTO target.exa VALUES (
+             &l_exaid.
+            ,&l_auton.
+            ,"&l_exapgm."
+            ,%sysfunc(datetime())
+            ,"&l_exafilename."
+            ,"&l_exapath."
+            ,.
+         );
+      %END;
       INSERT INTO target.cas VALUES (
           &g_scnid.
          ,&l_casid.

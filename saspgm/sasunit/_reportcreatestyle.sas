@@ -780,48 +780,48 @@
          style blindTable from table "Table that appears like background" /
             cellspacing=0
             borderwidth=0px
-            backgroundcolor=colors('docbg')
+            background=colors('docbg')
          ;
          style blindData from data "Data cell in a blind Table" /
             borderwidth=0px
-            backgroundcolor=colors('docbg')
+            background=colors('docbg')
          ;
          style blindHeader from header "Header cell in a blind Table" /
             borderwidth=0px
-            backgroundcolor=colors('docbg')
-            color=colors('docbg')
+            background=colors('docbg')
+            foreground=colors('docbg')
             fontsize=0.5pt
          ;
          style blindCaption from blindData "Caption row in a blind Table" /
             font=fonts('TitleFont2')
-            color=colors('captionfg')
+            foreground=colors('captionfg')
          ;
          style blindDataStrong from DataStrong "Strong data cell in a blind Table" /
-            color=colors('datafgstrong')
+            foreground=colors('datafgstrong')
             borderwidth=0px
-            backgroundcolor=colors('docbg')
+            background=colors('docbg')
          ;
          style tcgCoveredData "data cell with covered code in tcg report" /
-            color=color_list('fgTcgCovered')
+            foreground=color_list('fgTcgCovered')
          ;
          style tcgNonCoveredData "data cell with non-covered code in tcg report" /
-            color=color_list('fgTcgNonCovered')
+            foreground=color_list('fgTcgNonCovered')
          ;
          style tcgCommentData "data cell with commented code in tcg report" /
-            color=color_list('fgTcgComment')
+            foreground=color_list('fgTcgComment')
          ;
          style tcgNonContribData "data cell with non-contributing code in tcg report" /
-            color=color_list('fgTcgNonContrib')
+            foreground=color_list('fgTcgNonContrib')
          ;
          style blindFixedFontData from blindData "Fixed font data cell in a blind Table" /
             font =fonts('BatchFixedFont');
          ;
          style logerrcountmsg from blindData "Count of scenario error messages in test case overview" /
-            color=color_list('fgErrorCount')
+            foreground=color_list('fgErrorCount')
             font_weight = Bold                                                   
          ;
          style datacolumnerror "Renders an error in a column" /
-            color=color_list('fgErrorCount')
+            foreground=color_list('fgErrorCount')
             borderwidth=0px
             borderspacing=0px
          ;
@@ -852,21 +852,9 @@
          style tablesorterheaderDesc "Tablesorter-headerDesc for jQuery TableSorter" /
             backgroundimage = "data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7"
          ;
-         style pgmDocTodoData "data cell of ToDo section in pgmdoc report" /
-            backgroundcolor=color_list('bgPgmDocTodo')
-         ;
-         style pgmDocTestData "data cell of Test section in pgmdoc report" /
-            backgroundcolor=color_list('bgPgmDocTest')
-         ;
-         style pgmDocBugData "data cell of Bug section in pgmdoc report" /
-            backgroundcolor=color_list('bgPgmDocBug')
-         ;
-         style pgmDocRemarkData "data cell of Remark section in pgmdoc report" /
-            backgroundcolor=color_list('bgPgmDocRemark')
-         ;
-         style pgmDocDepData "data cell of Remark section in pgmdoc report" /
-            foreground=color_list('fgPgmDocDep')
-            background=color_list('bgPgmDocDep')
+         style pgmDocHeader from Header "Header of pgmdoc report" /
+            foreground=colors('datafg')
+            background=colors('databg')
          ;
          style pgmDocTodoHeader from Header "Header of ToDo section in pgmdoc report" /
             background=color_list('bgPgmDocTodo')
@@ -884,26 +872,43 @@
             foreground=color_list('fgPgmDocDep')
             background=color_list('bgPgmDocDep')
          ;
-         style pgmDocHeader from Header "Header of pgmdoc report" /
-            foreground    = colors('datafg')
-            background    = colors('databg')
-         ;
          style pgmDocData from Data "data cell of pgmdoc report" /
-           foreground = color_list('fgB1')
-           background = colors('docbg')
+            foreground=colors('datafg')
+            background=colors('docbg')
          ;
          style pgmDocDataStrong from DataStrong "strong data cell of pgmdoc report" /
-           background = colors('docbg')
+            foreground=colors('datafg')
+            background=colors('docbg')
          ;
          style pgmDocSource from blindFixedFontData "strong data cell of pgmdoc report" /
-           foreground = color_list('fgPgmDocSource')
+            foreground=color_list('fgPgmDocSource')
          ;
          style pgmDocBlindData from blindData "data cell of pgmdoc report" /
-           foreground = color_list('fgB1')
-           background = colors('docbg')
+            foreground=colors('datafg')
+            background=colors('docbg')
          ;
          style pgmDocBlindDataStrong from blindDataStrong "strong data cell of pgmdoc report" /
-           background = colors('docbg')
+            background=colors('docbg')
+         ;
+         style pgmDocTodoData from  pgmDocTodoHeader "data cell of ToDo section in pgmdoc report" /
+            borderwidth=0px
+            font_weight=medium
+         ;
+         style pgmDocTestData from pgmDocTestHeader "data cell of Test section in pgmdoc report" /
+            borderwidth=0px
+            font_weight=medium
+         ;
+         style pgmDocBugData from pgmDocBugHeader "data cell of Bug section in pgmdoc report" /
+            borderwidth=0px
+            font_weight=medium
+         ;
+         style pgmDocRemarkData from pgmDocRemarkHeader  "data cell of Remark section in pgmdoc report" /
+            borderwidth=0px
+            font_weight=medium
+         ;
+         style pgmDocDepData from pgmDocDepHeader "data cell of Remark section in pgmdoc report" /
+            borderwidth=0px
+            font_weight=medium
          ;
       end;
    run;

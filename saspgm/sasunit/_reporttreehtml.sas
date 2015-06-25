@@ -37,7 +37,7 @@
                        );
 
 %LOCAL l_title;
-%LOCAL d_tree d_tree1 d_tree2 d_tree3 d_la i; 
+%LOCAL d_tree d_tree1 d_tree2 d_tree3 d_tree4 d_la i; 
 
 %LET l_title = &g_project | SASUnit;
 
@@ -45,6 +45,7 @@
 %_tempFilename(d_tree1)
 %_tempFilename(d_tree2)
 %_tempFilename(d_tree3)
+%_tempFilename(d_tree4)
 %_tempFilename(d_la)
 
 /*-- generate tree structure 1 for test scenarios ----------------------------*/
@@ -181,8 +182,197 @@ DATA &d_tree2 (KEEP=label popup target lvl leaf rc);
 
 RUN;
 
-/*-- generate tree structure 3 Part I for profram documentation --------------------------*/
 %if (&o_pgmdoc.) %then %do;
+   /*-- generate tree structure 3: program documentation Part I --------------------------*/
+   %local l_counter l_counterm1 l_i l_im1 l_j l_NewElements;
+
+   %let l_NewElements=1;
+
+   proc sort data=work._GrpDoc out=work.__tree0;
+      by child;
+   run;
+
+   data work.__tree0;
+      set work.__tree0;
+      _nodeID=_N_;
+   run;
+
+   data work.__tree1;
+      set work.__tree0(where=(Node1Name=parent)
+                       rename=(child=Node1Name
+                              ChildText=Node1Label
+                              ChildDesc=Node1Desc
+                              )
+                      );
+      drop parent _NodeID;
+      call symputx ("l_obs", _N_, "L");
+      Node1ID=_NodeID;
+      Node1Sort=_NodeID;
+   run;
+
+   proc sql noprint;
+      create table work.__tree2 as
+         select tree1.Node1Name
+               ,tree1.Node1ID
+               ,tree1.Node1Sort
+               ,tree1.Node1Label
+               ,tree1.Node1Desc
+               ,tree0.child as Node2Name
+               ,_nodeID as Node2ID
+               ,_nodeID as Node2Sort
+               ,tree0.childText as Node2Label
+               ,tree0.childDesc as Node2Desc
+         from work.__tree1 as tree1 
+              left join work.__tree0(where=(child ne parent)) as tree0 
+              on tree1.Node1Name=tree0.parent
+         order by Node1ID, Node2Name;
+   quit;
+
+   %let l_counter=2;
+   %do %until (&l_NewElements. = 0);
+      %let l_counter=%eval (&l_counter.+1);
+      %let l_counterm1=%eval (&l_counter.-1);
+      proc sql noprint;
+         create table work.__tree&l_counter. as
+            select tree&l_counterm1..Node1Name
+                  ,tree&l_counterm1..Node1ID
+                  ,tree&l_counterm1..Node1Sort
+                  ,tree&l_counterm1..Node1Label
+                  ,tree&l_counterm1..Node1Desc
+                  %do l_i=2 %to &l_counterm1.;
+                    ,tree&l_counterm1..Node&l_i.Name
+                    ,tree&l_counterm1..Node&l_i.ID
+                    ,tree&l_counterm1..Node&l_i.Sort
+                    ,tree&l_counterm1..Node&l_i.Label
+                    ,tree&l_counterm1..Node&l_i.Desc
+                  %end;
+                  ,tree0.child as Node&l_counter.Name
+                  ,_nodeID as Node&l_counter.ID
+                  ,_nodeID as Node&l_counter.Sort
+                  ,tree0.childText as Node&l_counter.Label
+                  ,tree0.childDesc as Node&l_counter.Desc
+            from work.__tree&l_counterm1. as tree&l_counterm1. 
+                 left join work.__tree0(where=(child ne parent)) as tree0
+                 on tree&l_counterm1..Node&l_counterm1.Name=tree0.parent;
+         select N(Node&l_counter.Name) into :l_NewElements from work.__tree&l_counter.;
+      quit;
+   %end;
+
+   proc sort data=work.__tree&l_counterm1. out=&d_tree3.;
+      by 
+      %do l_i=1 %to&l_counterm1.;
+          Node&l_i.ID 
+      %end;
+      ;
+   run;
+
+   proc datasets lib=work nolist;
+      delete
+         %do l_i=0 %to &l_counter.;
+            __tree&l_i.
+         %end;
+         ;
+   run;quit;
+
+   data work.__tree0;
+      length label popup target $255;
+      set &d_tree3.;
+      by 
+      %do l_i=1 %to&l_counterm1.;
+          Node&l_i.ID 
+      %end;
+      ;
+
+      *** Mark leaves on all levels ***;
+      if not missing (Node&l_counterm1.ID) then do;
+         NodeType="Leaf";
+         Level=&l_counterm1.;
+         Label=Node&l_counterm1.Label;
+         Desc =Node&l_counterm1.Desc;
+         Node&l_counterm1.Sort=9999;
+         output;
+      end;
+      %do l_i=&l_counterm1. %to 2 %by -1;
+         %let l_im1=%eval(&l_i.-1);
+         if not missing (Node&l_im1.ID) and missing (Node&l_i.ID) then do;
+            NodeType="Leaf";
+            Level=&l_im1.;
+            Label=Node&l_im1.Label;
+            Desc =Node&l_im1.Desc;
+            Node&l_im1.Sort=9999;
+            output;
+         end;
+      %end;
+
+      *** Create nodes for all leaves ***;
+      %do l_i=&l_counterm1. %to 2 %by -1;
+         %let l_im1=%eval(&l_i.-1);
+         if (first.Node&l_im1.ID and not missing (Node&l_i.ID)) then do;
+            NodeType="Node";
+            Level=&l_im1.;
+            Label=Node&l_im1.Label;
+            Desc =Node&l_im1.Desc;
+            %do l_j=&l_i. %to &l_counterm1.;
+               call missing (Node&l_j.Name);
+               call missing (Node&l_j.ID);
+               call missing (Node&l_j.Sort);
+            %end;
+            output; 
+         end;
+      %end;
+      keep Label NodeType Level
+      %do l_i=1 %to&l_counterm1.;
+          Node&l_i.Name Node&l_i.ID Node&l_i.Sort
+      %end;
+      ;
+   run;
+
+   proc sort data=work.__tree0 out=&d_tree3. (drop=
+                                             %do l_i=1 %to&l_counterm1.;
+                                                Node&l_i.Sort
+                                             %end;
+                                             );
+      by 
+      %do l_i=1 %to&l_counterm1.;
+          Node&l_i.Sort
+      %end;
+      ;
+   run;
+
+   proc datasets lib=work nolist;
+      delete __tree0;
+   run;quit;
+
+   data &d_tree3.;
+      length label popup target $255;
+      set &d_tree3.;
+      leaf = 0;
+      IF _n_=1 THEN DO;
+         _label = label;
+         label  = "&g_nls_reportTree_016";
+         popup  = "";
+         target = "";
+         lvl    = 1;
+         leaf   = 0;
+         OUTPUT;
+         label  = "&g_nls_reportTree_020";
+         popup  = "";
+         target = "";
+         lvl    = 2;
+         leaf   = 0;
+         OUTPUT;
+         label=_label;
+      end;
+      lvl=level+2;
+      leaf=(NodeType="Leaf");
+      if (leaf) then do;
+         popup = "&g_nls_reportTree_018: " !! '&#x0D;' !! label;
+         target = catt ("pgm_", tranwrd (trim (label), ".sas", ".html"));
+      end;
+      output;
+   run;
+
+   /*-- generate tree structure 4: program documentation Part II --------------------------*/
    proc sql noprint;
       create table work._repdata2 as 
          select distinct exa.*
@@ -191,10 +381,11 @@ RUN;
                 ,cas.cas_obj
          from target.exa left join target.cas
               on exa.exa_id=cas.cas_exaid
-              ,target.tsu;
+              ,target.tsu
+         order by exa_auton, exa_id;;
    quit;
 
-   DATA &d_tree3 (KEEP=label popup target lvl leaf rc);
+   DATA &d_tree4. (KEEP=label popup target lvl leaf rc);
       LENGTH label popup target $255 lvl leaf  8;
       SET work._repdata2
       %if (&o_pgmdoc_sasunit. ne 1) %then %do;
@@ -205,12 +396,6 @@ RUN;
 
       leaf = 0;
       IF _n_=1 THEN DO;
-         label  = "&g_nls_reportTree_016";
-         popup  = "";
-         target = "";
-         lvl    = 1;
-         leaf   = 0;
-         OUTPUT;
          label  = "&g_nls_reportTree_019";
          popup  = "";
          target = "_PgmDoc_Lists.html";
@@ -279,7 +464,7 @@ RUN;
 DATA &d_tree. &d_la. (KEEP=lvl RENAME=(lvl=nextlvl));
    SET &d_tree1. &d_tree2. 
    %if (&o_pgmdoc.) %then %do;
-      &d_tree3.
+      &d_tree3. &d_tree4. 
    %end;
        END=eof;
    OUTPUT &d_tree;

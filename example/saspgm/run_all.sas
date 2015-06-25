@@ -57,6 +57,7 @@ OPTIONS
    i_language=%upcase(%sysget(SASUNIT_LANGUAGE))
   ,o_html=1
   ,o_junit=1
+/*  ,o_pgmdoc_sasunit=0*/
 );
 
 /** \endcond */

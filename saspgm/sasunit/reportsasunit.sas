@@ -152,6 +152,15 @@
    ods path (PREPEND) _style.template(READ);
    ods path (PREPEND) WORK.template(UPDATE);
 
+   %IF (&o_pgmdoc.=1) %THEN %DO;
+      %_reportPgmDoc(i_language      =&i_language.
+                    ,i_repdata       =&d_rep.
+                    ,o_html          =&o_html.
+                    ,o_pdf           =&o_pdf.
+                    ,o_path          =&l_output.
+                    ,o_pgmdoc_sasunit=&o_pgmdoc_sasunit.
+                    );
+   %END;
    %IF (&o_html.=1) %THEN %DO;
       %_openDummyHtmlPage;
       DATA _null_;
@@ -269,14 +278,6 @@
    %END;
    %IF (&o_junit.=1) %THEN %DO;
       %_reportJUnitXML(o_file=&l_output./junit.xml)
-   %END;
-   %IF (&o_pgmdoc.=1) %THEN %DO;
-      %_reportPgmDoc(i_language      =&i_language.
-                    ,o_html          =&o_html.
-                    ,o_pdf           =&o_pdf.
-                    ,o_path          =&l_output.
-                    ,o_pgmdoc_sasunit=&o_pgmdoc_sasunit.
-                    );
    %END;
 
    /*-- save last report date ---------------------------------------------------*/

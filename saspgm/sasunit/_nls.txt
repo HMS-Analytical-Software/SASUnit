@@ -48,6 +48,8 @@
  18 EN Program documentation for unit under test
  19 DE Zusätzlich Informationen
  19 EN Additional information
+ 20 DE Gruppen
+ 20 EN Groups
 ---reportAuton
   1 DE Prüflinge
   1 EN Units under Test

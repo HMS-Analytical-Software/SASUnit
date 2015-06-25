@@ -126,6 +126,12 @@ ol.hms-treeview
 	background-position: center center;
 }
 
+label.file
+{
+	background: url("../File.png") no-repeat;
+	background-position: center left;
+}
+
 label.fileok
 {
 	background: url("../FileOK.png") no-repeat;
