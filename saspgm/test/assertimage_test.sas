@@ -127,7 +127,7 @@
             ,i_desc               =Image1 does not exist
             );
    %markTest()
-      %assertDBValue(tst,exp,1# #NotExistendFile.cmd)
+      %assertDBValue(tst,exp,1# #&assertImage_NotExistend.)
       %assertDBValue(tst,act,-3# #&assertImage_image2.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
