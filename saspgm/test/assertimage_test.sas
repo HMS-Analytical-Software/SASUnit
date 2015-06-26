@@ -142,7 +142,7 @@
             );
    %markTest()
       %assertDBValue(tst,exp,1# #&assertImage_image1.)
-      %assertDBValue(tst,act,-4# #NotExistendFile.cmd)
+      %assertDBValue(tst,act,-4# #&assertImage_NotExistend.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
            
