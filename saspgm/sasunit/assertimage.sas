@@ -28,7 +28,8 @@
                                        0 : image match 
                                        >0: images do not match
    \param      i_modifier             Optional parameter: modifiers for the compare
-   \param      i_threshold            Optional parameter: further parameter to be passed to the script
+   \param      i_threshold            Optional parameter: further parameter to be passed to the script. Default is 0. To be uses especially with
+                                      modifier -metric ae to specify a number of pixels that may be different
    \param      i_desc                 Optional parameter: description of the assertion to be checked
 
 */ /** \cond */ 
@@ -38,7 +39,7 @@
                    ,i_actual             =
                    ,i_expected_shell_rc  =0
                    ,i_modifier           =-metric RMSE
-                   ,i_threshold          =1
+                   ,i_threshold          =0
                    ,i_desc               =Comparison of images
                    );
 

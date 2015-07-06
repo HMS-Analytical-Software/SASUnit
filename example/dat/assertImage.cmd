@@ -11,14 +11,15 @@ ECHO sasunit_mod: %sasunit_mod%
 ECHO sasunit_dest: %sasunit_dest%
 ECHO sasunit_threshold: %sasunit_threshold%
 
-if "%sasunit_mod%" == "" ( 
-   compare %sasunit_image1% %sasunit_image2% %sasunit_dest%
-)else (
-   compare %sasunit_threshold% %sasunit_mod% %sasunit_image1% %sasunit_image2% %sasunit_dest%
-)
+for /f %%i in ('compare %sasunit_mod% %sasunit_image1% %sasunit_image2% %sasunit_dest% ^2^>^&1') do set RC=%%i
+ECHO Pixels different: %RC%
 
-if errorlevel 1 (
-    SET retCode=1
+if %rc% GTR 0 (
+   if %rc% GTR %sasunit_threshold% (
+      SET retCode=1
+   ) else (
+      SET retCode=0
+   )
 ) else (
     SET retCode=0
 )
