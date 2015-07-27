@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_UTIL
 
-   \brief      Creates reprting dataset.
+   \brief      Creates reporting dataset.
 
    \version    \$Revision: 390 $
    \author     \$Author: klandwich $

@@ -30,9 +30,9 @@
    ;
    /* Prepare macro variables to adapt to OS specific test */
    %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
-      %LET assertText_script        =%sysfunc(translate(&g_testdata.\assertText_fc.cmd,\,/));
-      %LET assertImage_script       =%sysfunc(translate(&g_testdata.\assertImage.cmd,\,/));
-      %LET assertExternal_script    =%sysfunc(translate(&g_testdata.\assertExternal_cnt.cmd,\,/));
+      %LET assertText_script        =%sysfunc(translate(&g_sasunit_os.\assertText_fc.cmd,\,/));
+      %LET assertImage_script       =%sysfunc(translate(&g_sasunit_os.\assertImage.cmd,\,/));
+      %LET assertExternal_script    =%sysfunc(translate(&g_sasunit_os.\assertExternal_cnt.cmd,\,/));
       %LET assertText_CompTool      =fc;
       %LET assertText_OS            =Windows;
       %LET assertText_mod1          =/C;
@@ -41,9 +41,9 @@
       %LET assertText_work2         =%sysfunc(translate(&g_work.\text2.txt,\,/));
    %END;
    %ELSE %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ linux %THEN %DO;
-      %LET assertText_script        =%_abspath(&g_testdata.,assertText_diff.sh);
-      %LET assertImage_script       =%_abspath(&g_testdata.,assertImage.sh);
-      %LET assertExternal_script    =%_abspath(&g_testdata.,assertExternal_wc.sh);
+      %LET assertText_script        =%_abspath(&g_sasunit_os.,assertText_diff.sh);
+      %LET assertImage_script       =%_abspath(&g_sasunit_os.,assertImage.sh);
+      %LET assertExternal_script    =%_abspath(&g_sasunit_os.,assertExternal_wc.sh);
       %LET assertText_CompTool      =diff;
       %LET assertText_OS            =Linux;
       %LET assertText_mod1          =-i;
