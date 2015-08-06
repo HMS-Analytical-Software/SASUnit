@@ -120,8 +120,9 @@
          if tst_exp="" then tst_exp='^_';
 
          *** Columns for scenario overview ***;
-         scn_abs_path = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
-         scn_pgm      = resolve ('%_stdpath(&g_root./saspgm/test,' !! trim(scn_abs_path) !! ')');
+         scn_abs_path = resolve ('%_abspath(&g_root.,' !! trim(scn_path) !! ')');
+         idx          = find (scn_abs_path, '/', -length (scn_abs_path))+1;
+         scn_pgm      = substr (scn_abs_path, idx);
          scn_duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid      = put (scn_id, z3.);
          c_casid      = put (cas_id, z3.);
@@ -174,7 +175,7 @@
                                 ,i_linkTitle=LinkTitle1
                                 );
             %_render_DataColumn (i_sourceColumn=scn_path
-                                ,i_linkColumn=scn_abs_path
+                                ,i_linkColumn=LinkColumn2
                                 ,i_linkTitle=LinkTitle2
                                 ,o_targetColumn=scnProgramColumn
                                 );
@@ -185,7 +186,7 @@
                                 ,o_targetColumn=scnLast_runColumn
                                 );
             %_render_DataColumn (i_sourceColumn=cas_obj
-                                ,i_linkColumn=cas_abs_path
+                                ,i_linkColumn=LinkColumn4
                                 ,i_linkTitle=LinkTitle4
                                 ,o_targetColumn=casProgramColumn
                                 );

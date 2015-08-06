@@ -325,15 +325,15 @@
    run;
  
    proc report data=work._view nowd missing
-      style(report)={width=60em}
+      style(report)=pgmDocBlindData {width=60em}
       style(header)=blindHeader
       style(lines)=&style. 
-      style(column)=pgmDocData [textalign=left]
+      style(column)=pgmDocBlindData [textalign=left]
       ;
 
       column ReportColumns obs_sort new_description;
 
-      define ReportColumns / group style(column)=pgmDocDataStrong [width=20em];
+      define ReportColumns / group style(column)=pgmDocBlindDataStrong [width=20em];
       define obs_sort / group noprint;
       define new_description / display;
 
