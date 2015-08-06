@@ -183,19 +183,12 @@
                    ")";
             END;
             /*-- only if testsuite has been initialized anew after last report -----*/
-            IF tsu_lastinit > tsu_lastrep OR &o_force THEN DO;
+            IF tsu_lastinit > tsu_lastrep OR &o_force. THEN DO;
                /*-- convert SAS-log from initSASUnit -------------------------------*/
                PUT '%_reportLogHTML('                            /
                    "    i_log     = &g_log/000.log"              /
                    "   ,i_title   = &g_nls_reportSASUnit_001"    /
                    "   ,o_html    = &l_output/000_log.html"      /
-                   ")";
-               /*-- create overview page -------------------------------------------*/
-               PUT '%_reportHomeHTML('             /
-                   "    i_repdata = &d_rep"        /
-                   "   ,o_html    = &o_html."      /
-                   "   ,o_path    = &l_output."    /
-                   "   ,o_file    = overview"      /
                    ")";
             END;
             /*-- only if a test scenario has been run since last report ------------*/
@@ -207,6 +200,20 @@
                    "   ,o_pgmdoc         = &o_pgmdoc"            /
                    "   ,o_pgmdoc_sasunit = &o_pgmdoc_sasunit"    /
                    ")";
+               if (&o_pdf.) then do;
+                  PUT "ods pdf file=""&l_output./SASUnit_Test_Doc.pdf"" style=styles.SASUnit cssstyle=""css/SAS_SASUnit.css""" /
+                      " startpage=never;";
+               end;
+               /*-- create overview page -------------------------------------------*/
+               PUT '%_reportHomeHTML('             /
+                   "    i_repdata = &d_rep"        /
+                   "   ,o_html    = &o_html."      /
+                   "   ,o_path    = &l_output."    /
+                   "   ,o_file    = overview"      /
+                   ")";
+               if (&o_pdf.) then do;
+                  PUT "ods pdf startpage=now;";
+               end;
                /*-- create list of test scenarios ----------------------------------*/
                PUT '%_reportScnHTML('              /
                    "    i_repdata = &d_rep."       /
@@ -214,6 +221,9 @@
                    "   ,o_path    = &l_output."    /
                    "   ,o_file    = scn_overview"  /
                    ")";
+               if (&o_pdf.) then do;
+                  PUT "ods pdf startpage=now;";
+               end;
                /*-- create list of test cases --------------------------------------*/
                PUT '%_reportCasHTML('              /
                    "    i_repdata = &d_rep"        /
@@ -221,6 +231,9 @@
                    "   ,o_path    = &l_output."    /
                    "   ,o_file    = cas_overview"  /
                    ")";
+               if (&o_pdf.) then do;
+                  PUT "ods pdf startpage=now;";
+               end;
                /*-- create list of units under test --------------------------------*/
                PUT '%_reportAutonHTML('              /
                    "    i_repdata = &d_rep"          /
@@ -229,6 +242,9 @@
                    "   ,o_file    = auton_overview"  /
                    "   ,o_pgmdoc  = &o_pgmdoc."      /
                    ")";
+               if (&o_pdf.) then do;
+                  PUT 'ods pdf close;';
+               end;
             END;
          END;
 
