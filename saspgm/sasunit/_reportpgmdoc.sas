@@ -231,8 +231,8 @@
    %let l_anzBug =%_nobs(_BugDoc);
    %let l_anzDep =%_nobs(_DepDoc);
 
+   title j=c "&g_nls_reportPgmDoc_019.";
    %if (%eval(&l_anzToDo.+&l_anzTest.+&l_anzBug.+&l_anzDep.)) %then %do;
-      title j=c "&g_nls_reportPgmDoc_019.";
       %if (&l_anzToDo.) %then %do;
          %PrintDocList(lib=WORK
                       ,data=_ToDoDoc

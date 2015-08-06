@@ -39,7 +39,17 @@
       tag_text=tag;
    run;
 
-   proc report data=WORK._RPGH (where=(tag_sort like "00%")) nowd missing 
+   data work._empty_dataset;
+      length tag $20 new_description $200;
+      tag = " ";
+      new_description = "&g_nls_reportPgmDoc_024.";
+   run;
+
+   data work.view / view=work.view;
+      merge _empty_dataset _RPGH (where=(tag_sort like "00%"));
+   run;
+
+   proc report data=work.view nowd missing 
       style(column)=pgmDocBlindData
       style(header)=blindHeader
       style(report)={width=60em 
@@ -77,6 +87,9 @@
          if (trim(tag_text)="\deprecated") then do;
             call define (_ROW_, "style", "style=pgmDocDepData");
          end;
+      endcomp;
+      compute after tag / style=blindHeader;
+         line " ";
       endcomp;
    run;
 

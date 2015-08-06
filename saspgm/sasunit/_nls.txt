@@ -603,9 +603,9 @@
   4 EN See also
   5 DE Fehler
   5 EN Bug
-  6 DE Austehende Tests
+  6 DE Ausstehende Tests
   6 EN Test
-  7 DE Austehende Aufgaben
+  7 DE Ausstehende Aufgaben
   7 EN To Do
   8 DE Version
   8 EN Version
@@ -619,9 +619,9 @@
  12 EN Comment
  13 DE Copyright
  13 EN Copyright
- 14 DE Austehende Aufgaben
+ 14 DE Ausstehende Aufgaben
  14 EN To Do List
- 15 DE Austehende Tests
+ 15 DE Ausstehende Tests
  15 EN Test List
  16 DE Bekannte Fehler
  16 EN Bug List
@@ -629,7 +629,7 @@
  17 EN Program Documentation for Program
  18 DE Quellcode des Programms
  18 EN Source Code of Program
- 19 DE Zusätzlich Informationen
+ 19 DE Zusätzliche Informationen
  19 EN Additional information
  20 DE Veraltete Elemente
  20 EN Deprecated List
@@ -639,4 +639,5 @@
  22 EN Program Documentation
  23 DE Veraltet
  23 EN Deprecated
- 
+ 24 DE Keine Programmdokumentation gefunden
+ 24 EN No program documentation found
