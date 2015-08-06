@@ -80,7 +80,12 @@
 
    data work._examinee;
       set work._examinee_v;
-      exa_path = resolve('%_stdPath(&g_root.,' || exa_filename || ')');
+      if (exa_auton >= 2) then do;
+         exa_path = resolve('%_stdPath(&g_root.,' || exa_filename || ')');
+      end;
+      else do;
+         exa_path = resolve('%_stdPath(&g_sasunitroot.,' || exa_filename || ')');
+      end;
    run;     
 
    %let l_max_exaid=0;

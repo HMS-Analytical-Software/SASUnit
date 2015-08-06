@@ -28,7 +28,7 @@
                          ,r_sysrc             = 
                          );
 
-   %local l_cmdFile l_parms l_parenthesis l_tcgFilePath l_tcgOptionsString l_tcgOptionsStringLINUX l_rc l_macname;
+   %local l_cmdFile l_parms l_parenthesis l_tcgFilePath l_tcgOptionsString l_tcgOptionsStringLINUX l_rc l_macname l_program;
    %let l_macname=&sysmacroname.;
    
    /*-- prepare sasuser ---------------------------------------------------*/
@@ -65,6 +65,7 @@
       %LET   l_tcgOptionsString = -mcoverage -mcoverageloc = ""&l_tcgFilePath."";
    %END;
 
+   %let l_program=%_abspath(&g_root., &i_program.);
    DATA _null_;
       ATTRIB
          _sCmdString LENGTH = $32000
@@ -77,7 +78,7 @@
       """" !! &g_sasstart !! """"
       !! " " 
       !! "&l_parms. "
-      !! "-sysin ""&i_program."" "
+      !! "-sysin ""&l_program."" "
       !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&i_scnid.;"" "
       !! "-log ""&g_log/&i_scnid..log"" "
       !! "-print ""&g_testout/&i_scnid..lst"" "
