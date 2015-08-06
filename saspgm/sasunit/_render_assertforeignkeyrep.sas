@@ -13,7 +13,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
-   \param   i_assertype    type of assert beeing done. It is know be the program itself, but nevertheless specified as parameter.
+   \param   i_assertype    type of assert being done. It is know be the program itself, but nevertheless specified as parameter.
    \param   i_repdata      name of reporting dataset containing information on the assert.
    \param   i_scnid        scenario id of the current test
    \param   i_casid        test case id of the current test

@@ -46,7 +46,7 @@
  17 EN Files
  18 DE Programmdokumentation für Prüfling
  18 EN Program documentation for unit under test
- 19 DE Zusätzlich Informationen
+ 19 DE Zusätzliche Informationen
  19 EN Additional information
  20 DE Gruppen
  20 EN Groups

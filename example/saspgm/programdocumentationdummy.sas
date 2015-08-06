@@ -27,8 +27,7 @@
 
 \remark     You can add remarks to units under test.
             Remarks include <b>bold</b> and <em>emphasized</em> text as well as line breaks.
-            No explicit \\n ist necessary for line breaks, but can be used. 
-            As soon as SAS can render nested ODS directives they will be line breaks.
+            No explicit \\n is necessary for line breaks, but can be used. 
 
 \todo       Set a reminder for future implementations
 

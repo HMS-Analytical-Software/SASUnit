@@ -20,8 +20,6 @@
    \param   o_file         name of the outputfile without extension
    \param   o_pgmdoc       Switch for generartion of program_documentation (0/1)
 
-   \todo Check which statements are still necessary with new repdata
-
 */ /** \cond */ 
 
 %MACRO _reportAutonHTML (i_repdata = 
@@ -216,7 +214,6 @@
             %END;
          %END; /* %ELSE %DO; */
          /* store coverage percentage for report generation */
-         /* ToDo: Kill obsolete statements for work._auton_report */
          PROC SQL NOPRINT;
            UPDATE work._auton_report
              SET tcg_pct=&l_tcg_res.
@@ -354,13 +351,13 @@
 
             pgmdoc_name = tranwrd (exa_pgm, ".sas", ".html");
             if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/pgm_"!!trim(pgmdoc_name))) then do;
-               pgmColumn=catt ('^{style [url="pgm_', pgmdoc_name, '" flyover="&g_nls_reportAuton_028."]',cas_obj,'}');
+               pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.), '_" url="pgm_', pgmdoc_name, '" flyover="&g_nls_reportAuton_028."]',cas_obj,'}');
             end;
             else do;
                pgmColumn=catt (cas_obj);
             end;
             if (fileexist (exa_filename)) then do;
-               pgmColumn=catt (pgmColumn, ' ^{style [url="', LinkColumn1, '" flyover="', LinkTitle1, """ Fontsize=7pt] [&g_nls_reportAuton_027.]}");
+               pgmColumn=catt (pgmColumn, ' ^{style [url="', LinkColumn1, '" flyover="', LinkTitle1, """ Fontsize=7pt][&g_nls_reportAuton_027.]}");
             end;
 
             %_render_dataColumn(i_sourceColumn=scn_id

@@ -1,6 +1,9 @@
 /**
    \file
-   \brief      
+   \brief      Scan a flatfile for DoxyGen tags.
+
+   \details    Tags that are reported under "additional information" are kept in seperate datasets
+
    \ingroup    SASUNIT_REPORT
    \version    
    \version    \$Revision: 163 $
@@ -12,11 +15,24 @@
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-   \todo brief and details
 
-
-   <B>Ablauf:
-   </B>
+   \param   MacroName   Name of the macro that resides inside flatfile under FilePath
+   \param   FilePath    Path and name of a SASautocall macro
+   \param   LibOutDoc   Library of data set holding the header portion of the program documentation (optional: Default=WORK)
+   \param   DataOutDoc  Name of data set holding the header portion of the program documentation (optional: Default=_ProgramHeader)
+   \param   LibOutPgm   Library of data set holding the source code portion of the program documentation (optional: Default=WORK)
+   \param   DataOutPgm  Name of data set holding the source code portion of the program documentation (optional: Default=_ProgramCode)
+   \param   LibOutToDo  Library of data set holding the todo portion of the program documentation (optional: Default=WORK)
+   \param   DataOutToDo Name of data set holding the todo portion of the program documentation (optional: Default=_ToDODoc)
+   \param   LibOutTest  Library of data set holding the test portion of the program documentation (optional: Default=WORK)
+   \param   DataOutTest Name of data set holding the test portion of the program documentation (optional: Default=_TestDoc)
+   \param   LibOutBug   Library of data set holding the bug portion of the program documentation (optional: Default=WORK)
+   \param   DataOutBug  Name of data set holding the bug portion of the program documentation (optional: Default=_BugDoc)
+   \param   LibOutDep   Library of data set holding the dep portion of the program documentation (optional: Default=WORK)
+   \param   DataOutDep  Name of data set holding the dep portion of the program documentation (optional: Default=_DepDoc)
+   \param   LibOutGrp   Library of data set holding the grp portion of the program documentation (optional: Default=WORK)
+   \param   DataOutGrp  Name of data set holding the grp portion of the program documentation (optional: Default=_GrpDoc)
+   \param   i_language  Lanuage in which the documentation should be created. (optional: Default=EN)
 */
 /** \cond */
 %MACRO _scanHeader (MacroName   = 

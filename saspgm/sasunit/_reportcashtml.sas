@@ -94,7 +94,6 @@
          scn_duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid      = put (scn_id, z3.);
 
-
          %_render_idColumn   (i_sourceColumn=scn_id
                              ,i_format=z3.
                              ,o_targetColumn=ScnIdColumn
