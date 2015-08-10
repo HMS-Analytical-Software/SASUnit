@@ -105,7 +105,7 @@
          max_exaid=sum (max_exaid,1);
          exa_id=max_exaid;
       end;
-      exa_changed = coalesce (exa_changed, changed);
+      exa_changed = coalesce (changed, exa_changed);
       drop max_exaid changed;
    run;
 
@@ -117,7 +117,7 @@
    proc append base=target.exa data=&d_examinee.;
    run; 
 
-   PROC DATASETS NOLIST NOWARN LIB=work;
+   PROC DATASETS NOLIST NOWARN LIB=work memtype=(DATA VIEW);
       DELETE _examinee_v;
       DELETE _examinee;
    QUIT;
