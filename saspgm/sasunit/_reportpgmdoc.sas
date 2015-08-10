@@ -145,7 +145,7 @@
          from work._macros
          order by exa_id
          ;
-      select trim (cas_obj) into :l_macroDisplayName1-:l_macroDisplayName%cmpres(&l_anzMacros.)
+      select trim (coalesce (cas_obj, exa_pgm)) into :l_macroDisplayName1-:l_macroDisplayName%cmpres(&l_anzMacros.)
          from work._macros
          order by exa_id
          ;
