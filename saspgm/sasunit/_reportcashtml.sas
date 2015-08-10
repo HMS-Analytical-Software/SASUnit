@@ -90,7 +90,8 @@
          END;
 
          scn_abs_path = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
-         scn_pgm      = resolve ('%_stdpath(&g_root./saspgm/test,' !! trim(scn_abs_path) !! ')');
+         idx          = find (scn_abs_path, '/', -length (scn_abs_path))+1;
+         scn_pgm      = substr (scn_abs_path, idx);
          scn_duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid      = put (scn_id, z3.);
 
@@ -111,7 +112,7 @@
             LinkTitle2   = "&g_nls_reportScn_011";
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
-               LinkColumn1  = "file:///" !! scn_abs_path;
+               LinkColumn1  = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
                LinkColumn2  = c_scnid !! "_log.html";
             %end;
             %_render_dataColumn (i_sourceColumn=scn_path
