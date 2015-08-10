@@ -37,7 +37,7 @@
                        );
 
 %LOCAL l_title;
-%LOCAL d_tree d_tree1 d_tree2 d_tree3 d_tree4 d_la i; 
+%LOCAL d_tree d_tree1 d_tree2 d_tree3 d_tree4 d_tree5 d_la i; 
 
 %LET l_title = &g_project | SASUnit;
 
@@ -46,6 +46,7 @@
 %_tempFilename(d_tree2)
 %_tempFilename(d_tree3)
 %_tempFilename(d_tree4)
+%_tempFilename(d_tree5)
 %_tempFilename(d_la)
 
 /*-- generate tree structure 1 for test scenarios ----------------------------*/
@@ -258,7 +259,7 @@ RUN;
       quit;
    %end;
 
-   proc sort data=work.__tree&l_counterm1. out=&d_tree3.;
+   proc sort data=work.__tree&l_counterm1. out=&d_tree4.;
       by 
       %do l_i=1 %to&l_counterm1.;
           Node&l_i.ID 
@@ -276,7 +277,7 @@ RUN;
 
    data work.__tree0;
       length label popup target $255;
-      set &d_tree3.;
+      set &d_tree4.;
       by 
       %do l_i=1 %to&l_counterm1.;
           Node&l_i.ID 
@@ -327,7 +328,7 @@ RUN;
       ;
    run;
 
-   proc sort data=work.__tree0 out=&d_tree3. (drop=
+   proc sort data=work.__tree0 out=&d_tree4. (drop=
                                              %do l_i=1 %to&l_counterm1.;
                                                 Node&l_i.Sort
                                              %end;
@@ -345,24 +346,23 @@ RUN;
 
    data &d_tree3.;
       length label popup target $255;
-      set &d_tree3.;
-      leaf = 0;
-      IF _n_=1 THEN DO;
-         _label = label;
-         label  = "&g_nls_reportTree_016";
-         popup  = "";
-         target = "";
-         lvl    = 1;
-         leaf   = 0;
-         OUTPUT;
-         label  = "&g_nls_reportTree_020";
-         popup  = "";
-         target = "";
-         lvl    = 2;
-         leaf   = 0;
-         OUTPUT;
-         label=_label;
-      end;
+      label  = "&g_nls_reportTree_016";
+      popup  = "";
+      target = "";
+      lvl    = 1;
+      leaf   = 0;
+      OUTPUT;
+      label  = "&g_nls_reportTree_020";
+      popup  = "";
+      target = "";
+      lvl    = 2;
+      leaf   = 0;
+      OUTPUT;
+   run;
+
+   data &d_tree4.;
+      length label popup target $255;
+      set &d_tree4.;
       lvl=level+2;
       leaf=(NodeType="Leaf");
       if (leaf) then do;
@@ -385,7 +385,7 @@ RUN;
          order by exa_auton, exa_id;;
    quit;
 
-   DATA &d_tree4. (KEEP=label popup target lvl leaf rc);
+   DATA &d_tree5. (KEEP=label popup target lvl leaf rc);
       LENGTH label popup target $255 lvl leaf  8;
       SET work._repdata2
       %if (&o_pgmdoc_sasunit. ne 1) %then %do;
@@ -464,7 +464,7 @@ RUN;
 DATA &d_tree. &d_la. (KEEP=lvl RENAME=(lvl=nextlvl));
    SET &d_tree1. &d_tree2. 
    %if (&o_pgmdoc.) %then %do;
-      &d_tree3. &d_tree4. 
+      &d_tree3. &d_tree4. &d_tree5.
    %end;
        END=eof;
    OUTPUT &d_tree;
@@ -532,13 +532,15 @@ RUN;
 
 PROC DATASETS NOLIST NOWARN LIB=work;
    DELETE 
-      %scan(&d_tree,1,.) 
-      %scan(&d_tree1,1,.) 
-      %scan(&d_tree2,1,.) 
+      %scan(&d_tree,2,.) 
+      %scan(&d_tree1,2,.) 
+      %scan(&d_tree2,2,.) 
       %if (&o_pgmdoc.) %then %do;
-         %scan(&d_tree3,1,.) 
+         %scan(&d_tree3,2,.) 
+         %scan(&d_tree4,2,.) 
+         %scan(&d_tree5,2,.) 
       %end;
-      %scan(&d_la,1,.);
+      %scan(&d_la,2,.);
 QUIT;
 
 %MEND _reportTreeHTML;

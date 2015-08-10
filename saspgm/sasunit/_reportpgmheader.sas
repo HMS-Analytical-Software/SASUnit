@@ -39,59 +39,87 @@
       tag_text=tag;
    run;
 
-   data work._empty_dataset;
-      length tag $20 new_description $200;
-      tag = " ";
-      new_description = "&g_nls_reportPgmDoc_024.";
+   data WORK._RPGH_HEADER;
+      set _RPGH (where=(tag_sort like "00%"));
    run;
 
-   data work.view / view=work.view;
-      merge _empty_dataset _RPGH (where=(tag_sort like "00%"));
-   run;
+   %if (%_nobs (WORK._RPGH_HEADER) < 1) %then %do;
+      data work._empty_dataset;
+         length tag $20 new_description $3200;
+         tag = " ";
+         new_description = "&g_nls_reportPgmDoc_024.";
+      run;
 
-   proc report data=work.view nowd missing 
-      style(column)=pgmDocBlindData
-      style(header)=blindHeader
-      style(report)={width=60em 
-                     borderspacing =  0px
-                     paddingtop    =  3px 
-                     paddingleft   = 11px 
-                     paddingright  = 11px 
-                     paddingbottom =  3px 
-                    }
-      ;
+      proc report data=work._empty_dataset nowd missing 
+         style(column)=pgmDocBlindData [just=center]
+         style(header)=blindHeader
+         style(report)={width=60em 
+                        borderspacing =  0px
+                        paddingtop    =  3px 
+                        paddingleft   = 11px 
+                        paddingright  = 11px 
+                        paddingbottom =  3px 
+                       }
+         ;
 
-      column tag_sort tag tag_text new_description;
+         column tag new_description;
 
-      define tag_sort        / order noprint;
-      define tag             / order noprint;
-      define tag_text        / display noprint;
-      define new_description / display;
+         define tag             / order noprint;
+         define new_description / display;
 
-      compute before tag / style=PgmDocHeader;
-         line tag $HeaderText.;
-      endcomp;
-      compute tag_text;
-         if (trim(tag_text)="\bug") then do;
-            call define (_ROW_, "style", "style=pgmDocBugData");
-         end;
-         if (trim(tag_text)="\test") then do;
-            call define (_ROW_, "style", "style=pgmDocTestData");
-         end;
-         if (trim(tag_text)="\todo") then do;
-            call define (_ROW_, "style", "style=pgmDocToDoData");
-         end;
-         if (trim(tag_text)="\remark") then do;
-            call define (_ROW_, "style", "style=pgmDocRemarkData");
-         end;
-         if (trim(tag_text)="\deprecated") then do;
-            call define (_ROW_, "style", "style=pgmDocDepData");
-         end;
-      endcomp;
-      compute after tag / style=blindHeader;
-         line " ";
-      endcomp;
-   run;
+         compute before tag / style=PgmDocHeader;
+            line tag $HeaderText.;
+         endcomp;
+         compute after tag / style=blindHeader;
+            line " ";
+         endcomp;
+      run;
+   %end;
+   %else %do;
+      proc report data=WORK._RPGH_HEADER nowd missing 
+         style(column)=pgmDocBlindData
+         style(header)=blindHeader
+         style(report)={width=60em 
+                        borderspacing =  0px
+                        paddingtop    =  3px 
+                        paddingleft   = 11px 
+                        paddingright  = 11px 
+                        paddingbottom =  3px 
+                       }
+         ;
+
+         column tag_sort tag tag_text new_description;
+
+         define tag_sort        / order noprint;
+         define tag             / order noprint;
+         define tag_text        / display noprint;
+         define new_description / display;
+
+         compute before tag / style=PgmDocHeader;
+            line tag $HeaderText.;
+         endcomp;
+         compute tag_text;
+            if (trim(tag_text)="\bug") then do;
+               call define (_ROW_, "style", "style=pgmDocBugData");
+            end;
+            if (trim(tag_text)="\test") then do;
+               call define (_ROW_, "style", "style=pgmDocTestData");
+            end;
+            if (trim(tag_text)="\todo") then do;
+               call define (_ROW_, "style", "style=pgmDocToDoData");
+            end;
+            if (trim(tag_text)="\remark") then do;
+               call define (_ROW_, "style", "style=pgmDocRemarkData");
+            end;
+            if (trim(tag_text)="\deprecated") then do;
+               call define (_ROW_, "style", "style=pgmDocDepData");
+            end;
+         endcomp;
+         compute after tag / style=blindHeader;
+            line " ";
+         endcomp;
+      run;
+   %end;
 
    title;
 
