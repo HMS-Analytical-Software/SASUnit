@@ -6,7 +6,7 @@
 
    \details    The actual compare is done via a script file found in folder saspgm/sasunit/OS.
                For windows the script file is assertText_fc.cmd. The fc command is used to do the compare.
-               For Linux the scipt file is called assertText_diff.sh. Here the diff command is used to do the compare.
+               For Linux the script file is called assertText_diff.sh. Here the diff command is used to do the compare.
                Usage of other diff-tools is possible by changing the implementation of the script file.
 
                Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
