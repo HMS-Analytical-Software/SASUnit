@@ -333,14 +333,14 @@
  27 EN Yes
  28 DE Nein
  28 EN No
- 29 DE Testabdeckung ermitteln:
- 29 EN SASUnit started with test coverage:
- 30 DE SASUnit mit Überschreiben gestartet:
- 30 EN SASUnit started in overwrite mode:
- 31 DE Aufrufhierarchie erstellen:
- 31 EN Document call hierarchy:
- 32 DE Aufrufhierarchie mit SASUnit Makros:
- 32 EN Call hierarchy includes SASUnit macros:
+ 29 DE Testabdeckung ermitteln
+ 29 EN SASUnit started with test coverage
+ 30 DE SASUnit mit Überschreiben gestartet
+ 30 EN SASUnit started in overwrite mode
+ 31 DE Aufrufhierarchie erstellen
+ 31 EN Document call hierarchy
+ 32 DE Aufrufhierarchie mit SASUnit Makros
+ 32 EN Call hierarchy includes SASUnit macros
  33 DE Encoding der HTML-Berichte
  33 EN Encoding of HTML reports
 ---reportLibrary
@@ -471,8 +471,8 @@
  14 EN Keys of lookup table, which are not used in master table
  15 DE Leere Tabelle wurde erzeugt
  15 EN Table created but it contains no records
- 16 DE Nachschlagetabelle: 
- 16 EN lookup dataset:
+ 16 DE Nachschlagetabelle
+ 16 EN lookup dataset
  17 DE eindeutig
  17 EN unique
  18 DE nicht eindeutig
