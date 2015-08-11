@@ -127,15 +127,20 @@
          c_scnid      = put (scn_id, z3.);
          c_casid      = put (cas_id, z3.);
          if (exa_auton = 0) then do;
-            cas_abs_path = resolve ('%_abspath(&g_sasunit,' !! trim(cas_obj) !! ')');   
+            cas_abs_path = resolve ('%_abspath(&g_sasunit.,' !! trim(cas_obj) !! ')');   
          end;
          else if (exa_auton = 1) then do;
-            cas_abs_path = resolve ('%_abspath(&g_sasunit_os,' !! trim(cas_obj) !! ')');   
+            cas_abs_path = resolve ('%_abspath(&g_sasunit_os.,' !! trim(cas_obj) !! ')');   
          end;
          else do;
-            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! put (exa_auton-2,1.) !! ',' !! trim(cas_obj) !! ')');
+            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! put (exa_auton-2,1.) !! '.,' !! trim(cas_obj) !! ')');
          end;
-         cas_obj      = resolve ('%_stdpath(&g_root./saspgm/,' !! trim(cas_abs_path) !! ')');
+         if (exa_auton >= 2) then do;
+            cas_obj      = resolve ('%_stdpath(&g_root.,' !! trim(cas_abs_path) !! ')');
+         end;
+         else do;
+            cas_obj      = resolve ('%_stdpath(&g_sasunitroot./saspgm/sasunit,' !! trim(cas_abs_path) !! ')');
+         end;
 
          %_render_DataColumn (i_sourceColumn=scn_duration
                              ,o_targetColumn=scnDurationColumn
@@ -166,7 +171,7 @@
                LinkColumn1  = catt("cas_overview.html#SCN", c_scnid, "_");
                LinkColumn2  = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
                LinkColumn3  = c_scnid !! "_log.html";
-               LinkColumn4  = "pgm_" !! tranwrd (cas_obj, ".sas", ".html");
+               LinkColumn4  = "pgm_" !! tranwrd (exa_pgm, ".sas", ".html");
                LinkColumn5  = c_scnid !! "_" !! c_casid !! "_log.html";
             %end;
             %_render_DataColumn (i_sourceColumn=scn_desc

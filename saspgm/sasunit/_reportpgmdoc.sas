@@ -111,13 +111,17 @@
    run;
 
    %*** Get all macros to be documented ***;
-   proc sql noprint;
-      select count (*) into :l_anzMacros 
-         from target.exa
+   data work.exa;
+      set target.exa
          %if (&o_pgmdoc_sasunit. = 0) %then %do;
             where exa_auton >= 2
          %end;
          ;
+   run;
+
+   proc sql noprint;
+      select count (*) into :l_anzMacros 
+         from work.exa;
    quit;
 
    %do i=1 %to &l_anzMacros.;
@@ -126,20 +130,14 @@
 
    proc sql noprint;
       select exa_filename into :l_macroFileName1-:l_macroFileName%cmpres(&l_anzMacros.)
-         from target.exa
-         %if (&o_pgmdoc_sasunit. = 0) %then %do;
-            where exa_auton >= 2
-         %end;
+         from work.exa
          order by exa_id
          ;
 
       create table work._macros as 
          select distinct exa_id, exa_pgm, cas_obj
-            from target.exa left join target.cas
+            from work.exa left join target.cas
             on exa_id=cas_exaid
-            %if (&o_pgmdoc_sasunit. = 0) %then %do;
-               where exa_auton >= 2
-            %end;
          ;
       select trim(exa_pgm) into :l_macroName1-:l_macroName%cmpres(&l_anzMacros.)
          from work._macros

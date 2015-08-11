@@ -84,7 +84,7 @@
          exa_path = resolve('%_stdPath(&g_root.,' || exa_filename || ')');
       end;
       else do;
-         exa_path = resolve('%_stdPath(&g_sasunitroot.,' || exa_filename || ')');
+         exa_path = resolve('%_stdPath(&g_sasunitroot./saspgm/sasunit,' || exa_filename || ')');
       end;
    run;     
 
