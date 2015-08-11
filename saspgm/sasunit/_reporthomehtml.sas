@@ -47,11 +47,9 @@
    %let l_tst_failed=0;
 
    proc sql noprint;
-      select count (distinct scn_id) into :l_scn_failed from &i_repdata. where scn_res=2;
-      select sum (cas_cnt,0) into :l_cas_failed from 
-         (select count (distinct cas_id) as cas_cnt from &i_repdata. where cas_res=2 group by scn_id);
-      select sum (tst_cnt,0) into :l_tst_failed from 
-         (select count (distinct tst_id) as tst_cnt from &i_repdata. where tst_res=2 group by scn_id, cas_id);
+      select count (distinct scn_id)                into :l_scn_failed from &i_repdata. where scn_res=2;
+      select count (distinct catt (scn_id, cas_id)) into :l_cas_failed from &i_repdata. where cas_res=2;
+      select count (*)                              into :l_tst_failed from &i_repdata. where tst_res=2;
    quit;
 
    proc format lib=work;
