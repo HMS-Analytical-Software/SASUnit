@@ -14,6 +14,8 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
+   \todo Link auf SoureCode über Download SourceCode oder in der Programmdocumentation?
+
    \param   i_repdata      input dataset (created in reportSASUnit.sas)
    \param   o_html         flag to output file in HTML format
    \param   o_path         path for output file
@@ -54,6 +56,8 @@
 
       abs_path    = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
       scn_pgm     = resolve ('%_stdpath(&g_root./saspgm/test,' !! trim(abs_path) !! ')');
+      idx         = find (abs_path, '/', -length (abs_path))+1;
+      scn_pgm     = substr (abs_path, idx);
       duration    = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
       c_scnid     = put (scn_id, z3.);
 
@@ -78,7 +82,7 @@
          *** HTML-links are destinations specific ***;
          %if (&o_html.) %then %do;
             LinkColumn1 = catt ("cas_overview.html#SCN", c_scnid, "_");
-            LinkColumn2 = "file:///" !! abs_path;
+            LinkColumn2 = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
             LinkColumn3 = c_scnid !! "_log.html";
          %end;
          *** PDF- and RTF-links are not destination specific ***;
