@@ -13,7 +13,7 @@
    \author     \$Author$
    \date       \$Date$
    \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-					Here you can find the SASUnit documentation, release notes and license information.
+               Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -38,8 +38,8 @@
    %LET g_printfile=&&g_testout/%substr(00&g_scnid,%length(&g_scnid)).lst;
 
    PROC PRINTTO 
-      LOG="&g_logfile."
-      PRINT="&g_printfile."
+      LOG=LOG
+      PRINT=PRINT
    ;
    RUN;
 
