@@ -335,8 +335,8 @@
             
             *** HTML-links are destination specific ***;
             %if (&o_html.) %then %do;
-               LinkColumn1 = "file:///" !! exa_filename;
-               LinkColumn2 = CATT("cas_overview.html#SCN", PUT(scn_id,z3.), "_");
+               LinkColumn1 = catt ("src/", put (exa_auton,z2.), "/", exa_pgm);
+               LinkColumn2 = catt ("cas_overview.html#SCN", PUT(scn_id,z3.), "_");
                IF compress(cas_obj) ne '' THEN DO;
                   IF index(cas_obj,'/') GT 0 THEN DO;
                      LinkColumn3 =  'tcg_'||trim(LEFT(SCAN(SUBSTR(cas_obj, findw(cas_obj, SCAN(cas_obj, countw(cas_obj,'/'),'/'))),1,".") !! ".html"));
@@ -354,7 +354,7 @@
                pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.), '_" url="pgm_', pgmdoc_name, '" flyover="&g_nls_reportAuton_028."]',cas_obj,'}');
             end;
             else do;
-               pgmColumn=catt (cas_obj);
+               pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.), '_', ' ' !! cas_obj,'}');
             end;
             if (fileexist (exa_filename)) then do;
                pgmColumn=catt (pgmColumn, ' ^{style [url="', LinkColumn1, '" flyover="', LinkTitle1, """ Fontsize=7pt][&g_nls_reportAuton_027.]}");

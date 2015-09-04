@@ -47,8 +47,8 @@
    %LET l_nls_reportdetail_errors   = %STR(error(s));
 
    proc sql noprint;
-      select count (distinct tst_type) into :_numAsserts from &i_repdata. where scn_id = &i_scnid AND tst_type ne '^_'; * AND cas_id = &i_casid;
-      select count (distinct cas_id)   into :_numCases   from &i_repdata. where scn_id = &i_scnid AND tst_type ne '^_'; * AND cas_id = &i_casid;
+      select count (distinct tst_type) into :_numAsserts from &i_repdata. where scn_id = &i_scnid AND tst_type ne '^_';
+      select count (distinct cas_id)   into :_numCases   from &i_repdata. where scn_id = &i_scnid AND tst_type ne '^_';
    quit;
 
    %if (&_numAsserts. > 0) %then %do;
@@ -58,7 +58,7 @@
       %end;
 
       proc sql noprint;
-         select distinct tst_type into :assertType1-:assertType%cmpres(&_numAsserts.) from &i_repdata. where scn_id = &i_scnid AND tst_type ne '^_'; * AND cas_id = &i_casid;
+         select distinct tst_type into :assertType1-:assertType%cmpres(&_numAsserts.) from &i_repdata. where scn_id = &i_scnid AND tst_type ne '^_';
       quit;
 
       DATA work._test_report;

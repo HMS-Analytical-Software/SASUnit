@@ -1,5 +1,5 @@
-This is the readme file for version 1.5 of SASUnit, the Unit testing 
-framework for SAS(R) programs, copyright 2010, 2012-2014 HMS Analytical 
+This is the readme file for version 1.6 of SASUnit, the Unit testing 
+framework for SAS(R) programs, copyright 2010, 2012-2015 HMS Analytical 
 Software GmbH, http://www.analytical-software.de
 
 SASUnit is free software: you can redistribute it and/or modify it 
@@ -21,7 +21,7 @@ Institute, Cary, NC (http://www.sas.com).
 
 Release notes (changes since previous version, supported and tested 
 environments) can be found at 
-https://sourceforge.net/p/sasunit/wiki/Release%20Notes%20Version%201.2.1/.
+https://sourceforge.net/p/sasunit/wiki/Release%20Notes%20Version%201.6/.
 
 For installation and initial operation see 
 https://sourceforge.net/p/sasunit/wiki/Installation%20and%20initial%20operation/.

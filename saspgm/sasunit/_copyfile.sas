@@ -5,7 +5,7 @@
 
                no error checking
 
-   \%copyfile (input, output)
+   \%_copyfile (input, output)
 
    \version    \$Revision$
    \author     \$Author$

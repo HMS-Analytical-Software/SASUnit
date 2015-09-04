@@ -240,6 +240,8 @@
       new_description = tranwrd (new_description, "</em>", "}");
       new_description = tranwrd (new_description, "\n", "^n");
       new_description = tranwrd (new_description, "\^n", "\n");
+      new_description = tranwrd (new_description, "<br/>", "^n");
+      new_description = tranwrd (new_description, "<br>", "^n");
       new_description = tranwrd (new_description, "~ ", "- ");
       new_description = tranwrd (new_description, "~", "^_^_^_");
    run;

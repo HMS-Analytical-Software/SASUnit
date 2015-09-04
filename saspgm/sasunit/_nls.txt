@@ -103,8 +103,8 @@
  25 EN calls these programs
  26 DE wird von folgenden Programmen aufgerufen
  26 EN is called by these programs
- 27 DE Quelltext herunterladen
- 27 EN Download Sourcecode
+ 27 DE Herunterladen
+ 27 EN Download
  28 DE Programmdokumentation
  28 EN Program Documentation
 ---reportCas

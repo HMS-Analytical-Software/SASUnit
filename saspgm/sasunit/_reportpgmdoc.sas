@@ -125,7 +125,7 @@
    quit;
 
    %do i=1 %to &l_anzMacros.;
-      %local l_macroFileName&i. l_macroName&i. l_macroDisplayName&i.;
+      %local l_macroFileName&i. l_macroName&i. l_macroDisplayName&i. l_macroLink;
    %end;
 
    proc sql noprint;
@@ -133,9 +133,12 @@
          from work.exa
          order by exa_id
          ;
-
+      select catt ("src/", put (exa_auton, z2.), "/", exa_pgm) into :l_macroLink1-:l_macroLink%cmpres(&l_anzMacros.)
+         from work.exa
+         order by exa_id
+         ;
       create table work._macros as 
-         select distinct exa_id, exa_pgm, cas_obj
+         select distinct exa_id, exa_pgm, cas_obj, exa_auton
             from work.exa left join target.cas
             on exa_id=cas_exaid
          ;
@@ -206,6 +209,7 @@
          %_reportPgmHeader (i_lib=WORK, i_data=_Pgm&i., i_language=&i_language.);
 
          title2 j=c "&g_nls_reportPgmDoc_018. &&l_macroDisplayName&i..";
+         title3 j=c height=10pt link="&&l_macroLink&i." "[&g_nls_reportAuton_027.]";
 
          proc print data=work._pgmsrc_view noobs
             style(report)=blindTable [borderwidth=0]

@@ -80,12 +80,7 @@
 
    data work._examinee;
       set work._examinee_v;
-      if (exa_auton >= 2) then do;
-         exa_path = resolve('%_stdPath(&g_root.,' || exa_filename || ')');
-      end;
-      else do;
-         exa_path = resolve('%_stdPath(&g_sasunitroot./saspgm/sasunit,' || exa_filename || ')');
-      end;
+      exa_path = resolve('%_stdPath(&g_root.,' || exa_filename || ')');
    run;     
 
    %let l_max_exaid=0;
