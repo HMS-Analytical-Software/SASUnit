@@ -19,7 +19,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param      i_language EN or DE
    
    \return     macro symbols in global symbol table
@@ -41,7 +41,7 @@ run;
 
    data _null_;
       set nls;
-      where language = "&i_language";
+      where language = "&i_language.";
       call execute ('%global g_nls_' !! trim(program) !! '_' !! put (num, z3.) !! ';');
       call symput ('g_nls_' !! trim(program) !! '_' !! put (num, z3.), trim (text));
    run; 

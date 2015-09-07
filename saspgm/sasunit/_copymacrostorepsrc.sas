@@ -33,7 +33,7 @@
          where exa_auton >= 2;
       %end;
       *** Files not residing in an autocall path will have . as exa_auton ***;
-      *** Use 99 as exa_auton                                             ***;
+      *** Use 99 as an alternative                                        ***;
       exa_auton = coalesce (exa_auton, 99);
    run;
 

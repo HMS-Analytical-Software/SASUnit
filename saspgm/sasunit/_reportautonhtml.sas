@@ -14,7 +14,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_repdata      input data set (created in reportSASUnit.sas)
    \param   o_html         flag to output file in HTML format
    \param   o_path         path for output file
@@ -37,12 +37,12 @@
    %_tempFileName(d_rep1)
    %_tempFileName(d_rep2)
 
-   PROC MEANS NOPRINT NWAY missing DATA=&i_repdata(KEEP=exa_auton exa_id scn_id cas_id);
+   PROC MEANS NOPRINT NWAY missing DATA=&i_repdata (KEEP=exa_auton exa_id scn_id cas_id);
       class exa_auton exa_id scn_id cas_id;
       OUTPUT OUT=&d_rep1. (rename=(_FREQ_=scn_tst));
    RUN;
 
-   PROC MEANS NOPRINT NWAY missing DATA=&d_rep1.(KEEP=exa_auton exa_id scn_id scn_tst);
+   PROC MEANS NOPRINT NWAY missing DATA=&d_rep1. (KEEP=exa_auton exa_id scn_id scn_tst);
       class exa_auton exa_id scn_id;
       OUTPUT OUT=&d_rep2. (rename=(_FREQ_=scn_cas)) sum(scn_tst)=scn_tst;
    RUN;
@@ -336,7 +336,7 @@
             
             *** HTML-links are destination specific ***;
             %if (&o_html.) %then %do;
-               LinkColumn1 = catt ("src/", put (exa_auton,z2.), "/", exa_pgm);
+               LinkColumn1 = catt ("src/", put (coalesce (exa_auton,99),z2.), "/", exa_pgm);
                LinkColumn2 = catt ("cas_overview.html#SCN", PUT(scn_id,z3.), "_");
                IF compress(cas_obj) ne '' THEN DO;
                   IF index(cas_obj,'/') GT 0 THEN DO;
@@ -355,7 +355,7 @@
                pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.), '_" url="pgm_', pgmdoc_name, '" flyover="&g_nls_reportAuton_028."]',cas_obj,'}');
             end;
             else do;
-               pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.), '_', ' ' !! cas_obj,'}');
+               pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.), '_"]', ' ' !! cas_obj,'}');
             end;
             if (fileexist (exa_filename)) then do;
                pgmColumn=catt (pgmColumn, ' ^{style [url="', LinkColumn1, '" flyover="', LinkTitle1, """ Fontsize=7pt][&g_nls_reportAuton_027.]}");
