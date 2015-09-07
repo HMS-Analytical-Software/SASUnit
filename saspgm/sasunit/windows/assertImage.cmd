@@ -1,4 +1,8 @@
 @echo off
+rem This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+rem For copyright information and terms of usage under the GPL license see included file readme.txt
+rem or https://sourceforge.net/p/sasunit/wiki/readme/.
+
 SET sasunit_image1=%1%
 SET sasunit_image2=%2%
 SET sasunit_dest=%3%

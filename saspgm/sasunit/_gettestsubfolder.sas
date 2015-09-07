@@ -7,14 +7,14 @@
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
-	\sa			For further details refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>. 
-					Here you can find the SASUnit documentation, release notes and license information.
+   
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+               Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+			   
    \param   i_assertType Type of assert for which the subfolder should be returned
    \param   i_root       path to which the folder should be appended <em>(optional: Default=%sysfunc(pathname(testout)))</em>
    \param   i_scnid      Current scenario id

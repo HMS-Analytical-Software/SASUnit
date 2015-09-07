@@ -14,12 +14,14 @@
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+   
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+               Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+			   
    \param      i_script               Path of shell script
    \param      i_expected             Path of first text file (expected)
    \param      i_actual               Path of second text file (actual)

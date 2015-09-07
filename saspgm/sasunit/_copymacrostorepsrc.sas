@@ -7,13 +7,14 @@
    \version    \$Revision: 413 $
    \author     \$Author: klandwich $
    \date       \$Date: 2015-06-02 08:47:34 +0200 (Di, 02 Jun 2015) $
-   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_checklog.sas $
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-
+   
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+               Here you can find the SASUnit documentation, release notes and license information.
+   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_abspath.sas $
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+            
    \param    i_logfile  complete path and name of logfile
    \param    i_error    symbol for error (normally error, but might be language dependant). The value will be converted to uppercase.
    \param    i_warning  symbol for warning (normally warning, but might be language dependant). The value will be converted to uppercase.
@@ -31,6 +32,13 @@
       %if (&o_pgmdoc_sasunit. = 0) %then %do;
          where exa_auton >= 2;
       %end;
+      *** Files not residing in an autocall path will have . as exa_auton ***;
+      *** Use 99 as exa_auton                                             ***;
+      exa_auton = coalesce (exa_auton, 99);
+   run;
+
+   proc sort data=work._exa;
+      by exa_auton exa_pgm;
    run;
 
    %let l_output_path = %_abspath(&g_root., &g_target.)/rep;

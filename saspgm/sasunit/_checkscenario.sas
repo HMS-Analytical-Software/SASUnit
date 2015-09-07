@@ -13,6 +13,17 @@
                  (scenario has to be executed so that this will be noticed)
                - a calling program of units under test has been changed
 
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+               Here you can find the SASUnit documentation, release notes and license information.
+   \sa         \$HeadURL$
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+			   
    \param      i_examinee        Data set containing all SASUnit macros, test scenarios and units under test
    \param      i_scn_pre         Data set containing all test scenarios
    \param      o_scenariosToRun  Data set created in this macro holding information about scenarios that have to run
@@ -20,15 +31,6 @@
 
                Further more the result data set dependency from macro _crossreference in work is used
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
-   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-   \sa         \$HeadURL$
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
 %MACRO _checkScenario(i_examinee       = 

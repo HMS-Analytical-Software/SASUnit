@@ -7,15 +7,14 @@
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
-   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+   
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+               Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-
-   \todo Link auf SoureCode über Download SourceCode oder in der Programmdocumentation?
-
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+			   
    \param   i_repdata      input dataset (created in reportSASUnit.sas)
    \param   o_html         flag to output file in HTML format
    \param   o_path         path for output file

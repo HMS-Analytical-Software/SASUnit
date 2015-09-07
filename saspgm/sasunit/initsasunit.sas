@@ -9,14 +9,14 @@
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
-   \sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+   
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-               This file is part of SASUnit, the unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+			   
    \param   i_root         optional: root path for all other paths except i_sasunit, is used for paths that do not begin 
                            with a drive letter or a slash/backslash
    \param   io_target      Path for the test repository and the generated documentation, has to exist

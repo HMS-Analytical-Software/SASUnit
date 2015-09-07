@@ -1,26 +1,28 @@
 /**
-\file
-\ingroup    SASUNIT_UTIL
+   \file
+   \ingroup    SASUNIT_UTIL
 
-\brief      macro symbols for national language support
+   \brief      macro symbols for national language support
 
-            macro symbol names follow the convention g_nls_yyyy_zzz, where 
-            yyyy is a name of the macro program where the symbol is used (without prefix _ and 
-            without suffix HTML) 
-            and zzz is the symbol number within the macro program
+               macro symbol names follow the convention g_nls_yyyy_zzz, where 
+               yyyy is a name of the macro program where the symbol is used (without prefix _ and 
+               without suffix HTML) 
+               and zzz is the symbol number within the macro program
 
-\version    \$Revision$
-\author     \$Author$
-\date       \$Date$
-\sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-\sa         \$HeadURL$
-\copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-            This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-            For terms of usage under the GPL license see included file readme.txt
-            or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-
-\param      i_language EN or DE
-\return     macro symbols in global symbol table
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+               Here you can find the SASUnit documentation, release notes and license information.
+   \sa         \$HeadURL$
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+			   
+   \param      i_language EN or DE
+   
+   \return     macro symbols in global symbol table
 */ /** \cond */ 
 
 data nls (drop=mark);

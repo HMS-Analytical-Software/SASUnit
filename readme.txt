@@ -1,5 +1,5 @@
 This is the readme file for version 1.6 of SASUnit, the Unit testing 
-framework for SAS(R) programs, copyright 2010, 2012-2015 HMS Analytical 
+framework for SAS(R) programs, copyright 2010-2015 HMS Analytical 
 Software GmbH, http://www.analytical-software.de
 
 SASUnit is free software: you can redistribute it and/or modify it 

@@ -1,26 +1,28 @@
 /**
-\file
-\ingroup    SASUNIT_EXAMPLES_TEST
+   \file
+   \ingroup    SASUNIT_EXAMPLES_TEST
 
-\brief      Tests for generate.sas
+   \brief      Tests for generate.sas
 
-            Example for a test scenario with the following features:
-            - generate test data as part of the test scenario
-            - compare whole library with assertLibrary.sas 
-            - generate various test cases
-            - check error handling with assertLogMsg.sas
-            - suppress automatic log scanning in endTestcase.sas
+               Example for a test scenario with the following features:
+               - generate test data as part of the test scenario
+               - compare whole library with assertLibrary.sas 
+               - generate various test cases
+               - check error handling with assertLogMsg.sas
+               - suppress automatic log scanning in endTestcase.sas
 
-\version    \$Revision$ - KL: Added hint for support of different languages in test assertion.\n
-            Revision: 40 - KL: Added support for different languages in test assertion.
-\author     \$Author$
-\date       \$Date$
-\sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-\sa         \$HeadURL$
-\copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-            This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-            For terms of usage under the GPL license see included file readme.txt
-            or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+   \version    \$Revision$ - KL: Added hint for support of different languages in test assertion.\n
+               Revision: 40 - KL: Added support for different languages in test assertion.
+   \author     \$Author$
+   \date       \$Date$
+
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+               Here you can find the SASUnit documentation, release notes and license information.
+   \sa         \$HeadURL$
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+
 */ /** \cond */ 
 
 /*-- Testcase 1: one by variable ---------------------------------------------*/

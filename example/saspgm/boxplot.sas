@@ -1,37 +1,38 @@
 /**
-\file
-\ingroup    SASUNIT_EXAMPLES_PGM
+   \file
+   \ingroup    SASUNIT_EXAMPLES_PGM
 
-\brief      Create boxplot for two groups 
+   \brief      Create boxplot for two groups 
 
-            Specification for chart:  
-            - two overlayed boxplots, one per group, the two plots shall be 
-              slightly offset for readability. 
-            - boxplot for the smaller value of &group has gray color with dashed median line
-            - boxplot for the greater value of &group has black color with continuous median line
-            - lower border of boxes are at 25th percentile, higher border at 75th percentile
-            - whiskers shall be drawn from maximum and minimum value
-            - labels for variables &x und &y shall be written to the axes
-            - there shall be a legend for the group variable
-            - report format ist PDF
+               Specification for chart:  
+               - two overlayed boxplots, one per group, the two plots shall be 
+                 slightly offset for readability. 
+               - boxplot for the smaller value of &group has gray color with dashed median line
+               - boxplot for the greater value of &group has black color with continuous median line
+               - lower border of boxes are at 25th percentile, higher border at 75th percentile
+               - whiskers shall be drawn from maximum and minimum value
+               - labels for variables &x und &y shall be written to the axes
+               - there shall be a legend for the group variable
+               - report format ist PDF
             
-\version    \$Revision$
-\author     \$Author$
-\date       \$Date$
-\sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-\sa         \$HeadURL$
-\copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-            This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-            For terms of usage under the GPL license see included file readme.txt
-            or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
 
-\param      data    input data sets
-\param      x       variable for x axis, must be numeric and equidistant und must have at least two values, 
-                    missing values are not allowed
-\param      y       variable for y axis, must be numeric
-\param      group   variable for grouping, must be dichotomous,
-                    missing values are not allowed
-\param      report  output report file (file name extension must be pdf)
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+               Here you can find the SASUnit documentation, release notes and license information.
+   \sa         \$HeadURL$
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+
+   \param      data    input data sets
+   \param      x       variable for x axis, must be numeric and equidistant und must have at least two values, 
+                       missing values are not allowed
+   \param      y       variable for y axis, must be numeric
+   \param      group   variable for grouping, must be dichotomous,
+                       missing values are not allowed
+   \param      report  output report file (file name extension must be pdf)
 */ /** \cond */ 
 
 %MACRO boxplot(

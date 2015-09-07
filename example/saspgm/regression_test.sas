@@ -1,26 +1,28 @@
 /**
-\file
-\ingroup    SASUNIT_EXAMPLES_TEST
+   \file
+   \ingroup    SASUNIT_EXAMPLES_TEST
 
-\brief      Tests for regression.sas
+   \brief      Tests for regression.sas
 
-            Example for a test scenario with the following features:
-            - check reports manually agains reference standard 
-            - compare results from Microsoft Excel with assertColumns.sas, using fuzz because of rounding errors 
-            - use test data in library testdata
+               Example for a test scenario with the following features:
+               - check reports manually agains reference standard 
+               - compare results from Microsoft Excel with assertColumns.sas, using fuzz because of rounding errors 
+               - use test data in library testdata
 
-            This example test scenario runs only with SAS under SAS Microsoft Windows.
+               This example test scenario runs only with SAS under SAS Microsoft Windows.
 
-\version    \$Revision$ - KL: Removed hint "Windows only".\n
-            Revision: 71 - KL: Test case can now be run under LINUX.
-\author     \$Author$
-\date       \$Date$
-\sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-\sa         \$HeadURL$
-\copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-            This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-            For terms of usage under the GPL license see included file readme.txt
-            or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+   \version    \$Revision$ - KL: Removed hint "Windows only".\n
+               Revision: 71 - KL: Test case can now be run under LINUX.
+   \author     \$Author$
+   \date       \$Date$
+
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+               Here you can find the SASUnit documentation, release notes and license information.
+   \sa         \$HeadURL$
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+
 */ /** \cond */ 
 
 /*-- Compare linear regression between Excel and SAS -------------------------*/

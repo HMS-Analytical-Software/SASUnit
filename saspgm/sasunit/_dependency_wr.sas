@@ -6,12 +6,14 @@
    \version    \$Revision: 282 $
    \author     \$Author: klandwich $
    \date       \$Date: 2013-11-21 11:32:48 +0100 (DO, 21 Nov 2013) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_dependency_wr.sas $
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-               
+   
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+               Here you can find the SASUnit documentation, release notes and license information.
+   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_abspath.sas $
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+			   
    \param      i_node            Current tree node of this iteration (name of a macro)
    \param      i_dependencies    Data set holding the information for the call hierarchy with columns caller and called
    \param      i_direction       Indicates the direction of the call hierarchy:

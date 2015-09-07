@@ -1,8 +1,7 @@
 @echo off
-rem Copyright 2010, 2012 HMS Analytical Software GmbH.
-rem This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-rem For terms of usage under the GPL license see included file readme.txt
-rem or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+REM This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+REM For copyright information and terms of usage under the GPL license see included file readme.txt
+REM or https://sourceforge.net/p/sasunit/wiki/readme/.
 
 cd ..
 SET SASUNIT_ROOT=..\.
@@ -12,7 +11,7 @@ SET SASUNIT_HOST_OS=windows
 SET SASUNIT_SAS_VERSION=9.3_32
 SET SASUNIT_COVERAGEASSESSMENT=1
 
-rem Check if SASUnit Jenkins Plugin is present and use given SASUnit root path
+REM Check if SASUnit Jenkins Plugin is present and use given SASUnit root path
 echo Checking for presence of SASUnit Jenkins plugin...
 if not [%1] == [] SET SASUNIT_ROOT=%~1
 if [%1] == [] (
@@ -27,7 +26,7 @@ echo SASUnit config        = bin\sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%
 echo Overwrite             = %SASUNIT_OVERWRITE%
 echo Testcoverage          = %SASUNIT_COVERAGEASSESSMENT%
 
-rem Deletion of SASUnit styles to avoid incompatibilites between 32 and 64 bit systems
+REM Deletion of SASUnit styles to avoid incompatibilites between 32 and 64 bit systems
 echo Deleting SASUnit styles
 del "%SASUNIT_ROOT%\resources\style\*.sas7bitm"
 

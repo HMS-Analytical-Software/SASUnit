@@ -7,12 +7,14 @@
    \version    \$Revision: 328 $
    \author     \$Author: b-braun $
    \date       \$Date: 2014-08-06 19:24:55 +0200 (Mi, 06 Aug 2014) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/branches/v20_BB/saspgm/sasunit/_dependency_agg.sas $
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-
+   
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+               Here you can find the SASUnit documentation, release notes and license information.
+   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_abspath.sas $
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+			   
    \param   i_path      Path containing JSON files that will be aggregated 
    \param   o_file      JavaScript file in rep/js containing a JSON object for visualisation
 

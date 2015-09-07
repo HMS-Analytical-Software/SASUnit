@@ -1,22 +1,24 @@
 /**
-\file
-\ingroup    SASUNIT_EXAMPLES_TEST
+   \file
+   \ingroup    SASUNIT_EXAMPLES_TEST
 
-\brief      Tests for nobs.sas - has to fail!
+   \brief      Tests for nobs.sas - has to fail!
 
-            Examplpe for a test scenario with the following features:
-            - create simple test scenario
-            - check value of macro symbol with assertEquals.sas
+               Examplpe for a test scenario with the following features:
+               - create simple test scenario
+               - check value of macro symbol with assertEquals.sas
 
-\version    \$Revision$
-\author     \$Author$
-\date       \$Date$
-\sa         For further information please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
-\sa         \$HeadURL$
-\copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
-            This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-            For terms of usage under the GPL license see included file readme.txt
-            or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+
+   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+               Here you can find the SASUnit documentation, release notes and license information.
+   \sa         \$HeadURL$
+   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GPL license see included file readme.txt
+               or https://sourceforge.net/p/sasunit/wiki/readme/.
+
 */ /** \cond */ 
 
 /*-- simple example with sashelp.class ---------------------------------------*/
