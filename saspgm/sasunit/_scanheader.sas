@@ -16,7 +16,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   MacroName   Name of the macro that resides inside flatfile under FilePath
    \param   FilePath    Path and name of a SASautocall macro
    \param   LibOutDoc   Library of data set holding the header portion of the program documentation (optional: Default=WORK)
@@ -56,7 +56,7 @@
                    );
 
    %LOCAL l_sHeaderStartTag l_sHeaderEndTag;
-   %LET l_sHeaderStartTag       = %str(/)%str(** );
+   %LET l_sHeaderStartTag       = %str(/)%str(**);
    %LET l_sHeaderEndTag         = %str(*)%str(/);
 
    Data WORK.__programHeader (keep=macroname tag name description groupname grouptext);
@@ -132,7 +132,8 @@
       End;
 
       ***Start Scanning if sHeaderStartTag is found;
-      If (index(l_zeile, "&l_sHeaderStartTag")>0) Then Do;
+      If (index(l_zeile, "&l_sHeaderStartTag." !! "13"x)>0 
+          OR index(l_zeile, "&l_sHeaderStartTag. ")>0) Then Do;
          headerStmtOpen = 1;
          tagPos = Index(l_zeile, "&l_sHeaderStartTag");
          l_zeile = Strip(substr(l_zeile, tagPos + length("&l_sHeaderStartTag")));
