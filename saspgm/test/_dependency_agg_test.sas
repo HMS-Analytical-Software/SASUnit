@@ -4,10 +4,10 @@
 
    \brief      Test of _dependency_agg
 
-   \version    \$Revision: 190 $
-   \author     \$Author: b-braun $
-   \date       \$Date: 2013-05-29 18:04:27 +0200 (Mi, 29 Mai 2013) $
-   \sa         \$HeadURL: https://menrath@svn.code.sf.net/p/sasunit/code/trunk/saspgm/test/_dependency_agg_test.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt

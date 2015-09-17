@@ -1,7 +1,7 @@
 #!/bin/bash
 # This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
 # For copyright information and terms of usage under the GPL license see included file readme.txt
-# or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+# or https://sourceforge.net/p/sasunit/wiki/readme/.
 
 sasunit_image1=$1
 sasunit_image2=$2

@@ -6,13 +6,13 @@
 
                Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
-   \version    \$Revision: 205 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2013-07-05 10:38:34 +0200 (Fr, 05 Jul 2013) $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
 
    \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_abspath.sas $
+   \sa         \$HeadURL$
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.

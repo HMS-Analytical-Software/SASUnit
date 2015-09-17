@@ -3,13 +3,13 @@
 
    \brief      run an operation system command
 
-   \version    \$Revision: 346 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2014-11-16 06:51:26 +0100 (So, 16 Nov 2014) $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
 
    \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_abspath.sas $
+   \sa         \$HeadURL$
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
