@@ -56,7 +56,7 @@
                    );
 
    %LOCAL l_sHeaderStartTag l_sHeaderEndTag;
-   %LET l_sHeaderStartTag       = %str(/)%str(**);
+   %LET l_sHeaderStartTag       = %str(/)%str(** );
    %LET l_sHeaderEndTag         = %str(*)%str(/);
 
    Data WORK.__programHeader (keep=macroname tag name description groupname grouptext);
@@ -100,7 +100,7 @@
       *** MacroName for lists (todo, test, bug) ***;
       macroname = "&MacroName.";
 
-      l_zeile     = compbl (left (_INFILE_));
+      l_zeile     = compress (compbl (left (_INFILE_)), "0D"x);
 
       ***Leerzeile;
       if (compress(l_zeile) = "") then do;
@@ -132,8 +132,7 @@
       End;
 
       ***Start Scanning if sHeaderStartTag is found;
-      If (index(l_zeile, "&l_sHeaderStartTag." !! "0D"x)>0 
-          OR index(l_zeile, "&l_sHeaderStartTag. ")>0) Then Do;
+      If (index(l_zeile, "&l_sHeaderStartTag.")>0) Then Do;
          headerStmtOpen = 1;
          tagPos = Index(l_zeile, "&l_sHeaderStartTag");
          l_zeile = Strip(substr(l_zeile, tagPos + length("&l_sHeaderStartTag")));
@@ -297,7 +296,7 @@
    run;
 
    proc datasets lib=work nolist;
-      delete __programHeader _GrpInfo;
+      delete __programHeader _GroupInfo;
    run;quit;
 %MEND _scanHeader;
 /** \endcond */
