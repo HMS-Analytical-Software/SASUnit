@@ -132,7 +132,7 @@
       End;
 
       ***Start Scanning if sHeaderStartTag is found;
-      If (index(l_zeile, "&l_sHeaderStartTag." !! "13"x)>0 
+      If (index(l_zeile, "&l_sHeaderStartTag." !! "0D"x)>0 
           OR index(l_zeile, "&l_sHeaderStartTag. ")>0) Then Do;
          headerStmtOpen = 1;
          tagPos = Index(l_zeile, "&l_sHeaderStartTag");
