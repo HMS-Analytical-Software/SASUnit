@@ -14,11 +14,12 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_repdata      input dataset (created in reportSASUnit.sas)
    \param   o_html         flag to output file in HTML format
    \param   o_path         path for output file
    \param   o_file         name of the outputfile without extension
+   \param   o_pgmdoc       Switch for generartion of program_documentation (0/1)
 
 */ /** \cond */ 
 
@@ -28,6 +29,7 @@
                       ,o_rtf     = 0
                       ,o_path    =
                       ,o_file    =
+                      ,o_pgmdoc  =
                       );
 
    %local l_title l_footnote;
@@ -59,6 +61,7 @@
       scn_pgm     = substr (abs_path, idx);
       duration    = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
       c_scnid     = put (scn_id, z3.);
+      pgmdoc_name = tranwrd (exa_pgm, ".sas", ".html");
 
 
       %_render_IdColumn   (i_sourceColumn=scn_id
@@ -81,7 +84,12 @@
          *** HTML-links are destinations specific ***;
          %if (&o_html.) %then %do;
             LinkColumn1 = catt ("cas_overview.html#SCN", c_scnid, "_");
-            LinkColumn2 = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
+            if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/pgm_"!!trim(pgmdoc_name))) then do;
+               LinkColumn2 = catt ('pgm_', pgmdoc_name);
+            end;
+            else do;
+               LinkColumn2 = catt ("src/", put (coalesce (exa_auton,99),z2.), "/", exa_pgm);
+            end;
             LinkColumn3 = c_scnid !! "_log.html";
          %end;
          *** PDF- and RTF-links are not destination specific ***;

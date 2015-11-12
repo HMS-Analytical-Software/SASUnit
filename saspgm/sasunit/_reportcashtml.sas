@@ -19,6 +19,7 @@
    \param   o_html         flag to output file in HTML format
    \param   o_path         path for output file
    \param   o_file         name of the outputfile without extension
+   \param   o_pgmdoc       Switch for generartion of program_documentation (0/1)
 
 */ /** \cond */ 
 

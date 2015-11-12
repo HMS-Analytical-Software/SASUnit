@@ -222,6 +222,7 @@
                    "   ,o_html    = &o_html."      /
                    "   ,o_path    = &l_output."    /
                    "   ,o_file    = scn_overview"  /
+                   "   ,o_pgmdoc         = &o_pgmdoc"            /
                    ")";
                if (&o_pdf.) then do;
                   PUT "ods pdf startpage=now;";

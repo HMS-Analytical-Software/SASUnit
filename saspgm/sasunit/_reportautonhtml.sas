@@ -357,10 +357,7 @@
                pgmColumn=catt (pgmColumn, ' url="pgm_', pgmdoc_name, '" flyover="&g_nls_reportAuton_028."]', cas_obj,'}');
             end;
             else do;
-               pgmColumn=catt (pgmColumn, cas_obj, '}');
-            end;
-            if (fileexist (exa_filename)) then do;
-               pgmColumn=catt (pgmColumn, ' ^{style [url="', LinkColumn1, '" flyover="', LinkTitle1, """ Fontsize=7pt][&g_nls_reportAuton_027.]}");
+               pgmColumn=catt (pgmColumn, ' url="pgm_', LinkColumn1, '" flyover="', LinkTitle1, '"]', cas_obj,'}');
             end;
             %_render_dataColumn(i_sourceColumn=scn_id
                                ,i_format=z3.
