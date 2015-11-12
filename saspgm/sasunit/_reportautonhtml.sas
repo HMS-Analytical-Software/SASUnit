@@ -351,16 +351,17 @@
             %end;
 
             pgmdoc_name = tranwrd (exa_pgm, ".sas", ".html");
+
+            pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.),'_"');
             if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/pgm_"!!trim(pgmdoc_name))) then do;
-               pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.), '_" url="pgm_', pgmdoc_name, '" flyover="&g_nls_reportAuton_028."]',cas_obj,'}');
+               pgmColumn=catt (pgmColumn, ' url="pgm_', pgmdoc_name, '" flyover="&g_nls_reportAuton_028."]', cas_obj,'}');
             end;
             else do;
-               pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.), '_"]', ' ' !! cas_obj,'}');
+               pgmColumn=catt (pgmColumn, cas_obj, '}');
             end;
             if (fileexist (exa_filename)) then do;
                pgmColumn=catt (pgmColumn, ' ^{style [url="', LinkColumn1, '" flyover="', LinkTitle1, """ Fontsize=7pt][&g_nls_reportAuton_027.]}");
             end;
-
             %_render_dataColumn(i_sourceColumn=scn_id
                                ,i_format=z3.
                                ,i_linkColumn=LinkColumn2

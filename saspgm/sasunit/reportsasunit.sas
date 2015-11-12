@@ -14,14 +14,15 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
-   \param   i_language     Language of the report (DE, EN) - refer to _nls
-   \param   o_html         Test report in HTML-format?
-   \param   o_junit        Test report in JUNIT-XML-format?
-   \param   o_pgmdoc       Creates source code documentation per examinee (0 / 1)
-   \param   o_force        0 .. (default) incremental, 1 .. create complete report
-   \param   o_output       (optional) full path of the directory in which the test report is created. 
-                           If the parameter is not set, the subdirectory rep of the test repository is used.
+            
+   \param   i_language       Language of the report (DE, EN) - refer to _nls
+   \param   o_html           Test report in HTML-format?
+   \param   o_junit          Test report in JUNIT-XML-format?
+   \param   o_pgmdoc         Creates source code documentation per examinee (0 / 1)
+   \param   o_pgmdoc_sasunit Creates source code documentation also for sasunit macros (0 / 1)
+   \param   o_force          0 .. (default) incremental, 1 .. create complete report
+   \param   o_output         (optional) full path of the directory in which the test report is created. 
+                             If the parameter is not set, the subdirectory rep of the test repository is used.
    \return Results are created in the subdirectory rep of the test repository or in the directory 
            specified by parameter o_output.
            
@@ -231,6 +232,7 @@
                    "   ,o_html    = &o_html."      /
                    "   ,o_path    = &l_output."    /
                    "   ,o_file    = cas_overview"  /
+                   "   ,o_pgmdoc  = &o_pgmdoc."      /
                    ")";
                if (&o_pdf.) then do;
                   PUT "ods pdf startpage=now;";

@@ -14,7 +14,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_repdata      input dataset (created in reportSASUnit.sas)
    \param   o_html         flag to output file in HTML format
    \param   o_path         path for output file
@@ -26,6 +26,7 @@
                       ,o_html    = 0
                       ,o_path    =
                       ,o_file    =
+                      ,o_pgmdoc  =
                       );
 
    %LOCAL
@@ -130,12 +131,19 @@
          IF exa_auton = . THEN DO;
             abs_path = resolve ('%_abspath(&g_root,' !! trim(cas_obj) !! ')');   
          END;
+         ELSE IF exa_auton = 0 THEN DO;
+            abs_path = resolve ('%_abspath(&g_sasunit' !! ',' !! trim(cas_obj) !! ')');
+         END;
+         ELSE IF exa_auton = 1 THEN DO;
+            abs_path = resolve ('%_abspath(&g_sasunit_os' !! ',' !! trim(cas_obj) !! ')');
+         END;
          ELSE DO;
-            abs_path = resolve ('%_abspath(&g_sasautos' !! put (exa_auton,1.) !! ',' !! trim(cas_obj) !! ')');
+            abs_path = resolve ('%_abspath(&g_sasautos' !! put (exa_auton-2,1.) !! ',' !! trim(cas_obj) !! ')');
          END;
 
-         duration = put (cas_end - cas_start, ??&g_nls_reportScn_013.) !! " s";
-         c_casid  = put (cas_id, z3.);
+         duration    = put (cas_end - cas_start, ??&g_nls_reportScn_013.) !! " s";
+         c_casid     = put (cas_id, z3.);
+         pgmdoc_name = tranwrd (exa_pgm, ".sas", ".html");
 
          %_render_idColumn   (i_sourceColumn=cas_id
                              ,i_format=z3.
@@ -156,7 +164,12 @@
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
                LinkColumn3 = "cas_" !! c_scnid !! "_" !! c_casid !! ".html";
-               LinkColumn4 = "file:///" !! abs_path;
+               if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/pgm_"!!trim(pgmdoc_name))) then do;
+                  LinkColumn4 = catt ('pgm_', pgmdoc_name);
+               end;
+               else do;
+                  LinkColumn4 = catt ("src/", put (coalesce (exa_auton,99),z2.), "/", exa_pgm);
+               end;
                LinkColumn5 = c_scnid !! "_" !! c_casid !! "_log.html";
             %end;
 
