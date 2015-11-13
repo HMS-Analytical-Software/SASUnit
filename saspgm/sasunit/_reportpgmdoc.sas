@@ -115,7 +115,7 @@
    data work.exa;
       set target.exa
          %if (&o_pgmdoc_sasunit. = 0) %then %do;
-            where exa_auton >= 2
+            (where=(exa_auton >= 2))
          %end;
          ;
    run;
