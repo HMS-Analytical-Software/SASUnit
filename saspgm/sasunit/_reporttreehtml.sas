@@ -1,19 +1,32 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_REPORT 
 
    \brief      create the table of contents on the left side of the HTML report as a tree 
 
                structure:
                <project>
-                Scenarios
-                 <each test scenario>
-                  <each test case>
-                   <each test>
-                Units under Test
-                 <each autocall path>
-                  <each units under test>
-                   <each test case>
-                    <each test> 
+                 Scenarios
+                   <each test scenario>
+                     <each test case>
+                       <each test>
+                 Units under Test
+                   <each autocall path>
+                     <each units under test>
+                       <each test case>
+                         <each test> 
+                 Program documentation
+                   <groups>
+                      <each SASUnit group>
+                         <each macro>
+                   <additional information>
+                     <ToDo>
+                     <Bug>
+                     <Test>
+                     <Depracated>
+                   <files>
+                     <each autocall path>
+                       <each macro source file>
 
    \version    \$Revision$
    \author     \$Author$
@@ -25,7 +38,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_repdata      input dataset (created in reportSASUnit.sas)
    \param   o_html         test report in HTML format
    \return results will be written to folder &g_target/rep 
@@ -498,7 +511,8 @@ DATA _null_;
    if (leaf) then do;
       PUT "<li>";
       PUT "<label class=""file" class_suffix +(-1) """><a " @;
-      if (not missing (target)) then do;
+      _target = scan (catt ("&g_target./rep/", target),1,"#");
+      if (not missing (target) and fileexist (_target)) then do;
          PUT "href=""" target +(-1) """ " @;
       end;
       if (not missing (popup)) then do;
