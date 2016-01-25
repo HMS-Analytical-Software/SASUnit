@@ -12,8 +12,6 @@ You can find a copy of the GNU General Public License in the file gpl.txt of the
 
 SASUnit requires SAS. SAS is a product and registered trademark of SAS Institute, Cary, NC (http://www.sas.com).
 
-SASUnit contains parts of Doxygen (http://www.doxygen.org).
-
 Release notes (changes since previous version, supported and tested environments) can be found at https://sourceforge.net/p/sasunit/wiki/Release%20Notes%20Version%201.2/.
 
 For installation and initial operation see https://sourceforge.net/p/sasunit/wiki/Installation%20and%20initial%20operation/.
@@ -32,5 +30,5 @@ Development of SASUnit is hosted on SourceForge (https://sourceforge.net/project
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
 */
