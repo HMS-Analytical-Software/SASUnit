@@ -18,7 +18,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param     i_libref         library containing the data set
    \param     i_memname        data set to be tested    
    \param     i_operator       optional: logical operator to compare i_recordsExp and l_actual; if not specified "EQ" is assumed as default.
@@ -83,7 +83,7 @@
      IF NOT("&i_operator." IN ("EQ", "NE", "GT", "LT", "GE", "LE", "=", "<", ">", ">=", "<=", "~=")) THEN call symput('l_actual',"-5");
    RUN;     
    %IF (&l_actual. EQ -5) %THEN %DO;
-      %LET l_errmsg =Parameter i_opertaor contains an invalid operator;
+      %LET l_errmsg =Parameter i_operator contains an invalid operator;
       %goto Update;
    %END;
 
