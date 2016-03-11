@@ -13,7 +13,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_pgmfile Name and path of source code file
    \param   r_desc Name of the macro variable that holds the description
 
@@ -25,11 +25,11 @@
                    ,r_desc    = desc
                    ); 
 
-%LET &r_desc=;
+%LET &r_desc=&i_pgmfile.;
 %IF NOT %sysfunc(fileexist(&i_pgmfile)) %THEN %RETURN;
 
    data _null_;
-      infile "&i_pgmfile" truncover end=eof;
+      infile "&i_pgmfile." truncover end=eof;
       length desc $255;
       retain inbrief 0 desc;
       input line $255.;

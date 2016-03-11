@@ -26,7 +26,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_source       test scenario (path to SAS program) 
                            resp. test scenarios (search pattern with structure directory\filenamepattern, 
                            e.g. test\*_test.sas for all files that end with _test.sas
@@ -137,10 +137,10 @@
       DATA _NULL_;
          in = &i.;
          set &d_scenariosToRun. point=in;
-         Call Symputx('l_scnid',    scn_id,      'L');
-         Call Symputx('l_dorun',    dorun,       'L');
-         Call Symputx('l_filename', scn_path,    'L');
-         Call Symputx('l_changed',  scn_changed, 'L');
+         Call Symputx('l_scnid',    scn_id,       'L');
+         Call Symputx('l_dorun',    dorun,        'L');
+         Call Symputx('l_filename', scn_filename, 'L');
+         Call Symputx('l_changed',  scn_changed,  'L');
          stop;
       RUN;
 
