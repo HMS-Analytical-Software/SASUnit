@@ -23,7 +23,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param      i_examinee        Data set containing all SASUnit macros, test scenarios and units under test
    \param      i_scn_pre         Data set containing all test scenarios
    \param      o_scenariosToRun  Data set created in this macro holding information about scenarios that have to run
@@ -77,6 +77,7 @@
             ,CASE WHEN s.scn_id EQ . THEN 1
                  ELSE 0
                  END as insertIntoDB
+            ,filename as scn_filename
       from scenarios as s
       full join &i_scn_pre. as scn
       on lowcase (scn.membername)=s.scn_name
@@ -105,7 +106,7 @@
          group by cas_scnid
       ;
       create table &o_scenariosToRun. as
-      select h1.scn_id, h1.scn_path, h1.scn_end, h1.scn_changed, h1.insertIntoDB,
+      select h1.scn_id, h1.scn_path, h1.scn_filename, h1.scn_end, h1.scn_changed, h1.insertIntoDB,
          case WHEN scn_end < scn_changed OR scn_end < exa_changed OR exa_id = 0 THEN 1
               ELSE 0
               END as dorun

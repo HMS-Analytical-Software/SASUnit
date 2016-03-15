@@ -121,7 +121,7 @@
    /*-- if scenario not present in test database: create new scenario --------*/
    DATA target.scn;
       SET target.scn &d_scenariosToRun.(where=(insertIntoDB=1) in=add);
-         drop dorun insertIntoDB;
+         drop dorun insertIntoDB scn_filename;
    RUN;
 
    /* Prepare Loop */
