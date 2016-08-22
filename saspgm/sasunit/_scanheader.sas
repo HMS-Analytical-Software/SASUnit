@@ -64,34 +64,43 @@
              tag $20
              name $100
              description $1000
-             headerStmtOpen tagStmtOpen emptyLines defGroupOpen 8;
+             headerStmtOpen tagStmtOpen emptyLines defGroupOpen 8
+             zeile l_zeile $32000;
       Retain headerStmtOpen tagStmtOpen emptyLines defGroupOpen 0 
-             tag name;
+             tag name 
+             patternAuthor     patternBrief   patternCopyright patternDate  patternDefGroup patternDetails 
+             patternFile       patternInGroup patternLink      patternParam patternReturn   patternRet_Val 
+             patternSa         patternTodo    patternTest      patternBug   patternRemark   patternVersion 
+             patternDeprecated
+             patternTag patternComment
+;
 
-      *** Compile Perl RegEx with PRXPARSE;
-      patternAuthor     = PRXPARSE("/^\\author/");
-      patternBrief      = PRXPARSE("/^\\brief/");
-      patternCopyright  = PRXPARSE("/^\\copyright/");
-      patternDate       = PRXPARSE("/^\\date/");
-      patternDefGroup   = PRXPARSE("/^\\defgroup/");
-      patternDetails    = PRXPARSE("/^\\details/");
-      patternFile       = PRXPARSE("/^\\file/");
-      patternInGroup    = PRXPARSE("/^\\ingroup/");
-      patternLink       = PRXPARSE("/^\\link/");
-      patternParam      = PRXPARSE("/^\\param/");
-      patternReturn     = PRXPARSE("/^\\return/");
-      patternRet_Val    = PRXPARSE("/^\\retval/");
-      patternSa         = PRXPARSE("/^\\sa/");
-      patternTodo       = PRXPARSE("/^\\todo/");
-      patternTest       = PRXPARSE("/^\\test/");
-      patternBug        = PRXPARSE("/^\\bug/");
-      patternRemark     = PRXPARSE("/^\\remark/");
-      patternVersion    = PRXPARSE("/^\\version/");
-      patternDeprecated = PRXPARSE("/^\\deprecated/");
+      if (_N_ = 1) then do;
+         *** Compile Perl RegEx with PRXPARSE;
+         patternAuthor     = PRXPARSE("/^\\author/i");
+         patternBrief      = PRXPARSE("/^\\brief/i");
+         patternCopyright  = PRXPARSE("/^\\copyright/i");
+         patternDate       = PRXPARSE("/^\\date/i");
+         patternDefGroup   = PRXPARSE("/^\\defgroup/i");
+         patternDetails    = PRXPARSE("/^\\details/i");
+         patternFile       = PRXPARSE("/^\\file/i");
+         patternInGroup    = PRXPARSE("/^\\ingroup/i");
+         patternLink       = PRXPARSE("/^\\link/i");
+         patternParam      = PRXPARSE("/^\\param/i");
+         patternReturn     = PRXPARSE("/^\\return/i");
+         patternRet_Val    = PRXPARSE("/^\\retval/i");
+         patternSa         = PRXPARSE("/^\\sa/i");
+         patternTodo       = PRXPARSE("/^\\todo/i");
+         patternTest       = PRXPARSE("/^\\test/i");
+         patternBug        = PRXPARSE("/^\\bug/i");
+         patternRemark     = PRXPARSE("/^\\remark/i");
+         patternVersion    = PRXPARSE("/^\\version/i");
+         patternDeprecated = PRXPARSE("/^\\deprecated/i");
 
-      pattern           = "/^\\author|\\brief|\\copyright|\\date|\\defgroup|\\details|\\file|\\ingroup|\\link|\\param|\\return|\\retval|\\sa|\\todo|\\test|\\bug|\\version|\\remark|\\deprecated/";
-      patternTag        = PRXPARSE(pattern);
-      patternComment    = PRXPARSE("/\*\//");
+         pattern        = "/^\\author|\\brief|\\copyright|\\date|\\defgroup|\\details|\\file|\\ingroup|\\link|\\param|\\return|\\retval|\\sa|\\todo|\\test|\\bug|\\version|\\remark|\\deprecated/i";
+         patternTag     = PRXPARSE(pattern);
+         patternComment = PRXPARSE("/\*\//");
+      end;
               
       ***Input File;
       Infile "&FilePath.";
@@ -101,6 +110,9 @@
       macroname = "&MacroName.";
 
       l_zeile     = compress (compbl (left (_INFILE_)), "0D"x);
+      if (substr (l_zeile,1,1)="@") then do;
+         substr (l_zeile ,1,1) ="\";
+      end;
 
       ***Leerzeile;
       if (compress(l_zeile) = "") then do;
@@ -145,8 +157,8 @@
             tag         = "";
             name        = "";
             description = "";
-            blankPos    = Index(l_zeile, ' ');   
-            tag         = Substr(l_zeile, 1, blankPos);
+            blankPos    = index(l_zeile, ' ');   
+            tag         = substr(l_zeile, 1, blankPos);
             name        = "";
             description = "";
          End;
@@ -158,13 +170,13 @@
             description  = "";
             tagStmtOpen  = 1;
             defGroupOpen = 1;
-            blankPos = Index(l_zeile, ' ');   
-            tag = Substr(l_zeile, 1, blankPos);
-            l_zeile = Substr(l_zeile, blankPos+1);
-            description = Strip(l_zeile);
-            groupname = scan (description, 1);
-            blankPos = Index(description, ' ');   
-            grouptext = Substr(description, blankPos+1);
+            blankPos     = index(l_zeile, ' ');   
+            tag          = substr(l_zeile, 1, blankPos);
+            l_zeile      = substr(l_zeile, blankPos+1);
+            description  = strip(l_zeile);
+            groupname    = scan (description, 1);
+            blankPos     = index(description, ' ');   
+            grouptext    = substr(description, blankPos+1);
          End;
          ***Complex tags with more than one line, 2 columns;
          Else If (PRXMATCH(patternBrief, l_zeile)      = 1 OR
@@ -199,7 +211,7 @@
                tag = "\groupdesc";
             end;
             else do;
-               tag = Substr(l_zeile, 1, blankPos);
+               tag = substr(l_zeile, 1, blankPos);
             end;
             l_zeile = Substr(l_zeile, blankPos+1);
             description = Strip(l_zeile);
@@ -214,7 +226,7 @@
             description = "";
             tagStmtOpen = 1;
             blankPos = Index(l_zeile, ' ');   
-            tag = Substr(l_zeile, 1, blankPos);
+            tag = substr(l_zeile, 1, blankPos);
             l_zeile = Substr(l_zeile, blankPos+1);
             blankPos = Index(l_zeile, ' ');              
             name = Substr(l_zeile, 1, blankPos);
