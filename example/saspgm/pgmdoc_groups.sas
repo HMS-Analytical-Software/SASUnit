@@ -7,14 +7,14 @@
    \details    This file does not contain any source code. Its purpose is to define groups to be used in SASUnit's program documentation. The group structure is being
                defined by defgroup and ingroup instructions above. Defined groups may be used with an ingroup instruction in other source code files. 
 
-   \version    \$Revision$
+   @version    \$Revision$
    \author     \$Author$
    \date       \$Date$
 
    \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
-   \sa         \$HeadURL$
-   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+   @sa         \$HeadURL$
+   @copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 
