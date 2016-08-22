@@ -22,7 +22,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param      i_script               Path of shell script
    \param      i_expected             Path of first image file (expected)
    \param      i_actual               Path of second image file (actual)
@@ -80,23 +80,68 @@
    %*************************************************************;
 
    %*** Check if i_script file exists ***;
-   %IF NOT %SYSFUNC(FILEEXIST(&i_script.)) %THEN %DO;
+   %IF (%length(&i_script.) <= 0) %THEN %DO;
       %LET l_rc = -2;
+      %LET l_errMsg=Parameter i_script is empty!;
+      %LET i_expected =%str( );
+      %LET l_image1_extension=%str( );
+      %LET i_actual =%str( );
+      %LET l_image2_extension=%str( );
+      %LET i_expected_shell_rc =%str( );
+      %GOTO Update;
+   %END;
+   %IF NOT %SYSFUNC(FILEEXIST(&i_script.)) %THEN %DO;
+      %LET l_rc = -3;
       %LET l_errMsg=Script &i_script. does not exist!;
+      %LET i_expected =%str( );
+      %LET l_image1_extension=%str( );
+      %LET i_actual =%str( );
+      %LET l_image2_extension=%str( );
+      %LET i_expected_shell_rc =%str( );
       %GOTO Update;
    %END;
 
    %*** Check if i_expected is a path and if so, whether it exists ***;
+   %IF (%length(&i_expected.) <= 0) %THEN %DO;
+      %LET l_rc = -4;
+      %LET l_errMsg=Parameter i_expected is empty!;
+      %LET i_expected =%str( );
+      %LET l_image1_extension=%str( );
+      %LET i_actual =%str( );
+      %LET l_image2_extension=%str( );
+      %LET i_expected_shell_rc =%str( );
+      %GOTO Update;
+   %END;
    %IF NOT %SYSFUNC(FILEEXIST(&i_expected.)) %THEN %DO;
-      %LET l_rc = -3;
+      %LET l_rc = -5;
       %LET l_errMsg=Image &i_expected. does not exist!;
+      %LET l_image1_extension=%str( );
+      %LET l_image2_extension=%str( );
+      %LET i_expected_shell_rc =%str( );
       %GOTO Update;
    %END;
    
    %*** Check if i_actual is a path and if so, whether it exists ***;
+   %IF (%length(&i_actual.) <= 0) %THEN %DO;
+      %LET l_rc = -6;
+      %LET l_errMsg=Parameter i_actual is empty!;
+      %LET l_image2_extension=%str( );
+      %LET i_expected_shell_rc =%str( );
+      %GOTO Update;
+   %END;
    %IF NOT %SYSFUNC(FILEEXIST(&i_actual.)) %THEN %DO;
-      %LET l_rc = -4;
+      %LET l_rc = -7;
       %LET l_errMsg=Image &i_actual. does not exist!;
+      %LET l_image2_extension=%str( );
+      %LET i_expected_shell_rc =%str( );
+      %GOTO Update;
+   %END;
+
+   %*** Check if i_expected_shell_rc is given ***;
+   %IF (%length(&i_expected_shell_rc.) <= 0) %THEN %DO;
+      %LET l_rc = -8;
+      %LET l_errMsg=Parameter i_expected_shell_rc is empty!;
+      %LET i_expected_shell_rc =%str( );
       %GOTO Update;
    %END;
    
@@ -115,10 +160,10 @@
    %let l_image1_extension = %sysfunc(substr(&i_expected.,%sysfunc(length(&i_expected.))-%sysfunc(length(%sysfunc(scan(&i_expected.,-1,"."))))));
    %let l_image2_extension = %sysfunc(substr(&i_actual.,%sysfunc(length(&i_actual.))-%sysfunc(length(%sysfunc(scan(&i_actual.,-1,"."))))));
 
-   %_copyFile(&i_expected.                                       /* input file */
+   %_copyFile(&i_expected.                                       /* input file  */
              ,&l_path./_image_exp&l_image1_extension.            /* output file */
              )
-   %_copyFile(&i_actual.                                         /* input file */
+   %_copyFile(&i_actual.                                         /* input file  */
              ,&l_path./_image_act&l_image2_extension.            /* output file */
              );
 
@@ -138,8 +183,8 @@
 %UPDATE:
    %*** update result in test database ***;
    %_ASSERTS(i_type     = assertImage
-            ,i_expected = &i_expected_shell_rc.#&l_image1_extension. #&i_expected.
-            ,i_actual   = &l_rc.#&l_image2_extension. #&i_actual.
+            ,i_expected = &i_expected_shell_rc.#&l_image1_extension.#&i_expected.
+            ,i_actual   = &l_rc.#&l_image2_extension.#&i_actual.
             ,i_desc     = &i_desc.
             ,i_result   = &l_result.
             ,i_errmsg   = &l_errmsg.

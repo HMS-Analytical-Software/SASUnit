@@ -13,7 +13,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_assertype    type of assert beeing done. It is know be the program itself, but nevertheless specified as parameter.
    \param   i_repdata      name of reporting dataset containing information on the assert.
    \param   i_scnid        scenario id of the current test
@@ -50,18 +50,18 @@
    %let l_ifile=&l_path./_image_;
    %let l_ofile=&o_path./_&i_scnid._&i_casid._&i_tstid.;
    
-DATA _NULL_;
-   SET dir;
-   IF SUBSTR(membername,1,11) = "_image_act." THEN DO;
-      CALL EXECUTE('%_copyfile('||filename||','||"&l_ofile."||membername||')');
-   END;
-   ELSE IF SUBSTR(membername,1,11) = "_image_exp." THEN DO;
-      CALL EXECUTE('%_copyfile('||filename||','||"&l_ofile."||membername||')');
-   END;
-   ELSE IF SUBSTR(membername,1,12) = "_image_diff." THEN DO;
-      CALL EXECUTE('%_copyfile('||filename||','||"&l_ofile."||membername||')');
-   END;
-RUN;
+   DATA _NULL_;
+      SET dir;
+      IF SUBSTR(membername,1,11) = "_image_act." THEN DO;
+         CALL EXECUTE('%_copyfile('||filename||','||"&l_ofile."||membername||')');
+      END;
+      ELSE IF SUBSTR(membername,1,11) = "_image_exp." THEN DO;
+         CALL EXECUTE('%_copyfile('||filename||','||"&l_ofile."||membername||')');
+      END;
+      ELSE IF SUBSTR(membername,1,12) = "_image_diff." THEN DO;
+         CALL EXECUTE('%_copyfile('||filename||','||"&l_ofile."||membername||')');
+      END;
+   RUN;
 
 %MEND _render_assertImageRep;
 /** \endcond */

@@ -592,6 +592,18 @@
   7 EN Expected image
   8 DE Erwartetes Bild öffnen
   8 EN Open expected image
+  9 DE Parameter Shell-Skript (i_script) ist leer
+  9 EN Parameter shell script (i_script) is empty
+ 10 DE Parameter erwartetes Bild (i_expected) ist leer
+ 10 EN Parameter expected image (i_expected) is empty
+ 11 DE Parameter tatsäschliches Bild (i_actual) ist leer
+ 11 EN Parameter actual image (i_actual) is empty
+ 12 DE Parameter erwarteter Rückgabewert (i_expected_shell_rc) ist leer
+ 12 EN Parameter expected shell rc (i_expected_shell_rc) is empty
+ 13 DE Erwarteter Rückgabewert
+ 13 EN Expected return code
+ 14 DE Typ des Bildes
+ 14 EN Image type
 ---reportPgmDoc
   1 DE Ausführliche Beschreibung
   1 EN Detailed description

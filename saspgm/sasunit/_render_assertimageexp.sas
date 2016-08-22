@@ -14,7 +14,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_sourceColumn       name of the column holding the value
    \param   o_html               Test report in HTML-format?
    \param   o_targetColumn       name of the target column holding the ODS formatted value
@@ -35,6 +35,6 @@
    %IF (&o_html.) %THEN %DO;
       href_exp = catt (href,'_image_exp',extension);
    %END;
-   &o_targetColumn. = catt ("^{style [flyover=""", tooltip , """ url=""", href_exp, """] &g_nls_reportImage_007. } ^n ", hlp);
+   &o_targetColumn. = catt ("^{style [flyover=""", tooltip , """ url=""", href_exp, """] &g_nls_reportImage_007. } ^n &g_nls_reportImage_014.:", " " !! extension, " ^n &g_nls_reportImage_013.:", " " !! hlp);
 %MEND _render_assertImageExp;
 /** \endcond */
