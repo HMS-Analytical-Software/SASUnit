@@ -166,7 +166,7 @@
       %LET l_sasunit_os = &l_sasunit./unix_aix;
    %END;
    %LET l_abspath_sasunit_os=%_abspath(&l_sasunitroot.,&l_sasunit_os.);
-   OPTIONS SASAUTOS=(SASAUTOS "&l_sasunit." "&l_abspath_sasunit_os.");
+   OPTIONS APPEND=(SASAUTOS=("&l_sasunit." "&l_abspath_sasunit_os."));
    OPTIONS NOQUOTELENMAX;
 
    %_oscmds;

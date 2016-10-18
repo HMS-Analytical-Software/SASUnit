@@ -30,7 +30,7 @@
 
 OPTIONS 
    MPRINT MAUTOSOURCE NOMLOGIC NOSYMBOLGEN
-   SASAUTOS=(SASAUTOS "%sysget(SASUNIT_ROOT)/saspgm/sasunit") /* SASUnit macro library */
+   APPEND=(SASAUTOS "%sysget(SASUNIT_ROOT)/saspgm/sasunit") /* SASUnit macro library */
 ;
 
 /* open test repository or create when needed */

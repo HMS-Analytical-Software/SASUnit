@@ -89,7 +89,7 @@
       !! "-nosyntaxcheck "
       !! "-mautosource "
       !! "-mcompilenote all "
-      !! "-sasautos ""&g_sasunit"" "
+      !! "-SASAUTOS (SASAUTOS ""&g_sasunit"") "
       !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
       !! "-termstmt ""%nrstr(%%%_termScenario())"" "
       !! "&l_tcgOptionsString. "
