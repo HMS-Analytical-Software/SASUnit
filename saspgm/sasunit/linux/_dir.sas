@@ -41,14 +41,15 @@
    %IF &syserr NE 0 %THEN %GOTO errexit;
 
    %LET encoding=wlatin1;
-   %LET dirfile=%sysfunc(pathname(work))/.dir.txt;
+   %LET dirfile=%sysfunc(pathname(work))/dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
     
    %put &g_note.(SASUNIT): Directory search is: &i_path;
 
-   %let l_i_path=%qsysfunc(tranwrd(&i_path, %str( ), %str(\ )));
+   %let l_i_name=%qsysfunc(scan(&i_path, -1, /));
+   %let l_i_path=%qsysfunc(substr(&i_path, 1, %qsysfunc(index (&i_path., &l_i_name.))-1));
    %IF &i_recursive=0 %then %let s=-maxdepth 1; 
-   %SYSEXEC(find -P &l_i_path. &s. -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null);
+   %SYSEXEC(find -P "&l_i_path." &s. -name "&l_i_name." -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null);
    
    %if &g_verbose. %then %do;
       %put ======== OS Command Start ========;
