@@ -15,7 +15,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_dataset      data set to check
    \param   i_whereExpr    data set where-expression to be checked
    \param   i_desc         description of the assertion to be checked \n
@@ -72,7 +72,7 @@
 
 %UPDATE:
    /*-- update comparison result in test database -------------------------------*/
-   %_asserts(i_type   = assertRecordExists
+   %_asserts(i_type     = assertRecordExists
             ,i_expected = > 0
             ,i_actual   = &l_countMatches.
             ,i_desc     = &i_desc.
