@@ -76,10 +76,10 @@
       "" !! &g_sasstart. 
       !! " " 
       !! "&l_parms. "
-      !! "-sysin ""&l_program."" "
+      !! "-sysin %sysfunc(tranwrd(&l_program., %str( ), %str(\ ))) "
       !! "-initstmt "" &l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%);%%let g_scnid=)&i_scnid.;"" "
-      !! "-log   ""&g_log/&i_scnid..log"" "
-      !! "-print ""&g_testout/&i_scnid..lst"" "
+      !! "-log   %sysfunc(tranwrd(&g_log/&i_scnid..log, %str( ), %str(\ ))) "
+      !! "-print %sysfunc(tranwrd(&g_testout/&i_scnid..lst, %str( ), %str(\ ))) "
       !! "-noovp "
       !! "-nosyntaxcheck "
       !! "-mautosource "
