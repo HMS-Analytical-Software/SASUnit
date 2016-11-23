@@ -84,7 +84,7 @@
       !! "-nosyntaxcheck "
       !! "-mautosource "
       !! "-mcompilenote all "
-      !! "-sasautos (SASAUTOS ""%sysfunc(tranwrd(&g_sasunit, %str( ), %str(\ )))"") "
+      !! "-sasautos SASAUTOS -append SASAUTOS ""&g_sasunit"") "
       !! "-sasuser %sysfunc(pathname(work))/sasuser "
       !! "-termstmt ""%nrstr(%%_termScenario())"" "
       !! "";
