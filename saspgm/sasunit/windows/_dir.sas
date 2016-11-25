@@ -18,7 +18,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_path       name of directory or file group (containing wildcards) with full path
    \param   i_recursive  1 .. search recursively in subdirectories, default is 0
    \param   o_out        output dataset, default is work.dir. This dataset contains two columns
@@ -33,7 +33,9 @@
 
    %local encoding s dirfile xwait xsync xmin l_i_path;
    %let encoding=pcoem850;
+
    %let l_i_path = %sysfunc(translate(&i_path,\,/));
+   %let l_i_path = %sysfunc (dequote(&l_i_path.));
     
    proc sql noprint;
       create table &o_out (filename char(255));
@@ -49,7 +51,8 @@
    %let dirfile=%sysfunc(pathname(work))\___dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
 
-   /* %put &g_note.(SASUNIT): Directory search is: &l_i_path; */
+   %put &g_note.(SASUNIT): Directory search is: &i_path;
+   %put &g_note.(SASUNIT): Adjusted directory is: &l_i_path;
 
    %IF &i_recursive %then %let s=/S;
    

@@ -46,9 +46,21 @@
     
    %put &g_note.(SASUNIT): Directory search is: &i_path;
 
-   %let l_i_name=%qsysfunc(scan(&i_path, -1, /));
-   %let l_i_path=%qsysfunc(substr(&i_path, 1, %qsysfunc(index (&i_path., &l_i_name.))-1));
+   %let l_i_path=%sysfunc (dequote(&i_path.));
+
+   %if (%index (&l_i_path., *) = 0) %then %do;
+      %if ("%substr (%qsysfunc (reverse (&l_i_path.)), 1,1)" ne "/") %then %do;
+         %let l_i_path = &l_i_path./;
+      %end;
+      %let l_i_path = &l_i_path.%nrstr(*);
+   %end;
+   %put &g_note.(SASUNIT): Adjusted directory is: &l_i_path;
+ 
+   %let l_i_name=%qsysfunc(scan(&l_i_path, -1, /));
+   %let l_i_path=%qsysfunc(substr(&l_i_path, 1, %qsysfunc(index (&l_i_path., &l_i_name.))-1));
+
    %IF &i_recursive=0 %then %let s=-maxdepth 1; 
+
    %SYSEXEC(find -P "&l_i_path." &s. -name "&l_i_name." -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null);
    
    %if &g_verbose. %then %do;
@@ -58,7 +70,7 @@
       %else %put &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
 
       /* put sysexec command to log*/
-      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: find -P &l_i_path. &s. -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null;
+      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: find -P "&l_i_path." &s. -name "&l_i_name." -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null;
       
       /* write &dirfile to the log*/
       data _null_;
@@ -69,6 +81,20 @@
       %put ======== OS Command End ========;
    %end;
    
+   filename _dir pipe "find -P ""&l_i_path."" &s. -name ""&l_i_name."" -type f -printf ""%nrstr(%h/%f\t%TD\t%TT\t\r\n)""";
+
+   data &o_out. (keep=membername filename changed);
+      length membername filename $255;
+      format changed datetime20.;
+      infile _dir delimiter='09'x truncover;
+      input filename $ d:mmddyy8. t:time8.; 
+      changed = dhms (d, hour(t), minute(t), 0);
+      loca = length(filename) - length(scan(filename,-1,'/')) + 1;
+      membername = substr(filename,loca);
+   run;
+
+   filename _dir clear;
+/*
    data &o_out. (keep=membername filename changed);
       length membername filename $255;
       format changed datetime20.;
@@ -78,7 +104,7 @@
       loca = length(filename) - length(scan(filename,-1,'/')) + 1;
       membername = substr(filename,loca);
    run;
-
+*/
    proc sort data=&o_out.;
       by filename;
    run;

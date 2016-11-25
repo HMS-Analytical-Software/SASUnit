@@ -44,7 +44,7 @@
    %let dirfile=%sysfunc(pathname(work))/&o_out..dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
 
-/*   %put &g_note.(SASUNIT): Directory search is: &i_path;*/
+   %put &g_note.(SASUNIT): Directory search is: &i_path;
 
    %let l_i_path=%qsysfunc(tranwrd(&i_path, %str( ), %str(\ )));
 
@@ -76,7 +76,7 @@
       %put ======== OS Command End ========;
    %end;
    
-   data &o_out (keep=membername filename changed );
+   data &o_out (keep=membername filename changed);
       array dum{7} $;
       array dat{3} $;
       length filename membername $255

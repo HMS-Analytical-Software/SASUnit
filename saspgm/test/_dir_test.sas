@@ -39,7 +39,7 @@ run;
    run; 
 %mend addentry; 
 
-/*-- Empty directory ---------------------------------------------------------*/
+/*-- 001 Empty directory ---------------------------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir;
 %_xcmd(mkdir "&path")
 
@@ -50,7 +50,7 @@ run;
 %assertColumns(i_expected=dircheck, i_actual=dir, i_desc=check for empty dir file)
 %endTestcase;
 
-/*-- Simple directory with three files -----------------------------------------*/
+/*-- 002 Simple directory with three files -----------------------------------------*/
 %addentry(&path/file with blank.dat)
 %addentry(&path/file1.txt)
 %addentry(&path/filemitü.dat)
@@ -66,7 +66,7 @@ proc sort data=dircheck; by filename; run;
 
 data dircheck1; set dircheck; run; 
 
-/*-- recursive call with subdirectories --------------------------------------*/
+/*-- 003 recursive call with subdirectories --------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir/one;
 %_xcmd(mkdir "&path")
 %addentry(&path/file_one_1.dat)
@@ -89,7 +89,17 @@ proc sort data=dircheck; by filename; run;
 %assertColumns(i_expected=dircheck, i_actual=dir, i_desc=check for contents of dir file)
 %endTestcase;
 
-/*-- nonrecursive call with subdirectories -----------------------------------*/
+/*-- 004 recursive call with subdirectories and delimiter at end of path --------------------------------------*/
+%initTestcase(i_object=_dir.sas, i_desc=recursive call with subdirectories and delimiter at end of path)
+%_dir(i_path=%sysfunc(pathname(work))/testdir/, i_recursive=1, o_out=dir);
+%endTestcall;
+
+proc sort data=dir; by filename; run;
+proc sort data=dircheck; by filename; run;  
+%assertColumns(i_expected=dircheck, i_actual=dir, i_desc=check for contents of dir file)
+%endTestcase;
+
+/*-- 005 nonrecursive call with subdirectories -----------------------------------*/
 %initTestcase(i_object=_dir.sas, i_desc=nonrecursive call with subdirectories)
 %_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
 %endTestcall;
@@ -99,13 +109,63 @@ proc sort data=dircheck; by filename; run;
 %assertColumns(i_expected=dircheck1, i_actual=dir, i_desc=check for contents of dir file)
 %endTestcase;
 
-/*-- nonrecursive call with wildcards -----------------------------------*/
+/*-- 006 nonrecursive call with wildcards -----------------------------------*/
 %initTestcase(i_object=_dir.sas, i_desc=nonrecursive call with wildcards)
-%_dir(i_path=%sysfunc(pathname(work))/testdir/%str(*).txt, i_recursive=0, o_out=dir);
+%_dir(i_path=%sysfunc(pathname(work))/testdir/%str(*).dat, i_recursive=0, o_out=dir);
 %endTestcall;
 
 proc sort data=dir; by filename; run;
-proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains ".txt";run;  
+proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains ".dat";run;  
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file)
+%endTestcase;
+
+/*-- 007 recursive call with wildcards -----------------------------------*/
+%initTestcase(i_object=_dir.sas, i_desc=recursive call with wildcards)
+%_dir(i_path=%sysfunc(pathname(work))/testdir/%str(*).dat, i_recursive=1, o_out=dir);
+%endTestcall;
+
+proc sort data=dir; by filename; run;
+proc sort data=dircheck out=dirchecktxt; by filename; where filename contains ".dat";run;  
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file)
+%endTestcase;
+
+/*-- 008 nonrecursive call with wildcards and quoted path -----------------------------------*/
+%initTestcase(i_object=_dir.sas, i_desc=nonrecursive call with wildcards and quoted path)
+%_dir(i_path='%sysfunc(pathname(work))/testdir/%str(*).dat', i_recursive=0, o_out=dir);
+%endTestcall;
+
+proc sort data=dir; by filename; run;
+proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains ".dat";run;  
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file)
+%endTestcase;
+
+/*-- 009 recursive call with wildcards and quoted path -----------------------------------*/
+%initTestcase(i_object=_dir.sas, i_desc=recursive call with wildcards and quoted path)
+%_dir(i_path='%sysfunc(pathname(work))/testdir/%str(*).dat', i_recursive=1, o_out=dir);
+%endTestcall;
+
+proc sort data=dir; by filename; run;
+proc sort data=dircheck out=dirchecktxt; by filename; where filename contains ".dat";run;  
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file)
+%endTestcase;
+
+/*-- 010 nonrecursive call with wildcards and quoted path -----------------------------------*/
+%initTestcase(i_object=_dir.sas, i_desc=nonrecursive call with wildcards and quoted path)
+%_dir(i_path="%sysfunc(pathname(work))/testdir/%str(*).dat", i_recursive=0, o_out=dir);
+%endTestcall;
+
+proc sort data=dir; by filename; run;
+proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains ".dat";run;  
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file)
+%endTestcase;
+
+/*-- 011 recursive call with wildcards and quoted path -----------------------------------*/
+%initTestcase(i_object=_dir.sas, i_desc=recursive call with wildcards and quoted path)
+%_dir(i_path="%sysfunc(pathname(work))/testdir/%str(*).dat", i_recursive=1, o_out=dir);
+%endTestcall;
+
+proc sort data=dir; by filename; run;
+proc sort data=dircheck out=dirchecktxt; by filename; where filename contains ".dat";run;  
 %assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file)
 %endTestcase;
 
