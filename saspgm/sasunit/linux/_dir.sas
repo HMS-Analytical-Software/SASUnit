@@ -48,7 +48,7 @@
 
    %let l_i_path=%sysfunc (dequote(&i_path.));
 
-   %if (%index (&l_i_path., *) = 0) %then %do;
+   %if (%index (&l_i_path., %str(*)) = 0) %then %do;
       %if ("%substr (%qsysfunc (reverse (&l_i_path.)), 1,1)" ne "/") %then %do;
          %let l_i_path = &l_i_path./;
       %end;

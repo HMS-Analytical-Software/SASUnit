@@ -13,7 +13,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_program           Command file to be executed in a separate instance
    \param   i_scnid             Scenario id used to construct lognames
    \param   i_generateMcoverage Specifies whether to use mcoverage or not
