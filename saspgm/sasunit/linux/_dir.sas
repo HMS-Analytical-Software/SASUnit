@@ -47,6 +47,7 @@
    %put &g_note.(SASUNIT): Directory search is: &i_path;
 
    %let l_i_path=%qsysfunc (dequote(&i_path.));
+   %let l_i_path=%unquote(&l_i_path.);
 
    %if (%index (&l_i_path., %str(*)) = 0) %then %do;
       %if ("%substr (%qsysfunc (reverse (&l_i_path.)), 1,1)" ne "/") %then %do;
@@ -61,26 +62,6 @@
 
    %IF &i_recursive=0 %then %let s=-maxdepth 1; 
 
-   %SYSEXEC(find -P "&l_i_path." &s. -name "&l_i_name." -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null);
-   
-   %if &g_verbose. %then %do;
-      %put ======== OS Command Start ========;
-      /* Evaluate sysexec´s return code */
-      %if &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
-      %else %put &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
-
-      /* put sysexec command to log*/
-      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: find -P "&l_i_path." &s. -name "&l_i_name." -type f -printf "%nrstr(%h/%f\t%TD\t%TT\t\r\n)" > &dirfile. 2>/dev/null;
-      
-      /* write &dirfile to the log*/
-      data _null_;
-         infile "&dirfile" truncover lrecl=512;
-         input line $512.;
-         putlog line;
-      run;
-      %put ======== OS Command End ========;
-   %end;
-   
    filename _dir pipe "find -P ""&l_i_path."" &s. -name ""&l_i_name."" -type f -printf ""%nrstr(%h/%f\t%TD\t%TT\t\r\n)""";
 
    data &o_out. (keep=membername filename changed);
@@ -94,17 +75,14 @@
    run;
 
    filename _dir clear;
-/*
-   data &o_out. (keep=membername filename changed);
-      length membername filename $255;
-      format changed datetime20.;
-      infile _dirfile delimiter='09'x truncover;
-      input filename $ d:mmddyy8. t:time8.; 
-      changed = dhms (d, hour(t), minute(t), 0);
-      loca = length(filename) - length(scan(filename,-1,'/')) + 1;
-      membername = substr(filename,loca);
+
+   data &o_out.;
+      set &o_out.;
+      if (compress (upcase(filename)) =: 'FIND:') then do;
+         stop;
+      end;
    run;
-*/
+
    proc sort data=&o_out.;
       by filename;
    run;
