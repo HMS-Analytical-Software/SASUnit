@@ -131,7 +131,7 @@ proc sort data=dircheck out=dirchecktxt; by filename; where filename contains ".
 
 /*-- 008 nonrecursive call with wildcards and quoted path -----------------------------------*/
 %initTestcase(i_object=_dir.sas, i_desc=nonrecursive call with wildcards and quoted path)
-%_dir(i_path='%sysfunc(pathname(work))/testdir/*.dat', i_recursive=0, o_out=dir);
+%_dir(i_path='%sysfunc(pathname(work))/testdir/%str(*).dat', i_recursive=0, o_out=dir);
 %endTestcall;
 
 proc sort data=dir; by filename; run;
@@ -141,7 +141,7 @@ proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains "
 
 /*-- 009 recursive call with wildcards and quoted path -----------------------------------*/
 %initTestcase(i_object=_dir.sas, i_desc=recursive call with wildcards and quoted path)
-%_dir(i_path='%sysfunc(pathname(work))/testdir/*.dat', i_recursive=1, o_out=dir);
+%_dir(i_path='%sysfunc(pathname(work))/testdir/%str(*).dat', i_recursive=1, o_out=dir);
 %endTestcall;
 
 proc sort data=dir; by filename; run;
