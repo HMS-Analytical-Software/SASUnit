@@ -41,28 +41,36 @@
    %IF &syserr NE 0 %THEN %GOTO errexit;
 
    %LET encoding=wlatin1;
-   %LET dirfile=%sysfunc(pathname(work))/dir.txt;
-   filename _dirfile "&dirfile" encoding=&encoding;
 
    %put &g_note.(SASUNIT): Directory search is: &i_path;
 
+   *** resolve macro functions like sysfunc etc. ***; 
    %let l_i_path=%qsysfunc (dequote(&i_path.));
-   %if (%index (&l_i_path., %str (%%))) > 0 %then %do;
+   %if (%index (&l_i_path., %str (%%)) > 0) %then %do;
       %let l_i_path=%unquote (&l_i_path.);
    %end;
 
    %let l_i_name=;
 
+   *** Look for wildcards an extract them ***;
    %if (%index (&l_i_path., %str(*)) > 0) %then %do;
       %let l_i_name=%qsysfunc(scan(&l_i_path, -1, /));
       %let l_i_path=%qsysfunc(substr(&l_i_path, 1, %qsysfunc(index (&l_i_path., &l_i_name.))-1));
       %let l_i_name = -name %str("")&l_i_name.%str("");
    %end;
+
+   *** resolve macrovariables if there are any              ***;
+   *** unquote kills *.dat etc from teh path                ***;
+   *** So unquoting is done on the remaing part of the path ***;
+   %if (%index (&l_i_path., %str (&)) > 0) %then %do;
+      %let l_i_path=%unquote (&l_i_path.);
+   %end;
+
    %put &g_note.(SASUNIT): Adjusted directory is: &l_i_path;
 
    %IF &i_recursive=0 %then %let s=-maxdepth 1;
 
-   filename _dir pipe "find -P ""&l_i_path."" &s. &l_i_name. -type f -printf ""%nrstr(%h/%f\t%TD\t%TT\t\r\n)""";
+   filename _dir pipe "find -P ""&l_i_path."" &s. &l_i_name. -type f -printf ""%nrstr(%h/%f\t%TD\t%TT\t\r\n)""" encoding=&encoding.;
 
    data &o_out. (keep=membername filename changed);
       length membername filename $255;
