@@ -189,4 +189,24 @@ proc sort data=dircheck out=dirchecktxt; by filename; where filename contains ".
 %assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file)
 %endTestcase;
 
+/*-- 014 nonrecursive call with specific file -----------------------------------*/
+%initTestcase(i_object=_dir.sas, i_desc=nonrecursive call with specific file)
+%_dir(i_path="%sysfunc(pathname(work))/testdir/file1.txt", i_recursive=1, o_out=dir);
+%endTestcall;
+
+proc sort data=dir; by filename; run;
+proc sort data=dircheck out=dirchecktxt; by filename; where filename contains "file1.txt";run;  
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file)
+%endTestcase;
+
+/*-- 015 nonrecursive call with specific file in subdirectory -----------------------------------*/
+%initTestcase(i_object=_dir.sas, i_desc=nonrecursive call with specific file in subdirectory)
+%_dir(i_path="%sysfunc(pathname(work))/testdir/one/file_one_1.dat", i_recursive=1, o_out=dir);
+%endTestcall;
+
+proc sort data=dir; by filename; run;
+proc sort data=dircheck out=dirchecktxt; by filename; where filename contains "file_one_1.dat";run;  
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file)
+%endTestcase;
+
 /** \endcond */

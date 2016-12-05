@@ -5,7 +5,7 @@
                Wildcards may be used to specify the files to be included
 
                Resulting SAS dataset has the columns
-               filename (name of file with absolute path, path separator is slash) 
+               filename (name of file with absolute path, path separator is slash)
                changed (last modification data as SAS datetime).
 
    \version    \$Revision$
@@ -24,26 +24,26 @@
    \param   o_out        output dataset, default is work.dir. This dataset contains two columns
                          named filename and changed
 
-*/ /** \cond */ 
+*/ /** \cond */
 
 %MACRO _dir (i_path=
             ,i_recursive=0
             ,o_out=dir
             );
 
-   %LOCAL dirfile encoding s l_i_path;
-   
+   %LOCAL dirfile encoding s l_i_path l_i_name;
+
    data &o_out ;
        length filename $255;
        format changed datetime20.;
    run;
-   
+
    %IF &syserr NE 0 %THEN %GOTO errexit;
 
    %LET encoding=wlatin1;
    %LET dirfile=%sysfunc(pathname(work))/dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
-    
+
    %put &g_note.(SASUNIT): Directory search is: &i_path;
 
    %let l_i_path=%qsysfunc (dequote(&i_path.));
@@ -51,26 +51,24 @@
       %let l_i_path=%unquote (&l_i_path.);
    %end;
 
-   %if (%index (&l_i_path., %str(*)) = 0) %then %do;
-      %if ("%substr (%qsysfunc (reverse (&l_i_path.)), 1,1)" ne "/") %then %do;
-         %let l_i_path = &l_i_path./;
-      %end;
-      %let l_i_path = &l_i_path.%nrstr(*);
+   %let l_i_name=;
+
+   %if (%index (&l_i_path., %str(*)) > 0) %then %do;
+      %let l_i_name=%qsysfunc(scan(&l_i_path, -1, /));
+      %let l_i_path=%qsysfunc(substr(&l_i_path, 1, %qsysfunc(index (&l_i_path., &l_i_name.))-1));
+      %let l_i_name = -name %str("")&l_i_name.%str("");
    %end;
    %put &g_note.(SASUNIT): Adjusted directory is: &l_i_path;
- 
-   %let l_i_name=%qsysfunc(scan(&l_i_path, -1, /));
-   %let l_i_path=%qsysfunc(substr(&l_i_path, 1, %qsysfunc(index (&l_i_path., &l_i_name.))-1));
 
-   %IF &i_recursive=0 %then %let s=-maxdepth 1; 
+   %IF &i_recursive=0 %then %let s=-maxdepth 1;
 
-   filename _dir pipe "find -P ""&l_i_path."" &s. -name ""&l_i_name."" -type f -printf ""%nrstr(%h/%f\t%TD\t%TT\t\r\n)""";
+   filename _dir pipe "find -P ""&l_i_path."" &s. &l_i_name. -type f -printf ""%nrstr(%h/%f\t%TD\t%TT\t\r\n)""";
 
    data &o_out. (keep=membername filename changed);
       length membername filename $255;
       format changed datetime20.;
       infile _dir delimiter='09'x truncover;
-      input filename $ d:mmddyy8. t:time8.; 
+      input filename $ d:mmddyy8. t:time8.;
       changed = dhms (d, hour(t), minute(t), 0);
       loca = length(filename) - length(scan(filename,-1,'/')) + 1;
       membername = substr(filename,loca);
@@ -92,4 +90,3 @@
 %errexit:
 %MEND _dir;
 /** \endcond */
-
