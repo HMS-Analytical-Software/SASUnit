@@ -44,42 +44,38 @@
 
    %put &g_note.(SASUNIT): Directory search is: &i_path;
 
-   *** remove quotes around the path ***;
+   %*** remove quotes around the path ***;
    %if (%qsubstr(&i_path,1,1) = %str(%')) %then %do;
       %let l_i_path = %qsysfunc (compress(&i_path., %str(%')));
    %end;
    %else %do;
-     %let l_i_path = &i_path.;
+      %let l_i_path = &i_path.;
    %end;
-
-   %PUT --->l_i_path=&l_i_path.;
-
    %if (%qsubstr(&l_i_path,1,1) = %str(%")) %then %do;
       %let l_i_path = %qsysfunc (compress(&l_i_path., %str(%")));
    %end;
-   %PUT --->l_i_path=&l_i_path.;
 
    %let l_i_name=;
 
-   *** Look for wildcards an extract them ***;
+   %*** Look for wildcards an extract them ***;
    %if (%index (&l_i_path., %str(*)) > 0) %then %do;
       %let l_i_name=%qsysfunc(scan(&l_i_path, -1, /));
       %let l_i_path=%qsysfunc(substr(&l_i_path, 1, %qsysfunc(index (&l_i_path., &l_i_name.))-1));
       %let l_i_name = -name %str("")&l_i_name.%str("");
    %end;
-
-   %PUT --->l_i_path=&l_i_path.;
-
-
+   
    *** resolve macrovariables and macros if there are any   ***;
    *** unquote kills *.dat etc from the path                ***;
    *** So unquoting is done on the remaing part of the path ***;
    %if (%index (&l_i_path., %str (&)) > 0 OR %index (&l_i_path., %str(%%)) > 0) %then %do;
-      %let l_i_path=%qsysfunc (dequote (&l_i_path.));
       %let l_i_path=%unquote (&l_i_path.);
+   %end;
+   %if (%index (&l_i_name., %str (&)) > 0 OR %index (&l_i_name., %str(%%)) > 0) %then %do;
+      %let l_i_name=%unquote (&l_i_name.);
    %end;
 
    %put &g_note.(SASUNIT): Adjusted directory is: &l_i_path;
+   %put &g_note.(SASUNIT): Search pattern is    : &l_i_name;
 
    %IF &i_recursive=0 %then %let s=-maxdepth 1;
 

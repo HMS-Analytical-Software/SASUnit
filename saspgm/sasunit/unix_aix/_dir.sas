@@ -56,6 +56,9 @@
    %if %qsubstr(&path.,1,1) eq %str(%") %then
        %let path = &path.%str(%");
 
+   %put &g_note.(SASUNIT): Adjusted directory is: &path;
+   %put &g_note.(SASUNIT): Dearch pattern is    : &search;
+
    %SYSEXEC(find -L &path. ! -name &path -name "&search." -ls -type f > &dirfile.);
 
    %if &g_verbose. %then %do;
