@@ -42,10 +42,15 @@
 
    %LET encoding=wlatin1;
 
-   %put &g_note.(SASUNIT): Directory search is: &i_path;
+   %put &g_note.(SASUNIT): Directory search is:           &i_path;
+
+   %*** Change backslashes to slashes ***;
+   %let l_i_path = %qsysfunc (translate (&i_path, /, \));
+
+   %put &g_note.(SASUNIT): Corrected directory search is: &l_i_path;
 
    %*** remove quotes around the path ***;
-   %if (%qsubstr(&i_path,1,1) = %str(%')) %then %do;
+   %if (%qsubstr(&l_i_path,1,1) = %str(%')) %then %do;
       %let l_i_path = %qsysfunc (compress(&i_path., %str(%')));
    %end;
    %else %do;
@@ -74,8 +79,8 @@
       %let l_i_name=%unquote (&l_i_name.);
    %end;
 
-   %put &g_note.(SASUNIT): Adjusted directory is: &l_i_path;
-   %put &g_note.(SASUNIT): Search pattern is    : &l_i_name;
+   %put &g_note.(SASUNIT): Adjusted directory is:         &l_i_path;
+   %put &g_note.(SASUNIT): Search pattern is    :         &l_i_name;
 
    %IF &i_recursive=0 %then %let s=-maxdepth 1;
 
