@@ -51,10 +51,7 @@
 
    %*** remove quotes around the path ***;
    %if (%qsubstr(&l_i_path,1,1) = %str(%')) %then %do;
-      %let l_i_path = %qsysfunc (compress(&i_path., %str(%')));
-   %end;
-   %else %do;
-      %let l_i_path = &i_path.;
+      %let l_i_path = %qsysfunc (compress(&l_i_path., %str(%')));
    %end;
    %if (%qsubstr(&l_i_path,1,1) = %str(%")) %then %do;
       %let l_i_path = %qsysfunc (compress(&l_i_path., %str(%")));
