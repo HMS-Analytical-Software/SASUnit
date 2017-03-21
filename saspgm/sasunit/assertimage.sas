@@ -145,12 +145,13 @@
       %GOTO Update;
    %END;
    
-   %*** ***;
+   %*** Parameter i_threshold and i_modifier must not be empty due to changes in  ***;
+   %*** implementation of ImageMagick compare routine. Otherwise return codes of  ***;
+   %*** assertImage are not stable                                                ***;
    %IF ("&i_threshold." EQ "") %THEN %DO;
       %LET i_threshold = 0;
    %END;
    
-   %*** ***;
    %IF ("&i_modifier." EQ "") %THEN %DO;
       %LET i_modifier =-metric RMSE;
    %END;
