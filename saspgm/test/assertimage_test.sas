@@ -119,6 +119,7 @@
              )
 %endTestcall()
 
+%*** No 1-4 ***;
 %assertImage(i_script             =
             ,i_expected           =
             ,i_actual             =
@@ -134,6 +135,7 @@
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
+%*** No 5-8 ***;
 %assertImage(i_script             =&assertImage_script.
             ,i_expected           =
             ,i_actual             = 
@@ -149,6 +151,7 @@
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
+%*** No 9-12 ***;
 %assertImage(i_script             =&assertImage_script.
             ,i_expected           =&assertImage_image1.
             ,i_actual             =
@@ -164,6 +167,7 @@
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
+%*** No 13-16 ***;
 %assertImage(i_script             =&assertImage_script.
             ,i_expected           =&assertImage_image1.
             ,i_actual             =&assertImage_image2.
@@ -178,38 +182,41 @@
       %assertDBValue(tst,act,-8##&assertImage_image2.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+%*** No 17-20 ***;
 
 %assertImage(i_script             =&assertImage_script.
             ,i_expected           =&assertImage_image1.
             ,i_actual             =&assertImage_image2.
-            ,i_expected_shell_rc  =1
+            ,i_expected_shell_rc  =0
             ,i_modifier           =
             ,i_threshold          =
             ,i_desc               =Modifier Parameter is empty
             );                        
            
    %markTest()
-      %assertDBValue(tst,exp,1#.jpg#&assertImage_image1.)
-      %assertDBValue(tst,act,255#.jpg#&assertImage_image2.)
-      %assertDBValue(tst,res,2)
-      %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+      %assertDBValue(tst,exp,0#.jpg#&assertImage_image1.)
+      %assertDBValue(tst,act,0#.jpg#&assertImage_image2.)
+      %assertDBValue(tst,res,0)
+      %*assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
+%*** No 21-24 ***;
 %assertImage(i_script             =&assertImage_script.
             ,i_expected           =&assertImage_image1.
             ,i_actual             =&assertImage_image2.
-            ,i_expected_shell_rc  =1
+            ,i_expected_shell_rc  =0
             ,i_modifier           =-metric RMSE
             ,i_threshold          =
             ,i_desc               =Threshold Parameter is empty
             );                        
            
    %markTest()
-      %assertDBValue(tst,exp,1#.jpg#&assertImage_image1.)
-      %assertDBValue(tst,act,255#.jpg#&assertImage_image2.)
-      %assertDBValue(tst,res,2)
-      %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+      %assertDBValue(tst,exp,0#.jpg#&assertImage_image1.)
+      %assertDBValue(tst,act,0#.jpg#&assertImage_image2.)
+      %assertDBValue(tst,res,0)
+      %*assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 
+%*** No 25-28 ***;
 %assertImage(i_script             =&assertImage_NotExistend.
             ,i_expected           =&assertImage_image1.  
             ,i_actual             =&assertImage_image2.    

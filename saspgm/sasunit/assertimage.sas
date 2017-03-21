@@ -145,6 +145,16 @@
       %GOTO Update;
    %END;
    
+   %*** ***;
+   %IF ("&i_threshold." EQ "") %THEN %DO;
+      %LET i_threshold = 0;
+   %END;
+   
+   %*** ***;
+   %IF ("&i_modifier." EQ "") %THEN %DO;
+      %LET i_modifier =-metric RMSE;
+   %END;
+   
    %*** get current ids for test case and test ***;
    %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
