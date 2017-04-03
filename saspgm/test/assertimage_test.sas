@@ -112,6 +112,13 @@
 %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./rose.jpg))       , i_expected=1, i_desc=File successful copied);
 %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./rose_copy.jpg))  , i_expected=1, i_desc=File successful copied);
 %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./reconstruct.jpg)), i_expected=1, i_desc=File successful modified);
+%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image1.))    , i_expected=1, i_desc=Image rose.jpg  successful copied);
+%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image2.))    , i_expected=1, i_desc=Image rose_copy.jpg  successful copied);
+%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image3.))    , i_expected=1, i_desc=Image reconstruct.jpg  successful copied);
+%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image4.))    , i_expected=1, i_desc=Image class.jpg  successful copied);
+%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image5.))    , i_expected=1, i_desc=Image class1.jpg  successful copied);
+%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image6.))    , i_expected=1, i_desc=Image class2.jpg  successful copied);
+%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image7.))    , i_expected=1, i_desc=Image class3.jpg  successful copied);
 
 %*** test case 2 ------------------------------------ ***;
 %initTestcase(i_object   = assertImage.sas
@@ -130,8 +137,8 @@
             );                        
            
    %markTest()
-      %assertDBValue(tst,exp,# # )
-      %assertDBValue(tst,act,-2# # )
+      %assertDBValue(tst,exp,## )
+      %assertDBValue(tst,act,-2## )
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
@@ -146,8 +153,8 @@
             );                        
            
    %markTest()
-      %assertDBValue(tst,exp,# # )
-      %assertDBValue(tst,act,-4# # )
+      %assertDBValue(tst,exp,## )
+      %assertDBValue(tst,act,-4## )
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
@@ -163,7 +170,7 @@
            
    %markTest()
       %assertDBValue(tst,exp,##&assertImage_image1.)
-      %assertDBValue(tst,act,-6# # )
+      %assertDBValue(tst,act,-6## )
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
@@ -178,8 +185,8 @@
             );                        
            
    %markTest()
-      %assertDBValue(tst,exp,##&assertImage_image1.)
-      %assertDBValue(tst,act,-8##&assertImage_image2.)
+      %assertDBValue(tst,exp,#.jpg#&assertImage_image1.)
+      %assertDBValue(tst,act,-8#.jpg#&assertImage_image2.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %*** No 17-20 ***;
@@ -218,8 +225,8 @@
 
 %*** No 25-28 ***;
 %assertImage(i_script             =&assertImage_NotExistend.
-            ,i_expected           =&assertImage_image1.  
-            ,i_actual             =&assertImage_image2.    
+            ,i_expected           =&assertImage_image1.
+            ,i_actual             =&assertImage_image2.
             ,i_expected_shell_rc  =1
             ,i_modifier           =-metric RMSE
             ,i_threshold          =
@@ -227,8 +234,8 @@
             );                        
            
    %markTest()
-      %assertDBValue(tst,exp,# #)
-      %assertDBValue(tst,act,-3# #)
+      %assertDBValue(tst,exp,1##&assertImage_image1.)
+      %assertDBValue(tst,act,-3##&assertImage_image2.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
@@ -241,8 +248,8 @@
             ,i_desc               =Image1 does not exist
             );
    %markTest()
-      %assertDBValue(tst,exp,# #&assertImage_NotExistend.)
-      %assertDBValue(tst,act,-5# #&assertImage_image2.)
+      %assertDBValue(tst,exp,1#.cmd#&assertImage_NotExistend.)
+      %assertDBValue(tst,act,-5#.jpg#&assertImage_image2.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
            
@@ -255,8 +262,8 @@
             ,i_desc               =Image2 does not exist
             );
    %markTest()
-      %assertDBValue(tst,exp,##&assertImage_image1.)
-      %assertDBValue(tst,act,-7# #&assertImage_NotExistend.)
+      %assertDBValue(tst,exp,1#.jpg#&assertImage_image1.)
+      %assertDBValue(tst,act,-7#.cmd#&assertImage_NotExistend.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
            
@@ -308,5 +315,4 @@
             ,i_modifier           =-metric ae /* -metric ae counts the absolute amount of different pixels */
             ,i_desc               =Graphs do not match%str(,) i_modifier set to "-metric ae" and i_threshold allowing 60 pixels to be different
             );
-
 /** \endcond */

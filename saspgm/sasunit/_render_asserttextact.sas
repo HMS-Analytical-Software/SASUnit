@@ -13,7 +13,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_sourceColumn       name of the column holding the value
    \param   o_html               Test report in HTML-format?
    \param   o_targetColumn       name of the target column holding the ODS formatted value
@@ -26,9 +26,13 @@
                              );
    hlp = TRIM(LEFT(&i_sourceColumn.));
    SELECT (hlp);
-       WHEN (-2)  hlp = "&g_nls_reportText_007.";
-       WHEN (-3)  hlp = "&g_nls_reportText_008.";
-       WHEN (-4)  hlp = "&g_nls_reportText_009.";
+       WHEN (-2)  hlp = "&g_nls_reportText_010.";
+       WHEN (-3)  hlp = "&g_nls_reportText_007.";
+       WHEN (-4)  hlp = "&g_nls_reportText_011.";
+       WHEN (-5)  hlp = "&g_nls_reportText_008.";
+       WHEN (-6)  hlp = "&g_nls_reportText_012.";
+       WHEN (-7)  hlp = "&g_nls_reportText_009.";
+       WHEN (-8)  hlp = "&g_nls_reportText_013.";
 
        otherwise hlp = hlp;
    end;

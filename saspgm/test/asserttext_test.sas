@@ -123,29 +123,28 @@
              )
 %endTestcall()
 
-%assertText(i_script            =&g_sasunit_os./&assertText_NotExistend.
-           ,i_expected          =&assertText_work1.
-           ,i_actual            =assertText_work2
-           ,i_expected_shell_rc =0
-           ,i_modifier          =
-           ,i_desc              =Scipt does not exist
-           );
-           
+   %assertText(i_script            =
+              ,i_expected          =
+              ,i_actual            =
+              ,i_expected_shell_rc =0
+              ,i_modifier          =
+              ,i_desc              =Script is not given
+              );
+              
    %markTest()
       %assertDBValue(tst,exp,0)
       %assertDBValue(tst,act,-2)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+      %assertLog (i_errors=0, i_warnings=0);
 
    
-   %assertLog (i_errors=0, i_warnings=0);
-
-   %assertText(i_script            =&assertText_script.
-              ,i_expected          =&g_work./DoesNotExist.txt
-              ,i_actual            =assertText_work2
+   %assertText(i_script            =&assertText_NotExistend.
+              ,i_expected          =
+              ,i_actual            =
               ,i_expected_shell_rc =0
               ,i_modifier          =
-              ,i_desc              =Comparison of texts
+              ,i_desc              =Script does not exist
               );
 
    %markTest()
@@ -156,16 +155,76 @@
       %assertLog (i_errors=0, i_warnings=0);
 
    %assertText(i_script            =&assertText_script.
-              ,i_expected          =&assertText_work1.
-              ,i_actual            =&g_work./DoesNotExist.txt
+              ,i_expected          =
+              ,i_actual            =
               ,i_expected_shell_rc =0
               ,i_modifier          =
-              ,i_desc              =Comparison of texts
+              ,i_desc              =i_expected is not given
               );
 
    %markTest()
       %assertDBValue(tst,exp,0)
       %assertDBValue(tst,act,-4)
+      %assertDBValue(tst,res,2)
+      %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+      %assertLog (i_errors=0, i_warnings=0);
+      
+   %assertText(i_script            =&assertText_script.
+              ,i_expected          =&g_work./DoesNotExist.txt
+              ,i_actual            =HUGO
+              ,i_expected_shell_rc =0
+              ,i_modifier          =
+              ,i_desc              =i_expected does not exist
+              );
+
+   %markTest()
+      %assertDBValue(tst,exp,0)
+      %assertDBValue(tst,act,-5)
+      %assertDBValue(tst,res,2)
+      %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+      %assertLog (i_errors=0, i_warnings=0);
+      
+   %assertText(i_script            =&assertText_script.
+              ,i_expected          =&assertText_work1.
+              ,i_actual            =
+              ,i_expected_shell_rc =0
+              ,i_modifier          =
+              ,i_desc              =i_actual is not given
+              );
+
+   %markTest()
+      %assertDBValue(tst,exp,0)
+      %assertDBValue(tst,act,-6)
+      %assertDBValue(tst,res,2)
+      %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+      %assertLog (i_errors=0, i_warnings=0);
+      
+   %assertText(i_script            =&assertText_script.
+              ,i_expected          =&assertText_work1.
+              ,i_actual            =&g_work./DoesNotExist.txt
+              ,i_expected_shell_rc =0
+              ,i_modifier          =
+              ,i_desc              =i_actual does not exist
+              );
+
+   %markTest()
+      %assertDBValue(tst,exp,0)
+      %assertDBValue(tst,act,-7)
+      %assertDBValue(tst,res,2)
+      %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+      %assertLog (i_errors=0, i_warnings=0);
+      
+   %assertText(i_script            =&assertText_script.
+              ,i_expected          =&assertText_work1.
+              ,i_actual            =&assertText_work2.
+              ,i_expected_shell_rc =
+              ,i_modifier          =
+              ,i_desc              =i_expected_shell_rs is not given
+              );
+
+   %markTest()
+      %assertDBValue(tst,exp,)
+      %assertDBValue(tst,act,-8)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
       %assertLog (i_errors=0, i_warnings=0);

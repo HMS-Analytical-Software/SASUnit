@@ -83,57 +83,66 @@
    %IF (%length(&i_script.) <= 0) %THEN %DO;
       %LET l_rc = -2;
       %LET l_errMsg=Parameter i_script is empty!;
-      %LET i_expected =%str( );
-      %LET l_image1_extension=%str( );
-      %LET i_actual =%str( );
-      %LET l_image2_extension=%str( );
-      %LET i_expected_shell_rc =%str( );
       %GOTO Update;
    %END;
    %IF NOT %SYSFUNC(FILEEXIST(&i_script.)) %THEN %DO;
       %LET l_rc = -3;
       %LET l_errMsg=Script &i_script. does not exist!;
-      %LET i_expected =%str( );
-      %LET l_image1_extension=%str( );
-      %LET i_actual =%str( );
-      %LET l_image2_extension=%str( );
-      %LET i_expected_shell_rc =%str( );
       %GOTO Update;
    %END;
 
-   %*** Check if i_expected is a path and if so, whether it exists ***;
+   %*** Check if i_expected is a path ***;
    %IF (%length(&i_expected.) <= 0) %THEN %DO;
       %LET l_rc = -4;
       %LET l_errMsg=Parameter i_expected is empty!;
-      %LET i_expected =%str( );
-      %LET l_image1_extension=%str( );
-      %LET i_actual =%str( );
-      %LET l_image2_extension=%str( );
-      %LET i_expected_shell_rc =%str( );
       %GOTO Update;
    %END;
-   %IF NOT %SYSFUNC(FILEEXIST(&i_expected.)) %THEN %DO;
-      %LET l_rc = -5;
-      %LET l_errMsg=Image &i_expected. does not exist!;
-      %LET l_image1_extension=%str( );
-      %LET l_image2_extension=%str( );
-      %LET i_expected_shell_rc =%str( );
-      %GOTO Update;
-   %END;
-   
-   %*** Check if i_actual is a path and if so, whether it exists ***;
+
+   %*** Check if i_actual is a path ***;
    %IF (%length(&i_actual.) <= 0) %THEN %DO;
       %LET l_rc = -6;
       %LET l_errMsg=Parameter i_actual is empty!;
-      %LET l_image2_extension=%str( );
-      %LET i_expected_shell_rc =%str( );
       %GOTO Update;
    %END;
+
+   %*** get image file extension ***;
+   %let l_image1_extension = %str(.)%sysfunc(scan(&i_expected.,-1,.));
+   %let l_image2_extension = %str(.)%sysfunc(scan(&i_actual.,-1,.));
+
+   %*** get current ids for test case and test ***;
+   %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
+
+   %*** create subfolder ***;
+   %_createTestSubfolder (i_assertType   =assertimage
+                         ,i_scnid        =&g_scnid.
+                         ,i_casid        =&l_casid.
+                         ,i_tstid        =&l_tstid.
+                         ,r_path         =l_path
+                         );
+
+   %*** Check if i_expected exists ***;
+   %IF %SYSFUNC(FILEEXIST(&i_expected.)) %THEN %DO;
+      %_copyFile(&i_expected.                                       /* input file  */
+                ,&l_path./_image_exp&l_image1_extension.            /* output file */
+                );
+   %END;
+   %IF %SYSFUNC(FILEEXIST(&i_actual.)) %THEN %DO;
+      %_copyFile(&i_actual.                                         /* input file  */
+                ,&l_path./_image_act&l_image2_extension.            /* output file */
+                );
+   %END;
+
+   %*** Check if i_expected exists ***;
+   %IF NOT %SYSFUNC(FILEEXIST(&i_expected.)) %THEN %DO;
+      %LET l_rc = -5;
+      %LET l_errMsg=Image &i_expected. does not exist!;
+      %GOTO Update;
+   %END;
+   
+   %*** Check if i_actual exists ***;
    %IF NOT %SYSFUNC(FILEEXIST(&i_actual.)) %THEN %DO;
       %LET l_rc = -7;
       %LET l_errMsg=Image &i_actual. does not exist!;
-      %LET l_image2_extension=%str( );
-      %LET i_expected_shell_rc =%str( );
       %GOTO Update;
    %END;
 
@@ -141,7 +150,6 @@
    %IF (%length(&i_expected_shell_rc.) <= 0) %THEN %DO;
       %LET l_rc = -8;
       %LET l_errMsg=Parameter i_expected_shell_rc is empty!;
-      %LET i_expected_shell_rc =%str( );
       %GOTO Update;
    %END;
    
@@ -156,28 +164,6 @@
       %LET i_modifier =-metric RMSE;
    %END;
    
-   %*** get current ids for test case and test ***;
-   %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
-
-   %*** create subfolder ***;
-   %_createTestSubfolder (i_assertType   =assertimage
-                         ,i_scnid        =&g_scnid.
-                         ,i_casid        =&l_casid.
-                         ,i_tstid        =&l_tstid.
-                         ,r_path         =l_path
-                         );
-
-   %*** get image file extension + copy files ***;
-   %let l_image1_extension = %sysfunc(substr(&i_expected.,%sysfunc(length(&i_expected.))-%sysfunc(length(%sysfunc(scan(&i_expected.,-1,"."))))));
-   %let l_image2_extension = %sysfunc(substr(&i_actual.,%sysfunc(length(&i_actual.))-%sysfunc(length(%sysfunc(scan(&i_actual.,-1,"."))))));
-
-   %_copyFile(&i_expected.                                       /* input file  */
-             ,&l_path./_image_exp&l_image1_extension.            /* output file */
-             )
-   %_copyFile(&i_actual.                                         /* input file  */
-             ,&l_path./_image_act&l_image2_extension.            /* output file */
-             );
-
    %*************************************************************;
    %*** Start tests                                           ***;
    %*************************************************************;

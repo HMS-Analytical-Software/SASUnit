@@ -21,7 +21,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param      i_script               Path of shell script
    \param      i_expected             Path of first text file (expected)
    \param      i_actual               Path of second text file (actual)
@@ -71,26 +71,31 @@
    %*************************************************************;
 
    %*** Check if i_script file exists ***;
-   %IF NOT %SYSFUNC(FILEEXIST(&i_script.)) %THEN %DO;
+   %IF (%length(&i_script.) <= 0) %THEN %DO;
       %LET l_rc = -2;
+      %LET l_errMsg=Parameter i_script is empty!;
+      %GOTO Update;
+   %END;
+   %IF NOT %SYSFUNC(FILEEXIST(&i_script.)) %THEN %DO;
+      %LET l_rc = -3;
       %LET l_errMsg=Script file &i_script. does not exist!;
       %GOTO Update;
    %END;
 
-   %*** Check if i_expected is a path and if so, whether it exists ***;
-   %IF NOT %SYSFUNC(FILEEXIST(&i_expected.)) %THEN %DO;
-      %LET l_rc = -3;
-      %LET l_errMsg=Path &i_expected. does not exist!;
-      %GOTO Update;
-   %END;
-   
-   %*** Check if i_actual is a path and if so, whether it exists ***;
-   %IF NOT %SYSFUNC(FILEEXIST(&i_actual.)) %THEN %DO;
+   %*** Check if i_expected is a path ***;
+   %IF (%length(&i_expected.) <= 0) %THEN %DO;
       %LET l_rc = -4;
-      %LET l_errMsg=Path &i_actual. does not exist!;
+      %LET l_errMsg=Parameter i_expected is empty!;
       %GOTO Update;
    %END;
-   
+
+   %*** Check if i_actual is a path ***;
+   %IF (%length(&i_actual.) <= 0) %THEN %DO;
+      %LET l_rc = -6;
+      %LET l_errMsg=Parameter i_actual is empty!;
+      %GOTO Update;
+   %END;
+
    %*** get current ids for test case and test ***;
    %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
@@ -102,12 +107,38 @@
                          ,r_path         =l_path
                          );
 
-   %_copyFile(i_file = &i_expected.                       /* input file */
-             ,o_file = &l_path./_text_exp.txt             /* output file */
-             );
-   %_copyFile(i_file = &i_actual.                         /* input file */
-             ,o_file = &l_path./_text_act.txt             /* output file */
-             );
+   %IF %SYSFUNC(FILEEXIST(&i_expected.)) %THEN %DO;
+      %_copyFile(i_file = &i_expected.                       /* input file */
+                ,o_file = &l_path./_text_exp.txt             /* output file */
+                );
+   %END;
+
+   %IF %SYSFUNC(FILEEXIST(&i_actual.)) %THEN %DO;
+      %_copyFile(i_file = &i_actual.                         /* input file */
+                ,o_file = &l_path./_text_act.txt             /* output file */
+                );
+   %END;
+
+   %*** Check if i_expected exists ***;
+   %IF NOT %SYSFUNC(FILEEXIST(&i_expected.)) %THEN %DO;
+      %LET l_rc = -5;
+      %LET l_errMsg=Path &i_expected. does not exist!;
+      %GOTO Update;
+   %END;
+   
+   %*** Check if i_actual exists ***;
+   %IF NOT %SYSFUNC(FILEEXIST(&i_actual.)) %THEN %DO;
+      %LET l_rc = -7;
+      %LET l_errMsg=Path &i_actual. does not exist!;
+      %GOTO Update;
+   %END;
+   
+   %*** Check if i_expected_shell_rc is given ***;
+   %IF (%length(&i_expected_shell_rc.) <= 0) %THEN %DO;
+      %LET l_rc = -8;
+      %LET l_errMsg=Parameter i_expected_shell_rc is empty!;
+      %GOTO Update;
+   %END;
 
    %*************************************************************;
    %*** Start tests                                           ***;
