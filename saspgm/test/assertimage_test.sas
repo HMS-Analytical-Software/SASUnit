@@ -62,6 +62,7 @@
       assertImage_image5
       assertImage_image6
       assertImage_image7
+      assertImage_shell_ext
    ;
    /* Prepare macro variables to adapt to OS specific test */
    %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
@@ -78,7 +79,7 @@
       %LET assertImage_image5        =%sysfunc(translate(&g_work.\class1.png      ,\ ,/));
       %LET assertImage_image6        =%sysfunc(translate(&g_work.\class2.png       ,\ ,/));
       %LET assertImage_image7        =%sysfunc(translate(&g_work.\class3.png      ,\ ,/));
-      
+      %LET assertImage_shell_ext     =.cmd;
    %END;
    %ELSE %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ linux %THEN %DO;
       %LET assertImage_script        =%_abspath(&g_sasunit_os.,assertImage.sh);
@@ -94,6 +95,7 @@
       %LET assertImage_image5        =%_abspath(&g_work.,class1.png);
       %LET assertImage_image6        =%_abspath(&g_work.,class2.png);
       %LET assertImage_image7        =%_abspath(&g_work.,class3.png);
+      %LET assertImage_shell_ext     =.sh;
    %END;
 %MEND _adaptToOS;
 
@@ -248,7 +250,7 @@
             ,i_desc               =Image1 does not exist
             );
    %markTest()
-      %assertDBValue(tst,exp,1#.cmd#&assertImage_NotExistend.)
+      %assertDBValue(tst,exp,1#&assertImage_shell_ext.#&assertImage_NotExistend.)
       %assertDBValue(tst,act,-5#.jpg#&assertImage_image2.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
@@ -263,7 +265,7 @@
             );
    %markTest()
       %assertDBValue(tst,exp,1#.jpg#&assertImage_image1.)
-      %assertDBValue(tst,act,-7#.cmd#&assertImage_NotExistend.)
+      %assertDBValue(tst,act,-7#&assertImage_shell_ext.#&assertImage_NotExistend.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
            
