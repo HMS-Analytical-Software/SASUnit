@@ -343,6 +343,10 @@
  32 EN Call hierarchy includes SASUnit macros
  33 DE Encoding der HTML-Berichte
  33 EN Encoding of HTML reports
+ 34 DE Laufzeit der Szenarien
+ 34 EN Runtime Scenarios
+ 35 DE Laufzeit SASUnit (gestartete Szenarien)
+ 35 EN Runtime SASUnit (Scenarios started)
 ---reportLibrary
   1 DE Prüfbericht - Vergleich der beiden Bibliotheken
   1 EN Test Report - Comparison of two Libraries
@@ -568,6 +572,14 @@
   8 EN Input text file i_expected not found!
   9 DE Input Textdokument i_actual nicht gefunden!
   9 EN Input text file i_actual not found!
+ 10 DE Parameter Shell-Skript (i_script) ist leer
+ 10 EN Parameter shell script (i_script) is empty
+ 11 DE Parameter erwartetes Bild (i_expected) ist leer
+ 11 EN Parameter expected image (i_expected) is empty
+ 12 DE Parameter tatsäschliches Bild (i_actual) ist leer
+ 12 EN Parameter actual image (i_actual) is empty
+ 13 DE Parameter erwarteter Rückgabewert (i_expected_shell_rc) ist leer
+ 13 EN Parameter expected shell rc (i_expected_shell_rc) is empty
 ---reportExternal
   1 DE Shell-Script nicht gefunden!
   1 EN Shell script not found!
@@ -578,10 +590,10 @@
 ---reportImage
   1 DE Shell-Script nicht gefunden!
   1 EN Shell script not found!
-  2 DE Das in i_image1 spezifizierte Bild wurde nicht gefunden
-  2 EN The image specified in i_image1 was not found
-  3 DE Das in i_image2 spezifizierte Bild wurde nicht gefunden
-  3 EN The image specified in i_image2 was not found
+  2 DE Das in i_actual spezifizierte Bild wurde nicht gefunden
+  2 EN The image specified in i_actual was not found
+  3 DE Das in i_expected spezifizierte Bild wurde nicht gefunden
+  3 EN The image specified in i_expected was not found
   4 DE Tatsächliches Bild
   4 EN Actual image
   5 DE Tatsächliches Bild öffnen

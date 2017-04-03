@@ -14,7 +14,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_repdata      input dataset (created in reportSASUnit.sas)
    \param   o_html         flag to output file in HTML format
    \param   o_path         path for output file
@@ -36,6 +36,8 @@
        l_scn_failed
        l_cas_failed
        l_tst_failed
+       l_runtime
+       l_scn_run
        ;
 
    %LET Reference=%nrbquote(^{style [url="http://sourceforge.net/projects/sasunit/" postimage="SASUnit_Logo.png"]SASUnit});
@@ -46,11 +48,14 @@
    %let l_scn_failed=0;
    %let l_cas_failed=0;
    %let l_tst_failed=0;
+   %let l_scn_run=0;
 
    proc sql noprint;
       select count (distinct scn_id)                into :l_scn_failed from &i_repdata. where scn_res=2;
       select count (distinct catt (scn_id, cas_id)) into :l_cas_failed from &i_repdata. where cas_res=2;
       select count (*)                              into :l_tst_failed from &i_repdata. where tst_res=2;
+      select sum (scn_end - scn_start)              into :l_runtime    from target.scn;
+      select count (distinct scn_id)                into :l_scn_run    from &i_repdata. where scn_start >= tsu_lastrep;
    quit;
 
    proc format lib=work;
@@ -228,6 +233,19 @@
          idColumn = "&g_nls_reportHome_018.";
          parameterColumn="^_";
          valueColumn="%_nobs(target.tst) (%cmpres(&l_tst_failed.))";
+         Category="SASUnit";
+         output;
+         idColumn = "&g_nls_reportHome_034.";
+         parameterColumn="^_";
+         valueColumn = put (&l_runtime., time8.);
+         Category="SASUnit";
+         output;
+         idColumn = "&g_nls_reportHome_035.";
+         parameterColumn="^_";
+         valueColumn = catx (" "
+                            ,put (datetime() - dhms("&sysdate."d,hour("&systime.:00"t),minute("&systime.:00"t),second("&systime.:00"t)), time8.)
+                            ,"(%cmpres(&l_scn_run.))"
+                            );
          Category="SASUnit";
          output;
       END;

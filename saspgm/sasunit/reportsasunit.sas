@@ -166,7 +166,7 @@
    %IF (&o_html.=1) %THEN %DO;
       %_openDummyHtmlPage;
       DATA _null_;
-         SET &d_rep;
+         SET &d_rep end=eof;
          BY scn_id cas_id;
          FILE repgen;
 
@@ -205,16 +205,6 @@
                if (&o_pdf.) then do;
                   PUT "ods pdf file=""&l_output./SASUnit_Test_Doc.pdf"" style=styles.SASUnit cssstyle=""css/SAS_SASUnit.css""" /
                       " startpage=never;";
-               end;
-               /*-- create overview page -------------------------------------------*/
-               PUT '%_reportHomeHTML('             /
-                   "    i_repdata = &d_rep"        /
-                   "   ,o_html    = &o_html."      /
-                   "   ,o_path    = &l_output."    /
-                   "   ,o_file    = overview"      /
-                   ")";
-               if (&o_pdf.) then do;
-                  PUT "ods pdf startpage=now;";
                end;
                /*-- create list of test scenarios ----------------------------------*/
                PUT '%_reportScnHTML('              /
@@ -288,6 +278,18 @@
 
          END; /* if test case has been run since last report */
 
+         IF (eof) THEN DO;
+            /*-- only if a test scenario has been run since last report ------------*/
+            IF &l_lastrun > tsu_lastrep OR &l_bOnlyInexistingScnFound. OR &o_force. THEN DO;
+               /*-- create overview page -------------------------------------------*/
+               PUT '%_reportHomeHTML('             /
+                   "    i_repdata = &d_rep"        /
+                   "   ,o_html    = &o_html."      /
+                   "   ,o_path    = &l_output."    /
+                   "   ,o_file    = overview"      /
+                   ")";
+            END;
+         END;
       RUN;
 
       /*-- create report -----------------------------------------------------------*/
