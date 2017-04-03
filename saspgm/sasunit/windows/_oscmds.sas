@@ -14,7 +14,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
 */ /** \cond */  
 
 %macro _oscmds;
@@ -60,7 +60,7 @@
    options &xwait &xsync &xmin;
 
    data _null_;
-      length g_dateformat $40;
+      length g_dateformat $40 dateformat $80;
       infile "&l_filename.";
       input;
       if index (upcase (_INFILE_), "REG_SZ") then do;

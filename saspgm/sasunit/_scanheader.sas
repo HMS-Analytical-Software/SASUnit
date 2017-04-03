@@ -129,6 +129,7 @@
       ***Stop scanning if sHeaderStartEnd is found;
       If (index(_INFILE_,  "&l_sHeaderEndTag")>0) Then DO;
          HeaderStmtOpen = 0;
+         defGroupOpen   = 0;
       End; 
 
       ***Check for tag with more than one line;
@@ -262,25 +263,32 @@
    data work._GroupInfo;
       length parent child childtext childdesc $256 Type $8 NewGroup 8;
       set WORK.__programHeader (where=(tag in ("\defgroup", "\ingroup", "\groupdesc") AND not missing (new_description)));
-      retain parent child "&macroname" childtext childdesc "" Type "Macro" NewGroup 1;
+      retain parent child "&macroname" childtext childdesc "" Type "Macro" NewGroup 0;
       if (tag = "\defgroup") then do;
-         if (newGroup=1) then do;
+         if (newGroup = 1) then do;
             output;
          end;
          child     = groupname;
          childtext = grouptext;
          newGroup  = 1;
          parent    = child;
-         Type="Group";
+         Type      = "Group";
       end;
       if (tag = "\groupdesc") then do;
          childdesc = new_description;
       end;
       if (tag = "\ingroup") then do;
          parent = new_description;
-         newGroup = 0;
-         output;
-         Type = "Macro";
+         if (newGroup = 1) then do;
+            output;
+            newGroup = 0;
+         end;
+         else do;
+            child     = macroname;
+            childtext = "";
+            Type      = "Macro";
+            output;
+         end;
       end;
    run;
 
