@@ -89,7 +89,7 @@
               );
               
    %assertLog (i_errors=0, i_warnings=0);
-
+%endTestcase
 /*-- Comparison with image files -------------------------------------------
 This example implementation of an image comparision uses Imagemagick.
 For further information please consult http://www.imagemagick.org 
@@ -116,21 +116,21 @@ ods printer file="%sysfunc(pathname(work))/graph2.png";
       plot y * x / cframe=ligr;; 
    run;
 ods printer close;
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =%sysfunc(pathname(work))/graph1.png  
-            ,i_actual             =%sysfunc(pathname(work))/graph1_copy.png
-            ,i_expected_shell_rc  =0                   
-            ,i_modifier           =-metric ae                  
-            ,i_desc               =Graphs do match
-            );
-            
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =%sysfunc(pathname(work))/graph1.png  
-            ,i_actual             =%sysfunc(pathname(work))/graph2.png
-            ,i_expected_shell_rc  =1                   
-            ,i_modifier           =-metric RMSE                  
-            ,i_desc               =Graphs do not match%str(,) i_expected_shell_rc is set to 1
-            );
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =%sysfunc(pathname(work))/graph1.png  
+               ,i_actual             =%sysfunc(pathname(work))/graph1_copy.png
+               ,i_expected_shell_rc  =0                   
+               ,i_modifier           =-metric ae                  
+               ,i_desc               =Graphs do match
+               );
+               
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =%sysfunc(pathname(work))/graph1.png  
+               ,i_actual             =%sysfunc(pathname(work))/graph2.png
+               ,i_expected_shell_rc  =1                   
+               ,i_modifier           =-metric RMSE                  
+               ,i_desc               =Graphs do not match%str(,) i_expected_shell_rc is set to 1
+               );
 
    data class;
       set sashelp.class;
@@ -152,24 +152,25 @@ ods printer close;
    footnote;
    ods printer close;
    
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =%sysfunc(pathname(work))/class1.png  
-            ,i_actual             =%sysfunc(pathname(work))/class2.png
-            ,i_expected_shell_rc  =1                   
-            ,i_modifier           =-metric RMSE                  
-            ,i_desc               =Graphs do not match%str(,) i_expected_shell_rc is set to 1
-            );
-            
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =%sysfunc(pathname(work))/class1.png  
-            ,i_actual             =%sysfunc(pathname(work))/class3.png
-            ,i_expected_shell_rc  =0
-            ,i_threshold          =60
-            ,i_modifier           =-metric ae /* -metric ae counts the absolute amount of different pixels */
-            ,i_desc               =Graphs do not match%str(,) i_modifier set to "-metric ae" and i_threshold allowing 60 pixels to be different
-            );
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =%sysfunc(pathname(work))/class1.png  
+               ,i_actual             =%sysfunc(pathname(work))/class2.png
+               ,i_expected_shell_rc  =1                   
+               ,i_modifier           =-metric RMSE                  
+               ,i_desc               =Graphs do not match%str(,) i_expected_shell_rc is set to 1
+               );
+               
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =%sysfunc(pathname(work))/class1.png  
+               ,i_actual             =%sysfunc(pathname(work))/class3.png
+               ,i_expected_shell_rc  =0
+               ,i_threshold          =60
+               ,i_modifier           =-metric ae /* -metric ae counts the absolute amount of different pixels */
+               ,i_desc               =Graphs do not match%str(,) i_modifier set to "-metric ae" and i_threshold allowing 60 pixels to be different
+               );
 
-%assertLog (i_errors=0, i_warnings=0);
+   %assertLog (i_errors=0, i_warnings=0);
+%endTestcase
 
 /*-- Assert external: word count example -------------------------------------*/
 %initTestcase(i_object   = comparison.sas
@@ -177,20 +178,22 @@ ods printer close;
              );
 %endTestcall()
 
-%assertExternal (i_script             =&assertExternal_script.
-                ,i_expected           =&assertText_work1.
-                ,i_actual             =4
-                ,i_expected_shell_rc  =0
-                ,i_expectedIsPath     =Y
-                ,i_desc               =Word count of "Lorem" equals 4
-                );
-                
-%assertExternal (i_script             =&assertExternal_script.
-                ,i_expected           =&assertText_work1.
-                ,i_actual             =3
-                ,i_expected_shell_rc  =1
-                ,i_expectedIsPath     =Y
-                ,i_desc               =%str(Word count of "Lorem" equals 4, but i_actual=3, so i_expected_shell_rc must be 1 to make test green)
-                );
+   %assertExternal (i_script             =&assertExternal_script.
+                   ,i_expected           =&assertText_work1.
+                   ,i_actual             =4
+                   ,i_expected_shell_rc  =0
+                   ,i_expectedIsPath     =Y
+                   ,i_desc               =Word count of "Lorem" equals 4
+                   );
+                   
+   %assertExternal (i_script             =&assertExternal_script.
+                   ,i_expected           =&assertText_work1.
+                   ,i_actual             =3
+                   ,i_expected_shell_rc  =1
+                   ,i_expectedIsPath     =Y
+                   ,i_desc               =%str(Word count of "Lorem" equals 4, but i_actual=3, so i_expected_shell_rc must be 1 to make test green)
+                   );
   
+   %assertLog (i_errors=0, i_warnings=0);
+%endTestcase
 /** \endcond */

@@ -545,7 +545,7 @@
  18 EN Parameter i_variables contains invalid column names!
  19 DE Der Wert für Parameter o_listingVars enthält ungültige Spaltennamen!
  19 EN Parameter o_listingVars contains invalid column names!
- 20 DE Die Datei enthält fehlende Wert für die Schlüsselsüalten, obwohl o_treatMissings auf DISALLOW gesetzt ist!
+ 20 DE Die Datei enthält fehlende Wert für die Schlüsselspalten, obwohl o_treatMissings auf DISALLOW gesetzt ist!
  20 EN Dataset contains missing values for key columns despite o_treatMissings is set to DISALLOW!
  21 DE Tabelle nach Anwendung des Parameters o_treatMissings
  21 EN Dataset after applying parameter o_treatMissings.
