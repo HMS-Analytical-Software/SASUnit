@@ -14,12 +14,13 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_assertype    type of assert being done. It is know be the program itself, but nevertheless specified as parameter.
    \param   i_repdata      name of reporting dataset containing information on the assert.
    \param   i_scnid        scenario id of the current test
    \param   i_casid        test case id of the current test
    \param   i_tstid        id of the current test
+   \param   i_style        Name of the SAS style and css file to be used. 
    \param   o_html         Test report in HTML-format?
    \param   o_path         output folder
 
@@ -30,6 +31,7 @@
                                    ,i_scnid     =
                                    ,i_casid     =
                                    ,i_tstid     =
+                                   ,i_style     =
                                    ,o_html      = 0
                                    ,o_path      =
                                    );
@@ -49,7 +51,7 @@
    LIBNAME _afkLib "&l_path";
 
    %IF (&o_html.) %then %do;
-      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._foreignkey_rep.html" stylesheet=(url="css/SAS_SASUnit.css")
+      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._foreignkey_rep.html" style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
                 encoding="&g_rep_encoding.";
    %END;
 
@@ -103,7 +105,7 @@
       %END; 
    
    %IF (&o_html.) %then %do;
-      %_closeHtmlPage;
+      %_closeHtmlPage(&i_style.);
    %END;
 
   TITLE; FOOTNOTE;

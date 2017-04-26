@@ -25,10 +25,12 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
+   \param   i_style  Name of the SAS style and css file to be used. 
+   
 */ /** \cond */ 
 
-%macro _closehtmlpage;
-   %_openDummyHtmlPage;
+%macro _closehtmlpage (i_style);
+   %_openDummyHtmlPage  (&i_style.);
 %mend;
 /** \endcond */

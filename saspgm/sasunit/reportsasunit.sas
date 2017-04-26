@@ -23,6 +23,8 @@
    \param   o_force          0 .. (default) incremental, 1 .. create complete report
    \param   o_output         (optional) full path of the directory in which the test report is created. 
                              If the parameter is not set, the subdirectory rep of the test repository is used.
+   \param   i_style         (optional) Name of the SAS style and css file to be used. 
+   
    \return Results are created in the subdirectory rep of the test repository or in the directory 
            specified by parameter o_output.
            
@@ -36,6 +38,7 @@
                      ,o_pgmdoc_sasunit = _DEFAULT_
                      ,o_force          = 0
                      ,o_output         =
+                     ,i_style          = SAS_SASUnit
                      );
 
    %LOCAL l_macname; 
@@ -161,10 +164,11 @@
                     ,o_pdf           =&o_pdf.
                     ,o_path          =&l_output.
                     ,o_pgmdoc_sasunit=&o_pgmdoc_sasunit.
+                    ,i_style         =&i_style.
                     );
    %END;
    %IF (&o_html.=1) %THEN %DO;
-      %_openDummyHtmlPage;
+      %_openDummyHtmlPage(i_style=&i_style.);
       DATA _null_;
          SET &d_rep end=eof;
          BY scn_id cas_id;
@@ -179,9 +183,10 @@
                    "   ,&l_output" /
                    ")";
                /*-- create frame HTML page -----------------------------------------*/
-               PUT '%_reportFrameHTML('             /
-                   "    i_repdata = &d_rep"                 /
-                   "   ,o_html    = &l_output/index.html"   /
+               PUT '%_reportFrameHTML('                   /
+                   "    i_repdata = &d_rep"               /
+                   "   ,o_html    = &l_output/index.html" /
+                   "   ,i_style   = &i_style."            /
                    ")";
             END;
             /*-- only if testsuite has been initialized anew after last report -----*/
@@ -201,9 +206,10 @@
                    "   ,o_html           = &l_output/tree.html"  /
                    "   ,o_pgmdoc         = &o_pgmdoc"            /
                    "   ,o_pgmdoc_sasunit = &o_pgmdoc_sasunit"    /
+                   "   ,i_style          = &i_style."            /
                    ")";
                if (&o_pdf.) then do;
-                  PUT "ods pdf file=""&l_output./SASUnit_Test_Doc.pdf"" style=styles.SASUnit cssstyle=""css/SAS_SASUnit.css""" /
+                  PUT "ods pdf file=""&l_output./SASUnit_Test_Doc.pdf"" style=styles.&i_style. cssstyle=""css/&i_style..css""" /
                       " startpage=never;";
                end;
                /*-- create list of test scenarios ----------------------------------*/
@@ -212,7 +218,8 @@
                    "   ,o_html    = &o_html."      /
                    "   ,o_path    = &l_output."    /
                    "   ,o_file    = scn_overview"  /
-                   "   ,o_pgmdoc         = &o_pgmdoc"            /
+                   "   ,o_pgmdoc  = &o_pgmdoc"     /
+                   "   ,i_style   = &i_style."     /
                    ")";
                if (&o_pdf.) then do;
                   PUT "ods pdf startpage=now;";
@@ -223,7 +230,8 @@
                    "   ,o_html    = &o_html."      /
                    "   ,o_path    = &l_output."    /
                    "   ,o_file    = cas_overview"  /
-                   "   ,o_pgmdoc  = &o_pgmdoc."      /
+                   "   ,o_pgmdoc  = &o_pgmdoc."    /
+                   "   ,i_style   = &i_style."     /
                    ")";
                if (&o_pdf.) then do;
                   PUT "ods pdf startpage=now;";
@@ -235,6 +243,7 @@
                    "   ,o_path    = &l_output."      /
                    "   ,o_file    = auton_overview"  /
                    "   ,o_pgmdoc  = &o_pgmdoc."      /
+                   "   ,i_style   = &i_style."       /
                    ")";
                if (&o_pdf.) then do;
                   PUT 'ods pdf close;';
@@ -259,6 +268,7 @@
                    "   ,o_html    = &o_html."         /
                    "   ,o_path    = &l_output."       /
                    "   ,o_file    = cas_" scn_id z3.  /
+                   "   ,i_style   = &i_style."        /
                    ")";
             END;
          END;
@@ -287,6 +297,7 @@
                    "   ,o_html    = &o_html."      /
                    "   ,o_path    = &l_output."    /
                    "   ,o_file    = overview"      /
+                   "   ,i_style   = &i_style."     /
                    ")";
             END;
          END;

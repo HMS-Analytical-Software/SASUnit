@@ -23,7 +23,16 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
+
+   \param   i_language       Language of the report (DE, EN) - refer to _nls
+   \param   i_repdata        Name of reporting dataset
+   \param   o_html           Test report in HTML-format?
+   \param   o_pdf            Test report in PDF-format?
+   \param   o_path           Folder where the documentation should be created in
+   \param   o_pgmdoc_sasunit Create program documentation for SASUnit macros
+   \param   i_style          Name of the SAS style and css file to be used. 
+   
    \return program documentation
 */ /** \cond */
 %macro _reportpgmdoc (i_language=
@@ -32,6 +41,7 @@
                      ,o_pdf=
                      ,o_path=
                      ,o_pgmdoc_sasunit=
+                     ,i_style=
                      );
 
    %local 
@@ -203,7 +213,7 @@
                        (TITLE="&l_title.") 
                        headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                        metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                       style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css")
+                       style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
                        encoding="&g_rep_encoding.";
          %end;
 
@@ -220,13 +230,13 @@
             var ObsNum Text;
          run;
          %if (&o_html.) %then %do;
-            %_closeHtmlPage;
+            %_closeHtmlPage(&i_style.);
          %end;
       %end;
    %end;
 
    %if (&o_html.) %then %do;
-      ods html4 file="&o_Path./_PgmDoc_Lists.html" style=styles.sasunit stylesheet=(url="css/SAS_SASUnit.css"); 
+      ods html4 file="&o_Path./_PgmDoc_Lists.html" style=styles.&i_style. stylesheet=(url="css/&i_style..css"); 
    %end;
 
    %let l_anzToDo=%_nobs(_ToDoDoc);
@@ -279,7 +289,7 @@
    %end;
 
    %if (&o_html.) %then %do;
-      %_closeHtmlPage;
+      %_closeHtmlPage(&i_style.);
    %end;
 
    %*** eliminate empty groups              ***;

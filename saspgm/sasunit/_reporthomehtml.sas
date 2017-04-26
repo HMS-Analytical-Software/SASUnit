@@ -19,6 +19,7 @@
    \param   o_html         flag to output file in HTML format
    \param   o_path         path for output file
    \param   o_file         name of the outputfile without extension
+   \param   i_style        name of the SAS style and css file to be used. 
 
 */ /** \cond */ 
 
@@ -26,6 +27,7 @@
                        ,o_html    = 0
                        ,o_path    =
                        ,o_file    =
+                       ,i_style   =
                        );
 
 %LOCAL i
@@ -268,7 +270,7 @@
                     (TITLE="&l_title.") 
                     headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                    style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css")
+                    style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
                     encoding="&g_rep_encoding.";
       %_reportPageTopHTML(
          i_title   = %str(&g_project | &g_nls_reportHome_001.);
@@ -288,13 +290,13 @@
       compute before Category / style=header;
          line Category $headline.;
       endcomp;
-      compute before / style=blindData;
+      compute before / style=blindDataStrong [fontsize=10pt];
          line @1 "&g_nls_reportHome_002."; 
       endcomp;
    run;
 
    %if (&o_html.) %then %do;
-      %_closeHtmlPage;
+      %_closeHtmlPage(&i_style.);
    %end;
 
    proc delete data=work._home_report;

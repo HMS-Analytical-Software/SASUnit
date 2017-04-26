@@ -20,6 +20,7 @@
    \param   o_path         path for output file
    \param   o_file         name of the outputfile without extension
    \param   o_pgmdoc       Switch for generartion of program_documentation (0/1)
+   \param   i_style        Name of the SAS style and css file to be used. 
 
 */ /** \cond */ 
 
@@ -30,6 +31,7 @@
                       ,o_path    =
                       ,o_file    =
                       ,o_pgmdoc  =
+                      ,i_style   =
                       );
 
    %local l_title l_footnote;
@@ -131,7 +133,7 @@
                     /* Order of .js files in headtext attribute is essential */
                     headtext='<script src="js/jquery.min.and.tablesorter.min.js"></script><link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                    style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css")
+                    style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
                     encoding="&g_rep_encoding.";
       %_reportPageTopHTML(
          i_title   = &l_title.
@@ -139,10 +141,10 @@
         )
    %end;
    %if (&o_pdf.) %then %do;
-      ods pdf file="&o_path./&o_file..pdf" style=styles.SASUnit cssstyle="&g_target./SAS_SASUnit.css";
+      ods pdf file="&o_path./&o_file..pdf" style=styles.&i_style. cssstyle="&g_target./&i_style..css";
    %end;
    %if (&o_rtf.) %then %do;
-      ods rtf file="&o_path./&o_file..rtf" style=styles.SASUnit cssstyle="&g_target./SAS_SASUnit.css";
+      ods rtf file="&o_path./&o_file..rtf" style=styles.&i_style. cssstyle="&g_target./&i_style..css";
    %end;
 
    proc print data=work._scenario_report noobs label;
@@ -155,7 +157,7 @@
    run;
    
    %if (&o_html.) %then %do;
-      %_closeHtmlPage;
+      %_closeHtmlPage(&i_style.);
    %end;
    %if (&o_pdf.) %then %do;
       ods pdf close;

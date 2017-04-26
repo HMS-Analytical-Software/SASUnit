@@ -39,8 +39,12 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param   i_repdata      input dataset (created in reportSASUnit.sas)
-   \param   o_html         test report in HTML format
+   \param   i_repdata        input dataset (created in reportSASUnit.sas)
+   \param   o_html           test report in HTML format
+   \param   o_pgmdoc         Creates source code documentation per examinee (0 / 1)
+   \param   o_pgmdoc_sasunit Creates source code documentation also for sasunit macros (0 / 1)
+   \param   i_style          Name of the SAS style and css file to be used. 
+
    \return results will be written to folder &g_target/rep 
 */ /** \cond */ 
 
@@ -48,6 +52,7 @@
                        ,o_html           =0
                        ,o_pgmdoc         =0
                        ,o_pgmdoc_sasunit =0
+                       ,i_style          =
                        );
 
 %LOCAL l_title;
@@ -500,7 +505,7 @@ DATA _null_;
    length class_suffix $20;
 
    IF _n_=1 THEN DO;
-      %_reportHeaderHTML(&l_title)
+      %_reportHeaderHTML(&l_title.,&i_style.)
       PUT "<a href=""overview.html"" title=""&g_nls_reportTree_015 &g_project"" target=""basefrm"" class=""hms-treeview"">&g_project.</a>";
       PUT "<ol class=""hms-treeview"">";
    END;

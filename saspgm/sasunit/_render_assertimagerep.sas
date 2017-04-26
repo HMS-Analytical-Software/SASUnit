@@ -19,6 +19,7 @@
    \param   i_scnid        scenario id of the current test
    \param   i_casid        test case id of the current test
    \param   i_tstid        id of the current test
+   \param   i_style        Name of the SAS style and css file to be used. 
    \param   o_html         Test report in HTML-format?
    \param   o_path         output folder
 
@@ -29,6 +30,7 @@
                               ,i_scnid    =
                               ,i_casid    = 
                               ,i_tstid    = 
+                              ,i_style    =
                               ,o_html     =
                               ,o_path     =
                               );

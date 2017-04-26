@@ -18,7 +18,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param      i_macroName         name of the macro for which test coverage is assessed
    \param      i_macroLocation     path of the folder containing the source code file of the macro  
    \param      i_mCoverageName     name of the coverage analysis text file
@@ -27,6 +27,7 @@
    \param      o_outputPath        path of the folder in which the result html file is generated
    \param      o_resVarName        optional name of macroVariable in wich coverage percentage result is written
    \param      o_html              Test report in HTML-format?
+   \param      i_style             Name of the SAS style and css file to be used. 
 
 */ /** \cond */ 
 
@@ -38,6 +39,7 @@
                      ,o_outputPath=
                      ,o_resVarName=
                      ,o_html=0
+                     ,i_style=
                      );
 
    %local l_MacroName;
@@ -348,7 +350,7 @@
                     (TITLE="&l_title.") 
                     headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                    style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css")
+                    style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
                     encoding="&g_rep_encoding.";
    %end;
 
@@ -382,7 +384,7 @@
    run;
 
    %if (&o_html.) %then %do;
-      %_closeHtmlPage;
+      %_closeHtmlPage(&i_style.);
    %end;
 
    options center;

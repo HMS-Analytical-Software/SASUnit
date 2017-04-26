@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_REPORT
 
    \brief      create page with detail information of a test case in HTML format
@@ -13,13 +14,14 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_repdata      input dataset (created in reportSASUnit.sas)
    \param   i_scnid        scenario id of test case
    \param   i_casid        id of test case
    \param   o_html         flag to output file in HTML format
    \param   o_path         path for output file
    \param   o_file         name of the outputfile without extension
+   \param   i_style        name of the SAS style and css file to be used. 
 
 */ /** \cond */ 
 
@@ -29,6 +31,7 @@
                          ,o_html    = 0
                          ,o_path    =
                          ,o_file    =
+                         ,i_style   =
                          );
 
    %LOCAL
@@ -235,7 +238,7 @@
                           (TITLE="&l_title.") 
                           headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                           metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                          style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css")
+                          style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
                           encoding="&g_rep_encoding.";
             %_reportPageTopHTML(i_title   = &l_title.
                                ,i_current = 0
@@ -289,7 +292,7 @@
       %end;
 
       %if (&o_html.) %then %do;
-         %_closeHtmlPage;
+         %_closeHtmlPage(&i_style.);
       %end;
 
       %*** Reset title and footnotes ***;
@@ -318,7 +321,15 @@
                quit;
                %do l_TestAssert=1 %to &l_NumTests.;
                   %LET l_cTestAssert = %scan(&l_Tests.,&l_TestAssert.,§);
-                  %_render_&l_NumAssertSubstr.rep(i_assertype=&&asserttype&l_NumAssert.,i_repdata=&i_repdata.,i_scnid=&i_scnid.,i_casid=&l_c_casid.,i_tstid=&l_cTestAssert.,o_html=&o_html.,o_path=&o_path.);
+                  %_render_&l_NumAssertSubstr.rep(i_assertype=&&asserttype&l_NumAssert.
+                                                 ,i_repdata=&i_repdata.
+                                                 ,i_scnid=&i_scnid.
+                                                 ,i_casid=&l_c_casid.
+                                                 ,i_tstid=&l_cTestAssert.
+                                                 ,i_style=&i_style.
+                                                 ,o_html=&o_html.
+                                                 ,o_path=&o_path.
+                                                 );
                %end;
             %end;
          %end;

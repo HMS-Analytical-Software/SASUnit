@@ -14,13 +14,14 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
-  \deprecated No longer used because we create HTML now via SAS ODS
-
+            
    \param   i_title        page title (displayed in browser window)
+   \param   i_style  Name of the SAS style and css file to be used. 
+   
 */ /** \cond */ 
 
-%MACRO _reportHeaderHTML (i_title   
+%MACRO _reportHeaderHTML (i_title
+                         ,i_style
                          );
 
       PUT "<html xmlns=""http://www.w3.org/1999/xhtml"" xml:lang=""en"" lang=""en"">";
@@ -28,7 +29,7 @@
       PUT "    <meta http-equiv=""Content-Type"" content=""text/xhtml;charset=utf-8"" />";
       PUT "    <meta http-equiv=""Content-Style-Type"" content=""text/css"" />";
       PUT "    <meta http-equiv=""Content-Language"" content=""de"" />";
-      PUT "    <link href=""css/SAS_SASUnit.css"" rel=""stylesheet"" type=""text/css"">";
+      PUT "    <link href=""css/&i_style..css"" rel=""stylesheet"" type=""text/css"">";
       PUT "    <link rel=""shortcut icon"" href=""./favicon.ico"" type=""image/x-icon"" />";
       PUT "    <title>&i_title</title>";
       PUT "  </head>";

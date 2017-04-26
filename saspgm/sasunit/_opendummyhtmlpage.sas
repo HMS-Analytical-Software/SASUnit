@@ -25,11 +25,13 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
+   \param   i_style  Name of the SAS style and css file to be used. 
+   
 */ /** \cond */ 
 
-%macro _opendummyhtmlpage;
-   ods html4 file="%sysfunc(pathname(work))/dummyhtml.html" style=styles.SASUnit stylesheet=(URL="css/SAS_SASUnit.css")
+%macro _opendummyhtmlpage (i_style);
+   ods html4 file="%sysfunc(pathname(work))/dummyhtml.html" style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
              encoding="&g_rep_encoding.";
 %mend;
 /** \endcond */
