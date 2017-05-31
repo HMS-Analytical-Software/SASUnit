@@ -1679,8 +1679,9 @@
          style LayoutRegion from LayoutContainer                                 
             "Region style for LAYOUT cells";
          style blindTable from table "Table that appears like background" /
-            cellspacing=0
-            borderwidth=0px
+            cellspacing       = 0
+            borderwidth       = 0px
+            borderbottomwidth = 0px
             background=colors('docbg')
          ;
          style blindData from data "Data cell in a blind Table" /

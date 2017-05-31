@@ -144,6 +144,7 @@ run;
 
 %reportSASUnit(
     i_language=%upcase(%sysget(SASUNIT_LANGUAGE))
+   ,i_style          = SAS_SASUnit
    ,o_html    =1
    ,o_junit   =1
 );
