@@ -16,7 +16,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_root         optional: root path for all other paths except i_sasunit, is used for paths that do not begin 
                            with a drive letter or a slash/backslash
    \param   io_target      Path for the test repository and the generated documentation, has to exist
@@ -89,14 +89,14 @@
    %LET g_version   = 1.6.0;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
-   
-   /*-- check value of parameters i_verbose, i_crossref and i_crossrefsasunit, if one of them has a value other than 0, 
-        they will be set to 1 in order to assure that values will only be 0 or 1 ------*/
+
+   /*-- check value of parameters i_verbose, i_crossref and i_crossrefsasunit, if one of them has a value other than default, 
+        they will be set to 1/0 in order to assure that values will only be 0 or 1 ------*/
    %IF (&i_crossrefsasunit. NE 0) %THEN %DO;
       %LET i_crossrefsasunit = 1;
    %END;
-   %IF (&i_crossref. NE 0) %THEN %DO;
-      %LET i_crossref = 1;
+   %IF (&i_crossref. NE 1) %THEN %DO;
+      %LET i_crossref = 0;
    %END;
    %IF (&i_verbose. NE 0) %THEN %DO;
       %LET i_verbose = 1;
@@ -105,8 +105,8 @@
    %IF (&i_testcoverage. NE 1)%THEN %DO;
       %LET i_testcoverage = 0;
    %END;
-   %IF (&i_overwrite NE 1) %THEN %DO;
-      %LET i_overwrite=0;
+   %IF (&i_overwrite NE 0) %THEN %DO;
+      %LET i_overwrite=1;
    %END;
 
    %LOCAL l_macname  l_current_dbversion l_target_abs  l_newdb       l_rc       l_project      l_root    l_sasunit          l_abs l_autoexec      l_autoexec_abs
@@ -196,14 +196,12 @@
                     ) 
    %THEN %GOTO errexit;
 
-   /*-- check value of parameter i_testcoverage, if it has an other value than 1, 
-        set it to 0 in order to assure that it will have only value 0 or 1 ------*/
+   /*-- if test coverage should be assessed: check SAS version --------------*/
    %IF (&i_testcoverage. EQ 1) %THEN %DO;
-      /*-- if test coverage should be assessed: check SAS version --------------*/
       %IF %_handleError(&l_macname.
-                    ,ErrorTargetLib
-                    ,%quote(&syslibrc) NE 0
-                    ,Error in parameter io_target: target directory &l_target_abs. cannot be assigned as a SAS library
+                    ,TestCoverageNotSupported
+                    ,(&sysver. = 9.2)
+                    ,Error SAS Option MCOVERAGE is only supported since SAS 9.3
                     ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
