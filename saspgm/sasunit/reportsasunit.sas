@@ -38,7 +38,7 @@
                      ,o_pgmdoc_sasunit = _DEFAULT_
                      ,o_force          = 0
                      ,o_output         =
-                     ,i_style          = SAS_SASUnit_classic
+                     ,i_style          = SAS_SASUnit
                      );
 
    %LOCAL l_macname; 
