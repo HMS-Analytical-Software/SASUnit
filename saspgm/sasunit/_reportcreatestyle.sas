@@ -1,6 +1,6 @@
 /**
    \file
-   \ingroup    SASUNIT_UTIL 
+   \ingroup    SASUNIT_REPORT
 
    \brief      Creates to style used while rendering ODS output.
 
@@ -20,7 +20,7 @@
 %macro _reportCreateStyle ;
 
    proc template;
-      define style Styles.SAS_SASUNIT_classic;
+      define style Styles.SASUNIT_classic;
          style fonts
             "Fonts used in the default style" /
             'TitleFont'  = ("Geneva, Arial, Helvetica, sans-serif",16pt,Bold)
@@ -913,7 +913,7 @@
          ;
       end;
 
-      define style Styles.SAS_SASUNIT;
+      define style Styles.SASUNIT;
          style fonts
             "Fonts used in the default style" /
             'TitleFont'  = ("Geneva, Arial, Helvetica, sans-serif",16pt,Bold)

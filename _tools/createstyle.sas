@@ -54,12 +54,12 @@ ods listing close;
 *ods html(3)    file="C:\TEMP\SASUNIT_HTML_mit_Styleangabe.html" style=styles.sasunit stylesheet=(url="SAS_SASUnit.css");
 *ods htmlcss(4) file="C:\TEMP\SASUNIT_HTMLCSS_mit_Styleangabe.html" style=styles.sasunit stylesheet=(url="SAS_SASUnit.css");
 * writing Stylesheet *;
-ods html(5)     file      ="C:\TEMP\SASUNIT_claasic.html" 
-                style     =styles.SAS_SASUNIT_classic 
-                stylesheet="C:\projects\sasunit\resources\html\css\SAS_SASUnit_PROC_TEMPLATE_classic.css"(url="SAS_SASUnit_PROC_TEMPLATE_classic.css");
+ods html(5)     file      ="C:\TEMP\SASUNIT_classic.html" 
+                style     =styles.SASUNIT_classic 
+                stylesheet="C:\projects\sasunit\resources\html\css\SASUnit_classic_PROC_TEMPLATE.css"(url="SASUnit_classic_PROC_TEMPLATE.css");
 ods html(6)     file      ="C:\TEMP\SASUNIT.html"         
-                style     =styles.SAS_SASUNIT
-                stylesheet="C:\projects\sasunit\resources\html\css\SAS_SASUnit_PROC_TEMPLATE.css"(url="SAS_SASUnit_PROC_TEMPLATE.css");
+                style     =styles.SASUNIT
+                stylesheet="C:\projects\sasunit\resources\html\css\SASUnit_PROC_TEMPLATE.css"(url="SASUnit_PROC_TEMPLATE.css");
 proc compare base=sashelp.class compare=work.class;
 run;quit;
 proc report data=scenarios nowd;

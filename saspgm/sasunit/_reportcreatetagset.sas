@@ -1,6 +1,6 @@
 /**
    \file
-   \ingroup    SASUNIT_UTIL 
+   \ingroup    SASUNIT_REPORT 
 
    \brief      Creates tageset used with ODS for generating JUnit-XML output.
 
