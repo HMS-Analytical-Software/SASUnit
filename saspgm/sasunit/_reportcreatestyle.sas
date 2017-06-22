@@ -866,10 +866,10 @@
          style pgmDocBugHeader from Header "Header of Bug section in pgmdoc report" /
             background=color_list('bgPgmDocBug')
          ;
-         style pgmDocRemarkHeader from Header "Header of remark section in pgmdoc report" /
+         style pgmDocRemarkHeader from Header "Header of Remark section in pgmdoc report" /
             background=color_list('bgPgmDocRemark')
          ;
-         style pgmDocDepHeader from Header "Header of deprecated section in pgmdoc report" /
+         style pgmDocDepHeader from Header "Header of Deprecated section in pgmdoc report" /
             foreground=color_list('fgPgmDocDep')
             background=color_list('bgPgmDocDep')
          ;
@@ -907,7 +907,7 @@
             borderwidth=0px
             font_weight=medium
          ;
-         style pgmDocDepData from pgmDocDepHeader "data cell of Remark section in pgmdoc report" /
+         style pgmDocDepData from pgmDocDepHeader "data cell of Deprecated section in pgmdoc report" /
             borderwidth=0px
             font_weight=medium
          ;
@@ -1769,10 +1769,10 @@
          style pgmDocBugHeader from Header "Header of Bug section in pgmdoc report" /
             background=color_list('bgPgmDocBug')
          ;
-         style pgmDocRemarkHeader from Header "Header of remark section in pgmdoc report" /
+         style pgmDocRemarkHeader from Header "Header of Remark section in pgmdoc report" /
             background=color_list('bgPgmDocRemark')
          ;
-         style pgmDocDepHeader from Header "Header of deprecated section in pgmdoc report" /
+         style pgmDocDepHeader from Header "Header of Deprecated section in pgmdoc report" /
             foreground=color_list('fgPgmDocDep')
             background=color_list('bgPgmDocDep')
          ;
@@ -1810,7 +1810,7 @@
             borderwidth=0px
             font_weight=medium
          ;
-         style pgmDocDepData from pgmDocDepHeader "data cell of Remark section in pgmdoc report" /
+         style pgmDocDepData from pgmDocDepHeader "data cell of Deprecated section in pgmdoc report" /
             borderwidth=0px
             font_weight=medium
          ;
