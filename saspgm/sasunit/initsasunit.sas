@@ -56,7 +56,6 @@
                                  1 .. SASUnit core macros are included
 */ /** \cond */ 
 
-
 %MACRO initSASUnit(i_root            = 
                   ,io_target         = 
                   ,i_overwrite       = 0
