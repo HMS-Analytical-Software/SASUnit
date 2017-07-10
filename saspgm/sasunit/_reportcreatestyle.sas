@@ -1796,22 +1796,32 @@
          ;
          style pgmDocTodoData from  pgmDocTodoHeader "data cell of ToDo section in pgmdoc report" /
             borderwidth=0px
+            borderbottomwidth=0px
+            bordertopwidth=0px
             font_weight=medium
          ;
          style pgmDocTestData from pgmDocTestHeader "data cell of Test section in pgmdoc report" /
             borderwidth=0px
+            borderbottomwidth=0px
+            bordertopwidth=0px
             font_weight=medium
          ;
          style pgmDocBugData from pgmDocBugHeader "data cell of Bug section in pgmdoc report" /
             borderwidth=0px
+            borderbottomwidth=0px
+            bordertopwidth=0px
             font_weight=medium
          ;
          style pgmDocRemarkData from pgmDocRemarkHeader  "data cell of Remark section in pgmdoc report" /
             borderwidth=0px
+            borderbottomwidth=0px
+            bordertopwidth=0px
             font_weight=medium
          ;
          style pgmDocDepData from pgmDocDepHeader "data cell of Deprecated section in pgmdoc report" /
             borderwidth=0px
+            borderbottomwidth=0px
+            bordertopwidth=0px
             font_weight=medium
          ;
       end;
