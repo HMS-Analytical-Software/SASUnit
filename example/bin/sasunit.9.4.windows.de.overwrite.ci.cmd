@@ -15,7 +15,7 @@ REM Check if SASUnit Jenkins Plugin is present and use given SASUnit root path
 echo Checking for presence of SASUnit Jenkins plugin...
 if not [%1] == [] SET SASUNIT_ROOT=%~1
 if [%1] == [] (
-   echo ... parameter not found. Using SASUnit root path from skript
+   echo ... parameter not found. Using SASUnit root path from script
    echo.
 ) else (
    echo ...plugin found. Using plugin provided SASUnit root path

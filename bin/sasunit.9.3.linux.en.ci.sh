@@ -14,7 +14,7 @@ export SASCFGPATH=./bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_L
 
 # Check if SASUnit Jenkins Plugin is present and use given SASUnit root path
 if [ -z "$1" ] ; then 
-   echo ... parameter not found. Using SASUnit root path from skript
+   echo ... parameter not found. Using SASUnit root path from script
    echo
 else 
    export SASUNIT_ROOT="$(eval echo $1)"
