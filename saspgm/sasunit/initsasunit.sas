@@ -54,7 +54,7 @@
                                  scan for dependencies
                                  0 (default) .. SASUnit core macros are not included
                                  1 .. SASUnit core macros are included
-*/ /** \cond */ 
+*//** \cond */ 
 
 %MACRO initSASUnit(i_root            = 
                   ,io_target         = 
