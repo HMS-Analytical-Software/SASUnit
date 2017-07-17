@@ -44,6 +44,7 @@ OPTIONS
   ,i_sasautos        = saspgm                                           /* Search for units under test here */
   ,i_testdata        = dat                                              /* test data, libref testdata */
   ,i_refdata         = dat                                              /* reference data, libref refdata */
+  ,i_doc             = doc/spec
   ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
   ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)              /* set to 1 to assess test coverage assessment */
   ,i_verbose         = 1
