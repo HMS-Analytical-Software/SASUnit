@@ -29,6 +29,9 @@ https://sourceforge.net/p/sasunit/wiki/Installation%20and%20initial%20operation/
 For how to start with unit testing of SAS programs see 
 https://sourceforge.net/p/sasunit/wiki/Getting%20started%20with%20unit%20testing%20of%20SAS%20programs/.
 
+Tips and Best Practices can be found here
+https://sourceforge.net/p/sasunit/wiki/How%20to%20and%20Best%20Practices/.
+
 Development of SASUnit is hosted on SourceForge 
 (https://sourceforge.net/projects/sasunit/) and all source code, 
 documentation and support options can be found there.
