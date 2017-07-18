@@ -5,6 +5,7 @@
                Wildcards may be used to specify the files to be included
 
                Resulting SAS dataset has the columns
+               membername (name of the file in the directory)
                filename (name of file with absolute path, path separator is slash)
                changed (last modification data as SAS datetime).
 
