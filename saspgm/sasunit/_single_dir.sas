@@ -68,7 +68,7 @@
       do i=1 to num;
          membername = dread (d_id, i);
          filename = catx ("/", directory, membername);
-         fileref  = "_SF" !! put (i,z5.);
+         fileref  = "SF" !! put ((i-1)+(_N_-1)*10000,z6.);
          rc = filename (fileref, filename);
          d_dir_id = dopen (fileref);
          if (d_dir_id <= 0) then do;
