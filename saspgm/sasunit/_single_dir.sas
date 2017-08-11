@@ -20,102 +20,89 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param   i_path       name of directory in which to search
-   \param   i_pattern    name of file to be search or name with widlcards
-   \param   o_out        output dataset, default is work.dir. This dataset contains two columns
-                         named filename and changed
+   \param   i_dsPath     name of sas dataset containing one variable directory. For each observation/directory the search will be done.
+   \param   i_pattern    pattern which the filemembers must match
+   \param   o_members    output dataset, default is work.dir. This dataset contains three columns
+                         named membername, filename and changed
+   \param   o_subDirs    output dataset. This dataset contains one column named directory and
+                         holds all subdirectories (optional: default = _NONE_)
 
 */ /** \cond */ 
-
-%MACRO _single_dir (i_path=
+%MACRO _single_dir (i_dsPath=
                    ,i_pattern=_NONE_
-                   ,o_out=dir
+                   ,o_members=work.dir
+                   ,o_subdirs=_NONE_
                    );
 
-   %local l_i_path l_i_pattern;
+   %local 
+      l_i_path 
+      l_dir_id
+      l_rc
+   ;
 
-   %let l_i_path = %sysfunc(dequote(&i_path.));
-   %let l_i_path = %sysfunc(translate(&l_i_path,/,\));
-
-   %let l_i_pattern=%qupcase(&i_pattern);
-   %if ("&l_i_pattern" ne "_NONE_") %then %do;
-      %put &g_note.(SASUNIT): Given pattern was found: &l_i_pattern.;
-      %let l_i_pattern = %sysfunc(dequote (&l_i_pattern.)); 
-      %let l_i_pattern = %sysfunc(translate (&l_i_pattern., %str(%%), %str(*))); 
-      %let l_i_pattern = %sysfunc(translate (&l_i_pattern., _, ?)); 
-      %put &g_note.(SASUNIT): Modified pattern: &l_i_pattern.;
-   %end;
-
-   data work._sdir_1
-      %if (&l_i_pattern. ne _NONE_) %then %do;
-         (where=(upcase (membername) like "&l_i_pattern."))
+   data work._sd_members
+      %if (&i_pattern. ne _NONE_) %then %do;
+         (where=(upcase (membername) like "%upcase(&i_pattern.)"))
+      %end;
+      %if (&o_subdirs. ne _NONE_) %then %do;
+         &o_subdirs. (keep=filename)
       %end;
    ;
-      length membername filename $255;
+      length 
+         membername 
+         filename    $255
+         fileref     $8
+      ;
 
-      pattern = "&l_i_pattern.";
-      rc = filename ("DIR", "&l_i_path.");
-      directory = catt("&l_i_path.");
-      putlog directory=;
-      if (substr (directory, length (directory),1) = "/") then do;
-         directory = substr (directory,1,length(directory)-1);
-      end;
-      putlog directory=;
-      if (rc ne 0) then do;
-         putlog "&g_error.(SASUNIT): Given directory does not exist: '&l_i_path.'";
+      set &i_dsPath.;
+
+      rc = filename ("DIR", Directory);
+      d_id = dopen("DIR");
+      num  = dnum(d_id);
+      if (num < 1) then do;
+         putlog "&g_note.(SASUNIT): Given directory is empty:" Directory;
       end;
       else do;
-         d_id = dopen ("DIR");
-         if (d_id > 0) then do;
-            putlog "&g_note.(SASUNIT): Given directory was found: '&l_i_path.'";
-         end;
-         else do;
-            putlog "&g_error.(SASUNIT): Given directory does not exist: '&l_i_path.'";
-            rc = filename ("DIR", "");
-            STOP;
-         end;
-         num  = dnum(d_id);
-         if (num < 1) then do;
-            putlog "&g_note.(SASUNIT): Given directory is empty.";
-         end;
-         else do;
-            putlog "&g_note.(SASUNIT): Given directory contains " num "entries.";
-         end;
-         do i=1 to num;
-            membername = dread (d_id, i);
-            filename = catx ("/", directory, membername);
-            fileref  = "_SF" !! put (i,z5.);
-            rc = filename (fileref, filename);
-            d_dir_id = dopen (fileref);
-            if (d_dir_id <= 0) then do;
-               output;
-            end;
-            else do;
-               d_dir_id = dclose (d_dir_id);
-               putlog "&g_note.(SASUNIT): Given directory contains subdirectory '" membername +(-1) "'";
-               rc = filename (fileref, "");
-            end;
-         end;
-         d_id = dclose (d_id);
+         putlog "&g_note.(SASUNIT): Directory """ Directory +(-1) """ contains " num "entries.";
       end;
+      do i=1 to num;
+         membername = dread (d_id, i);
+         filename = catx ("/", directory, membername);
+         fileref  = "_SF" !! put (i,z5.);
+         rc = filename (fileref, filename);
+         d_dir_id = dopen (fileref);
+         if (d_dir_id <= 0) then do;
+            output work._sd_members;
+         end;
+         else do;
+            d_dir_id = dclose (d_dir_id);
+            putlog "&g_note.(SASUNIT): Directory """ Directory +(-1) """ contains subdirectory """ membername +(-1) """";
+            rc = filename (fileref, "");
+            %if (&o_subdirs. ne _NONE_) %then %do;
+               output &o_subdirs.;
+            %end;
+         end;
+      end;
+      d_id = dclose (d_id);
       rc = filename ("DIR", "");
       keep fileref filename membername;
    run;
 
    proc sql noprint;
-      create table work._sdir_2 as 
-         select d.*
+      create table work._single_dir as 
+         select m.*
                ,v.modate as changed format=datetime20. informat=datetime.
-         from work._sdir_1 d left join sashelp.vextfl v
-         on d.fileref = v.fileref;
+         from work._sd_members m left join sashelp.vextfl v
+         on m.fileref = v.fileref;
    quit;
 
    data _null_;
-      set work._sdir_2;
+      set work._single_dir;
       rc = filename (fileref, "");
    run;
 
-   data &o_out.;
-      set work._sdir_2 (drop=fileref);
+   data &o_members.;
+      set work._single_dir (drop=fileref);
    run;
 %MEND _single_dir;
+/** \endcond **/

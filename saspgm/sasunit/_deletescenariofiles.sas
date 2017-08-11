@@ -15,7 +15,12 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
+   \remark     still uses _dir for deletion of a tree.
+
+   \todo _new_dir
+   
+            
    \param      i_scenariosToRun  Data set containing all scenarios that have to run
 
 */ /** \cond */  

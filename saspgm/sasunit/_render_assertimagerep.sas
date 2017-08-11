@@ -13,7 +13,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-            
+
    \param   i_assertype    type of assert beeing done. It is know be the program itself, but nevertheless specified as parameter.
    \param   i_repdata      name of reporting dataset containing information on the assert.
    \param   i_scnid        scenario id of the current test
@@ -23,6 +23,8 @@
    \param   o_html         Test report in HTML-format?
    \param   o_path         output folder
 
+   \todo _new_dir
+   
 */ /** \cond */ 
 
 %MACRO _render_assertImageRep (i_assertype=

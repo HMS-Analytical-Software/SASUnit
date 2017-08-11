@@ -20,6 +20,7 @@ data dircheck;
    length membername filename $255; 
    format changed datetime20.; 
    informat changed datetime.;
+   label change="Date Modified";
    stop; 
 run; 
 
@@ -32,8 +33,7 @@ run;
       length membername filename $255; 
       format changed datetime20.; 
       informat changed datetime.;
-      label change="Date Modified";
-      changed = dhms(datepart(&thetime), hour(timepart(&thetime)), minute(timepart(&thetime)), 0); 
+      changed = &thetime; 
       filename = translate("&file", '/', '\');
       membername = substr(filename,length(filename) - length(scan(filename,-1,'/')) + 1);      
       output; 
@@ -43,27 +43,19 @@ run;
    run; 
 %mend addentry; 
 
-/*-- 001 Directory does not exist ---------------------------------------------------------*/
-%let path = %sysfunc(pathname(work))/testdir123;
-%initTestcase(i_object=_single_dir.sas, i_desc=directory does not exist)
-%_single_dir(i_path=&path., o_out=_no_dir);
-%endTestcall;
-
-%assertlog(i_errors=0, i_warnings=0);
-%assertLogMsg(i_logmsg=^ERROR.SASUNIT.: Given directory does not exist: %str(%').);
-%assertColumns(i_expected=dircheck, i_actual=_no_dir, i_desc=check for empty dir file)
-%endTestcase;
-
-/*-- 002 Empty directory ---------------------------------------------------------*/
+/*-- 001 Empty directory ---------------------------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir;
-%_xcmd(mkdir "&path")
-
+%_xcmd(mkdir "&path");
+data work.directory;
+   Directory = translate ("&path.", "/", "\");
+run;
 %initTestcase(i_object=_single_dir.sas, i_desc=empty directory)
-%_single_dir(i_path=&path., o_out=_empty_dir);
+%_single_dir(i_dsPath=work.directory, o_members=_empty_dir);
 %endTestcall;
 
-%assertLogMsg(i_logmsg=^NOTE.SASUNIT.: Given directory is empty.);
-%assertColumns(i_expected=dircheck, i_actual=_empty_dir, i_desc=check for empty dir file)
+%assertLog(i_errors=0, i_warnings=0);
+%assertLogMsg(i_logmsg=^NOTE.SASUNIT.: Given directory is empty:);
+%assertColumns(i_expected=dircheck, i_actual=_empty_dir, i_desc=check for empty dir file, i_fuzz=0.5)
 %endTestcase;
 
 /*-- 002 Simple directory with three files -----------------------------------------*/
@@ -72,17 +64,18 @@ run;
 %addentry(&path/filemitü.dat)
 
 %initTestcase(i_object=_single_dir.sas, i_desc=directory with three files)
-%_single_dir(i_path=%sysfunc(pathname(work))/testdir, o_out=dir);
+%_single_dir(i_dsPath=work.directory, o_members=dir);
 %endTestcall;
 
+%assertLog(i_errors=0, i_warnings=0);
 proc sort data=dir; by filename; run;
 proc sort data=dircheck; by filename; run;  
-%assertColumns(i_expected=dircheck, i_actual=dir, i_desc=check for contents of dir file, i_exclude=changed)
+%assertColumns(i_expected=dircheck, i_actual=dir, i_desc=check for contents of dir file, i_fuzz=0.5)
 %endTestcase;
 
 data dircheck1; set dircheck; run; 
 
-/*-- 005 nonrecursive call with subdirectories -----------------------------------*/
+/*-- 003 nonrecursive call with subdirectories -----------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir/one;
 %_xcmd(mkdir "&path")
 %addentry(&path/file_one_1.dat)
@@ -97,72 +90,48 @@ data dircheck1; set dircheck; run;
 %addentry(&path/file_two_2.dat)
 
 %initTestcase(i_object=_single_dir.sas, i_desc=nonrecursive call with subdirectories)
-%_single_dir(i_path=%sysfunc(pathname(work))/testdir, o_out=dir);
+%_single_dir(i_dsPath=work.directory, o_members=dir);
 %endTestcall;
 
+%assertLog(i_errors=0, i_warnings=0);
 proc sort data=dir; by filename; run;
 proc sort data=dircheck; by filename; run;  
-%assertColumns(i_expected=dircheck1, i_actual=dir, i_desc=check for contents of dir file, i_exclude=changed)
+%assertColumns(i_expected=dircheck1, i_actual=dir, i_desc=check for contents of dir file, i_fuzz=0.5)
 %endTestcase;
 
-/*-- 006 nonrecursive call with wildcards -----------------------------------*/
+/*-- 004 nonrecursive call with wildcards -----------------------------------*/
 %initTestcase(i_object=_single_dir.sas, i_desc=nonrecursive call with wildcards)
-%_single_dir(i_path=%sysfunc(pathname(work))/testdir/, i_pattern=%str(*).dat, o_out=dir);
+%_single_dir(i_dsPath=work.directory, i_pattern=%str(%%).dat, o_members=dir);
 %endTestcall;
 
+%assertLog(i_errors=0, i_warnings=0);
 proc sort data=dir; by filename; run;
 proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains ".dat";run;  
-%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_exclude=changed)
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_fuzz=0.5)
 %endTestcase;
 
-/*-- 008 nonrecursive call with wildcards and quoted path -----------------------------------*/
-%initTestcase(i_object=_single_dir.sas, i_desc=nonrecursive call with wildcards and quoted path)
-%_single_dir(i_path='%sysfunc(pathname(work))/testdir/', i_pattern='*.dat', o_out=dir);
-%endTestcall;
-
-proc sort data=dir; by filename; run;
-proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains ".dat";run;  
-%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_exclude=changed)
-%endTestcase;
-
-/*-- 010 nonrecursive call with wildcards, macro function and quoted path -----------------------------------*/
-%initTestcase(i_object=_single_dir.sas, i_desc=nonrecursive call with wildcards%str(,) macro function and quoted path)
-%_single_dir(i_path='%sysfunc(pathname(work))/testdir/', i_pattern='%str(*).dat', o_out=dir);
-%endTestcall;
-
-proc sort data=dir; by filename; run;
-proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains ".dat";run;  
-%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_exclude=changed)
-%endTestcase;
-
-/*-- 012 nonrecursive call with wildcards, macro funstion and quoted path -----------------------------------*/
-%initTestcase(i_object=_single_dir.sas, i_desc=nonrecursive call with wildcards%str(,) macro function and quoted path)
-%_single_dir(i_path="%sysfunc(pathname(work))/testdir/", i_pattern="%str(*).dat", o_out=dir);
-%endTestcall;
-
-proc sort data=dir; by filename; run;
-proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains ".dat";run;  
-%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_exclude=changed)
-%endTestcase;
-
-/*-- 014 nonrecursive call with specific file -----------------------------------*/
+/*-- 005 nonrecursive call with specific file -----------------------------------*/
 %initTestcase(i_object=_single_dir.sas, i_desc=nonrecursive call with specific file)
-%_single_dir(i_path="%sysfunc(pathname(work))/testdir/", i_pattern="file1.txt", o_out=dir);
+%_single_dir(i_dsPath=work.directory, i_pattern=file1.txt, o_members=dir);
 %endTestcall;
 
+%assertLog(i_errors=0, i_warnings=0);
 proc sort data=dir; by filename; run;
 proc sort data=dircheck out=dirchecktxt; by filename; where filename contains "file1.txt";run;  
-%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_exclude=changed)
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_fuzz=0.5)
 %endTestcase;
 
-/*-- 015 nonrecursive call with specific file in subdirectory -----------------------------------*/
+/*-- 006 nonrecursive call with specific file in subdirectory -----------------------------------*/
+data work.directory;
+   Directory = translate ("%sysfunc(pathname(work))/testdir/one", "/", "\");
+run;
 %initTestcase(i_object=_single_dir.sas, i_desc=nonrecursive call with specific file in subdirectory)
-%_single_dir(i_path="%sysfunc(pathname(work))/testdir/one/", i_pattern="file_one_1.dat", o_out=dir);
+%_single_dir(i_dsPath=work.directory, i_pattern=file_one_1.dat, o_members=dir);
 %endTestcall;
 
+%assertLog(i_errors=0, i_warnings=0);
 proc sort data=dir; by filename; run;
 proc sort data=dircheck out=dirchecktxt; by filename; where filename contains "file_one_1.dat";run;  
-%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_exclude=changed)
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_fuzz=0.5)
 %endTestcase;
-
 /** \endcond */
