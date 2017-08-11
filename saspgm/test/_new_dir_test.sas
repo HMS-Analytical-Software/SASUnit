@@ -32,7 +32,7 @@ run;
    data dircheck0; 
       length membername filename $255; 
       format changed datetime20.; 
-      changed = &thetime; 
+      changed = floor(&thetime);
       filename = translate("&file", '/', '\');
       membername = substr(filename,length(filename) - length(scan(filename,-1,'/')) + 1);      
       output; 
