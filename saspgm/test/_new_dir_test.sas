@@ -26,17 +26,18 @@ run;
 
 /*-- macro to add one entry to check file ------------------------------------*/
 %macro addentry(file);
-   %local theTime;
    data _null_; file "&file"; put 'X'; run; 
-   %let thetime=%sysfunc(datetime());
+   filename _did_it "&file.";
    data dircheck0; 
       length membername filename $255; 
+      set sashelp.vextfl (where=(upcase(fileref) = "_DID_IT") keep=fileref modate rename=(modate=changed));
       format changed datetime20.; 
-      changed = floor(&thetime);
       filename = translate("&file", '/', '\');
       membername = substr(filename,length(filename) - length(scan(filename,-1,'/')) + 1);      
       output; 
+      keep membername filename changed;
    run;
+   filename _did_it clear;
    data dircheck; 
       set dircheck dircheck0; 
    run; 
