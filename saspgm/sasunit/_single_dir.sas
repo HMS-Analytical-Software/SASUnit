@@ -56,6 +56,8 @@
 
       set &i_dsPath.;
 
+      retain filecounter 0;
+
       rc = filename ("DIR", Directory);
       d_id = dopen("DIR");
       num  = dnum(d_id);
@@ -68,7 +70,7 @@
       do i=1 to num;
          membername = dread (d_id, i);
          filename = catx ("/", directory, membername);
-         fileref  = "SF" !! put ((i-1)+(_N_-1)*10000,z6.);
+         fileref  = "SF" !! put (filecounter, HEX6.);
          rc = filename (fileref, filename);
          d_dir_id = dopen (fileref);
          if (d_dir_id <= 0) then do;
@@ -82,6 +84,7 @@
                output &o_subdirs.;
             %end;
          end;
+         filecounter = filecounter + 1;
       end;
       d_id = dclose (d_id);
       rc = filename ("DIR", "");
