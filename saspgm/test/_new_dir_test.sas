@@ -4,10 +4,10 @@
 
    \brief      Test of _new_dir.sas
 
-   \version    \$Revision: 486 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2016-12-05 12:08:40 +0100 (Mo, 05 Dez 2016) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/test/_new_dir_test.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt

@@ -4,10 +4,10 @@
 
    \brief      Test examples for assertText.sas 
 
-   \version    \$Revision: 456 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2015-09-17 14:15:34 +0200 (Do, 17 Sep 2015) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/test/asserttext_test.sas $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
    \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
