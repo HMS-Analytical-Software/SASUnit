@@ -41,9 +41,6 @@
          %let g_RunMode=SASUNIT_BATCH;         
       %end;
    %end;
-   %if (&SYSPROCESSMODE.=SAS DMS Session) %then %do;
-      %let g_RunMode   =SASUNIT_INTERACTIVE;         
-   %end;   
    
    *** Check for interactive mode ***;
    %if (%symexist (SYSPROCESSMODE)) %then %do;
