@@ -20,7 +20,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_object          source code file of program under test, is searched in 
                               the AUTOCALL path in case only the name of the source code 
                               file is given, without path information
@@ -36,15 +36,15 @@
                    ,i_specdoc  =  
                    );
 
-   %GLOBAL g_inTestcase;
-   %IF &g_inTestcase EQ 1 %THEN %DO;
+   %GLOBAL g_inTestCase g_inTestCall;
+   %IF &g_inTestCall. EQ 1 %THEN %DO;
       %endTestcall;
+   %END;
+   %IF &g_inTestCase. EQ 1 %THEN %DO;
       %endTestcase;
    %END;
-   %IF &g_inTestcase EQ 2 %THEN %DO;
-      %endTestcase;
-   %END;
-   %LET g_inTestcase=1;
+   %LET g_inTestCase=1;
+   %LET g_inTestCall=1;
 
    /* handle absolute and relative paths for programs */
    %LOCAL l_pgm l_auton l_object l_casid l_exaid l_num l_exafilename l_exapath l_exapgm;

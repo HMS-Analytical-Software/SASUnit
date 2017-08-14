@@ -17,7 +17,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param      i_assertLog if 1 .. an assertLog (0,0) will be invoked for the test case to be ended, provided that
                            assertLog was not invoked yet
                
@@ -25,8 +25,16 @@
 
 %MACRO endTestcase(i_assertLog=1);
 
-   %GLOBAL g_inTestcase;
+   %GLOBAL g_inTestCase g_inTestCall;
    %LOCAL l_casid l_assertLog l_result;
+   
+   %IF &g_inTestCall. EQ 1 %THEN %DO;
+      %endTestcall;
+   %END;
+   %ELSE %IF &g_inTestCase. NE 1 %THEN %DO;
+      %PUT &g_error.(SASUNIT): endTestcase must be called after initTestcase;
+      %RETURN;
+   %END;
 
    PROC SQL NOPRINT;
    /* determine id of current test case */
@@ -47,13 +55,6 @@
    %END;
    QUIT;
 
-   %IF &g_inTestcase EQ 1 %THEN %DO;
-      %endTestcall;
-   %END;
-   %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
-      %PUT &g_error.(SASUNIT): endTestcase muss nach initTestcase aufgerufen werden;
-      %RETURN;
-   %END;
    %LET g_inTestcase=0;
 
    /* determine test results */

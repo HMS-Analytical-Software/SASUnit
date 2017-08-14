@@ -17,7 +17,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_expected     expected value
    \param   i_actual       actual value
    \param   i_desc         description of the assertion to be checked \n
@@ -34,11 +34,11 @@
                     );
 
    /*-- verify correct sequence of calls-----------------------------------------*/
-   %GLOBAL g_inTestcase;
-   %IF &g_inTestcase EQ 1 %THEN %DO;
-      %endTestcall;
+   %GLOBAL g_inTestCase g_inTestCall;
+   %IF &g_inTestCall EQ 1 %THEN %DO;
+      %endTestCall;
    %END;
-   %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
+   %IF &g_inTestCase NE 1 %THEN %DO;
       %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;

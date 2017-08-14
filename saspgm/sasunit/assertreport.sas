@@ -12,6 +12,8 @@
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+
+   \todo _single_dir: i_expected contains path and member
    
    \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
@@ -19,7 +21,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_expected           optional: file name for the expected file (full path or file in &g_refdata)
    \param   i_actual             file name for created report file (full path!)
    \param   i_desc               description of the assertion to be checked \n
@@ -37,11 +39,11 @@
                     );
 
    /*-- verify correct sequence of calls-----------------------------------------*/
-   %GLOBAL g_inTestcase;
-   %IF &g_inTestcase EQ 1 %THEN %DO;
+   %GLOBAL g_inTestCase g_inTestCall;
+   %IF &g_inTestCall EQ 1 %THEN %DO;
       %endTestcall;
    %END;
-   %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
+   %IF &g_inTestCase NE 1 %THEN %DO;
       %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;

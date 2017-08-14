@@ -19,17 +19,18 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
 */ /** \cond */ 
 
 %MACRO endTestcall();
 
-   %GLOBAL g_inTestcase;
-   %IF &g_inTestcase NE 1 %THEN %DO;
-      %PUT &g_error.(SASUNIT): endTestcall muss nach InitTestcase aufgerufen werden;
+   %GLOBAL g_inTestCall g_inTestCase;
+
+   %IF &g_inTestCall. NE 1 OR &g_inTestCase. NE 1 %THEN %DO;
+      %PUT &g_error.(SASUNIT): endTestcall must be called after initTestcase;
       %RETURN;
    %END;
-   %LET g_inTestcase=2;
+   %LET g_inTestCall=0;
 
    %LOCAL l_casid l_filled l_lstfile; 
 

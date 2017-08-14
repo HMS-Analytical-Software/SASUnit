@@ -50,7 +50,6 @@
                         ,i_desc              = Check for foreign key relation
                         );
 
-   %GLOBAL g_inTestcase;
    %LOCAL l_dsMstrName l_dsLookupName l_MstrVars l_LookupVars l_renameLookup l_actual l_helper l_helper1 l_vartypMstr 
           l_vartypLookup l_rc l_result l_cnt1 l_cnt2 l_casid l_tstid l_path i l_listingVars num_missing l_treatMissings
           l_treatMissing l_unique l_errMsg;
@@ -67,10 +66,11 @@
    %LET l_errMsg           =;
 
    /*-- verify correct sequence of calls-----------------------------------------*/
-   %IF &g_inTestcase EQ 1 %THEN %DO;
+   %GLOBAL g_inTestCase g_inTestCall;
+   %IF &g_inTestCall EQ 1 %THEN %DO;
       %endTestcall;
    %END;
-   %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
+   %IF &g_inTestCase NE 1 %THEN %DO;
       %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;

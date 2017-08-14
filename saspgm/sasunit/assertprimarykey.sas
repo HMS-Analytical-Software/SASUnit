@@ -35,17 +35,17 @@
                         ,o_treatMissings  = VALUE
                         );
 
-   %GLOBAL g_inTestcase;
    %LOCAL l_result l_errMsg l_actual l_i l_variables l_name l_anz_lvars l_path l_lastVariable l_casid l_tstid l_missingWhere;
 
    %LET l_result = 2;
    %LET l_errMsg =;
 
    /*-- verify correct sequence of calls-----------------------------------------*/
-   %IF &g_inTestcase EQ 1 %THEN %DO;
+   %GLOBAL g_inTestCase g_inTestCall;
+   %IF &g_inTestCall EQ 1 %THEN %DO;
       %endTestcall;
    %END;
-   %ELSE %IF &g_inTestcase NE 2 %THEN %DO;
+   %IF &g_inTestCase NE 1 %THEN %DO;
       %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
