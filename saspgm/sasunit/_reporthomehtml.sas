@@ -59,7 +59,7 @@
       select sum (scn_end - scn_start)              into :l_runtime    from target.scn;
       select count (distinct scn_id)                into :l_scn_run    from &i_repdata. where scn_start >= tsu_lastrep;
    quit;
-
+   
    proc format lib=work;
       value $headline 
                "PROJECT"    ="&g_nls_reportHome_024."

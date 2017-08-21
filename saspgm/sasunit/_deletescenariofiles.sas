@@ -118,8 +118,6 @@
          RUN;
          %_executeCMDFile(&l_foldersToDelete);
          %LET l_rc=%_delfile(&l_foldersToDelete);
-         
-         
       %END;
    %END;
 %MEND _deletescenariofiles;
