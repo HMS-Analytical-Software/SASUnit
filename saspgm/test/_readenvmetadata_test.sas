@@ -13,14 +13,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
-
 /*
-%symdel envvar;
-%symdel starttype;
-/**/
-
-/**/
-options mprint mlogic symbolgen;
+%initScenario();
 /**/
 /* === Test case 1 ================================================ */
 %initTestcase (i_object = _readEnvMetadata.sas
@@ -75,6 +69,7 @@ options mprint mlogic symbolgen;
               ,i_desc    =Running Program is this scenario
               );
 %endTestcase();
-
-%*endScenario();
+/*
+%endScenario();
+/**/
 /** \endcond */

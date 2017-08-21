@@ -25,8 +25,9 @@
       g_RunMode
       g_runningProgram
       g_runEnvironment
+      g_runningProgramFullName
    ;
-   %put _ALL_;
+
    *** Check for batch mode ***;
    %if (%symexist (SYSPROCESSMODE)) %then %do;
       %if (&SYSPROCESSMODE.=SAS Batch Mode) %then %do;
@@ -34,7 +35,7 @@
       %end;
    %end;
    %else %do;
-      %if (&SYSPROCESSNAME.=SAS Batch Mode) %then %do;
+      %if (%sysfunc(quote(&SYSPROCESSNAME.))="SAS Batch Mode") %then %do;
          %let g_RunMode=SASUNIT_BATCH;         
       %end;
       %else %if (%substr(&SYSPROCESSNAME.,1,7) = Program) %then %do;
@@ -49,7 +50,7 @@
       %end;
    %end;
    %else %do;
-      %if (&SYSPROCESSNAME.=DMS Process OR &SYSPROCESSNAME.=Object Server) %then %do;
+      %if (%sysfunc(quote(&SYSPROCESSNAME.))="DMS Process" OR %sysfunc(quote(&SYSPROCESSNAME.))="Object Server") %then %do;
          %let g_RunMode=SASUNIT_INTERACTIVE;         
       %end;
    %end;
