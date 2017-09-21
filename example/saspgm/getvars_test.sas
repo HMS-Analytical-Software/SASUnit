@@ -23,6 +23,8 @@
 
 */ /** \cond */ 
 
+%initScenario(i_desc=Tests for getvars.sas);
+
 /*-- simple example with sashelp.class ---------------------------------------*/
 %initTestcase(i_object=getvars.sas, i_desc=simple example with sashelp.class)
 %let vars=%getvars(sashelp.class);
@@ -70,4 +72,6 @@ run;
 %initTestcase(i_object=getvars.sas, i_desc=example with invalid dataset)
 %let vars=%getvars(xxx);
 %assertEquals(i_actual=&vars, i_expected=, i_desc=example with invalid dataset)
+
+%endScenario();
 /** \endcond */

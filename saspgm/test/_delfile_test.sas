@@ -14,6 +14,8 @@
 
 */ /** \cond */ 
 
+%initScenario (i_desc=Test of _delFile.sas)
+
 %let infile=&g_refdata./class.xlsx;
 %let outfile=%sysfunc(pathname(work))/class.xlsx;
 %_copyFile (&infile.

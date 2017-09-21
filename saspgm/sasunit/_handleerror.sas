@@ -35,21 +35,23 @@
    \param   i_text           error message, further information will be issued to the SAS log
    \param   i_verbose        issue message to the SAS log even if i_condition evaluates to false, 
                              default is 0
+   \param   i_msgytpe        Type of message: ERROR/WARNING (optional: default=ERROR)
    \return                   evaluated i_condition
 */ /** \cond */
 
-%MACRO _handleError (i_macroname      
+%MACRO _handleError (i_macroname
                     ,i_errorcode      
                     ,i_condition      
                     ,i_text           
                     ,i_verbose=0       
+                    ,i_msgtype=&G_ERROR.      
                     );
 
 %IF %unquote(&i_condition) %THEN %DO;
    1
    %PUT;
    %PUT --------------------------------------------------------------------------------;
-   %PUT ERROR(SASUNIT) &i_errorcode in Makro &i_macroname (Condition: &i_condition);
+   %PUT &i_msgtype.(SASUNIT) [&i_errorcode.] in Makro &i_macroname (Condition: &i_condition);
    %IF "&i_text" NE ""
       %THEN %PUT &i_text;
    %PUT --------------------------------------------------------------------------------;
@@ -62,7 +64,7 @@
    0
    %IF &i_verbose %THEN %DO;
       %PUT;
-      %PUT handleError: OK: &i_errorcode &i_macroname (Condition: &i_condition);
+      %PUT handleError: OK: [&i_errorcode.] &i_macroname (Condition: &i_condition);
       %PUT;
    %END;
 %END;

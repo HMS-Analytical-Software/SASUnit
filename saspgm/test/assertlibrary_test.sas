@@ -15,6 +15,8 @@
 
 */ /** \cond */ 
 
+%initScenario(i_desc =Test of assertLibrary.sas);
+
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /* test case 1 ------------------------------------*/

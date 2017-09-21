@@ -99,6 +99,8 @@
    %END;
 %MEND _adaptToOS;
 
+%initScenario(i_desc =Test of assertImage.sas);
+
 /* create test files */
 %_createtestfiles;
 %_adaptToOS;

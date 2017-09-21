@@ -14,6 +14,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */
 
+%initScenario (i_desc=Test of _crossreference.sas)
+
 /* Create test files */
 %MACRO _createtestfiles;
    %LOCAL l_work;

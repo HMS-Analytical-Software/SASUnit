@@ -39,6 +39,8 @@ run;
    run; 
 %mend addentry; 
 
+%initScenario (i_desc=Test of _dir.sas)
+
 /*-- 001 Empty directory ---------------------------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir;
 %_xcmd(mkdir "&path")

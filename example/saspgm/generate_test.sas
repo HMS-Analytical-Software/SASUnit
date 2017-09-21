@@ -25,6 +25,8 @@
 
 */ /** \cond */ 
 
+%initScenario(i_desc=Tests for generate.sas);
+
 /*-- Testcase 1: one by variable ---------------------------------------------*/
 %initTestcase(i_object=generate.sas, i_desc=example with one by variable)
 
@@ -134,4 +136,6 @@ quit;
 libname test1;
 libname test2;
 
+
+%endScenario();
 /** \endcond */

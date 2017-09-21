@@ -14,6 +14,8 @@
 
 */ /** \cond */ 
       
+%initScenario (i_desc=Test of _executeCmdFile.sas)
+
 %let path = %sysfunc (pathname(WORK));
 data _null_;
    file "&path./createfolder.cmd";

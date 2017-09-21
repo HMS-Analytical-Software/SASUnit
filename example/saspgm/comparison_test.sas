@@ -18,6 +18,8 @@
 
 */ /** \cond */ 
 
+%initScenario(i_desc=Tests for comparison.sas);
+
 %MACRO _adaptToOS;
    %GLOBAL 
       assertText_script
@@ -196,4 +198,6 @@ ods printer close;
   
    %assertLog (i_errors=0, i_warnings=0);
 %endTestcase
+
+%endScenario();
 /** \endcond */

@@ -19,7 +19,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_logmsg       message of interest (Perl Regular Expression), non-case-sensitive log scan,
                            special characters have to be quoted with a prefixed single backslash,
                            see http://support.sas.com/onlinedoc/913/getDoc/de/lrdict.hlp/a002288677.htm#a002405779
@@ -41,6 +41,9 @@
    %END;
    %IF &g_inTestCase NE 1 %THEN %DO;
       %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
+      %RETURN;
+   %END;
+   %IF (&g_runmode. EQ SASUNIT_INTERACTIVE) %THEN %DO;
       %RETURN;
    %END;
 

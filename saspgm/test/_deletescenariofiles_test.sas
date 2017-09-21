@@ -113,6 +113,8 @@
    %END;
 %MEND _deletescenariofiles_crtTstFls;
 
+%initScenario (i_desc=Test of _deleteScenarioFiles.sas)
+
 %*** Initialize/create test files ***;
 %_deletescenariofiles_crtTstFls;
 

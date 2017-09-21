@@ -21,6 +21,8 @@
 
 */ /** \cond */ 
 
+%initScenario(i_desc=Tests for nobs.sas - has to fail!);
+
 /*-- simple example with sashelp.class ---------------------------------------*/
 %initTestcase(i_object=nobs.sas, i_desc=simple example with sashelp.class)
 %let nobs=%nobs(sashelp.class);
@@ -72,4 +74,5 @@ run;
 %assertEquals(i_actual=&nobs, i_expected=, i_desc=number of observations with invalid dataset)
 %endTestcase()
 
+%endScenario();
 /** \endcond */

@@ -14,6 +14,8 @@
 
 */ /** \cond */ 
 
+%initScenario (i_desc=Test of _copyDir.sas)
+
 %let indir=%sysfunc(pathname(work))/in;
 %let outdir=%sysfunc(pathname(work))/out;
 %_mkdir(&indir.);

@@ -14,6 +14,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
+%initScenario(i_desc =Test of assertEquals.sas);
+
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 %initTestcase(i_object=assertEquals.sas, i_desc=%str(equal values, no fuzz))

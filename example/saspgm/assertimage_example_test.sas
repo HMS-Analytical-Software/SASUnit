@@ -14,6 +14,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
+%initScenario(i_desc=Tests for assertText.sas);
+
 %MACRO _createtestfiles();
    %_copyfile(&g_root/dat/rose.jpg, &g_work./rose.jpg);
    %_copyfile(&g_root/dat/rose.jpg, &g_work./rose_copy.jpg);
@@ -135,4 +137,6 @@
             ,i_desc               =Graphs do not match%str(,) i_modifier set to "-metric ae" and i_threshold allowing 60 pixels to be different
             );
 
+
+%endScenario();
 /** \endcond */

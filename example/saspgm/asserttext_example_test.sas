@@ -14,6 +14,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
+%initScenario(i_desc=Tests for assertText.sas);
+
 %MACRO _createtestfiles;
    DATA _NULL_;
       FILE "&g_work./text1.txt";
@@ -162,4 +164,6 @@
               
    %assertLog (i_errors=0, i_warnings=0);
 %endTestcase();
+
+%endScenario();
 /** \endcond */

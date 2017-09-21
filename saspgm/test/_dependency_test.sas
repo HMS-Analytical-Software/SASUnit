@@ -160,6 +160,8 @@
    
 %MEND _createtestfiles;
 
+%initScenario (i_desc=Test of _dependency.sas)
+
 /* create test files */
 %_createtestfiles;
 

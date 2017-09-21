@@ -18,6 +18,8 @@
 
 */ /** \cond */ 
 
+%initScenario(i_desc=Example for cross reference reports);
+
 /*-- Testcase 1 ---------------------------------------------*/
 %initTestcase(i_object=CrossReferenceTest1.sas, i_desc=example for cross refence reports)
 
@@ -62,4 +64,6 @@ ods listing;
 %assertLog(i_errors=0, i_warnings=0);
 %endTestcase()
 
+
+%endScenario();
 /** \endcond */

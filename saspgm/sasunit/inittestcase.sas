@@ -36,7 +36,10 @@
                    ,i_specdoc  =  
                    );
 
-   %GLOBAL g_inTestCase g_inTestCall;
+   %GLOBAL g_inTestCase g_inTestCall g_scnID;
+   %IF (&g_scnID. = %str( )) %THEN %DO;
+      %initScenario();
+   %END;
    %IF &g_inTestCall. EQ 1 %THEN %DO;
       %endTestcall;
    %END;
@@ -106,15 +109,16 @@
 
    %PUT ========================== test case &l_casid ======================================================;
 
-   /* reroute SASLOG and SASLIST */
-   %LET g_logfile  =&g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log;
-   %LET g_printfile=&g_testout/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).lst;
-   PROC PRINTTO 
-      NEW 
-      LOG="&g_logfile."
-      PRINT="&g_printfile."
-   ;
-   RUN;
-
+   %if (&g_runmode. ne SASUNIT_INTERACTIVE) %then %do;
+      /* reroute SASLOG and SASLIST */
+      %LET g_logfile  =&g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log;
+      %LET g_printfile=&g_testout/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).lst;
+      PROC PRINTTO 
+         NEW 
+         LOG="&g_logfile."
+         PRINT="&g_printfile."
+      ;
+      RUN;
+   %end;
 %MEND initTestcase;
 /** \endcond */

@@ -17,7 +17,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_errors       number of errors, default 0
    \param   i_warnings     number of warnings, default 0
    \param   i_desc         description of the assertion to be checked \n
@@ -39,12 +39,15 @@
       %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
+   %IF (&g_runmode. EQ SASUNIT_INTERACTIVE) %THEN %DO;
+      %RETURN;
+   %END;
 
    %LOCAL l_casid l_error_count l_warning_count l_result l_errMsg;
    %LET l_errMsg=;
 
    PROC SQL NOPRINT;
-   /* determine number of the current test case */
+      /* determine number of the current test case */
       SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid = &g_scnid;
    QUIT;
 

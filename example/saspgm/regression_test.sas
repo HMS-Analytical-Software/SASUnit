@@ -27,6 +27,8 @@
 
 /*-- Compare linear regression between Excel and SAS -------------------------*/
 
+%initScenario(i_desc=Tests for regression.sas);
+
 %macro SetXLSType;
    %if (&sysver=9.1) %then EXCEL; %else XLS;
 %mend;
@@ -61,4 +63,6 @@ quit;
 %assertEquals(i_actual=&slope_xls, i_expected=&slope_sas, i_desc=compare slope parameter)
 %assertPerformance(i_expected=5, i_desc=regression calculation should be done within 5 seconds.)
 
+
+%endScenario();
 /** \endcond */

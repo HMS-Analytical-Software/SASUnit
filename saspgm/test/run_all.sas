@@ -17,9 +17,9 @@
 
 OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "%trim(%sysget(SASUNIT_ROOT))/saspgm/sasunit");
 
-%LET SASUNIT_VERBOSE=1;
-%LET SASUNIT_CROSSREF=1;
-%LET SASUNIT_CROSSREFSASUNIT=1;
+%LET SASUNIT_VERBOSE=0;
+%LET SASUNIT_CROSSREF=0;
+%LET SASUNIT_CROSSREFSASUNIT=0;
 
 proc options option=logparm;run;
 
@@ -29,9 +29,10 @@ proc options option=logparm;run;
   ,i_overwrite       = %sysget(SASUNIT_OVERWRITE)
   ,i_project         = SASUnit Self Test
   ,i_sasunit         = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos        = saspgm/test
-  ,i_sasautos1       = saspgm/test/pgmlib1
-  ,i_sasautos2       = saspgm/test/pgmlib2
+  ,i_sasautos        = saspgm/sasunit
+  ,i_sasautos1       = saspgm/test
+  ,i_sasautos2       = saspgm/test/pgmlib1
+  ,i_sasautos3       = saspgm/test/pgmlib2
   ,i_testdata        = dat
   ,i_refdata         = dat
   ,i_doc             = doc/spec

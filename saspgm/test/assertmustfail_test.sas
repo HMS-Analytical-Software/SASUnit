@@ -15,6 +15,8 @@
 
 */ /** \cond */
 
+%initScenario(i_desc =Test of macro assertMustFail);
+
 data work.cas;
    cas_scnid=&g_scnid.;
    cas_id=4;

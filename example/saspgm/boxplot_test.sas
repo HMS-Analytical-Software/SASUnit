@@ -23,6 +23,8 @@
 
 */ /** \cond */
 
+%initScenario(i_desc=Tests for boxplot.sas);
+
 /*-- standard case without reference -----------------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=standard case without reference)
 %boxplot(data=testdata.blood_pressure, x=visit, y=sbp, group=med, report=&g_work/report1.pdf)
@@ -240,4 +242,5 @@ run;
 %assertEquals(i_actual=%sysfunc(fileexist(&g_work/report22.pdf)), i_expected=0, i_desc=no report created)
 %endTestcase(i_assertLog=0)
 
+%endScenario();
 /** \endcond */

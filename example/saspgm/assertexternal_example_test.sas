@@ -13,6 +13,9 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
+
+%initScenario(i_desc=Tests for assertExternal.sas);
+
 %MACRO _createtestfiles;
    DATA _NULL_;
       FILE "&g_work./text1.txt";
@@ -146,4 +149,6 @@
                 ,i_threshold          =NONE
                 );
                 
+
+%endScenario();
 /** \endcond */

@@ -89,9 +89,12 @@
 %MEND _adaptToOS;
 
 
+%initScenario(i_desc =Test of assertExternal.sas);
+
 /* create test files */
 %_createtestfiles;
 %_adaptToOS;
+
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /* test case 1 ------------------------------------ */

@@ -80,7 +80,7 @@
       !! " " 
       !! "&l_parms. "
       !! "-sysin ""&l_program."" "
-      !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%);%%%let g_scnid=)&i_scnid.;"" "
+      !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%))"" "
       !! "-log ""&g_log/&i_scnid..log"" "
       !! "-print ""&g_testout/&i_scnid..lst"" "
       !! "&g_splash "

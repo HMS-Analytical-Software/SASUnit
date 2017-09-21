@@ -14,6 +14,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
+%initScenario(i_desc =Test of assertRowExpression.sas);
+
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 %*** Testcase 1 ***;

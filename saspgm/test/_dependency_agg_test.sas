@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of _dependency_agg
+   \brief      Test of _dependency_agg.sas
 
    \version    \$Revision$
    \author     \$Author$
@@ -128,6 +128,8 @@
    RUN;  
    FILENAME jsonfile;   
 %MEND _createtestfiles;
+
+%initScenario (i_desc=Test of _dependency_agg.sas)
 
 /* create test files */
 %_createtestfiles;

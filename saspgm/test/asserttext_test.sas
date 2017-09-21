@@ -110,6 +110,8 @@
    %END;
 %MEND _adaptToOS;
 
+%initScenario(i_desc =Test of assertText.sas);
+
 /* create test files */
 %_createtestfiles;
 %_adaptToOS;

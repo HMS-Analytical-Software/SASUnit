@@ -49,15 +49,10 @@
                     ) 
       %THEN %GOTO errexit;
 
-   /* set global macro symbols and librefs / filerefs  */
-   /* includes creation of autocall paths */
-   %_loadEnvironment()
-
-   %IF &g_error_code NE %THEN %GOTO errexit;
-
-   /* flag for test cases */
-   %GLOBAL g_inTestcase;
+   /* flags for test cases */
+   %GLOBAL g_inTestcase g_inTestcall;
    %LET g_inTestcase=0;
+   %LET g_inTestcall=0;
 
    %GOTO exit;
    %errexit:

@@ -16,6 +16,8 @@
 
 */ /** \cond */ 
 
+%initScenario(i_desc =Test of assertReport.sas);
+
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /* test case 1 ------------------------------------*/

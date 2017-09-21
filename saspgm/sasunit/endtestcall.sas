@@ -26,23 +26,33 @@
 
    %GLOBAL g_inTestCall g_inTestCase;
 
-   %IF &g_inTestCall. NE 1 OR &g_inTestCase. NE 1 %THEN %DO;
+/* Geht erst ab SAS Version 9.3
+   %IF (&g_inTestCall. NE 1 AND %sysmexecname(%sysmexecdepth-1) = ENDTESTCASE) %THEN %DO;
+      %PUT &g_note.(SASUNIT): endTestcall already run by user. This call was issued from endTestcase.;
+      %RETURN;
+   %END;
+*/
+
+   %IF (&g_inTestCall. NE 1 OR &g_inTestCase. NE 1) %THEN %DO;
       %PUT &g_error.(SASUNIT): endTestcall must be called after initTestcase;
       %RETURN;
    %END;
+
    %LET g_inTestCall=0;
 
    %LOCAL l_casid l_filled l_lstfile; 
 
-   /* restore log and listing of test scenario */
-   %LET g_logfile  =&g_log/%substr(00&g_scnid,%length(&g_scnid)).log;
-   %LET g_printfile=&&g_testout/%substr(00&g_scnid,%length(&g_scnid)).lst;
+   %IF (&g_runmode. ne SASUNIT_INTERACTIVE) %THEN %DO;
+      /* restore log and listing of test scenario */
+      %LET g_logfile  =&g_log/%substr(00&g_scnid,%length(&g_scnid)).log;
+      %LET g_printfile=&&g_testout/%substr(00&g_scnid,%length(&g_scnid)).lst;
 
-   PROC PRINTTO 
-      LOG=LOG
-      PRINT=PRINT
-   ;
-   RUN;
+      PROC PRINTTO 
+         LOG=LOG
+         PRINT=PRINT
+      ;
+      RUN;
+   %END;
 
    /* determine and store end time */
    PROC SQL NOPRINT;
@@ -57,24 +67,24 @@
          cas_id    = &l_casid;
    QUIT;
 
-   /* delete listing if empty */
-   PROC SQL NOPRINT;
-      SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid=&g_scnid;
-   QUIT;
-   %LET l_casid = &l_casid;
-   %LET l_filled=0;
-   %LET l_lstfile=&g_testout/%substr(00&g_scnid,%length(&g_scnid))_%substr(00&l_casid,%length(&l_casid)).lst;
-   DATA _null_;
-      INFILE "&l_lstfile";
-      INPUT;
-      CALL symput ('l_filled','1');
-      STOP;
-   RUN;
-   %IF NOT &l_filled %THEN %DO;
-      %LET l_filled=%_delfile(&l_lstfile);
+   %IF (&g_runmode. ne SASUNIT_INTERACTIVE) %THEN %DO;
+      /* delete listing if empty */
+      %LET l_filled=0;
+      %LET l_lstfile=&g_testout/%substr(00&g_scnid,%length(&g_scnid))_%substr(00&l_casid,%length(&l_casid)).lst;
+      DATA _null_;
+         INFILE "&l_lstfile";
+         INPUT;
+         CALL symput ('l_filled','1');
+         STOP;
+      RUN;
+      %IF NOT &l_filled %THEN %DO;
+         %LET l_filled=%_delfile(&l_lstfile);
+      %END;
    %END;
 
-   ODS _ALL_ CLOSE;
+   %if (&g_runmode. ne SASUNIT_INTERACTIVE) %then %do;
+      ODS _ALL_ CLOSE;
+   %end;
 
 %MEND endTestcall;
 /** \endcond */

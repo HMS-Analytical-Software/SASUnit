@@ -31,6 +31,8 @@
 
 */ /** \cond */
 
+%initScenario(i_desc=Tests for buidling a database);
+
 /*-- Creation of base datasets -----------------------------------------*/
 %initTestcase(i_object=basedatasets.sas, i_desc=Creation of base datasets)
 %basedatasets
@@ -143,4 +145,6 @@
 
 %assertLog (i_errors=0, i_warnings=0)
 %endTestCase()
+
+%endScenario();
 /** \endcond */

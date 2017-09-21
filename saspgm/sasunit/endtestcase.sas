@@ -25,23 +25,35 @@
 
 %MACRO endTestcase(i_assertLog=1);
 
-   %GLOBAL g_inTestCase g_inTestCall;
+   %GLOBAL g_inTestCase;
    %LOCAL l_casid l_assertLog l_result;
    
-   %IF &g_inTestCall. EQ 1 %THEN %DO;
-      %endTestcall;
-   %END;
-   %ELSE %IF &g_inTestCase. NE 1 %THEN %DO;
-      %PUT &g_error.(SASUNIT): endTestcase must be called after initTestcase;
+/* Geht erst ab SAS Version 9.3
+   %IF (&g_inTestCall. NE 1 AND %sysmexecname(%sysmexecdepth-1) = ENDSCENARIO) %THEN %DO;
+      %PUT &g_note.(SASUNIT): endTestcase already run by user. This call was issued from endScenario.;
       %RETURN;
    %END;
+*/
+
+/* Wegen SAS Version 9.2 muss es noch so gemacht werden */
+   %IF &g_inTestCall. EQ 1 %THEN %DO;
+      %endTestcall
+   %END;
+/* Wegen SAS Version 9.2 muss es noch so gemacht werden */
+
+   %IF &g_inTestCase. NE 1 %THEN %DO;
+      %PUT &g_error.(SASUNIT): endTestcase must be called after initTestcase!;
+      %RETURN;
+   %END;
+
+   %endTestcall;
 
    PROC SQL NOPRINT;
    /* determine id of current test case */
       SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid=&g_scnid;
    %LET l_casid = &l_casid;
    %IF &l_casid=. %THEN %DO;
-      %PUT &g_error.(SASUNIT): endTestcase muss nach InitTestcase aufgerufen werden;
+      %PUT &g_error.(SASUNIT): endTestcase muss nach InitTestcase aufgerufen werden!;
       %RETURN;
    %END;
    %IF &i_assertLog %THEN %DO;
@@ -55,7 +67,7 @@
    %END;
    QUIT;
 
-   %LET g_inTestcase=0;
+   %LET g_inTestCase=0;
 
    /* determine test results */
    PROC SQL NOPRINT;

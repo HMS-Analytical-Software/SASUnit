@@ -69,7 +69,6 @@
               ,i_desc    =Running Program is this scenario
               );
 %endTestcase();
-/*
+
 %endScenario();
-/**/
 /** \endcond */

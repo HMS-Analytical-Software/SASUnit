@@ -21,14 +21,8 @@
 %MACRO _termScenario();
 
    %GLOBAL g_inTestcase;
-   %IF &g_inTestcase EQ 1 %THEN %DO;
-      %endTestcall;
+   %IF &g_inTestCase EQ 1 %THEN %DO;
       %endTestcase;
    %END;
-   %IF &g_inTestcase EQ 2 %THEN %DO;
-      %endTestcase;
-   %END;
-   %LET g_inTestcase=1;
-
 %MEND _termScenario;
 /** \endcond */
