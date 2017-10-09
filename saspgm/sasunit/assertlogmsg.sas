@@ -43,11 +43,8 @@
       %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
-   %IF (&g_runmode. EQ SASUNIT_INTERACTIVE) %THEN %DO;
-      %RETURN;
-   %END;
 
-   %LOCAL l_casid l_msg_found l_actual l_expected l_assert_failed;
+   %LOCAL l_casid l_msg_found l_actual l_expected l_assert_failed l_errmsg;
    PROC SQL NOPRINT;
    /* determine number of the current test case */
       SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid = &g_scnid;
@@ -56,6 +53,16 @@
    %IF &l_casid = . OR &l_casid = %THEN %DO;
       %PUT &g_error.(SASUNIT): assert must not be called before initTestcase;
       %RETURN;
+   %END;
+
+   %LET l_errmsg=_NONE_;
+
+   %IF (&g_runmode. EQ SASUNIT_INTERACTIVE) %THEN %DO;
+      %let l_assert_failed=1;
+      %let l_errmsg=Current SASUnit version does not support interactive execution of assertLogMsg.;
+      %let l_actual=-1;
+      %let l_expected=-1;
+      %goto exit;
    %END;
 
    /* scanne den Log */
@@ -73,14 +80,14 @@
       END;
    RUN;
 
-   %IF &l_msg_found %THEN %DO;
+   %IF &l_msg_found. %THEN %DO;
       %LET l_actual = 1; /* message found */
    %END;
    %ELSE %DO;
       %LET l_actual = 2; /* message not found */
    %END;
 
-   %IF &i_not %THEN %DO;
+   %IF &i_not. %THEN %DO;
       %LET l_expected = 2&i_logmsg; /* message not present */
       %LET l_assert_failed = %eval (&l_msg_found.*2);
    %END;
@@ -88,12 +95,13 @@
       %LET l_expected = 1&i_logmsg; /* message present */
       %LET l_assert_failed = %eval((NOT &l_msg_found)*2);
    %END;
-
-   %_asserts(i_type     = assertLogMsg
-            ,i_expected = %str(&l_expected)
-            ,i_actual   = %str(&l_actual)
-            ,i_desc     = &i_desc
-            ,i_result   = &l_assert_failed
+%exit:
+   %_asserts(i_type     =assertLogMsg
+            ,i_expected =%str(&l_expected.)
+            ,i_actual   =%str(&l_actual.)
+            ,i_desc     =&i_desc.
+            ,i_result   =&l_assert_failed.
+            ,i_errmsg   =&l_errmsg.
             )
 
 %MEND assertLogMsg;

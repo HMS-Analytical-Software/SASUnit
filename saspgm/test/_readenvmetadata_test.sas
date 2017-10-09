@@ -23,8 +23,8 @@
 
 %_readEnvMetadata;
 
-%let g_RPM =%sysfunc(translate (&g_runningProgram., /, \));
-%let g_RPM =%scan (&g_RPM., -1, /);
+%let g_RPMFN=%sysfunc(translate (&g_runningProgramFullName., /, \));
+%let g_RPM  =%scan (&g_RPMFN., -1, /);
 
 %endTestCall;
 

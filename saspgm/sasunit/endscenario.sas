@@ -20,27 +20,67 @@
 */
 /** \cond */ 
 %MACRO endScenario();
-   %global g_inTestCase g_inTestCall g_scnID;
+   %global g_inScenario g_inTestCase g_inTestCall g_scnID;
+
+   %if &g_inScenario. NE 1 %then %do;
+      %endTestcase
+   %end;
+
+   %local l_result;
    
 /* Geht erst ab SAS Version 9.3
    %endTestcase
 */
 /* Wegen SAS Version 9.2 muss es noch so gemacht werden */
-   %IF &g_inTestCase. EQ 1 %THEN %DO;
+   %if &g_inTestCase. EQ 1 %then %do;
       %endTestcase
-   %END;
+   %end;
 /* Wegen SAS Version 9.2 muss es noch so gemacht werden */
 
+   proc sql noprint;
+      select max (cas_res) into :l_result from target.cas WHERE cas_scnid=&g_scnid;
+   QUIT;
+
+   PROC SQL NOPRINT;
+      UPDATE target.scn
+      SET 
+         scn_res = &l_result
+        ,scn_end = %sysfunc(datetime())
+      WHERE 
+         scn_id = &g_scnid;
+   QUIT;
+
    %if (&g_runmode. = SASUNIT_INTERACTIVE) %then %do;
+      *** Create formats used in reports ***;
+      proc format lib=work;
+         value PictName     0 = "^{style [color=green]OK}"
+                            1 = "^{style [color=black]Manual}"
+                            2 = "^{style [color=white background=red]Error}"
+                            OTHER="?????";
+      run;
+
+      title1 "SASUnit quick results";
+      title2 "Test cases";
       proc print data=target.scn noobs label;
          where scn_id = &G_SCNID.;
+         format scn_res PictName.;
       run;
+
+      title1 "^_";
+      title2 "Test cases";
       proc print data=target.cas noobs label;
          where cas_scnid = &G_SCNID.;
+         format cas_res PictName.;
       run;
+
+      title2 "Asserts";
       proc print data=target.tst noobs label;
          where tst_scnid = &G_SCNID.;
+         format tst_res PictName.;
+         by tst_casid;
       run;
    %end;
+
+   %LET g_inScenario=0;
 %MEND endScenario;
 /** \endcond */

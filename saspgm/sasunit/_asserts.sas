@@ -13,7 +13,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param  i_type           type of check, name of the calling assert macro
    \param  i_expected       expected value
    \param  i_actual         actual value
@@ -51,7 +51,12 @@
       %LET l_errMsg =&i_type.: assert passed.;
    %END;
    %ELSE %IF (&i_result. eq 1) %THEN %DO;
-      %LET l_errMsg =&i_type.: assert passed, but manual check necessary.;
+      %IF (%nrbquote(&i_errMsg.) eq _NONE_) %THEN %DO;
+         %LET l_errMsg =&i_type.: assert passed, but manual check necessary.;
+      %END;
+      %ELSE %DO;
+         %LET l_errMsg =%bquote(&i_type. manual: &i_errMsg.);
+      %END;
    %END;
    %ELSE %DO;
       %IF (%nrbquote(&i_errMsg.) eq _NONE_) %THEN %DO;

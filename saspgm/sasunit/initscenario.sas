@@ -31,38 +31,62 @@
    
 */ /** \cond */ 
 
-%MACRO initScenario(i_desc =  
-                   )
-               ;
+%MACRO initScenario(i_desc =_NONE_
+                   );
 
-   %GLOBAL g_inTestCase g_inTestCall g_scnID;
-   %IF &g_inTestCall EQ 1 %THEN %DO;
-      %put ERROR:;
+   %GLOBAL g_inScenario g_inTestCase g_inTestCall g_scnID;
+   
+   %IF &g_inTestCall. EQ 1 %THEN %DO;
+      %put ERROR: initScenario must not be called within a testcall!;
    %END;
-   %IF &g_inTestCase EQ 1 %THEN %DO;
-      %put ERROR:;
+   %IF &g_inTestCase. EQ 1 %THEN %DO;
+      %put ERROR: initScenario must not be called within a testcase!;
    %END;
    %LET g_inTestCase=0;
    %LET g_inTestCall=0;
+   %LET g_inScenario=0;
+   
+   %local l_changed l_scnID;
    
    %_readEnvMetadata;
-
-   %let g_scnID=001;
-
+   
+   filename _CUR_SCN "&g_runningProgramFullName.";
    proc sql noprint;
-      select put (min(1,max(scn_id)+1), z3.) into :g_scnID from target.scn;
+      select put (max(1,max(scn_id)+1), z3.) into :g_scnID from target.scn;
+      select modate into :l_changed from sashelp.vextfl where fileref="_CUR_SCN";
+      select scn_id into :l_scnID 
+         from target.scn 
+         where translate("&g_runningProgramFullName.", "/", "\") contains trim(scn_path);
       select scn_id into :g_scnID 
          from target.scn 
-         where translate("&g_runningProgram.", "/", "\") contains trim(scn_path);
+         where translate("&g_runningProgramFullName.", "/", "\") contains trim(scn_path);
    quit;
-
-   /* set global macro symbols and librefs / filerefs  */
-   /* includes creation of autocall paths */
-   %_loadenvironment;
+   filename _CUR_SCN clear;
+   
+   %let l_changed="&l_changed."dt;
 
    proc sql noprint;
+      %if (&l_scnID. = 0) %then %do;
+        insert into target.scn VALUES (&g_scnID.,"%_stdpath(&g_root., &g_runningProgramFullName.)","&i_desc.",%sysfunc(datetime()),.,&l_changed.,.,.,.,.);
+      %end;
+      %else %do;
+         update target.scn 
+            set
+                scn_start   =%sysfunc(datetime())
+               ,scn_changed =&l_changed.
+            %if (%nrbquote(&i_desc.) ne _NONE_) %then %do;
+               ,scn_desc    ="&i_desc"
+               %end;         
+            where scn_id = &g_scnID.;
+      %end;
       delete from target.cas where cas_scnid=&g_scnID.;
       delete from target.tst where tst_scnid=&g_scnID.;
    quit;
+   
+   /* set global macro symbols and librefs / filerefs  */
+   /* includes creation of autocall paths */
+   %_loadenvironment;
+   
+   %LET g_inScenario=1;
 %MEND initScenario;
 /** \endcond */

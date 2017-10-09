@@ -39,9 +39,6 @@
       %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
       %RETURN;
    %END;
-   %IF (&g_runmode. EQ SASUNIT_INTERACTIVE) %THEN %DO;
-      %RETURN;
-   %END;
 
    %LOCAL l_casid l_error_count l_warning_count l_result l_errMsg;
    %LET l_errMsg=;
@@ -54,6 +51,14 @@
    %IF &l_casid = . OR &l_casid = %THEN %DO;
       %PUT &g_error.(SASUNIT): assert must not be called before initTestcase;
       %RETURN;
+   %END;
+
+   %IF (&g_runmode. EQ SASUNIT_INTERACTIVE) %THEN %DO;
+      %let l_result=1;
+      %let l_errmsg=Current SASUnit version does not support interactive execution of assertLog.;
+      %let l_error_count=-1;
+      %let l_warning_count=-1;
+      %goto exit;
    %END;
 
    /* Scan Log */
@@ -73,13 +78,13 @@
    %IF (&l_result. EQ 2) %THEN %DO;
       %LET l_errmsg=%bquote(expected &i_errors. error(s) and &i_warnings. warning(s), but actually there are &l_error_count. error(s) and &l_warning_count warning(s));
    %END;
-
-   %_asserts(i_type     = assertLog
-            ,i_expected = %str(&i_errors#&i_warnings)
-            ,i_actual   = %str(&l_error_count#&l_warning_count)
-            ,i_desc     = &i_desc
-            ,i_result   = &l_result
-            ,i_errMsg   = &l_errMsg
+%exit:
+   %_asserts(i_type     =assertLog
+            ,i_expected =%str(&i_errors.#&i_warnings.)
+            ,i_actual   =%str(&l_error_count.#&l_warning_count.)
+            ,i_desc     =&i_desc.
+            ,i_result   =&l_result.
+            ,i_errMsg   =&l_errMsg.
             )
 
 %MEND assertLog;

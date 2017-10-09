@@ -161,10 +161,9 @@
          /*-- save description and start date and time of scenario --------------*/
          %_getPgmDesc (i_pgmfile=&l_filename, r_desc=l_scndesc)
          PROC SQL NOPRINT;
-            UPDATE target.scn SET
-               scn_desc    = "&l_scndesc"
-              ,scn_start   = %sysfunc(datetime())
-              ,scn_changed = &l_changed.
+            UPDATE target.scn 
+               SET scn_desc    = "&l_scndesc"
+                  ,scn_changed = &l_changed.
             WHERE scn_id = &l_scnid
             ;
          QUIT;
@@ -214,11 +213,9 @@
             
             UPDATE target.scn
                SET 
-                   scn_end          = %sysfunc(datetime())
-                  ,scn_rc           = &l_sysrc.
+                   scn_rc           = &l_sysrc.
                   ,scn_errorcount   = &l_error_count.
                   ,scn_warningcount = &l_warning_count.
-                  ,scn_res          = &l_result.
                WHERE 
                   scn_id = &l_scnid.
                ;

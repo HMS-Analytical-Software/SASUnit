@@ -22,7 +22,7 @@
 %MACRO _readEnvMetadata;
 
    %global 
-      g_RunMode
+      g_runMode
       g_runningProgram
       g_runEnvironment
       g_runningProgramFullName
@@ -31,27 +31,27 @@
    *** Check for batch mode ***;
    %if (%symexist (SYSPROCESSMODE)) %then %do;
       %if (&SYSPROCESSMODE.=SAS Batch Mode) %then %do;
-         %let g_RunMode=SASUNIT_BATCH;         
+         %let g_runMode=SASUNIT_BATCH;         
       %end;
    %end;
    %else %do;
       %if (%sysfunc(quote(&SYSPROCESSNAME.))="SAS Batch Mode") %then %do;
-         %let g_RunMode=SASUNIT_BATCH;         
+         %let g_runMode=SASUNIT_BATCH;         
       %end;
       %else %if (%substr(&SYSPROCESSNAME.,1,7) = Program) %then %do;
-         %let g_RunMode=SASUNIT_BATCH;         
+         %let g_runMode=SASUNIT_BATCH;         
       %end;
    %end;
    
    *** Check for interactive mode ***;
    %if (%symexist (SYSPROCESSMODE)) %then %do;
       %if (&SYSPROCESSMODE.=SAS DMS Session OR &SYSPROCESSMODE.=SAS Workspace Server) %then %do;
-         %let g_RunMode=SASUNIT_INTERACTIVE;         
+         %let g_runMode=SASUNIT_INTERACTIVE;         
       %end;
    %end;
    %else %do;
       %if (%sysfunc(quote(&SYSPROCESSNAME.))="DMS Process" OR %sysfunc(quote(&SYSPROCESSNAME.))="Object Server") %then %do;
-         %let g_RunMode=SASUNIT_INTERACTIVE;         
+         %let g_runMode=SASUNIT_INTERACTIVE;         
       %end;
    %end;
 
@@ -71,12 +71,17 @@
    %end;
    
    *** Check for running program ***;
-   %let g_runningProgram =_NONE_;
+   %let g_runningProgram         =_NONE_;
+   %let g_runningProgramFullName =_NONE_;
    %if (&g_runEnvironment.=SASUNIT_SEG) %then %do;
-      %let g_runningProgram=%sysfunc(dequote(&_SASPROGRAMFILE.));
+      %let g_runningProgramFullName=%sysfunc(dequote(&_SASPROGRAMFILE.));
    %end;
    %if (&g_runEnvironment.=SASUNIT_DMS) %then %do;
-      %let g_runningProgram=%sysfunc(getoption(SYSIN));
+      %let g_runningProgramFullName=%sysfunc(getoption(SYSIN));
+   %end;
+   %if (g_runningProgramFullName ne %str()) %then %do;
+      %let g_runningProgramFullName =%sysfunc(translate (&g_runningProgramFullName., /, \));
+      %let g_runningProgram         =%scan(&g_runningProgramFullName., -1, /);
    %end;
 %exit:
 %MEND _readEnvMetadata;

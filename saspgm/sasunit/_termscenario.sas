@@ -20,9 +20,6 @@
 
 %MACRO _termScenario();
 
-   %GLOBAL g_inTestcase;
-   %IF &g_inTestCase EQ 1 %THEN %DO;
-      %endTestcase;
-   %END;
+   %endScenario;
 %MEND _termScenario;
 /** \endcond */
