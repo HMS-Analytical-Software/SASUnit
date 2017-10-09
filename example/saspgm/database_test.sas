@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_EXAMPLES_TEST
 
-   \brief      Tests for buidling a database
+   \brief      Tests for buildlng a database
 
             Example for a test scenario with the following features:
             - Creating three tables for bulding up a sample database.
@@ -31,7 +31,7 @@
 
 */ /** \cond */
 
-%initScenario(i_desc=Tests for buidling a database);
+%initScenario(i_desc=Tests for building a database);
 
 /*-- Creation of base datasets -----------------------------------------*/
 %initTestcase(i_object=basedatasets.sas, i_desc=Creation of base datasets)

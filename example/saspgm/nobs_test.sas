@@ -4,7 +4,7 @@
 
    \brief      Tests for nobs.sas - has to fail!
 
-               Examplpe for a test scenario with the following features:
+               Example for a test scenario with the following features:
                - create simple test scenario
                - check value of macro symbol with assertEquals.sas
 
@@ -28,6 +28,7 @@
 %let nobs=%nobs(sashelp.class);
 %endTestcall()
 %assertEquals(i_actual=&nobs, i_expected=19, i_desc=number of observations in sashelp.class)
+%assertLogMsg (i_logMsg=NOTE: The macro NOBS completed compilation without errors);
 %endTestcase()
 
 /*-- failed test -------------------------------------------------------------*/
@@ -39,23 +40,23 @@
 
 /*-- example with big dataset ------------------------------------------------*/
 %initTestcase(i_object=nobs.sas, i_desc=%str(example with big dataset))
-data big;
+data work.big;
    do i=1 to 1000000;
       x=ranuni(0);
       output; 
    end;
 run; 
-%let nobs=%nobs(big);
+%let nobs=%nobs(work.big);
 %endTestcall()
 %assertEquals(i_actual=&nobs, i_expected=1000000, i_desc=number of observations in dataset work.big)
 %endTestcase()
 
 /*-- example with empty dataset ----------------------------------------------*/
 %initTestcase(i_object=nobs.sas, i_desc=%str(example with empty dataset))
-data empty;
+data work.empty;
    stop; 
 run; 
-%let nobs=%nobs(empty);
+%let nobs=%nobs(work.empty);
 %endTestcall()
 %assertEquals(i_actual=&nobs, i_expected=0, i_desc=number of observations in dataset work.empty)
 %endTestcase()
@@ -73,6 +74,10 @@ run;
 %endTestcall()
 %assertEquals(i_actual=&nobs, i_expected=, i_desc=number of observations with invalid dataset)
 %endTestcase()
+
+proc datasets lib=work memtype=DATA nolist;
+   delete big empty;
+run;quit;
 
 %endScenario();
 /** \endcond */

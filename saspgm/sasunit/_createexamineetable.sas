@@ -118,6 +118,9 @@
       DELETE _examinee_v;
       DELETE _examinee;
    QUIT;
-
+   PROC DELETE data=&d_examinee.;
+   RUN;
+   PROC DELETE data=&d_dir.;
+   RUN;
 %MEND _createExamineeTable;
 /** \endcond */
