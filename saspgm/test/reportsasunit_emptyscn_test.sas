@@ -14,6 +14,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
+%initScenario(i_desc=Test for scenario without any testcases);
+
 %Macro reportsasunit_emptyscn_test;
 
 /* scenario must not contain any test cases

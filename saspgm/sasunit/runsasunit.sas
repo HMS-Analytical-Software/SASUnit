@@ -216,6 +216,7 @@
                    scn_rc           = &l_sysrc.
                   ,scn_errorcount   = &l_error_count.
                   ,scn_warningcount = &l_warning_count.
+                  ,scn_res          = &l_result.
                WHERE 
                   scn_id = &l_scnid.
                ;

@@ -14,6 +14,8 @@
 
 */ /** \cond */ 
 
+%initScenario (i_desc=Test of _asserts.sas);
+
 /* save values from original scenario */
 %let save_g_scnid = &g_scnid.;
 %let save_target  = %sysfunc (pathname(target));
