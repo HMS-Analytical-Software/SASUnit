@@ -28,7 +28,8 @@
 %let nobs=%nobs(sashelp.class);
 %endTestcall()
 %assertEquals(i_actual=&nobs, i_expected=19, i_desc=number of observations in sashelp.class)
-%assertLogMsg (i_logMsg=NOTE: The macro NOBS completed compilation without errors);
+%assertLogMsg (i_logMsg=.let nobs=.nobs.sashelp.class.);
+%assertLogMsg (i_logMsg=NOTE: .* NOBS );
 %endTestcase()
 
 /*-- failed test -------------------------------------------------------------*/
