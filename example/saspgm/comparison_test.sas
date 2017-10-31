@@ -199,5 +199,10 @@ ods printer close;
    %assertLog (i_errors=0, i_warnings=0);
 %endTestcase
 
+proc datasets lib=work nolist;
+   delete testdata1 testdata2 class;
+run;
+quit;
+
 %endScenario();
 /** \endcond */

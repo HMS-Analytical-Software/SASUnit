@@ -14,7 +14,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%initScenario(i_desc =Test of assertRowExpression.sas);
+%initScenario(i_desc =%str(Test of assertRowExpression.sas - has to fail! 1 error %(one error concernig non-existing variable name1%)));
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
@@ -161,4 +161,10 @@ run;
 %assertDBValue(tst,res,0)
 %endTestcase()
 
+proc datasets lib=work nolist;
+   delete class1;
+run;
+quit;
+
+%endScenario();
 /** \endcond */

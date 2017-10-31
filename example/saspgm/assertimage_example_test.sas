@@ -47,6 +47,8 @@
    footnote;
    ods printer close;
 
+   proc delete data=work.class;
+
 %MEND _createtestfiles;
 
 %MACRO _adaptToOS();

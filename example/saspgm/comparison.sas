@@ -48,7 +48,7 @@
       PUT "et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
    RUN;
    
-   data testdata1;
+   data work.testdata1;
       x = 1;
       y=2;
       Output;
@@ -65,7 +65,7 @@
       end;
    run;
 
-   data testdata2;
+   data work.testdata2;
       set testdata1;
       if _n_ = 4 then DO;
          y=7;

@@ -84,7 +84,7 @@ quit;
 proc datasets lib=test2 nolist kill;
 quit; 
 /* create input dataset */
-proc sort data=sashelp.class out=class;
+proc sort data=sashelp.class out=work.class;
    by sex;
    where sex='F';
 run;
@@ -136,6 +136,8 @@ quit;
 libname test1;
 libname test2;
 
+proc delete data=work.class;
+run;
 
 %endScenario();
 /** \endcond */

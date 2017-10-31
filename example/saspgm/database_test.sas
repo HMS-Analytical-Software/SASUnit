@@ -144,7 +144,15 @@
                     );
 
 %assertLog (i_errors=0, i_warnings=0)
-%endTestCase()
+%endTestCase();
+
+proc datasets lib=work nolist;
+   delete customer contracts
+          customercontracts
+		  combineddataset
+   ;
+run;
+quit;
 
 %endScenario();
 /** \endcond */

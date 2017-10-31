@@ -234,4 +234,12 @@ QUIT;
 %assertLog (i_errors=0, i_warnings=0)
 %endTestcase();
 
+proc datasets lib=work nolist;
+   delete 
+      test1 test2 test3 test4 test5 test6 test7 test8 test9 test10
+   ;
+run;
+quit;
+
+%endScenario();
 /** \endcond */

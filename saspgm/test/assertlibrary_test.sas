@@ -348,5 +348,16 @@ run;
 
 %assertLog (i_errors=0, i_warnings=0)
 
-%endTestcase()
+%endTestcase();
+
+proc datasets lib=_ref nolist;
+   delete class1 Class2 class3 class4;
+run;
+quit;
+proc datasets lib=_tst nolist;
+   delete class1 Class2 class3 class4;
+run;
+quit;
+
+%endScenario();
 /** \endcond */ 

@@ -281,5 +281,10 @@ run;
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
 
+proc datasets lib=work memtype=(data view) nolist;
+   delete class class0 class1 class3 class4 class5 class6 class7 class8;
+run;
+quit;
 
+%endScenario();
 /** \endcond */ 

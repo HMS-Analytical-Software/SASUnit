@@ -39,7 +39,7 @@
 
 /*-- standard case with reference, missing values for Y ----------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=%str(standard case with reference, missing values for Y ))
-data blood_pressure; 
+data work.blood_pressure; 
    set testdata.blood_pressure; 
    output; 
    sbp=.;
@@ -54,7 +54,7 @@ run;
 
 /*-- different scaling for x and y axis --------------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=different scaling for x and y axis)
-data blood_pressure; 
+data work.blood_pressure; 
    set testdata.blood_pressure; 
    visit=visit*100; 
    sbp=sbp*100;
@@ -65,7 +65,7 @@ run;
 
 /*-- only two visits ---------------------------------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=only two visits)
-data blood_pressure; 
+data work.blood_pressure; 
    set testdata.blood_pressure; 
    where visit in (1, 5);
 run; 
@@ -75,7 +75,7 @@ run;
 
 /*-- Error: only one visit ---------------------------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=only one visit)
-data blood_pressure; 
+data work.blood_pressure; 
    set testdata.blood_pressure; 
    where visit in (3);
 run; 
@@ -86,7 +86,7 @@ run;
 
 /*-- 18 visits ---------------------------------------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=18 visits)
-data blood_pressure; 
+data work.blood_pressure; 
    set 
       testdata.blood_pressure (in=in1)
       testdata.blood_pressure (in=in2)
@@ -129,7 +129,7 @@ run;
 
 /*-- Error: x variable not numeric -------------------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=x variable not numeric)
-data blood_pressure;
+data work.blood_pressure;
    set testdata.blood_pressure; 
    visitc = put (visit, 1.);
 run; 
@@ -140,7 +140,7 @@ run;
 
 /*-- Error: x variable values not equidistant --------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=x variable values not equidistant)
-data blood_pressure;
+data work.blood_pressure;
    set testdata.blood_pressure; 
    if visit=5 then visit=6;
 run; 
@@ -151,7 +151,7 @@ run;
 
 /*-- Error: x variable has missing values ------------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=x variable has missing values)
-data blood_pressure;
+data work.blood_pressure;
    set testdata.blood_pressure; 
    output; 
    visit=.; 
@@ -178,7 +178,7 @@ run;
 
 /*-- Error: y variable not numeric -------------------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=y variable not numeric)
-data blood_pressure;
+data work.blood_pressure;
    set testdata.blood_pressure; 
    sbpc = put (sbp, best32.);
 run; 
@@ -203,7 +203,7 @@ run;
 
 /*-- Error: group variable has only one value --------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=group variable has only one value)
-data blood_pressure;
+data work.blood_pressure;
    set testdata.blood_pressure; 
    if med=1; 
 run; 
@@ -214,7 +214,7 @@ run;
 
 /*-- Error: group variable has more than two values -------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=group variable has more than two values)
-data blood_pressure2;
+data work.blood_pressure2;
    set testdata.blood_pressure; 
    if med=1 then do; 
       output; 
@@ -230,7 +230,7 @@ run;
 
 /*-- Error: group variable has missing values --------------------------------*/
 %initTestcase(i_object=boxplot.sas, i_desc=group variable has missing values)
-data blood_pressure3;
+data work.blood_pressure3;
    set testdata.blood_pressure; 
    if med=0 then do; 
       med=.; 
@@ -242,5 +242,9 @@ run;
 %assertEquals(i_actual=%sysfunc(fileexist(&g_work/report22.pdf)), i_expected=0, i_desc=no report created)
 %endTestcase(i_assertLog=0)
 
+proc datasets lib=work nolist;
+   delete blood_pressure blood_pressure2 blood_pressure3;
+run;
+quit;
 %endScenario();
 /** \endcond */

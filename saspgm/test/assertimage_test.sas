@@ -25,14 +25,14 @@
       run;
    ods printer close;
 
-   data class;
+   data work.class;
       set sashelp.class;
       if name="Barbara" then age=20;
    run;
 
    options printerpath=png nodate;
    ods printer file="%sysfunc(pathname(work))/class1.png";
-      proc print data=class;
+      proc print data=work.class;
       run;
    footnote .j=r "01/07/2015";
    ods printer file="%sysfunc(pathname(work))/class2.png";
@@ -44,6 +44,9 @@
       run;
    footnote;
    ods printer close;
+
+   prc delete data=work.class;
+   run;
 
 %MEND _createtestfiles;
 
@@ -319,4 +322,6 @@
             ,i_modifier           =-metric ae /* -metric ae counts the absolute amount of different pixels */
             ,i_desc               =Graphs do not match%str(,) i_modifier set to "-metric ae" and i_threshold allowing 60 pixels to be different
             );
+
+%endScenario();
 /** \endcond */

@@ -42,7 +42,7 @@ proc sort data=&data out=&d_temp1;
 run;
 %if &syserr %then %do;
    %put ERROR: Macro Generate: data= or by= specified incorrectly;
-   %return;
+   %goto exit;
 %end;
 
 /*-- determine groups --------------------------------------------------------*/
@@ -90,7 +90,7 @@ data %do i=1 %to &count; &out&i (label="&&label&i") %end; ;
 %end;
    end;
 run;
-
+%exit:
 proc datasets lib=work nolist;
    delete %scan(&d_temp1,2,.) %scan(&d_temp2,2,.);
 quit;

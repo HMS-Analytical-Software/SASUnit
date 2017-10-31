@@ -14,7 +14,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_Library            library of data set treated as master table
    \param   i_Dataset            member name of data set treated as master table
    \param   i_Variables          variables of the data set, that should be used as key. Multiple variables have to be separated by blank
@@ -224,6 +224,8 @@
       %END;
    run;
 
+   libname _apk clear;
+
    %LET l_actual=%eval(&l_anzahlObs. = 0);
    %LET l_result=%eval((&l_anzahlObs. > 0)*2);
 
@@ -235,5 +237,10 @@
             ,i_result   = &l_result.
             ,i_errMsg   = &l_errMsg.
             )
+
+   proc datasets lib=work nolist;
+      delete _variables _sorted _notUnique;
+   run;
+   quit;
 %MEND assertPrimaryKey;
 /** \endcond */

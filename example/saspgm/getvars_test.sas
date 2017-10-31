@@ -40,24 +40,18 @@
 /*-- example with variable names containing special characters ---------------*/
 %initTestcase(i_object=getvars.sas, i_desc=example with variable names containing special characters)
 options validvarname=any;
-data test; 
+data work.test; 
    'a b c'n=1; 
    '$6789'n=2;
    ';6789'n=2;
 run; 
 %let vars="%getvars(test,dlm=%str(","))";
-%assertEquals(i_actual=&vars, i_expected=%str("a b c","$6789",";6789"), i_desc=check variables)
-%macro al;
-%if &sysver=9.1 %then %do;
-   %assertLog(i_warnings=1,i_desc=%str(check log, one warning due to validvarname))
-   %endTestcase(i_assertLog=0) /* no assertLog */
-%end;
-%mend al;
-%al;
+%assertEquals(i_actual=&vars., i_expected=%str("a b c","$6789",";6789"), i_desc=check variables)
+%endTestcase()
 
 /*-- example with empty dataset ----------------------------------------------*/
 %initTestcase(i_object=getvars.sas, i_desc=example with empty dataset)
-data test; 
+data work.test; 
    stop;
 run; 
 %let vars=%getvars(test);
@@ -73,5 +67,7 @@ run;
 %let vars=%getvars(xxx);
 %assertEquals(i_actual=&vars, i_expected=, i_desc=example with invalid dataset)
 
+proc delete data=work.test;
+run;
 %endScenario();
 /** \endcond */

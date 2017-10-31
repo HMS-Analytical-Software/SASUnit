@@ -19,7 +19,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_mstrLib            library of data set treated as master table
    \param   i_mstMem             member name of data set treated as master table
    \param   i_mstKey             key or keys of the master table. Multiple keys have to be separated by blank
@@ -52,11 +52,13 @@
 
    %LOCAL l_dsMstrName l_dsLookupName l_MstrVars l_LookupVars l_renameLookup l_actual l_helper l_helper1 l_vartypMstr 
           l_vartypLookup l_rc l_result l_cnt1 l_cnt2 l_casid l_tstid l_path i l_listingVars num_missing l_treatMissings
-          l_treatMissing l_unique l_errMsg;
+          l_treatMissing l_unique l_errMsg l_dsLookupid l_dsMstid;
 
    %LET l_actual           = -999;
    %LET l_dsMstrName       = &i_mstrLib..&i_mstMem.;
+   %LET l_dsMstid          = 0;
    %LET l_dsLookupName     = &i_lookupLib..&i_lookupMem.;
+   %LET l_dsLookupid       = 0;
    %LET i_mstKey           = %SYSFUNC(compbl(&i_mstKey.));
    %LET i_lookupKey        = %SYSFUNC(compbl(&i_lookupKey.));
    %LET l_listingVars      = %SYSFUNC(COMPBL(&o_listingVars. %str( )));
@@ -205,12 +207,12 @@
    %END;
    %Continue:
    %LET l_listingVars= &i_mstKey. &l_listingVars.;
-   %LET l_rc=%SYSFUNC(close(&l_dsMstid.));
-   %LET l_rc=%SYSFUNC(close(&l_dsLookupid.));
+   %LET l_dsMstid=%SYSFUNC(close(&l_dsMstid.));
+   %LET l_dsLookupid=%SYSFUNC(close(&l_dsLookupid.));
 
    %*** parameter l_treatMissings: handle different cases ***;
    %*** make local copy of master table*;
-   data mstrCopy;
+   data work.mstrCopy;
       set &l_dsMstrName.;
    run; 
 
@@ -223,17 +225,17 @@
 
    %*** get number of missing keys in master table*;
    PROC SQL;
-      create table master_missing as
+      create table work.master_missing as
       select *
-      from mstrCopy
+      from work.mstrCopy
       where &l_treatMissing.;
       ;
    QUIT; 
    
    %***get number of observations ***;
-   %LET l_helper     =%SYSFUNC(open(master_missing));
+   %LET l_helper     =%SYSFUNC(open(work.master_missing));
    %LET num_missing  =%SYSFUNC(attrn(&l_helper,nlobs));
-   %LET l_rc         =%SYSFUNC(close(&l_helper)); 
+   %LET l_helper     =%SYSFUNC(close(&l_helper)); 
    
    %*** Exit if missings were found***;
    %IF ("&l_treatMissings." = "DISALLOW" AND &num_missing. GT 0) %THEN %DO;
@@ -244,7 +246,7 @@
    %ELSE %IF ("&l_treatMissings." EQ "IGNORE") %THEN %DO;
       %*** delete missing values ***;
       PROC SQL;
-         delete from mstrCopy
+         delete from work.mstrCopy
          where &l_treatMissing.;
          ;
       QUIT;
@@ -274,7 +276,7 @@
 
    %*** Check whether specified key is unique for lookup table ***;
    PROC SQL noprint;
-      create table distKeysLookUp as
+      create table work.distKeysLookUp as
       SELECT distinct &l_LookupVars.
       FROM &l_dsLookupName.
       ;
@@ -306,20 +308,20 @@
    %END;
 
    %*** Check whether all keys in the master table are available in the lookup table***;
-   proc sort data = mstrCopy out = mstrSorted;
+   proc sort data = work.mstrCopy out =work.mstrSorted;
       by &l_MstrVars;
    run;     
-   data keyNotFndMstr keyNotFndLookUp;
-      merge mstrSorted(in=fndMstr) distKeysLookUp(in=fndLookUp rename=(&l_renameLookup.));
+   data work.keyNotFndMstr work.keyNotFndLookUp;
+      merge work.mstrSorted(in=fndMstr) work.distKeysLookUp(in=fndLookUp rename=(&l_renameLookup.));
       by &l_MstrVars.;
       if     fndLookUp AND not   fndMstr then output keyNotFndMstr;
       If not fndLookUp AND       fndMstr then output keyNotFndLookUp;
    run;
 
    %*** Who many keys from the master table were not found in the lookup table ***;
-   %LET l_helper  =%SYSFUNC(OPEN(work.keyNotFndLookUp,IN));
-   %LET l_actual  =%SYSFUNC(ATTRN(&l_helper,NOBS));
-   %LET l_rc      =%SYSFUNC(CLOSE(&l_helper));
+   %LET l_helper  =%SYSFUNC(open(work.keyNotFndLookUp,IN));
+   %LET l_actual  =%SYSFUNC(attrn(&l_helper,NOBS));
+   %LET l_helper  =%SYSFUNC(close(&l_helper));
 
    %*** Test successful? l_actual < 0 -> error_message, l_actual > 0 -> no foreign key relationship***;
    %IF (&l_actual. = 0) %THEN %DO;
@@ -365,6 +367,7 @@
         select keyNotFndMstr;
       run;
    %END;
+   libname tar_afk clear;
 
    %Update:
    %_asserts(i_type      = assertForeignKey
@@ -375,5 +378,23 @@
             ,i_errMsg   = &l_errMsg.
             )
 
+   %if (&l_dsLookupid. > 0) %then %do;
+      %LET l_dsLookupid=%SYSFUNC(close(&l_dsLookupid.));
+   %end;
+   %if (&l_dsMstid. > 0) %then %do;
+      %LET l_dsMstid=%SYSFUNC(close(&l_dsMstid.));
+   %end;
+
+   proc datasets lib=work nolist;
+      delete 
+         mstrCopy
+         distKeysLookUp
+         mstrSorted
+         keyNotFndMstr
+         keyNotFndLookUp
+         master_missing
+      ;
+   run;
+   quit;
 %MEND assertForeignKey;
 /** \endcond */

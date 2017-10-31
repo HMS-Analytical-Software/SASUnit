@@ -105,6 +105,7 @@ quit;
    %let dsid=%sysfunc(close(&dsid));
    %return; 
 %end; 
+
 /*-- check for number of groups and determine variable type and group sequence -*/
 %let grouptype=%sysfunc(vartype(&dsid,%sysfunc(varnum(&dsid,&group))));
 %local count lower;
@@ -114,6 +115,7 @@ proc sql noprint;
 quit; 
 %if &lower=. %then %do; 
    %put ERROR: boxplot: Missing values in group variable are not allowed; 
+   %let dsid=%sysfunc(close(&dsid));
    %return; 
    %*** This is code not covered by any test case and left intentionally here to ***;
    %*** demonstrate the functionality of the test coverage                       ***;
@@ -121,6 +123,7 @@ quit;
 %end; 
 %if &count NE 2 %then %do;
    %put ERROR: boxplot: Variable &group must have exactly two values; 
+   %let dsid=%sysfunc(close(&dsid));
    %return; 
 %end; 
 

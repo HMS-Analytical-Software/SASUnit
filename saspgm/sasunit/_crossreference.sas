@@ -17,7 +17,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param      i_includeSASUnit  Include the SASUnit core macros in scan or not, default set to 0
    \param      i_examinee        Data set containing content of autocall libraries 
    \param      o_listcalling     Output data set with columns caller and called representing the calling hierarchy
@@ -113,7 +113,7 @@
    %DO l_macro = 1 %to &l_count.;
       /* Find all macro calls in a macro */
       %IF %SYSFUNC(FILEEXIST(&&l_filename&l_macro.)) %THEN %DO;
-         DATA helper;
+         DATA work.helper;
             IF _N_ = 1 THEN DO;
                retain pattern1 ptrn_Com_1_o ptrn_Com_1_c;
                retain l_DoxyHeader 0 comment 0;
@@ -178,17 +178,17 @@
          RUN;
          
          DATA _NULL_;
-            SET helper nobs=cnt_obs;
+            SET work.helper nobs=cnt_obs;
             call symput('l_nobs', put(cnt_obs, 4.));
          RUN;
 
          %IF &l_nobs GT 0 %THEN %DO;
             /* Neglect multiple calls to the same macro */
-            PROC sort DATA = helper nodupkey;
+            PROC sort DATA = work.helper nodupkey;
                BY called;
             RUN;
             /* Append data from helper to calling macro-data set */     
-            PROC append base=&o_listcalling DATA=helper;
+            PROC append base=&o_listcalling DATA=work.helper;
                where caller ne called;
             RUN;
          %END;
@@ -256,5 +256,9 @@
    %IF &g_verbose =0 %THEN %DO;
       options &l_source &l_notes &l_mprint;
    %END;
+
+   proc datasets lib=work nolist;
+      delete helper stage:;
+   run;quit;
 %MEND _crossreference;
 /** \endcond */

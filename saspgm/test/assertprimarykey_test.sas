@@ -296,4 +296,8 @@ run;
 
 %assertLog (i_errors=0, i_warnings=0);
 
+proc delete data=work.class_missing;
+run;
+
+%endScenario();
 /** \endcond */

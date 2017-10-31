@@ -19,7 +19,7 @@
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /* test case 1 ------------------------------------ */
-libname hugo1 "X:/TEST";;
+libname hugo1 "X:/TEST";
 
 %initTestcase(
              i_object=assertTableExists.sas
@@ -202,5 +202,13 @@ libname hugo (WORK);
 
 %endTestcase();
 
+proc datasets lib=work memtype=(data view) nolist;
+   delete class vview class_v;
+run;
+quit;
 
+libname hugo clear;
+libname hugo1 clear;
+
+%endScenario();
 /** \endcond */

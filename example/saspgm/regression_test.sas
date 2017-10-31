@@ -35,11 +35,11 @@
 proc import datafile="&g_testdata/regression.xls" dbms=%SetXLSType out=work.data replace;
    RANGE="data";
 run;
-data refdata (rename=(yhat=est)) testdata(drop=yhat); 
+data work.refdata (rename=(yhat=est)) work.testdata(drop=yhat); 
    set work.data; 
    format _all_;
 run; 
-proc import datafile="&g_testdata/regression.xls" dbms=%SetXLSType out=refparm replace;
+proc import datafile="&g_testdata/regression.xls" dbms=%SetXLSType out=work.refparm replace;
    RANGE="parameters";
 run;
 
@@ -63,6 +63,10 @@ quit;
 %assertEquals(i_actual=&slope_xls, i_expected=&slope_sas, i_desc=compare slope parameter)
 %assertPerformance(i_expected=5, i_desc=regression calculation should be done within 5 seconds.)
 
+proc datasets lib=work nolist;
+   delete refparm refdata testdata data aus parameters;
+run;
+quit;
 
 %endScenario();
 /** \endcond */
