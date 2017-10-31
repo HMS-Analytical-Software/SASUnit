@@ -50,6 +50,7 @@ OPTIONS
   ,i_verbose         = 1
   ,i_crossref        = 1
   ,i_crossrefsasunit = 1
+  ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
   )
 
 /* Run specified test scenarios. There can be more than one call to runSASUnit */
@@ -57,7 +58,7 @@ OPTIONS
 
 /* Create or recreate HTML pages for report where needed */
 %reportSASUnit(
-   i_language =%upcase(%sysget(SASUNIT_LANGUAGE))
+   i_language =%lowcase(%sysget(SASUNIT_LANGUAGE))
   ,o_html     =1
   ,o_junit    =1
 );

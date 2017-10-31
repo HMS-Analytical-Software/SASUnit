@@ -41,7 +41,7 @@ run;
 
    data _null_;
       set nls;
-      where language = "&i_language.";
+      where language = "%upcase(&i_language.)";
       call execute ('%global g_nls_' !! trim(program) !! '_' !! put (num, z3.) !! ';');
       call symput ('g_nls_' !! trim(program) !! '_' !! put (num, z3.), trim (text));
    run; 

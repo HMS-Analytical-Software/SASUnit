@@ -30,6 +30,7 @@
            g_testdata g_refdata g_doc g_error g_warning g_note
            g_work g_testout g_log g_logfile g_printfile
            g_testcoverage g_verbose g_crossref g_crossrefsasunit g_rep_encoding
+		   g_language
            ;
 
    %LOCAL i;
@@ -90,6 +91,7 @@
       call symput ('g_verbose'        , put (tsu_verbose, z1.));
       call symput ('g_crossref'       , put (tsu_crossref, z1.));
       call symput ('g_crossrefsasunit', put (tsu_crossrefsasunit, z1.));
+      call symput ('g_language'       , trim(tsu_language));
    RUN;
 
    %LET g_project      = &g_project;
@@ -142,7 +144,7 @@
    %_oscmds;
 
    %put _global_;
-   
+
    %GOTO exit;
 %errexit:
    LIBNAME target;

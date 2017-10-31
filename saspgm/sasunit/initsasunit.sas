@@ -81,13 +81,20 @@
                   ,i_verbose         = 0
                   ,i_crossref        = 1
                   ,i_crossrefsasunit = 0
+                  ,i_language        = _NONE_
                   );
 
    %GLOBAL g_version g_revision g_verbose g_error g_warning g_note;
 
-   %LET g_version   = 1.7.0;
+   %LET g_version   = 1.7.1;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
+
+   /*-- initialize error --------------------------------------------------------*/
+   %_initErrorHandler;
+
+   /*-- check for operation system and SAS version -------------------------------*/
+   %IF (%_checkRunEnvironment(&i_verbose.) ne 0) %THEN %GOTO errexit;
 
    /*-- check value of parameters i_verbose, i_crossref and i_crossrefsasunit, if one of them has a value other than default, 
         they will be set to 1/0 in order to assure that values will only be 0 or 1 ------*/
@@ -133,18 +140,6 @@
    %let l_sasunit=%sysfunc (pathname(_tmp));
    libname _tmp clear;
 
-   /*-- initialize error --------------------------------------------------------*/
-   %_initErrorHandler;
-
-   /*-- check for operation system ----------------------------------------------*/
-   %IF %_handleError(&l_macname.
-                    ,WrongOS
-                    ,(%upcase(&sysscp.) NE WIN) AND (%upcase(&sysscpl.) NE LINUX) AND (%upcase(&sysscpl.) NE AIX)
-                    ,Invalid operating system - only WIN%str(,) LINUX AND AIX
-                    ,i_verbose=&i_verbose.
-                    ) 
-   %THEN %GOTO errexit;
-
    /*-- check for correct sasunit path ----------------------------------------------*/
    %IF %_handleError(&l_macname.
                     ,WrongSASUnitPath
@@ -168,6 +163,8 @@
    OPTIONS APPEND=(SASAUTOS=("&l_sasunit." "&l_abspath_sasunit_os."));
    OPTIONS NOQUOTELENMAX;
 
+   %_readEnvMetadata;
+
    %_oscmds;
    
    %_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note);
@@ -185,15 +182,6 @@
           %PUT &G_WARNING.:(SASUNIT) Shell variable SASUNIT_OVERWRITE not passed correctly to parameter i_overwrite!;
       %END;
    %END;
-
-   /*-- check SAS version -------------------------------------------------------*/
-   %IF %_handleError(&l_macname.
-                    ,WrongVer
-                    ,(&sysver. NE 9.2) AND (&sysver. NE 9.3) AND (&sysver. NE 9.4)
-                    ,Invalid SAS version - only SAS 9.2 to 9.4
-                    ,i_verbose=&i_verbose.
-                    ) 
-   %THEN %GOTO errexit;
 
    /*-- if test coverage should be assessed: check SAS version --------------*/
    %IF (&i_testcoverage. EQ 1) %THEN %DO;
@@ -281,9 +269,10 @@
             ,tsu_verbose         INT FORMAT=8.     /* see i_verbose */
             ,tsu_crossref        INT FORMAT=8.     /* see i_crossref */
             ,tsu_crossrefsasunit INT FORMAT=8.     /* see i_crossrefsasunit */
+            ,tsu_language        CHAR(10)          /* see i_language */
          );
          INSERT INTO target.tsu VALUES (
-         "","","","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,"",&i_verbose.,&i_crossref.,&i_crossrefsasunit.
+         "","","","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,"",&i_verbose.,&i_crossref.,&i_crossrefsasunit.,"&i_language."
          );
 
          CREATE TABLE target.scn(COMPRESS=CHAR)
@@ -491,6 +480,7 @@
    PROC SQL NOPRINT;
       UPDATE target.tsu SET tsu_sasunit_os = "&l_sasunit_os";
    QUIT;
+   
    /*-- check if autoexec exists where specified --------------------------------*/
    PROC SQL NOPRINT;
       SELECT tsu_autoexec INTO :l_autoexec FROM target.tsu;
@@ -646,6 +636,7 @@
       UPDATE target.tsu SET tsu_verbose         =&i_verbose;
       UPDATE target.tsu SET tsu_crossref        =&i_crossref;
       UPDATE target.tsu SET tsu_crossrefsasunit =&i_crossrefsasunit;
+      UPDATE target.tsu SET tsu_language        ="&i_language.";
    QUIT;
 
    /*-- load relevant information from test database to global macro symbols ----*/

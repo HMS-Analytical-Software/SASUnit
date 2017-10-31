@@ -30,7 +30,7 @@
            
 */ /** \cond */ 
 
-%MACRO reportSASUnit (i_language       = EN
+%MACRO reportSASUnit (i_language       = _NONE_
                      ,o_html           = 1
                      ,o_pdf            = 0
                      ,o_junit          = 0
@@ -65,7 +65,12 @@
       %GOTO exit;
    %END;
 
-   %_nls (i_language=&i_language)
+   %if (&i_language. = _NONE_) %then %do;
+      %_nls (i_language=&g_language)
+   %end;
+   %else %do;
+      %_nls (i_language=&i_language)
+   %end;
 
    /*-- check if target folder exists -------------------------------------------*/
    %LOCAL l_output; 
