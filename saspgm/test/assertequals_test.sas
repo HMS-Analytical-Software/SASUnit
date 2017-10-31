@@ -14,7 +14,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%initScenario(i_desc =Test of assertEquals.sas);
+%initScenario(i_desc =Test of assertEquals.sas)
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
@@ -165,4 +165,6 @@
 %assertDBValue(tst,act,AAA)
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
+
+%endScenario()
 /** \endcond */

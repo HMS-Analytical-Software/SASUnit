@@ -206,5 +206,6 @@
                 ,i_desc               =%str(Compared files do not match, but modifier ignore case used -> test is OK)
                 ,i_threshold          =NONE
                 );
-                
+
+   %endScenario(); 
 /** \endcond */

@@ -50,7 +50,7 @@
    /* alphanumerical value? */
    %IF   %sysfunc(prxmatch("^[0-9]*.?[0-9]*$",&i_expected))=0 
       OR %sysfunc(prxmatch("^[0-9]*.?[0-9]*$",&i_actual))=0 %THEN %DO; 
-      %LET l_result = %eval(("&i_expected" NE "&i_actual")*2);
+      %LET l_result = %eval((%sysfunc(quote(&i_expected)) NE %sysfunc(quote(&i_actual)))*2);
    %END; 
    /* numerical value and fuzz specified ? */
    %ELSE %IF %quote(&i_fuzz) NE %THEN %DO;

@@ -38,16 +38,16 @@
 /* Wegen SAS Version 9.2 muss es noch so gemacht werden */
 
    proc sql noprint;
-      select max (cas_res) into :l_result from target.cas WHERE cas_scnid=&g_scnid;
+      select max (cas_res) into :l_result from target.cas WHERE cas_scnid=&g_scnid.;
    QUIT;
 
    PROC SQL NOPRINT;
       UPDATE target.scn
       SET 
-         scn_res = &l_result
+         scn_res = &l_result.
         ,scn_end = %sysfunc(datetime())
       WHERE 
-         scn_id = &g_scnid;
+         scn_id = &g_scnid.;
    QUIT;
 
    %if (&g_runmode. = SASUNIT_INTERACTIVE) %then %do;
@@ -60,22 +60,22 @@
       run;
 
       title1 "SASUnit quick results";
-      title2 "Test cases";
+      title2 "Test scenario";
       proc print data=target.scn noobs label;
-         where scn_id = &G_SCNID.;
+         where scn_id = &g_scnid.;
          format scn_res PictName.;
       run;
 
       title1 "^_";
       title2 "Test cases";
       proc print data=target.cas noobs label;
-         where cas_scnid = &G_SCNID.;
+         where cas_scnid = &g_scnid.;
          format cas_res PictName.;
       run;
 
       title2 "Asserts";
       proc print data=target.tst noobs label;
-         where tst_scnid = &G_SCNID.;
+         where tst_scnid = &g_scnid.;
          format tst_res PictName.;
          by tst_casid;
       run;

@@ -14,7 +14,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%initScenario(i_desc =Test of assertRecordCount.sas);
+%initScenario(i_desc =%str(Test of assertRecordCount.sas - has to fail! 3 errors %(1 non-existing variable, 2 errors invalid where-syntax%)));
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
@@ -99,4 +99,5 @@
 %assertLog (i_errors=0, i_warnings=0)
 %endTestcase();
 
+%endScenario();
 /** \endcond */

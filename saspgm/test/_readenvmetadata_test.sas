@@ -13,8 +13,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
-/*
-%initScenario();
+/**/
+%initScenario(i_desc=Test of _readEnvMetadata.sas);
 /**/
 /* === Test case 1 ================================================ */
 %initTestcase (i_object = _readEnvMetadata.sas
@@ -23,7 +23,7 @@
 
 %_readEnvMetadata;
 
-%let g_RPMFN=%sysfunc(translate (&g_runningProgramFullName., /, \));
+%let g_RPMFN=&g_runningProgramFullName.;
 %let g_RPM  =%scan (&g_RPMFN., -1, /);
 
 %endTestCall;
@@ -48,12 +48,12 @@
               );
 
 %let _CLIENTAPPABREV=EG;
-%let _SASPROGRAMFILE=_readenvmetadata_test.sas;
+%let _SASPROGRAMFILE=\saspgm\test\_readenvmetadata_test.sas;
 
 %_readEnvMetadata;
 
-%let g_RPM =%sysfunc(translate (&g_runningProgram., /, \));
-%let g_RPM =%scan (&g_RPM., -1, /);
+%let g_RPMFN=&g_runningProgramFullName.;
+%let g_RPM  =%scan (&g_RPMFN., -1, /);
 
 %endTestCall
 %assertEquals (i_expected=SASUNIT_SEG

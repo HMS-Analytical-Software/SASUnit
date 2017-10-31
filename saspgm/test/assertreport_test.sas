@@ -586,4 +586,5 @@ ods pdf close;
 %assertDBValue(tst,res,2)
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
+%endScenario()
 /** \endcond */ 

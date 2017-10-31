@@ -34,32 +34,36 @@
 %MACRO initScenario(i_desc =_NONE_
                    );
 
-   %GLOBAL g_inScenario g_inTestCase g_inTestCall g_scnID;
+   %global g_inScenario g_inTestCase g_inTestCall g_scnID;
    
-   %IF &g_inTestCall. EQ 1 %THEN %DO;
+   %if &g_inScenario. EQ 1 %then %do;
+      %put ERROR: initScenario must not be called twice!;
+   %end;
+   %if &g_inTestCall. EQ 1 %then %do;
       %put ERROR: initScenario must not be called within a testcall!;
-   %END;
-   %IF &g_inTestCase. EQ 1 %THEN %DO;
+   %end;
+   %if &g_inTestCase. EQ 1 %then %do;
       %put ERROR: initScenario must not be called within a testcase!;
-   %END;
-   %LET g_inTestCase=0;
-   %LET g_inTestCall=0;
-   %LET g_inScenario=0;
-   
-   %local l_changed l_scnID;
+   %end;
+   %let g_inTestCase=0;
+   %let g_inTestCall=0;
+   %let g_inScenario=0;
    
    %_readEnvMetadata;
    
+   %local l_changed l_scnID;
+   %let l_scnid = 0;
+
    filename _CUR_SCN "&g_runningProgramFullName.";
    proc sql noprint;
       select put (max(1,max(scn_id)+1), z3.) into :g_scnID from target.scn;
       select modate into :l_changed from sashelp.vextfl where fileref="_CUR_SCN";
       select scn_id into :l_scnID 
          from target.scn 
-         where translate("&g_runningProgramFullName.", "/", "\") contains trim(scn_path);
+         where "&g_runningProgramFullName." contains trim(scn_path);
       select scn_id into :g_scnID 
          from target.scn 
-         where translate("&g_runningProgramFullName.", "/", "\") contains trim(scn_path);
+         where "&g_runningProgramFullName." contains trim(scn_path);
    quit;
    filename _CUR_SCN clear;
    
@@ -87,6 +91,6 @@
    /* includes creation of autocall paths */
    %_loadenvironment;
    
-   %LET g_inScenario=1;
+   %let g_inscenario=1;
 %MEND initScenario;
 /** \endcond */

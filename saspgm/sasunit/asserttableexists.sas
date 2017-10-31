@@ -18,7 +18,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_libref       library in which the test candidate can be found
    \param   i_memname      name of data set, view or catalogue to be tested
    \param   i_target       optional: Explicit test for existence of a dataset,view or catalogue (Possible arguments: data, view, catalog). 
@@ -48,10 +48,10 @@
    %END;
 
    %LOCAL l_dsname l_libref_ok l_table_exist l_result l_date l_suffix l_errMsg;
-   %LET l_dsname =%sysfunc(catx(., &i_libref, &i_memname));
-   %LET l_table_exist = -1;
-   %LET l_result=2;
-   %LET l_date =;
+   %LET l_dsname     =%sysfunc(catx(., &i_libref, &i_memname));
+   %LET l_table_exist=-1;
+   %LET l_result     =2;
+   %LET l_date       =;
 
    %*************************************************************;
    %*** Check preconditions                                   ***;
@@ -76,7 +76,7 @@
    %*** start tests                                           ***;
    %*************************************************************;
    
-   %IF %sysfunc(exist(&l_dsname, &i_target)) %THEN %DO;
+   %IF %sysfunc(exist(&l_dsname., &i_target.)) %THEN %DO;
       %LET l_table_exist=1;
       %PUT &g_note.(SASUNIT): &i_target. &l_dsname. exists.;
       %LET l_errMsg=&i_target &l_dsname exists;

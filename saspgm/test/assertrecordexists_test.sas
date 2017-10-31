@@ -14,7 +14,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%initScenario(i_desc =Test of assertRecordExists.sas);
+%initScenario(i_desc =%str(Test of assertRecordExists.sas - has to fail! 1 error %(concerning non-existing variable%)));
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
@@ -69,5 +69,5 @@
 %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 %endTestcase(i_assertLog=0)
 
-
+%endScenario()
 /** \endcond */
