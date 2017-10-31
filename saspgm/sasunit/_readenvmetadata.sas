@@ -14,9 +14,13 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-            
-   \param    o_environment
-   \param    o_starttype
+
+   \todo Add SAS Studio and JupyterNotebooks
+ 
+   \param    g_runMode
+   \param    g_runningProgram
+   \param    g_runEnvironment
+   \param    g_runningProgramFullName
 */
 /** \cond */ 
 %MACRO _readEnvMetadata;
@@ -28,7 +32,8 @@
       g_runningProgramFullName
    ;
 
-   *** Check for batch mode ***;
+   /* This is nice but not reliable. SAS Studio or JupyterNotebooks behave differently
+   *** Check for batch or interactive mode ***;
    %if (%symexist (SYSPROCESSMODE)) %then %do;
       %if (&SYSPROCESSMODE.=SAS Batch Mode) %then %do;
          %let g_runMode=SASUNIT_BATCH;         
@@ -54,15 +59,40 @@
          %let g_runMode=SASUNIT_INTERACTIVE;         
       %end;
    %end;
+*/
+/* This one doesn't work for enterprise guide
+   %if (&SYSENV. = FORE) %then %do;
+      %let g_runMode=SASUNIT_INTERACTIVE;         
+   %end;
+   %else %do;
+      %let g_runMode=SASUNIT_BATCH;         
+   %end;*/
+
+   *** Check for execution mode and running program ***;
+   %let g_runningProgram         =_NONE_;
+   %let g_runningProgramFullName =_NONE_;
+
+   %let g_runningProgramFullName=%sysfunc(getoption(SYSIN));
+
+   %if (%bquote(&g_runningProgramFullName.) ne %str()) %then %do;
+      %let g_runningProgramFullName =%sysfunc(translate (&g_runningProgramFullName., /, \));
+      %let g_runningProgram         =%scan(&g_runningProgramFullName., -1, /);
+      %let g_runMode                =SASUNIT_BATCH;         
+   %end;
+   %else %do;
+      %let g_runMode=SASUNIT_INTERACTIVE;         
+      %let g_runningProgramFullName =_NONE_;
+   %end;   
 
    *** Check for running Environment ***;
+   *** Add SAS Studio and JupyterNotebooks ***;
    %if (%symexist (_CLIENTAPPABREV)) %then %do;
       %if (%upcase(&_CLIENTAPPABREV)=EG) %then %do;
          %let g_runEnvironment =SASUNIT_SEG;
       %end;
    %end;
    %else %do;
-      %if (%sysfunc(quote(&SYSPROCESSNAME.))=Object Server) %then %do;
+      %if (%sysfunc(quote(&SYSPROCESSNAME.))="Object Server") %then %do;
          %let g_runEnvironment =SASUNIT_SEG;
       %end;
       %else %if (%sysfunc(quote(&SYSPROCESSNAME.))="DMS Process" OR %substr(&SYSPROCESSNAME.,1,7) = Program) %then %do;
@@ -71,15 +101,17 @@
    %end;
    
    *** Check for running program ***;
-   %let g_runningProgram         =_NONE_;
-   %let g_runningProgramFullName =_NONE_;
-   %if (&g_runEnvironment.=SASUNIT_SEG) %then %do;
-      %let g_runningProgramFullName=%sysfunc(dequote(&_SASPROGRAMFILE.));
+   %if (&g_runMode. ne SASUNIT_BATCH) %then %do;
+      %if (&g_runEnvironment.=SASUNIT_SEG) %then %do;
+         %if (&_SASPROGRAMFILE. ne '') %then %do;
+            %let g_runningProgramFullName=%sysfunc(dequote(&_SASPROGRAMFILE.));
+         %end;
+      %end;
+      %else %if (&g_runEnvironment.=SASUNIT_DMS) %then %do;
+         %let g_runningProgramFullName=%sysfunc(getoption(SYSIN));
+      %end;
    %end;
-   %if (&g_runEnvironment.=SASUNIT_DMS) %then %do;
-      %let g_runningProgramFullName=%sysfunc(getoption(SYSIN));
-   %end;
-   %if (g_runningProgramFullName ne %str()) %then %do;
+   %if (%bquote(&g_runningProgramFullName.) ne _NONE_) %then %do;
       %let g_runningProgramFullName =%sysfunc(translate (&g_runningProgramFullName., /, \));
       %let g_runningProgram         =%scan(&g_runningProgramFullName., -1, /);
    %end;
