@@ -95,7 +95,7 @@
       create table work._single_dir as 
          select m.*
                ,v.modate as changed format=datetime20. informat=datetime.
-         from work._sd_members m left join sashelp.vextfl v
+         from work._sd_members m left join dictionary.extfiles v
          on m.fileref = v.fileref;
    quit;
 
