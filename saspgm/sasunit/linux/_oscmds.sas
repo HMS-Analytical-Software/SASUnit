@@ -34,7 +34,7 @@
    %LET g_copydir       =cp -R;
    %LET g_endcommand    =%str(;);
    %_xcmd(umask 0033);
-   %LET g_sasstart      ="%sysfunc(pathname(sasroot))/bin/sas_%sysget(SASUNIT_LANGUAGE)";
+   %LET g_sasstart      ="%sysfunc(pathname(sasroot))/bin/sas_&g_language.";
    %LET g_splash        =;   
    %LET g_infile_options=;
 
