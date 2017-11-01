@@ -74,6 +74,23 @@
 
    %LET l_errmsg =;
    %LET l_result = 2;
+   %LET l_macname  =&sysmacroname;
+
+   %*************************************************************;
+   %*** Check if XCMD is allowed                              ***;
+   %*************************************************************;
+   %IF %_handleError(&l_macname.
+                 ,NOXCMD
+                 ,(%sysfunc(getoption(XCMD)) = NOXCMD)
+                 ,Your SAS Session does not allow XCMD%str(,) therefore assertExternal cannot be run.
+                 ,i_verbose=&g_verbose.
+                 ) 
+   %THEN %DO;
+      %LET l_rc    =2;
+      %LET l_result=2;
+      %LET l_errmsg=Your SAS Session does not allow XCMD%str(,) therefore assertExternal cannot be run.;
+      %GOTO Update;
+   %END;
 
    %*************************************************************;
    %*** Check preconditions                                   ***;

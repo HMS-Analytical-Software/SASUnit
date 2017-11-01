@@ -18,7 +18,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param     i_script               Path of shell script
    \param     i_expected             First parameter for script
    \param     i_actual               Second parameter for script
@@ -59,11 +59,13 @@
            l_expected
            l_rc
            l_result
+           l_macname
    ;
   
-  %LET l_errmsg   =;
-  %LET l_result   = 2;
-  %LET l_rc       = 2;
+   %LET l_errmsg   =;
+   %LET l_result   =2;
+   %LET l_rc       =2;
+   %LET l_macname  =&sysmacroname;
   
    %*************************************************************;
    %*** Check preconditions                                   ***;
@@ -92,6 +94,22 @@
          %LET l_errMsg=Path &i_actual. does not exist!;
          %GOTO Update;
       %END;
+   %END;
+
+   %*************************************************************;
+   %*** Check if XCMD is allowed                              ***;
+   %*************************************************************;
+   %IF %_handleError(&l_macname.
+                 ,NOXCMD
+                 ,(%sysfunc(getoption(XCMD)) = NOXCMD)
+                 ,Your SAS Session does not allow XCMD%str(,) therefore assertExternal cannot be run.
+                 ,i_verbose=&g_verbose.
+                 ) 
+   %THEN %DO;
+      %LET l_rc    =2;
+      %LET l_result=2;
+      %LET l_errmsg=Your SAS Session does not allow XCMD%str(,) therefore assertExternal cannot be run.;
+      %GOTO Update;
    %END;
 
    %*************************************************************;

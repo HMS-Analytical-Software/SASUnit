@@ -142,9 +142,9 @@
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
-
 %assertLog (i_errors=0, i_warnings=0);
 %endTestcase();
+
 
 /* test case 2 ------------------------------------ */
 %initTestcase(i_object   = assertexternal.sas
@@ -169,6 +169,10 @@
                 ,i_desc               =%str(Word count of "Lorem" equals 2, but i_actual=3, so i_expected_shell_rc must be 1)
                 ,i_threshold          =NONE
                 );
+
+%assertLog (i_errors=0, i_warnings=0);
+%endTestcase();
+
 
 /* test case 3 ------------------------------------ */
 %initTestcase(i_object   = assertexternal.sas
@@ -206,6 +210,7 @@
                 ,i_desc               =%str(Compared files do not match, but modifier ignore case used -> test is OK)
                 ,i_threshold          =NONE
                 );
+%endTestcase();
 
-   %endScenario(); 
+%endScenario(); 
 /** \endcond */
