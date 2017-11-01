@@ -84,7 +84,7 @@
                   ,i_verbose         = 0
                   ,i_crossref        = 1
                   ,i_crossrefsasunit = 0
-                  ,i_language        = _NONE_
+                  ,i_language        = %sysget(SASUNIT_LANGUAGE)
                   );
 
    %GLOBAL g_version g_revision g_verbose g_error g_warning g_note g_runMode;
