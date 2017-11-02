@@ -32,78 +32,60 @@
       g_runningProgramFullName
    ;
 
-   /* This is nice but not reliable. SAS Studio or JupyterNotebooks behave differently
-   *** Check for batch or interactive mode ***;
-   %if (%symexist (SYSPROCESSMODE)) %then %do;
-      %if (&SYSPROCESSMODE.=SAS Batch Mode) %then %do;
-         %let g_runMode=SASUNIT_BATCH;         
-      %end;
-   %end;
-   %else %do;
-      %if (%sysfunc(quote(&SYSPROCESSNAME.))="SAS Batch Mode") %then %do;
-         %let g_runMode=SASUNIT_BATCH;         
-      %end;
-      %else %if (%substr(&SYSPROCESSNAME.,1,7) = Program) %then %do;
-         %let g_runMode=SASUNIT_BATCH;         
-      %end;
-   %end;
-   
-   *** Check for interactive mode ***;
-   %if (%symexist (SYSPROCESSMODE)) %then %do;
-      %if (&SYSPROCESSMODE.=SAS DMS Session OR &SYSPROCESSMODE.=SAS Workspace Server) %then %do;
-         %let g_runMode=SASUNIT_INTERACTIVE;         
-      %end;
-   %end;
-   %else %do;
-      %if (%sysfunc(quote(&SYSPROCESSNAME.))="DMS Process" OR %sysfunc(quote(&SYSPROCESSNAME.))="Object Server") %then %do;
-         %let g_runMode=SASUNIT_INTERACTIVE;         
-      %end;
-   %end;
-*/
-/* This one doesn't work for enterprise guide
-   %if (&SYSENV. = FORE) %then %do;
-      %let g_runMode=SASUNIT_INTERACTIVE;         
-   %end;
-   %else %do;
-      %let g_runMode=SASUNIT_BATCH;         
-   %end;*/
-
-   *** Check for execution mode and running program ***;
+   %*** Check for execution mode and running program ***;
    %let g_runningProgram         =_NONE_;
    %let g_runningProgramFullName =_NONE_;
 
    %let g_runningProgramFullName=%sysfunc(getoption(SYSIN));
 
-   %if (%bquote(&g_runningProgramFullName.) ne %str()) %then %do;
+   %*** Detect Jupyter Notebooks ***;
+   %if (%bquote(&g_runningProgramFullName.) eq __STDIN__) %then %do;
+      %let g_runMode                =SASUNIT_INTERACTIVE;         
+      %let g_runningProgramFullName =_NONE_;
+   %end;
+   %*** Detect batch mode ***;
+   %else %if (%bquote(&g_runningProgramFullName.) ne %str()) %then %do;
       %let g_runningProgramFullName =%sysfunc(translate (&g_runningProgramFullName., /, \));
       %let g_runningProgram         =%scan(&g_runningProgramFullName., -1, /);
       %let g_runMode                =SASUNIT_BATCH;         
    %end;
    %else %do;
-      %let g_runMode=SASUNIT_INTERACTIVE;         
+      %let g_runMode                =SASUNIT_INTERACTIVE;         
       %let g_runningProgramFullName =_NONE_;
    %end;   
 
-   *** Check for running Environment ***;
-   *** Add SAS Studio and JupyterNotebooks ***;
+   %*** Check for running Environment ***;
    %if (%symexist (_CLIENTAPPABREV)) %then %do;
       %if (%upcase(&_CLIENTAPPABREV)=EG) %then %do;
          %let g_runEnvironment =SASUNIT_SEG;
+      %end;
+   %end;
+   %else %if (%symexist (_CLIENTPROJECTNAME)) %then %do;
+      %let g_runEnvironment =SASUNIT_SEG;
+   %end;
+   %else %if (%symexist (_EXECENV)) %then %do;
+      %if (%upcase(&_EXECENV.)=SASStudio) %then %do;
+         %let g_runEnvironment =SASUNIT_SASSTUDIO;
       %end;
    %end;
    %else %do;
       %if (%sysfunc(quote(&SYSPROCESSNAME.))="Object Server") %then %do;
          %let g_runEnvironment =SASUNIT_SEG;
       %end;
-      %else %if (%sysfunc(quote(&SYSPROCESSNAME.))="DMS Process" OR %substr(&SYSPROCESSNAME.,1,7) = Program) %then %do;
-         %let g_runEnvironment =SASUNIT_DMS;
+      %else %if (%sysfunc(quote(&SYSPROCESSNAME.))="DMS Process" OR %sysfunc(quote(%substr(&SYSPROCESSNAME.,1,7))) = "Program") %then %do;
+         %if (%sysfunc(getoption(SYSIN)) eq __STDIN__) %then %do;
+            %let g_runEnvironment =SASUNIT_JUPYTER;
+         %end;
+         %else %do;
+            %let g_runEnvironment =SASUNIT_DMS;
+         %end;
       %end;
    %end;
    
-   *** Check for running program ***;
+   %*** Check for running program ***;
    %if (&g_runMode. ne SASUNIT_BATCH) %then %do;
-      %if (&g_runEnvironment.=SASUNIT_SEG) %then %do;
-         %if (&_SASPROGRAMFILE. ne '') %then %do;
+      %if (&g_runEnvironment.=SASUNIT_SEG OR &g_runEnvironment.=SASUNIT_SASSTUDIO) %then %do;
+         %if (&_SASPROGRAMFILE. ne '' AND &_SASPROGRAMFILE. ne %str()) %then %do;
             %let g_runningProgramFullName=%sysfunc(dequote(&_SASPROGRAMFILE.));
          %end;
       %end;
@@ -115,6 +97,5 @@
       %let g_runningProgramFullName =%sysfunc(translate (&g_runningProgramFullName., /, \));
       %let g_runningProgram         =%scan(&g_runningProgramFullName., -1, /);
    %end;
-%exit:
 %MEND _readEnvMetadata;
 /** \endcond */
