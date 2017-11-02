@@ -55,18 +55,18 @@
    %end;   
 
    %*** Check for running Environment ***;
-   %if (%symexist (_CLIENTAPPABREV)) %then %do;
+   %if (%symexist (_EXECENV)) %then %do;
+      %if (%upcase(&_EXECENV.)=SASSTUDIO) %then %do;
+         %let g_runEnvironment =SASUNIT_SASSTUDIO;
+      %end;
+   %end;
+   %else %if (%symexist (_CLIENTAPPABREV)) %then %do;
       %if (%upcase(&_CLIENTAPPABREV)=EG) %then %do;
          %let g_runEnvironment =SASUNIT_SEG;
       %end;
    %end;
    %else %if (%symexist (_CLIENTPROJECTNAME)) %then %do;
       %let g_runEnvironment =SASUNIT_SEG;
-   %end;
-   %else %if (%symexist (_EXECENV)) %then %do;
-      %if (%upcase(&_EXECENV.)=SASStudio) %then %do;
-         %let g_runEnvironment =SASUNIT_SASSTUDIO;
-      %end;
    %end;
    %else %do;
       %if (%sysfunc(quote(&SYSPROCESSNAME.))="Object Server") %then %do;
