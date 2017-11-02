@@ -19,6 +19,7 @@
 
 */ /** \cond */ 
 
+%initScenario(i_desc=Test of _checkScenario.sas);
 /*-- change time for scenarios -----------------------------------------------*/
 %LET scn_changed=%sysfunc(datetime());
 %MACRO _createTestFiles;
@@ -255,4 +256,10 @@ QUIT;
                         );
       %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);
+
+proc datasets lib=work kill memtype=(data) nolist;
+run;
+quit;
+
+%endScenario();
 /** \endcond */

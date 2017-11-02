@@ -13,6 +13,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
+%initScenario (i_desc=Test of _getAutocallNumber.sas);
 
 %initTestcase(i_object=_getAutocallNumber.sas, i_desc=Macro resides in SASUnit folder)
 %let old_g_sasautos0 = &g_sasautos0.;
@@ -57,4 +58,5 @@
 %assertEquals(i_expected=.,  i_actual=&rc.,  i_desc=SASUnit folder returns missing)
 %endTestcase;
 
+%endScenario();
 /** \endcond */

@@ -45,7 +45,7 @@
    footnote;
    ods printer close;
 
-   prc delete data=work.class;
+   proc delete data=work.class;
    run;
 
 %MEND _createtestfiles;
