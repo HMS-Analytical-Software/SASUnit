@@ -2,7 +2,7 @@
    \file
    \ingroup  SASUNIT_UTIL
 
-   \brief    reads metadata o fruntime environment
+   \brief    reads metadata of runtime environment
 
    \version    \$Revision$
    \author     \$Author$
@@ -15,8 +15,6 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 
-   \todo Add SAS Studio and JupyterNotebooks
- 
    \param    g_runMode
    \param    g_runningProgram
    \param    g_runEnvironment
@@ -32,20 +30,22 @@
       g_runningProgramFullName
    ;
 
+   %local l_sysin;
+
    %*** Check for execution mode and running program ***;
    %let g_runningProgram         =_NONE_;
    %let g_runningProgramFullName =_NONE_;
 
-   %let g_runningProgramFullName=%sysfunc(getoption(SYSIN));
+   %let l_sysin=%qsysfunc(getoption(SYSIN));
 
    %*** Detect Jupyter Notebooks ***;
-   %if (%bquote(&g_runningProgramFullName.) eq __STDIN__) %then %do;
+   %if (&l_sysin. eq __STDIN__) %then %do;
       %let g_runMode                =SASUNIT_INTERACTIVE;         
       %let g_runningProgramFullName =_NONE_;
    %end;
    %*** Detect batch mode ***;
-   %else %if (%bquote(&g_runningProgramFullName.) ne %str()) %then %do;
-      %let g_runningProgramFullName =%sysfunc(translate (&g_runningProgramFullName., /, \));
+   %else %if (&l_sysin. ne %str()) %then %do;
+      %let g_runningProgramFullName =%sysfunc(translate (&l_sysin., /, \));
       %let g_runningProgram         =%scan(&g_runningProgramFullName., -1, /);
       %let g_runMode                =SASUNIT_BATCH;         
    %end;
@@ -73,7 +73,7 @@
          %let g_runEnvironment =SASUNIT_SEG;
       %end;
       %else %if (%sysfunc(quote(&SYSPROCESSNAME.))="DMS Process" OR %sysfunc(quote(%substr(&SYSPROCESSNAME.,1,7))) = "Program") %then %do;
-         %if (%sysfunc(getoption(SYSIN)) eq __STDIN__) %then %do;
+         %if (&l_sysin. eq __STDIN__) %then %do;
             %let g_runEnvironment =SASUNIT_JUPYTER;
          %end;
          %else %do;
