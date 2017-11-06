@@ -90,7 +90,10 @@
          %end;
       %end;
       %else %if (&g_runEnvironment.=SASUNIT_DMS) %then %do;
-         %let g_runningProgramFullName=%sysfunc(getoption(SYSIN));
+         /*** No way to determine the currently interactive running program in Display Manager ***/
+      %end;
+      %else %if (&g_runEnvironment.=SASUNIT_JUPYTER) %then %do;
+         /*** No way to determine the currently interactive running program in Jupyter Notebooks ***/
       %end;
    %end;
    %if (%bquote(&g_runningProgramFullName.) ne _NONE_) %then %do;

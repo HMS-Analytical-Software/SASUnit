@@ -21,20 +21,17 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param   i_object          source code file of program under test, is searched in 
-                              the AUTOCALL path in case only the name of the source code 
-                              file is given, without path information
+   \param   i_object          relative or absolute path of the scenario source code file
    \param   i_desc            description of the test case
-   \param   i_specdoc         optional: path of specification document
-   \return  Information on current testcase in macro variables
-   
-   
+
 */ /** \cond */ 
 
-%MACRO initScenario(i_desc =_NONE_
+%MACRO initScenario(i_object =_AUTOMATIC_
+                   ,i_desc   =_NONE_
                    );
 
    %global g_inScenario g_inTestCase g_inTestCall g_scnID;
+   %local l_scenarioPath;
    
    %if &g_inScenario. EQ 1 %then %do;
       %put ERROR: initScenario must not be called twice!;
@@ -52,7 +49,12 @@
    %_readEnvMetadata;
    
    %local l_changed l_scnID;
-   %let l_scnid = 0;
+   %let l_scnid =0;
+
+   %if (%bquote(&i_object.) ne _AUTOMATIC_) %then %do;
+       %let l_scenarioPath           =%_stdPath(&g_ROOT, &i_object.);
+       %let g_runningProgramFullName =&l_scenarioPath.;
+   %end;
 
    filename _CUR_SCN "&g_runningProgramFullName.";
    proc sql noprint;
