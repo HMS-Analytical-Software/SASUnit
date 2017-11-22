@@ -99,12 +99,12 @@
    %else %do;
       data _null_;
          set work._nd_directories nobs=anzahl;
-         call symputx ("nobs", catt(anzahl), "L");
+         call symputx ("l_nobs", catt(anzahl), "L");
          stop;
       run;
 
-      %do %while (&nobs. > 0);
-         %let nobs = 0;
+      %do %while (&l_nobs. > 0);
+         %let l_nobs = 0;
          %_single_dir (i_dsPath=work._nd_directories
                       ,i_pattern=&l_i_pattern.
                       ,o_members=work._nd_members
@@ -119,7 +119,7 @@
             Directory = filename;
             keep Directory;
             if (_N_ = 1) then do;
-               call symputx ("nobs", catt(anzahl), "L");
+               call symputx ("l_nobs", catt(anzahl), "L");
             end;
          run;
       %end;
