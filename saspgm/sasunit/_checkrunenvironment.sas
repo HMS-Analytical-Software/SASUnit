@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_UTIL
 
-   \brief      This macro check operating system and sas version against the requirments of the current implementation 
+   \brief      This macro checks operating system and sas version against the requirments of the current implementation 
 
 
    \version    \$Revision: 508 $

@@ -22,7 +22,7 @@
    \param   i_libref       library in which the test candidate can be found
    \param   i_memname      name of data set, view or catalogue to be tested
    \param   i_target       optional: Explicit test for existence of a dataset,view or catalogue (Possible arguments: data, view, catalog). 
-                              If i_target is not given data will be used as default.
+                           If i_target is not given data will be used as default.
    \param   i_desc         description of the assertion to be checked \n
                            default: "Check for existence of a specific dataset"
    \param   i_not          optional: negates the assertion, if set to 1. Set to 0 no negation takes place. 

@@ -25,10 +25,10 @@
    \param      i_script               Path of shell script
    \param      i_expected             Path of first text file (expected)
    \param      i_actual               Path of second text file (actual)
-   \param      i_expected_shell_rc    Expected return value of called script i_script
-   \param      i_desc                 Optional parameter: description of the assertion to be checked
-   \param      i_threshold            Optional parameter: further parameter to be passed to the script
-   \param      i_modifier             Optional parameter: modifiers for the compare
+   \param      i_expected_shell_rc    Optional parameter: Expected return value of called script i_script (default = 0)
+   \param      i_modifier             Optional parameter: modifiers for the compare (default = ' ')
+   \param      i_desc                 Optional parameter: description of the assertion to be checked (default = "Comparion of texts")
+   \param      i_threshold            Optional parameter: further parameter to be passed to the script (default = 1)
 
 */ /** \cond */ 
 

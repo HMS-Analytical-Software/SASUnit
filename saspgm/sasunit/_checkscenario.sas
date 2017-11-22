@@ -11,7 +11,8 @@
                  be tested) has been changed since last execution of the scenario 
                - test scenario contains a unit under test which does not exist 
                  (scenario has to be executed so that this will be noticed)
-               - a calling program of units under test has been changed
+               - one of the called units under test has been changed. To make sure it still works
+                 as before
 
    \version    \$Revision$
    \author     \$Author$

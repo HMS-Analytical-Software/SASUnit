@@ -23,7 +23,7 @@
    \param   i_dsPath     name of sas dataset containing one variable directory. For each observation/directory the search will be done.
    \param   i_pattern    pattern which the filemembers must match
    \param   o_members    output dataset, default is work.dir. This dataset contains three columns
-                         named membername, filename and changed
+                         named membername, filename and changed (optional: default = work.dir)
    \param   o_subDirs    output dataset. This dataset contains one column named directory and
                          holds all subdirectories (optional: default = _NONE_)
 

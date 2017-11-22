@@ -26,13 +26,13 @@
    \param      i_script               Path of shell script
    \param      i_expected             Path of first image file (expected)
    \param      i_actual               Path of second image file (actual)
-   \param      i_expected_shell_rc    Expected return value of called script i_script 
+   \param      i_expected_shell_rc    Optional parameter: Expected return value of called script i_script (default = 0)
                                        0 : image match 
                                        >0: images do not match
-   \param      i_modifier             Optional parameter: modifiers for the compare
-   \param      i_threshold            Optional parameter: further parameter to be passed to the script. Default is 0. To be uses especially with
+   \param      i_modifier             Optional parameter: modifiers for the compare (default = "-metric RMSE")
+   \param      i_threshold            Optional parameter: further parameter to be passed to the script. Default is 0. To be used especially with
                                       modifier -metric ae to specify a number of pixels that may be different
-   \param      i_desc                 Optional parameter: description of the assertion to be checked
+   \param      i_desc                 Optional parameter: description of the assertion to be checked (default = "Comparison of images")
 
 */ /** \cond */ 
 

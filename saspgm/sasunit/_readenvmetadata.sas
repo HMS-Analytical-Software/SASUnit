@@ -15,10 +15,10 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 
-   \param    g_runMode
-   \param    g_runningProgram
-   \param    g_runEnvironment
-   \param    g_runningProgramFullName
+   \return   g_runMode
+   \return   g_runningProgram
+   \return   g_runEnvironment
+   \return   g_runningProgramFullName
 */
 /** \cond */ 
 %MACRO _readEnvMetadata;

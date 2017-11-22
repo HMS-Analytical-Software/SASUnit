@@ -30,25 +30,24 @@
    \param   i_actual       data set with actual values
    \param   i_desc         description of the assertion to be checked \n
                            default: "Compare datasets"
-   \param   i_fuzz         optional: maximal deviation of expected and actual values, 
-                           only for numerical values 
-   \param   i_allow        optional: accepted differences between data sets, default setting is DSLABEL LABEL COMPVAR<br />
-                           DSLABEL  Data set labels differ <br />
-                           DSTYPE   Data set types differ <br />
-                           INFORMAT Variable has different informat <br /> 
-                           FORMAT   Variable has different format <br />
-                           LENGTH   Variable has different length <br />
-                           LABEL    Variable has different label <br />
-                           BASEOBS  Base data set has observation not in comparison <br />
-                           COMPOBS  Comparison data set has observation not in base <br />
-                           BASEBY   Base data set has BY group not in comparison <br />
-                           COMPBY   Comparison data set has BY group not in base <br />
-                           BASEVAR  Base data set has variable not in comparison <br />
-                           COMPVAR  Comparison data set has variable not in base <br />
-                           VALUE    A value comparison was unequal <br />
-                           TYPE     Conflicting variable types <br />
-                           BYVAR    BY variables do not match <br />
-                           ERROR    Fatal error: comparison not done <br />
+   \param   i_fuzz         optional: maximal deviation of expected and actual values, only for numerical values 
+   \param   i_allow        optional: accepted differences between data sets, default setting is DSLABEL LABEL COMPVAR<br/>
+                           DSLABEL  Data set labels differ <br/>
+                           DSTYPE   Data set types differ <br/>
+                           INFORMAT Variable has different informat <br/> 
+                           FORMAT   Variable has different format <br/>
+                           LENGTH   Variable has different length <br/>
+                           LABEL    Variable has different label <br/>
+                           BASEOBS  Base data set has observation not in comparison <br/>
+                           COMPOBS  Comparison data set has observation not in base <br/>
+                           BASEBY   Base data set has BY group not in comparison <br/>
+                           COMPBY   Comparison data set has BY group not in base <br/>
+                           BASEVAR  Base data set has variable not in comparison <br/>
+                           COMPVAR  Comparison data set has variable not in base <br/>
+                           VALUE    A value comparison was unequal <br/>
+                           TYPE     Conflicting variable types <br/>
+                           BYVAR    BY variables do not match <br/>
+                           ERROR    Fatal error: comparison not done <br/>
    \param   i_id           optional: Id-column for matching of observations    
    \param   o_maxReportObs optional: number of observations that are copied from the expected and actual
                                      data set. default setting is MAX

@@ -57,6 +57,10 @@
                                  scan for dependencies
                                  0 (default) .. SASUnit core macros are not included
                                  1 .. SASUnit core macros are included
+   \param   i_language     optional: specifying the language that should be used.
+                                     this parameter is necessary to avoid using the respective environment variable under linux 
+						   supported values: "en" / "de"
+                           default: %sysget(SASUNIT_LANGUAGE)
 *//** \cond */ 
 
 %MACRO initSASUnit(i_root            = 

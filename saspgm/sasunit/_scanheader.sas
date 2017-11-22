@@ -110,8 +110,8 @@
       macroname = "&MacroName.";
 
       l_zeile     = compress (compbl (left (_INFILE_)), "0D"x);
-      if (substr (l_zeile,1,1)="@") then do;
-         substr (l_zeile ,1,1) ="\";
+      if (substr (l_zeile,1,1) = "@") then do;
+         substr (l_zeile ,1,1) = "\";
       end;
 
       ***Leerzeile;

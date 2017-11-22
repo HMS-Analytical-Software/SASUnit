@@ -22,13 +22,13 @@
    \param     i_script               Path of shell script
    \param     i_expected             First parameter for script
    \param     i_actual               Second parameter for script
-   \param     i_expected_shell_rc    Expected return code of scipt. The shell return code and i_expected_shell_rc are compared to determined 
-                                     success of assert
-   \param     i_modifier             Optional parameter: modifier used in script
-   \param     i_threshold            Optional parameter: threshold above which the test is successful
-   \param     i_expectedIsPath       If set to Y, i_expected is checked if it is a valid path
-   \param     i_actualIsPath         If put to Y, i_actual is checked if it is a valid path
-   \param     i_desc                 Optional parameter: description of the assertion to be checked
+   \param     i_expected_shell_rc    Optional parameter: Expected return code of scipt. The shell return code and i_expected_shell_rc are compared 
+                                     to determine success of assert (default = 0)
+   \param     i_modifier             Optional parameter: modifier used in script (default = ' ')
+   \param     i_threshold            Optional parameter: threshold above which the test is successful (default = "NONE")
+   \param     i_expectedIsPath       Optional parameter: If set to Y, i_expected is checked if it is a valid path (default = "N")
+   \param     i_actualIsPath         Optional parameter: If put to Y, i_actual is checked if it is a valid path (default = "N")
+   \param     i_desc                 Optional parameter: description of the assertion to be checked Default = "External comparison")
 
 */ /** \cond */ 
 

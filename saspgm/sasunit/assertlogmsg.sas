@@ -25,7 +25,7 @@
                            see http://support.sas.com/onlinedoc/913/getDoc/de/lrdict.hlp/a002288677.htm#a002405779
    \param   i_desc         description of the assertion to be checked \n
                            default: "Scan for log messages"
-   \param   i_not          negates the assertion, if set to 1
+   \param   i_not          negates the assertion, if set to 1 (optional: default = 0)
    
 */ /** \cond */ 
 

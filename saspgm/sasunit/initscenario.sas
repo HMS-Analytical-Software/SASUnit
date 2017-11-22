@@ -21,8 +21,8 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param   i_object          relative or absolute path of the scenario source code file
-   \param   i_desc            description of the test case
+   \param   i_object          relative or absolute path of the scenario source code file (optional: default=_AUTOMATIC_ -> running program is captured from session metadata.)
+   \param   i_desc            description of the test case (optional: No default)
 
 */ /** \cond */ 
 
