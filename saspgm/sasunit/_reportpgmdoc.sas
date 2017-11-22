@@ -113,10 +113,10 @@
          "\todo"       = "007"
          "\remark"     = "008"
          "\deprecated" = "009"
-         "\return"     = "00A"
-         "\copyright"  = "00B"
-         "\param"      = "011"
-         "\retval"     = "012"
+         "\copyright"  = "00A"
+         "\param"      = "010"
+         "\retval"     = "011"
+         "\return"     = "012"
          other         = "___"
          ;
    run;
