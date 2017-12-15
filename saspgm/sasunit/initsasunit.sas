@@ -20,47 +20,45 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param   i_root         optional: root path for all other paths except i_sasunit, is used for paths that do not begin 
-                           with a drive letter or a slash/backslash
-   \param   io_target      Path for the test repository and the generated documentation, has to exist
-   \param   i_overwrite    0 (default) .. create test repository only in case it does not already exist
-                           1 .. test repository is always created newly 
-   \param   i_project      optional: (in case test repository already exists): name of project
-   \param   i_sasunit      optional: absolute installation path of SAS programs from SASUnit. It is checked whether installationpath
-                           is starting with path in environment variable SASUNIT_ROOT set by script file
-   \param   i_sasautos     optional: i_sasautos, i_sasautos1 .. i_sasautos9: search paths for the programs 
-                           under test and other sas macros invoked in test scenarios or programs under test
-                           (the filename SASAUTOS predefined by SAS is always included at the beginning of
-                           the search path)
-   \param   i_autoexec     optional: a SAS program that is always invoked before a start of a test scenario
-   \param   i_sascfg       optional: a SAS configuration file that is used for every invocation of a
-                           test scenario
-   \param   i_sasuser      optional: Template for a SASUSER directory including configuration catalogs.
-                           A temporary SASUSER directory is created, existing only for the duration of a 
-                           test scenario, in which all files are copied out of the specified directory.
-   \param   i_testdata     optional: directory containing test data, has to exist in case parameter is set
-                           (is accessed readonly)
-   \param   i_refdata      optional: directory containing reference data, has to exist in case parameter is set
-                           (is accessed readonly)
-   \param   i_doc          optional: directory containing specification documents, etc., has to exist
-                           in case parameter is set (is accessed readonly)
-   \param   i_testcoverage optional: controls whether assessment of test coverage is activated
-                           0 .. no assessment of test coverage
-                           1 (default) .. assessment of test coverage is activated
-   \param   i_verbose      optional: controls whether results of asserts are written to the SAS log
-                           0 (default).. no results written to SAS log
-                           1 .. results are written to SAS log
-   \param   i_crossref     optional: controls whether the cross reference is created
-                           0  .. cross reference will not be created 
-                           1 (default).. cross reference will be created                                                      
-   \param   i_crossrefsasunit    optional: controls whether the SASUnit core macros are included in the
-                                 scan for dependencies
-                                 0 (default) .. SASUnit core macros are not included
-                                 1 .. SASUnit core macros are included
-   \param   i_language     optional: specifying the language that should be used.
-                                     this parameter is necessary to avoid using the respective environment variable under linux 
-						   supported values: "en" / "de"
-                           default: %sysget(SASUNIT_LANGUAGE)
+   \param   i_root              optional: root path for all other paths except i_sasunit, is used for paths that do not begin 
+                                with a drive letter or a slash/backslash
+   \param   io_target           Path for the test repository and the generated documentation, has to exist
+   \param   i_overwrite         0 (default) .. create test repository only in case it does not already exist
+                                1 .. test repository is always created newly 
+   \param   i_project           optional: (in case test repository already exists): name of project
+   \param   i_sasunit           optional: absolute installation path of SAS programs from SASUnit. It is checked whether installationpath
+                                is starting with path in environment variable SASUNIT_ROOT set by script file
+   \param   i_sasautos          optional: i_sasautos, i_sasautos1 .. i_sasautos9: search paths for the programs 
+                                under test and other sas macros invoked in test scenarios or programs under test
+                                (the filename SASAUTOS predefined by SAS is always included at the beginning of
+                                the search path)
+   \param   i_autoexec          optional: a SAS program that is always invoked before a start of a test scenario
+   \param   i_sascfg            optional: a SAS configuration file that is used for every invocation of a
+                                test scenario
+   \param   i_sasuser           optional: Template for a SASUSER directory including configuration catalogs.
+                                A temporary SASUSER directory is created, existing only for the duration of a 
+                                test scenario, in which all files are copied out of the specified directory.
+   \param   i_testdata          optional: directory containing test data, has to exist in case parameter is set
+                                (is accessed readonly)
+   \param   i_refdata           optional: directory containing reference data, has to exist in case parameter is set
+                                (is accessed readonly)
+   \param   i_doc               optional: directory containing specification documents, etc., has to exist
+                                in case parameter is set (is accessed readonly)
+   \param   i_testcoverage      optional: controls whether assessment of test coverage is activated
+                                0 .. no assessment of test coverage
+                                1 (default) .. assessment of test coverage is activated
+   \param   i_verbose           optional: controls whether results of asserts are written to the SAS log
+                                0 (default).. no results written to SAS log
+                                1 .. results are written to SAS log
+   \param   i_crossref          optional: controls whether the cross reference is created
+                                0  .. cross reference will not be created 
+                                1 (default).. cross reference will be created                                                      
+   \param   i_crossrefsasunit   optional: controls whether the SASUnit core macros are included in the scan for dependencies
+                                0 (default) .. SASUnit core macros are not included
+                                1 .. SASUnit core macros are included
+   \param   i_language          optional: specifying the language that should be used. This parameter is necessary to avoid using the respective environment variable under linux 
+                                supported values: "en" / "de"
+                                default: %sysget(SASUNIT_LANGUAGE)
 *//** \cond */ 
 
 %MACRO initSASUnit(i_root            = 
@@ -78,6 +76,26 @@
                   ,i_sasautos7       =
                   ,i_sasautos8       =
                   ,i_sasautos9       =
+                  ,i_sasautos10      =
+                  ,i_sasautos11      =
+                  ,i_sasautos12      =
+                  ,i_sasautos13      =
+                  ,i_sasautos14      =
+                  ,i_sasautos15      =
+                  ,i_sasautos16      =
+                  ,i_sasautos17      =
+                  ,i_sasautos18      =
+                  ,i_sasautos19      =
+                  ,i_sasautos20      =
+                  ,i_sasautos21      =
+                  ,i_sasautos22      =
+                  ,i_sasautos23      =
+                  ,i_sasautos24      =
+                  ,i_sasautos25      =
+                  ,i_sasautos26      =
+                  ,i_sasautos27      =
+                  ,i_sasautos28      =
+                  ,i_sasautos29      =
                   ,i_autoexec        =
                   ,i_sascfg          =
                   ,i_sasuser         =
@@ -105,10 +123,6 @@
    /***       Check boolean parameters vs default value                        ***/
    /******************************************************************************/
 
-   /*-- initialize error --------------------------------------------------------*/
-   %_initErrorHandler;
-   %LET l_macname=&sysmacroname;
-
    /*-- check for operation system and SAS version -------------------------------*/
    %IF (%_checkRunEnvironment(&i_verbose.) ne 0) %THEN %GOTO errexit;
 
@@ -128,7 +142,10 @@
       l_testdata    l_testdata_abs 
       l_refdata     l_refdata_abs      
       l_doc         l_doc_abs  
-      l_sasautos    l_sasautos1 l_sasautos2 l_sasautos3 l_sasautos4 l_sasautos5 l_sasautos6 l_sasautos7 l_sasautos8 l_sasautos9 l_sasautos_abs
+      l_sasautos    l_sasautos1  l_sasautos2  l_sasautos3  l_sasautos4  l_sasautos5  l_sasautos6  l_sasautos7  l_sasautos8  l_sasautos9 
+      l_sasautos10  l_sasautos11 l_sasautos12 l_sasautos13 l_sasautos14 l_sasautos15 l_sasautos16 l_sasautos17 l_sasautos18 l_sasautos19 
+      l_sasautos20  l_sasautos21 l_sasautos22 l_sasautos23 l_sasautos24 l_sasautos25 l_sasautos26 l_sasautos27 l_sasautos28 l_sasautos29 
+      l_sasautos_abs
       i
       l_work
       l_sysrc
@@ -173,17 +190,6 @@
       %END;
    %END;
 
-   /*-- if test coverage should be assessed: check SAS version --------------*/
-   %IF (&i_testcoverage. EQ 1) %THEN %DO;
-      %IF %_handleError(&l_macname.
-                    ,TestCoverageNotSupported
-                    ,(&sysver. = 9.2)
-                    ,Error SAS Option MCOVERAGE is only supported since SAS 9.3
-                    ,i_verbose=&i_verbose.
-                    ) 
-      %THEN %GOTO errexit;
-   %END;
-
    /*-- Resolve relative root path like ../. to an absolute root path ----------*/
    libname _tmp "&i_root.";
    %let l_root=%sysfunc (pathname(_tmp));
@@ -206,9 +212,9 @@
          SELECT tsu_project  INTO :l_project  FROM target.tsu;
          SELECT tsu_sasunit  INTO :_sasunit   FROM target.tsu;
          SELECT tsu_sasautos INTO :l_sasautos FROM target.tsu;
-      %DO i=1 %TO 9;
+      %DO i=1 %TO 29;
          SELECT tsu_sasautos&i. INTO :l_sasautos&i. FROM target.tsu;
-      %END; /* i=1 %TO 9 */
+      %END; /* i=1 %TO 29 */
          SELECT tsu_autoexec INTO :l_autoexec FROM target.tsu;
          SELECT tsu_sascfg   INTO :l_sascfg   FROM target.tsu;
          SELECT tsu_sasuser  INTO :l_sasuser  FROM target.tsu;
@@ -216,6 +222,21 @@
          SELECT tsu_refdata  INTO :l_refdata  FROM target.tsu;
          SELECT tsu_doc      INTO :l_doc      FROM target.tsu;
       QUIT;
+   %END;
+
+   /*-- initialize error --------------------------------------------------------*/
+   %_initErrorHandler;
+   %LET l_macname=&sysmacroname;
+
+   /*-- if test coverage should be assessed: check SAS version --------------*/
+   %IF (&i_testcoverage. EQ 1) %THEN %DO;
+      %IF %_handleError(&l_macname.
+                    ,TestCoverageNotSupported
+                    ,(&sysver. = 9.2)
+                    ,Error SAS Option MCOVERAGE is only supported since SAS 9.3
+                    ,i_verbose=&i_verbose.
+                    ) 
+      %THEN %GOTO errexit;
    %END;
 
    /*-- root folder -------------------------------------------------------------*/
@@ -316,7 +337,7 @@
                     ) 
       %THEN %GOTO errexit;
    
-   %DO i=1 %TO 9;
+   %DO i=1 %TO 29;
       %LET l_sasautos&i.=&&l_sasautos&i..;
       %IF "&&i_sasautos&i" NE "" %THEN %LET l_sasautos&i.=&&i_sasautos&i..;
       %LET l_sasautos_abs=%_abspath(&l_root,&&l_sasautos&i..);
@@ -327,7 +348,7 @@
                        ,i_verbose=&i_verbose.
                        ) 
          %THEN %GOTO errexit;
-   %END; /* i=1 %TO 9 */
+   %END; /* i=1 %TO 29 */
 
    /*-- check if autoexec exists where specified --------------------------------*/
    %LET l_autoexec=&l_autoexec;
@@ -499,7 +520,7 @@
             ,tsu_sasunit         CHAR(1000)        /* see i_sasunit */
             ,tsu_sasunit_os      CHAR(1000)        /* os-specific sasunit macros */
             ,tsu_sasautos        CHAR(1000)        /* see i_sasautos */
-      %DO i=1 %TO 9;            
+      %DO i=1 %TO 29;            
             ,tsu_sasautos&i      CHAR(1000)        /* see i_sasautos<n> */
       %END;                     
             ,tsu_autoexec        CHAR(1000)        /* see i_autoexec */
@@ -518,7 +539,9 @@
             ,tsu_language        CHAR(10)          /* see i_language */
          );
          INSERT INTO target.tsu VALUES (
-         "","","","","","","","","","","","","","","","","","","","","","",0,0,&i_testcoverage.,"",&i_verbose.,&i_crossref.,&i_crossrefsasunit.,"&i_language."
+         "","","","","",""
+        ,"","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""
+        ,"","","","","","",0,0,&i_testcoverage.,"",&i_verbose.,&i_crossref.,&i_crossrefsasunit.,"&i_language."
          );
 
          CREATE TABLE target.scn(COMPRESS=CHAR)
@@ -624,9 +647,9 @@
    /*-- update parameters ----------------------------------------------------*/
    PROC SQL NOPRINT;
       UPDATE target.tsu SET tsu_sasautos  = "&l_sasautos";
-      %DO i=1 %TO 9;
+      %DO i=1 %TO 29;
          UPDATE target.tsu SET tsu_sasautos&i. = "&&l_sasautos&i";
-      %END; /* i=1 %TO 9 */
+      %END; /* i=1 %TO 29 */
       UPDATE target.tsu SET tsu_project         = "&l_project";
       UPDATE target.tsu SET tsu_target          = "&io_target";
       UPDATE target.tsu SET tsu_root            = "&l_root";

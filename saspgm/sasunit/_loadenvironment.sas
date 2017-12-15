@@ -25,12 +25,14 @@
    %LOCAL l_macname; %LET l_macname=&sysmacroname;
 
    %GLOBAL g_sasunitroot g_target g_project g_root g_sasunit g_sasunit_os g_autoexec g_sascfg g_sasuser
-           g_sasautos g_sasautos0 g_sasautos1 g_sasautos2 g_sasautos3 g_sasautos4 
-           g_sasautos5 g_sasautos6 g_sasautos7 g_sasautos8 g_sasautos9 
+           g_sasautos   
+           g_sasautos0  g_sasautos1  g_sasautos2  g_sasautos3  g_sasautos4  g_sasautos5  g_sasautos6  g_sasautos7  g_sasautos8  g_sasautos9 
+           g_sasautos10 g_sasautos11 g_sasautos12 g_sasautos13 g_sasautos14 g_sasautos15 g_sasautos16 g_sasautos17 g_sasautos18 g_sasautos19 
+           g_sasautos20 g_sasautos21 g_sasautos22 g_sasautos23 g_sasautos24 g_sasautos25 g_sasautos26 g_sasautos27 g_sasautos28 g_sasautos29 
            g_testdata g_refdata g_doc g_error g_warning g_note
            g_work g_testout g_log g_logfile g_printfile
            g_testcoverage g_verbose g_crossref g_crossrefsasunit g_rep_encoding
-		   g_language
+           g_language
            ;
 
    %LOCAL i;
@@ -78,7 +80,7 @@
       call symput ('g_sasunit_os'     , trim(tsu_sasunit_os));
       call symput ('g_sasautos'       , trim(tsu_sasautos));
       call symput ('g_sasautos0'      , trim(tsu_sasautos));
-   %DO i=1 %TO 9;                     
+   %DO i=1 %TO 29;                     
       call symput ("g_sasautos&i"     , trim(tsu_sasautos&i));
    %END;                              
       call symput ('g_autoexec'       , trim(tsu_autoexec));
@@ -100,7 +102,7 @@
    %LET g_sasunit      = %_abspath(&g_root,&g_sasunit);
    %LET g_sasunit_os   = %_abspath(&g_root,&g_sasunit_os);
    %LET g_sasautos     = %_abspath(&g_root,&g_sasautos);
-   %DO i=0 %TO 9;
+   %DO i=0 %TO 29;
       %LET g_sasautos&i = %_abspath(&g_root,&&g_sasautos&i);
    %END;
    %LET g_autoexec     = %_abspath(&g_root,&g_autoexec);
@@ -136,10 +138,10 @@
       %END;
    %END;
 
-   OPTIONS MAUTOSOURCE SASAUTOS=(SASAUTOS "&g_sasunit" "&g_sasunit_os"
-   %DO i=0 %TO 9;
+   OPTIONS MAUTOSOURCE APPEND=(SASAUTOS=("&g_sasunit_os"
+   %DO i=0 %TO 29;
       %IF "&&g_sasautos&i" NE "" %THEN "&&g_sasautos&i";
-   %END;     );
+   %END;     ));
    
    %_oscmds;
 

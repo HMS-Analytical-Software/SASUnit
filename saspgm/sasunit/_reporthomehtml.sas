@@ -97,7 +97,7 @@
             idColumn = "&g_nls_reportHome_006.";
             parameterColumn="^{style [flyover=""&g_sasautos.""]%str(&)g_sasautos}";
             valueColumn=catt ("^{style [flyover=""&g_sasautos."" url=""file:///&g_sasautos.""]", tsu_sasautos, "}");
-            %DO i=1 %TO 9;
+            %DO i=1 %TO 29;
             if (tsu_sasautos&i. ne "") then do;
                parameterColumn=catt(parameterColumn,"^n","^{style [flyover=""&&g_sasautos&i.""]%str(&)g_sasautos&i.}");
                valueColumn=catt (valueColumn,"^n","^{style [flyover=""&&g_sasautos&i."" url=""file:///&&g_sasautos&i.""]", tsu_sasautos&i., "}");
@@ -253,7 +253,7 @@
       END;
    run;
 
-   %let l_title   =%str(&g_project | &Reference. &g_nls_reportHome_001.);
+   %let l_title = %str(&g_project | &Reference. &g_nls_reportHome_001.);
    title j=c %sysfunc(quote(&l_title.));
 
    %_reportFooter(o_html=&o_html.);

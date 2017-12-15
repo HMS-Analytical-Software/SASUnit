@@ -14,7 +14,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   d_reporting Name of dataset to be created
 
 */ /** \cond */ 
@@ -179,7 +179,7 @@ PROC SQL NOPRINT;
          ,tsu_sasunit_os
          ,tsu_sasautos   
          ,tsu_sasautos as tsu_sasautos0
-   %DO i=1 %TO 9;
+   %DO i=1 %TO 29;
          ,tsu_sasautos&i 
    %END;
          ,tsu_autoexec   
