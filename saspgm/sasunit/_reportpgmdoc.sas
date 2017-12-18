@@ -114,9 +114,9 @@
          "\remark"     = "008"
          "\deprecated" = "009"
          "\copyright"  = "00A"
+         "\return"     = "00F"
          "\param"      = "010"
          "\retval"     = "011"
-         "\return"     = "012"
          other         = "___"
          ;
    run;
