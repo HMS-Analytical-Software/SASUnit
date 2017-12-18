@@ -89,7 +89,12 @@
       !! "-nosyntaxcheck "
       !! "-mautosource "
       !! "-mcompilenote all "
-      !! "-sasautos SASAUTOS -append SASAUTOS ""&g_sasunit"" "
+      %if (&sysver. = 9.2) %then %do;
+         !! "-sasautos (SASAUTOS ""&g_sasunit"") "
+      %end;
+      %else %do;
+         !! "-append SASAUTOS ""&g_sasunit"" "
+      %end;
       !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
       !! "-termstmt ""%nrstr(%%%_termScenario())"" "
       !! "&l_tcgOptionsString. "
