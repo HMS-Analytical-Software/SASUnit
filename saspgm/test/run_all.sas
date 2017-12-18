@@ -15,13 +15,11 @@
 
 */ /** \cond */ 
 
-OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "%trim(%sysget(SASUNIT_ROOT))/saspgm/sasunit");
+OPTIONS MPRINT MAUTOSOURCE APPEND=(SASAUTOS="%trim(%sysget(SASUNIT_ROOT))/saspgm/sasunit");
 
 %LET SASUNIT_VERBOSE=1;
 %LET SASUNIT_CROSSREF=1;
 %LET SASUNIT_CROSSREFSASUNIT=1;
-
-proc options option=logparm;run;
 
 %initSASUnit(
    i_root            = .
@@ -147,7 +145,7 @@ run;
 
 %reportSASUnit(
     i_language=%upcase(%sysget(SASUNIT_LANGUAGE))
-   ,i_style   = SASUnit
+   ,i_style   =SASUnit
    ,o_html    =1
    ,o_junit   =1
 );

@@ -18,7 +18,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_lib      Library of input data set
    \param   i_data     Name of input data set
    \param   i_language Lanuage in which the documentation should be created. (optional: Default=EN)
@@ -41,7 +41,7 @@
    run;
 
    data WORK._RPGH_HEADER;
-      set _RPGH (where=(tag_sort like "00%"));
+      set WORK._RPGH (where=(tag_sort like "00%"));
    run;
 
    %if (%_nobs (WORK._RPGH_HEADER) < 1) %then %do;
@@ -54,7 +54,7 @@
       proc report data=work._empty_dataset nowd missing 
          style(column)=pgmDocBlindData [just=center]
          style(header)=blindHeader
-         style(report)={width=60em 
+         style(report)={width=90em 
                         borderspacing =  0px
                         paddingtop    =  3px 
                         paddingleft   = 11px 
@@ -80,7 +80,7 @@
       proc report data=WORK._RPGH_HEADER nowd missing 
          style(column)=pgmDocBlindData
          style(header)=blindHeader
-         style(report)={width=60em 
+         style(report)={width=90em 
                         borderspacing =  0px
                         paddingtop    =  3px 
                         paddingleft   = 11px 
@@ -127,7 +127,13 @@
    proc report data=WORK._RPGH (where=(tag_sort like "01%")) nowd missing 
       style(column)=pgmDocBlindData
       style(header)=blindHeader
-      style(report)=pgmDocBlindData {width=60em cellspacing=0}
+      style(report)={width=90em 
+					borderspacing =  0px
+					paddingtop    =  3px 
+					paddingleft   = 11px 
+					paddingright  = 11px 
+					paddingbottom =  3px 
+				   }
       ;
 
       column tag_sort tag new_name new_description;

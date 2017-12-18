@@ -42,9 +42,10 @@
    %if &g_inTestCase. EQ 1 %then %do;
       %put ERROR: initScenario must not be called within a testcase!;
    %end;
+   
+   %let g_inScenario=0;
    %let g_inTestCase=0;
    %let g_inTestCall=0;
-   %let g_inScenario=0;
    
    %_readEnvMetadata;
    
