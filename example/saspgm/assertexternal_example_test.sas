@@ -14,7 +14,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%initScenario(i_desc=Tests for assertExternal.sas);
+%initScenario(i_desc=Test examples for assertExternal.sas);
 
 %MACRO _createtestfiles;
    DATA _NULL_;
@@ -64,7 +64,7 @@
       assertExternal_work2
    ;
    /* Prepare macro variables to adapt to OS specific test */
-   %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
+   %IF %lowcase(%SYSGET(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
       %LET assertExternal_script1        =%sysfunc(translate(&g_sasunit_os.\assertExternal_cnt.cmd,\,/));
       %LET assertExternal_script2        =%sysfunc(translate(&g_sasunit_os.\assertExternal_fc.cmd,\,/));
       %LET assertExternal_mod1           =/C;
@@ -72,7 +72,7 @@
       %LET assertExternal_work1Copy      =%sysfunc(translate(&g_work.\text1_copy.txt,\,/));
       %LET assertExternal_work2          =%sysfunc(translate(&g_work.\text2.txt,\,/));
    %END;
-   %ELSE %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ linux %THEN %DO;
+   %ELSE %IF %lowcase(%SYSGET(SASUNIT_HOST_OS)) EQ linux %THEN %DO;
       %LET assertExternal_script1        = %_abspath(&g_sasunit_os.,assertExternal_wc.sh);
       %LET assertExternal_script2        = %_abspath(&g_sasunit_os.,assertExternal_diff.sh);
       %LET assertExternal_mod1           =-i;

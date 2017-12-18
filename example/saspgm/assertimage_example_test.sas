@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_EXAMPLES_TEST 
 
-   \brief      Test examples for assertImage.sas 
+   @brief      Test examples for assertImage.sas
 
    \version    \$Revision$
    \author     \$Author$
@@ -14,7 +14,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%initScenario(i_desc=Tests for assertText.sas);
+%initScenario(i_desc=Test examples for assertImage.sas);
 
 %MACRO _createtestfiles();
    %_copyfile(&g_root/dat/rose.jpg, &g_work./rose.jpg);

@@ -14,7 +14,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%initScenario(i_desc=Tests for assertText.sas);
+%initScenario(i_desc=Test examples for assertText.sas);
 
 %MACRO _createtestfiles;
    DATA _NULL_;
