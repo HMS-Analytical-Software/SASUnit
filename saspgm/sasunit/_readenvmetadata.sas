@@ -28,6 +28,8 @@
       g_runningProgram
       g_runEnvironment
       g_runningProgramFullName
+      g_xcmd
+      g_dirMacro
    ;
 
    %local l_sysin;
@@ -43,6 +45,7 @@
       %let g_runMode                =SASUNIT_INTERACTIVE;         
       %let g_runningProgramFullName =_NONE_;
    %end;
+   
    %*** Detect batch mode ***;
    %else %if (&l_sysin. ne %str()) %then %do;
       %let g_runningProgramFullName =%sysfunc(translate (&l_sysin., /, \));
@@ -99,6 +102,15 @@
    %if (%bquote(&g_runningProgramFullName.) ne _NONE_) %then %do;
       %let g_runningProgramFullName =%sysfunc(translate (&g_runningProgramFullName., /, \));
       %let g_runningProgram         =%scan(&g_runningProgramFullName., -1, /);
+   %end;
+
+   %let g_xcmd = %sysfunc(getoption(XCMD));
+
+   %if (&g_xcmd. = NOXMD) %then %do;
+      %let g_dirMacro = _noxcmd_dir;
+   %end;
+   %else %do;
+      %let g_dirMacro = _dir;
    %end;
 %MEND _readEnvMetadata;
 /** \endcond */

@@ -40,6 +40,14 @@
               ,i_actual  =&g_RPM.
               ,i_desc    =Running Program is this scenario
               );
+%assertEquals (i_expected=XCMD
+              ,i_actual  =&g_xcmd.
+              ,i_desc    =Setting of XCMD system option
+              );
+%assertEquals (i_expected=_dir
+              ,i_actual  =&g_dirMacro.
+              ,i_desc    =Name of corresponding dir macro
+              );
 %endTestcase();
 
 /* === Test case 2 ================================================ */
@@ -97,6 +105,10 @@
               ,i_desc    =Running Program is this scenario
               );
 %endTestcase();
+
+%symdel _EXECENV;
+%symdel _SASPROGRAMFILE;
+%symdel _CLIENTAPPABREV;
 
 %endScenario();
 /** \endcond */
