@@ -29,7 +29,7 @@
 
 %MACRO _dir(i_path=
            ,i_recursive=0
-           ,o_out=dir
+           ,o_out=work.dir
            );
 
    %LOCAL dirfile encoding s l_i_path;

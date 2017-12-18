@@ -29,7 +29,7 @@
 
 %MACRO _dir (i_path=
             ,i_recursive=0
-            ,o_out=dir
+            ,o_out=work.dir
             );
 
    %local encoding s dirfile xwait xsync xmin l_i_path;
