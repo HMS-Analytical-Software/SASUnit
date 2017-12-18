@@ -33,11 +33,11 @@
       length desc $255;
       retain inbrief 0 desc;
       input line $255.;
-      if upcase(line) =: '\BRIEF' then do;
+      if upcase(line) =: '\BRIEF' or upcase(line) =: '@BRIEF' then do;
          line = left (substr(line,7));
          inbrief=1;
       end;
-      if substr(line,1,1)='\' or line=' ' or line='0D'x then inbrief=0;
+      if substr(line,1,1)='\' or substr(line,1,1)='@' or line=' ' or line='0D'x then inbrief=0;
       if inbrief then do;
          if desc=' ' then desc = line;
          else desc = trim(desc) !! ' ' !! line;
