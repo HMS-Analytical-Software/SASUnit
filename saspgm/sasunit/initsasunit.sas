@@ -450,31 +450,6 @@
 
    %_readEnvMetadata;
 
-   %IF (&g_runMode. = SASUNIT_BATCH) %THEN %DO;
-      /*-- check folders -----------------------------------------------------------*/
-      %IF %_handleError(&l_macname.
-                       ,NoLogDir
-                       ,NOT %_existdir(&l_target_abs./log)
-                       ,folder &l_target_abs./log does not exist
-                       ,i_verbose=&i_verbose.
-                       ) 
-         %THEN %GOTO errexit;
-      %IF %_handleError(&l_macname.
-                       ,NoTstDir
-                       ,NOT %_existdir(&l_target_abs./tst)
-                       ,folder &l_target_abs./tst does not exist
-                       ,i_verbose=&i_verbose.
-                       ) 
-         %THEN %GOTO errexit;
-      %IF %_handleError(&l_macname.
-                       ,NoRepDir
-                       ,NOT %_existdir(&l_target_abs./rep)
-                       ,folder &l_target_abs./rep does not exist
-                       ,i_verbose=&i_verbose.
-                       ) 
-         %THEN %GOTO errexit;
-   %END; 
-
    /******************************************************************************/
    /*** End of Step one                                                        ***/
    /******************************************************************************/
@@ -642,7 +617,30 @@
       RUN;
       %_executeCMDFile(&l_cmdfile.);
       %LET l_rc=%_delfile(&l_cmdfile.);
-   %END;
+
+      /*-- check folders -----------------------------------------------------------*/
+      %IF %_handleError(&l_macname.
+                       ,NoLogDir
+                       ,NOT %_existdir(&l_target_abs./log)
+                       ,folder &l_target_abs./log does not exist
+                       ,i_verbose=&i_verbose.
+                       ) 
+         %THEN %GOTO errexit;
+      %IF %_handleError(&l_macname.
+                       ,NoTstDir
+                       ,NOT %_existdir(&l_target_abs./tst)
+                       ,folder &l_target_abs./tst does not exist
+                       ,i_verbose=&i_verbose.
+                       ) 
+         %THEN %GOTO errexit;
+      %IF %_handleError(&l_macname.
+                       ,NoRepDir
+                       ,NOT %_existdir(&l_target_abs./rep)
+                       ,folder &l_target_abs./rep does not exist
+                       ,i_verbose=&i_verbose.
+                       ) 
+         %THEN %GOTO errexit;
+   %END; 
 
    /*-- update parameters ----------------------------------------------------*/
    PROC SQL NOPRINT;
