@@ -16,7 +16,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   io_target       path to test database
 */ /** \cond */ 
 
@@ -50,7 +50,8 @@
       %THEN %GOTO errexit;
 
    /* flags for test cases */
-   %GLOBAL g_inTestcase g_inTestcall;
+   %GLOBAL g_inScenario g_inTestcase g_inTestcall;
+   %LET g_inScenario=0;
    %LET g_inTestcase=0;
    %LET g_inTestcall=0;
 
