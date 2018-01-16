@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST
 
-   \brief      Test of _new_dir.sas
+   \brief      Test of _noxcmd_dir.sas
 
    \version    \$Revision$
    \author     \$Author$
@@ -46,8 +46,8 @@ run;
 /*-- 001 Empty directory ---------------------------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir;
 
-%initTestcase(i_object=_new_dir.sas, i_desc=directory does not exist)
-%_new_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=directory does not exist)
+%_noxcmd_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -58,8 +58,8 @@ run;
 %let path = %sysfunc(pathname(work))/testdir;
 %_xcmd(mkdir "&path")
 
-%initTestcase(i_object=_new_dir.sas, i_desc=empty directory)
-%_new_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=empty directory)
+%_noxcmd_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -72,8 +72,8 @@ run;
 %addentry(&path/file1.txt)
 %addentry(&path/filemitü.dat)
 
-%initTestcase(i_object=_new_dir.sas, i_desc=directory with three files)
-%_new_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=directory with three files)
+%_noxcmd_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -98,8 +98,8 @@ data dircheck1; set dircheck; run;
 %addentry(&path/file_two_1.dat)
 %addentry(&path/file_two_2.dat)
 
-%initTestcase(i_object=_new_dir.sas, i_desc=recursive call with subdirectories)
-%_new_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=1, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=recursive call with subdirectories)
+%_noxcmd_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=1, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -109,8 +109,8 @@ proc sort data=dircheck; by filename; run;
 %endTestcase;
 
 /*-- 005 recursive call with subdirectories and delimiter at end of path --------------------------------------*/
-%initTestcase(i_object=_new_dir.sas, i_desc=recursive call with subdirectories and delimiter at end of path)
-%_new_dir(i_path=%sysfunc(pathname(work))/testdir/, i_recursive=1, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=recursive call with subdirectories and delimiter at end of path)
+%_noxcmd_dir(i_path=%sysfunc(pathname(work))/testdir/, i_recursive=1, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -120,8 +120,8 @@ proc sort data=dircheck; by filename; run;
 %endTestcase;
 
 /*-- 006 nonrecursive call with subdirectories -----------------------------------*/
-%initTestcase(i_object=_new_dir.sas, i_desc=nonrecursive call with subdirectories)
-%_new_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=nonrecursive call with subdirectories)
+%_noxcmd_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -131,8 +131,8 @@ proc sort data=dircheck; by filename; run;
 %endTestcase;
 
 /*-- 007 nonrecursive call with wildcards -----------------------------------*/
-%initTestcase(i_object=_new_dir.sas, i_desc=nonrecursive call with wildcards)
-%_new_dir(i_path=%sysfunc(pathname(work))/testdir/%str(*).dat, i_recursive=0, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=nonrecursive call with wildcards)
+%_noxcmd_dir(i_path=%sysfunc(pathname(work))/testdir/%str(*).dat, i_recursive=0, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -142,8 +142,8 @@ proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains "
 %endTestcase;
 
 /*-- 008 recursive call with wildcards -----------------------------------*/
-%initTestcase(i_object=_new_dir.sas, i_desc=recursive call with wildcards)
-%_new_dir(i_path=%sysfunc(pathname(work))/testdir/%str(*).dat, i_recursive=1, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=recursive call with wildcards)
+%_noxcmd_dir(i_path=%sysfunc(pathname(work))/testdir/%str(*).dat, i_recursive=1, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -153,8 +153,8 @@ proc sort data=dircheck out=dirchecktxt; by filename; where filename contains ".
 %endTestcase;
 
 /*-- 009 nonrecursive call with wildcards and quoted path -----------------------------------*/
-%initTestcase(i_object=_new_dir.sas, i_desc=nonrecursive call with wildcards and quoted path)
-%_new_dir(i_path='%sysfunc(pathname(work))/testdir/*.dat', i_recursive=0, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=nonrecursive call with wildcards and quoted path)
+%_noxcmd_dir(i_path='%sysfunc(pathname(work))/testdir/*.dat', i_recursive=0, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -164,8 +164,8 @@ proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains "
 %endTestcase;
 
 /*-- 010 recursive call with wildcards and quoted path -----------------------------------*/
-%initTestcase(i_object=_new_dir.sas, i_desc=recursive call with wildcards and quoted path)
-%_new_dir(i_path='%sysfunc(pathname(work))/testdir/*.dat', i_recursive=1, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=recursive call with wildcards and quoted path)
+%_noxcmd_dir(i_path='%sysfunc(pathname(work))/testdir/*.dat', i_recursive=1, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -175,8 +175,8 @@ proc sort data=dircheck out=dirchecktxt; by filename; where filename contains ".
 %endTestcase;
 
 /*-- 011 nonrecursive call with wildcards, macro function and quoted path -----------------------------------*/
-%initTestcase(i_object=_new_dir.sas, i_desc=nonrecursive call with wildcards%str(,) macro function  and quoted path)
-%_new_dir(i_path='%sysfunc(pathname(work))/testdir/%str(*).dat', i_recursive=0, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=nonrecursive call with wildcards%str(,) macro function  and quoted path)
+%_noxcmd_dir(i_path='%sysfunc(pathname(work))/testdir/%str(*).dat', i_recursive=0, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -186,8 +186,8 @@ proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains "
 %endTestcase;
 
 /*-- 012 recursive call with wildcards, macro function and quoted path -----------------------------------*/
-%initTestcase(i_object=_new_dir.sas, i_desc=recursive call with wildcards%str(,) macro function and quoted path)
-%_new_dir(i_path='%sysfunc(pathname(work))/testdir/*.dat', i_recursive=1, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=recursive call with wildcards%str(,) macro function and quoted path)
+%_noxcmd_dir(i_path='%sysfunc(pathname(work))/testdir/*.dat', i_recursive=1, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -197,8 +197,8 @@ proc sort data=dircheck out=dirchecktxt; by filename; where filename contains ".
 %endTestcase;
 
 /*-- 013 nonrecursive call with wildcards and quoted path -----------------------------------*/
-%initTestcase(i_object=_new_dir.sas, i_desc=nonrecursive call with wildcards and quoted path)
-%_new_dir(i_path="%sysfunc(pathname(work))/testdir/%str(*).dat", i_recursive=0, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=nonrecursive call with wildcards and quoted path)
+%_noxcmd_dir(i_path="%sysfunc(pathname(work))/testdir/%str(*).dat", i_recursive=0, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -208,8 +208,8 @@ proc sort data=dircheck1 out=dirchecktxt; by filename; where filename contains "
 %endTestcase;
 
 /*-- 014 recursive call with wildcards and quoted path -----------------------------------*/
-%initTestcase(i_object=_new_dir.sas, i_desc=recursive call with wildcards and quoted path)
-%_new_dir(i_path="%sysfunc(pathname(work))/testdir/%str(*).dat", i_recursive=1, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=recursive call with wildcards and quoted path)
+%_noxcmd_dir(i_path="%sysfunc(pathname(work))/testdir/%str(*).dat", i_recursive=1, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -219,8 +219,8 @@ proc sort data=dircheck out=dirchecktxt; by filename; where filename contains ".
 %endTestcase;
 
 /*-- 015 nonrecursive call with specific file -----------------------------------*/
-%initTestcase(i_object=_new_dir.sas, i_desc=nonrecursive call with specific file)
-%_new_dir(i_path="%sysfunc(pathname(work))/testdir/file1.txt", i_recursive=0, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=nonrecursive call with specific file)
+%_noxcmd_dir(i_path="%sysfunc(pathname(work))/testdir/file1.txt", i_recursive=0, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
@@ -230,8 +230,8 @@ proc sort data=dircheck out=dirchecktxt; by filename; where filename contains "f
 %endTestcase;
 
 /*-- 016 nonrecursive call with specific file in subdirectory -----------------------------------*/
-%initTestcase(i_object=_new_dir.sas, i_desc=nonrecursive call with specific file in subdirectory)
-%_new_dir(i_path="%sysfunc(pathname(work))/testdir/one/file_one_1.dat", i_recursive=1, o_out=dir);
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=nonrecursive call with specific file in subdirectory)
+%_noxcmd_dir(i_path="%sysfunc(pathname(work))/testdir/one/file_one_1.dat", i_recursive=1, o_out=dir);
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);

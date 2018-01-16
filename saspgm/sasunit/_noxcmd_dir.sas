@@ -26,7 +26,7 @@
                          named filename and changed
 
 */ /** \cond */ 
-%MACRO _new_dir (i_path=
+%MACRO _noxcmd_dir (i_path=
                 ,i_recursive=0
                 ,o_out=dir
                 );
@@ -125,5 +125,5 @@
       %end;
    %end;
 %exit:
-%MEND _new_dir;
+%MEND _noxcmd_dir;
 /** \endcond **/
