@@ -27,7 +27,7 @@
 
    %LET l_macname=&sysmacroname;
 
-   OPTIONS MAUTOSOURCE MPRINT LINESIZE=MAX;
+   OPTIONS MAUTOSOURCE MPRINT MPRINTNEST LINESIZE=MAX;
 
    /* initialize error handling */
    %_initErrorHandler;

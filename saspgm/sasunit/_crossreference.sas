@@ -23,7 +23,12 @@
    \param      o_listcalling     Output data set with columns caller and called representing the calling hierarchy
    \param      o_dependency      Output data set holding results of this macro needed in macro _checkScenario
    \param      o_macroList       Output data set with list of all macros, needed for visualization of calling hierarchy
-   
+
+   \todo Since options mprintnest is already available with SAS9.2 use this option for cross reference from various logfiles.
+         We could use this for the d3d graphics to speed up reporting a bit.
+         For executing all calling macros of an examinee we still need sourcecode scanning. Or we need to store this call reference 
+         froim last run.
+
 */ /** \cond */ 
 
 %MACRO _crossreference(i_includeSASUnit  =0
