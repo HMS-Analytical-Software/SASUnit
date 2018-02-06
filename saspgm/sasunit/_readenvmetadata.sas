@@ -106,7 +106,7 @@
 
    %let g_xcmd = %sysfunc(getoption(XCMD));
 
-   %if (&g_xcmd. = NOXMD) %then %do;
+   %if (&g_xcmd. = NOXCMD) %then %do;
       %let g_dirMacro = _noxcmd_dir;
    %end;
    %else %do;

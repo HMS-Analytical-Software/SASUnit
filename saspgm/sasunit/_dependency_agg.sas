@@ -15,11 +15,12 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
+   \remark     still uses _dir. This macro is called by reportSASUnit. reportSASUnit will not be called interactively. 
+               So there is no need to change anything with this macro concerning NOXCMD
+
    \param   i_path      Path containing JSON files that will be aggregated 
    \param   o_file      JavaScript file in rep/js containing a JSON object for visualisation
 
-   \todo _new_dir
-   
 */ /** \cond */ 
 
 %MACRO _dependency_agg(i_path =

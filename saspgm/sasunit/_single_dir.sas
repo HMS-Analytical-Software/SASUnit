@@ -107,5 +107,9 @@
    data &o_members.;
       set work._single_dir (drop=fileref);
    run;
+
+   proc datasets lib=work nolist;
+      delete _sd_members _single_dir;
+   run;quit;
 %MEND _single_dir;
 /** \endcond **/

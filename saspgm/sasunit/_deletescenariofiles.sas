@@ -16,11 +16,9 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \remark     still uses _dir for deletion of a tree.
+   \remark     still uses _dir for deletion of a tree. This macro is called by runSASUnit. runSASUnit will not be called interactively. 
+               So there is no need to change anything with this macro concerning NOXCMD
 
-   \todo _new_dir
-   
-            
    \param      i_scenariosToRun  Data set containing all scenarios that have to run
 
 */ /** \cond */  

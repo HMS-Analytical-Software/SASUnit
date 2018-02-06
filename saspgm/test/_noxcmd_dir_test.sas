@@ -46,6 +46,7 @@ run;
 /*-- 001 Empty directory ---------------------------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir;
 
+%initScenario(i_desc=Test of _noxcmd_dir.sas);
 %initTestcase(i_object=_noxcmd_dir.sas, i_desc=directory does not exist)
 %_noxcmd_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
 %endTestcall;
@@ -239,4 +240,10 @@ proc sort data=dir; by filename; run;
 proc sort data=dircheck out=dirchecktxt; by filename; where filename contains "file_one_1.dat";run;  
 %assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_fuzz=0.5)
 %endTestcase;
+
+proc datasets lib=work kill memtype=(data) nolist;
+run;
+quit;
+
+%endScenario();
 /** \endcond */

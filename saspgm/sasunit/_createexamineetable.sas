@@ -15,8 +15,6 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \todo _new_dir
-   
 */ /** \cond */ 
 
 %MACRO _createExamineeTable;
@@ -34,7 +32,7 @@
    %LET l_autonr=0;
    %DO %WHILE("&l_auto" ne "");  
       %LET l_auto=%quote(&l_auto/);
-      %_dir(i_path=&l_auto.*.sas, o_out=&d_dir);
+      %&g_dirmacro.(i_path=&l_auto.*.sas, o_out=&d_dir);
       data &d_examinee.;
          set %IF &l_autonr>0 %THEN &d_examinee.; &d_dir.(in=indir);
          if indir then DO;
@@ -49,7 +47,7 @@
    %IF (&g_crossrefsasunit.) %THEN %DO;
       %LET l_auto=&g_sasunit;
       %LET l_auto=%quote(&l_auto/);
-      %_dir(i_path=&l_auto.*.sas, o_out=&d_dir);
+      %&g_dirmacro.(i_path=&l_auto.*.sas, o_out=&d_dir);
       data &d_examinee.;
          set &d_examinee &d_dir(in=indir);
          if indir then DO;
@@ -59,7 +57,7 @@
       run; 
       %LET l_auto=&g_sasunit_os;
       %LET l_auto=%quote(&l_auto/);
-      %_dir(i_path=&l_auto.*.sas, o_out=&d_dir);
+      %&g_dirmacro.(i_path=&l_auto.*.sas, o_out=&d_dir);
       data &d_examinee.;
          set &d_examinee. &d_dir(in=indir);
          if indir then DO;

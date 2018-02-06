@@ -14,6 +14,9 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 
+   \remark     still uses _dir. This macro is called by reportSASUnit. reportSASUnit will not be called interactively. 
+               So there is no need to change anything with this macro concerning NOXCMD
+
    \param   i_assertype    type of assert beeing done. It is know be the program itself, but nevertheless specified as parameter.
    \param   i_repdata      name of reporting dataset containing information on the assert.
    \param   i_scnid        scenario id of the current test
@@ -23,8 +26,6 @@
    \param   o_html         Test report in HTML-format?
    \param   o_path         output folder
 
-   \todo _new_dir
-   
 */ /** \cond */ 
 
 %MACRO _render_assertImageRep (i_assertype=

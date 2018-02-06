@@ -125,5 +125,9 @@
       %end;
    %end;
 %exit:
+   proc datasets lib=work nolist;
+      delete _nd_directories _nd_members _nd_newdirs;
+   run;
+   quit;
 %MEND _noxcmd_dir;
 /** \endcond **/

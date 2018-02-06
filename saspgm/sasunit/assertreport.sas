@@ -13,8 +13,6 @@
    \author     \$Author$
    \date       \$Date$
 
-   \todo _single_dir: i_expected contains path and member
-   
    \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
@@ -29,7 +27,6 @@
    \param   i_manual             1: in case of a positive check result, write an entry indicating a manual check (empty rectangle). \n
                                  0: in case of a positive check result, write an entry indicating OK (green hook). \n
                                  default: 1
-                                 
 */ /** \cond */ 
 
 %MACRO assertReport (i_expected           =       
@@ -48,7 +45,9 @@
       %RETURN;
    %END;
 
-   %LOCAL l_expected l_exp_ext l_rep_ext l_result l_casid l_tstid l_path l_errmsg;
+   %LOCAL l_expected l_exp_ext l_rep_ext l_result l_casid l_tstid l_path l_errmsg l_macname;
+
+   %LET l_macname=&sysmacroname;
 
    %*** check parameters ***;
    %LET l_rep_ext  = %_getExtension(&i_actual);
@@ -75,6 +74,22 @@
       %END;
    %END;
 
+   %*************************************************************;
+   %*** Check if XCMD is allowed                              ***;
+   %*************************************************************;
+   %IF %_handleError(&l_macname.
+                 ,NOXCMD
+                 ,(%sysfunc(getoption(XCMD)) = NOXCMD)
+                 ,Your SAS Session does not allow XCMD%str(,) therefore assertExternal cannot be run.
+                 ,i_verbose=&g_verbose.
+                 ) 
+   %THEN %DO;
+      %LET l_rc    =2;
+      %LET l_result=2;
+      %LET l_errmsg=Your SAS Session does not allow XCMD%str(,) therefore assertExternal cannot be run.;
+      %GOTO Update;
+   %END;
+
    /*-- check for existence and check change date -------------------------------*/
    %LET l_result=2;
    %LET l_errmsg=Report was not created anew!;
@@ -93,6 +108,9 @@
    proc sql;
       drop table &d_dir;
    quit;
+
+   *** At this point the report is created and checked for existance ***;
+   %IF &l_result. = 1 %THEN %LET l_errmsg=_NONE_;
 
    %IF NOT &i_manual AND &l_result=1 %THEN %LET l_result=0;
 
