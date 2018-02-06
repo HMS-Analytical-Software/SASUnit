@@ -130,6 +130,17 @@
          ;
    run;
 
+   *** Make entries unique if a folder is used twice in sasautos ****;
+   proc sort data=work.exa;
+      by exa_filename exa_auton;
+   run;
+
+   data work.exa;
+      set work.exa;
+      by exa_filename exa_auton;
+      if (last.exa_filename);
+   run;
+
    proc sql noprint;
       select count (*) into :l_anzMacros 
          from work.exa;
