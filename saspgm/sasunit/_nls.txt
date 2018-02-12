@@ -287,8 +287,8 @@
   4 EN Root directory
   5 DE Pfad zur Testdatenbank
   5 EN Path to test repository
-  6 DE Programmbibliotheken^n(Makro-Autocall-Pfade)^n
-  6 EN Program libraries^n(macro autocall paths)^n
+  6 DE Programmbibliotheken^n(Makro-Autocall-Pfade)
+  6 EN Program libraries^n(macro autocall paths)
   7 DE Autoexec-Programm für Testszenarien
   7 EN Autoexec-program for test scenarios
   8 DE SAS-Konfigurationsdatei für Testszenarien
@@ -347,6 +347,8 @@
  34 EN Runtime Scenarios
  35 DE Laufzeit SASUnit (gestartete Szenarien)
  35 EN Runtime SASUnit (Scenarios started)
+ 36 DE Testergebnisse
+ 36 EN Test results
 ---reportLibrary
   1 DE Prüfbericht - Vergleich der beiden Bibliotheken
   1 EN Test Report - Comparison of two Libraries
