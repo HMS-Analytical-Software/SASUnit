@@ -26,8 +26,8 @@
 
    \todo Since options mprintnest is already available with SAS9.2 use this option for cross reference from various logfiles.
          We could use this for the d3d graphics to speed up reporting a bit.
-         For executing all calling macros of an examinee we still need sourcecode scanning. Or we need to store this call reference 
-         froim last run.
+         For executing all calling macros of an examinee we still need sourcecode scanning.
+         Or we need to store this call reference from last run.
 
 */ /** \cond */ 
 
