@@ -15,26 +15,36 @@
 
 */ /** \cond */ 
 
-OPTIONS MPRINT MAUTOSOURCE SASAUTOS=(SASAUTOS "%trim(%sysget(SASUNIT_ROOT))/saspgm/sasunit");
+OPTIONS 
+   MPRINT MAUTOSOURCE NOMLOGIC NOSYMBOLGEN
+   APPEND=(SASAUTOS "%sysget(SASUNIT_ROOT)/saspgm/sasunit") /* SASUnit macro library */
+;
+
 %LET SASUNIT_VERBOSE=1;
+%LET SASUNIT_CROSSREF=1;
+%LET SASUNIT_CROSSREFSASUNIT=1;
+
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root         = %sysget(SASUNIT_ROOT)
-  ,io_target      = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
-  ,i_overwrite    = %sysget(SASUNIT_OVERWRITE)
-  ,i_project      = SASUnit Self Test
-  ,i_sasunit      = saspgm/sasunit
-  ,i_sasautos     = saspgm/sasunit
-  ,i_sasautos1    = saspgm/test
-  ,i_sasautos2    = saspgm/test/pgmlib1
-  ,i_sasautos3    = saspgm/test/pgmlib2
-  ,i_testdata     = dat
-  ,i_refdata      = dat
-  ,i_doc          = doc/spec
-  ,i_sascfg       = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE))_junit.cfg
-  ,i_testcoverage = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose      = &SASUNIT_VERBOSE.
+   i_root            = %sysget(SASUNIT_ROOT)
+  ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
+  ,i_overwrite       = %sysget(SASUNIT_OVERWRITE)
+  ,i_project         = SASUnit Self Test
+  ,i_sasunit         = %sysget(SASUNIT_ROOT)/saspgm/sasunit
+  ,i_sasautos        = saspgm/sasunit
+  ,i_sasautos1       = saspgm/test
+  ,i_sasautos2       = saspgm/test/pgmlib1
+  ,i_sasautos3       = saspgm/test/pgmlib2
+  ,i_testdata        = dat
+  ,i_refdata         = dat
+  ,i_doc             = doc/spec
+  ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE))_junit.cfg
+  ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
+  ,i_verbose         = &SASUNIT_VERBOSE.
+  ,i_crossref        = &SASUNIT_CROSSREF.
+  ,i_crossrefsasunit = &SASUNIT_CROSSREFSASUNIT.
+  ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
 );
 
 %runSASUnit(i_source = %str(saspgm/test/reportsasunit_inexisting_scenario_has_to_fail));

@@ -33,7 +33,12 @@ OPTIONS
    APPEND=(SASAUTOS "%sysget(SASUNIT_ROOT)/saspgm/sasunit") /* SASUnit macro library */
 ;
 
-/* open test repository or create when needed */
+%LET SASUNIT_VERBOSE=1;
+%LET SASUNIT_CROSSREF=1;
+%LET SASUNIT_CROSSREFSASUNIT=1;
+
+proc options option=logparm;run;
+
 %initSASUnit(
    i_root            = .                                                /* root path, all other paths can then be relative paths */
   ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))  /* Output of SASUnit: test repository, logs, results, reports */
@@ -47,9 +52,9 @@ OPTIONS
   ,i_doc             = doc/spec
   ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
   ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)              /* set to 1 to assess test coverage assessment */
-  ,i_verbose         = 1
-  ,i_crossref        = 1
-  ,i_crossrefsasunit = 1
+  ,i_verbose         = &SASUNIT_VERBOSE.
+  ,i_crossref        = &SASUNIT_CROSSREF.
+  ,i_crossrefsasunit = &SASUNIT_CROSSREFSASUNIT.
   ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
   )
 
