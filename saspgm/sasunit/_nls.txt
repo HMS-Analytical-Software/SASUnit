@@ -667,3 +667,12 @@
  23 EN Deprecated
  24 DE Keine Programmdokumentation gefunden
  24 EN No program documentation found
+---endScenario
+  1 DE SASUnit Ergebnisse
+  1 EN SASUnit quick results
+  2 DE Testszenario
+  2 EN Test scenario
+  3 DE Testfälle
+  3 EN Test cases
+  4 DE Prüfungen
+  4 EN Assertions

@@ -25,26 +25,31 @@
    \return     macro symbols in global symbol table
 */ /** \cond */ 
 
-data nls (drop=mark);
-   infile "&g_sasunit./_nls.txt" truncover;
-   input mark $3. @;
-   if mark ne '###' then do;
-      if mark='---' then input @4 program $32.;
-      retain program;  
-      input @1 num 3. +1 language $2. +1 text $128.;
-      output;
-   end;
-run; 
-
 %MACRO _nls (i_language = 
             );
 
+   data work.nls (drop=mark);
+      infile "&g_sasunit./_nls.txt" truncover;
+      input mark $3. @;
+      if mark ne '###' then do;
+         if mark='---' then input @4 program $32.;
+         retain program;  
+         input @1 num 3. +1 language $2. +1 text $128.;
+         output;
+      end;
+   run; 
+
    data _null_;
-      set nls;
+      set work.nls;
       where language = "%upcase(&i_language.)";
       call execute ('%global g_nls_' !! trim(program) !! '_' !! put (num, z3.) !! ';');
       call symput ('g_nls_' !! trim(program) !! '_' !! put (num, z3.), trim (text));
    run; 
+
+   proc datasets lib=work nolist;
+      delete nls;
+   run;
+   quit;
 
 %MEND _nls;
 /** \endcond */

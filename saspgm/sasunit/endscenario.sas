@@ -59,21 +59,21 @@
                             OTHER="?????";
       run;
 
-      title1 "SASUnit quick results";
-      title2 "Test scenario";
+      title1 "&g_nls_endScenario_001.";
+      title2 "&g_nls_endScenario_002.";
       proc print data=target.scn noobs label;
          where scn_id = &g_scnid.;
          format scn_res PictName.;
       run;
 
       title1 "^_";
-      title2 "Test cases";
+      title2 "&g_nls_endScenario_003.";
       proc print data=target.cas noobs label;
          where cas_scnid = &g_scnid.;
          format cas_res PictName.;
       run;
 
-      title2 "Asserts";
+      title2 "&g_nls_endScenario_004.";
       proc print data=target.tst noobs label;
          where tst_scnid = &g_scnid.;
          format tst_res PictName.;
