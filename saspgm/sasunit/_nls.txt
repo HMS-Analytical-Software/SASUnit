@@ -676,3 +676,43 @@
   3 EN Test cases
   4 DE Prüfungen
   4 EN Assertions
+  5 DE Id
+  5 EN Id
+  6 DE Pfad
+  6 EN path
+  7 DE Beschreibung
+  7 EN Description
+  8 DE Start
+  8 EN Start
+  9 DE Ende
+  9 EN End
+ 10 DE Bearbeitungszeitpunkt
+ 10 EN Modification Datetimestamp
+ 11 DE Rückgabewert
+ 11 EN Return value
+ 12 DE Anzahl Fehler
+ 12 EN Error count
+ 13 DE Anzahl Warnungen
+ 13 EN Warning count
+ 14 DE Ergebnis
+ 14 EN Result
+ 15 DE Szenario-Id
+ 15 EN Scenario id
+ 16 DE Prüfling-Id
+ 16 EN Examinee id
+ 17 DE Prüfling
+ 17 EN Examinee
+ 18 DE Spezifikation
+ 18 EN Specification
+ 19 DE Testfall-Id
+ 19 EN Testcase id
+ 20 DE Prüfungsart
+ 20 EN Test type
+ 21 DE Erwartetes Ergebnis
+ 21 EN Expcected result
+ 22 DE Tatsächliches Ergebnis
+ 22 EN Actual result
+ 23 DE Prüfungsmeldung
+ 23 EN Test message
+ 24 DE Vergleichsergebnis
+ 24 EN Comparison result

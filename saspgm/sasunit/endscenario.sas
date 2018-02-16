@@ -64,6 +64,18 @@
       proc print data=target.scn noobs label;
          where scn_id = &g_scnid.;
          format scn_res PictName.;
+         label 
+            scn_id           = "&g_nls_endScenario_005."
+            scn_path         = "&g_nls_endScenario_006."
+            scn_desc         = "&g_nls_endScenario_007."
+            scn_start        = "&g_nls_endScenario_008."
+            scn_end          = "&g_nls_endScenario_009."
+            scn_changed      = "&g_nls_endScenario_010."
+            scn_rc           = "&g_nls_endScenario_011."
+            scn_errorcount   = "&g_nls_endScenario_012."
+            scn_warningcount = "&g_nls_endScenario_013."
+            scn_res          = "&g_nls_endScenario_014."
+         ;
       run;
 
       title1 "^_";
@@ -71,6 +83,17 @@
       proc print data=target.cas noobs label;
          where cas_scnid = &g_scnid.;
          format cas_res PictName.;
+         label 
+            cas_scnid = "&g_nls_endScenario_015."
+            cas_id    = "&g_nls_endScenario_005."
+            cas_exaid = "&g_nls_endScenario_016."
+            cas_obj   = "&g_nls_endScenario_017."
+            cas_desc  = "&g_nls_endScenario_007."
+            cas_spec  = "&g_nls_endScenario_017."
+            cas_start = "&g_nls_endScenario_008."
+            cas_end   = "&g_nls_endScenario_009."
+            cas_res   = "&g_nls_endScenario_014."
+         ;
       run;
 
       title2 "&g_nls_endScenario_004.";
@@ -78,6 +101,17 @@
          where tst_scnid = &g_scnid.;
          format tst_res PictName.;
          by tst_casid;
+         label 
+            tst_scnid  = "&g_nls_endScenario_015."
+            tst_casid  = "&g_nls_endScenario_019."
+            tst_id     = "&g_nls_endScenario_005."
+            tst_type   = "&g_nls_endScenario_020."
+            tst_desc   = "&g_nls_endScenario_007."
+            tst_exp    = "&g_nls_endScenario_021."
+            tst_act    = "&g_nls_endScenario_022."
+            tst_res    = "&g_nls_endScenario_024."
+            tst_errmsg = "&g_nls_endScenario_023."
+         ;
       run;
    %end;
 

@@ -720,6 +720,11 @@
       UPDATE target.tsu SET tsu_dbVersion = "&g_version.";
    QUIT;
 
+   %IF (&g_runMode. = SASUNIT_INTERACTIVE) %THEN %DO;
+      %_reportCreateStyle;
+      %_reportCreateTagset;
+   %END;
+
    %PUT;
    %PUT ============================ SASUnit has been initialized successfully ==========================;
    %PUT;
