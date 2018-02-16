@@ -14,6 +14,8 @@
 
 */ /** \cond */ 
 
+%initScenario(i_desc=Test of _render_assertLogMsgAct.sas);
+
 %LET G_NLS_REPORTDETAIL_045=Message found; 
 %LET G_NLS_REPORTDETAIL_046=Message not found; 
 
