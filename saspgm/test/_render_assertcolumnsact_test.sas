@@ -14,6 +14,8 @@
 
 */ /** \cond */ 
 
+%initScenario (i_desc=Test of _render_assertColumnsAct.sas);
+
 %LET G_NLS_REPORTDETAIL_016=assertColumnsAct; 
 %LET G_NLS_REPORTDETAIL_017=assertColumnsAct; 
 %LET G_NLS_REPORTDETAIL_038=assertColumnsAct; 

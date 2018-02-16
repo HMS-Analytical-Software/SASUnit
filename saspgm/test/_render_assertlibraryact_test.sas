@@ -14,6 +14,8 @@
 
 */ /** \cond */ 
 
+%initScenario (i_desc=Test of _render_assertLibraryAct.sas);
+
 %LET G_NLS_REPORTDETAIL_017=assertLibraryAct; 
 %LET G_NLS_REPORTDETAIL_019=assertLibraryAct; 
 %LET G_NLS_REPORTDETAIL_039=assertLibraryAct; 

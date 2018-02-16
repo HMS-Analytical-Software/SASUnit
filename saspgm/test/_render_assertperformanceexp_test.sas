@@ -15,6 +15,8 @@
 
 */ /** \cond */ 
 
+%initScenario (i_desc=Test of _render_assertPerformanceExp.sas);
+
 %LET G_NLS_REPORTDETAIL_042=found; 
 %LET G_NLS_REPORTDETAIL_043=not found; 
 %LET G_NLS_REPORTDETAIL_044=Message; 

@@ -14,6 +14,8 @@
 
 */ /** \cond */ 
 
+%initScenario (i_desc=Test of _render_assertLogAct.sas);
+
 %LET G_NLS_REPORTDETAIL_036=assertLogAct; 
 %LET G_NLS_REPORTDETAIL_037=assertLogAct; 
 

@@ -14,6 +14,8 @@
 
 */ /** \cond */ 
 
+%initScenario (i_desc=Test of _render_assertReportAct.sas);
+
 %LET G_NLS_REPORTDETAIL_020=Open both reports; 
 %LET G_NLS_REPORTDETAIL_022=Actual report is old; 
 %LET G_NLS_REPORTDETAIL_023=Open actual report; 
