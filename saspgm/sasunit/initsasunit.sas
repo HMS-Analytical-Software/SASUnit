@@ -109,8 +109,9 @@
                   ,i_language        = %sysget(SASUNIT_LANGUAGE)
                   );
 
-   %GLOBAL g_version g_revision g_verbose g_error g_warning g_note g_runMode;
+   %GLOBAL g_version g_revision g_verbose g_error g_warning g_note g_runMode g_language;
 
+   %LET g_version   = 2.0;
    %LET g_version   = 1.7.2;
    %LET g_revision  = $Revision$;
    %LET g_revision  = %scan(&g_revision,2,%str( $:));
@@ -150,7 +151,6 @@
       l_work
       l_sysrc
       l_cmdfile    
-      restore_sasautos 
       l_overwrite
       l_testcoverage
       _root _sasunit
@@ -325,7 +325,6 @@
    %THEN %GOTO errexit;
 
    /*-- check autocall paths ----------------------------------------------------*/
-   %LET restore_sasautos=%sysfunc(getoption(sasautos));
    %LET l_sasautos=&l_sasautos;
    %IF "&i_sasautos" NE "" %THEN %LET l_sasautos=&i_sasautos;
    %LET l_sasautos_abs=%_abspath(&l_root,&l_sasautos);
@@ -454,11 +453,14 @@
    /*** End of Step one                                                        ***/
    /******************************************************************************/
 
+   /*-- Under linux g_language is used in _oscmds -------------------------------------------*/
+   /*-- Moving this call after _loadenvironment causes other errors -------------------------*/
+   /*-- So g_language is simply set here ----------------------------------------------------*/
+   %let g_language=&i_language.;
 
    %_oscmds;
    
    %_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note);
-
 
    %LET l_current_dbversion=0;
 
@@ -670,6 +672,7 @@
    /*-- load relevant information from test database to global macro symbols ----*/
    %_loadEnvironment (i_withLibrefs = 0
                      )
+
    /* Correct Termstring in Textfiles */
    %_prepareTextFiles;
    
