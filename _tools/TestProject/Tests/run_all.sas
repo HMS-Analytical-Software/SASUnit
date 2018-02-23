@@ -40,7 +40,7 @@ OPTIONS
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root            = C:\projects\sasunit\_tools\TestProject           /* root path, all other paths can then be relative paths */
+   i_root            = %sysget(SASUNIT_ROOT)\_tools\TestProject           /* root path, all other paths can then be relative paths */
   ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))  /* Output of SASUnit: test repository, logs, results, reports */
   ,i_overwrite       = %sysget(SASUNIT_OVERWRITE)                       /* set to 1 to force all test scenarios to be run, else only changed 
                                                                            scenarios or scenarios with changed unit under test will be run*/
