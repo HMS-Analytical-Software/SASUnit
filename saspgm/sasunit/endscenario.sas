@@ -96,8 +96,26 @@
          ;
       run;
 
+      data work._tst_V / view=work._tst_V;
+         length tst_exp tst_act $256;
+         set target.tst;
+         if (tst_res = 2) then do;
+            tst_exp = catt ("^{style [color=white background=red]", tst_exp, "}");
+            tst_act = catt ("^{style [color=white background=red]", tst_act, "}");
+         end;
+      run;
+
       title2 "&g_nls_endScenario_004.";
-      proc print data=target.tst noobs label;
+      proc print data=work._tst_V noobs label;
+         var  tst_scnid
+              tst_casid
+              tst_id
+              tst_type
+              tst_desc
+              tst_exp
+              tst_act
+              tst_res
+              tst_errmsg;
          where tst_scnid = &g_scnid.;
          format tst_res PictName.;
          by tst_casid;
@@ -116,5 +134,11 @@
    %end;
 
    %LET g_inScenario=0;
+
+   proc datasets lib=work memtype=VIEW nolist;
+      delete _tst_V;
+   run;
+   quit;
+
 %MEND endScenario;
 /** \endcond */
