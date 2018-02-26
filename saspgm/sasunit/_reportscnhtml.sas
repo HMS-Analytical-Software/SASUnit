@@ -41,7 +41,7 @@
       by scn_id;
 
       LENGTH abs_path scn_pgm $256 
-             LinkColumn1 LinkTitle1 LinkColumn2 LinkTitle2 LinkColumn3 LinkTitle3 /*LinkColumn4 LinkColumn5 LinkColumn6*/ $1000
+             LinkColumn1 LinkTitle1 LinkColumn2 LinkTitle2 LinkColumn3 LinkTitle3 $1000
              idColumn $80
              descriptionColumn $1000
              programColumn $1000
@@ -58,13 +58,10 @@
             ;
 
       abs_path    = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
-      scn_pgm     = resolve ('%_stdpath(&g_root./saspgm/test,' !! trim(abs_path) !! ')');
-      idx         = find (abs_path, '/', -length (abs_path))+1;
-      scn_pgm     = substr (abs_path, idx);
+      scn_pgm     = scan (abs_path, -1, '/');
       duration    = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
       c_scnid     = put (scn_id, z3.);
-      pgmdoc_name = tranwrd (exa_pgm, ".sas", ".html");
-
+      pgmdoc_name = catt ("pgm_scn_", put (scn_id, z3.));
 
       %_render_IdColumn   (i_sourceColumn=scn_id
                           ,i_format=z3.
@@ -86,11 +83,11 @@
          *** HTML-links are destinations specific ***;
          %if (&o_html.) %then %do;
             LinkColumn1 = catt ("cas_overview.html#SCN", c_scnid, "_");
-            if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/pgm_"!!trim(pgmdoc_name))) then do;
-               LinkColumn2 = catt ('pgm_', pgmdoc_name);
+            if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmdoc_name) !! ".html")) then do;
+               LinkColumn2 = catt (pgmdoc_name, ".html");
             end;
             else do;
-               LinkColumn2 = catt ("src/", put (coalesce (exa_auton,99),z2.), "/", exa_pgm);
+               LinkColumn2 = catt ("src/scn/scn_", put (scn_id, z3.), ".sas");
             end;
             LinkColumn3 = c_scnid !! "_log.html";
          %end;

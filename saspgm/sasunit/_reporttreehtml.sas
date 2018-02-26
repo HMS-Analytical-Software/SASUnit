@@ -139,7 +139,7 @@ DATA &d_tree2 (KEEP=label popup target lvl leaf rc);
       SELECT (exa_auton);
          WHEN (0) label = tsu_sasunit;
          WHEN (1) label = tsu_sasunit_os;
-%DO i=0 %TO 9;
+%DO i=0 %TO 29;
          WHEN (&i+2) label = tsu_sasautos&i;
 %END;
          OTHERWISE label="&g_nls_reportAuton_015";
@@ -155,7 +155,12 @@ DATA &d_tree2 (KEEP=label popup target lvl leaf rc);
       ELSE 
          popup = "&g_nls_reportTree_010";
       target = "auton_overview.html#AUTON";
-      IF exa_auton NE . THEN target = trim(target) !! put(exa_auton,z3.);
+      IF exa_auton NE . THEN DO;
+         target = trim(target) !! put(exa_auton,z3.);
+      END;
+      ELSE DO;
+         target = trim(target) !! put(99,z3.);
+      END;
       target = trim(target) !! '_';
       lvl    = 2;
       leaf   = 0;
@@ -167,7 +172,7 @@ DATA &d_tree2 (KEEP=label popup target lvl leaf rc);
       SELECT (exa_auton);
          WHEN (0) popup = trim(tsu_sasunit) !! '/' !! cas_obj;
          WHEN (1) popup = trim(tsu_sasunit_os) !! '/' !! cas_obj;
-%DO i=0 %TO 9;
+%DO i=0 %TO 29;
          WHEN (&i+2) popup = trim(tsu_sasautos&i) !! '/' !! cas_obj;
 %END;
          OTHERWISE popup=cas_obj;
@@ -203,12 +208,54 @@ DATA &d_tree2 (KEEP=label popup target lvl leaf rc);
 RUN;
 
 %if (&o_pgmdoc.) %then %do;
-   /*-- generate tree structure 3: program documentation Part I --------------------------*/
+   /*-- generate tree structure 3: program documentation Part I (Groups) ----------------*/
    %local l_counter l_counterm1 l_i l_im1 l_j l_NewElements;
 
    %let l_NewElements=1;
 
-   proc sort data=work._GrpDoc out=work.__tree0;
+   data work.scn;
+      set target.scn;
+      scn_abs_path = resolve ('%_abspath(&g_root.,' !! trim(scn_path) !! ')');
+   run;
+
+   proc sql noprint;
+      create table work._GrpDoc_1 as
+         select _GrpDoc.*,
+                exa.exa_auton
+         from work._GrpDoc left join target.exa
+         on _GrpDoc.childPath = exa.exa_filename;
+      create table work._GrpDoc_2 as
+         select _GrpDoc_1.*,
+                scn.scn_id
+         from work._GrpDoc_1 left join work.scn
+         on _GrpDoc_1.childPath = scn.scn_abs_path;
+   quit;
+
+   data work._GrpDoc_3;
+      set work._GrpDoc_2;
+      length pgmscn_name pgmexa_name target $255;
+      if (not missing (scn_id)) then do;
+         pgmscn_name  = catt ("pgm_scn_", put (scn_id, z3.) !! ".html");
+         if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmscn_name))) then do;
+            target = catt (pgmscn_name);
+         end;
+         else do;
+            target = catt ("src/scn/scn_", put (scn_id, z3.), ".sas");
+         end;
+      end;
+      else if (not missing (exa_auton)) then do;
+         pgmexa_name = catt ("pgm_", put (exa_auton, z2.), "_", tranwrd (child, ".sas", ".html"));
+         if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmexa_name))) then do;
+            target = catt (pgmexa_name);
+         end;
+         else do;
+            target = catt ("src/", put (coalesce (exa_auton, 99), z2.), "/", child);
+         end;
+      end;
+      keep parent child childText ChildDesc target;
+   run;
+
+   proc sort data=work._GrpDoc_3 out=work.__tree0;
       by child;
    run;
 
@@ -222,6 +269,7 @@ RUN;
                        rename=(child=Node1Name
                               ChildText=Node1Label
                               ChildDesc=Node1Desc
+                              Target   =Node1Target
                               )
                       );
       drop parent _NodeID;
@@ -237,11 +285,13 @@ RUN;
                ,tree1.Node1Sort
                ,tree1.Node1Label
                ,tree1.Node1Desc
+               ,tree1.Node1Target
                ,tree0.child as Node2Name
                ,_nodeID as Node2ID
                ,_nodeID as Node2Sort
                ,tree0.childText as Node2Label
                ,tree0.childDesc as Node2Desc
+               ,tree0.Target as Node2Target
          from work.__tree1 as tree1 
               left join work.__tree0(where=(child ne parent)) as tree0 
               on tree1.Node1Name=tree0.parent
@@ -259,18 +309,21 @@ RUN;
                   ,tree&l_counterm1..Node1Sort
                   ,tree&l_counterm1..Node1Label
                   ,tree&l_counterm1..Node1Desc
+                  ,tree&l_counterm1..Node1target
                   %do l_i=2 %to &l_counterm1.;
                     ,tree&l_counterm1..Node&l_i.Name
                     ,tree&l_counterm1..Node&l_i.ID
                     ,tree&l_counterm1..Node&l_i.Sort
                     ,tree&l_counterm1..Node&l_i.Label
                     ,tree&l_counterm1..Node&l_i.Desc
+                    ,tree&l_counterm1..Node&l_i.target
                   %end;
                   ,tree0.child as Node&l_counter.Name
                   ,_nodeID as Node&l_counter.ID
                   ,_nodeID as Node&l_counter.Sort
                   ,tree0.childText as Node&l_counter.Label
                   ,tree0.childDesc as Node&l_counter.Desc
+                  ,tree0.Target as Node&l_counter.Target
             from work.__tree&l_counterm1. as tree&l_counterm1. 
                  left join work.__tree0(where=(child ne parent)) as tree0
                  on tree&l_counterm1..Node&l_counterm1.Name=tree0.parent;
@@ -295,7 +348,7 @@ RUN;
    run;quit;
 
    data work.__tree0;
-      length label popup target $255;
+      length label $255;
       set &d_tree4.;
       by 
       %do l_i=1 %to&l_counterm1.;
@@ -308,6 +361,7 @@ RUN;
          NodeType="Leaf";
          Level=&l_counterm1.;
          Label=Node&l_counterm1.Label;
+         Target=Node&l_counterm1.Target;
          Desc =Node&l_counterm1.Desc;
          Node&l_counterm1.Sort=9999;
          output;
@@ -319,6 +373,7 @@ RUN;
             Level=&l_im1.;
             Label=Node&l_im1.Label;
             Desc =Node&l_im1.Desc;
+            Target=Node&l_im1.Target;
             Node&l_im1.Sort=9999;
             output;
          end;
@@ -329,18 +384,20 @@ RUN;
          %let l_im1=%eval(&l_i.-1);
          if (first.Node&l_im1.ID and not missing (Node&l_i.ID)) then do;
             NodeType="Node";
-            Level=&l_im1.;
-            Label=Node&l_im1.Label;
-            Desc =Node&l_im1.Desc;
+            Level   =&l_im1.;
+            Label   =Node&l_im1.Label;
+            Desc    =Node&l_im1.Desc;
+            Target  ="";
             %do l_j=&l_i. %to &l_counterm1.;
                call missing (Node&l_j.Name);
                call missing (Node&l_j.ID);
                call missing (Node&l_j.Sort);
+               call missing (Node&l_j.Target);
             %end;
             output; 
          end;
       %end;
-      keep Label NodeType Level
+      keep Label Target NodeType Level Desc
       %do l_i=1 %to&l_counterm1.;
           Node&l_i.Name Node&l_i.ID Node&l_i.Sort
       %end;
@@ -380,13 +437,15 @@ RUN;
    run;
 
    data &d_tree4.;
-      length label popup target $255;
+      length label popup $255;
       set &d_tree4.;
       lvl=level+2;
       leaf=(NodeType="Leaf");
       if (leaf) then do;
-         popup = "&g_nls_reportTree_018: " !! '&#x0D;' !! label;
-         target = catt ("pgm_", tranwrd (trim (label), ".sas", ".html"));
+         popup = "&g_nls_reportTree_018: " !! '&#x0D;' !! trim(Label);
+      end;
+      else do;
+         popup = trim (Label) !! ": " !! '&#x0D;' !! trim(Desc);
       end;
       output;
    run;
@@ -401,7 +460,7 @@ RUN;
          from target.exa left join target.cas
               on exa.exa_id=cas.cas_exaid
               ,target.tsu
-         order by exa_auton, exa_id;;
+         order by exa_auton, exa_id;
    quit;
 
    DATA &d_tree5. (KEEP=label popup target lvl leaf rc);
@@ -433,7 +492,7 @@ RUN;
          SELECT (exa_auton);
             WHEN (0) label = tsu_sasunit;
             WHEN (1) label = tsu_sasunit_os;
-   %DO i=0 %TO 9;
+   %DO i=0 %TO 29;
             WHEN (&i+2) label = tsu_sasautos&i;
    %END;
             OTHERWISE label="&g_nls_reportAuton_015";
@@ -462,15 +521,15 @@ RUN;
             label = cas_obj;
          end;
          SELECT (exa_auton);
-            WHEN (0) popup = trim(tsu_sasunit) !! '/' !! cas_obj;
-            WHEN (1) popup = trim(tsu_sasunit_os) !! '/' !! cas_obj;
-   %DO i=0 %TO 9;
-            WHEN (&i+2) popup = trim(tsu_sasautos&i) !! '/' !! cas_obj;
+            WHEN (0) popup = trim(tsu_sasunit) !! '/' !! label;
+            WHEN (1) popup = trim(tsu_sasunit_os) !! '/' !! label;
+   %DO i=0 %TO 29;
+            WHEN (&i+2) popup = trim(tsu_sasautos&i) !! '/' !! label;
    %END;
-            OTHERWISE popup=cas_obj;
+            OTHERWISE popup=label;
          END;
          popup = "&g_nls_reportTree_018: " !! '&#x0D;' !! popup;
-         target = catt ("pgm_", tranwrd (trim (exa_pgm), ".sas", ".html"));
+         target = catt ("pgm_", put (exa_auton, z2.), "_", tranwrd (trim (exa_pgm), ".sas", ".html"));
          lvl    = 4;
          leaf   = 1;
          rc     = .;

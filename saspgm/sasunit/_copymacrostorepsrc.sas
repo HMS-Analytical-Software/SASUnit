@@ -29,9 +29,6 @@
 
    data work._exa;
       set target.exa;
-      %if (&o_pgmdoc_sasunit. = 0) %then %do;
-         where exa_auton >= 2;
-      %end;
       *** Files not residing in an autocall path will have . as exa_auton ***;
       *** Use 99 as an alternative                                        ***;
       exa_auton = coalesce (exa_auton, 99);
@@ -56,6 +53,25 @@
          DirRc  = dcreate (put (exa_auton, z2.), "&l_output_path.");
       end;
       command = catt ('%_copyfile(', exa_filename, ",", NewDir, "/", exa_pgm, ");");
+      put command;
+   run;
+   %include "&l_saspgm.";
+
+   proc sort data=target.scn out=work._scn;
+      by scn_id;
+   run;
+
+   %let l_output_path = %_abspath(&g_root., &g_target.)/rep/src;
+   %let l_rc          = %sysfunc (dcreate (scn, &l_output_path.));
+   %let l_output_path = &l_output_path./scn;
+   %let l_saspgm      = %sysfunc(pathname(work))/CopyMacrosToRep.sas;
+
+   data _null_;
+      file "&l_saspgm.";
+      set work._scn;
+      length command $32000 scn_abs_path $300;
+      scn_abs_path = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
+      command = catt ('%_copyfile(', scn_abs_path, ", &l_output_path./scn_", put (scn_id, z3.) , ".sas);");
       put command;
    run;
    %include "&l_saspgm.";

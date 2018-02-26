@@ -95,10 +95,10 @@
          END;
 
          scn_abs_path = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
-         idx          = find (scn_abs_path, '/', -length (scn_abs_path))+1;
-         scn_pgm      = substr (scn_abs_path, idx);
+         scn_pgm      = scan (scn_abs_path, -1, "/");
          scn_duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid      = put (scn_id, z3.);
+         pgmdoc_name  = catt ("pgm_scn_", put (scn_id, z3.));
 
          %_render_idColumn   (i_sourceColumn=scn_id
                              ,i_format=z3.
@@ -117,12 +117,17 @@
             LinkTitle2   = "&g_nls_reportScn_011";
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
-               LinkColumn1  = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
+               if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/"!!trim(pgmdoc_name)!!".html")) then do;
+                  LinkColumn1 = catt (pgmdoc_name, ".html");
+               end;
+               else do;
+                  LinkColumn1 = catt ("src/scn/scn_", put (scn_id,z3.), ".sas");
+               end;
                LinkColumn2  = c_scnid !! "_log.html";
             %end;
             %_render_dataColumn (i_sourceColumn=scn_path
-                                ,i_linkColumn=LinkColumn1
-                                ,i_linkTitle=LinkTitle1
+                                ,i_linkColumn  =LinkColumn1
+                                ,i_linkTitle   =LinkTitle1
                                 ,o_targetColumn=scnProgramColumn
                                 );
             scnLast_runColumn = catt ('^{style [flyover="',LinkTitle2,'" url="',LinkColumn2,'"]', put (scn_start, ??&g_nls_reportScn_012.),'}'
@@ -146,7 +151,7 @@
 
          duration    = put (cas_end - cas_start, ??&g_nls_reportScn_013.) !! " s";
          c_casid     = put (cas_id, z3.);
-         pgmdoc_name = tranwrd (exa_pgm, ".sas", ".html");
+         pgmdoc_name = catt ("pgm_", put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", ""));
 
          %_render_idColumn   (i_sourceColumn=cas_id
                              ,i_format=z3.
@@ -167,8 +172,8 @@
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
                LinkColumn3 = "cas_" !! c_scnid !! "_" !! c_casid !! ".html";
-               if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/pgm_"!!trim(pgmdoc_name))) then do;
-                  LinkColumn4 = catt ('pgm_', pgmdoc_name);
+               if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmdoc_name) !! ".html")) then do;
+                  LinkColumn4 = catt (pgmdoc_name, ".html");
                end;
                else do;
                   LinkColumn4 = catt ("src/", put (coalesce (exa_auton,99),z2.), "/", exa_pgm);

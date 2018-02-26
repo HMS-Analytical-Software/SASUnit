@@ -263,6 +263,9 @@
       %IF (l_pgmLib ne .) %THEN %DO;
          %LET l_cAuton=%sysfunc (putn(&l_pgmLib.,z3.))_;
       %END;
+      %ELSE %DO;
+         %LET l_cAuton=%sysfunc (putn(99,z3.))_;
+      %END;
       data work._current_auton;
          length pgmColumn scenarioColumn caseColumn assertColumn
                 %IF &g_testcoverage. EQ 1 %THEN %DO;
@@ -276,7 +279,7 @@
                 linkColumn0 linkColumn1 LinkColumn2 LinkColumn3 LinkColumn4 LinkColumn5 $1000
                 _autonColumn autonColumn scn_abs_path pgmdoc_name $400;
          set work._auton_report (where=(exa_auton=&l_pgmLib.));
-         ARRAY sa(0:9) tsu_sasautos tsu_sasautos1-tsu_sasautos9;
+         ARRAY sa(0:29) tsu_sasautos tsu_sasautos1-tsu_sasautos29;
          label 
             pgmColumn="&g_nls_reportAuton_005."
             scenarioColumn="&g_nls_reportAuton_006."
@@ -317,7 +320,7 @@
             end;
             else do;
                _autonColumn = sa(exa_auton-2);
-               linkTitle0   = symget("g_sasautos" !! put(exa_auton-2, z1.));
+               linkTitle0   = symget("g_sasautos" !! put(exa_auton-2, z2.));
             end;
             linkColumn0  = "file:///" !! linkTitle0;
             linkTitle0   = "&g_nls_reportAuton_009. " !! linkTitle0;
@@ -331,11 +334,12 @@
 
          *** Any destination that renders links shares this if ***;
          %if (&o_html.) %then %do;
-            LinkTitle1 = "&g_nls_reportAuton_009." !! byte(13) !! exa_filename;
-            LinkTitle2 = "&g_nls_reportAuton_010." !! byte(13) !! scn_abs_path;
-            LinkTitle3 = "&g_nls_reportAuton_017. " !! cas_obj;
-            LinkTitle4 = trim(cas_obj) !! " &g_nls_reportAuton_025.";
-            LinkTitle5 = trim(cas_obj) !! " &g_nls_reportAuton_026.";
+            LinkTitle1  = "&g_nls_reportAuton_009." !! byte(13) !! exa_filename;
+            LinkTitle2  = "&g_nls_reportAuton_010." !! byte(13) !! scn_abs_path;
+            LinkTitle3  = "&g_nls_reportAuton_017. " !! cas_obj;
+            LinkTitle4  = trim(cas_obj) !! " &g_nls_reportAuton_025.";
+            LinkTitle5  = trim(cas_obj) !! " &g_nls_reportAuton_026.";
+            pgmexa_name = catt ("pgm_", put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", ""));
             
             *** HTML-links are destination specific ***;
             %if (&o_html.) %then %do;
@@ -351,17 +355,15 @@
                END;
                LinkColumn4 = "&g_nls_reportAuton_023.";
                LinkColumn5 = "&g_nls_reportAuton_024.";
+
+               pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.),'_"');
+               if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmexa_name) !! ".html")) then do;
+                  pgmColumn=catt (pgmColumn, ' url="', pgmexa_name, '.html" flyover="&g_nls_reportAuton_028."]', cas_obj,'}');
+               end;
+               else do;
+                  pgmColumn=catt (pgmColumn, ' url="', LinkColumn1, '" flyover="', LinkTitle1, '"]', cas_obj,'}');
+               end;
             %end;
-
-            pgmdoc_name = tranwrd (exa_pgm, ".sas", ".html");
-
-            pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.),'_"');
-            if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/pgm_"!!trim(pgmdoc_name))) then do;
-               pgmColumn=catt (pgmColumn, ' url="pgm_', pgmdoc_name, '" flyover="&g_nls_reportAuton_028."]', cas_obj,'}');
-            end;
-            else do;
-               pgmColumn=catt (pgmColumn, ' url="pgm_', LinkColumn1, '" flyover="', LinkTitle1, '"]', cas_obj,'}');
-            end;
             %_render_dataColumn(i_sourceColumn=scn_id
                                ,i_format=z3.
                                ,i_linkColumn=LinkColumn2

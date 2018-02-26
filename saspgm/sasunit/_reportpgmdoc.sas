@@ -55,6 +55,7 @@
       l_anzTest
       l_anzBug 
       l_anzDep 
+      l_anzScns
    ;
 
    %if (%sysfunc(exist (WORK._bugdoc))) %then %do;
@@ -138,7 +139,8 @@
    data work.exa;
       set work.exa;
       by exa_filename exa_auton;
-      if (last.exa_filename);
+      exa_auton = coalesce (exa_auton, 99);
+      if (first.exa_filename);
    run;
 
    proc sql noprint;
@@ -147,7 +149,7 @@
    quit;
 
    %do i=1 %to &l_anzMacros.;
-      %local l_macroFileName&i. l_macroName&i. l_macroDisplayName&i. l_macroLink;
+      %local l_macroFileName&i. l_macroName&i. l_macroDisplayName&i. l_macroLink&i. l_pageName&i.;
    %end;
 
    proc sql noprint;
@@ -156,6 +158,10 @@
          order by exa_id
          ;
       select catt ("src/", put (exa_auton, z2.), "/", exa_pgm) into :l_macroLink1-:l_macroLink%cmpres(&l_anzMacros.)
+         from work.exa
+         order by exa_id
+         ;
+      select catt ("pgm_", put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", "")) into :l_pageName1-:l_pageName%cmpres(&l_anzMacros.)
          from work.exa
          order by exa_id
          ;
@@ -218,9 +224,9 @@
          title j=c "&l_title.";
          title2 j=c "&&g_nls_reportPgmDoc_017. &&l_macroDisplayName&i..";
 
-         %let l_pageName = %sysfunc (tranwrd (&&l_macroName&i..,%str(.sas),%str()));
+         %let l_pageName = &&l_pageName&i..;
          %if (&o_html.) %then %do;
-            ods html4 file="&o_Path./pgm_&l_pageName..html"
+            ods html4 file="&o_Path./&l_pageName..html"
                        (TITLE="&l_title.") 
                        headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                        metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
@@ -232,6 +238,115 @@
 
          title2 j=c "&g_nls_reportPgmDoc_018. &&l_macroDisplayName&i..";
          title3 j=c height=10pt link="&&l_macroLink&i." "[&g_nls_reportAuton_027.]";
+
+         proc print data=work._pgmsrc_view noobs
+            style(report)=blindTable [borderwidth=0]
+            style(column)=pgmDocSource
+            style(header)=blindHeader;
+
+            var ObsNum Text;
+         run;
+         %if (&o_html.) %then %do;
+            %_closeHtmlPage(&i_style.);
+         %end;
+      %end;
+   %end;
+
+   %*** Get all scenarios to be documented         ***;
+   %*** if they do not reside in an autocall path, ***;
+   %*** then we need to document them separately   ***;
+   proc sort data=target.scn out=work.scn;
+      by scn_id;
+   run;
+
+   proc sql noprint;
+      select count (*) into :l_anzScns
+         from work.scn;
+   quit;
+
+   %do i=1 %to &l_anzScns.;
+      %local l_scnFileName&i. l_scnName&i. l_scnDisplayName&i. l_scnLink&i. l_scnPageName&i.;
+   %end;
+
+   data work.scn;
+      set work.scn;
+      scn_abs_path = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
+      scn_pgm      = scan (scn_path, -1, '/');
+   run;
+
+   proc sql noprint;
+      select scn_abs_path into :l_scnFileName1-:l_scnFileName%cmpres(&l_anzMacros.)
+         from work.scn
+         ;
+      select catt ("src/scn/scn_", put (scn_id, z3.), ".sas") into :l_scnLink1-:l_scnLink%cmpres(&l_anzMacros.)
+         from work.scn
+         ;
+      select catt ("pgm_scn_", put (scn_id, z3.)) into :l_scnPageName1-:l_scnPageName%cmpres(&l_anzMacros.)
+         from work.scn
+         ;
+      select trim(scn_pgm) into :l_scnName1-:l_scnName%cmpres(&l_anzMacros.)
+         from work.scn
+         ;
+   quit;
+
+   options nocenter;
+   ods listing close;
+
+   %do i=1 %to &l_anzScns;
+      %if (%sysfunc (fileexist(&&l_scnFileName&i.))) %then %do;
+         %_scanHeader (MacroName        = &&l_scnName&i.
+                      ,FilePath         = &&l_scnFileName&i.
+                      ,LiboutDoc        = WORK
+                      ,DataOutDoc       = _Pgm&i.
+                      ,i_language       = &i_language.
+                      );
+
+         data work._pgmsrc&i.;
+            length Text $400 CommentOpen idxCommentOpen idxCommentClose 8;
+            retain CommentOpen 0;
+            infile "&&l_scnFileName&i.";
+            input;
+            Text=_INFILE_;
+            idxCommentOpen=index (Text, '/** ');
+            if (idxCommentOpen > 0) then do;
+               CommentOpen=1;
+            end;
+            if (not CommentOpen) then do;
+               Text = tranwrd (Trim(Text), "^{", "°["); 
+               Text = tranwrd (Trim(Text), "}", "]"); 
+               output;
+            end;
+            idxCommentClose=index (Text, '*/');
+            if (idxCommentClose > 0) then do;
+               CommentOpen=0;
+            end;
+            keep Text;
+         run;
+
+         data work._pgmsrc_view / view=work._pgmsrc_view;
+            set work._pgmsrc&i.;
+            length ObsNum $80;
+            ObsNum = put (_N_,z5.);
+         run;
+
+         %let l_title=&g_nls_reportPgmDoc_022. | &g_project - &g_nls_reportPgmDoc_021.;
+         title j=c "&l_title.";
+         title2 j=c "&&g_nls_reportPgmDoc_017. &&l_scnName&i..";
+
+         %let l_pageName = &&l_scnPageName&i..;
+         %if (&o_html.) %then %do;
+            ods html4 file="&o_Path./&l_pageName..html"
+                       (TITLE="&l_title.") 
+                       headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
+                       metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
+                       style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
+                       encoding="&g_rep_encoding.";
+         %end;
+
+         %_reportPgmHeader (i_lib=WORK, i_data=_Pgm&i., i_language=&i_language.);
+
+         title2 j=c "&g_nls_reportPgmDoc_018. &&l_scnName&i..";
+         title3 j=c height=10pt link="&&l_scnLink&i." "[&g_nls_reportAuton_027.]";
 
          proc print data=work._pgmsrc_view noobs
             style(report)=blindTable [borderwidth=0]
@@ -329,7 +444,7 @@
       if (missing (childText)) then do;
          childText=child;
       end;
-      keep parent child childText ChildDesc;
+      keep parent child childText ChildDesc childPath;
       if last.child;
    run;
 

@@ -70,7 +70,7 @@
          WHERE scn_id = &i_scnid;
 
          LENGTH 
-            scn_abs_path cas_abs_path $256 
+            scn_abs_path cas_abs_path pgmscn_name pgmexa_name $256 
             hlp hlp2    $200
             errcountmsg $50
             LinkTitle1
@@ -127,6 +127,7 @@
          scn_abs_path = resolve ('%_abspath(&g_root.,' !! trim(scn_path) !! ')');
          idx          = find (scn_abs_path, '/', -length (scn_abs_path))+1;
          scn_pgm      = substr (scn_abs_path, idx);
+         pgmscn_name  = catt ("pgm_scn_", put (scn_id, z3.));
          scn_duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid      = put (scn_id, z3.);
          c_casid      = put (cas_id, z3.);
@@ -145,6 +146,7 @@
          else do;
             cas_obj      = resolve ('%_stdpath(&g_sasunitroot./saspgm/sasunit,' !! trim(cas_abs_path) !! ')');
          end;
+         pgmexa_name = catt ("pgm_", put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", ""));
 
          %_render_DataColumn (i_sourceColumn=scn_duration
                              ,o_targetColumn=scnDurationColumn
@@ -173,9 +175,19 @@
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
                LinkColumn1  = catt("cas_overview.html#SCN", c_scnid, "_");
-               LinkColumn2  = "pgm_" !! tranwrd (scn_pgm, ".sas", ".html");
+               if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmscn_name))) then do;
+                  LinkColumn2 = catt (pgmscn_name, ".html");
+               end;
+               else do;
+                  LinkColumn2 = catt ("src/scn/scn_", put (scn_id, z3.), ".sas");
+               end;
                LinkColumn3  = c_scnid !! "_log.html";
-               LinkColumn4  = "pgm_" !! tranwrd (exa_pgm, ".sas", ".html");
+               if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmexa_name))) then do;
+                  LinkColumn4 = catt (pgmexa_name, ".html");
+               end;
+               else do;
+                  LinkColumn4 = catt ("src/", put (coalesce (exa_auton,99),z2.), "/", exa_pgm);
+               end;
                LinkColumn5  = c_scnid !! "_" !! c_casid !! "_log.html";
             %end;
             %_render_DataColumn (i_sourceColumn=scn_desc

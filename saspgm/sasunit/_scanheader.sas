@@ -261,9 +261,9 @@
    run;
 
    data work._GroupInfo;
-      length parent child childtext childdesc $256 Type $8 NewGroup 8;
+      length parent child childtext childdesc childpath $256 Type $8 NewGroup 8;
       set WORK.__programHeader (where=(tag in ("\defgroup", "\ingroup", "\groupdesc") AND not missing (new_description)));
-      retain parent child "&macroname" childtext childdesc "" Type "Macro" NewGroup 0;
+      retain parent child "&macroname" childtext childdesc "" childpath "&FilePath." Type "Macro" NewGroup 0;
       if (tag = "\defgroup") then do;
          if (newGroup = 1) then do;
             output;

@@ -28,7 +28,7 @@
    %LOCAL i l_path;
 
    %*** check all autocall paths ***;
-   %DO i=0 %TO 9;
+   %DO i=0 %TO 29;
       %IF ("%cmpres (&&g_sasautos&i)" ne "") %THEN %DO;
          %LET l_path = &&g_sasautos&i/&i_object;
          %IF %sysfunc(fileexist(&l_path)) %THEN %DO;

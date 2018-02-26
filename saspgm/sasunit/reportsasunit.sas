@@ -163,8 +163,8 @@
    ods path (PREPEND) _style.template(READ);
    ods path (PREPEND) WORK.template(UPDATE);
 
+   %_copyMacrosToRepSrc (o_pgmdoc_sasunit=&o_pgmdoc_sasunit.);
    %IF (&o_pgmdoc.=1) %THEN %DO;
-      %_copyMacrosToRepSrc (o_pgmdoc_sasunit=&o_pgmdoc_sasunit.);
       %_reportPgmDoc(i_language      =&i_language.
                     ,i_repdata       =&d_rep.
                     ,o_html          =&o_html.
