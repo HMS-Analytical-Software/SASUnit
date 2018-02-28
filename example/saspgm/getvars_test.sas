@@ -26,28 +26,65 @@
 %initScenario(i_desc=Tests for getvars.sas);
 
 /*-- simple example with sashelp.class ---------------------------------------*/
-%initTestcase(i_object=getvars.sas, i_desc=simple example with sashelp.class)
-%let vars=%getvars(sashelp.class);
-/* %endTestcall() can be omitted, will called implicitly by the first assert */
-%assertEquals(i_actual=&vars, i_expected=Name Sex Age Height Weight, i_desc=Variablen prüfen)
-/* %endTestcase() can be omitted, will called implicitly by the next initTestcase */
+%macro testcase(i_object=getvars.sas, i_desc=%str(simple example with sashelp.class));
+   /* setup environment for test call */
+
+   /* start testcase */
+   %initTestcase(i_object=&i_object., i_desc=&i_desc.)
+
+   /* call */
+   %let vars=%getvars(sashelp.class);
+   %endTestcall()
+
+   /* assert */
+   %assertEquals(i_actual=&vars, i_expected=Name Sex Age Height Weight, i_desc=Variablen prüfen)
+
+   /* end testcase */
+   %endTestcase()
+%mend testcase; %testcase;
 
 /*-- simple example with sashelp.class, different delimiter ------------------*/
-%initTestcase(i_object=getvars.sas, i_desc=%str(simple example with sashelp.class, different delimiter))
-%let vars=%getvars(sashelp.class,dlm=%str(,));
-%assertEquals(i_actual=&vars, i_expected=%str(Name,Sex,Age,Height,Weight), i_desc=check variables)
+%macro testcase(i_object=getvars.sas, i_desc=%str(simple example with sashelp.class, different delimiter));
+   /* setup environment for test call */
+
+   /* start testcase */
+   %initTestcase(i_object=&i_object., i_desc=&i_desc.)
+
+   /* call */
+   %let vars=%getvars(sashelp.class,dlm=%str(,));
+   %endTestcall()
+
+   /* assert */
+   %assertEquals(i_actual=&vars, i_expected=%str(Name,Sex,Age,Height,Weight), i_desc=check variables)
+
+   /* end testcase */
+   %endTestcase()
+%mend testcase; %testcase;
 
 /*-- example with variable names containing special characters ---------------*/
-%initTestcase(i_object=getvars.sas, i_desc=example with variable names containing special characters)
-options validvarname=any;
-data work.test; 
-   'a b c'n=1; 
-   '$6789'n=2;
-   ';6789'n=2;
-run; 
-%let vars="%getvars(test,dlm=%str(","))";
-%assertEquals(i_actual=&vars., i_expected=%str("a b c","$6789",";6789"), i_desc=check variables)
-%endTestcase()
+%macro testcase(i_object=getvars.sas, i_desc=%str(example with variable names containing special characters));
+
+   /* setup environment for test call */
+   options validvarname=any;
+   data work.test; 
+      'a b c'n=1; 
+      '$6789'n=2;
+      ';6789'n=2;
+   run; 
+
+   /* start testcase */
+   %initTestcase(i_object=&i_object., i_desc=&i_desc.)
+
+   /* call */
+   %let vars="%getvars(test,dlm=%str(%",%"))";
+   %endTestcall()
+
+   /* assert */
+   %assertEquals(i_actual=&vars., i_expected=%str("a b c","$6789",";6789"), i_desc=check variables)
+
+   /* end testcase */
+   %endTestcase()
+%mend testcase; %testcase;
 
 /*-- example with empty dataset ----------------------------------------------*/
 %initTestcase(i_object=getvars.sas, i_desc=example with empty dataset)
