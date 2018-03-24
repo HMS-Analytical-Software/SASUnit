@@ -64,6 +64,19 @@
       proc print data=target.scn noobs label;
          where scn_id = &g_scnid.;
          format scn_res PictName.;
+         var 
+            scn_id
+            scn_path
+            scn_desc
+            scn_res
+            scn_start
+            scn_end
+            scn_changed
+            scn_rc
+            scn_errorcount
+            scn_warningcount
+         ;
+
          label 
             scn_id           = "&g_nls_endScenario_005."
             scn_path         = "&g_nls_endScenario_006."
@@ -83,6 +96,19 @@
       proc print data=target.cas noobs label;
          where cas_scnid = &g_scnid.;
          format cas_res PictName.;
+
+         var
+            cas_scnid
+            cas_id
+            cas_obj
+            cas_desc
+            cas_res
+            cas_exaid
+            cas_spec
+            cas_start
+            cas_end
+         ;
+
          label 
             cas_scnid = "&g_nls_endScenario_015."
             cas_id    = "&g_nls_endScenario_005."
