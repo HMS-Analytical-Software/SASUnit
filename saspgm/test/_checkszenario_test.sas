@@ -23,6 +23,8 @@
 /*-- change time for scenarios -----------------------------------------------*/
 %LET scn_changed=%sysfunc(datetime());
 %MACRO _createTestFiles;
+   %local l_root;
+   %let l_root = %sysfunc (translate (&g_root., /, \));
 /* Create test DB */
 DATA scn;
    length scn_path $255;
@@ -37,25 +39,25 @@ RUN;
 DATA scn_dir;
    length membername $80 filename $255;
    format changed datetime20.;
-   membername = "scenario1.sas"; changed = &scn_changed.-60; filename = "saspgm/test/pgmlib1/scenario1.sas"; output;
-   membername = "scenario2.sas"; changed = &scn_changed.-60; filename = "saspgm/test/pgmlib1/scenario2.sas"; output;
-   membername = "scenario3.sas"; changed = &scn_changed.-60; filename = "saspgm/test/pgmlib1/scenario3.sas"; output;
-   membername = "scenario4.sas"; changed = &scn_changed.-60; filename = "saspgm/test/pgmlib1/scenario4.sas"; output;
+   membername = "scenario1.sas"; changed = &scn_changed.-60; filename = "&l_root./saspgm/test/pgmlib1/scenario1.sas"; output;
+   membername = "scenario2.sas"; changed = &scn_changed.-60; filename = "&l_root./saspgm/test/pgmlib1/scenario2.sas"; output;
+   membername = "scenario3.sas"; changed = &scn_changed.-60; filename = "&l_root./saspgm/test/pgmlib1/scenario3.sas"; output;
+   membername = "scenario4.sas"; changed = &scn_changed.-60; filename = "&l_root./saspgm/test/pgmlib1/scenario4.sas"; output;
 RUN;
 
 DATA exa;
    length exa_pgm $80 exa_filename $255;
    format exa_changed datetime20.;
    format exa_id z3.;
-   exa_id=5; exa_auton=3; exa_pgm = "scenario1.sas"; exa_changed = &scn_changed.-60; exa_filename = "saspgm/test/pgmlib1/scenario1.sas"; output;
-   exa_id=6; exa_auton=3; exa_pgm = "scenario2.sas"; exa_changed = &scn_changed.-60; exa_filename = "saspgm/test/pgmlib1/scenario2.sas"; output;
-   exa_id=7; exa_auton=3; exa_pgm = "scenario3.sas"; exa_changed = &scn_changed.-60; exa_filename = "saspgm/test/pgmlib1/scenario3.sas"; output;
-   exa_id=8; exa_auton=3; exa_pgm = "scenario4.sas"; exa_changed = &scn_changed.-60; exa_filename = "saspgm/test/pgmlib1/scenario4.sas"; output;
+   exa_id=5; exa_auton=3; exa_pgm = "scenario1.sas"; exa_changed = &scn_changed.-60; exa_filename = "&l_root./saspgm/test/pgmlib1/scenario1.sas"; output;
+   exa_id=6; exa_auton=3; exa_pgm = "scenario2.sas"; exa_changed = &scn_changed.-60; exa_filename = "&l_root./saspgm/test/pgmlib1/scenario2.sas"; output;
+   exa_id=7; exa_auton=3; exa_pgm = "scenario3.sas"; exa_changed = &scn_changed.-60; exa_filename = "&l_root./saspgm/test/pgmlib1/scenario3.sas"; output;
+   exa_id=8; exa_auton=3; exa_pgm = "scenario4.sas"; exa_changed = &scn_changed.-60; exa_filename = "&l_root./saspgm/test/pgmlib1/scenario4.sas"; output;
    
-   exa_id=1; exa_auton=2; exa_pgm = "testmakro1.sas"; exa_changed = &scn_changed.-60; exa_filename = "saspgm/test/pgmlib1/testmakro1.sas"; output;
-   exa_id=2; exa_auton=2; exa_pgm = "testmakro2.sas"; exa_changed = &scn_changed.-60; exa_filename = "saspgm/test/pgmlib1/testmakro2.sas"; output;
-   exa_id=3; exa_auton=2; exa_pgm = "testmakro3.sas"; exa_changed = &scn_changed.-60; exa_filename = "saspgm/test/pgmlib1/testmakro3.sas"; output;
-   exa_id=4; exa_auton=2; exa_pgm = "testmakro4.sas"; exa_changed = &scn_changed.-60; exa_filename = "saspgm/test/pgmlib1/testmakro4.sas"; output;
+   exa_id=1; exa_auton=2; exa_pgm = "testmakro1.sas"; exa_changed = &scn_changed.-60; exa_filename = "&l_root./saspgm/test/pgmlib1/testmakro1.sas"; output;
+   exa_id=2; exa_auton=2; exa_pgm = "testmakro2.sas"; exa_changed = &scn_changed.-60; exa_filename = "&l_root./saspgm/test/pgmlib1/testmakro2.sas"; output;
+   exa_id=3; exa_auton=2; exa_pgm = "testmakro3.sas"; exa_changed = &scn_changed.-60; exa_filename = "&l_root./saspgm/test/pgmlib1/testmakro3.sas"; output;
+   exa_id=4; exa_auton=2; exa_pgm = "testmakro4.sas"; exa_changed = &scn_changed.-60; exa_filename = "&l_root./saspgm/test/pgmlib1/testmakro4.sas"; output;
 RUN;
 
 DATA cas;
@@ -75,13 +77,14 @@ run;
 /*-- Case 1: Neither scenario nor dependend macros changed --*/
 %_createTestFiles;
 %initTestcase(i_object = _checkScenario.sas, i_desc = Neither scenario nor dependend macros changed)
-%_switch();
+libname target (work);
+
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir
                ,o_scenariosToRun = scenariosToRun
                );
-%_switch();
+libname target "&g_target.";
 %endTestcall();
    %markTest();
       %assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ 
@@ -112,14 +115,13 @@ QUIT;
 %LET G_CROSSREFSASUNIT=1;
 
 %initTestcase(i_object = _checkScenario.sas, i_desc = 1 scenarios and 0 dependend macro changed since last run);
-%_switch();
+libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir
                ,o_scenariosToRun = scenariosToRun
                );
-%_switch();
-
+libname target "&g_target.";
 %endTestcall();
    %markTest();
       %assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
@@ -144,14 +146,13 @@ QUIT;
 %LET G_CROSSREF=1;
 %LET G_CROSSREFSASUNIT=1;
 %initTestcase(i_object = _checkScenario.sas, i_desc = 1 scenarios and 1 dependend macro changed since last run);
-%_switch();
+libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir
                ,o_scenariosToRun = scenariosToRun
                );
-%_switch();
-
+libname target "&g_target.";
 %endTestcall();
    %markTest();
       %assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
@@ -174,14 +175,13 @@ PROC SQL;
    ;
 QUIT;
 
-%_switch();
+libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir
                ,o_scenariosToRun = scenariosToRun
                );
-%_switch();
-
+libname target "&g_target.";
 %endTestcall();
    %markTest();
       %assertRecordCount(i_libref=work, i_memname=scn, i_operator=EQ
@@ -214,14 +214,13 @@ PROC SQL;
    ;
 QUIT;
 
-%_switch();
+libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir
                ,o_scenariosToRun = scenariosToRun
                );
-%_switch();
-
+libname target "&g_target.";
 %endTestcall();
    %markTest();
       %assertRecordCount(i_libref=work, i_memname=scn, i_operator=EQ

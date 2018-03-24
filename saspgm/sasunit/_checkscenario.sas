@@ -107,7 +107,7 @@
       create table helper4 as
          select h3.*
          from work.helper3 as h3 
-         where scn_filename not in (select filename from &i_scn_pre.);
+         where scn_filename not in (select scn_filename from work.helper1);
       ;
    QUIT;      
 
