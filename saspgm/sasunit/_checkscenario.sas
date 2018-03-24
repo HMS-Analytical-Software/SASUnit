@@ -51,7 +51,6 @@
 
    %LET l_cntObs = 0;
 
-
    %_tempFileName(d_dependency);
    %_tempFileName(d_listcalling);
    %_tempFileName(d_macroList);
@@ -65,24 +64,18 @@
       SET target.scn (keep=scn_id scn_path scn_end scn_changed) nobs=cnt_obs;
       pos = find(scn_path,'/',-200)+1;
       scn_name = lowcase (substr(scn_path,pos));
+      scn_filename = resolve('%_absPath(&g_root,' || scn_path || ')');
    RUN;
 
    PROC SQL noprint;
       create table work.findScenariosToInsertInDB as
-      select s.scn_id
-            ,CASE WHEN not missing (filename) THEN resolve('%_stdPath(&g_root,' || filename || ')')
-                 ELSE scn_path
-                 END as scn_path
-            ,coalesce (scn.changed,s.scn_changed) as scn_changed
-            ,s.scn_end
-            ,CASE WHEN s.scn_id EQ . THEN 1
-                 ELSE 0
-                 END as insertIntoDB
+      select . as scn_id
+            ,resolve('%_stdPath(&g_root,' || filename || ')') as  scn_path length=1000
+            ,changed as scn_changed
+            ,. as scn_end
+            ,1 as insertIntoDB
             ,filename as scn_filename
-      from scenarios as s
-      full join &i_scn_pre. as scn
-      on lowcase (scn.membername)=s.scn_name
-      ;
+      from &i_scn_pre. where upcase (filename) not in (select upcase (scn_filename)  from work.scenarios);
    QUIT;
 
    /* Create scn_id for new scenarios */
@@ -106,16 +99,31 @@
          on cas_exaid = exa.exa_id
          group by cas_scnid
       ;
-      create table &o_scenariosToRun. as
-      select h1.scn_id, h1.scn_path, h1.scn_filename, h1.scn_end, h1.scn_changed, h1.insertIntoDB,
-         case WHEN scn_end < scn_changed OR scn_end < exa_changed OR exa_id = 0 THEN 1
-              ELSE 0
-              END as dorun
-      from work.helper1 as h1 
-      left join work.helper2 as h2 on h2.cas_scnid=h1.scn_id
-      order by scn_id;
+      create table helper3 as
+         select scn.scn_id, scn.scn_path, scn.scn_filename, scn.scn_end, scn.scn_changed, exa_changed, exa_id
+         from work.scenarios as scn 
+         left join work.helper2 as h2 on h2.cas_scnid=scn.scn_id;
+      ;
+      create table helper4 as
+         select h3.*
+         from work.helper3 as h3 
+         where scn_filename not in (select filename from &i_scn_pre.);
       ;
    QUIT;      
+
+   data &o_scenariosToRun.;
+      set work.helper1 work.helper4;
+      dorun = 0;
+      if (scn_end < scn_changed OR scn_end < exa_changed 
+          OR exa_id = 0 OR insertIntoDB=1) then do;
+          dorun = 1;
+      end;
+      keep scn_id scn_path scn_filename scn_end scn_changed insertIntoDB DoRun;
+   run;
+
+   proc sort data=&o_scenariosToRun.;
+      by scn_id;
+   run;
 
    /* Create cross-reference and mark dependent scenarios as to be run */
    %if (&g_crossref. = 1) %then %do;
@@ -171,7 +179,7 @@
    %end;
 
    PROC DATASETS NOLIST NOWARN LIB=WORK;
-      DELETE helper1 helper2 findScenariosToInsertInDB;
+      DELETE helper1 helper2 helper3 helper4 findScenariosToInsertInDB;
       DELETE _modifiedExaWithCaller;
       DELETE _modifiedExaWithCallerID;
       DELETE _modifiedExaWithCallerScnID;

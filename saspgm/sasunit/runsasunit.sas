@@ -114,8 +114,8 @@
                         );
 
    PROC SQL NOPRINT;
-      DELETE * FROM target.cas WHERE cas_scnid in (select scn_id from &d_scenariosToRun where dorun=1);
-      DELETE * FROM target.tst WHERE tst_scnid in (select scn_id from &d_scenariosToRun where dorun=1);
+      DELETE * FROM target.cas WHERE cas_scnid in (select scn_id from &d_scenariosToRun. where dorun=1);
+      DELETE * FROM target.tst WHERE tst_scnid in (select scn_id from &d_scenariosToRun. where dorun=1);
    QUIT;
 
    /*-- if scenario not present in test database: create new scenario --------*/
@@ -163,7 +163,7 @@
          PROC SQL NOPRINT;
             UPDATE target.scn 
                SET scn_desc    = "&l_scndesc"
-                  ,scn_changed = &l_changed.
+              ,scn_changed = &l_changed.
             WHERE scn_id = &l_scnid
             ;
          QUIT;
@@ -213,7 +213,8 @@
             
             UPDATE target.scn
                SET 
-                   scn_rc           = &l_sysrc.
+                   scn_end          = %sysfunc(datetime())
+                  ,scn_rc           = &l_sysrc.
                   ,scn_errorcount   = &l_error_count.
                   ,scn_warningcount = &l_warning_count.
                   ,scn_res          = &l_result.
