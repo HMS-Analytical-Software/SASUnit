@@ -126,8 +126,10 @@
       infile "&i_macroLocation./&l_MacroName.";
       input;
       srcrow = _INFILE_;
-      if (index (upcase (srcrow), "%nrstr(%MACRO )%scan(%upcase(&l_MacroName.),1,.)")) then do;
-         nCounter=0;
+      if (index (compress (upcase (srcrow)), "%nrstr(%MACRO)%scan(%upcase(&l_MacroName.),1,.)(") 
+          OR index (compress (upcase (srcrow)), "%nrstr(%MACRO)%scan(%upcase(&l_MacroName.),1,.);") 
+         ) then do;
+         nCounter = 0;
       end;
       if (nCounter >= 0) then do;
          nCounter=nCounter+1;
