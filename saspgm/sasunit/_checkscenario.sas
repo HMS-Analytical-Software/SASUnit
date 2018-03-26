@@ -56,7 +56,7 @@
    %_tempFileName(d_macroList);
 
    /* Get Scenarios and their names from target.scn */
-   DATA work.scenarios;
+   DATA work._scenarios;
       IF _n_ = 1 THEN DO;
          call symput ('l_cntObs',put(cnt_obs, 3.));
       END;
@@ -68,20 +68,20 @@
    RUN;
 
    PROC SQL noprint;
-      create table work.findScenariosToInsertInDB as
+      create table work._findScenariosToInsertInDB as
       select . as scn_id
             ,resolve('%_stdPath(&g_root,' || filename || ')') as  scn_path length=1000
             ,changed as scn_changed
             ,. as scn_end
             ,1 as insertIntoDB
             ,filename as scn_filename
-      from &i_scn_pre. where upcase (filename) not in (select upcase (scn_filename)  from work.scenarios);
+      from &i_scn_pre. where upcase (filename) not in (select upcase (scn_filename) from work._scenarios);
    QUIT;
 
    /* Create scn_id for new scenarios */
-   DATA work.helper1;
+   DATA work._scns2insert;
       retain index &l_cntObs.;
-      SET work.findScenariosToInsertInDB;
+      SET work._findScenariosToInsertInDB;
       IF scn_id EQ . THEN DO;
          index+1;
          scn_id=index;
@@ -91,33 +91,48 @@
    /* look for units under test not in autocall libraries (exa_id = 0)*/
    /* and join change datetime of examinees                           */
    PROC SQL noprint;
-      create table work.helper2 as
-         select distinct cas_scnid
-                        ,max (exa_changed) as exa_changed format datetime20.
-                        ,min (cas_exaid) as exa_id
-         from target.cas left join target.exa
-         on cas_exaid = exa.exa_id
+      create table work._curr_scenarios as
+         select *
+         from work._scenarios
+         where upcase (scn_filename) in (select upcase (filename) from &i_scn_pre.)
+      ;
+      create table work._othr_scenarios as
+         select *
+         from work._scenarios
+         where upcase (scn_filename) not in (select upcase (filename) from &i_scn_pre.)
+      ;
+      create table work._curr_cas_exa as
+         select distinct
+                cas.cas_scnid
+               ,cas.cas_exaid
+         from target.cas
+         where cas.cas_scnid in (select scn_id from work._curr_scenarios);
+      ;
+      create table work._curr_examinee as
+         select curr.cas_scnid
+               ,max (exa.exa_changed) as exa_changed format datetime20.
+         from work._curr_cas_exa curr left join target.exa
+         on curr.cas_exaid = exa.exa_id
          group by cas_scnid
       ;
-      create table helper3 as
-         select scn.scn_id, scn.scn_path, scn.scn_filename, scn.scn_end, scn.scn_changed, exa_changed, exa_id
-         from work.scenarios as scn 
-         left join work.helper2 as h2 on h2.cas_scnid=scn.scn_id;
-      ;
-      create table helper4 as
-         select h3.*
-         from work.helper3 as h3 
-         where scn_filename not in (select scn_filename from work.helper1);
+      create table work._scns2run as
+         select scn.scn_id, scn.scn_path, scn.scn_filename, scn.scn_end, scn.scn_changed, exa.exa_changed
+         from work._curr_scenarios as scn 
+         left join work._curr_examinee as exa on exa.cas_scnid=scn.scn_id;
       ;
    QUIT;      
 
-   data &o_scenariosToRun.;
-      set work.helper1 work.helper4;
+   data work._scns2run;
+      set work._scns2run;
       dorun = 0;
-      if (scn_end < scn_changed OR scn_end < exa_changed 
-          OR exa_id = 0 OR insertIntoDB=1) then do;
-          dorun = 1;
+      if (scn_end < scn_changed OR scn_end < exa_changed OR missing (exa_changed)) then do;
+         dorun = 1;
       end;
+   run;
+
+   data &o_scenariosToRun.;
+      set work._scns2insert work._scns2run work._othr_scenarios;
+      dorun = max (dorun, insertIntoDB, 0);
       keep scn_id scn_path scn_filename scn_end scn_changed insertIntoDB DoRun;
    run;
 
@@ -179,7 +194,8 @@
    %end;
 
    PROC DATASETS NOLIST NOWARN LIB=WORK;
-      DELETE helper1 helper2 helper3 helper4 findScenariosToInsertInDB;
+      DELETE _scenarios _findScenariosToInsertInDB _scns2insert;
+      DELETE _curr_scenarios _othr_scenarios _curr_cas_exa _curr_examinee _scns2run;
       DELETE _modifiedExaWithCaller;
       DELETE _modifiedExaWithCallerID;
       DELETE _modifiedExaWithCallerScnID;
