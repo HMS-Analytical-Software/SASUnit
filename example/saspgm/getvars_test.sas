@@ -87,22 +87,62 @@
 %mend testcase; %testcase;
 
 /*-- example with empty dataset ----------------------------------------------*/
-%initTestcase(i_object=getvars.sas, i_desc=example with empty dataset)
-data work.test; 
-   stop;
-run; 
-%let vars=%getvars(test);
-%assertEquals(i_actual=&vars, i_expected=, i_desc=no variables found)
+%macro testcase(i_object=getvars.sas, i_desc=%str(example with empty dataset));
+   /* setup environment for test call */
+   data work.test; 
+      stop;
+   run; 
+
+   /* start testcase */
+   %initTestcase(i_object=&i_object., i_desc=&i_desc.)
+
+   /* call */
+   %let vars=%getvars(test);
+   %endTestcall()
+
+   /* assert */
+   %assertEquals(i_actual=&vars, i_expected=, i_desc=no variables found)
+
+   /* end testcase */
+   %endTestcase()
+%mend testcase; %testcase;
 
 /*-- example without dataset specified ---------------------------------------*/
-%initTestcase(i_object=getvars.sas, i_desc=example without dataset specified)
-%let vars=%getvars();
-%assertEquals(i_actual=&vars, i_expected=, i_desc=no variables found)
+%macro testcase(i_object=getvars.sas, i_desc=%str(example without dataset specified));
+   /* setup environment for test call */
+
+   /* start testcase */
+   %initTestcase(i_object=&i_object., i_desc=&i_desc.)
+
+   /* call */
+   %let vars=%getvars();
+   %endTestcall()
+
+   /* assert */
+   %assertEquals(i_actual=&vars, i_expected=, i_desc=no variables found)
+
+   /* end testcase */
+   %endTestcase()
+%mend testcase; %testcase;
+
 
 /*-- example with invalid dataset --------------------------------------------*/
-%initTestcase(i_object=getvars.sas, i_desc=example with invalid dataset)
-%let vars=%getvars(xxx);
-%assertEquals(i_actual=&vars, i_expected=, i_desc=example with invalid dataset)
+%macro testcase(i_object=getvars.sas, i_desc=%str(example with invalid dataset));
+   /* setup environment for test call */
+
+   /* start testcase */
+   %initTestcase(i_object=&i_object., i_desc=&i_desc.)
+
+   /* call */
+   %let vars=%getvars(xxx);
+   %endTestcall()
+
+   /* assert */
+   %assertEquals(i_actual=&vars, i_expected=, i_desc=example with invalid dataset)
+
+   /* end testcase */
+   %endTestcase()
+%mend testcase; %testcase;
 
 proc delete data=work.test;
 run;
