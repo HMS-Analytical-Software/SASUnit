@@ -48,6 +48,7 @@
    ods printer close;
 
    proc delete data=work.class;
+   run;
 
 %MEND _createtestfiles;
 
