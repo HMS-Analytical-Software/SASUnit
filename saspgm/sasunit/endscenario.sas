@@ -1,6 +1,6 @@
 /**
    \file
-   \ingroup  SASUNIT_UTIL
+   \ingroup  SASUNIT_SCN
 
    \brief    ends scenario call in interactive sessions
 
@@ -14,9 +14,6 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-            
-   \param    o_environment
-   \param    o_starttype
 */
 /** \cond */ 
 %MACRO endScenario();
@@ -115,7 +112,7 @@
             cas_exaid = "&g_nls_endScenario_016."
             cas_obj   = "&g_nls_endScenario_017."
             cas_desc  = "&g_nls_endScenario_007."
-            cas_spec  = "&g_nls_endScenario_017."
+            cas_spec  = "&g_nls_endScenario_018."
             cas_start = "&g_nls_endScenario_008."
             cas_end   = "&g_nls_endScenario_009."
             cas_res   = "&g_nls_endScenario_014."
