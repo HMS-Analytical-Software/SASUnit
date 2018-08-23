@@ -73,7 +73,7 @@
               1 = "&g_nls_reportHome_027."
            ;
      value $RowHeader 
-          %do i=1 %to 36;
+          %do i=1 %to 37;
              %let l_i=%sysfunc(putn (&i., z3.));
               "&l_i." = "&&g_nls_reportHome_&l_i.."
           %end;
@@ -83,13 +83,15 @@
    DATA work._home_report;
       SET &i_repdata.;
 
-      length Category $20 idColumn parameterColumn valueColumn $4000;
+      length Category $20 idColumn parameterColumn valueColumn $4000 sortColumn 8;
 
       IF _n_=1 THEN DO;
+         /*** Section PROJECT                                                             ***/
          idColumn = "003";
          parameterColumn="^{style [flyover=""&g_project.""]%str(&)g_project}";
          valueColumn=tsu_project;
          Category="PROJECT";
+         SortColumn=0;
          output;
          idColumn = "004";
          parameterColumn="^{style [flyover=""&g_root.""]%str(&)g_root}";
@@ -117,27 +119,6 @@
             end;
             %END;
          end;
-         if (tsu_autoexec ne "") then do;
-            idColumn = "007";
-            parameterColumn="^{style [flyover=""&g_autoexec.""]%str(&)g_autoexec}";
-            valueColumn=catt ("^{style [flyover=""&g_autoexec."" url=""file:///&g_autoexec.""]", tsu_autoexec, "}");
-            Category="XSAS_Session";
-            output;
-         end;
-         if (tsu_sascfg ne "") then do;
-            idColumn = "008";
-            parameterColumn="^{style [flyover=""&g_sascfg.""]%str(&)g_sascfg}";
-            valueColumn=catt ("^{style [flyover=""&g_sascfg."" url=""file:///&g_sascfg.""]", tsu_sascfg, "}");
-            Category="XSAS_Session";
-            output;
-         end;
-         if (tsu_sasuser ne "") then do;
-            idColumn = "009";
-            parameterColumn="^{style [flyover=""&g_sasuser.""]%str(&)g_sasuser}";
-            valueColumn=catt ("^{style [flyover=""&g_sasuser."" url=""file:///&g_sasuser.""]", tsu_sasuser, "}");
-            Category="XSAS_Session";
-            output;
-         end;
          if (tsu_testdata ne "") then do;
             idColumn = "010";
             parameterColumn="^{style [flyover=""&g_testdata.""]%str(&)g_testdata}";
@@ -159,28 +140,136 @@
             Category="PROJECT";
             output;
          end;
+
+         /*** Section SASUnit                                                             ***/
          idColumn = "013";
          parameterColumn="^{style [flyover=""&g_sasunit.""]%str(&)g_sasunit}";
          valueColumn=catt ("^{style [flyover=""%trim(&g_sasunit.)"" url=""file:///%trim(&g_sasunit.)""]", tsu_sasunit, "}");
          Category="SASUnit";
+         SortColumn+1;
          output;
          idColumn = "013";
          parameterColumn="^{style [flyover=""&g_sasunit_os.""]%str(&)g_sasunit_os}";
          valueColumn=catt ("^{style [flyover=""%trim(&g_sasunit_os.)"" url=""file:///%trim(&g_sasunit_os.)""]", tsu_sasunit_os, "}");
          Category="SASUnit";
+         SortColumn+1;
          output;
+         idColumn = "037";
+         parameterColumn="^{style [flyover=""&g_version.""]%str(&)g_version}";
+         valueColumn="&g_version.";
+         Category="SASUnit";
+         SortColumn+1;
+         output;
+         if (tsu_dbVersion ne "") then do;
+            idColumn = "022";
+            parameterColumn="^{style [flyover=""&g_db_version.""]%str(&)g_db_version}";
+            valueColumn=tsu_dbVersion;
+            Category="SASUnit";
+            SortColumn+1;
+            output;
+         end;
          if getoption("LOG") ne "" then do;
             idColumn = "014";
             parameterColumn="^_";
             valueColumn=catt ('^{style [flyover="', getoption("LOG"), '" url="', "file:///" , getoption("LOG"), '"]', resolve('%_stdPath (i_root=&g_root, i_path=%sysfunc(getoption(log)))'), "}");
             Category="SASUnit";
+            SortColumn+1;
             output;
          end;
-         if (tsu_dbVersion ne "") then do;
-            idColumn = "022";
-            parameterColumn="^_";
-            valueColumn=tsu_dbVersion;
-            Category="SASUnit";
+         idColumn = "021";
+         parameterColumn="SASUNIT_LANGUAGE";
+         valueColumn="%sysget(SASUNIT_LANGUAGE)";
+         Category="SASUnit";
+         SortColumn+1;
+         output;
+         idColumn = "033";
+         parameterColumn='&g_rep_encoding';
+         valueColumn="&g_rep_encoding.";
+         Category="SASUnit";
+         SortColumn+1;
+         output;
+         idColumn = "029";
+         parameterColumn='SASUNIT_COVERAGEASSESSMENT';
+         valueColumn=catt (put (%sysget(SASUNIT_COVERAGEASSESSMENT), YESNO.));
+         Category="SASUnit";
+         SortColumn+1;
+         output;
+         idColumn = "029";
+         parameterColumn='&g_testcoverage';
+         valueColumn=catt (put (&G_TESTCOVERAGE., YESNO.));
+         Category="SASUnit";
+         output;
+         idColumn = "030";
+         parameterColumn="SASUNIT_OVERWRITE";
+         valueColumn=put (%sysget(SASUNIT_OVERWRITE), YESNO.);
+         Category="SASUnit";
+         SortColumn+1;
+         output;
+         idColumn = "031";
+         parameterColumn='&g_crossref';
+         valueColumn=put (&g_crossref., YESNO.);
+         Category="SASUnit";
+         SortColumn+1;
+         output;
+         idColumn = "032";
+         parameterColumn='&g_crossrefsasunit';
+         valueColumn=put (&g_crossrefsasunit., YESNO.);
+         Category="SASUnit";
+         SortColumn+1;
+         output;
+
+         /*** Section TestResults                                                         ***/
+         idColumn = "016";
+         parameterColumn="^_";
+         valueColumn="%_nobs(target.scn) (%cmpres(&l_scn_failed.))";
+         Category="TestResults";
+         SortColumn+1;
+         output;
+         idColumn = "017";
+         parameterColumn="^_";
+         valueColumn="%_nobs(target.cas) (%cmpres(&l_cas_failed.))";
+         Category="TestResults";
+         output;
+         idColumn = "018";
+         parameterColumn="^_";
+         valueColumn="%_nobs(target.tst) (%cmpres(&l_tst_failed.))";
+         Category="TestResults";
+         output;
+         idColumn = "034";
+         parameterColumn="^_";
+         valueColumn = put (&l_runtime., time8.);
+         Category="TestResults";
+         output;
+         idColumn = "035";
+         parameterColumn="^_";
+         valueColumn = catx (" "
+                            ,put (datetime() - dhms("&sysdate."d,hour("&systime.:00"t),minute("&systime.:00"t),second("&systime.:00"t)), time8.)
+                            ,"(%cmpres(&l_scn_run.))"
+                            );
+         Category="TestResults";
+         output;
+
+         /*** Section XSAS_Session                                                        ***/
+         if (tsu_autoexec ne "") then do;
+            idColumn = "007";
+            parameterColumn="^{style [flyover=""&g_autoexec.""]%str(&)g_autoexec}";
+            valueColumn=catt ("^{style [flyover=""&g_autoexec."" url=""file:///&g_autoexec.""]", tsu_autoexec, "}");
+            Category="XSAS_Session";
+            SortColumn+1;
+            output;
+         end;
+         if (tsu_sascfg ne "") then do;
+            idColumn = "008";
+            parameterColumn="^{style [flyover=""&g_sascfg.""]%str(&)g_sascfg}";
+            valueColumn=catt ("^{style [flyover=""&g_sascfg."" url=""file:///&g_sascfg.""]", tsu_sascfg, "}");
+            Category="XSAS_Session";
+            output;
+         end;
+         if (tsu_sasuser ne "") then do;
+            idColumn = "009";
+            parameterColumn="^{style [flyover=""&g_sasuser.""]%str(&)g_sasuser}";
+            valueColumn=catt ("^{style [flyover=""&g_sasuser."" url=""file:///&g_sasuser.""]", tsu_sasuser, "}");
+            Category="XSAS_Session";
             output;
          end;
          idColumn = "015";
@@ -207,69 +296,6 @@
          parameterColumn='&SYSUSERID';
          valueColumn="&SYSUSERID.";
          Category="XSAS_Session";
-         output;
-         idColumn = "021";
-         parameterColumn="SASUNIT_LANGUAGE";
-         valueColumn="%sysget(SASUNIT_LANGUAGE)";
-         Category="SASUnit";
-         output;
-         idColumn = "033";
-         parameterColumn='&g_rep_encoding';
-         valueColumn="&g_rep_encoding.";
-         Category="SASUnit";
-         output;
-         idColumn = "029";
-         parameterColumn='SASUNIT_COVERAGEASSESSMENT';
-         valueColumn=catt (put (%sysget(SASUNIT_COVERAGEASSESSMENT), YESNO.));
-         Category="SASUnit";
-         output;
-         idColumn = "029";
-         parameterColumn='&g_testcoverage';
-         valueColumn=catt (put (&G_TESTCOVERAGE., YESNO.));
-         Category="SASUnit";
-         output;
-         idColumn = "030";
-         parameterColumn="SASUNIT_OVERWRITE";
-         valueColumn=put (%sysget(SASUNIT_OVERWRITE), YESNO.);
-         Category="SASUnit";
-         output;
-         idColumn = "031";
-         parameterColumn='&g_crossref';
-         valueColumn=put (&g_crossref., YESNO.);
-         Category="SASUnit";
-         output;
-         idColumn = "032";
-         parameterColumn='&g_crossrefsasunit';
-         valueColumn=put (&g_crossrefsasunit., YESNO.);
-         Category="SASUnit";
-         output;
-         idColumn = "016";
-         parameterColumn="^_";
-         valueColumn="%_nobs(target.scn) (%cmpres(&l_scn_failed.))";
-         Category="TestResults";
-         output;
-         idColumn = "017";
-         parameterColumn="^_";
-         valueColumn="%_nobs(target.cas) (%cmpres(&l_cas_failed.))";
-         Category="TestResults";
-         output;
-         idColumn = "018";
-         parameterColumn="^_";
-         valueColumn="%_nobs(target.tst) (%cmpres(&l_tst_failed.))";
-         Category="TestResults";
-         output;
-         idColumn = "034";
-         parameterColumn="^_";
-         valueColumn = put (&l_runtime., time8.);
-         Category="TestResults";
-         output;
-         idColumn = "035";
-         parameterColumn="^_";
-         valueColumn = catx (" "
-                            ,put (datetime() - dhms("&sysdate."d,hour("&systime.:00"t),minute("&systime.:00"t),second("&systime.:00"t)), time8.)
-                            ,"(%cmpres(&l_scn_run.))"
-                            );
-         Category="TestResults";
          output;
       END;
    run;
@@ -304,9 +330,10 @@
 
       format idColumn $RowHeader.;
 
-      columns Category idColumn parameterColumn valueColumn;
+      columns Category sortColumn idColumn parameterColumn valueColumn;
 
       define Category        / group noprint;
+      define sortColumn      / group noprint;
       define idColumn        / group order=internal style(Column)=rowheader;
 
       compute before Category / style=header;

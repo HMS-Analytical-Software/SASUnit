@@ -109,11 +109,12 @@
                   ,i_language        = %sysget(SASUNIT_LANGUAGE)
                   );
 
-   %GLOBAL g_version g_revision g_verbose g_error g_warning g_note g_runMode g_language;
+   %GLOBAL g_version g_revision g_db_version g_verbose g_error g_warning g_note g_runMode g_language;
 
-   %LET g_version   = 2.0;
-   %LET g_revision  = $Revision$;
-   %LET g_revision  = %scan(&g_revision,2,%str( $:));
+   %LET g_version    = 2.0.0;
+   %LET g_db_version = 2.0;
+   %LET g_revision   = $Revision$;
+   %LET g_revision   = %scan(&g_revision,2,%str( $:));
 
    /******************************************************************************/
    /*** Step one                                                               ***/
@@ -481,7 +482,7 @@
             did = close(did);
          end;
       run;
-      %LET l_newdb=%eval ("&l_current_dbversion." NE "&g_version.");
+      %LET l_newdb=%eval ("&l_current_dbversion." NE "&g_db_version.");
    %END;
 
    /*-- create test database if necessary ---------------------------------------*/
@@ -661,10 +662,10 @@
       UPDATE target.tsu SET tsu_testdata        = "&l_testdata";
       UPDATE target.tsu SET tsu_refdata         = "&l_refdata";
       UPDATE target.tsu SET tsu_doc             = "&l_doc";
-      UPDATE target.tsu SET tsu_testcoverage    =&i_testcoverage;
-      UPDATE target.tsu SET tsu_verbose         =&i_verbose;
-      UPDATE target.tsu SET tsu_crossref        =&i_crossref;
-      UPDATE target.tsu SET tsu_crossrefsasunit =&i_crossrefsasunit;
+      UPDATE target.tsu SET tsu_testcoverage    =&i_testcoverage.;
+      UPDATE target.tsu SET tsu_verbose         =&i_verbose.;
+      UPDATE target.tsu SET tsu_crossref        =&i_crossref.;
+      UPDATE target.tsu SET tsu_crossrefsasunit =&i_crossrefsasunit.;
       UPDATE target.tsu SET tsu_language        ="&i_language.";
    QUIT;
 
@@ -719,7 +720,7 @@
       /*-- save time of initialization ---------------------------------------------*/
       UPDATE target.tsu SET tsu_lastinit = %sysfunc(datetime());
       /*-- update column tsu_dbVersion ------------------------------------------*/
-      UPDATE target.tsu SET tsu_dbVersion = "&g_version.";
+      UPDATE target.tsu SET tsu_dbVersion = "&g_db_version.";
    QUIT;
 
    %IF (&g_runMode. = SASUNIT_INTERACTIVE) %THEN %DO;

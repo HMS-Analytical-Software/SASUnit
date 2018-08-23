@@ -349,6 +349,8 @@
  35 EN Runtime SASUnit (Scenarios started)
  36 DE Testergebnisse
  36 EN Test results
+ 37 DE SASUnit Version
+ 37 EN SASUnit version
 ---reportLibrary
   1 DE Prüfbericht - Vergleich der beiden Bibliotheken
   1 EN Test Report - Comparison of two Libraries
