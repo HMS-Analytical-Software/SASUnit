@@ -86,6 +86,7 @@
       input line $char255.;
       if index (line, ":\") then do;
          dir = substr(line, index (line, ":\")-1);
+         if index(dir, "tartalma") > 0 then dir = substr(line, 1, index (dir, "tartalma")-1);
       end;      
       if substr(line,1,1) ne ' ' then do;
          * Check for presence of AM/PM in time value, because you can specify AM/PM timeformat in German Windows *;
