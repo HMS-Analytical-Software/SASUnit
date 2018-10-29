@@ -76,7 +76,7 @@
       %put ======== OS Command End ========;
    %end;
    
-   %SYSEXEC(dir &s /a-d "&l_i_path" > "&dirfile");
+   %SYSEXEC(dir &s /A-D /ON "&l_i_path" > "&dirfile");
    options &xwait &xsync &xmin;
    
    data &o_out (keep=membername filename changed);
@@ -86,7 +86,16 @@
       input line $char255.;
       if index (line, ":\") then do;
          dir = substr(line, index (line, ":\")-1);
-         if index(dir, "tartalma") > 0 then dir = substr(line, 1, index (dir, "tartalma")-1);
+		 /* In Hungarian Windows the message is different                         */
+		 /* - in English, German or French Windows the message looks like this    */
+		 /*   <Word for Directory> <Word for of> <Directory>                      */
+		 /* - in Hungarian and probably other Windows the message looks like this */
+		 /*   <Directory> <Word for Directory ot whatever>                        */
+		 /* Another problem is that dirctories with blanks are NOT quoted         */
+		 /* We need to get rid of OS dir commands                                 */
+         if index(dir, "tartalma") > 0 then do;
+            dir = substr(line, 1, index (dir, "tartalma")-1);
+         end;
       end;      
       if substr(line,1,1) ne ' ' then do;
          * Check for presence of AM/PM in time value, because you can specify AM/PM timeformat in German Windows *;
