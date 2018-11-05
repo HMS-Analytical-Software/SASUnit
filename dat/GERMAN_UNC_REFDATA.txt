@@ -1,0 +1,6 @@
+membername;filename;changed
+New text document - Kopie (2).txt;//Servername/Ordner1/Ordner mit Blanks im Namen/New text document - Kopie (2).txt;30OCT2018:09:20:00
+New text document - Kopie (3).txt;//Servername/Ordner1/Ordner mit Blanks im Namen/New text document - Kopie (3).txt;30OCT2018:09:20:00
+New text document - Kopie (4).txt;//Servername/Ordner1/Ordner mit Blanks im Namen/New text document - Kopie (4).txt;30OCT2018:09:20:00
+New text document - Kopie.txt;//Servername/Ordner1/Ordner mit Blanks im Namen/New text document - Kopie.txt;30OCT2018:09:20:00
+New text document.txt;//Servername/Ordner1/Ordner mit Blanks im Namen/New text document.txt;30OCT2018:09:20:00

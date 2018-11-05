@@ -1,7 +1,7 @@
  Volume in Laufwerk \\hd1pcms0091\AA_projekte: hat keine Bezeichnung.
  Volumeseriennummer: A0CF-C9AC
 
- Verzeichnis von \\hd1pcms0091\AA_projekte\SASUnit\SASUnit_Test\Folder with Blanks in Name
+ Verzeichnis von \\Servername\Ordner1\Ordner mit Blanks im Namen
 
 30.10.2018  09:20                 0 New text document - Kopie (2).txt
 30.10.2018  09:20                 0 New text document - Kopie (3).txt

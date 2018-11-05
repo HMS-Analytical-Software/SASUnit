@@ -17,6 +17,13 @@
 %initScenario (i_desc=Test of _readdirfile.sas)
 
 /*-- 001 german windows mapped drive ----------------------------------------------*/
+proc import 
+   datafile="&g_refdata./german_drive_refdata.txt" 
+   out=work._german_drive_refdata dbms=CSV 
+   replace;
+
+   delimiter = ";";
+run;
 %initTestcase(i_object=_readdirfile.sas
              ,i_desc=german windows mapped drive
              )
@@ -26,13 +33,28 @@
               );
 %endTestcall;
 
-%assertColumns(i_expected=refdata.german_drive
+data work.german_drive_refdata;
+   length membername filename $255;
+   set work._german_drive_refdata;
+   format _all_;
+   informat _all_;
+   format changed datetime20.;
+run;
+
+%assertColumns(i_expected=work.german_drive_refdata
               ,i_actual=work.german_drive
               ,i_desc=reading german output with mapped drive
               )
 %endTestcase;
 
 /*-- 002 german windows unc path ----------------------------------------------*/
+proc import 
+   datafile="&g_refdata./german_unc_refdata.txt" 
+   out=work._german_unc_refdata dbms=CSV 
+   replace;
+
+   delimiter = ";";
+run;
 %initTestcase(i_object=_readdirfile.sas
              ,i_desc=german windows unc path
              )
@@ -42,13 +64,28 @@
               );
 %endTestcall;
 
-%assertColumns(i_expected=refdata.german_unc
+data work.german_unc_refdata;
+   length membername filename $255;
+   set work._german_unc_refdata;
+   format _all_;
+   informat _all_;
+   format changed datetime20.;
+run;
+
+%assertColumns(i_expected=work.german_unc_refdata
               ,i_actual=work.german_unc
               ,i_desc=reading german output with mapped drive
               )
 %endTestcase;
 
 /*-- 003 english windows mapped drive ----------------------------------------------*/
+proc import 
+   datafile="&g_refdata./english_drive_refdata.txt" 
+   out=work._english_drive_refdata dbms=CSV 
+   replace;
+
+   delimiter = ";";
+run;
 %initTestcase(i_object=_readdirfile.sas
              ,i_desc=english windows mapped drive
              )
@@ -58,13 +95,28 @@
               );
 %endTestcall;
 
-%assertColumns(i_expected=refdata.english_drive
+data work.english_drive_refdata;
+   length membername filename $255;
+   set work._english_drive_refdata;
+   format _all_;
+   informat _all_;
+   format changed datetime20.;
+run;
+
+%assertColumns(i_expected=work.english_drive_refdata
               ,i_actual=work.english_drive
               ,i_desc=reading english output with mapped drive
               )
 %endTestcase;
 
 /*-- 004 english windows unc path ----------------------------------------------*/
+proc import 
+   datafile="&g_refdata./english_unc_refdata.txt" 
+   out=work._english_unc_refdata dbms=CSV 
+   replace;
+
+   delimiter = ";";
+run;
 %initTestcase(i_object=_readdirfile.sas
              ,i_desc=english windows unc path
              )
@@ -74,13 +126,28 @@
               );
 %endTestcall;
 
-%assertColumns(i_expected=refdata.english_unc
+data work.english_unc_refdata;
+   length membername filename $255;
+   set work._english_unc_refdata;
+   format _all_;
+   informat _all_;
+   format changed datetime20.;
+run;
+
+%assertColumns(i_expected=work.english_unc_refdata
               ,i_actual=work.english_unc
               ,i_desc=reading english output with unc path
               )
 %endTestcase;
 
 /*-- 005 hungarian windows mapped drive ----------------------------------------------*/
+proc import 
+   datafile="&g_refdata./hungarian_drive_refdata.txt" 
+   out=work._hungarian_drive_refdata dbms=CSV 
+   replace;
+
+   delimiter = ";";
+run;
 %initTestcase(i_object=_readdirfile.sas
              ,i_desc=hungarian windows mapped drive
              )
@@ -90,13 +157,28 @@
               );
 %endTestcall;
 
-%assertColumns(i_expected=refdata.hungarian_drive
+data work.hungarian_drive_refdata;
+   length membername filename $255;
+   set work._hungarian_drive_refdata;
+   format _all_;
+   informat _all_;
+   format changed datetime20.;
+run;
+
+%assertColumns(i_expected=work.hungarian_drive_refdata
               ,i_actual=work.hungarian_drive
               ,i_desc=reading hungarian output with mapped drive
               )
 %endTestcase;
 
 /*-- 006 hungarian windows unc path ----------------------------------------------*/
+proc import 
+   datafile="&g_refdata./hungarian_unc_refdata.txt" 
+   out=work._hungarian_unc_refdata dbms=CSV 
+   replace;
+
+   delimiter = ";";
+run;
 %initTestcase(i_object=_readdirfile.sas
              ,i_desc=hungarian windows unc path
              )
@@ -106,11 +188,43 @@
               );
 %endTestcall;
 
-%assertColumns(i_expected=refdata.english_unc
+data work.hungarian_unc_refdata;
+   length membername filename $255;
+   set work._hungarian_unc_refdata;
+   format _all_;
+   informat _all_;
+   format changed datetime20.;
+run;
+
+%assertColumns(i_expected=work.hungarian_unc_refdata
               ,i_actual=work.hungarian_unc
               ,i_desc=reading hungarian output with unc path
               )
 %endTestcase;
+
+proc datasets lib=work nolist;
+   delete 
+      german_drive
+      german_drive_refdata
+      _german_drive_refdata
+      german_unc
+      german_unc_refdata
+      _german_unc_refdata
+      english_drive
+      english_drive_refdata
+      _english_drive_refdata
+      english_unc
+      english_unc_refdata
+      _english_unc_refdata
+      hungarian_drive
+      hungarian_drive_refdata
+      _hungarian_drive_refdata
+      hungarian_unc
+      hungarian_unc_refdata
+      _hungarian_unc_refdata
+   ;
+run;
+quit;
 
 %endScenario();
 /** \endcond */

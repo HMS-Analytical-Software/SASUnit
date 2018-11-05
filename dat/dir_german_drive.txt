@@ -1,7 +1,7 @@
  Volume in Laufwerk C: hat keine Bezeichnung.
  Volumeseriennummer: 4E6A-30C6
 
- Verzeichnis von C:\TEMP\Folder with Blanks in Name
+ Verzeichnis von C:\Ordner1\Ordner mit Blanks im Namen
 
 30.10.2018  09:20                 0 New text document - Kopie (2).txt
 30.10.2018  09:20                 0 New text document - Kopie (3).txt

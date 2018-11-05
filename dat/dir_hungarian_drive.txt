@@ -1,7 +1,7 @@
  A meghatóban (C) lévó kötetnek nincs címkéje.
  A kötet sorozatszáma: 0C2B-B56E
 
- C:\AA_Projekte\SASUnit\SASUnit_Test\Folder with Blanks in Name  tartalma:
+ C:\Folder1\Hungarian\Folder with Blanks in Name  tartalma:
 
 30.10.2018  09:20                 0 New text document - Kopie (2).txt
 30.10.2018  09:20                 0 New text document - Kopie (3).txt
