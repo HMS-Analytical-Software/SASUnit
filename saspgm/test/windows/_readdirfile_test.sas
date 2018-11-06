@@ -18,7 +18,7 @@
 
 /*-- 001 german windows mapped drive ----------------------------------------------*/
 proc import 
-   datafile="&g_refdata./german_drive_refdata.txt" 
+   datafile="&g_refdata./german_drive_refdata_&g_language..txt" 
    out=work._german_drive_refdata dbms=CSV 
    replace;
 
@@ -49,7 +49,7 @@ run;
 
 /*-- 002 german windows unc path ----------------------------------------------*/
 proc import 
-   datafile="&g_refdata./german_unc_refdata.txt" 
+   datafile="&g_refdata./german_unc_refdata_&g_language..txt" 
    out=work._german_unc_refdata dbms=CSV 
    replace;
 
@@ -80,7 +80,7 @@ run;
 
 /*-- 003 english windows mapped drive ----------------------------------------------*/
 proc import 
-   datafile="&g_refdata./english_drive_refdata.txt" 
+   datafile="&g_refdata./english_drive_refdata_&g_language..txt" 
    out=work._english_drive_refdata dbms=CSV 
    replace;
 
@@ -111,7 +111,7 @@ run;
 
 /*-- 004 english windows unc path ----------------------------------------------*/
 proc import 
-   datafile="&g_refdata./english_unc_refdata.txt" 
+   datafile="&g_refdata./english_unc_refdata_&g_language..txt" 
    out=work._english_unc_refdata dbms=CSV 
    replace;
 
@@ -142,7 +142,7 @@ run;
 
 /*-- 005 hungarian windows mapped drive ----------------------------------------------*/
 proc import 
-   datafile="&g_refdata./hungarian_drive_refdata.txt" 
+   datafile="&g_refdata./hungarian_drive_refdata_&g_language..txt" 
    out=work._hungarian_drive_refdata dbms=CSV 
    replace;
 
@@ -173,7 +173,7 @@ run;
 
 /*-- 006 hungarian windows unc path ----------------------------------------------*/
 proc import 
-   datafile="&g_refdata./hungarian_unc_refdata.txt" 
+   datafile="&g_refdata./hungarian_unc_refdata_&g_language..txt" 
    out=work._hungarian_unc_refdata dbms=CSV 
    replace;
 

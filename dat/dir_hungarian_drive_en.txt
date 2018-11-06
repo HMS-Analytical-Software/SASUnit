@@ -1,0 +1,12 @@
+ A meghatóban (C) lévó kötetnek nincs címkéje.
+ A kötet sorozatszáma: 0C2B-B56E
+
+ C:\Folder1\Hungarian\Folder with Blanks in Name  tartalma:
+
+10.30.2018  09:20   AM              0 New text document - Kopie (2).txt
+10.30.2018  09:20   AM              0 New text document - Kopie (3).txt
+10.30.2018  09:20   AM              0 New text document - Kopie (4).txt
+10.30.2018  09:20   AM              0 New text document - Kopie.txt
+10.30.2018  09:20   AM              0 New text document.txt
+               5 File(s)              0 bytes
+               0 Dir(s)  26,406,363,136 bytes free

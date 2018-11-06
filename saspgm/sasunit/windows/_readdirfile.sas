@@ -95,10 +95,6 @@
          
          output;
       end;
-putlog line=;
-putlog dir=;
-putlog membername=;
-putlog filename=;
    run;
    
    filename _dirfile;
