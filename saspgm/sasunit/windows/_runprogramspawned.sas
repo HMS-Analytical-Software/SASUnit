@@ -73,7 +73,7 @@
       ;
       FILE 
          "&l_cmdFile."
-         LRECL=32000
+         LRECL=32000 encoding=pcoem850
       ;
     _sCmdString = 
       """" !! &g_sasstart !! """"
