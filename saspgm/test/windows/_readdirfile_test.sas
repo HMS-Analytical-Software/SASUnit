@@ -16,6 +16,19 @@
 
 %initScenario (i_desc=Test of _readdirfile.sas)
 
+%global g_os_language;
+
+%macro setOSLanguage;
+   %let g_os_language = en;
+   %if (%upcase (%substr(&G_DATEFORMAT.,1,2)) = DD
+        OR %upcase (%substr(&G_DATEFORMAT.,6,2)) = DD
+       ) %then %do;
+      %let g_os_language = de;
+   %end;
+   %PUT &g_note.(SASUNIT): OS Language set to: &g_os_language.;
+%mend;
+%setOSLanguage;
+
 /*-- 001 german windows mapped drive ----------------------------------------------*/
 proc import 
    datafile="&g_refdata./german_drive_refdata.txt" 
@@ -27,7 +40,7 @@ run;
 %initTestcase(i_object=_readdirfile.sas
              ,i_desc=german windows mapped drive
              )
-%_readdirfile (i_dirfile =&g_testdata./dir_german_drive_&g_language..txt
+%_readdirfile (i_dirfile =&g_testdata./dir_german_drive_&g_os_language..txt
               ,i_encoding=pcoem850
               ,o_out     =work.german_drive
               );
@@ -49,7 +62,7 @@ run;
 
 /*-- 002 german windows unc path ----------------------------------------------*/
 proc import 
-   datafile="&g_refdata./german_unc_refdata_&g_language..txt" 
+   datafile="&g_refdata./german_unc_refdata.txt" 
    out=work._german_unc_refdata dbms=CSV 
    replace;
 
@@ -58,7 +71,7 @@ run;
 %initTestcase(i_object=_readdirfile.sas
              ,i_desc=german windows unc path
              )
-%_readdirfile (i_dirfile =&g_testdata./dir_german_unc_&g_language..txt
+%_readdirfile (i_dirfile =&g_testdata./dir_german_unc_&g_os_language..txt
               ,i_encoding=pcoem850
               ,o_out     =work.german_unc
               );
@@ -80,7 +93,7 @@ run;
 
 /*-- 003 english windows mapped drive ----------------------------------------------*/
 proc import 
-   datafile="&g_refdata./english_drive_refdata_&g_language..txt" 
+   datafile="&g_refdata./english_drive_refdata.txt" 
    out=work._english_drive_refdata dbms=CSV 
    replace;
 
@@ -89,7 +102,7 @@ run;
 %initTestcase(i_object=_readdirfile.sas
              ,i_desc=english windows mapped drive
              )
-%_readdirfile (i_dirfile =&g_testdata./dir_english_drive_&g_language..txt
+%_readdirfile (i_dirfile =&g_testdata./dir_english_drive_&g_os_language..txt
               ,i_encoding=pcoem850
               ,o_out     =work.english_drive
               );
@@ -111,7 +124,7 @@ run;
 
 /*-- 004 english windows unc path ----------------------------------------------*/
 proc import 
-   datafile="&g_refdata./english_unc_refdata_&g_language..txt" 
+   datafile="&g_refdata./english_unc_refdata.txt" 
    out=work._english_unc_refdata dbms=CSV 
    replace;
 
@@ -120,7 +133,7 @@ run;
 %initTestcase(i_object=_readdirfile.sas
              ,i_desc=english windows unc path
              )
-%_readdirfile (i_dirfile =&g_testdata./dir_english_unc_&g_language..txt
+%_readdirfile (i_dirfile =&g_testdata./dir_english_unc_&g_os_language..txt
               ,i_encoding=pcoem850
               ,o_out     =work.english_unc
               );
@@ -142,7 +155,7 @@ run;
 
 /*-- 005 hungarian windows mapped drive ----------------------------------------------*/
 proc import 
-   datafile="&g_refdata./hungarian_drive_refdata_&g_language..txt" 
+   datafile="&g_refdata./hungarian_drive_refdata.txt" 
    out=work._hungarian_drive_refdata dbms=CSV 
    replace;
 
@@ -151,7 +164,7 @@ run;
 %initTestcase(i_object=_readdirfile.sas
              ,i_desc=hungarian windows mapped drive
              )
-%_readdirfile (i_dirfile =&g_testdata./dir_hungarian_drive_&g_language..txt
+%_readdirfile (i_dirfile =&g_testdata./dir_hungarian_drive_&g_os_language..txt
               ,i_encoding=pcoem850
               ,o_out     =work.hungarian_drive
               );
@@ -173,7 +186,7 @@ run;
 
 /*-- 006 hungarian windows unc path ----------------------------------------------*/
 proc import 
-   datafile="&g_refdata./hungarian_unc_refdata_&g_language..txt" 
+   datafile="&g_refdata./hungarian_unc_refdata.txt" 
    out=work._hungarian_unc_refdata dbms=CSV 
    replace;
 
@@ -182,7 +195,7 @@ run;
 %initTestcase(i_object=_readdirfile.sas
              ,i_desc=hungarian windows unc path
              )
-%_readdirfile (i_dirfile =&g_testdata./dir_hungarian_unc_&g_language..txt
+%_readdirfile (i_dirfile =&g_testdata./dir_hungarian_unc_&g_os_language..txt
               ,i_encoding=pcoem850
               ,o_out     =work.hungarian_unc
               );
