@@ -27,9 +27,10 @@
                          ,i_scnid             = 
                          ,i_generateMcoverage = 0
                          ,r_sysrc             = 
+                         ,i_pgmIsScenario     = 1
                          );
 
-   %local l_cmdFile l_parms l_parenthesis l_tcgFilePath l_tcgOptionsString l_tcgOptionsStringLINUX l_rc l_macname l_program;
+   %local l_cmdFile l_parms l_tcgFilePath l_tcgOptionsString l_rc l_macname l_program;
    %let l_macname=&sysmacroname.;
    
    /*-- prepare sasuser ---------------------------------------------------*/
@@ -48,7 +49,6 @@
    /*-- set config and autoexec -------------------------------------------*/
    %let l_cmdFile=%sysfunc(pathname(work))/_runprogramspawned.cmd;
    %LET l_parms=;
-   %LET l_parenthesis=(;
    %IF "&g_autoexec" NE "" %THEN %DO;
       %LET l_parms=&l_parms -autoexec ""&g_autoexec"";
    %END;
@@ -77,7 +77,9 @@
       !! " " 
       !! "&l_parms. "
       !! "-sysin %sysfunc(tranwrd(&l_program., %str( ), %str(\ ))) "
+      %if (&i_pgmIsScenario. = 1) %then %do;
       !! "-initstmt ""&l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%))"" "
+      %end;
       !! "-log   %sysfunc(tranwrd(&g_log/&i_scnid..log, %str( ), %str(\ ))) "
       !! "-print %sysfunc(tranwrd(&g_testout/&i_scnid..lst, %str( ), %str(\ ))) "
       !! "-noovp "
@@ -91,7 +93,9 @@
          !! "-append SASAUTOS ""&g_sasunit"" "
       %end;
       !! "-sasuser %sysfunc(pathname(work))/sasuser "
+      %if (&i_pgmIsScenario. = 1) %then %do;
       !! "-termstmt ""%nrstr(%%_termScenario())"" "
+      %end;
       !! "";
       PUT _sCmdString;
    RUN;

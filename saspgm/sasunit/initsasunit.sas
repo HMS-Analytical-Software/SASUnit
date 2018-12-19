@@ -118,7 +118,7 @@
 
    /******************************************************************************/
    /*** Step one                                                               ***/
-   /***    Check supoorted OSes and SAS Versions                               ***/
+   /***    Check supported OSes and SAS Versions                               ***/
    /***    Validate configuration of initSASUnit                               ***/
    /***       Check all paths for existence                                    ***/
    /***       Check boolean parameters vs default value                        ***/
@@ -697,6 +697,7 @@
                          ,i_scnid            =000
                          ,i_generateMcoverage=0
                          ,r_sysrc            =l_sysrc
+                         ,i_pgmIsScenario    =0
                          );                
 
       %IF %_handleError(&l_macname.

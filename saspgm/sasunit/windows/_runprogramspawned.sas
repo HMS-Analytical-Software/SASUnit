@@ -27,9 +27,10 @@
                          ,i_scnid             = 
                          ,i_generateMcoverage = 0
                          ,r_sysrc             = 
+                         ,i_pgmIsScenario     = 1
                          );
 
-   %local l_cmdFile l_parms l_parenthesis l_tcgFilePath l_tcgOptionsString l_tcgOptionsStringLINUX l_rc l_macname l_program;
+   %local l_cmdFile l_parms l_parenthesis l_tcgFilePath l_tcgOptionsString l_rc l_macname l_program;
    %let l_macname=&sysmacroname.;
    
    /*-- prepare sasuser ---------------------------------------------------*/
@@ -80,7 +81,9 @@
       !! " " 
       !! "&l_parms. "
       !! "-sysin ""&l_program."" "
+      %if (&i_pgmIsScenario. = 1) %then %do;
       !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%))"" "
+      %end;
       !! "-log ""&g_log/&i_scnid..log"" "
       !! "-print ""&g_testout/&i_scnid..lst"" "
       !! "&g_splash "
@@ -96,8 +99,10 @@
          !! "-append SASAUTOS ""&g_sasunit"" "
       %end;
       !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
+      %if (&i_pgmIsScenario. = 1) %then %do;
       !! "-termstmt ""%nrstr(%%%_termScenario())"" "
       !! "&l_tcgOptionsString. "
+      %end;
       !! "";
       PUT _sCmdString;
    RUN;
