@@ -30,9 +30,9 @@
 
    data _null_;
       infile "&i_pgmfile." truncover end=eof;
-      length desc $255;
+      length desc $1000;
       retain inbrief 0 desc;
-      input line $255.;
+      input line $1000.;
       if upcase(line) =: '\BRIEF' or upcase(line) =: '@BRIEF' then do;
          line = left (substr(line,7));
          inbrief=1;
