@@ -143,6 +143,11 @@
    %if (&o_rtf.) %then %do;
       ods rtf file="&o_path./&o_file..rtf" style=styles.&i_style. cssstyle="&g_target./&i_style..css";
    %end;
+   
+   data work._scenario_report;
+      set work._scenario_report;
+      descriptionColumn = tranwrd (descriptionColumn, "^n", "");
+   run;
 
    proc print data=work._scenario_report noobs label;
       var idColumn            / style(column)=rowheader;

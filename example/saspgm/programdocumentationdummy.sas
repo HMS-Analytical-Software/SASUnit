@@ -28,7 +28,11 @@
 
    \remark     You can add remarks to units under test.
                Remarks include <b>bold</b> and <em>emphasized</em> text as well as line breaks.
-               No explicit \\n is necessary for line breaks, but can be used. 
+               No explicit \\n is necessary for line breaks, but can be used.
+			   \nLuke the spook left a comment.
+^_^_^_^_^_^_^_^_^_^_^_^_^_^_^_^_^_^_^_\|||/
+^_^_^_^_^_^_^_^_^_^_^_^_^_^_^_^_^_(o o)
+^_^_^_^_----ooO-(_)-Ooo--------
 
    \todo       Set a reminder for future implementations
 

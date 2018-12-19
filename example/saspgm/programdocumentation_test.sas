@@ -2,7 +2,10 @@
    \file
    \ingroup    SASUNIT_EXAMPLES_TEST
 
-   \brief      Tests showing program documentation features
+   \brief      Tests showing program documentation features.<br>
+               This is a second line of brief, that adds more information.^n
+               This is a line with many characters it needs to have more than 255<br>
+               With this line I will cross the boundary of 255 characters in the description field.
 
 
    \version    \$Revision$
@@ -18,8 +21,6 @@
 
 */ /** \cond */
 
-%initScenario(i_desc=Tests showing program documentation features);
-
 %initTestcase(i_object=ProgramDocumentationDummy.sas, i_desc=Showing program documentation features)
 
 %endTestCall()
@@ -27,5 +28,4 @@
 %assertLog (i_errors=0, i_warnings=0)
 %endTestCase()
 
-%endScenario();
 /** \endcond */

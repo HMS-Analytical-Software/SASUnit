@@ -159,7 +159,8 @@
       %IF &l_dorun %THEN %DO;
 
          /*-- save description and start date and time of scenario --------------*/
-         %_getPgmDesc (i_pgmfile=&l_filename, r_desc=l_scndesc)
+         %_getPgmDesc (i_pgmfile=&l_filename., r_desc=l_scndesc)
+         %let l_scndesc=%sysfunc (tranwrd (%quote(&l_scndesc.), %str(<br>), %str(^n))); 
          PROC SQL NOPRINT;
             UPDATE target.scn 
                SET scn_desc    = "&l_scndesc"
