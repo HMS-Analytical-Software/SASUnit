@@ -119,6 +119,7 @@
          PRINT="&g_printfile."
       ;
       RUN;
+      options linesize=max;
    %end;
 %MEND initTestcase;
 /** \endcond */

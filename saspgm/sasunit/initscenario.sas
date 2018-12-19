@@ -94,6 +94,8 @@
    /* includes creation of autocall paths */
    %_loadenvironment;
    
+   options linesize=max;
+   
    %let g_inscenario=1;
 
    %_nls(i_language=&g_LANGUAGE.);
