@@ -6,10 +6,10 @@
 cd ..
 export SASUNIT_ROOT=$(readlink -f ../.)
 export SASUNIT_OVERWRITE=1
-export SASUNIT_COVERAGEASSESSMENT=0
-export SASUNIT_LANGUAGE=de
+export SASUNIT_COVERAGEASSESSMENT=1
+export SASUNIT_LANGUAGE=en
 export SASUNIT_HOST_OS=linux
-export SASUNIT_SAS_VERSION=9.2
+export SASUNIT_SAS_VERSION=9.4
 export SASUNIT_PGMDOC=1
 export SASUNIT_PGMDOC_SASUNIT=1
 export SASUNIT_CROSSREFERENCE=1
@@ -29,7 +29,7 @@ echo Verbose               = $SASUNIT_VERBOSE
 echo
 
 echo "Starting SASUnit in Overwrite Mode ..."
-/usr/local/SAS/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE -nosyntaxcheck -noovp
+/opt/sas/sas94/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE -nosyntaxcheck -noovp
 
 # Show SAS exit status
 RETVAL=$?

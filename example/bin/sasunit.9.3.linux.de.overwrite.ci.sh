@@ -10,12 +10,12 @@ export SASUNIT_COVERAGEASSESSMENT=1
 export SASUNIT_LANGUAGE=de
 export SASUNIT_HOST_OS=linux
 export SASUNIT_SAS_VERSION=9.3
-export SASCFGPATH=./bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg
 export SASUNIT_PGMDOC=1
 export SASUNIT_PGMDOC_SASUNIT=1
 export SASUNIT_CROSSREFERENCE=1
 export SASUNIT_CROSSREFERENCE_SASUNIT=1
 export SASUNIT_VERBOSE=0
+export SASCFGPATH=./bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg
 
 # Check if SASUnit Jenkins Plugin is present and use given SASUnit root path
 if [ -z "$1" ] ; then 
@@ -28,7 +28,7 @@ else
 fi
 
 echo SASUnit root path     = $SASUNIT_ROOT
-echo SASUnit config        = ./bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg
+echo SASUnit config        = $SASCFGPATH
 echo Overwrite             = $SASUNIT_OVERWRITE
 echo Testcoverage          = $SASUNIT_COVERAGEASSESSMENT
 echo Program Documentation = $SASUNIT_PGMDOC

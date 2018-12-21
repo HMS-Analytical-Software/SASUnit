@@ -4,32 +4,22 @@
 # or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 cd ..
-export SASUNIT_ROOT=$(readlink -f ../.)
-export SASUNIT_OVERWRITE=1
-export SASUNIT_COVERAGEASSESSMENT=0
+export SASUNIT_ROOT=$(readlink -f .)
+export SASUNIT_OVERWRITE=0
+export SASUNIT_COVERAGEASSESSMENT=1
 export SASUNIT_LANGUAGE=de
 export SASUNIT_HOST_OS=linux
-export SASUNIT_SAS_VERSION=9.2
-export SASUNIT_PGMDOC=1
-export SASUNIT_PGMDOC_SASUNIT=1
-export SASUNIT_CROSSREFERENCE=1
-export SASUNIT_CROSSREFERENCE_SASUNIT=1
-export SASUNIT_VERBOSE=0
+export SASUNIT_SAS_VERSION=9.4
 export SASCFGPATH=./bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg
 
 echo SASUnit root path     = $SASUNIT_ROOT
-echo SASUnit config        = $SASCFGPATH
+echo SASUnit config        = ./bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg
 echo Overwrite             = $SASUNIT_OVERWRITE
 echo Testcoverage          = $SASUNIT_COVERAGEASSESSMENT
-echo Program Documentation = $SASUNIT_PGMDOC
-echo PgmDoc for SASUnit    = $SASUNIT_PGMDOC_SASUNIT
-echo Crossreference        = $SASUNIT_CROSSREFERENCE
-echo Crossref for SASUnit  = $SASUNIT_CROSSREFERENCE_SASUNIT
-echo Verbose               = $SASUNIT_VERBOSE
 echo
 
-echo "Starting SASUnit in Overwrite Mode ..."
-/usr/local/SAS/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE -nosyntaxcheck -noovp
+echo "Starting SASUnit ..."
+/opt/sas/sas94/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE -nosyntaxcheck -noovp
 
 # Show SAS exit status
 RETVAL=$?
