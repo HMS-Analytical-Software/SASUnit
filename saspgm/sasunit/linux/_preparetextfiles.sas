@@ -22,7 +22,5 @@
 
 %MACRO _prepareTextFiles; 
 
-      %_xcmd(sed -i -e 's/\r//g' "&g_sasunit/_nls.txt");
-   
 %MEND _prepareTextFiles;
 /** \endcond */
