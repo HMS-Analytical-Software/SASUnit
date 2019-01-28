@@ -4,7 +4,7 @@
 
    \brief      Tests showing program documentation features.<br>
                This is a second line of brief, that adds more information.^n
-               This is a line with many characters it needs to have more than 255<br>
+               This is a line with many characters, it needs to have more than 255.<br>
                With this line I will cross the boundary of 255 characters in the description field.
 
 
