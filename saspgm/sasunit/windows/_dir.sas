@@ -50,7 +50,6 @@
    options noxwait xsync xmin;
    
    %let dirfile=%sysfunc(pathname(work))\___dir.txt;
-   filename _dirfile "&dirfile" encoding=&encoding;
 
    %put &g_note.(SASUNIT): Directory search is: &i_path;
    %put &g_note.(SASUNIT): Adjusted directory is: &l_i_path;
@@ -79,69 +78,10 @@
    %SYSEXEC(dir &s /A-D /ON "&l_i_path" > "&dirfile");
    options &xwait &xsync &xmin;
    
-   data &o_out (keep=membername filename changed);
-      length membername dir filename $255 language $2 tstring dateformat timeformat $40;
-      retain language "__" dir FilePos dateformat timeformat Detect_AM_PM;
-      infile _dirfile truncover;
-      input line $char255.;
-      /* In Hungarian Windows the message is different                         */
-      /* - in English, German or French Windows the message looks like this    */
-      /*   <Word for Directory> <Word for of> <Directory>                      */
-      /* - in Hungarian and probably other Windows the message looks like this */
-      /*   <Directory> <Word for Directory or whatever>                        */
-      /* Another problem is that dirctories with blanks are NOT quoted         */
-      /* We need to get rid of OS dir commands                                 */
-      if (substr (line, 3, 2) =":\"
-          OR substr (line, 2, 2) ="\\") then do;        
-        dir = trim(substr(line, 2, find (trim(line), " ", -300)-1));
-      end;
-      else do;
-         if (index (line, ":\")) then do;
-            dir = substr(line, index (line, ":\")-1);
-         end;
-         else if (index (line, "\\")) then do;
-            dir = substr(line, index (line, "\\"));
-         end;
-      end;      
-      if substr(line,1,1) ne ' ' then do;
-         * Check for presence of AM/PM in time value, because you can specify AM/PM timeformat in German Windows *;
-         if (language = "__") then do;
-            Detect_AM_PM = upcase (scan (line, 3, " "));
-            if (Detect_AM_PM in ("AM", "PM")) then do;
-               Filenamepart = scan (line,5, " ");
-               Filepos      = index (line, trim(Filenamepart));
-               language     = "EN";
-               dateformat   = "mmddyy10.";
-               timeformat   = "time9.";
-            end;
-            else do;
-               Filenamepart = scan (line,4, " ");
-               Filepos      = index (line, trim(Filenamepart));
-               language     = "DE";
-               dateformat   = "ddmmyy10.";
-               timeformat   = "time5.";
-            end;
-         end;
-         if ("&G_DATEFORMAT." ne "_NONE_") then do;
-            dateformat   = "&G_DATEFORMAT.";
-            line         = tranwrd (line, "Mrz", "Mär");
-         end;
-         d          = inputn (scan (line,1,' '), dateformat);
-         tstring    = trim (scan (line,2,' '));
-         if (Detect_AM_PM in ("AM", "PM")) then do;
-            tstring = trim (scan (line,2,' ')) !! ' ' !! trim (scan (line, 3, ' '));
-         end;
-         t          = inputn (tstring,           timeformat);
-         changed  = dhms (d, hour(t), minute(t), 0);
-         format changed datetime20.;
-         membername = translate(substr (line,FilePos),'/','\');
-         filename   = translate(trim(dir),'/','\') !! '/' !! membername;
-         
-         output;
-      end;
-   run;
-   
-   filename _dirfile;
+   %_readdirfile (i_dirfile =&dirfile.
+                 ,i_encoding=&encoding.
+                 ,o_out     =&o_out.
+                 );   
 
 %errexit:
 %MEND _dir;
