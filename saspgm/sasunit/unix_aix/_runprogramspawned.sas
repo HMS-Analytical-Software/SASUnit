@@ -87,12 +87,7 @@
       !! "-nosyntaxcheck "
       !! "-mautosource "
       !! "-mcompilenote all "
-      %if (&sysver. = 9.2) %then %do;
-         !! "-sasautos (SASAUTOS ""&g_sasunit"") "
-      %end;
-      %else %do;
-         !! "-append SASAUTOS ""&g_sasunit"" "
-      %end;
+      !! "-sasautos SASAUTOS -append SASAUTOS ""&g_sasunit"" "
       !! "-sasuser %sysfunc(pathname(work))/sasuser "
       %if (&i_pgmIsScenario. = 1) %then %do;
       !! "-termstmt ""%nrstr(%%_termScenario())"" "
