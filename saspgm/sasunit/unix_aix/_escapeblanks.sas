@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL_OS_UNIX_AIX
 
    \brief      escapes blanks with backslashes if runnign under linux or aix

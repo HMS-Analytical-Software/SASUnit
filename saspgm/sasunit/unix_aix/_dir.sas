@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL_OS_UNIX_AIX
 
    \brief      generates a dataset with the names of all files in a directory or directory tree.

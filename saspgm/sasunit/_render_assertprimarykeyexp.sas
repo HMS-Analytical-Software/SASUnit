@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_REPORT
     
    \brief      renders the layout of the expected column for assertPrimaryKey

@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL_OS_WIN
 
    \brief      Reads the text file comming from dir command.

@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL 
 
    \brief      Called by assert macros, fills table tst

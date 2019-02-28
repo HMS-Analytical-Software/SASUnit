@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL_OS_WIN
 
    \brief      run an operation system command

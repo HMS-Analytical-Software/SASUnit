@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL 
 
    \brief      determines whether a certain variable, optionally of a certain type, 

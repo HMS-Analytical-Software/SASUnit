@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL
 
    \brief      delete all SAS datasets in the form WORK.DATAxxx, see tempFileName.sas

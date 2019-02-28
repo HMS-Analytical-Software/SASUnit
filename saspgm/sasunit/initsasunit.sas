@@ -646,27 +646,28 @@
 
    /*-- update parameters ----------------------------------------------------*/
    PROC SQL NOPRINT;
-      UPDATE target.tsu SET tsu_sasautos  = "&l_sasautos";
+      UPDATE target.tsu 
+            SET tsu_sasautos  = "&l_sasautos"
       %DO i=1 %TO 29;
-         UPDATE target.tsu SET tsu_sasautos&i. = "&&l_sasautos&i";
+               ,tsu_sasautos&i. = "&&l_sasautos&i"
       %END; /* i=1 %TO 29 */
-      UPDATE target.tsu SET tsu_project         = "&l_project";
-      UPDATE target.tsu SET tsu_target          = "&io_target";
-      UPDATE target.tsu SET tsu_root            = "&l_root";
-      UPDATE target.tsu SET tsu_sasunitroot     = "&l_sasunitroot";
-      UPDATE target.tsu SET tsu_sasunit         = "&l_sasunit";
-      UPDATE target.tsu SET tsu_sasunit_os      = "&l_sasunit_os";
-      UPDATE target.tsu SET tsu_autoexec        = "&l_autoexec";
-      UPDATE target.tsu SET tsu_sascfg          = "&l_sascfg";
-      UPDATE target.tsu SET tsu_sasuser         = "&l_sasuser";
-      UPDATE target.tsu SET tsu_testdata        = "&l_testdata";
-      UPDATE target.tsu SET tsu_refdata         = "&l_refdata";
-      UPDATE target.tsu SET tsu_doc             = "&l_doc";
-      UPDATE target.tsu SET tsu_testcoverage    =&i_testcoverage.;
-      UPDATE target.tsu SET tsu_verbose         =&i_verbose.;
-      UPDATE target.tsu SET tsu_crossref        =&i_crossref.;
-      UPDATE target.tsu SET tsu_crossrefsasunit =&i_crossrefsasunit.;
-      UPDATE target.tsu SET tsu_language        ="&i_language.";
+               ,tsu_project         = "&l_project"
+               ,tsu_target          = "&io_target"
+               ,tsu_root            = "&l_root"
+               ,tsu_sasunitroot     = "&l_sasunitroot"
+               ,tsu_sasunit         = "&l_sasunit"
+               ,tsu_sasunit_os      = "&l_sasunit_os"
+               ,tsu_autoexec        = "&l_autoexec"
+               ,tsu_sascfg          = "&l_sascfg"
+               ,tsu_sasuser         = "&l_sasuser"
+               ,tsu_testdata        = "&l_testdata"
+               ,tsu_refdata         = "&l_refdata"
+               ,tsu_doc             = "&l_doc"
+               ,tsu_testcoverage    =&i_testcoverage.
+               ,tsu_verbose         =&i_verbose.
+               ,tsu_crossref        =&i_crossref.
+               ,tsu_crossrefsasunit =&i_crossrefsasunit.
+               ,tsu_language        ="&i_language.";
    QUIT;
 
    /*-- load relevant information from test database to global macro symbols ----*/

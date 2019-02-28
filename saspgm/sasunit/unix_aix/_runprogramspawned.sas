@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL_OS_UNIX_AIX
 
    \brief      runs a program in a spawned process

@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL_OS_LINUX
 
    \brief      corrects termstring in textfiles. Under Linux CRLF will be converted to CR

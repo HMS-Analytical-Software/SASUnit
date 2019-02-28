@@ -1,8 +1,8 @@
 /**
    \file
-   \ingroup  SASUNIT_UTIL
+   \ingroup    SASUNIT_UTIL
 
-   \brief    reads metadata of runtime environment
+   \brief      reads metadata of runtime environment
 
    \version    \$Revision$
    \author     \$Author$

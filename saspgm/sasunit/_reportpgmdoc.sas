@@ -1,5 +1,6 @@
 /**
    \file
+   \ingroup    SASUNIT_REPORT
 
    \brief   Create program documentation
 

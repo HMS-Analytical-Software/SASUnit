@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL
 
    \brief      close the last test case at the end of a test scenario.

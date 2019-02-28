@@ -1,10 +1,11 @@
 /**
    \file
+   \ingroup    SASUNIT_REPORT
+   
    \brief      Scan a flatfile for DoxyGen tags.
 
    \details    Tags that are reported under "additional information" are kept in seperate datasets
 
-   \ingroup    SASUNIT_REPORT
    \version    
    \version    \$Revision$
    \author     \$Author$

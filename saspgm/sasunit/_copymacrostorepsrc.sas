@@ -1,8 +1,8 @@
 /**
    \file
-   \ingroup  SASUNIT_UTIL
+   \ingroup    SASUNIT_UTIL
 
-   \brief    Copy macros source codes to rep directory, so that they can be accessed even when rep folder is moved.
+   \brief      Copy macros source codes to rep directory, so that they can be accessed even when rep folder is moved.
 
    \version    \$Revision$
    \author     \$Author$

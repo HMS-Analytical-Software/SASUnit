@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL 
 
    \brief     of a given absolute file path (with / as dir separator), 

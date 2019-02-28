@@ -1,5 +1,6 @@
 /**
    \file
+   \ingroup    SASUNIT_REPORT
 
    \brief   Render header section of program documentation 
 

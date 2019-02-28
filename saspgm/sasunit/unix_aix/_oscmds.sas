@@ -1,4 +1,5 @@
-/** \file
+/**
+   \file
    \ingroup    SASUNIT_UTIL_OS_UNIX_AIX
 
    \brief      set global macro variables for OS commands.

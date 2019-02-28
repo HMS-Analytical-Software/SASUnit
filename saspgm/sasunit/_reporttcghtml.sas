@@ -1,12 +1,12 @@
 /**
    \file
-   \ingroup SASUNIT_REPORT
+   \ingroup    SASUNIT_REPORT
 
-   \brief   Processes the output of the MCOVERAGE and MCOVERAGELOC system options 
-            available in SAS 9.3 in order to assess test coverage.
-            <BR>
-            A html representation of a given macro source code file is generated, 
-            showing which lines of code were executed during tests.
+   \brief      Processes the output of the MCOVERAGE and MCOVERAGELOC system options 
+               available in SAS 9.3 in order to assess test coverage.
+               <BR>
+               A html representation of a given macro source code file is generated, 
+               showing which lines of code were executed during tests.
 
    \version \$Revision$
    \author  \$Author$

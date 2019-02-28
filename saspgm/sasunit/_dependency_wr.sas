@@ -1,6 +1,7 @@
 /**
    \file
    \ingroup    SASUNIT_UTIL
+   
    \brief      The macro is called from _dependencyJsonBuilder. It iterates through the dependency tree
                and writes out a .json file to visualize the call hierarchy.
    \version    \$Revision$

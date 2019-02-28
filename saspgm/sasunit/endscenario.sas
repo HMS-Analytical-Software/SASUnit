@@ -1,8 +1,8 @@
 /**
    \file
-   \ingroup  SASUNIT_SCN
+   \ingroup    SASUNIT_SCN
 
-   \brief    ends scenario call in interactive sessions
+   \brief      ends scenario call in interactive sessions
 
    \version    \$Revision: 451 $
    \author     \$Author: klandwich $

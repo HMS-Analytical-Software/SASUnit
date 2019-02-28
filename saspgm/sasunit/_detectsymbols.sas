@@ -1,8 +1,8 @@
 /**
-    \file
-    \ingroup  SASUNIT_UTIL
+   \file
+   \ingroup    SASUNIT_UTIL
 
-    \brief    determine the language dependant symbols used for NOTE, ERROR, WARNING in the SAS log
+   \brief      determine the language dependant symbols used for NOTE, ERROR, WARNING in the SAS log
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$

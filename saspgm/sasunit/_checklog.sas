@@ -1,8 +1,8 @@
 /**
    \file
-   \ingroup  SASUNIT_UTIL
+   \ingroup    SASUNIT_UTIL
 
-   \brief    check log for errors or warnings
+   \brief      check log for errors or warnings
 
    \version    \$Revision$
    \author     \$Author$
