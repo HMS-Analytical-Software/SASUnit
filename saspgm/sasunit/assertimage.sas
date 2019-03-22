@@ -130,13 +130,19 @@
    %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
    %*** create subfolder ***;
-   %_createTestSubfolder (i_assertType   =assertimage
-                         ,i_scnid        =&g_scnid.
-                         ,i_casid        =&l_casid.
-                         ,i_tstid        =&l_tstid.
-                         ,r_path         =l_path
-                         );
+   %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+      %_createTestSubfolder (i_assertType   =assertimage
+                            ,i_scnid        =&g_scnid.
+                            ,i_casid        =&l_casid.
+                            ,i_tstid        =&l_tstid.
+                            ,r_path         =l_path
+                            );
 
+   %end;
+   %else %do;
+      %let l_path=%sysfunc(pathname(WORK));
+   %end;
+   
    %*** Check if i_expected exists ***;
    %IF %SYSFUNC(FILEEXIST(&i_expected.)) %THEN %DO;
       %_copyFile(&i_expected.                                       /* input file  */
@@ -148,7 +154,7 @@
                 ,&l_path./_image_act&l_image2_extension.            /* output file */
                 );
    %END;
-
+   
    %*** Check if i_expected exists ***;
    %IF NOT %SYSFUNC(FILEEXIST(&i_expected.)) %THEN %DO;
       %LET l_rc = -5;

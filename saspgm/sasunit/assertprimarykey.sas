@@ -183,14 +183,16 @@
    %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
    %*** create subfolder ***;
-   %_createTestSubfolder (i_assertType =assertPrimaryKey
-                         ,i_scnid      =&g_scnid.
-                         ,i_casid      =&l_casid.
-                         ,i_tstid      =&l_tstid.
-                         ,r_path       =l_path
-                          );
+   %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+      %_createTestSubfolder (i_assertType =assertPrimaryKey
+                            ,i_scnid      =&g_scnid.
+                            ,i_casid      =&l_casid.
+                            ,i_tstid      =&l_tstid.
+                            ,r_path       =l_path
+                             );
 
-   libname _apk "&l_path.";
+      libname _apk "&l_path.";
+   %end;
 
    %* sort dataset by i_variables *;
    proc sort data=&i_library..&i_dataset. out=work._sorted;
@@ -210,21 +212,23 @@
       select count (*) into :l_anzahlObs from work._notUnique;
    QUIT;
 
-   data _apk._sorted;
-      set work._sorted (OBS=&o_maxReportObs.);
-      %IF (&o_listingVars. ne _NONE_) %THEN %DO;
-         keep &o_listingVars.;
-      %END;
-   run;
+   %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+      data _apk._sorted;
+         set work._sorted (OBS=&o_maxReportObs.);
+         %IF (&o_listingVars. ne _NONE_) %THEN %DO;
+            keep &o_listingVars.;
+         %END;
+      run;
 
-   data _apk._notUnique;
-      set work._notUnique (OBS=&o_maxReportObs.);
-      %IF (&o_listingVars. ne _NONE_) %THEN %DO;
-         keep &o_listingVars.;
-      %END;
-   run;
+      data _apk._notUnique;
+         set work._notUnique (OBS=&o_maxReportObs.);
+         %IF (&o_listingVars. ne _NONE_) %THEN %DO;
+            keep &o_listingVars.;
+         %END;
+      run;
 
-   libname _apk clear;
+      libname _apk clear;
+   %end;
 
    %LET l_actual=%eval(&l_anzahlObs. = 0);
    %LET l_result=%eval((&l_anzahlObs. > 0)*2);

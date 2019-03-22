@@ -28,16 +28,38 @@
       g_splash
       g_infile_options
       ;
+      
+   %local
+      l_macroName 
+   ;   
+   %LET l_macname=&sysmacroname;
 
    %LET g_removedir     =rm -r -f;
    %LET g_removefile    =rm;
    %LET g_makedir       =mkdir;
    %LET g_copydir       =cp -R;
    %LET g_endcommand    =%str(;);
-   %_xcmd(umask 0033);
    %LET g_sasstart      ="%sysfunc(pathname(sasroot))/bin/sas_&g_language.";
    %LET g_splash        =;   
    %LET g_infile_options=;
+   
+   %*************************************************************;
+   %*** Check if XCMD is allowed                              ***;
+   %*************************************************************;
+   %IF %_handleError(&l_macname.
+                 ,NOXCMD
+                 ,(%sysfunc(getoption(XCMD)) = NOXCMD)
+                 ,Your SAS Session does not allow XCMD%str(,) therefore functionality is restricted.
+                 ,i_verbose=&g_verbose.
+                 ,i_msgtype=WARNING
+                 ) 
+   %THEN %DO;
+      * Should only be a warning, so reset error flag *;
+      %let G_ERROR_CODE =;
+   %END;
+   %ELSE %DO;
+      %_xcmd(umask 0033);
+   %END;
 
 %mend _oscmds;
 

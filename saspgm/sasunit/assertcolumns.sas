@@ -137,16 +137,18 @@
    /*-- get current ids for test case and test --------- ------------------------*/
    %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
-   %*** create subfolder ***;
-   %_createTestSubfolder (i_assertType   =assertcolumns
-                         ,i_scnid        =&g_scnid.
-                         ,i_casid        =&l_casid.
-                         ,i_tstid        =&l_tstid.
-                         ,r_path         =l_path
-                         );
+   %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+      %*** create subfolder ***;
+      %_createTestSubfolder (i_assertType   =assertcolumns
+                            ,i_scnid        =&g_scnid.
+                            ,i_casid        =&l_casid.
+                            ,i_tstid        =&l_tstid.
+                            ,r_path         =l_path
+                            );
 
-   libname _acLib "&l_path.";
-
+      libname _acLib "&l_path.";
+   %end;
+   
    /*-- check if actual dataset exists ------------------------------------------*/
    %LOCAL l_rc l_actual; 
    %IF NOT %sysfunc(exist(&i_actual,DATA)) AND NOT %sysfunc(exist(&i_actual,VIEW)) %THEN %DO;
@@ -172,7 +174,9 @@
       OPTIONS FORMCHAR="|----|+|---+=|-/\<>*";
       OPTIONS ORIENTATION=portrait;
 
-      ODS DOCUMENT NAME=_acLib._columns_rep(WRITE);
+      %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+         ODS DOCUMENT NAME=_acLib._columns_rep(WRITE);
+      %end;
       TITLE;
       FOOTNOTE;
       PROC COMPARE
@@ -187,7 +191,9 @@
       %PUT &g_note.(SASUNIT): sysinfo = &sysinfo;
       %LET l_compResult = &sysinfo;
 
-      ODS DOCUMENT CLOSE;
+      %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+         ODS DOCUMENT CLOSE;
+      %end;
       OPTIONS FORMCHAR="&l_formchar.";
       OPTIONS ORIENTATION=&l_orientation.;
 
@@ -221,21 +227,23 @@
             );
 
    /*-- write dataset set the target area ---------------------------------------*/
-   %IF &o_maxreportobs NE 0 %THEN %DO;
-      %IF %sysfunc(exist(&i_expected,DATA)) OR %sysfunc(exist(&i_expected,VIEW)) %THEN %DO;
-         DATA _acLib._columns_exp;
-            SET &i_expected (obs=&o_maxReportObs.);
-         RUN;
+   %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+      %IF &o_maxreportobs NE 0 %THEN %DO;
+         %IF %sysfunc(exist(&i_expected,DATA)) OR %sysfunc(exist(&i_expected,VIEW)) %THEN %DO;
+            DATA _acLib._columns_exp;
+               SET &i_expected (obs=&o_maxReportObs.);
+            RUN;
+         %END;
+
+         %IF %sysfunc(exist(&i_actual,DATA)) OR %sysfunc(exist(&i_actual,VIEW)) %THEN %DO;
+            DATA _acLib._columns_act;
+               SET &i_actual (obs=&o_maxReportObs.);
+            RUN;
+         %END;
       %END;
 
-      %IF %sysfunc(exist(&i_actual,DATA)) OR %sysfunc(exist(&i_actual,VIEW)) %THEN %DO;
-         DATA _acLib._columns_act;
-            SET &i_actual (obs=&o_maxReportObs.);
-         RUN;
-      %END;
-   %END;
-
-   libname _acLib;
+      libname _acLib;
+   %end;
 
 %MEND assertColumns;
 /** \endcond */

@@ -74,22 +74,6 @@
       %END;
    %END;
 
-   %*************************************************************;
-   %*** Check if XCMD is allowed                              ***;
-   %*************************************************************;
-   %IF %_handleError(&l_macname.
-                 ,NOXCMD
-                 ,(%sysfunc(getoption(XCMD)) = NOXCMD)
-                 ,Your SAS Session does not allow XCMD%str(,) therefore assertExternal cannot be run.
-                 ,i_verbose=&g_verbose.
-                 ) 
-   %THEN %DO;
-      %LET l_rc    =2;
-      %LET l_result=2;
-      %LET l_errmsg=Your SAS Session does not allow XCMD%str(,) therefore assertExternal cannot be run.;
-      %GOTO Update;
-   %END;
-
    /*-- check for existence and check change date -------------------------------*/
    %LET l_result=2;
    %LET l_errmsg=Report was not created anew!;
@@ -117,22 +101,40 @@
    /*-- get current ids for test case and test --------- ------------------------*/
    %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
-   %*** create subfolder ***;
-   %_createTestSubfolder (i_assertType   =assertreport
-                         ,i_scnid        =&g_scnid.
-                         ,i_casid        =&l_casid.
-                         ,i_tstid        =&l_tstid.
-                         ,r_path         =l_path
-                         );
+   %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+      %*** create subfolder ***;
+      %_createTestSubfolder (i_assertType   =assertreport
+                            ,i_scnid        =&g_scnid.
+                            ,i_casid        =&l_casid.
+                            ,i_tstid        =&l_tstid.
+                            ,r_path         =l_path
+                            );
 
-   /* copy actual report if it exists */
-   %IF &l_rep_ext. NE %THEN %DO;
-      %_copyFile(&i_actual, &l_path./_man_act&l_rep_ext);
-   %END;
+      /* copy actual report if it exists */
+      %IF &l_rep_ext. NE %THEN %DO;
+         %_copyFile(&i_actual, &l_path./_man_act&l_rep_ext);
+      %END;
 
-   /* copy expected report if it exists  */
-   %IF &l_exp_ext. NE %THEN %DO;
-      %_copyFile(&l_expected, &l_path./_man_exp&l_exp_ext);
+      /* copy expected report if it exists  */
+      %IF &l_exp_ext. NE %THEN %DO;
+         %_copyFile(&l_expected, &l_path./_man_exp&l_exp_ext);
+      %END;
+   %end;
+
+   %*************************************************************;
+   %*** Check if XCMD is allowed                              ***;
+   %*************************************************************;
+   %IF %_handleError(&l_macname.
+                 ,NOXCMD
+                 ,(%sysfunc(getoption(XCMD)) = NOXCMD)
+                 ,Your SAS Session does not allow XCMD%str(,) therefore check your report in the report viewer.
+                 ,i_verbose=&g_verbose.
+                 ) 
+   %THEN %DO;
+      %LET l_rc    =1;
+      %LET l_result=1;
+      %LET l_errmsg=Your SAS Session does not allow XCMD%str(,) therefore check your report in the report viewer.;
+      %GOTO Update;
    %END;
 
 %Update:

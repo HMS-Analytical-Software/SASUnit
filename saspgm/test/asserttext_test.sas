@@ -120,7 +120,7 @@
 
 /* test case 1 ------------------------------------ */
 
-%initTestcase(i_object   =asserttext.sas
+%initTestcase(i_object   =assertText.sas
              ,i_desc     =Texts with invalid input parameters
              )
 %endTestcall()
@@ -233,7 +233,7 @@
       
 /* test case 2 ------------------------------------ */
 
-%initTestcase(i_object   =asserttext.sas
+%initTestcase(i_object   =assertText.sas
              ,i_desc     =Successfull tests
              )
 %endTestcall()
@@ -256,7 +256,7 @@
    %assertLog (i_errors=0, i_warnings=0);
    
 %initTestcase(
-             i_object   = asserttext.sas
+             i_object   = assertText.sas
             ,i_desc     = Specific tests with modifiers for &assertText_OS. compare tool &assertText_CompTool.
    )
 %endTestcall()

@@ -336,39 +336,41 @@
    %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
    %*** create subfolder ***;
-   %_createTestSubfolder (i_assertType  =assertForeignKey
-                         ,i_scnid      =&g_scnid.
-                         ,i_casid      =&l_casid.
-                         ,i_tstid      =&l_tstid.
-                         ,r_path       =l_path
-                          );
+   %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+      %_createTestSubfolder (i_assertType  =assertForeignKey
+                            ,i_scnid      =&g_scnid.
+                            ,i_casid      =&l_casid.
+                            ,i_tstid      =&l_tstid.
+                            ,r_path       =l_path
+                             );
 
-   /* copy data sets if they exist  */
-   %LET l_helper= %SYSFUNC(getoption(work));
-   libname tar_afk "&l_path.";
-   %IF %SYSFUNC(fileexist(&l_helper./keyNotFndLookUp.sas7bdat)) NE 0 %THEN %DO;
-      /*Subset data set, keep only key variables + variables specified in l_listingVars*/
-      data keyNotFndLookUp;
-         set keyNotFndLookUp(OBS=&o_maxObsRprtFail.);
-         keep &l_listingVars;
-      run;   
+      /* copy data sets if they exist  */
+      %LET l_helper= %SYSFUNC(getoption(work));
+      libname tar_afk "&l_path.";
+      %IF %SYSFUNC(fileexist(&l_helper./keyNotFndLookUp.sas7bdat)) NE 0 %THEN %DO;
+         /*Subset data set, keep only key variables + variables specified in l_listingVars*/
+         data keyNotFndLookUp;
+            set keyNotFndLookUp(OBS=&o_maxObsRprtFail.);
+            keep &l_listingVars;
+         run;   
+      
+         proc copy in = work out = tar_afk;
+            select keyNotFndLookUp;
+         run;
+      %END;
+      %IF %SYSFUNC(fileexist(&l_helper./keyNotFndMstr.sas7bdat)) NE 0 %THEN %DO;
+         data keyNotFndMstr;
+            set keyNotFndMstr(OBS=&o_maxObsRprtFail.);
+            keep &l_listingVars;
+         run; 
+      
+         proc copy in = work out = tar_afk;
+           select keyNotFndMstr;
+         run;
+      %END;
+      libname tar_afk clear;
+   %end;
    
-      proc copy in = work out = tar_afk;
-         select keyNotFndLookUp;
-      run;
-   %END;
-   %IF %SYSFUNC(fileexist(&l_helper./keyNotFndMstr.sas7bdat)) NE 0 %THEN %DO;
-      data keyNotFndMstr;
-         set keyNotFndMstr(OBS=&o_maxObsRprtFail.);
-         keep &l_listingVars;
-      run; 
-   
-      proc copy in = work out = tar_afk;
-        select keyNotFndMstr;
-      run;
-   %END;
-   libname tar_afk clear;
-
    %Update:
    %_asserts(i_type      = assertForeignKey
             ,i_expected = %str(&l_unique.)

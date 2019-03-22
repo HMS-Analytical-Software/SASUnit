@@ -33,7 +33,10 @@
 
    %local
       l_filename
-      ;
+      l_macroName 
+   ;   
+   
+   %LET l_macname=&sysmacroname;
 
    %LET g_copydir       =xcopy /E /I /Y;
    %LET g_endcommand    =%str( );
@@ -47,6 +50,23 @@
    * retrieve dateformat from WINDOWS registry *;
    * Set default if anything goes wrong *;
    %LET g_dateformat  = _NONE_;
+
+   %*************************************************************;
+   %*** Check if XCMD is allowed                              ***;
+   %*************************************************************;
+   %IF %_handleError(&l_macname.
+                 ,NOXCMD
+                 ,(%sysfunc(getoption(XCMD)) = NOXCMD)
+                 ,Your SAS Session does not allow XCMD%str(,) therefore functionality is restricted.
+                 ,i_verbose=&g_verbose.
+                 ,i_msgtype=WARNING
+                 ) 
+   %THEN %DO;
+      * Should only be a warning, so reset error flag *;
+      %let G_ERROR_CODE =;
+      %GOTO Exit;
+   %END;
+
 
    %let xwait=%sysfunc(getoption(xwait));
    %let xsync=%sysfunc(getoption(xsync));
@@ -94,6 +114,7 @@
          call symputx ("G_DATEFORMAT", trim (g_dateformat));
       end;
    run;
+%exit:   
 %mend _oscmds;
 
 /** \endcond */

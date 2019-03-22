@@ -87,15 +87,17 @@
    %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
    %*** create subfolder ***;
-   %_createTestSubfolder (i_assertType   =assertRowExpression
-                         ,i_scnid        =&g_scnid.
-                         ,i_casid        =&l_casid.
-                         ,i_tstid        =&l_tstid.
-                         ,r_path         =l_path
-                         );
+   %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+      %_createTestSubfolder (i_assertType   =assertRowExpression
+                            ,i_scnid        =&g_scnid.
+                            ,i_casid        =&l_casid.
+                            ,i_tstid        =&l_tstid.
+                            ,r_path         =l_path
+                            );
 
-   libname _areLib "&l_path.";
-
+      libname _areLib "&l_path.";
+   %end;
+   
    %*** Count matching observations ***;
    PROC SQL NOPRINT;
       select count (*) into :l_actual 
@@ -105,29 +107,33 @@
    %IF (&syserr. ne 0) %THEN %DO;
       %LET l_actual=-1;
       %LET l_errmsg=Where expression is not valid!;
-      data _areLib.ViolatingObservations;
-         set &l_dsname;
-         stop;
-      run; 
-      libname _areLib clear;
+      %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+         data _areLib.ViolatingObservations;
+            set &l_dsname;
+            stop;
+         run; 
+         libname _areLib clear;
+      %end;
       %GOTO Update;
    %END;
 
-   options obs=&o_maxReportObs.;
-   data _areLib.ViolatingObservations;
-      set &l_dsname (where=(not (&i_where.)));
-      %IF (&o_listVars. ne _NONE_) %THEN %DO;
-         keep &o_listVars.;
+   %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+      options obs=&o_maxReportObs.;
+      data _areLib.ViolatingObservations;
+         set &l_dsname (where=(not (&i_where.)));
+         %IF (&o_listVars. ne _NONE_) %THEN %DO;
+            keep &o_listVars.;
+         %END;
+      run;
+      %LET l_rc=&syserr.;
+      options obs=MAX;
+      libname _areLib clear;
+      %IF (&l_rc. ne 0) %THEN %DO;
+         %LET l_actual=-1;
+         %LET l_errmsg=Error writing table with condition violating observations!;
+         %GOTO Update;
       %END;
-   run;
-   %LET l_rc=&syserr.;
-   options obs=MAX;
-   libname _areLib clear;
-   %IF (&l_rc. ne 0) %THEN %DO;
-      %LET l_actual=-1;
-      %LET l_errmsg=Error writing table with condition violating observations!;
-      %GOTO Update;
-   %END;
+   %end;
    
    %*** Determine results***;
    %if (&l_actual. eq &l_nobs.) %then %do;

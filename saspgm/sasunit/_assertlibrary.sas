@@ -249,28 +249,30 @@
    %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
 
    %*** create subfolder ***;
-   %_createTestSubfolder (i_assertType   =assertlibrary
-                         ,i_scnid        =&g_scnid.
-                         ,i_casid        =&l_casid.
-                         ,i_tstid        =&l_tstid.
-                         ,r_path         =l_path
-                         );
+   %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+      %_createTestSubfolder (i_assertType   =assertlibrary
+                            ,i_scnid        =&g_scnid.
+                            ,i_casid        =&l_casid.
+                            ,i_tstid        =&l_tstid.
+                            ,r_path         =l_path
+                            );
 
-   %*** create library listing ***;
-   *** Capture tables instead of ODS DOCUMENT ***;
-   libname _alLib "&l_path.";
-   ods document name=_alLib._Library_act(WRITE);
-      proc print data=WORK._assertLibraryActual label noobs;
+      %*** create library listing ***;
+      *** Capture tables instead of ODS DOCUMENT ***;
+      libname _alLib "&l_path.";
+      ods document name=_alLib._Library_act(WRITE);
+         proc print data=WORK._assertLibraryActual label noobs;
+         run;
+      ods document close;
+      ods document name=_alLib._Library_exp(WRITE);
+         proc print data=WORK._assertLibraryExpected label noobs;
+         run;
+      ods document close;
+      data _alLib._Library_rep;
+         set work._ergebnis;
       run;
-   ods document close;
-   ods document name=_alLib._Library_exp(WRITE);
-      proc print data=WORK._assertLibraryExpected label noobs;
-      run;
-   ods document close;
-   data _alLib._Library_rep;
-      set work._ergebnis;
-   run;
-   libname _alLib clear;
+      libname _alLib clear;
+   %end;
 
    proc datasets lib=work nolist memtype=(data view);
       delete _ergebnis _assertLibraryActual _assertLibraryExpected;
