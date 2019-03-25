@@ -20,10 +20,6 @@ OPTIONS
    APPEND=(SASAUTOS "%sysget(SASUNIT_ROOT)/saspgm/sasunit") /* SASUnit macro library */
 ;
 
-%LET SASUNIT_VERBOSE=1;
-%LET SASUNIT_CROSSREF=1;
-%LET SASUNIT_CROSSREFSASUNIT=1;
-
 proc options option=logparm;run;
 
 %initSASUnit(
@@ -40,9 +36,9 @@ proc options option=logparm;run;
   ,i_doc             = doc/spec
   ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
   ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose         = &SASUNIT_VERBOSE.
-  ,i_crossref        = &SASUNIT_CROSSREF.
-  ,i_crossrefsasunit = &SASUNIT_CROSSREFSASUNIT.
+  ,i_verbose         = %sysget(SASUNIT_VERBOSE)
+  ,i_crossref        = %sysget(SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
   ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
 );
 
@@ -96,9 +92,10 @@ run;
   ,i_doc             = doc/spec
   ,i_sascfg          = &ConfigName.
   ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose         = &SASUNIT_VERBOSE.
-  ,i_crossref        = &SASUNIT_CROSSREF.
-  ,i_crossrefsasunit = &SASUNIT_CROSSREFSASUNIT.
+  ,i_verbose         = %sysget(SASUNIT_VERBOSE)
+  ,i_crossref        = %sysget(SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
 )
 
 %runSASUnit(i_source = saspgm/test/assert_i_config_usage_configtest.sas);
@@ -118,9 +115,10 @@ run;
   ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
   ,i_autoexec        = &AutoexecName2.
   ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose         = &SASUNIT_VERBOSE.
-  ,i_crossref        = &SASUNIT_CROSSREF.
-  ,i_crossrefsasunit = &SASUNIT_CROSSREFSASUNIT.
+  ,i_verbose         = %sysget(SASUNIT_VERBOSE)
+  ,i_crossref        = %sysget(SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
 )
 
 %runSASUnit(i_source = saspgm/test/assert_i_autoexec_usage_configtest.sas);
@@ -142,15 +140,17 @@ run;
   ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
   ,i_autoexec        = %str( )
   ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose         = &SASUNIT_VERBOSE.
-  ,i_crossref        = &SASUNIT_CROSSREF.
-  ,i_crossrefsasunit = &SASUNIT_CROSSREFSASUNIT.
+  ,i_verbose         = %sysget(SASUNIT_VERBOSE)
+  ,i_crossref        = %sysget(SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
 );
 
 %reportSASUnit(
-    i_language=%upcase(%sysget(SASUNIT_LANGUAGE))
-   ,i_style   =SASUnit
-   ,o_html    =1
-   ,o_junit   =1
+   i_language       =%lowcase(%sysget(SASUNIT_LANGUAGE))
+   ,o_html           =1
+   ,o_junit          =1
+   ,o_pgmdoc         =%sysget(SASUNIT_PGMDOC)
+   ,o_pgmdoc_sasunit =%sysget(SASUNIT_PGMDOC_SASUNIT)
 );
 /** \endcond */
