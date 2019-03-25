@@ -92,7 +92,12 @@
    
    /* set global macro symbols and librefs / filerefs  */
    /* includes creation of autocall paths */
-   %_loadenvironment;
+   %if (&g_runMode.=SASUNIT_INTERACTIVE) %then %do;
+      %_loadenvironment (i_appendSASAutos=N);
+   %end;
+   %else %do;
+      %_loadenvironment (i_appendSASAutos=Y);
+   %end;
    
    options linesize=max;
    

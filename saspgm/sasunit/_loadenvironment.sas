@@ -15,11 +15,14 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param   i_withlibrefs 1..initialize also filerefs and librefs 
-                          0..initialize only macro symbols. 
+   \param   i_withlibrefs    1..initialize also filerefs and librefs 
+                             0..initialize only macro symbols. 
+   \param   i_appendSASAutos Y..append SASAUTOS, in intercative mode append SASAUTOS must be diabled
+                             ..do not append SASAUTOS
 */ /** \cond */ 
 
-%MACRO _loadEnvironment(i_withlibrefs = 1
+%MACRO _loadEnvironment(i_withlibrefs    =1
+                       ,i_appendSASAutos =Y
                        );
  
    %LOCAL l_macname; %LET l_macname=&sysmacroname;
@@ -138,10 +141,12 @@
       %END;
    %END;
 
-   OPTIONS MAUTOSOURCE APPEND=(SASAUTOS=("&g_sasunit_os"
-   %DO i=0 %TO 29;
-      %IF "&&g_sasautos&i" NE "" %THEN "&&g_sasautos&i";
-   %END;     ));
+   %IF (&i_appendSASAutos.=Y) %THEN %DO;
+      OPTIONS MAUTOSOURCE APPEND=(SASAUTOS=("&g_sasunit_os"
+      %DO i=0 %TO 29;
+         %IF "&&g_sasautos&i" NE "" %THEN "&&g_sasautos&i";
+      %END;     ));
+   %END;
    
    %_oscmds;
 

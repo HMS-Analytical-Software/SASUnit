@@ -79,7 +79,7 @@
    %LET l_errmsg=Report was not created anew!;
    %local d_dir;
    %_tempFileName(d_dir)
-   %_dir(i_path=&i_actual, o_out=&d_dir)
+   %_noxcmd_dir(i_path=&i_actual, o_out=&d_dir)
    data _null_;
       set &d_dir nobs=nobs;
       if nobs ne 1 then stop;

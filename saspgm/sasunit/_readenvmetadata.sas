@@ -42,7 +42,7 @@
 
    %*** Detect Jupyter Notebooks ***;
    %if (&l_sysin. eq __STDIN__) %then %do;
-      %let g_runMode                =SASUNIT_INTERACTIVE;         
+      %let g_runMode                =SASUNIT_INTERACTIVE;
       %let g_runningProgramFullName =_NONE_;
    %end;
    

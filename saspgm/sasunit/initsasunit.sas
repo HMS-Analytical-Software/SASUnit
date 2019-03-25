@@ -643,7 +643,6 @@
                        ) 
          %THEN %GOTO errexit;
    %END; 
-
    /*-- update parameters ----------------------------------------------------*/
    PROC SQL NOPRINT;
       UPDATE target.tsu 
@@ -671,7 +670,8 @@
    QUIT;
 
    /*-- load relevant information from test database to global macro symbols ----*/
-   %_loadEnvironment (i_withLibrefs = 0
+   %_loadEnvironment (i_withLibrefs   =0
+                     ,i_appendSASAutos=Y
                      )
 
    /* Correct Termstring in Textfiles */

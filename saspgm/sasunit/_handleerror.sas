@@ -57,7 +57,9 @@
       %THEN %PUT &i_text;
    %PUT --------------------------------------------------------------------------------;
    %PUT;
-   %LET g_error_code = &i_errorcode;
+   %IF %UPCASE(&i_msgtype.) = &G_ERROR. %THEN %DO;
+      %LET g_error_code = &i_errorcode;
+   %END;
    %LET g_error_msg  = &i_text;
    %LET g_error_macro= &i_macroname;
 %END;
