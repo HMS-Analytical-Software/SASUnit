@@ -11,6 +11,11 @@ export SASUNIT_LANGUAGE=en
 export SASUNIT_HOST_OS=linux
 export SASUNIT_SAS_VERSION=9.4
 export SASCFGPATH=./bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg
+export SASUNIT_PGMDOC=1
+export SASUNIT_PGMDOC_SASUNIT=0
+export SASUNIT_CROSSREFERENCE=1
+export SASUNIT_CROSSREFERENCE_SASUNIT=0
+export SASUNIT_VERBOSE=0
 
 # Check if SASUnit Jenkins Plugin is present and use given SASUnit root path
 if [ -z "$1" ] ; then 
