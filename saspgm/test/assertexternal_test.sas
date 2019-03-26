@@ -88,12 +88,28 @@
    %END;
 %MEND _adaptToOS;
 
+%MACRO _adaptToEnv;
+   %let expected_word_count_multiplier = 1;
+   %if ((%sysfunc(getoption(XCMD)) = NOXCMD)) %then %do;
+      %let expected_word_count_multiplier = 0;
+   %end;
+%MEND _adaptToEnv;
+%MACRO markTextIfNOXCMD(exp,act,res);
+   %if ((%sysfunc(getoption(XCMD)) = NOXCMD)) %then %do;
+      %markTest()
+         %assertDBValue(tst,exp,&exp.);
+         %assertDBValue(tst,act,&act.);
+         %assertDBValue(tst,res,&res.);
+         %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
+   %end;
+%MEND;
 
 %initScenario(i_desc =Test of assertExternal.sas);
 
 /* create test files */
 %_createtestfiles;
 %_adaptToOS;
+%_adaptToEnv;
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
@@ -160,6 +176,7 @@
                 ,i_desc               =Word count of "Lorem" equals 2
                 ,i_threshold          =NONE
                 );
+   %markTextIfNOXCMD(0,0,2);
                 
 %assertExternal (i_script             =&assertExternal_script1.
                 ,i_expected           =&assertExternal_work1.
@@ -169,6 +186,7 @@
                 ,i_desc               =%str(Word count of "Lorem" equals 2, but i_actual=3, so i_expected_shell_rc must be 1)
                 ,i_threshold          =NONE
                 );
+   %markTextIfNOXCMD(1,0,2);
 
 %assertLog (i_errors=0, i_warnings=0);
 %endTestcase();
@@ -189,6 +207,7 @@
                 ,i_desc               =Compared files match
                 ,i_threshold          =NONE
                 );
+   %markTextIfNOXCMD(0,0,2);
                 
 %assertExternal (i_script             =&assertExternal_script2.
                 ,i_expected           =&assertExternal_work1.
@@ -199,6 +218,7 @@
                 ,i_desc               =Compared files do not match
                 ,i_threshold          =NONE
                 );
+   %markTextIfNOXCMD(1,0,2);
                 
 %assertExternal (i_script             =&assertExternal_script2.
                 ,i_expected           =&assertExternal_work1.
@@ -210,6 +230,7 @@
                 ,i_desc               =%str(Compared files do not match, but modifier ignore case used -> test is OK)
                 ,i_threshold          =NONE
                 );
+   %markTextIfNOXCMD(0,0,2);
 %endTestcase();
 
 %endScenario(); 

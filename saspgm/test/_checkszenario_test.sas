@@ -91,8 +91,8 @@
       cas_scnid = 2; cas_exaid=2; cas_obj="TestMakro2"; output;
       cas_scnid = 3; cas_exaid=3; cas_obj="TestMakro3"; output;
       cas_scnid = 4; cas_exaid=4; cas_obj="TestMakro4"; output;
-      cas_scnid = 5; cas_exaid=11; cas_obj="TestMakro5"; output;
-      cas_scnid = 6; cas_exaid=12; cas_obj="TestMakro6"; output;
+      cas_scnid = 5; cas_exaid=9; cas_obj="TestMakro5"; output;
+      cas_scnid = 6; cas_exaid=10; cas_obj="TestMakro6"; output;
    RUN;
 
    data tsu;
@@ -195,7 +195,7 @@ libname target "&g_target.";
 
 /* test case 4 ------------------------------------ */
 %LET G_CROSSREF=0;
-%LET G_CROSSREFSASUNIT=0;
+%LET G_CROSSREFSASUNIT=1;
 /* Test files without scenario4 in test db */
 %_createTestFiles;
 PROC SQL;
@@ -230,10 +230,10 @@ libname target "&g_target.";
                   );
 %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);
-%LET G_CROSSREF=&_G_CROSSREF.;
-%LET G_CROSSREFSASUNIT=&_G_CROSSREFSASUNIT.;
 
 /* test case 5 ------------------------------------ */
+%LET G_CROSSREF=0;
+%LET G_CROSSREFSASUNIT=1;
 /* Test files without scenario3 in test db */
 %_createTestFiles;
 data work.scn;
@@ -288,6 +288,8 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 6 ------------------------------------ */
+%LET G_CROSSREF=0;
+%LET G_CROSSREFSASUNIT=1;
 /* Test files with empty test db */
 %_createTestFiles;
 data work.scn;
@@ -338,6 +340,8 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 7 ------------------------------------ */
+%LET G_CROSSREF=0;
+%LET G_CROSSREFSASUNIT=1;
 %_createTestFiles;
 data work.scn;
    set work.scn_multi;
@@ -383,6 +387,8 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 8 ------------------------------------ */
+%LET G_CROSSREF=0;
+%LET G_CROSSREFSASUNIT=1;
 %_createTestFiles;
 data work.scn;
    set work.scn_multi;
@@ -416,6 +422,8 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 9 ------------------------------------ */
+%LET G_CROSSREF=0;
+%LET G_CROSSREFSASUNIT=1;
 %_createTestFiles;
 data work.scn;
    set work.scn_multi;
@@ -456,10 +464,10 @@ libname target "&g_target.";
                   );
 %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);
-%LET G_CROSSREF=&_G_CROSSREF.;
-%LET G_CROSSREFSASUNIT=&_G_CROSSREFSASUNIT.;
 
 /* test case 10 ------------------------------------ */
+%LET G_CROSSREF=0;
+%LET G_CROSSREFSASUNIT=1;
 %_createTestFiles;
 data work.scn;
    set work.scn_multi;
@@ -505,6 +513,8 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 11 ------------------------------------ */
+%LET G_CROSSREF=0;
+%LET G_CROSSREFSASUNIT=1;
 %_createTestFiles;
 data work.scn;
    set work.scn_multi;
@@ -513,11 +523,11 @@ run;
 PROC SQL;
    update exa
       set exa_changed = &scn_changed.+60
-      where exa_pgm = "testmakro5.sas"
+      where exa_pgm = "testmakro2.sas"
    ;
 QUIT;
 %initTestcase(i_object = _checkScenario.sas
-             ,i_desc   = First call to runsasunit - testmakro 5 changed - dependcy overwrites);
+             ,i_desc   = First call to runsasunit - testmakro 2 changed);
 
 libname target (work);
 /* check which test scenarios must be run */
@@ -544,11 +554,66 @@ libname target "&g_target.";
                   );
 %assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
                   ,i_recordsExp=1
-                  ,i_where=%str(scn_path = "saspgm/test/pgmlib2/scenario5.sas" and dorun = 1)
-                  ,i_desc=Scenario 5 expected with %str(dorun=1)
+                  ,i_where=%str(scn_path = "saspgm/test/pgmlib1/scenario2.sas" and dorun = 1)
+                  ,i_desc=Scenario 2 expected with %str(dorun=1)
                   );
 %assertLog (i_errors=0, i_warnings=0);
-%endTestcase(i_assertLog=0);
+%endTestcase;
+
+/* test case 12 ------------------------------------ */
+%LET G_CROSSREF=1;
+%LET G_CROSSREFSASUNIT=1;
+%_createTestFiles;
+data work.scn;
+   set work.scn_multi;
+run;
+/* Modifiy results of _dir macro */
+PROC SQL;
+   update exa
+      set exa_changed = &scn_changed.+60
+      where exa_pgm = "testmakro2.sas"
+   ;
+QUIT;
+%initTestcase(i_object = _checkScenario.sas
+             ,i_desc   = Second call to runsasunit - testmakro 2 changed - dependency overwrites);
+
+libname target (work);
+/* check which test scenarios must be run */
+%_checkScenario(i_examinee       = exa
+               ,i_scn_pre        = scn_dir_1
+               ,o_scenariosToRun = scenariosToRun
+               );
+libname target "&g_target.";
+%endTestcall();
+%assertRecordCount(i_libref=work, i_memname=scn, i_operator=EQ
+                  ,i_recordsExp=6
+                  ,i_where=
+                  ,i_desc=6 observations in test db expected
+                  );
+%assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
+                  ,i_recordsExp=2
+                  ,i_where=dorun ne 0
+                  ,i_desc=2 scenarios should be run
+                  );
+%assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
+                  ,i_recordsExp=4
+                  ,i_where=dorun = 0
+                  ,i_desc=4 Scenario should not be run
+                  );
+%assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
+                  ,i_recordsExp=1
+                  ,i_where=%str(scn_path = "saspgm/test/pgmlib1/scenario1.sas" and dorun = 1)
+                  ,i_desc=Scenario 1 expected with %str(dorun=1)
+                  );
+%assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
+                  ,i_recordsExp=1
+                  ,i_where=%str(scn_path = "saspgm/test/pgmlib1/scenario2.sas" and dorun = 1)
+                  ,i_desc=Scenario 2 expected with %str(dorun=1)
+                  );
+%assertLog (i_errors=0, i_warnings=0);
+%endTestcase;
+%LET G_CROSSREF=&_G_CROSSREF.;
+%LET G_CROSSREFSASUNIT=&_G_CROSSREFSASUNIT.;
 
 proc datasets lib=work kill memtype=(data) nolist;
 run;

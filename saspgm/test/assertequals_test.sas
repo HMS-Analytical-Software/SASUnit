@@ -165,6 +165,5 @@
 %assertDBValue(tst,act,AAA)
 %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=0)
-
 %endScenario()
 /** \endcond */

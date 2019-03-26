@@ -36,12 +36,9 @@
                     );
 
    /*-- verify correct sequence of calls-----------------------------------------*/
-   %GLOBAL g_inTestCase g_inTestCall;
-   %IF &g_inTestCall EQ 1 %THEN %DO;
-      %endTestcall;
-   %END;
-   %IF &g_inTestCase NE 1 %THEN %DO;
-      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
+   %GLOBAL g_inTestCase;
+   %endTestCall(i_messageStyle=NOTE);
+   %IF %_checkCallingSequence(i_callerType=assert) NE 0 %THEN %DO;      
       %RETURN;
    %END;
 

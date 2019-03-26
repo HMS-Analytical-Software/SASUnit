@@ -22,19 +22,17 @@
             
 */ /** \cond */ 
 
-%MACRO endTestcall();
+%MACRO endTestcall(i_messageStyle=ERROR);
 
    %GLOBAL g_inTestCall g_inTestCase;
 
-/* Geht erst ab SAS Version 9.3
-   %IF (&g_inTestCall. NE 1 AND %sysmexecname(%sysmexecdepth-1) = ENDTESTCASE) %THEN %DO;
-      %PUT &g_note.(SASUNIT): endTestcall already run by user. This call was issued from endTestcase.;
-      %RETURN;
-   %END;
-*/
-
-   %IF (&g_inTestCall. NE 1 OR &g_inTestCase. NE 1) %THEN %DO;
-      %PUT &g_error.(SASUNIT): endTestcall must be called after initTestcase;
+   %IF (&g_inTestCall. NE 1) %THEN %DO;
+      %IF (&i_messageStyle=ERROR) %THEN %DO;
+         %PUT &g_error.: endTestcall must be called after initTestcase!;
+      %END;
+      %ELSE %DO;
+         %PUT &g_note.(SASUNIT): endTestcall already run by user. This call was issued from endTestcase.;
+      %END;
       %RETURN;
    %END;
 

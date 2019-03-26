@@ -16,24 +16,25 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 */
 /** \cond */ 
-%MACRO endScenario();
-   %global g_inScenario g_inTestCase g_inTestCall g_scnID;
+%MACRO endScenario(i_messageStyle=ERROR);
 
-   %if &g_inScenario. NE 1 %then %do;
-      %endTestcase
-   %end;
+   /*-- verify correct sequence of calls-----------------------------------------*/
+   %GLOBAL g_inScenario g_scnID;
+   %endTestCall(i_messageStyle=NOTE);
+   %endTestCase(i_messageStyle=NOTE);
+   %IF &g_inScenario. NE 1 %THEN %DO;
+      %IF (&i_messageStyle=ERROR) %THEN %DO;
+         %PUT &g_error.: endScenario must be called after initScenario;
+      %END;
+      %ELSE %DO;
+         %PUT &g_note.(SASUNIT): endScenarios already run by user. This call was issued from _termScenario.;
+      %END;
+      %RETURN;
+      %RETURN;
+   %END;
 
    %local l_result;
    
-/* Geht erst ab SAS Version 9.3
-   %endTestcase
-*/
-/* Wegen SAS Version 9.2 muss es noch so gemacht werden */
-   %if &g_inTestCase. EQ 1 %then %do;
-      %endTestcase
-   %end;
-/* Wegen SAS Version 9.2 muss es noch so gemacht werden */
-
    proc sql noprint;
       select max (cas_res) into :l_result from target.cas WHERE cas_scnid=&g_scnid.;
    QUIT;

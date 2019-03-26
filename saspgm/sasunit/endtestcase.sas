@@ -23,28 +23,19 @@
                
 */ /** \cond */ 
 
-%MACRO endTestcase(i_assertLog=1);
+%MACRO endTestcase(i_assertLog=1,i_messageStyle=ERROR);
 
    %GLOBAL g_inTestCase g_inTestCall;
-   %LOCAL l_casid l_assertLog l_result;
-   
-/* Geht erst ab SAS Version 9.3
-   %IF (&g_inTestCase. NE 1 AND %sysmexecname(%sysmexecdepth-1) = ENDSCENARIO) %THEN %DO;
-      %PUT &g_note.(SASUNIT): endTestcase already run by user. This call was issued from endScenario.;
-      %RETURN;
-   %END;
-   
-   %endTestcall
-*/
+   %LOCAL l_casid l_assertLog l_result;   
 
-/* Wegen SAS Version 9.2 muss es noch so gemacht werden */
-   %IF &g_inTestCall. EQ 1 %THEN %DO;
-      %endTestcall
-   %END;
-/* Wegen SAS Version 9.2 muss es noch so gemacht werden */
-
+   %endTestcall(i_messageStyle=NOTE);
    %IF &g_inTestCase. NE 1 %THEN %DO;
-      %PUT &g_error.(SASUNIT): endTestcase must be called after initTestcase!;
+      %IF (&i_messageStyle=ERROR) %THEN %DO;
+         %PUT &g_error.: endTestcase must be called after initTestcase!;
+      %END;
+      %ELSE %DO;
+         %PUT &g_note.(SASUNIT): endTestcall already run by user. This call was issued from endScenario.;
+      %END;
       %RETURN;
    %END;
 

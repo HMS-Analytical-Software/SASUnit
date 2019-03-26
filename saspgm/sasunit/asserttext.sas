@@ -32,22 +32,19 @@
 
 */ /** \cond */ 
 
-   %MACRO assertText (i_script            =
-                     ,i_expected          =
-                     ,i_actual            =
-                     ,i_expected_shell_rc =0
-                     ,i_modifier          =
-                     ,i_desc              =Comparison of texts
-                     ,i_threshold         =1
-                     );
+%MACRO assertText (i_script            =
+                  ,i_expected          =
+                  ,i_actual            =
+                  ,i_expected_shell_rc =0
+                  ,i_modifier          =
+                  ,i_desc              =Comparison of texts
+                  ,i_threshold         =1
+                  );
 
    /*-- verify correct sequence of calls-----------------------------------------*/
-   %GLOBAL g_inTestCase g_inTestCall;
-   %IF &g_inTestCall EQ 1 %THEN %DO;
-      %endTestcall;
-   %END;
-   %IF &g_inTestCase NE 1 %THEN %DO;
-      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
+   %GLOBAL g_inTestCase;
+   %endTestCall(i_messageStyle=NOTE);
+   %IF %_checkCallingSequence(i_callerType=assert) NE 0 %THEN %DO;      
       %RETURN;
    %END;
 
@@ -79,7 +76,7 @@
                  ,i_verbose=&g_verbose.
                  ) 
    %THEN %DO;
-      %LET l_rc    =2;
+      %LET l_rc    =0;
       %LET l_result=2;
       %LET l_errmsg=Your SAS Session does not allow XCMD%str(,) therefore assertText cannot be run.;
       %GOTO Update;

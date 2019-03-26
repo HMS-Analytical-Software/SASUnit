@@ -71,6 +71,13 @@
                      ,i_exclude      =
                      );
 
+   /*-- verify correct sequence of calls-----------------------------------------*/
+   %GLOBAL g_inTestCase;
+   %endTestCall(i_messageStyle=NOTE);
+   %IF %_checkCallingSequence(i_callerType=assert) NE 0 %THEN %DO;      
+      %RETURN;
+   %END;
+
    %LOCAL l_allowSymbols l_i l_j l_symboli l_symbolj l_potenz l_mask l_casid l_tstid l_path l_errMsg;
    %LET l_errMsg=;
 
@@ -122,16 +129,6 @@
      %PUT &g_warning.(SASUNIT): Both parameters i_include and i_exclude have been set.;
      %PUT &g_warning.(SASUNIT): I_exclude parameter will be dropped;
      %LET i_exclude =;
-   %END;
-
-   /*-- verify correct sequence of calls-----------------------------------------*/
-   %GLOBAL g_inTestCase g_inTestCall;
-   %IF &g_inTestCall EQ 1 %THEN %DO;
-      %endTestcall;
-   %END;
-   %IF &g_inTestCase NE 1 %THEN %DO;
-      %PUT &g_error.(SASUNIT): assert must be called after initTestcase;
-      %RETURN;
    %END;
 
    /*-- get current ids for test case and test --------- ------------------------*/

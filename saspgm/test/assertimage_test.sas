@@ -196,8 +196,8 @@
       %assertDBValue(tst,act,-8#.jpg#&assertImage_image2.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-%*** No 17-20 ***;
 
+%*** No 17-20 ***;
 %assertImage(i_script             =&assertImage_script.
             ,i_expected           =&assertImage_image1.
             ,i_actual             =&assertImage_image2.
