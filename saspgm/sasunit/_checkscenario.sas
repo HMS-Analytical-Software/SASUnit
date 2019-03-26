@@ -27,6 +27,8 @@
             
    \param      i_examinee        Data set containing all SASUnit macros, test scenarios and units under test
    \param      i_scn_pre         Data set containing all test scenarios
+   \param      i_crossref        indication if cross reference should be run. (optional: default=G_CROSSREF)
+   \param      i_crossrefSASUnit indication if cross reference for SASUnit macros should be run. (optional: default=G_CROSSREFSASUNIT)
    \param      o_scenariosToRun  Data set created in this macro holding information about scenarios that have to run
                (all data sets created in runsasunit)
 
@@ -36,6 +38,8 @@
 
 %MACRO _checkScenario(i_examinee       = 
                      ,i_scn_pre        =
+                     ,i_crossref       =&G_CROSSREF
+                     ,i_crossrefSASUnit=&G_CROSSREFSASUNIT
                      ,o_scenariosToRun =
                      );
 
@@ -141,8 +145,8 @@
    run;
 
    /* Create cross-reference and mark dependent scenarios as to be run */
-   %if (&g_crossref. = 1) %then %do;
-      %_crossreference(i_includeSASUnit = &g_crossrefsasunit.
+   %if (&i_crossref. = 1) %then %do;
+      %_crossreference(i_includeSASUnit = &i_crossrefsasunit.
                       ,i_examinee       = &i_examinee.
                       ,o_listcalling    = &d_listcalling.
                       ,o_dependency     = &d_dependency.

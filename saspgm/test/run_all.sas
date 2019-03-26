@@ -41,18 +41,19 @@ proc options option=logparm;run;
   ,i_crossrefsasunit = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
   ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
 );
-
+/*
 %runSASUnit(i_source = %str(saspgm/test/reportsasunit_inexisting_scenario_has_to_fail));
 %runSASUnit(i_source = %str(saspgm/test/%str(*)_test.sas));
 %runSASUnit(i_source = %str(saspgm/test/%lowcase(%sysget(SASUNIT_HOST_OS))/%str(*)_test.sas));
-
+*/
+%runSASUnit(i_source = %str(saspgm/test/_checkszenario_test.sas));
 /* To check different config and autoexec files there will be additional calls   */
 /* of initSASUnit and runSASUnit.                                                */
 /* First of all there will be created a new config file with a separate option   */
 /* for autoexec. Then a separate autoexec file is created.                       */
 /* To ensure the use of these files there will be set a macro variable different */
 /* In each autoexec file and tested in special testcases.                        */
-
+/*
 %let ConfigName   =%sysfunc (pathname(work))/config_for_testing.cfg;
 %let AutoexecName1=%sysfunc (pathname(work))/autoexec_for_config_test.sas;
 %let AutoexecName2=%sysfunc (pathname(work))/autoexec_for_autoexec_test.sas;
@@ -145,7 +146,7 @@ run;
   ,i_crossrefsasunit = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
   ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
 );
-
+*/
 %reportSASUnit(
    i_language       =%lowcase(%sysget(SASUNIT_LANGUAGE))
    ,o_html           =1

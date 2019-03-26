@@ -96,22 +96,24 @@
    RUN;
 
    data tsu;
-      format tsu_lastinit datetime20.;
-      tsu_lastinit=&scn_changed.; output;
+      set target.tsu;
+      tsu_lastinit=&scn_changed.;
    run;
 %MEND _createTestFiles;
 
-/*-- Case 1: Neither scenario nor dependend macros changed --*/
+/*-- Case 1: Neither scenario nor dependent macros changed --*/
 %_createTestFiles;
 data work.scn;
    set work.scn_single;
 run;
-%initTestcase(i_object = _checkScenario.sas, i_desc = Neither scenario nor dependend macros changed)
+%initTestcase(i_object = _checkScenario.sas, i_desc = Neither scenario nor dependent macros changed)
 libname target (work);
 
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir_1
+               ,i_crossref       =0
+               ,i_crossrefSASUnit=1
                ,o_scenariosToRun = scenariosToRun
                );
 libname target "&g_target.";
@@ -141,16 +143,14 @@ PROC SQL;
       where exa_pgm = "testmakro4.sas"
    ;
 QUIT;
-%LET _G_CROSSREF=&G_CROSSREF.;
-%LET _G_CROSSREFSASUNIT=&G_CROSSREFSASUNIT.;
-%LET G_CROSSREF=0;
-%LET G_CROSSREFSASUNIT=1;
 
 %initTestcase(i_object = _checkScenario.sas, i_desc = 1 macro changed since last run - no dependency check);
 libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir_1
+               ,i_crossref       =0
+               ,i_crossrefSASUnit=1
                ,o_scenariosToRun = scenariosToRun
                );
 libname target "&g_target.";
@@ -174,13 +174,13 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 3 ------------------------------------ */
-%LET G_CROSSREF=1;
-%LET G_CROSSREFSASUNIT=1;
 %initTestcase(i_object = _checkScenario.sas, i_desc = 1 macro changed since last run - dependency check);
 libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir_1
+               ,i_crossref       =1
+               ,i_crossrefSASUnit=1
                ,o_scenariosToRun = scenariosToRun
                );
 libname target "&g_target.";
@@ -194,8 +194,6 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 4 ------------------------------------ */
-%LET G_CROSSREF=0;
-%LET G_CROSSREFSASUNIT=1;
 /* Test files without scenario4 in test db */
 %_createTestFiles;
 PROC SQL;
@@ -209,6 +207,8 @@ libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir_1
+               ,i_crossref       =0
+               ,i_crossrefSASUnit=1
                ,o_scenariosToRun = scenariosToRun
                );
 libname target "&g_target.";
@@ -232,8 +232,6 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 5 ------------------------------------ */
-%LET G_CROSSREF=0;
-%LET G_CROSSREFSASUNIT=1;
 /* Test files without scenario3 in test db */
 %_createTestFiles;
 data work.scn;
@@ -250,6 +248,8 @@ libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir_1
+               ,i_crossref       =0
+               ,i_crossrefSASUnit=1
                ,o_scenariosToRun = scenariosToRun
                );
 libname target "&g_target.";
@@ -288,8 +288,6 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 6 ------------------------------------ */
-%LET G_CROSSREF=0;
-%LET G_CROSSREFSASUNIT=1;
 /* Test files with empty test db */
 %_createTestFiles;
 data work.scn;
@@ -302,6 +300,8 @@ libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir_1
+               ,i_crossref       =0
+               ,i_crossrefSASUnit=1
                ,o_scenariosToRun = scenariosToRun
                );
 libname target "&g_target.";
@@ -340,8 +340,6 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 7 ------------------------------------ */
-%LET G_CROSSREF=0;
-%LET G_CROSSREFSASUNIT=1;
 %_createTestFiles;
 data work.scn;
    set work.scn_multi;
@@ -359,6 +357,8 @@ libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir_1
+               ,i_crossref       =0
+               ,i_crossrefSASUnit=1
                ,o_scenariosToRun = scenariosToRun
                );
 libname target "&g_target.";
@@ -387,8 +387,6 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 8 ------------------------------------ */
-%LET G_CROSSREF=0;
-%LET G_CROSSREFSASUNIT=1;
 %_createTestFiles;
 data work.scn;
    set work.scn_multi;
@@ -399,6 +397,8 @@ libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir_2
+               ,i_crossref       =0
+               ,i_crossrefSASUnit=1
                ,o_scenariosToRun = scenariosToRun
                );
 libname target "&g_target.";
@@ -422,8 +422,6 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 9 ------------------------------------ */
-%LET G_CROSSREF=0;
-%LET G_CROSSREFSASUNIT=1;
 %_createTestFiles;
 data work.scn;
    set work.scn_multi;
@@ -443,6 +441,8 @@ libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir_1
+               ,i_crossref       =0
+               ,i_crossrefSASUnit=1
                ,o_scenariosToRun = scenariosToRun
                );
 libname target "&g_target.";
@@ -466,8 +466,6 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 10 ------------------------------------ */
-%LET G_CROSSREF=0;
-%LET G_CROSSREFSASUNIT=1;
 %_createTestFiles;
 data work.scn;
    set work.scn_multi;
@@ -485,6 +483,8 @@ libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir_2
+               ,i_crossref       =0
+               ,i_crossrefSASUnit=1
                ,o_scenariosToRun = scenariosToRun
                );
 libname target "&g_target.";
@@ -513,8 +513,6 @@ libname target "&g_target.";
 %endTestcase(i_assertLog=0);
 
 /* test case 11 ------------------------------------ */
-%LET G_CROSSREF=0;
-%LET G_CROSSREFSASUNIT=1;
 %_createTestFiles;
 data work.scn;
    set work.scn_multi;
@@ -533,6 +531,8 @@ libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir_1
+               ,i_crossref       =0
+               ,i_crossrefSASUnit=1
                ,o_scenariosToRun = scenariosToRun
                );
 libname target "&g_target.";
@@ -561,8 +561,6 @@ libname target "&g_target.";
 %endTestcase;
 
 /* test case 12 ------------------------------------ */
-%LET G_CROSSREF=1;
-%LET G_CROSSREFSASUNIT=1;
 %_createTestFiles;
 data work.scn;
    set work.scn_multi;
@@ -581,6 +579,8 @@ libname target (work);
 /* check which test scenarios must be run */
 %_checkScenario(i_examinee       = exa
                ,i_scn_pre        = scn_dir_1
+               ,i_crossref       =1
+               ,i_crossrefSASUnit=1
                ,o_scenariosToRun = scenariosToRun
                );
 libname target "&g_target.";
@@ -612,8 +612,34 @@ libname target "&g_target.";
                   );
 %assertLog (i_errors=0, i_warnings=0);
 %endTestcase;
-%LET G_CROSSREF=&_G_CROSSREF.;
-%LET G_CROSSREFSASUNIT=&_G_CROSSREFSASUNIT.;
+
+/* test case 13 ------------------------------------ */
+%_createTestFiles;
+data work.scn;
+   set work.scn_multi;
+run;
+/* Modifiy results of _dir macro */
+PROC SQL;
+   update exa
+      set exa_changed = &scn_changed.+60
+      where exa_pgm = "testmakro2.sas"
+   ;
+QUIT;
+%initTestcase(i_object = _checkScenario.sas
+             ,i_desc   = Constellation with error cause of missing variable tsu_sasunit_os);
+
+libname target (work);
+/* check which test scenarios must be run */
+%_checkScenario(i_examinee       = exa
+               ,i_scn_pre        = scn_dir_1
+               ,i_crossref       =1
+               ,i_crossrefSASUnit=0
+               ,o_scenariosToRun = scenariosToRun
+               );
+libname target "&g_target.";
+%endTestcall();
+%assertLog (i_errors=0, i_warnings=0);
+%endTestcase;
 
 proc datasets lib=work kill memtype=(data) nolist;
 run;
