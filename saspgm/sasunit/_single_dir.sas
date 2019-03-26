@@ -42,7 +42,7 @@
    ;
 
    data work._sd_members
-      %if (&i_pattern. ne _NONE_) %then %do;
+      %if (%quote(&i_pattern.) ne _NONE_) %then %do;
          (where=(upcase (membername) like "%upcase(&i_pattern.)"))
       %end;
       %if (&o_subdirs. ne _NONE_) %then %do;

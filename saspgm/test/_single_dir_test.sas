@@ -137,6 +137,22 @@ proc sort data=dircheck out=dirchecktxt; by filename; where filename contains "f
 %assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_fuzz=0.5)
 %endTestcase;
 
+/*-- 007 nonrecursive call with specific file containing special characters -------------------------*/
+%let path = %sysfunc(pathname(work))/testdir;
+%addentry(&path/file-one-$8.dat)
+data work.directory;
+   Directory = translate ("%sysfunc(pathname(work))/testdir", "/", "\");
+run;
+%initTestcase(i_object=_single_dir.sas, i_desc=nonrecursive call with specific file in subdirectory)
+%_single_dir(i_dsPath=work.directory, i_pattern=file-one-$8.dat, o_members=dir);
+%endTestcall;
+
+%assertLog(i_errors=0, i_warnings=0);
+proc sort data=dir; by filename; run;
+proc sort data=dircheck out=dirchecktxt; by filename; where filename contains "file-one-$8.dat";run;  
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_fuzz=0.5)
+%endTestcase;
+
 
 proc datasets lib=work kill memtype=(data) nolist;
 run;
