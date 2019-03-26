@@ -78,6 +78,8 @@
          %put &g_error.(SASUNIT): Extracted file pattern is: &l_i_pattern.;
          %goto exit;
       %end;
+      %put &g_note.(SASUNIT): Given path is valid      : &l_i_path.;
+      %put &g_note.(SASUNIT): Extracted file pattern is: &l_i_pattern.;
    %end;
    %let l_dir_id = %sysfunc (dclose(&l_dir_id.));
    filename DIR clear;
