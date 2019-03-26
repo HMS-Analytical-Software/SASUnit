@@ -14,13 +14,18 @@ export SASCFGPATH=./bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_L
 export SASUNIT_PGMDOC=1
 export SASUNIT_PGMDOC_SASUNIT=0
 export SASUNIT_CROSSREFERENCE=1
-export SASUNIT_CROSSREFERENCE_SASUNIT=0
+export SASUNIT_CROSSREFERENCE_SASUNIT=1
 export SASUNIT_VERBOSE=0
 
 echo SASUnit root path     = $SASUNIT_ROOT
-echo SASUnit config        = ./bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg
+echo SASUnit config        = $SASCFGPATH
 echo Overwrite             = $SASUNIT_OVERWRITE
 echo Testcoverage          = $SASUNIT_COVERAGEASSESSMENT
+echo Program Documentation = $SASUNIT_PGMDOC
+echo PgmDoc for SASUnit    = $SASUNIT_PGMDOC_SASUNIT
+echo Crossreference        = $SASUNIT_CROSSREFERENCE
+echo Crossref for SASUnit  = $SASUNIT_CROSSREFERENCE_SASUNIT
+echo Verbose               = $SASUNIT_VERBOSE
 echo
 
 echo "Starting SASUnit in Overwrite Mode ..."
