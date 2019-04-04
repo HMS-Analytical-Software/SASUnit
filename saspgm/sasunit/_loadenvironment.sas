@@ -33,7 +33,7 @@
            g_sasautos10 g_sasautos11 g_sasautos12 g_sasautos13 g_sasautos14 g_sasautos15 g_sasautos16 g_sasautos17 g_sasautos18 g_sasautos19 
            g_sasautos20 g_sasautos21 g_sasautos22 g_sasautos23 g_sasautos24 g_sasautos25 g_sasautos26 g_sasautos27 g_sasautos28 g_sasautos29 
            g_testdata g_refdata g_doc g_error g_warning g_note
-           g_work g_testout g_log g_logfile g_printfile
+           g_work g_testout g_log g_logfile g_printfile g_caslogfile
            g_testcoverage g_verbose g_crossref g_crossrefsasunit g_rep_encoding
            g_language
            ;

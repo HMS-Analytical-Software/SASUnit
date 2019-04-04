@@ -32,7 +32,7 @@
 %MACRO assertLogMsg (i_logmsg   =       
                     ,i_desc     = Scan for log messages  
                     ,i_not      = 0
-                    ,i_logfile  = _NONE_
+                    ,i_logfile  = &g_caslogfile.
                     );
 
    /*-- verify correct sequence of calls-----------------------------------------*/
@@ -59,20 +59,14 @@
       %goto exit;
    %END;
 
-   %let l_logfile = &g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log;
-
-   %if (%nrbquote(&i_logfile.) ne _NONE_) %then %do;
-      %let l_logfile=%quote(&i_logfile.);
-   %end;
-
-   /* scanne den Log */
+   /* Scanne den Log */
    %LET l_msg_found=0;
    DATA _null_;
       RETAIN pattern_id;
       IF _n_=1 THEN DO;
          pattern_id = prxparse("/%upcase(&i_logmsg)/");
       END;
-      INFILE "&l_logfile." END=eof TRUNCOVER &g_infile_options.;
+      INFILE "&i_logfile." END=eof TRUNCOVER &g_infile_options.;
       INPUT logrec $char256.;
       logrec = upcase(logrec);
       IF prxmatch (pattern_id, logrec) THEN DO;

@@ -111,8 +111,9 @@
 
    %if (&g_runmode. ne SASUNIT_INTERACTIVE) %then %do;
       /* reroute SASLOG and SASLIST */
-      %LET g_logfile  =&g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log;
-      %LET g_printfile=&g_testout/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).lst;
+      %LET g_logfile   =&g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log;
+      %LET g_printfile =&g_testout/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).lst;
+      %LET g_caslogfile=&g_logfile.;
       PROC PRINTTO 
          NEW 
          LOG="&g_logfile."

@@ -28,7 +28,7 @@
 %MACRO assertLog (i_errors   = 0
                  ,i_warnings = 0
                  ,i_desc     = Scan log for errors
-                 ,i_logfile  = _NONE_
+                 ,i_logfile  = &g_caslogfile.
                  );
 
    /*-- verify correct sequence of calls-----------------------------------------*/
@@ -55,15 +55,9 @@
       %goto exit;
    %END;
 
-   %let l_logfile = &g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log;
-
-   %if (%nrbquote(&i_logfile.) ne _NONE_) %then %do;
-      %let l_logfile=%quote(&i_logfile.);
-   %end;
-
    /* Scan Log */
    %_checklog (
-       i_logfile = &l_logfile.
+       i_logfile = &i_logfile.
       ,i_error   = &g_error
       ,i_warning = &g_warning
       ,r_errors  = l_error_count
