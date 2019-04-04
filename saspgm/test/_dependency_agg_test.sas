@@ -161,3 +161,6 @@
       %assertColumns(i_actual=jsFile_actual, i_expected=jsFile_expected, i_desc=Assert expected and actual file are identical);
       %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);
+
+%endScenario();
+/** endcond **/

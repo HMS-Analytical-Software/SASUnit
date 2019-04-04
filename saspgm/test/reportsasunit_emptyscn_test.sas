@@ -23,4 +23,6 @@
 
 %Mend reportsasunit_emptyscn_test;
 %reportsasunit_emptyscn_test;
+
+%endScenario();
 /** \endcond */

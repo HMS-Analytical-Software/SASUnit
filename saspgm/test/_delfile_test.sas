@@ -30,4 +30,5 @@
 %assertEquals(i_expected=0,  i_actual=&rc.,  i_desc=check on return code)
 %endTestcase;
 
+%endScenario();
 /** \endcond */

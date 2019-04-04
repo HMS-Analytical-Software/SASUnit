@@ -257,3 +257,6 @@ filename in;
       %assertColumns(i_actual=parent_called, i_expected=parent_called_exp, i_desc=Assert Columns for parent_called);
       %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);
+
+%endScenario();
+/** endcond **/

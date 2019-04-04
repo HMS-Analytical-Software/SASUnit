@@ -152,4 +152,5 @@
    %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/rep/cas_003_004.html)), i_expected=1, i_desc=Test if files rep/cas_003* exists%str(,) file not to delete cas_003_004.html);
 %endTestcase(i_assertLog=0)
 
+%endScenario();
 /** \endcond */

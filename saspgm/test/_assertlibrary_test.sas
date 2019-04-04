@@ -15,6 +15,8 @@
 
 *//** \cond */  
 
+%initScenario(i_desc=Test of _assertLibrary.sas);
+
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 %global sal_rc;
 
@@ -114,4 +116,5 @@ run;
 
 %endTestcase()
 
+%endScenario();
 /** \endcond */ 
