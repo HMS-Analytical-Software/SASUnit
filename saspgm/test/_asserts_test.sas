@@ -62,10 +62,10 @@ libname target (work);
 
 libname target "&save_target.";
 %let g_scnid = &save_g_scnid.;
-%endTestcall;
+%endTestcall();
 
 %assertColumns(i_expected=work.expected_tst,  i_actual=work.tst,  i_desc=check on equality)
-%endTestcase;
+%endTestcase();
 
-%endScenario;
+%endScenario();
 /** \endcond */

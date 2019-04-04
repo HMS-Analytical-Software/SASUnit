@@ -12,6 +12,9 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
+               
+   \todo Rethink design. Test knows the implementation!
+   
 */ /** \cond */ 
 
 %initScenario (i_desc=Test of _render_assertColumnsExp.sas);

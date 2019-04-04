@@ -12,6 +12,8 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
+   \todo Rethink test design. Use switch to read from a test DB. Use files in work folders or pgmlibx folders.
+
 */ /** \cond */ 
 %initScenario (i_desc=Test of _getAutocallNumber.sas);
 
