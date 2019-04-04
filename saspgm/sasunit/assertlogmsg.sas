@@ -32,6 +32,7 @@
 %MACRO assertLogMsg (i_logmsg   =       
                     ,i_desc     = Scan for log messages  
                     ,i_not      = 0
+                    ,i_logfile  = _NONE_
                     );
 
    /*-- verify correct sequence of calls-----------------------------------------*/
@@ -47,20 +48,22 @@
       SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid = &g_scnid;
    QUIT;
 
-   %IF &l_casid = . OR &l_casid = %THEN %DO;
-      %PUT &g_error.(SASUNIT): assert must not be called before initTestcase;
-      %RETURN;
-   %END;
-
    %LET l_errmsg=_NONE_;
 
-   %IF (&g_runmode. EQ SASUNIT_INTERACTIVE) %THEN %DO;
+   %IF (&g_runmode. EQ SASUNIT_INTERACTIVE 
+        AND %nrbquote (&i_logfile.) = _NONE_) %THEN %DO;
       %let l_assert_failed=1;
       %let l_errmsg=Current SASUnit version does not support interactive execution of assertLogMsg.;
       %let l_actual=-1;
       %let l_expected=-1;
       %goto exit;
    %END;
+
+   %let l_logfile = &g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log;
+
+   %if (%nrbquote(&i_logfile.) ne _NONE_) %then %do;
+      %let l_logfile=%quote(&i_logfile.);
+   %end;
 
    /* scanne den Log */
    %LET l_msg_found=0;
@@ -69,7 +72,7 @@
       IF _n_=1 THEN DO;
          pattern_id = prxparse("/%upcase(&i_logmsg)/");
       END;
-      INFILE "&g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log" END=eof TRUNCOVER &g_infile_options.;
+      INFILE "&l_logfile." END=eof TRUNCOVER &g_infile_options.;
       INPUT logrec $char256.;
       logrec = upcase(logrec);
       IF prxmatch (pattern_id, logrec) THEN DO;

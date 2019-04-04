@@ -28,6 +28,7 @@
 %MACRO assertLog (i_errors   = 0
                  ,i_warnings = 0
                  ,i_desc     = Scan log for errors
+                 ,i_logfile  = _NONE_
                  );
 
    /*-- verify correct sequence of calls-----------------------------------------*/
@@ -37,7 +38,7 @@
       %RETURN;
    %END;
 
-   %LOCAL l_casid l_error_count l_warning_count l_result l_errMsg;
+   %LOCAL l_casid l_error_count l_warning_count l_result l_errMsg l_logfile;
    %LET l_errMsg=;
 
    PROC SQL NOPRINT;
@@ -45,12 +46,8 @@
       SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid = &g_scnid;
    QUIT;
 
-   %IF &l_casid = . OR &l_casid = %THEN %DO;
-      %PUT &g_error.(SASUNIT): assert must not be called before initTestcase;
-      %RETURN;
-   %END;
-
-   %IF (&g_runmode. EQ SASUNIT_INTERACTIVE) %THEN %DO;
+   %IF (&g_runmode. EQ SASUNIT_INTERACTIVE 
+        AND %nrbquote (&i_logfile.) = _NONE_) %THEN %DO;
       %let l_result=1;
       %let l_errmsg=Current SASUnit version does not support interactive execution of assertLog.;
       %let l_error_count=-1;
@@ -58,9 +55,15 @@
       %goto exit;
    %END;
 
+   %let l_logfile = &g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log;
+
+   %if (%nrbquote(&i_logfile.) ne _NONE_) %then %do;
+      %let l_logfile=%quote(&i_logfile.);
+   %end;
+
    /* Scan Log */
    %_checklog (
-       i_logfile = &g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log
+       i_logfile = &l_logfile.
       ,i_error   = &g_error
       ,i_warning = &g_warning
       ,r_errors  = l_error_count
