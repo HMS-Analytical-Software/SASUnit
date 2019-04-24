@@ -39,6 +39,8 @@
 /** \cond */
 %MACRO _scanHeader (MacroName   = 
                    ,FilePath    = 
+                   ,LinkName    =
+                   ,DisplayName =                   
                    ,LibOutDoc   = WORK
                    ,DataOutDoc  = _ProgramHeader 
                    ,LibOutPgm   = WORK
@@ -60,13 +62,13 @@
    %LET l_sHeaderStartTag       = %str(/)%str(** );
    %LET l_sHeaderEndTag         = %str(*)%str(/);
 
-   Data WORK.__programHeader (keep=macroname tag name description groupname grouptext);
-      Length macroname $80
+   Data WORK.__programHeader (keep=macroname displayname linkname tag name description groupname grouptext);
+      Length macroname displayname linkname $200
              tag $20
              name $100
              description $1000
              headerStmtOpen tagStmtOpen emptyLines defGroupOpen 8
-             zeile l_zeile $32000;
+             l_zeile $32000;
       Retain headerStmtOpen tagStmtOpen emptyLines defGroupOpen 0 
              tag name 
              patternAuthor     patternBrief   patternCopyright patternDate  patternDefGroup patternDetails 
@@ -108,7 +110,9 @@
       Input;
 
       *** MacroName for lists (todo, test, bug) ***;
-      macroname = "&MacroName.";
+      macroname   = "&MacroName.";
+      linkname    = "&LinkName.";
+      displayname = "&DisplayName.";
 
       l_zeile     = compress (compbl (left (_INFILE_)), "0D"x);
       if (substr (l_zeile,1,1) = "@") then do;
@@ -313,7 +317,7 @@
    run;
 
    data &LibOutDoc..&DataOutDoc.;
-      set WORK.__programHeader (where=(tag_sort ne "___")  keep=macroname tag tag_sort name description new_description);
+      set WORK.__programHeader (where=(tag_sort ne "___")  keep=macroname displayname linkname tag tag_sort name description new_description);
    run;
 
    proc datasets lib=work nolist;

@@ -188,6 +188,8 @@
       %if (%sysfunc (fileexist(&&l_macroFileName&i.))) %then %do;
          %_scanHeader (MacroName        = &&l_macroName&i.
                       ,FilePath         = &&l_macroFileName&i.
+                      ,LinkName         = &&l_pageName&i.
+                      ,DisplayName      = &&l_macroDisplayName&i.
                       ,LiboutDoc        = WORK
                       ,DataOutDoc       = _Pgm&i.
                       ,i_language       = &i_language.
@@ -252,7 +254,7 @@
          %end;
       %end;
    %end;
-
+   
    %*** Get all scenarios to be documented         ***;
    %*** if they do not reside in an autocall path, ***;
    %*** then we need to document them separately   ***;
@@ -274,18 +276,18 @@
       scn_abs_path = resolve ('%_abspath(&g_root,' !! trim(scn_path) !! ')');
       scn_pgm      = scan (scn_path, -1, '/');
    run;
-
+   
    proc sql noprint;
-      select scn_abs_path into :l_scnFileName1-:l_scnFileName%cmpres(&l_anzMacros.)
+      select scn_abs_path into :l_scnFileName1-:l_scnFileName%cmpres(&l_anzScns.)
          from work.scn
          ;
-      select catt ("src/scn/scn_", put (scn_id, z3.), ".sas") into :l_scnLink1-:l_scnLink%cmpres(&l_anzMacros.)
+      select catt ("src/scn/scn_", put (scn_id, z3.), ".sas") into :l_scnLink1-:l_scnLink%cmpres(&l_anzScns.)
          from work.scn
          ;
-      select catt ("pgm_scn_", put (scn_id, z3.)) into :l_scnPageName1-:l_scnPageName%cmpres(&l_anzMacros.)
+      select catt ("pgm_scn_", put (scn_id, z3.)) into :l_scnPageName1-:l_scnPageName%cmpres(&l_anzScns.)
          from work.scn
          ;
-      select trim(scn_pgm) into :l_scnName1-:l_scnName%cmpres(&l_anzMacros.)
+      select trim(scn_pgm) into :l_scnName1-:l_scnName%cmpres(&l_anzScns.)
          from work.scn
          ;
    quit;
@@ -293,10 +295,36 @@
    options nocenter;
    ods listing close;
 
+   data __ToDoDoc;
+      set _ToDoDoc;
+   run;
+   data __TestDoc;
+      set _TestDoc;
+   run;
+   data __BugDoc;
+      set _BugDoc;
+   run;
+   data __DepDoc;
+      set _DepDoc;
+   run;
+   
+   proc sql noprint;
+      create table _ToDoDoc as
+         select * from __ToDoDoc where macroname not in (select distinct scn_pgm from work.scn);
+      create table _TestDoc as
+         select * from __TestDoc where macroname not in (select distinct scn_pgm from work.scn);
+      create table _BugDoc as
+         select * from __BugDoc where macroname not in (select distinct scn_pgm from work.scn);
+      create table _DepDoc as
+         select * from __DepDoc where macroname not in (select distinct scn_pgm from work.scn);
+   quit;
+
    %do i=1 %to &l_anzScns;
       %if (%sysfunc (fileexist(&&l_scnFileName&i.))) %then %do;
          %_scanHeader (MacroName        = &&l_scnName&i.
                       ,FilePath         = &&l_scnFileName&i.
+                      ,LinkName         = &&l_scnPageName&i.
+                      ,DisplayName      = &&l_scnName&i.
                       ,LiboutDoc        = WORK
                       ,DataOutDoc       = _Pgm&i.
                       ,i_language       = &i_language.
@@ -356,6 +384,7 @@
 
             var ObsNum Text;
          run;
+                  
          %if (&o_html.) %then %do;
             %_closeHtmlPage(&i_style.);
          %end;
@@ -365,7 +394,7 @@
    %if (&o_html.) %then %do;
       ods html4 file="&o_Path./_PgmDoc_Lists.html" style=styles.&i_style. stylesheet=(url="css/&i_style..css"); 
    %end;
-
+   
    %let l_anzToDo=%_nobs(_ToDoDoc);
    %let l_anzTest=%_nobs(_TestDoc);
    %let l_anzBug =%_nobs(_BugDoc);
@@ -460,10 +489,9 @@
 
    data work._view / view=work._view;
       set &lib..&data.;
-      idx = find (macroname, '.sas', 'it');
-      ReportColumns= catt ('^{style [url="pgm_', substr (macroname,1,idx) !! 'html"] ', macroname, '}');
+      ReportColumns= catt ('^{style [url="', linkname,  '.html"] ', displayname, '}');
    run;
- 
+   
    proc report data=work._view nowd missing
       style(report)=pgmDocBlindData {width=60em}
       style(header)=blindHeader
