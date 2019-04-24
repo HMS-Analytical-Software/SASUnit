@@ -42,12 +42,10 @@ proc options option=logparm;run;
   ,i_crossrefsasunit = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
   ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
 );
-/*
+
 %runSASUnit(i_source = %str(saspgm/test/reportsasunit_inexisting_scenario_has_to_fail));
 %runSASUnit(i_source = %str(saspgm/test/%str(*)_test.sas));
 %runSASUnit(i_source = %str(saspgm/test/%lowcase(%sysget(SASUNIT_HOST_OS))/%str(*)_test.sas));
-*/
-%runSASUnit(i_source = saspgm/test/_closehtmlpage_test.sas);
 
 /* To check different config and autoexec files there will be additional calls   */
 /* of initSASUnit and runSASUnit.                                                */
