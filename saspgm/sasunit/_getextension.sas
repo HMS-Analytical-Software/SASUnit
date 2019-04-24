@@ -4,9 +4,9 @@
 
    \brief     get file extension including the separating dot
 
-   \%getExtension(file name)
+   \%_getExtension(file name)
 
-              Example: %getExtension(test.sas) yields .sas
+              Example: %_getExtension(test.sas) yields .sas
 
    \version    \$Revision$
    \author     \$Author$
@@ -18,7 +18,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_file     file name with extension
    \return  file name extension or empty if file name does not contain a dot
 

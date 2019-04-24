@@ -57,6 +57,7 @@ run;
 
 %initTestcase(i_object=assertLog.sas, i_desc=reading log file without errors)
 %endTestcall()
+
 %assertLog(i_errors  =0
           ,i_warnings=0
           ,i_logfile =&G_TESTDATA./_checklog_t03_input.log
