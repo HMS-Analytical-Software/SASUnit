@@ -69,9 +69,9 @@
 %_tempFilename(d_la)
 
 /*-- generate tree structure 1 for test scenarios ----------------------------*/
-DATA &d_tree1 (KEEP=label popup target lvl leaf rc);
+DATA &d_tree1. (KEEP=label popup target lvl leaf rc);
    LENGTH label popup target $255 lvl leaf 8;
-   SET &i_repdata;
+   SET &i_repdata.;
    BY scn_id cas_id tst_id;
     
    tst_type=tranwrd(tst_type,"^_","");
@@ -116,7 +116,7 @@ DATA &d_tree1 (KEEP=label popup target lvl leaf rc);
 RUN;
 
 /*-- generate tree structure 2 for units under test --------------------------*/
-DATA &d_tree2 (KEEP=label popup target lvl leaf rc);
+DATA &d_tree2. (KEEP=label popup target lvl leaf rc);
    LENGTH label popup target $255 lvl leaf  8;
    SET &i_repdata.;
    BY exa_auton exa_id scn_id cas_id tst_id;
@@ -222,7 +222,10 @@ RUN;
       create table work._GrpDoc_1 as
          select _GrpDoc.*,
                 exa.exa_auton
-         from work._GrpDoc left join target.exa
+         from work._GrpDoc left join target.exa 
+         %if (&o_pgmdoc_sasunit. = 0) %then %do;
+            (where=(exa_auton >= 2))
+         %end;
          on _GrpDoc.childPath = exa.exa_filename;
       create table work._GrpDoc_2 as
          select _GrpDoc_1.*,
