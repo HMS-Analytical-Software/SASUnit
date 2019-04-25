@@ -19,7 +19,7 @@ ods html file="%sysfunc(pathname(WORK))\TEST.HMTL";
 
 %initTestcase(i_object=_closehtmlpage.sas, i_desc=Test with correct call);
 
-%_closehtmlpage(HTMLBlue);
+%_closehtmlpage(Default);
 
 %endTestcall;
 
