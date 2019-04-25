@@ -35,7 +35,7 @@
       %&g_dirmacro.(i_path=&l_auto.*.sas, o_out=&d_dir);
       data &d_examinee.;
          set %IF &l_autonr>0 %THEN &d_examinee.; &d_dir.(in=indir);
-         if indir then DO;
+         if indir then do;
             auton=&l_autonr.+2;
             source=symgetc ("l_auto");
          end;

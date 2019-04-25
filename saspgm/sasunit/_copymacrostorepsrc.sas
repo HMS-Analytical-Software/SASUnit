@@ -15,12 +15,7 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param    i_logfile  complete path and name of logfile
-   \param    i_error    symbol for error (normally error, but might be language dependant). The value will be converted to uppercase.
-   \param    i_warning  symbol for warning (normally warning, but might be language dependant). The value will be converted to uppercase.
-   \param    r_errors   macro variable to return number of errors (999 if logfile does not exist)
-   \param    r_warnings macro variable to return number of warnings (999 if logfile does not exist)
-
+   \param    o_pgmdoc_sasunit  flag if documentation for SASUnit macros should be done. (0/1)
 */
 /** \cond */ 
 %MACRO _copyMacrosToRepSrc (o_pgmdoc_sasunit=);
@@ -28,7 +23,11 @@
    %local l_output_path l_rc l_saspgm;
 
    data work._exa;
-      set target.exa;
+      set target.exa
+      %if (&o_pgmdoc_sasunit. ne 1) %then %do;
+         (where=(exa_auton >= 2 or missing(exa_auton)))
+      %end;
+      ;
       *** Files not residing in an autocall path will have . as exa_auton ***;
       *** Use 99 as an alternative                                        ***;
       exa_auton = coalesce (exa_auton, 99);
@@ -75,5 +74,12 @@
       put command;
    run;
    %include "&l_saspgm.";
+
+   proc datasets lib=work nolist;
+      delete
+         _exa
+         _scn
+      ;
+   run;quit;
 %MEND _copyMacrosToRepSrc;
 /** \endcond */

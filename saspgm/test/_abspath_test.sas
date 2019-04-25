@@ -14,6 +14,8 @@
 
 */ /** \cond */ 
 
+%initScenario (i_desc=Test of _absPath.sas);
+
 %initTestcase(i_object=_absPath.sas, i_desc=concatenation and conversion \/)
 %let abspath=%_abspath(c:\temp,test/test);
 %assertEquals(i_expected=c:/temp/test/test, i_actual=&abspath, i_desc=concatenation and conversion \/)
@@ -52,4 +54,5 @@
 %let expected=%str(&expected.*.sas);
 %assertEquals(i_expected=&expected, i_actual=&abspath, i_desc=second parameter with wildcards)
 
-/** \endcond */ 
+%endScenario();
+/** \endcond */

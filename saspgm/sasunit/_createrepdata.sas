@@ -257,7 +257,13 @@ PROC SQL NOPRINT;
 
 %exit:
    PROC DATASETS NOWARN NOLIST LIB=work;
-      DELETE %scan(&d_pgm.,2,.)
+      DELETE 
+        %scan(&d_pgm.,2,.)
+        %scan(&d_scn.,2,.)
+        %scan(&d_emptyscn.,2,.)
+        %scan(&d_cas.,2,.)
+        %scan(&d_tst.,2,.)
+        %scan(&d_exa.,2,.)
              ;
    QUIT;
 %mend _createRepData;
