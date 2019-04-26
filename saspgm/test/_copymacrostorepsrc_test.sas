@@ -23,18 +23,15 @@
 %let w_macro2_path     =&workpath./macro2;
 %let w_macro3_path     =&workpath./macro3;
 %let w_scn_path        =&workpath./scn;
-options dlcreatedir;
-libname _x_ "&w_sasunit_path.";
-libname _x_ "&w_sasunit_os_path.";
-libname _x_ "&w_macro_path.";
-libname _x_ "&w_macro2_path.";
-libname _x_ "&w_macro3_path.";
-libname _x_ "&w_scn_path.";
-libname _x_ "&workpath./rep";
-libname _x_ "&workpath./rep/src";
-libname _x_ clear;
 
-options nodlcreatedir;
+%sysfunc (dcreate(&w_sasunit_path.));
+%sysfunc (dcreate(&w_sasunit_os_path.));
+%sysfunc (dcreate(&w_macro_path.));
+%sysfunc (dcreate(&w_macro2_path.));
+%sysfunc (dcreate(&w_macro3_path.));
+%sysfunc (dcreate(&w_scn_path.));
+%sysfunc (dcreate(&workpath./rep));
+%sysfunc (dcreate(&workpath./rep/src));
 
 data _NULL_;
    file "&w_sasunit_path./SASUnit_Macro.sas";
