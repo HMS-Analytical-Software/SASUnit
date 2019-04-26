@@ -24,14 +24,13 @@
 %let w_macro3_path     =&workpath./macro3;
 %let w_scn_path        =&workpath./scn;
 
-%sysfunc (dcreate(&w_sasunit_path.));
-%sysfunc (dcreate(&w_sasunit_os_path.));
-%sysfunc (dcreate(&w_macro_path.));
-%sysfunc (dcreate(&w_macro2_path.));
-%sysfunc (dcreate(&w_macro3_path.));
-%sysfunc (dcreate(&w_scn_path.));
-%sysfunc (dcreate(&workpath./rep));
-%sysfunc (dcreate(&workpath./rep/src));
+%let rc=%sysfunc (dcreate(saspgm, &workpath.));
+%let rc=%sysfunc (dcreate(os,     &w_sasunit_path.));
+%let rc=%sysfunc (dcreate(macro,  &workpath.));
+%let rc=%sysfunc (dcreate(macro2, &workpath.));
+%let rc=%sysfunc (dcreate(macro3, &workpath.));
+%let rc=%sysfunc (dcreate(scn,    &workpath.));
+%let rc=%sysfunc (dcreate(rep,    &workpath.));
 
 data _NULL_;
    file "&w_sasunit_path./SASUnit_Macro.sas";
