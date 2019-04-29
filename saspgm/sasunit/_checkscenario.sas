@@ -38,8 +38,8 @@
 
 %MACRO _checkScenario(i_examinee       = 
                      ,i_scn_pre        =
-                     ,i_crossref       =&G_CROSSREF
-                     ,i_crossrefSASUnit=&G_CROSSREFSASUNIT
+                     ,i_crossref       =&G_CROSSREF.
+                     ,i_crossrefSASUnit=&G_CROSSREFSASUNIT.
                      ,o_scenariosToRun =
                      );
 

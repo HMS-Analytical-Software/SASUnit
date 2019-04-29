@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_REPORT
 
-   \brief      Creates to style used while rendering ODS output.
+   \brief      Creates two styles used while rendering ODS output.
 
    \version    \$Revision$
    \author     \$Author$
