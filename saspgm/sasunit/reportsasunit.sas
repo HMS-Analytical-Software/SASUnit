@@ -17,30 +17,34 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param   i_language       Language of the report (DE, EN) - refer to _nls
-   \param   o_html           Test report in HTML-format?
-   \param   o_junit          Test report in JUNIT-XML-format?
-   \param   o_pgmdoc         Creates source code documentation per examinee (0 / 1)
-   \param   o_pgmdoc_sasunit Creates source code documentation also for sasunit macros (0 / 1)
-   \param   o_force          0 .. (default) incremental, 1 .. create complete report
-   \param   o_output         (optional) full path of the directory in which the test report is created. 
-                             If the parameter is not set, the subdirectory rep of the test repository is used.
-   \param   i_style         (optional) Name of the SAS style and css file to be used. 
+   \param   i_language         Language of the report (DE, EN) - refer to _nls
+   \param   o_html             Test report in HTML-format?
+   \param   o_junit            Test report in JUNIT-XML-format?
+   \param   o_pgmdoc           Creates source code documentation per examinee (0 / 1)
+   \param   o_pgmdoc_sasunit   Creates source code documentation also for sasunit macros (0 / 1)
+   \param   o_crossref         Flag if cross reference was triggered (0 / 1) (optional: Default=G_CROSSREF)
+   \param   o_testcoverage     Flag if test coverage was triggered (0 / 1) (optional: Default=G_TESTCOVERAGE)
+   \param   o_force            0 .. (default) incremental, 1 .. create complete report
+   \param   o_output           (optional) full path of the directory in which the test report is created. 
+                               If the parameter is not set, the subdirectory rep of the test repository is used.
+   \param   i_style            (optional) Name of the SAS style and css file to be used. 
    
    \return Results are created in the subdirectory rep of the test repository or in the directory 
            specified by parameter o_output.
            
 */ /** \cond */ 
 
-%MACRO reportSASUnit (i_language       = _NONE_
-                     ,o_html           = 1
-                     ,o_pdf            = 0
-                     ,o_junit          = 0
-                     ,o_pgmdoc         = _DEFAULT_
-                     ,o_pgmdoc_sasunit = _DEFAULT_
-                     ,o_force          = 0
-                     ,o_output         =
-                     ,i_style          = SASUnit
+%MACRO reportSASUnit (i_language         = _NONE_
+                     ,o_html             = 1
+                     ,o_pdf              = 0
+                     ,o_junit            = 0
+                     ,o_pgmdoc           = _DEFAULT_
+                     ,o_pgmdoc_sasunit   = _DEFAULT_
+                     ,o_crossref         = &G_CROSSREF.
+                     ,o_testcoverage     = &G_TESTCOVERAGE.
+                     ,o_force            = 0
+                     ,o_output           =
+                     ,i_style            = SASUnit
                      );
 
    %LOCAL l_macname; 
@@ -77,7 +81,7 @@
    /*-- check if target folder exists -------------------------------------------*/
    %LOCAL l_output; 
    %IF %length(&o_output) %THEN %LET l_output=&o_output;
-   %ELSE %LET l_output =&g_target/rep;
+   %ELSE %LET l_output =&g_target./rep;
    %LET l_output=%_abspath(&g_root,&l_output);
 
    %IF %_handleError(&l_macname.
@@ -130,20 +134,7 @@
    FILENAME repgen temp;
 
    *** Create formats used in reports ***;
-   proc format lib=work;
-      value PictName     0 = "&g_sasunitroot./resources/html/ok.png"
-                         1 = "&g_sasunitroot./resources/html/manual.png"
-                         2 = "&g_sasunitroot./resources/html/error.png"
-                         OTHER="?????";
-      value PictNameHTML 0 = "ok.png"
-                         1 = "manual.png"
-                         2 = "error.png"
-                         OTHER="?????";
-      value PictDesc     0 = "OK"
-                         1 = "&g_nls_reportDetail_026"
-                         2 = "&g_nls_reportDetail_025"
-                         OTHER = "&g_nls_reportDetail_027";
-   run;
+   %_reportCreateFormats;
 
    *** set options for ODS ****;
    ods escapechar="^";
@@ -245,12 +236,14 @@
                end;
                /*-- create list of units under test --------------------------------*/
                PUT '%_reportAutonHTML('              /
-                   "    i_repdata = &d_rep"          /
-                   "   ,o_html    = &o_html."        /
-                   "   ,o_path    = &l_output."      /
-                   "   ,o_file    = auton_overview"  /
-                   "   ,o_pgmdoc  = &o_pgmdoc."      /
-                   "   ,i_style   = &i_style."       /
+                   "    i_repdata      = &d_rep"          /
+                   "   ,o_html         = &o_html."        /
+                   "   ,o_path         = &l_output."      /
+                   "   ,o_file         = auton_overview"  /
+                   "   ,o_pgmdoc       = &o_pgmdoc."      /
+                   "   ,o_crossref     = &o_crossref."    /
+                   "   ,o_testcoverage = &o_testcoverage."    /
+                   "   ,i_style        = &i_style."       /
                    ")";
                if (&o_pdf.) then do;
                   PUT 'ods pdf close;';

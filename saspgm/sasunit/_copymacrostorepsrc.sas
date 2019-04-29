@@ -56,7 +56,7 @@
    run;
    %include "&l_saspgm.";
 
-   proc sort data=target.scn out=work._scn;
+   proc sort data=target.scn (where=(not missing(scn_start))) out=work._scn;
       by scn_id;
    run;
 

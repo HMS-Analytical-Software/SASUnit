@@ -246,6 +246,23 @@ run;
 
 %endTestcase;
 
+
+data work.scn;
+   set refdata.empty_test_db_scn;
+run;
+
+%initTestcase(i_object=_copyMacrosToRepSrc.sas, i_desc=Test with 'empty' scenariofile);
+%_switch();
+%_copyMacrosToRepSrc(o_pgmdoc_sasunit=1);
+%_switch();
+%endTestcall;
+
+%assertLog(i_errors  =0
+          ,i_warnings=0
+          );
+
+%endTestcase;
+
 proc datasets lib=work nolist;
    delete 
       scn

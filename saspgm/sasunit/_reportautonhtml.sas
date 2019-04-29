@@ -20,21 +20,27 @@
    \param   o_path         path for output file
    \param   o_file         name of the outputfile without extension
    \param   o_pgmdoc       Switch for generartion of program_documentation (0/1)
+   \param   o_crossref     Flag if cross reference was triggered (0 / 1) (optional: Default=G_CROSSREF)
+   \param   o_testcoverage Flag if test coverage was triggered (0 / 1) (optional: Default=G_TESTCOVERAGE)
    \param   i_style        Name of the SAS style and css file to be used. 
+   \param   i_language     Language of the report (DE, EN) - refer to _nls (optional: Default=&G_LANGUAGE.
 
 */ /** \cond */ 
 
-%MACRO _reportAutonHTML (i_repdata = 
-                        ,o_html    = 0
-                        ,o_path    =
-                        ,o_file    =
-                        ,o_pgmdoc  =
-                        ,i_style   =
+%MACRO _reportAutonHTML (i_repdata     = 
+                        ,o_html        = 0
+                        ,o_path        =
+                        ,o_file        =
+                        ,o_pgmdoc      =
+                        ,o_crossref    =
+                        ,o_testcoverage=
+                        ,i_style       =
+                        ,i_language    =&G_LANGUAGE.
                         );
 
    /*-- determine number of scenarios 
      and number of test cases per unit under test ----------------------------*/
-   %LOCAL d_rep1 d_rep2 l_tcg_res l_pgmLibraries l_pgmLib l_title l_logpath l_cAuton;
+   %LOCAL d_rep1 d_rep2 l_tcg_res l_pgmLibraries l_pgmLib l_title l_logpath l_cAuton l_numOfRealScenarios;
 
    %_tempFileName(d_rep1)
    %_tempFileName(d_rep2)
@@ -74,8 +80,16 @@
       DELETE %SCAN(&d_rep2.,2,.);
    QUIT;
    
+   /* Determine number of real scenarios found in traget.scn */
+   proc sql noprint;
+      select count(*) into :l_numOfRealScenarios
+      from target.scn
+      where not missing(scn_start);
+   quit;
+   %let l_numOfRealScenarios=&l_numOfRealScenarios.;
+
    /* Visualize crossreference data */
-   %IF &g_crossref. EQ 1 %THEN %DO;
+   %IF &o_crossref. EQ 1 AND &l_numOfRealScenarios. > 0 %THEN %DO;
       PROC SQL;
          create view prepareDependency as
          select distinct cas_obj as name
@@ -102,15 +116,15 @@
       %_dependency_agg(i_path = &g_target/tst/crossreference
                       ,o_file = &l_output/js/data.refs.js
                       );
+
+      /* Delete data sets after json files have been created */
+      PROC DATASETS NOLIST NOWARN LIB=%scan(&d_listcalling,1,.);
+         DELETE %SCAN(&d_macrolist,2,.);
+         DELETE %SCAN(&d_listcalling,2,.);
+      QUIT;
    %END;
    
-   /* Delete data sets after json files have been created */
-   PROC DATASETS NOLIST NOWARN LIB=%scan(&d_listcalling,1,.);
-      DELETE %SCAN(&d_macrolist,2,.);
-      DELETE %SCAN(&d_listcalling,2,.);
-   QUIT;
-
-   %IF &g_testcoverage. EQ 1 %THEN %DO;
+   %IF &o_testcoverage. EQ 1 %THEN %DO;
        /*-- in the log subdir: append all *.tcg files to one file named 000.tcg
         This is done in order to get one file containing coverage data 
         of all calls to the macros under test -----------------------------------*/
@@ -268,10 +282,10 @@
       %END;
       data work._current_auton;
          length pgmColumn scenarioColumn caseColumn assertColumn
-                %IF &g_testcoverage. EQ 1 %THEN %DO;
+                %IF &o_testcoverage. EQ 1 %THEN %DO;
                    coverageColumn
                 %END;
-                %IF &g_crossref. EQ 1 %THEN %DO;
+                %IF &o_crossref. EQ 1 %THEN %DO;
                    crossrefColumn
                 %END;
                 resultColumn
@@ -285,10 +299,10 @@
             scenarioColumn="&g_nls_reportAuton_006."
             caseColumn="&g_nls_reportAuton_007."
             assertColumn="&g_nls_reportAuton_014."
-            %IF &g_testcoverage. EQ 1 %THEN %DO;
+            %IF &o_testcoverage. EQ 1 %THEN %DO;
                coverageColumn="&g_nls_reportAuton_016." [%]
             %END;
-            %IF &g_crossref. EQ 1 %THEN %DO;
+            %IF &o_crossref. EQ 1 %THEN %DO;
                crossrefColumn="&g_nls_reportAuton_022."
             %END;
             resultColumn="&g_nls_reportAuton_008.";
@@ -370,7 +384,7 @@
                                ,i_linkTitle=LinkTitle2
                                ,o_targetColumn=scenarioColumn
                                );
-            %IF &g_testcoverage. EQ 1 %THEN %DO;
+            %IF &o_testcoverage. EQ 1 %THEN %DO;
                %_render_dataColumn(i_sourceColumn=tcg_pct
                                   ,i_format=3.
                                   ,i_linkColumn=LinkColumn3
@@ -378,7 +392,7 @@
                                   ,o_targetColumn=coverageColumn
                                   );
             %END;
-            %IF &g_crossref. EQ 1 %THEN %DO;            
+            %IF &o_crossref. EQ 1 %THEN %DO;            
                %_render_crossrefColumn (i_sourceColumn       = %sysfunc(trim(cas_obj))
                                        ,o_targetColumn       = crossrefColumn
                                        ,i_linkColumn_caller  = LinkColumn4
@@ -403,10 +417,10 @@
             ;
 
          columns autonColumn exa_pgm pgmColumn scenarioColumn caseColumn assertColumn
-            %IF &g_testcoverage. EQ 1 %THEN %DO;
+            %IF &o_testcoverage. EQ 1 %THEN %DO;
                 coverageColumn
             %END;
-            %IF &g_crossref. EQ 1 %THEN %DO;
+            %IF &o_crossref. EQ 1 %THEN %DO;
                crossrefColumn
             %END;
                 resultColumn autonColumn;
@@ -417,10 +431,10 @@
          define scenarioColumn / order style(column)=[just=right];
          define caseColumn     / order style(column)=[just=right];
          define assertColumn   / order style(column)=[just=right];
-         %IF &g_testcoverage. EQ 1 %THEN %DO;
+         %IF &o_testcoverage. EQ 1 %THEN %DO;
             define coverageColumn / order style(column)=[just=right];
          %END;
-         %IF &g_crossref. EQ 1 %THEN %DO;
+         %IF &o_crossref. EQ 1 %THEN %DO;
             define crossrefColumn / order style(column)=[just=right];
          %END;
          define resultColumn / order style(COLUMN)=[background=white];
