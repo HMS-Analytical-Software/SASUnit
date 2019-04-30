@@ -63,7 +63,7 @@ run;
    %PUT NOTE(SASUNIT):---->Doing _repoprtTreeHtml;
 %MEND;
 
-%macro testcase(i_object=runsasunit.sas, i_desc=%str(Call without any scenarios in runSASUnit));
+%macro testcase(i_object=reportSASUnit.sas, i_desc=%str(Call without any scenarios in runSASUnit));
    /*****************
    documentation
    ******************
