@@ -107,10 +107,12 @@ data work.scn;
    scn_id       = 1;
    scn_path     = "scn/Testscenario_outside_autocall.sas";
    scn_desc     = "Blah Blubb Blubber";
+   scn_start    = 1;
    output;
    scn_id       = 2;
    scn_path     = "macro2/Testscenario_inside_autocall.sas";
    scn_desc     = "Blah Blubb Blubber";
+   scn_start    = 1;
    output;
 run;
 
@@ -206,12 +208,12 @@ run;
 %let _filename=&workpath./rep/src/00/SASUnit_Marco.sas;
 %assertEquals(i_expected=1
              ,i_actual  =%sysfunc(fileexist(&_filename.))
-             ,i_desc    =File &_filename. must not exist
+             ,i_desc    =File &_filename. must exist
              );
 %let _filename=&workpath./rep/src/01/SASUnit_OS_Marco.sas;
 %assertEquals(i_expected=1
              ,i_actual  =%sysfunc(fileexist(&_filename.))
-             ,i_desc    =File &_filename. must not exist
+             ,i_desc    =File &_filename. must exist
              );
 %let _filename=&workpath./rep/src/02/autocall_macro_1.sas;
 %assertEquals(i_expected=1

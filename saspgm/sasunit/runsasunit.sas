@@ -43,6 +43,7 @@
    %LOCAL 
       d_scenariosToRun
       d_scn_pre
+      d_dir
       i
       l_auto 
       l_autonr
@@ -75,6 +76,7 @@
 
    %_tempFileName(d_scenariosToRun);
    %_tempFileName(d_scn_pre);
+   %_tempFileName(d_dir);
 
    /*-- check if testdatabase can be accessed -----------------------------------*/
    %IF %_handleError(&l_macname.
@@ -90,7 +92,7 @@
 
    /*-- find out all test scenarios ---------------------------------------------*/
    %LET l_source = %_abspath(&g_root, &i_source);
-   %_dir(i_path=&l_source, i_recursive=&i_recursive, o_out=&d_dir)
+   %_dir(i_path=&l_source, i_recursive=&i_recursive, o_out=&d_dir.)
    %IF %_handleError(&l_macname.
                     ,NoSourceFiles
                     ,%_nobs(&d_dir) EQ 0
@@ -293,9 +295,8 @@
 
      
 %exit:
-   PROC DATASETS NOLIST NOWARN LIB=%scan(&d_examinee,1,.);
+   PROC DATASETS NOLIST NOWARN LIB=%scan(&d_scn_pre,1,.);
       DELETE %scan(&d_dir,2,.);
-      DELETE %scan(&d_examinee,2,.);
       DELETE %scan(&d_scenariosToRun,2,.);
       DELETE %scan(&d_scn_pre,2,.);
    QUIT;

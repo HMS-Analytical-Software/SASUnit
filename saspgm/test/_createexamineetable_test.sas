@@ -20,6 +20,9 @@ data work.exa;
    set target.exa;
    stop;
 run;
+data work.exa_expected;
+   set target.exa (where=(exa_auton>=2));
+run;
 
 %initTestcase(i_object=_createExamineeTable.sas, i_desc=Test with correct call);
 
@@ -30,7 +33,7 @@ run;
 
 %endTestcall;
 
-%assertColumns(i_expected=target.exa
+%assertColumns(i_expected=work.exa_expected
               ,i_actual  =work.exa
               ,i_desc    =Identical except test coverage
               ,i_exclude =exa_tcg_pct

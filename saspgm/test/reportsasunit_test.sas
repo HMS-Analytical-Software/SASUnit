@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of reportSASUnit.sas - has to fail! 2 errors (subsequent, dealing with positional parameters)
+   \brief      Test of reportSASUnit.sas
 
    \version    \$Revision$
    \author     \$Author$
@@ -15,10 +15,14 @@
 */ /** \cond */ 
 
 
-%initScenario(i_desc=%str(Test of reportSASUnit.sas - has to fail! 2 errors %(subsequent, dealing with positional parameters%)));
+%initScenario(i_desc=%str(Test of reportSASUnit.sas));
 
 %let workpath =%sysfunc(pathname(WORK));
 %let rc       =%sysfunc (dcreate(rep, &workpath.));
+
+%let G_REVISION  =N.N.N;
+%let G_VERSION   =NNN;
+%let G_DB_VERSION=N.N;
 
 data work.tsu;
    set refdata.empty_test_db_tsu;
@@ -49,6 +53,15 @@ run;
    %PUT NOTE(SASUNIT):---->Doing _repoprtPgmDoc;
 %MEND;
 
+%MACRO _reportTreeHTML(i_repdata        =
+                      ,o_html           =
+                      ,o_pgmdoc         =
+                      ,o_pgmdoc_sasunit =
+                      ,i_style          =
+                      );
+                      
+   %PUT NOTE(SASUNIT):---->Doing _repoprtTreeHtml;
+%MEND;
 
 %macro testcase(i_object=runsasunit.sas, i_desc=%str(Call without any scenarios in runSASUnit));
    /*****************
@@ -65,7 +78,10 @@ run;
    %initTestcase(i_object=&i_object., i_desc=&i_desc.)
    %_switch();
    /* call */
-   %reportSASUnit(o_output         =&workpath.);
+   %reportSASUnit(o_html        =1
+                 ,o_testcoverage=0
+                 ,o_output      =&workpath.
+                 );
    %_switch();
    %endTestcall()
 
@@ -76,44 +92,20 @@ run;
    %endTestcase()
 %mend testcase; %testcase;
 
-%endScenario();
+proc datasets lib=work nolist;
+   delete
+      tsu
+      exa
+      scn
+      cas
+      tst;
+run;quit;
 
-/*%Macro reportsasunit_test;*/
-/**/
-/*/* test case start ------------------------------------ */*/
-/*%initTestcase(*/
-/*    i_object = reportSASUnit.sas,*/
-/*   ,i_desc   = %STR(Syntax error in macro call, test case will not be shown in the report)*/
-/*);*/
-/**/
-/*data _null_;*/
-/*   put 'dummy unit under test executing';*/
-/*run;*/
-/**/
-/*%endTestcall;*/
-/**/
-/*%assertLog (i_errors=0, i_warnings=0);*/
-/**/
-/*%endTestcase;*/
-/**/
-/**/
-/*/* test case start ------------------------------------ */*/
-/*%initTestcase(*/
-/*    i_object = reportSASUnit.sas*/
-/*   ,i_desc   = %STR(dummy test case, must be shown in the report as OK (scenario contains other test with syntax errors))*/
-/*);*/
-/**/
-/*data _null_;*/
-/*   put 'dummy unit under test executing';*/
-/*run;*/
-/**/
-/*%endTestcall;*/
-/**/
-/*%assertLog (i_errors=0, i_warnings=0);*/
-/**/
-/*%endTestcase;*/
-/**/
-/*%Mend reportsasunit_test;*/
-/*%reportsasunit_test*/
+*** Mockup löschen ***;
+proc catalog catalog=work.SASMACR entrytype=MACRO;
+   delete _reportPgmDoc _reportTreeHTML;
+run;quit;
+
+%endScenario();
 
 /** \endcond */

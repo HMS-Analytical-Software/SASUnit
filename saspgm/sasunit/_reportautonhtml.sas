@@ -55,7 +55,7 @@
       OUTPUT OUT=&d_rep2. (rename=(_FREQ_=scn_cas)) sum(scn_tst)=scn_tst;
    RUN;
 
-   /*-- Keep only one observation per examiniee and scenario ---*/
+   /*-- Keep only one observation per examinee and scenario ---*/
    PROC SORT DATA=&i_repdata. out=work._auton_report;
       BY exa_auton exa_id scn_id;
    RUN;
@@ -334,7 +334,7 @@
             end;
             else do;
                _autonColumn = sa(exa_auton-2);
-               linkTitle0   = symget("g_sasautos" !! put(exa_auton-2, z2.));
+               linkTitle0   = symget("g_sasautos" !! compress(put(exa_auton-2, best4.)));
             end;
             linkColumn0  = "file:///" !! linkTitle0;
             linkTitle0   = "&g_nls_reportAuton_009. " !! linkTitle0;

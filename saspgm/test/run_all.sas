@@ -84,9 +84,10 @@ run;
   ,i_overwrite       = 0
   ,i_project         = SASUnit Self Test
   ,i_sasunit         = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos        = saspgm/test
-  ,i_sasautos1       = saspgm/test/pgmlib1
-  ,i_sasautos2       = saspgm/test/pgmlib2
+  ,i_sasautos        = saspgm/sasunit
+  ,i_sasautos1       = saspgm/test
+  ,i_sasautos2       = saspgm/test/pgmlib1
+  ,i_sasautos3       = saspgm/test/pgmlib2
   ,i_testdata        = dat
   ,i_refdata         = dat
   ,i_doc             = doc/spec
@@ -102,13 +103,14 @@ run;
 
 %initSASUnit(
    i_root            = .
-  ,io_target         = doc/sasunit/%lowcase(%cmpres(%sysget(SASUNIT_LANGUAGE)))
+  ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
   ,i_overwrite       = 0
   ,i_project         = SASUnit Self Test
   ,i_sasunit         = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos        = saspgm/test
-  ,i_sasautos1       = saspgm/test/pgmlib1
-  ,i_sasautos2       = saspgm/test/pgmlib2
+  ,i_sasautos        = saspgm/sasunit
+  ,i_sasautos1       = saspgm/test
+  ,i_sasautos2       = saspgm/test/pgmlib1
+  ,i_sasautos3       = saspgm/test/pgmlib2
   ,i_testdata        = dat
   ,i_refdata         = dat
   ,i_doc             = doc/spec
@@ -131,9 +133,10 @@ run;
   ,i_overwrite       = 0
   ,i_project         = SASUnit Self Test
   ,i_sasunit         = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos        = saspgm/test
-  ,i_sasautos1       = saspgm/test/pgmlib1
-  ,i_sasautos2       = saspgm/test/pgmlib2
+  ,i_sasautos        = saspgm/sasunit
+  ,i_sasautos1       = saspgm/test
+  ,i_sasautos2       = saspgm/test/pgmlib1
+  ,i_sasautos3       = saspgm/test/pgmlib2
   ,i_testdata        = dat
   ,i_refdata         = dat
   ,i_doc             = doc/spec
