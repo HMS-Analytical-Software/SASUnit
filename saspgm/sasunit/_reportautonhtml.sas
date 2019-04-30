@@ -140,7 +140,17 @@
          INPUT row :$256.;
          PUT row;
       RUN;
-
+      
+      data WORK._MCoverage_all_macros;
+         length MacName $40;
+         infile "&g_log/000.tcg";
+         input;
+         RecordType = input (scan (_INFILE_, 1, ' '), ??8.);
+         FirstLine  = input (scan (_INFILE_, 2, ' '), ??8.);
+         LastLine   = input (scan (_INFILE_, 3, ' '), ??8.);
+         MacName    = scan (_INFILE_, 4, ' ');
+      run;
+   
       /*-- for every unit under test (see ‘target’ database ): 
        call new macro _reporttcghtml.sas once in order to get a html 
        file showing test coverage for the given unit under test. For every call, 
@@ -221,8 +231,8 @@
                  AND %SYSFUNC(FILEEXIST(&g_log./000.tcg)) ) %THEN %DO;
                  %_reporttcghtml(i_macroName                = &l_currentUnitFileName.
                                 ,i_macroLocation            = &l_currentUnitLocation.
-                                ,i_mCoverageName            = 000.tcg
-                                ,i_mCoverageLocation        = &g_log
+                                ,i_mCoverageName            = _MCoverage_all_macros
+                                ,i_mCoverageLibrary         = WORK
                                 ,o_outputFile               = tcg_%SCAN(&l_currentUnitFileName.,1,.)
                                 ,o_outputPath               = &g_target/rep
                                 ,o_resVarName               = l_tcg_res
@@ -242,6 +252,8 @@
          QUIT;
       %end; /*do i = 1 to &l_listCount*/
       
+      PROC DELETE DATA=WORK._MCoverage_all_macros;
+      RUN;
    %END;
 
    PROC SQL NOPRINT;

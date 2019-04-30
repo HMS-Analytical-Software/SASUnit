@@ -21,8 +21,8 @@
             
    \param      i_macroName         name of the macro for which test coverage is assessed
    \param      i_macroLocation     path of the folder containing the source code file of the macro  
-   \param      i_mCoverageName     name of the coverage analysis text file
-   \param      i_mCoverageLocation path of the folder containing the coverage analysis text file generated with the mcoverage option
+   \param      i_mCoverageName     name of the SAS dataset with converted coverage analysis text file
+   \param      i_mCoverageLibrary  library of the SAS dataset with converted coverage analysis text file
    \param      o_outputFile        name of the resulting html file
    \param      o_outputPath        path of the folder in which the result html file is generated
    \param      o_resVarName        optional name of macroVariable in wich coverage percentage result is written
@@ -34,7 +34,7 @@
 %macro _reporttcghtml(i_macroName=
                      ,i_macroLocation=
                      ,i_mCoverageName=
-                     ,i_mCoverageLocation=
+                     ,i_mCoverageLibrary=
                      ,o_outputFile=
                      ,o_outputPath=
                      ,o_resVarName=
@@ -52,8 +52,8 @@
    %let l_MCoverageName=%lowcase(&i_mCoverageName.);
 
    /*** Check existence of input files */
-   %IF (NOT %SYSFUNC(FILEEXIST(&i_mCoverageLocation./&l_MCoverageName.)) OR &l_MCoverageName=) %THEN %DO;
-     %PUT  ERROR(SASUNIT): Input file with coverage data does not exist.;
+   %IF (NOT %SYSFUNC(EXIST(&i_mCoverageLibrary..&l_MCoverageName.)) OR &l_MCoverageName=) %THEN %DO;
+     %PUT  ERROR(SASUNIT): Input dataset with converted coverage data does not exist.;
      %GOTO _macExit;
    %END;
    %IF (NOT %SYSFUNC(FILEEXIST(&i_macroLocation./&l_MacroName.)) OR &l_MacroName=) %THEN %DO;
@@ -61,25 +61,15 @@
      %GOTO _macExit;
    %END;
 
-   /*** Read records from flat file and keep only those of given macro ***/
-   data WORK._MCoverage1 (where=(upcase (MacName)="%scan(%upcase(&l_MacroName.),1,.)"));
-      length MacName $40;
-      infile "&i_mCoverageLocation./&l_MCoverageName.";
-      input;
-      RecordType = input (scan (_INFILE_, 1, ' '), ??8.);
-      FirstLine  = input (scan (_INFILE_, 2, ' '), ??8.);
-      LastLine   = input (scan (_INFILE_, 3, ' '), ??8.);
-      MacName    = scan (_INFILE_, 4, ' ');
-   run;
-
-   /*** Keep only one record per combination of record type first_line and last_line ***/
-   proc sort data=WORK._MCoverage1 out=WORK._MCoverage3 nodupkey;
+   /*** Read records from SAS data set and keep only those of given macro ***/
+   /*** Keep only one record per combination of record, type first_line and last_line ***/
+   proc sort data=&i_mCoverageLibrary..&l_MCoverageName. (where=(upcase (MacName)="%scan(%upcase(&l_MacroName.),1,.)")) out=WORK._MCoverage1 nodupkey;
       by Firstline RecordType LastLine;
    run;
 
    /*** Get the covered rows of the macro ***/;
-   data WORK._MCoverage4;
-      set WORK._MCoverage3;
+   data WORK._MCoverage2;
+      set WORK._MCoverage1;
 
       /*** Keep value of last record the detect changes from one observation to the other ***/
       lag_LastLine = lag (LastLine);
@@ -112,10 +102,10 @@
 
    /*** Due to the order of check in above data step, line numbers are not sorted properly ***/
    /*** Sort lines and generate a second data set with non-contributing rows ***/
-   proc sort data=WORK._MCoverage4 out=WORK._MCoverage5 NODUPKEY;
+   proc sort data=WORK._MCoverage2 out=WORK._MCoverage3 NODUPKEY;
       by _line_;
    run;
-   proc sort data=WORK._MCoverage4 out=WORK._NonEx NODUPKEY;
+   proc sort data=WORK._MCoverage2 out=WORK._NonEx NODUPKEY;
       by nonEx;
    run;
 
@@ -143,7 +133,7 @@
    %let l_MissingLines = 0;
    proc sql noprint;
       select distinct nCounter into :l_MissingLines separated by ' ' from WORK.rowsOfInputFile 
-      where nCounter not in (select distinct _line_ from WORK._MCoverage5  where _line_ not eq .);
+      where nCounter not in (select distinct _line_ from WORK._MCoverage3 where _line_ not eq .);
    quit;
 
    /*** If there is an %if-statement with %do and %end an adjustment is made: ***/
