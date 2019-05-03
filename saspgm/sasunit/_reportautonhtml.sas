@@ -89,7 +89,7 @@
    %let l_numOfRealScenarios=&l_numOfRealScenarios.;
 
    /* Visualize crossreference data */
-   %IF &o_crossref. EQ 1 AND &l_numOfRealScenarios. > 0 %THEN %DO;
+   %IF (&o_crossref. EQ 1 AND &l_numOfRealScenarios. > 0) %THEN %DO;
       PROC SQL;
          create view prepareDependency as
          select distinct cas_obj as name
@@ -124,7 +124,7 @@
       QUIT;
    %END;
    
-   %IF &o_testcoverage. EQ 1 %THEN %DO;
+   %IF (&o_testcoverage. EQ 1  AND &l_numOfRealScenarios. > 0) %THEN %DO;
        /*-- in the log subdir: append all *.tcg files to one file named 000.tcg
         This is done in order to get one file containing coverage data 
         of all calls to the macros under test -----------------------------------*/
