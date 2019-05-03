@@ -248,9 +248,7 @@ run;
 
 %endTestcase;
 
-
-data work.scn;
-   set refdata.empty_test_db_scn;
+proc cimport file="&g_refdata./empty_test_db_scn.cport" data=work.scn;
 run;
 
 %initTestcase(i_object=_copyMacrosToRepSrc.sas, i_desc=Test with 'empty' scenariofile);

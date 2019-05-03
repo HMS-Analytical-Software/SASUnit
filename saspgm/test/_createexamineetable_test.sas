@@ -16,32 +16,59 @@
 
 %initScenario (i_desc=Test of _createExamineeTable.sas);
 
-data work.exa;
-   set target.exa;
-   stop;
-run;
-data work.exa_expected;
-   set target.exa (where=(exa_auton>=2));
-run;
 
-%initTestcase(i_object=_createExamineeTable.sas, i_desc=Test with correct call);
+%macro testcase(i_object=_createExamineeTable.sas, i_desc=%str(Test with correct call));
+   /*****************
+   documentation
+   ******************
+   setup  [...] 
+   call   [...]
+   assert [...]
+   *****************/
 
-%_switch();
-%let g_root=&save_root.;
-%_createExamineeTable;
-%_switch();
+   /* setup environment for test call */
+   data work.exa;
+      set target.exa;
+      stop;
+   run;
+   data work.exa_expected;
+      set target.exa 
+         %if (&g_crossrefsasunit. = 0) %then %do;
+                (where=(exa_auton >=2))
+         %end;
+      ;
+   run;
 
-%endTestcall;
+   /* start testcase */
+   %initTestcase(i_object=&i_object., i_desc=&i_desc.)
 
-%assertColumns(i_expected=work.exa_expected
-              ,i_actual  =work.exa
-              ,i_desc    =Identical except test coverage
-              ,i_exclude =exa_tcg_pct
-              );
-%endTestcase;
+   /* call */
+   %_switch();
+   %let g_root=&save_root.;
+   %_createExamineeTable;
+   %_switch();
+
+   %endTestcall()
+
+   /* assert */
+   proc sort data=work.exa_expected;
+      by exa_id;
+   run;
+   proc sort data=work.exa;
+      by exa_id;
+   run;
+   %assertColumns(i_expected=work.exa_expected
+                 ,i_actual  =work.exa
+                 ,i_desc    =Identical except test coverage
+                 ,i_exclude =exa_tcg_pct
+                 );
+
+   /* end testcase */
+   %endTestcase()
+%mend testcase; %testcase;
 
 proc datasets lib=work nolist;
-   delete exa;
+   delete exa exa_expected;
 run;quit;
 
 %endScenario();
