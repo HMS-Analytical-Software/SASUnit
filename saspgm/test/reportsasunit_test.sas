@@ -24,20 +24,15 @@
 %let G_VERSION   =NNN;
 %let G_DB_VERSION=N.N;
 
-data work.tsu;
-   set refdata.empty_test_db_tsu;
+proc cimport file="&g_refdata./empty_test_db_tsu.cport" data=work.tsu;
 run;
-data work.exa;
-   set refdata.empty_test_db_exa;
+proc cimport file="&g_refdata./empty_test_db_exa.cport" data=work.exa;
 run;
-data work.scn;
-   set refdata.empty_test_db_scn;
+proc cimport file="&g_refdata./empty_test_db_scn.cport" data=work.scn;
 run;
-data work.cas;
-   set refdata.empty_test_db_cas;
+proc cimport file="&g_refdata./empty_test_db_cas.cport" data=work.cas;
 run;
-data work.tst;
-   set refdata.empty_test_db_tst;
+proc cimport file="&g_refdata./empty_test_db_tst.cport" data=work.tst;
 run;
 
 %*** MockUp ***;
