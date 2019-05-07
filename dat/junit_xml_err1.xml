@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<testsuites>
+   <testsuite
+     tests     ="1"
+     failures  ="2"
+     id        ="002"
+     name      ="Blah Blubb Blubber"
+     package   ="macro2/Testscenario_inside_autocall.sas"
+     time      ="10"
+     timestamp ="1960-01-01T00:00:00"
+   >
+      <testcase
+        classname ="autocall_macro_2.sas"
+        name      ="Test für autocall_macro_2.sas"
+        time      ="1"
+        timestamp ="1960-01-01T00:00:00"
+        id        ="002-002"
+      >
+         <failure
+           message ="assert failed. Artificial failure"
+           type   = "assertLog"
+         >assert failed. Artificial failure</failure>
+      </testcase>
+   </testsuite>
+</testsuites>

@@ -14,12 +14,13 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   o_file         Filepath for the XML-report
 
 */ /** \cond */ 
 
-%MACRO _reportJUnitXML(o_file    =
+%MACRO _reportJUnitXML(i_repdata =
+                      ,o_file    =
                       );
 
    /**
@@ -42,12 +43,12 @@
          ,        scn_start             AS timestamp FORMAT = e8601dt.
          ,        (scn_end-scn_start)   AS time
          ,        0                     AS tests
-         FROM     &d_rep.
+         FROM     &i_repdata.
       ;
    
       UPDATE Work.Combined SET time     = 0 WHERE time = .;
-      UPDATE Work.Combined SET tests    = (SELECT COUNT(DISTINCT(cas_id)) FROM &d_rep. WHERE scn_id = Combined.scn_id);
-      UPDATE Work.Combined SET failures = (SELECT COUNT(*)                FROM &d_rep. (where=(tst_res = &_SU_Error.)) WHERE scn_id = Combined.scn_id);
+      UPDATE Work.Combined SET tests    = (SELECT COUNT(DISTINCT(cas_id)) FROM &i_repdata. WHERE scn_id = Combined.scn_id);
+      UPDATE Work.Combined SET failures = (SELECT COUNT(*)                FROM &i_repdata. (where=(tst_res = &_SU_Error.)) WHERE scn_id = Combined.scn_id);
 
       /* Insert testcases */
       INSERT INTO Work.Combined 
@@ -63,7 +64,7 @@
          ,        cas_start                     AS timestamp FORMAT = e8601dt.
          ,        (cas_end-cas_start)           AS time
          ,        1                             AS tests
-         FROM     &d_rep
+         FROM     &i_repdata.
       ;
    QUIT;
 
@@ -79,7 +80,7 @@
 
    /* Assert that the failed tests are listed first */
    PROC SORT
-      DATA = &d_rep.
+      DATA = &i_repdata.
       OUT  = Work.Failures
    ;
       BY scn_id
@@ -131,12 +132,14 @@
 
    /* Print the aggregated table with test information using the JUnit-Tagset */
    options linesize=256;
-   ods listing close;
    ods tagsets.JUnit_XML file="&o_file.";
    PROC PRINT data = Work.JUnit;
    RUN;
-   ods _all_ close;
-   ods listing;
+   ods tagsets.JUnit_XML close;
+
+   proc datasets lib=work nolist;
+      delete Combined Failures Junit;
+   run;quit;
 
 %MEND _reportJUnitXML;
 
