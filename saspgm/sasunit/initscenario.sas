@@ -7,8 +7,8 @@
 
                internally: 
                - Insertion of relevant data into the test repository
-               - Redirection of SAS log
-               - Setting of flag g_inTestcase
+               - Determine execution environment
+               - Setting of flags g_inScenario, g_inTestcase and g_inTestCall
 
    \version    \$Revision: 451 $
    \author     \$Author: klandwich $

@@ -4,10 +4,8 @@
 
    \brief      Check whether a report file exists and was created during the current SAS session.
 
-               It is possible to write an instruction into the test protocol indicating the need
-               to perform a manual check of the report. \n
-               Writes an entry into the test repository indicating the need to perform a manual 
-               check of the report and copies the report and a given report template (optional).
+               It is possible to write an instruction into the test protocol indicating the need to perform a manual check of the report. \n
+               Writes an entry into the test repository indicating the need to perform a manual check of the report and copies the report and a given report template (optional).
 
    \version    \$Revision$
    \author     \$Author$

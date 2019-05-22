@@ -6,7 +6,6 @@
    
                Furthermore a where condition can be specified (if not specified set to 1) as well as the number of expected records 
                in the data set that meet the given where condition.
-     
 
    \version    \$Revision$
    \author     \$Author$

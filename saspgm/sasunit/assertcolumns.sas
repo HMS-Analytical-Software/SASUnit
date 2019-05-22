@@ -2,17 +2,13 @@
    \file
    \ingroup    SASUNIT_ASSERT
 
-   \brief      Check whether there are differences between the values of 
-               the columns of two sas data sets (PROC COMPARE).
+   \brief      Check whether there are differences between the values of the columns of two sas data sets (PROC COMPARE).
 
-               The values of the two data sets are considered to match each other 
-               if all columns existing in data set i_expected are also existing in 
-               data set i_actual. <br />
-               Optionally one can define a deviation for numerical values so that 
-               all corresponding values can be deviating from each other less than 
-               a maximal deviation of i_fuzz (Caution: this corresponds to the 
-               parameter 'criterion' of PROC COMPARE, the parameter 'fuzz' has 
-               a different meaning in the context of PROC COMPARE)
+               The values of the two data sets are considered to match each other if all columns existing in data set i_expected 
+               are also existing in data set i_actual.
+               Optionally one can define a deviation for numerical values so that all corresponding values can be deviating from each other 
+               less than a maximal deviation of i_fuzz.
+               (Caution: this corresponds to the parameter 'criterion' of PROC COMPARE, the parameter 'fuzz' has a different meaning in the context of PROC COMPARE)
 
    
    \version    \$Revision$

@@ -4,8 +4,9 @@
 
    \brief      Checks whether a foreign key relationship between the columns of two data sets exists.
 
-               This assert supports simple and composite keys. The number of specified columns in parameters i_mstKey and i_lookupKey
-               must be the same and columns have to be in the same order. If more than one column is specified the parameter i_cmpKeyLen has to be provided containing the number of columns.
+               This assert supports simple and composite keys. 
+               The number of specified columns in parameters i_mstKey and i_lookupKey must be the same and columns have to be in the same order.
+               If more than one column is specified the parameter i_cmpKeyLen has to be provided containing the number of columns.
                Eventually needed renaming of key variables takes place automatically.               
                      
 

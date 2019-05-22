@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_SCN
 
-   \brief      ends scenario call in interactive sessions
+   \brief      This macro ends a scenario call. In interactive sessions a compact report of the test results in generated.
 
    \version    \$Revision: 451 $
    \author     \$Author: klandwich $

@@ -3,7 +3,6 @@
    \ingroup    SASUNIT_ASSERT
 
    \brief      Check whether at least one record exists which satisfies a certain WHERE condition.
-
    
    \version    \$Revision$
    \author     \$Author$

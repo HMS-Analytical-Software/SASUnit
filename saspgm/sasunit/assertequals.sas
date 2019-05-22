@@ -4,7 +4,7 @@
 
    \brief      Check whether there are differences between the value of a macro variable and an expected value. 
    
-               The values can be character string or numerical. <br />
+               The values can be character string or numerical.
                Optionally one can define a deviation for numerical values so that the  values can be deviating from each other less than a maximal deviation of i_fuzz.
 
    \version    \$Revision$

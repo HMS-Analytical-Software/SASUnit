@@ -4,10 +4,8 @@
 
    \brief      Check whether a certain message appears in the log.
 
-               If the message does not appear in the log as expected, 
-               the check of the assertion will fail.
-               If i_not is set to 1, the check of the assertion will fail in case the 
-               message is found in the log.
+               If the message does not appear in the log as expected, the check of the assertion will fail.
+               If i_not is set to 1, the check of the assertion will fail in case the message is found in the log.
 
    \version    \$Revision$
    \author     \$Author$

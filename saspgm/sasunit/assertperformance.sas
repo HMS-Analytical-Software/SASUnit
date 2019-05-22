@@ -4,7 +4,6 @@
 
    \brief      Check whether runtime of the testcase is below or equal a given limit.
 
-
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$

@@ -2,10 +2,9 @@
    \file
    \ingroup    SASUNIT_ASSERT
 
-   \brief      This assert does an image compare. 
+   \brief      This assert compares images on equality. It's an implementation to show how to use assertExternal for a specific purpose. 
 
-   \details    As compare tool imageMagick is used. Make shure to use version 6.9 or above since before the
-               compare method always returned 0.
+   \details    As compare tool imageMagick is used. Make sure to use version 6.9 or above since before the compare method always returned 0.
                Beginning with ImageMagick 6.9 the following return codes are used:
                   0: images match
                   1: images different

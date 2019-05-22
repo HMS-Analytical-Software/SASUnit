@@ -6,7 +6,6 @@
                
                The comparison report is created later, as PROC REPORT does not support ODS Document.
 
-
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$

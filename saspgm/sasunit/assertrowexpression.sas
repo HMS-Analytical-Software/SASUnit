@@ -4,7 +4,6 @@
 
    \brief      Checks if all observations meet a given WHERE expression.
 
-               
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$

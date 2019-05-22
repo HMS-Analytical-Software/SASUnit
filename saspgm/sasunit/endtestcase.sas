@@ -4,8 +4,7 @@
 
    \brief      Ends a test case
 
-               Result and finish time are added to the test repository.
-
+               Result of the tests is added to the test repository.
 
    \version    \$Revision$
    \author     \$Author$

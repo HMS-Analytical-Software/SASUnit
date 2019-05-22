@@ -4,8 +4,7 @@
 
    \brief      Check whether errors or warnings appear in the log.
 
-               If number of errors and warnings does not appear in the log as expected, 
-               the check of the assertion will fail.
+               If number of errors and warnings does not appear in the log as expected, the check of the assertion will fail.
 
    \version    \$Revision$
    \author     \$Author$
