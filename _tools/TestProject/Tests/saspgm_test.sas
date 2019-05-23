@@ -15,6 +15,8 @@
 
 */ /** \cond */ 
 
+%initScenario (i_desc=Test of the tree building and the functionality for program libraries);
+
 %initTestcase(i_object=pgm01_1.sas, i_desc=call of program 1 in library 1)
 %pgm01_1()
 %endTestcase;
@@ -105,4 +107,6 @@ run;
 %include "&g_work/pgm14_1.sas";
 %pgm14_1()
 %endTestcase;
+
+%endScenario;
 /** \endcond */

@@ -91,7 +91,8 @@
             assertTypeColumn $200
             expectedColumn $1000
             actualColumn $1000
-            resultColumn $1000;
+            resultColumn $1000
+            c_autonM2    $2
             ;
          label 
             scnDescriptionColumn="&g_nls_reportDetail_029."
@@ -131,6 +132,7 @@
          scn_duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid      = put (scn_id, z3.);
          c_casid      = put (cas_id, z3.);
+         c_autonM2    = compress (exa_auton-2,2.);
          if (exa_auton = 0) then do;
             cas_abs_path = resolve ('%_abspath(&g_sasunit.,' !! trim(cas_obj) !! ')');   
          end;
@@ -138,7 +140,7 @@
             cas_abs_path = resolve ('%_abspath(&g_sasunit_os.,' !! trim(cas_obj) !! ')');   
          end;
          else do;
-            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! put (exa_auton-2,1.) !! '.,' !! trim(cas_obj) !! ')');
+            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! trim(c_autonM2) !! '.,' !! trim(cas_obj) !! ')');
          end;
          if (exa_auton >= 2) then do;
             cas_obj      = resolve ('%_stdpath(&g_root.,' !! trim(cas_abs_path) !! ')');
@@ -348,7 +350,7 @@
       %end;
 
       proc datasets lib=work nolist memtype=(view data);
-         delete _test_overview _test_report;
+         *delete _test_overview _test_report;
       run;
    %end;
 %MEND _reportDetailHTML;
