@@ -221,7 +221,7 @@
               ,i_actual            =&assertText_work2.
               ,i_expected_shell_rc =
               ,i_modifier          =
-              ,i_desc              =i_expected_shell_rs is not given
+              ,i_desc              =i_expected_shell_rc is not given
               );
 
    %markTest()
