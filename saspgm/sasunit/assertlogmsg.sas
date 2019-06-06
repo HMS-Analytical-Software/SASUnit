@@ -49,7 +49,8 @@
    %LET l_errmsg=_NONE_;
 
    %IF (&g_runmode. EQ SASUNIT_INTERACTIVE 
-        AND %nrbquote (&i_logfile.) = _NONE_) %THEN %DO;
+        AND %nrbquote (&i_logfile.) = %str()
+       ) %THEN %DO;
       %let l_assert_failed=1;
       %let l_errmsg=Current SASUnit version does not support interactive execution of assertLogMsg.;
       %let l_actual=-1;
