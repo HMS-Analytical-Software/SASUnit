@@ -1,7 +1,8 @@
-/** \file
-   \ingroup    SASUNIT_TEST
+/**
+   \file
+   \ingroup    SASUNIT_TEST 
 
-   \brief      Test of _closeHTMLPage.sas
+   \brief      Test of _dependency_wr.sas
 
    \version    \$Revision$
    \author     \$Author$
@@ -11,21 +12,15 @@
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+*/ /** \cond */
 
-*/ /** \cond */ 
-%initScenario (i_desc=Test of _closeHTMLPage.sas)
+%initScenario (i_desc=Test of _dependency_wr.sas)
 
-ods html file="%sysfunc(pathname(WORK))\TEST.HMTL";
-
-%initTestcase(i_object=_closeHTMLPage.sas, i_desc=Test with correct call);
-
-%_closeHTMLPage(Default);
-
+%initTestcase(i_object=_dependency_wr.sas, i_desc=Test with correct call);
+   *** Empty scenario *;
 %endTestcall;
-
-%assertLogMsg(i_logMsg=MPRINT._CLOSEHTMLPAGE._OPENDUMMYHTMLPAGE.:);
 
 %endTestcase;
 
 %endScenario();
-/** \endcond */
+/** endcond **/

@@ -1,7 +1,7 @@
 /** \file
    \ingroup    SASUNIT_TEST
 
-   \brief      Test of _closeHTMLPage.sas
+   \brief      Test of initTestcase.sas
 
    \version    \$Revision$
    \author     \$Author$
@@ -13,19 +13,12 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
-%initScenario (i_desc=Test of _closeHTMLPage.sas)
+%initScenario (i_desc=Test of initTestcase.sas)
 
-ods html file="%sysfunc(pathname(WORK))\TEST.HMTL";
-
-%initTestcase(i_object=_closeHTMLPage.sas, i_desc=Test with correct call);
-
-%_closeHTMLPage(Default);
-
+%initTestcase(i_object=initTestcase.sas, i_desc=Test with correct call);
+   *** Empty scenario *;
 %endTestcall;
-
-%assertLogMsg(i_logMsg=MPRINT._CLOSEHTMLPAGE._OPENDUMMYHTMLPAGE.:);
 
 %endTestcase;
 
-%endScenario();
-/** \endcond */
+%endScenario();/** \endcond */

@@ -14,7 +14,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */
 
-%MACRO _createtestfiles;  
+%MACRO _createTestFiles;  
  
    /* Create folders */
    %_mkdir(%SYSFUNC(PATHNAME(work))/tst);
@@ -127,12 +127,12 @@
       END;
    RUN;  
    FILENAME jsonfile;   
-%MEND _createtestfiles;
+%MEND _createTestFiles;
 
 %initScenario (i_desc=Test of _dependency_agg.sas)
 
 /* create test files */
-%_createtestfiles;
+%_createTestFiles;
 
 /* test case 1 ------------------------------------ */
 %initTestcase(i_object=_dependency_agg.sas, i_desc=Test if JSON and JavaScript files have been created and json object is well formed);

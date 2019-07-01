@@ -35,7 +35,7 @@ run;
 proc cimport file="&g_refdata./empty_test_db_tst.cport" data=work.tst;
 run;
 
-%*** MockUp ***;
+%*** Mocks erstellen ***;
 %MACRO _reportPgmDoc(i_language      =
                     ,i_repdata       =
                     ,o_html          =
@@ -96,7 +96,7 @@ proc datasets lib=work nolist;
       tst;
 run;quit;
 
-*** Mockup löschen ***;
+*** Mocks löschen ***;
 proc catalog catalog=work.SASMACR entrytype=MACRO;
    delete _reportPgmDoc _reportTreeHTML;
 run;quit;

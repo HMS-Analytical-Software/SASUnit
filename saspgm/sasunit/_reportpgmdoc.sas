@@ -36,7 +36,7 @@
    
    \return program documentation
 */ /** \cond */
-%macro _reportpgmdoc (i_language=
+%macro _reportPgmDoc (i_language=
                      ,i_repdata=
                      ,o_html=
                      ,o_pdf=
@@ -510,5 +510,5 @@
       endcomp;
    run;
    title;
-%mend;
+%mend _reportPgmDoc;
 /** \endcond */

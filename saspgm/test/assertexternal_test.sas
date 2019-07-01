@@ -13,7 +13,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
-%MACRO _createtestfiles;
+%MACRO _createTestfiles;
    DATA _NULL_;
       FILE "&g_work./text1.txt";
       PUT "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.";
@@ -49,7 +49,7 @@
       PUT "dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod";
       PUT "tincidunt ut laoreet dolore magna aliquam erat volutpat.";
    RUN;
-%MEND _createtestfiles;
+%MEND _createTestfiles;
 
 %MACRO _adaptToOS;
    %GLOBAL 
@@ -107,7 +107,7 @@
 %initScenario(i_desc =Test of assertExternal.sas);
 
 /* create test files */
-%_createtestfiles;
+%_createTestfiles;
 %_adaptToOS;
 %_adaptToEnv;
 

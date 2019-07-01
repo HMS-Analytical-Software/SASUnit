@@ -1,7 +1,7 @@
 /** \file
    \ingroup    SASUNIT_TEST
 
-   \brief      Test of _oscmds.sas
+   \brief      Test of _osCmds.sas
 
    \version    \$Revision$
    \author     \$Author$
@@ -17,7 +17,7 @@
 
 */ /** \cond */ 
 
-%initTestcase(i_object=_oscmds.sas, i_desc=check for correct values)
+%initTestcase(i_object=_osCmds.sas, i_desc=check for correct values)
 /* Get current values */
 %let _removedir  = &g_removedir.;
 %let _makedir    = &g_makedir.;
@@ -34,7 +34,7 @@
 %let g_sasstart   = ;
 %let g_splash     = ;
 
-%_oscmds
+%_osCmds
 %endTestcall;
 
 %assertEquals(i_expected=&_removedir.,  i_actual=&g_removedir.,  i_desc=check g_removedir for identical value)

@@ -24,7 +24,7 @@
 
 */ /** \cond */  
 
-%macro _render_datacolumn (i_sourceColumn=
+%macro _render_dataColumn (i_sourceColumn=
                           ,i_format=_NONE_
                           ,i_linkColumn=_NONE_
                           ,i_linkTitle=_NONE_
@@ -94,5 +94,5 @@
       %if (&l_doStyle.) %then %do;
          &o_targetColumn. = catt (&o_targetColumn., "}");
       %end;
-%mend _render_datacolumn;
+%mend _render_dataColumn;
 /** \endcond */

@@ -31,7 +31,7 @@
 
 */ /** \cond */ 
 
-%macro _reporttcghtml(i_macroName=
+%macro _reportTcgHTML(i_macroName=
                      ,i_macroLocation=
                      ,i_mCoverageName=
                      ,i_mCoverageLibrary=
@@ -382,5 +382,5 @@
    options center;
    title;footnote;
    %_macExit:
-%mend _reporttcghtml;
+%mend _reportTcgHTML;
 /** \endcond */

@@ -25,7 +25,7 @@
    
 */ /** \cond */ 
 
-%macro _checkrunenvironment(i_verbose);
+%macro _checkRunEnvironment(i_verbose);
    %local l_result l_macname;
 
    %*** initalize local variables ***;
@@ -52,5 +52,5 @@
    %then %let l_result=1;
 
    &l_result.
-%mend _checkrunenvironment;
+%mend _checkRunEnvironment;
 /** \endcond */

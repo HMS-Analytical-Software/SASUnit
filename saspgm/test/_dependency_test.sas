@@ -14,7 +14,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */
 
-%MACRO _createtestfiles;
+%MACRO _createTestFiles;
    /* Create data */
    DATA listcalling_test;
       KEEP caller called;
@@ -158,12 +158,12 @@
       END;
    RUN;
    
-%MEND _createtestfiles;
+%MEND _createTestFiles;
 
 %initScenario (i_desc=Test of _dependency.sas)
 
 /* create test files */
-%_createtestfiles;
+%_createTestFiles;
 
 /* test case 1 ------------------------------------ */
 %initTestcase(i_object=_dependency.sas, i_desc=Test if JSON files have been created);

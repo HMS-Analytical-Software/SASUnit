@@ -15,7 +15,7 @@
 */ /** \cond */
 
 /* Create test files */
-%MACRO _deletescenariofiles_crtTstFls();
+%MACRO _deleteScenarioFiles_crtTstFls();
    %LOCAL l_abs_path;
    %LET l_abs_path = %_abspath(&g_root, &g_target);
    
@@ -111,7 +111,7 @@
          PUT "hugo&i.";
       RUN;      
    %END;
-%MEND _deletescenariofiles_crtTstFls;
+%MEND _deleteScenarioFiles_crtTstFls;
 
 %initScenario (i_desc=Test of _deleteScenarioFiles.sas)
 

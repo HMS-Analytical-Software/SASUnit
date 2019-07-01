@@ -27,7 +27,7 @@ data _NULL_;
    put"&G_NOTE.: This note is to show, that regex is working.";
 run;
 
-%initTestcase(i_object=assertLog.sas, i_desc=reading log file without errors)
+%initTestcase(i_object=assertLogMsg.sas, i_desc=reading log file without errors)
 %endTestcall()
 %assertLogMsg(i_logMsg  =^LINE1:
              ,i_desc    =string at the beginning of the line

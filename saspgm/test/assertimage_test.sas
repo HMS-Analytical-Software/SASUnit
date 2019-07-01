@@ -14,7 +14,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%MACRO _createtestfiles();
+%MACRO _createTestfiles();
    %_copyfile(&g_root/dat/rose.jpg, &g_work./rose.jpg);
    %_copyfile(&g_root/dat/rose.jpg, &g_work./rose_copy.jpg);
    %_copyfile(&g_root/dat/reconstruct.jpg, &g_work./reconstruct.jpg);
@@ -48,7 +48,7 @@
    proc delete data=work.class;
    run;
 
-%MEND _createtestfiles;
+%MEND _createTestfiles;
 
 %MACRO _adaptToOS();
    %GLOBAL 
@@ -105,7 +105,7 @@
 %initScenario(i_desc =Test of assertImage.sas);
 
 /* create test files */
-%_createtestfiles;
+%_createTestfiles;
 %_adaptToOS;
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));

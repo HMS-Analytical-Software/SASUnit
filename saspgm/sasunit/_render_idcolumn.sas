@@ -23,7 +23,7 @@
 
 */ /** \cond */ 
 
-%macro _render_idcolumn (i_sourceColumn=
+%macro _render_idColumn (i_sourceColumn=
                         ,i_format=_NONE_
                         ,i_linkColumn=_NONE_
                         ,i_linkTitle=_NONE_
@@ -36,5 +36,5 @@
                           ,i_linkTitle=&i_linkTitle.
                           ,o_targetColumn=&o_targetColumn.
                           );
-%mend _render_idcolumn;
+%mend _render_idColumn;
 /** \endcond */

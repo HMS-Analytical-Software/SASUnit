@@ -30,7 +30,7 @@
    
 */ /** \cond */ 
 
-%macro _closehtmlpage (i_style);
+%macro _closeHTMLPage (i_style);
    %_openDummyHtmlPage  (&i_style.);
-%mend;
+%mend _closeHTMLPage;
 /** \endcond */

@@ -14,7 +14,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
-%MACRO _createtestfiles;
+%MACRO _createTestfiles;
    DATA _NULL_;
       FILE "&g_work./text1.txt";
       PUT "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt";
@@ -74,7 +74,7 @@
       PUT "labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores";
       PUT "et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
    RUN;
-%MEND _createtestfiles;
+%MEND _createTestfiles;
 
 %MACRO _adaptToOS;
    %GLOBAL 
@@ -113,7 +113,7 @@
 %initScenario(i_desc =Test of assertText.sas);
 
 /* create test files */
-%_createtestfiles;
+%_createTestfiles;
 %_adaptToOS;
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));

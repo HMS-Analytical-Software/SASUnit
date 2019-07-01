@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_TEST 
 
-   \brief      Test of _crossreference.sas
+   \brief      Test of _crossReference.sas
 
    \version    \$Revision$
    \author     \$Author$
@@ -14,10 +14,10 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */
 
-%initScenario (i_desc=Test of _crossreference.sas)
+%initScenario (i_desc=Test of _crossReference.sas)
 
 /* Create test files */
-%MACRO _createtestfiles;
+%MACRO _createTestFiles;
    %LOCAL l_work;
    
    %LET l_work = %SYSFUNC(pathname(work));
@@ -60,13 +60,13 @@
              ,o_file=%_abspath(&l_work.,saspgm/testfolder1/testmakro4.sas)
              );
    
-%MEND _createtestfiles;
+%MEND _createTestFiles;
 
 /* create test files */
-%_createtestfiles; 
+%_createTestFiles; 
 
 /* test case 1 ------------------------------------ */
-%initTestcase(i_object=_crossreference.sas, i_desc=Testing if the test setup was successful)
+%initTestcase(i_object=_crossReference.sas, i_desc=Testing if the test setup was successful)
 %endTestcall()
    %markTest()
       /* Files and folder test */
@@ -78,7 +78,7 @@
 %endTestcase(i_assertLog=0);
 
 /* test case 2 ------------------------------------ */
-%initTestcase(i_object=_crossreference.sas, i_desc=Test table listcalling with i_includeSASUnit = 1)
+%initTestcase(i_object=_crossReference.sas, i_desc=Test table listcalling with i_includeSASUnit = 1)
 /*-- switch to example database --------------------*/
 %_switch();
    %_dir(i_path=%sysfunc(pathname(work))/saspgm, i_recursive=1, o_out=work.cr_dir);
@@ -86,7 +86,7 @@
       set work.cr_dir;
       exa_filename=filename;
    run;
-   %_crossreference(i_includeSASUnit  =1
+   %_crossReference(i_includeSASUnit  =1
                    ,i_examinee        =work.cr_dir
                    ,o_listcalling     =work.listcalling
                    ,o_dependency      =work.dependency
@@ -108,7 +108,7 @@
 %endTestcase(i_assertLog=0);
 
 /* test case 3 ------------------------------------ */
-%initTestcase(i_object=_crossreference.sas, i_desc=Test table dependency with i_includeSASUnit = 1)
+%initTestcase(i_object=_crossReference.sas, i_desc=Test table dependency with i_includeSASUnit = 1)
 /*-- switch to example database --------------------*/
 %endTestcall();
    %markTest();
@@ -123,7 +123,7 @@
 %endTestcase(i_assertLog=0);
 
 /* test case 4 ------------------------------------ */
-%initTestcase(i_object=_crossreference.sas, i_desc=Test table macrolist with i_includeSASUnit = 1)
+%initTestcase(i_object=_crossReference.sas, i_desc=Test table macrolist with i_includeSASUnit = 1)
 /*-- switch to example database --------------------*/
 %endTestcall();
    %markTest();
@@ -140,7 +140,7 @@
 %endTestcase(i_assertLog=0);
 
 /* test case 5 ------------------------------------ */
-%initTestcase(i_object=_crossreference.sas, i_desc=Test table listcalling with i_includeSASUnit = 0);
+%initTestcase(i_object=_crossReference.sas, i_desc=Test table listcalling with i_includeSASUnit = 0);
 /*-- switch to example database --------------------*/
 %_switch();
    %let l_sasunit = &g_sasunit;
@@ -150,7 +150,7 @@
       set work.cr_dir;
       exa_filename=filename;
    run;
-   %_crossreference(i_includeSASUnit  =0
+   %_crossReference(i_includeSASUnit  =0
                    ,i_examinee        =work.cr_dir
                    ,o_listcalling     =work.listcalling
                    ,o_dependency      =work.dependency
@@ -172,7 +172,7 @@
 %endTestcase(i_assertLog=0);
 
 /* test case 6 ------------------------------------ */
-%initTestcase(i_object=_crossreference.sas, i_desc=Test table dependency with i_includeSASUnit = 0)
+%initTestcase(i_object=_crossReference.sas, i_desc=Test table dependency with i_includeSASUnit = 0)
 %endTestcall();
    %markTest();
       %assertRecordCount(i_libref=work, i_memname=Dependency, i_operator=EQ, i_recordsExp=1, i_where=                                                                 , i_desc=Number of expected rows);
@@ -183,7 +183,7 @@
 %endTestcase(i_assertLog=0);
 
 /* test case 7 ------------------------------------ */
-%initTestcase(i_object=_crossreference.sas, i_desc=Test table macrolist with i_includeSASUnit = 0)
+%initTestcase(i_object=_crossReference.sas, i_desc=Test table macrolist with i_includeSASUnit = 0)
 /*-- switch to example database --------------------*/
 %endTestcall();
    %markTest();

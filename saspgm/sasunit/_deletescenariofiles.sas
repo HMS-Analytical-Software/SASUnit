@@ -25,7 +25,7 @@
 
 
 
-%MACRO _deletescenariofiles(i_scenariosToRun=
+%MACRO _deleteScenarioFiles(i_scenariosToRun=
                            );
    %LOCAL l_len l_nobs l_obs l_scnDel l_target l_foldersToDelete l_filesToDelete;
    %LET l_target = %_abspath(&g_root, &g_target);
@@ -118,5 +118,5 @@
          %LET l_rc=%_delfile(&l_foldersToDelete);
       %END;
    %END;
-%MEND _deletescenariofiles;
+%MEND _deleteScenarioFiles;
 /** \endcond */

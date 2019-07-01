@@ -32,7 +32,7 @@
 
 */ /** \cond */ 
 
-%MACRO _crossreference(i_includeSASUnit  =0
+%MACRO _crossReference(i_includeSASUnit  =0
                       ,i_examinee        =
                       ,o_listcalling     =
                       ,o_dependency      =
@@ -266,5 +266,5 @@
    proc datasets lib=work nolist;
       delete helper stage:;
    run;quit;
-%MEND _crossreference;
+%MEND _crossReference;
 /** \endcond */

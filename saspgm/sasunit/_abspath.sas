@@ -21,7 +21,7 @@
    \return           modified path
 */ /** \cond */ 
 
-%MACRO _abspath (i_root
+%MACRO _absPath (i_root
                 ,i_path 
                 );
 
@@ -38,5 +38,5 @@
    %ELSE %IF %length(&i_root) %THEN &i_root/&i_path;
    %ELSE &i_path;
 
-%MEND _abspath;
+%MEND _absPath;
 /** \endcond */

@@ -30,8 +30,8 @@
    
 */ /** \cond */ 
 
-%macro _opendummyhtmlpage (i_style);
+%macro _openDummyHTMLPage (i_style);
    ods html4 file="%sysfunc(pathname(work))/dummyhtml.html" style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
              encoding="&g_rep_encoding.";
-%mend;
+%mend _openDummyHTMLPage;
 /** \endcond */

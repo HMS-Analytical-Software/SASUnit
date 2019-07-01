@@ -21,7 +21,7 @@
 
 */ /** \cond */ 
 
-%macro _render_iconcolumn (i_sourceColumn=
+%macro _render_iconColumn (i_sourceColumn=
                           ,o_html=0
                           ,o_targetColumn=
                           );
@@ -34,5 +34,5 @@
    %end;
 
    &o_targetColumn. = '^{style [postimage="' !! trim(put (&i_sourceColumn., &l_pictNameFmt.)) !! '" flyover="' !! trim(put (&i_sourceColumn., PictDesc.)) !! '" fontsize=0pt]' !! &i_sourceColumn !! '}';
-%mend _render_iconcolumn;
+%mend _render_iconColumn;
 /** \endcond */
