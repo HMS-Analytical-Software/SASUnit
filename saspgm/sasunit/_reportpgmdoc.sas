@@ -480,7 +480,7 @@
 
    options center;
    ods listing;
-%mend;
+%mend _reportPgmDoc;
 
 %macro PrintDocList (lib=, data=, title=, style=);
    proc sort data=&lib..&data.;
@@ -510,5 +510,5 @@
       endcomp;
    run;
    title;
-%mend _reportPgmDoc;
+%mend PrintDocList;
 /** \endcond */
