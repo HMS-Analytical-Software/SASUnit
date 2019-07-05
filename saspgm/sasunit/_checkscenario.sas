@@ -69,6 +69,7 @@
       pos = find(scn_path,'/',-200)+1;
       scn_name = lowcase (substr(scn_path,pos));
       scn_filename = resolve('%_absPath(&g_root,' || scn_path || ')');
+      format scn_changed datetime32.;
    RUN;
 
    PROC SQL noprint;
@@ -97,8 +98,9 @@
    PROC SQL noprint;
       create table work._curr_scenarios as
          select *
-         from work._scenarios
-         where upcase (scn_filename) in (select upcase (filename) from &i_scn_pre.)
+               ,max (scn_changed, dir.changed) as dir_changed
+         from work._scenarios scn inner join &i_scn_pre. dir
+         on scn.scn_filename = dir.filename
       ;
       create table work._othr_scenarios as
          select *
@@ -120,7 +122,7 @@
          group by cas_scnid
       ;
       create table work._scns2run as
-         select scn.scn_id, scn.scn_path, scn.scn_filename, scn.scn_end, scn.scn_changed, exa.exa_changed
+         select scn.scn_id, scn.scn_path, scn.scn_filename, scn.scn_end, scn.dir_changed as scn_changed, exa.exa_changed
          from work._curr_scenarios as scn 
          left join work._curr_examinee as exa on exa.cas_scnid=scn.scn_id;
       ;
