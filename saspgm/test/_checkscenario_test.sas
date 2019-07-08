@@ -15,7 +15,7 @@
 
                check for many combinations where scenario and / or programs under test have been 
                changed or programs under test are missing, take into account programs 
-               which can be found in autocall paths. 
+               which can not be found in autocall paths. 
 
 */ /** \cond */ 
 
@@ -638,6 +638,54 @@ libname target (work);
                );
 libname target "&g_target.";
 %endTestcall();
+%assertLog (i_errors=0, i_warnings=0);
+%endTestcase;
+
+/* test case 14 ------------------------------------ */
+%_createTestFiles;
+/* Modifiy results of _dir macro */
+data work.scn;
+   set work.scn_single;
+run;
+PROC SQL;
+   update scn_dir_1
+      set changed = &scn_changed.+60
+      where membername = "scenario2.sas"
+   ;
+QUIT;
+%initTestcase(i_object = _checkScenario.sas
+             ,i_desc   = Scenario changed but macros did not);
+
+libname target (work);
+/* check which test scenarios must be run */
+%_checkScenario(i_examinee       = exa
+               ,i_scn_pre        = scn_dir_1
+               ,i_crossref       =0
+               ,i_crossrefSASUnit=0
+               ,o_scenariosToRun = scenariosToRun
+               );
+libname target "&g_target.";
+%endTestcall();
+%assertRecordCount(i_libref=work, i_memname=scn, i_operator=EQ
+                  ,i_recordsExp=4
+                  ,i_where=
+                  ,i_desc=4 observations in test db expected
+                  );
+%assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
+                  ,i_recordsExp=1
+                  ,i_where=dorun ne 0
+                  ,i_desc=1 scenario should be run
+                  );
+%assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
+                  ,i_recordsExp=3
+                  ,i_where=dorun = 0
+                  ,i_desc=3 Scenario should not be run
+                  );
+%assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
+                  ,i_recordsExp=1
+                  ,i_where=%str(scn_path = "saspgm/test/pgmlib1/scenario2.sas" and dorun = 1)
+                  ,i_desc=Scenario 2 expected with %str(dorun=1)
+                  );
 %assertLog (i_errors=0, i_warnings=0);
 %endTestcase;
 
