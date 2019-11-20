@@ -95,7 +95,8 @@
 %assertRecordCount(i_libref=sashelp, i_memname=class,    i_operator=LT,       i_recordsExp=6,   i_where=%str(age = 14), i_desc=test with operator LT);
 %assertRecordCount(i_libref=sashelp, i_memname=class,    i_operator=~=,       i_recordsExp=6,   i_where=%str(age = 14), i_desc=test with operator ~=);
 %assertRecordCount(i_libref=sashelp, i_memname=class,    i_operator=NE,       i_recordsExp=6,   i_where=%str(age = 14), i_desc=test with operator NE);
-%assertRecordCount(i_libref=sashelp, i_memname=class,    i_operator=<=,       i_recordsExp=2,  i_where=%str(age = 14 and weight < 100), i_desc=complex where condition);
+%assertRecordCount(i_libref=sashelp, i_memname=class,    i_operator=<=,       i_recordsExp=2,   i_where=%str(age = 14 and weight < 100), i_desc=complex where condition);
+%assertRecordCount(i_libref=sashelp, i_memname=class,    i_operator=EQ,       i_recordsExp=3,   i_where=%str(age in %(11, 16%) and sex in %('F', 'M'%)), i_desc=complex where condition with in operator and brackets);
 %assertLog (i_errors=0, i_warnings=0)
 %endTestcase();
 
