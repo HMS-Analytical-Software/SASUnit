@@ -63,7 +63,7 @@
 
 %MACRO initSASUnit(i_root            = 
                   ,io_target         = 
-                  ,i_overwrite       = 0
+                  ,i_overwrite       =0
                   ,i_project         = 
                   ,i_sasunit         =%sysget(SASUNIT_ROOT)/saspgm/sasunit
                   ,i_sasautos        =
@@ -102,17 +102,17 @@
                   ,i_testdata        = 
                   ,i_refdata         = 
                   ,i_doc             = 
-                  ,i_testcoverage    = 1
-                  ,i_verbose         = 0
-                  ,i_crossref        = 1
-                  ,i_crossrefsasunit = 0
-                  ,i_language        = %sysget(SASUNIT_LANGUAGE)
+                  ,i_testcoverage    =1
+                  ,i_verbose         =0
+                  ,i_crossref        =1
+                  ,i_crossrefsasunit =0
+                  ,i_language        =%sysget(SASUNIT_LANGUAGE)
                   );
 
    %GLOBAL g_version g_revision g_db_version g_verbose g_error g_warning g_note g_runMode g_language;
 
-   %LET g_version    = 2.0.2;
-   %LET g_db_version = 2.0;
+   %LET g_version    = 2.1.0;
+   %LET g_db_version = 2.1;
    %LET g_revision   = $Revision$;
    %LET g_revision   = %scan(&g_revision,2,%str( $:));
 
@@ -155,6 +155,10 @@
       l_testcoverage
       _root _sasunit
    ;
+   
+   /*-- Initialize error handler --------------------------------------------------------*/
+   %_initErrorHandler;
+   %LET l_macname=&sysmacroname;
 
    /*-- check value of parameters i_verbose, i_crossref and i_crossrefsasunit, 
         if one of them has a value other than default, 
@@ -223,10 +227,6 @@
          SELECT tsu_doc      INTO :l_doc      FROM target.tsu;
       QUIT;
    %END;
-
-   /*-- initialize error --------------------------------------------------------*/
-   %_initErrorHandler;
-   %LET l_macname=&sysmacroname;
 
    /*-- if test coverage should be assessed: check SAS version --------------*/
    %IF (&i_testcoverage. EQ 1) %THEN %DO;
@@ -487,88 +487,7 @@
 
    /*-- create test database if necessary ---------------------------------------*/
    %IF &l_newdb %THEN %DO;
-      PROC SQL NOPRINT;
-         CREATE TABLE target.tsu(COMPRESS=CHAR)
-         (                                         /* test suite */
-             tsu_project         CHAR(1000)        /* see i_project */
-            ,tsu_root            CHAR(1000)        /* see i_root */
-            ,tsu_target          CHAR(1000)        /* see io_target */
-            ,tsu_sasunitroot     CHAR(1000)        /* root path to sasunit files */
-            ,tsu_sasunit         CHAR(1000)        /* see i_sasunit */
-            ,tsu_sasunit_os      CHAR(1000)        /* os-specific sasunit macros */
-            ,tsu_sasautos        CHAR(1000)        /* see i_sasautos */
-      %DO i=1 %TO 29;            
-            ,tsu_sasautos&i      CHAR(1000)        /* see i_sasautos<n> */
-      %END;                     
-            ,tsu_autoexec        CHAR(1000)        /* see i_autoexec */
-            ,tsu_sascfg          CHAR(1000)        /* see i_sascfg */
-            ,tsu_sasuser         CHAR(1000)        /* see i_sasuser */
-            ,tsu_testdata        CHAR(1000)        /* see i_testdata */
-            ,tsu_refdata         CHAR(1000)        /* see i_refdata */
-            ,tsu_doc             CHAR(1000)        /* see i_doc */
-            ,tsu_lastinit        INT FORMAT=datetime21.2 /* date and time of last initialization */
-            ,tsu_lastrep         INT FORMAT=datetime21.2 /* date and time of last report generation*/
-            ,tsu_testcoverage    INT FORMAT=8.     /* see i_testcoverage */
-            ,tsu_dbversion       CHAR(8)           /* Version String to force creation of a new test data base */
-            ,tsu_verbose         INT FORMAT=8.     /* see i_verbose */
-            ,tsu_crossref        INT FORMAT=8.     /* see i_crossref */
-            ,tsu_crossrefsasunit INT FORMAT=8.     /* see i_crossrefsasunit */
-            ,tsu_language        CHAR(10)          /* see i_language */
-         );
-         INSERT INTO target.tsu VALUES (
-         "","","","","",""
-        ,"","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""
-        ,"","","","","","",0,0,&i_testcoverage.,"",&i_verbose.,&i_crossref.,&i_crossrefsasunit.,"&i_language."
-         );
-
-         CREATE TABLE target.scn(COMPRESS=CHAR)
-         (                                            /* test scenario */
-             scn_id           INT FORMAT=z3.          /* number of scenario */
-            ,scn_path         CHAR(1000)              /* path to program file */ 
-            ,scn_desc         CHAR(1000)              /* description of program (brief tag in comment header) */
-            ,scn_start        INT FORMAT=datetime21.2 /* starting date and time of the last run */
-            ,scn_end          INT FORMAT=datetime21.2 /* ending date and time of the last run */
-            ,scn_changed      INT FORMAT=datetime21.2 /* modification date and time of the last run */
-            ,scn_rc           INT                     /* return code of SAS session of last run */
-            ,scn_errorcount   INT                     /* number of detected errors in the scenario log */
-            ,scn_warningcount INT                     /* number of detected warnings in the scenario log */
-            ,scn_res          INT                     /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
-         );
-         CREATE TABLE target.cas(COMPRESS=CHAR)
-         (                                      /* test case */
-             cas_scnid INT FORMAT=z3.           /* reference to test scenario */
-            ,cas_id    INT FORMAT=z3.           /* sequential number of test case within test scenario */
-            ,cas_exaid INT FORMAT=z3.           /* reference to examinee */ 
-            ,cas_obj   CHAR(255)                /* file name of program under test: only name if found in autocall paths, or fully qualified path otherwise */ 
-            ,cas_desc  CHAR(1000)               /* description of test case */
-            ,cas_spec  CHAR(1000)               /* optional: specification document, fully qualified path or only filename to be found in folder &g_doc */
-            ,cas_start INT FORMAT=datetime21.2  /* starting date and time of the last run */
-            ,cas_end   INT FORMAT=datetime21.2  /* ending date and time of the last run */
-            ,cas_res   INT                      /* overall test result of last run: 0 .. OK, 1 .. not OK, 2 .. manual */
-         );
-         CREATE TABLE target.tst(COMPRESS=CHAR)
-         (                                    /* Test */
-             tst_scnid  INT FORMAT=z3.        /* reference to test scenario */
-            ,tst_casid  INT FORMAT=z3.        /* reference to test case */
-            ,tst_id     INT FORMAT=z3.        /* sequential number of test within test case */
-            ,tst_type   CHAR(32)              /* type of test (name of assert macro) */
-            ,tst_desc   CHAR(1000)            /* description of test */
-            ,tst_exp    CHAR(255)             /* expected result */
-            ,tst_act    CHAR(255)             /* actual result */
-            ,tst_res    INT                   /* test result of the last run: 0 .. OK, 1 .. manual, 2 .. not OK */
-            ,tst_errmsg CHAR(1000)            /* custom error message for asserts */
-         );
-         CREATE TABLE target.exa(COMPRESS=CHAR)
-         (                                        /* all possible examinees */
-             exa_id       INT FORMAT=z3.          /* number of examinees */
-            ,exa_auton    INT                     /* Number of autocall path */
-            ,exa_pgm      CHAR(1000)              /* name of program file */ 
-            ,exa_changed  INT FORMAT=datetime21.2 /* Change Datetime value of examinee */
-            ,exa_filename CHAR(1000)              /* absolute path and name of program file */
-            ,exa_path     CHAR(1000)              /* path of program file relative to SASUnit Root */ 
-            ,exa_tcg_pct  INT FORMAT=NLPCT.     
-         );
-      QUIT;
+      %_createTestDatabase(libref=target)
       %IF %_handleError(&l_macname.
                        ,ErrorCreateDB
                        ,&syserr. NE 0
@@ -734,14 +653,18 @@
    %PUT ============================ SASUnit has been initialized successfully ==========================;
    %PUT;
 
-   %GOTO exit;
+   %RETURN;
 %errexit:
    %PUT;
-   %PUT &g_error: ===================== Error! Testsuite aborted! ===========================================;
+   %PUT &g_error: ===================== Errors occured! Check log files! ===========================================;
+   %PUT;
+   %*RETURN;
+%fatalexit:
+   %PUT;
+   %PUT &g_error: ===================== Fatal errors occured! test suite aborted! ===========================================;
    %PUT;
    LIBNAME target;
-    endsas;
-%exit:
+   endsas;
 %MEND initSASUnit;
 
 /** \endcond */

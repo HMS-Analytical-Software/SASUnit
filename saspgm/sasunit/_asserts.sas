@@ -68,17 +68,6 @@
       %END;
    %END;
 
-   %IF (&g_verbose.) %THEN %DO;
-         %PUT --------------------------------------------------------------------------------;
-      %IF (&i_result. NE 2) %THEN %DO;
-         %PUT &G_NOTE.(SASUNIT): &l_errMsg.;
-      %END;
-      %ELSE %DO;
-         %PUT &G_ERROR.(SASUNIT): &l_errMsg.;
-      %END;
-         %PUT --------------------------------------------------------------------------------;
-   %END;
-
    PROC SQL NOPRINT;
       /* determine number of test case */
       SELECT max(cas_id) INTO :&r_casid FROM target.cas WHERE cas_scnid=&g_scnid;
@@ -86,6 +75,7 @@
          %PUT --------------------------------------------------------------------------------;
          %PUT &g_error.(SASUNIT): _asserts: Error retrieving testcase id;
          %PUT --------------------------------------------------------------------------------;
+         %_issueErrorMessage (App.Program.SASUnitAsserts, ERROR: _asserts: Error retrieving testcase id)
          %RETURN;
       %END;
       /* generate a new check number */
@@ -98,17 +88,35 @@
       %IF &&&r_tstid=. %THEN %LET &r_tstid=1;
       %ELSE                  %LET &r_tstid=%eval(&&&r_tstid+1);
       INSERT INTO target.tst VALUES (
-          &g_scnid
-         ,&&&r_casid
-         ,&&&r_tstid
+          &g_scnid.
+         ,&&&r_casid..
+         ,&&&r_tstid..
          ,"&i_type"
-         ,%sysfunc(quote(&i_desc%str( )))
-         ,%sysfunc(quote(&i_expected%str( )))
-         ,%sysfunc(quote(&i_actual%str( )))
+         ,%sysfunc(quote(&i_desc.%str( )))
+         ,%sysfunc(quote(&i_expected.%str( )))
+         ,%sysfunc(quote(&i_actual.%str( )))
          ,&i_result
          ,"&l_errMsg"
       );
    QUIT;
+
+   %IF (&g_verbose.) %THEN %DO;
+         %PUT --------------------------------------------------------------------------------;
+      %IF (&i_result. = 2) %THEN %DO;
+         %*_issueErrorMessage (App.Program.SASUnitAsserts, ERROR~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.);
+         %PUT &G_ERROR.(SASUNIT): &l_errMsg.;
+      %END;
+      %ELSE %DO;
+         %IF (&i_result. = 1) %THEN %DO;
+            %*_issueInfoMessage (App.Program.SASUnitAsserts, MANUAL~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.);
+         %END;
+         %ELSE %DO;
+            %*_issueInfoMessage (App.Program.SASUnitAsserts, OK~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.);
+         %END;
+         %PUT &G_NOTE.(SASUNIT): &l_errMsg.;
+      %END;
+         %PUT --------------------------------------------------------------------------------;
+   %END;
 
    %PUT ========================== Check &&&r_casid...&&&r_tstid (&i_type) =====================================;
 

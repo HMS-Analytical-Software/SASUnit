@@ -34,7 +34,7 @@
    \param   i_errorcode      error code unique to the calling macro
    \param   i_condition      condition - logical expression, will be evaluated and returned by the macro
    \param   i_text           error message, further information will be issued to the SAS log
-   \param   i_verbose        issue message to the SAS log even if i_condition evaluates to false, 
+   \param   i_verbose        issue message to the SAS log even if i_condition evaluates to true, 
                              default is 0
    \param   i_msgytpe        Type of message: ERROR/WARNING (optional: default=ERROR)
    \return                   evaluated i_condition
@@ -44,8 +44,8 @@
                     ,i_errorcode      
                     ,i_condition      
                     ,i_text           
-                    ,i_verbose=0       
-                    ,i_msgtype=&G_ERROR.      
+                    ,i_verbose=&g_verbose.
+                    ,i_msgtype=ERROR
                     );
 
 %IF %unquote(&i_condition) %THEN %DO;

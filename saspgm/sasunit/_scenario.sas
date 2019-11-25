@@ -37,6 +37,7 @@
                     ,InvalidTargetDir
                     ,"&io_target" EQ "" OR NOT %_existDir(&io_target)
                     ,target directory &io_target does not exist
+                    ,i_verbose=0
                     ) 
       %THEN %GOTO errexit;
 
@@ -46,6 +47,7 @@
                     ,ErrorNoTargetDirLib
                     ,%quote(&syslibrc.) NE 0
                     ,test database cannot be opened
+                    ,i_verbose=0
                     ) 
       %THEN %GOTO errexit;
 

@@ -50,6 +50,7 @@
                     ,InvalidTsu
                     ,%_nobs(target.tsu) NE 1
                     ,invalid test database: target.tsu
+                    ,i_verbose=0
                     ) 
       %THEN %GOTO errexit;
 
@@ -57,6 +58,7 @@
                     ,MissingCas
                     ,NOT %sysfunc(exist(target.cas))
                     ,invalid test database: target.cas
+                    ,i_verbose=0
                     ) 
       %THEN %GOTO errexit;
 
@@ -64,6 +66,7 @@
                     ,MissingScn
                     ,NOT %sysfunc(exist(target.scn))
                     ,invalid test database: target.scn
+                    ,i_verbose=0
                     ) 
       %THEN %GOTO errexit;
 
@@ -71,6 +74,7 @@
                     ,MissingTst
                     ,NOT %sysfunc(exist(target.tst))
                     ,invalid test database: target.tst
+                    ,i_verbose=0
                     ) 
       %THEN %GOTO errexit;
 

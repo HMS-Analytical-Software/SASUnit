@@ -99,7 +99,7 @@
          ,&l_casid.
          ,&l_exaid.
          ,"&i_object."
-         ,"&i_desc."
+         ,%sysfunc(quote(&i_desc.))
          ,"%_abspath(&g_doc,&i_specdoc)"
          ,%sysfunc(datetime())
          ,.

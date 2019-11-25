@@ -174,7 +174,7 @@
 
          IF _n_=1 THEN DO;
             /*-- only if testreport is generated competely anew --------------------*/
-            IF tsu_lastrep=0 OR &o_force THEN DO;
+            IF missing(tsu_lastrep) OR &o_force THEN DO;
                /*-- copy static files - images, css etc. ---------------------------*/
                PUT '%_copydir(' /
                    "    &g_sasunitroot./resources" '/html/%str(*)' /

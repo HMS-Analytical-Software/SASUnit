@@ -31,18 +31,33 @@
                    );
 
    %global g_inScenario g_inTestCase g_inTestCall g_scnID;
-   %local l_scenarioPath;
+   %local l_scenarioPath l_macname;
    
-   %if &g_inScenario. EQ 1 %then %do;
-      %put ERROR: initScenario must not be called twice!;
-   %end;
-   %if &g_inTestCall. EQ 1 %then %do;
-      %put ERROR: initScenario must not be called within a testcall!;
-   %end;
-   %if &g_inTestCase. EQ 1 %then %do;
-      %put ERROR: initScenario must not be called within a testcase!;
-   %end;
+   %_initErrorHandler;
+   %LET l_macname=&sysmacroname;
    
+   %if (%_handleError(&l_macname.
+                     ,CallSequenceScenario
+                     ,(&g_inScenario. EQ 1)
+                     ,initScenario must not be called twice!
+                     ,i_verbose=0
+                     ) 
+       ) %then %return;
+   %if (%_handleError(&l_macname.
+                     ,CallSequenceScenario
+                     ,(&g_inTestCase. EQ 1)
+                     ,initScenario must not be called within a testcase!
+                     ,i_verbose=0
+                     ) 
+       ) %then %return;
+   %if (%_handleError(&l_macname.
+                     ,CallSequenceScenario
+                     ,&g_inTestCall. EQ 1
+                     ,initScenario must not be called within a testcall!
+                     ,i_verbose=0
+                     ) 
+       ) %then %return;
+       
    %let g_inScenario=0;
    %let g_inTestCase=0;
    %let g_inTestCall=0;
