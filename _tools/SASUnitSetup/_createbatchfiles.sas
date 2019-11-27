@@ -1,4 +1,5 @@
 %macro _createBatchFiles(i_sasunitRootFolder=
+                        ,i_targetFolder=
                         ,i_projectBinFolder=
                         ,i_sasunitLanguage=
                         ,i_operatingSystem=
@@ -6,7 +7,7 @@
                         ,i_sasexe=
                         );
 
-   %_createBatchFile(i_sasunitCommandFile=&targetFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..overwrite
+   %_createBatchFile(i_sasunitCommandFile=&i_targetFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..overwrite
                     ,i_sasunitRootFolder=&i_sasunitRootFolder.
                     ,i_projectBinFolder=&i_projectBinFolder.
                     ,i_sasunitOverwrite=1
@@ -22,7 +23,7 @@
                     ,i_sasexe=&i_sasexe.
                     ,i_sasunitJenkinsPlugin=0
                     );
-   %_createBatchFile(i_sasunitCommandFile=&targetFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage.
+   %_createBatchFile(i_sasunitCommandFile=&i_targetFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage.
                     ,i_sasunitRootFolder=&i_sasunitRootFolder.
                     ,i_projectBinFolder=&i_projectBinFolder.
                     ,i_sasunitOverwrite=0
@@ -38,7 +39,7 @@
                     ,i_sasexe=&i_sasexe.
                     ,i_sasunitJenkinsPlugin=0
                     );
-   %_createBatchFile(i_sasunitCommandFile=&targetFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..overwrite.ci
+   %_createBatchFile(i_sasunitCommandFile=&i_targetFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..overwrite.ci
                     ,i_sasunitRootFolder=&i_sasunitRootFolder.
                     ,i_projectBinFolder=&i_projectBinFolder.
                     ,i_sasunitOverwrite=1
@@ -54,7 +55,7 @@
                     ,i_sasexe=&i_sasexe.
                     ,i_sasunitJenkinsPlugin=1
                     );
-   %_createBatchFile(i_sasunitCommandFile=&targetFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..ci
+   %_createBatchFile(i_sasunitCommandFile=&i_targetFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..ci
                     ,i_sasunitRootFolder=&i_sasunitRootFolder.
                     ,i_projectBinFolder=&i_projectBinFolder.
                     ,i_sasunitOverwrite=0

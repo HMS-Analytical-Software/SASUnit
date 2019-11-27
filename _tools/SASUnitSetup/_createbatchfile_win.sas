@@ -37,7 +37,6 @@
       put "SET SASUNIT_CROSSREFERENCE=&i_sasunitCrossRef.";
       put "SET SASUNIT_CROSSREFERENCE_SASUNIT=&i_sasunitCrossRefSASUnit.";
       put "SET SASUNIT_VERBOSE=&i_sasunitVerbose.";
-      put "SET SASUNIT_PROJECT_BIN_FOLDER=&i_projectBinFolder.";
       put;
       put "echo.";
       put 'echo SASUnit root path     = %SASUNIT_ROOT%';
@@ -49,7 +48,6 @@
       put 'echo Crossreference        = %SASUNIT_CROSSREFERENCE%';
       put 'echo Crossref for SASUnit  = %SASUNIT_CROSSREFERENCE_SASUNIT%';
       put 'echo Verbose               = %SASUNIT_VERBOSE%';
-      put 'echo Project bin folder    = %SASUNIT_PROJECT_BIN_FOLDER%';
       put "echo.";
       put;
       if (&i_sasunitOverwrite. = 0) then do;

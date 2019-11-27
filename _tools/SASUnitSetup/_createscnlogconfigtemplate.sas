@@ -1,19 +1,15 @@
-%macro _createScnLogConfigTemplate(i_projectBinFolder =
+%macro _createScnLogConfigTemplate(i_targetFolder     =
                                   ,i_sasunitLogPath   =
                                   ,i_sasunitScnLogPath=
                                   ,i_sasunitLanguage  =
                                   );
    data _null_;
-      file "&targetFolder./sasunit.scnlogconfig.&i_sasunitLanguage..template.xml";
+      file "&i_targetFolder./sasunit.scnlogconfig.&i_sasunitLanguage..template.xml";
       put '<?xml version="1.0" encoding="UTF-8" ?>';
       put '<logging:configuration xmlns:logging="http://www.sas.com/xml/logging/1.0/">';
       %_writeSASUnitScenarioAppender (i_logpath=&i_sasunitScnLogPath.
 	                                 ,i_append=false
 	                                 )
-      put;
-      %_writeSASUnitSuiteAppender (i_logpath=&i_sasunitLogPath.
-	                              ,i_append=true
-	                              )
       put;
       %_writeSASUnitAssertAppender (i_logpath=&i_sasunitLogPath.
                                    ,i_append=true
@@ -23,12 +19,6 @@
                           ,i_additivity=TRUE
                           ,i_level=Info
                           ,i_appender=SASUnitScenarioAppender
-                          );
-      put;
-      %_writeSASUnitLogger(i_loggerName=App.Program.SASUnit
-                          ,i_additivity=FALSE
-                          ,i_level=Info
-                          ,i_appender=SASUnitSuiteAppender
                           );
       put;
       put '   <!-- New logger for SASUnit messages by error handler; Not sure if needed at the end of the day -->';

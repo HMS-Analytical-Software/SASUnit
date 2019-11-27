@@ -20,18 +20,18 @@ options SASAUTOS=(SASAUTOS "&g_sasunitRootPath.\saspgm\sasunit" "&g_sasunitRootP
 options mrecall mprint;
 
 *** Windows SASUnit ***;
-%let jenkinsPath =&g_sasunitRootPath.;
-%let sasPath     =%sysget (SASUNIT_SAS_PATH);
-%let language    =DE;
-%let version     =%sysget (SASUNIT_SAS_VERSION);
-%let targetFolder=&jenkinsPath.\bin;
+%let jenkinsPath      =&g_sasunitRootPath.;
+%let sasPath          =%sysget (SASUNIT_SAS_PATH);
+%let language         =DE;
+%let version          =%sysget (SASUNIT_SAS_VERSION);
+%let projectBinFolder = bin;
 
 %SASUnitSetup(i_sasunitRootFolder  =&g_sasunitRootPath.
              ,i_projectRootFolder  =&jenkinsPath.
              ,i_sasunitLogPath     =&jenkinsPath./doc/sasunit/%lowcase(&language.)
              ,i_sasunitScnLogPath  =&jenkinsPath./doc/sasunit/%lowcase(&language.)/log
              ,i_sasunitTestDBFolder=&jenkinsPath./doc/sasunit/%lowcase(&language.)
-             ,i_projectBinFolder   =bin
+             ,i_projectBinFolder   =&projectBinFolder.
              ,i_sasunitLanguage    =&language.
              ,i_sasunitRunAllPgm   =&jenkinsPath./saspgm/test/run_all.sas
              ,i_operatingSystem    =&os.
@@ -47,7 +47,7 @@ options mrecall mprint;
              ,i_sasunitLogPath     =&jenkinsPath./doc/sasunit/%lowcase(&language.)
              ,i_sasunitScnLogPath  =&jenkinsPath./doc/sasunit/%lowcase(&language.)/log
              ,i_sasunitTestDBFolder=&jenkinsPath./doc/sasunit/%lowcase(&language.)
-             ,i_projectBinFolder   =bin
+             ,i_projectBinFolder   =&projectBinFolder.
              ,i_sasunitLanguage    =&language.
              ,i_sasunitRunAllPgm   =&jenkinsPath./saspgm/test/run_all.sas
              ,i_operatingSystem    =&os.
@@ -61,14 +61,14 @@ options mrecall mprint;
 %let sasPath     =%sysget (SASUNIT_SAS_PATH);
 %let language    =DE;
 %let version     =%sysget (SASUNIT_SAS_VERSION);
-%let targetFolder=&jenkinsPath.\bin;
+%let projectBinFolder = bin;
 
 %SASUnitSetup(i_sasunitRootFolder  =&g_sasunitRootPath.
              ,i_projectRootFolder  =&jenkinsPath.
              ,i_sasunitLogPath     =&jenkinsPath./doc/sasunit/%lowcase(&language.)
              ,i_sasunitScnLogPath  =&jenkinsPath./doc/sasunit/%lowcase(&language.)/log
              ,i_sasunitTestDBFolder=&jenkinsPath./doc/sasunit/%lowcase(&language.)
-             ,i_projectBinFolder   =bin
+             ,i_projectBinFolder   =&projectBinFolder.
              ,i_sasunitLanguage    =&language.
              ,i_sasunitRunAllPgm   =&jenkinsPath./saspgm/run_all.sas
              ,i_operatingSystem    =&os.
@@ -84,7 +84,7 @@ options mrecall mprint;
              ,i_sasunitLogPath     =&jenkinsPath./doc/sasunit/%lowcase(&language.)
              ,i_sasunitScnLogPath  =&jenkinsPath./doc/sasunit/%lowcase(&language.)/log
              ,i_sasunitTestDBFolder=&jenkinsPath./doc/sasunit/%lowcase(&language.)
-             ,i_projectBinFolder   =bin
+             ,i_projectBinFolder   =&projectBinFolder.
              ,i_sasunitLanguage    =&language.
              ,i_sasunitRunAllPgm   =&jenkinsPath./saspgm/run_all.sas
              ,i_operatingSystem    =&os.

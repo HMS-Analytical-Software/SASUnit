@@ -1,5 +1,5 @@
-%macro _createConfigFile(i_projectBinFolder =
-                        ,i_projectRootFolder=
+%macro _createConfigFile(i_projectRootFolder=
+                        ,i_targetFolder     =
                         ,i_sasunitLogPath   =
                         ,i_sasunitLanguage  =
                         ,i_sasunitRunAllPgm =
@@ -30,7 +30,7 @@
    %put >>>&=l_sasunitRunAllPgm.;
 
    data _NULL_;
-      file "&targetFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..cfg";
+      file "&i_targetFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..cfg";
       put "/**";
       put "   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.";
       put "               For copyright information and terms of usage under the GPL license see included file readme.txt";
