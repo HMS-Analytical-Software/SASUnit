@@ -13,6 +13,7 @@
 	  l_sasunitRunAllPgm
 	  l_sasunitLogPath
 	  l_sasconfig
+     l_sasunitLogFileName
    ;
 
    %let l_projectRootFolder   =%sysfunc(translate (&i_projectRootFolder.,/,\));
@@ -22,8 +23,9 @@
 
    %put >>>&=l_sasunitRunAllPgm.;
    
-   %let l_sasunitRunAllPgm    =%_stdPath(&l_projectRootFolder., &l_sasunitRunAllPgm.);
    %let l_sasunitLogPath      =%_stdPath(&l_projectRootFolder., &l_sasunitLogPath.);
+   %let l_sasunitRunAllPgm    =%_stdPath(&l_projectRootFolder., &l_sasunitRunAllPgm.);
+   %let l_sasunitLogFileName  =%scan (&l_sasunitRunAllPgm., -1, /);
    
    %put >>>&=l_sasunitRunAllPgm.;
 
@@ -40,8 +42,8 @@
       put;
       put "-CONFIG ""&l_sasconfig.""";
       put "-sysin ""&l_sasunitRunAllPgm."""; 
-	  put "-log ""&l_sasunitLogPath./%sysfunc(tranwrd(&l_sasunitRunAllPgm., .sas, .log))""";
-	  put "-print ""&l_sasunitLogPath./%sysfunc(tranwrd(&l_sasunitRunAllPgm., .sas, .lst))""";
+	  put "-log ""&l_sasunitLogPath./%sysfunc(tranwrd(&l_sasunitLogFileName., .sas, .log))""";
+	  put "-print ""&l_sasunitLogPath./%sysfunc(tranwrd(&l_sasunitLogFileName., .sas, .lst))""";
    run;
 
 %mend _createConfigFile;

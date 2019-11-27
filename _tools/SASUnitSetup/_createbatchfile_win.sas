@@ -52,7 +52,12 @@
       put 'echo Project bin folder    = %SASUNIT_PROJECT_BIN_FOLDER%';
       put "echo.";
       put;
-      put "echo ""Starting SASUnit ...""";
+      if (&i_sasunitOverwrite. = 0) then do;
+         put "echo ""Starting SASUnit ...""";
+      end;
+      else do;
+         put "echo ""Starting SASUnit in overwrite mode...""";
+      end;
       put """&i_sasexe."" -CONFIG ""bin\sasunit.%nrstr(%%SASUNIT_SAS_VERSION%%.%%SASUNIT_HOST_OS%%.%%SASUNIT_LANGUAGE%%).cfg"" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC ""bin\sasunit.logconfig.&i_sasunitLanguage..xml""";
       put;
       put 'if %ERRORLEVEL%==0 goto normalexit';

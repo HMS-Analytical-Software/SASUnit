@@ -2,10 +2,6 @@ libname tmp "%sysget (SASUNIT_ROOT)";
 %let g_sasunitRootPath = %sysfunc(pathname(tmp));
 libname tmp clear;
 
-libname tmp "%sysget (SASUNIT_PROJECT_ROOT)";
-%let g_projectRootPath = %sysfunc(pathname(tmp));
-libname tmp clear;
-
 libname tmp "%sysget (SASUNIT_TOOL_ROOT)";
 %let g_toolRootPath = %sysfunc(pathname(tmp));
 libname tmp clear;
@@ -28,7 +24,7 @@ options mrecall mprint;
 %let sasPath     =%sysget (SASUNIT_SAS_PATH);
 %let language    =DE;
 %let version     =%sysget (SASUNIT_SAS_VERSION);
-%let targetFolder=&g_sasunitRootPath.\bin;
+%let targetFolder=&jenkinsPath.\bin;
 
 %SASUnitSetup(i_sasunitRootFolder  =&g_sasunitRootPath.
              ,i_projectRootFolder  =&jenkinsPath.
@@ -37,7 +33,7 @@ options mrecall mprint;
              ,i_sasunitTestDBFolder=&jenkinsPath./doc/sasunit/%lowcase(&language.)
              ,i_projectBinFolder   =bin
              ,i_sasunitLanguage    =&language.
-             ,i_sasunitRunAllPgm   =%sysget(SASUNIT_RUNALL)
+             ,i_sasunitRunAllPgm   =&jenkinsPath./saspgm/test/run_all.sas
              ,i_operatingSystem    =&os.
              ,i_sasVersion         =&version.
              ,i_sasexe             =&sasPath.\&version.\sas.exe
@@ -53,7 +49,7 @@ options mrecall mprint;
              ,i_sasunitTestDBFolder=&jenkinsPath./doc/sasunit/%lowcase(&language.)
              ,i_projectBinFolder   =bin
              ,i_sasunitLanguage    =&language.
-             ,i_sasunitRunAllPgm   =%sysget(SASUNIT_RUNALL)
+             ,i_sasunitRunAllPgm   =&jenkinsPath./saspgm/test/run_all.sas
              ,i_operatingSystem    =&os.
              ,i_sasVersion         =&version.
              ,i_sasexe             =&sasPath.\&version.\sas.exe
@@ -61,11 +57,11 @@ options mrecall mprint;
              );
 
 *** Windows Examples ***;
-%let jenkinsPath =&g_projectRootPath.;
+%let jenkinsPath =&g_sasunitRootPath./example;
 %let sasPath     =%sysget (SASUNIT_SAS_PATH);
 %let language    =DE;
 %let version     =%sysget (SASUNIT_SAS_VERSION);
-%let targetFolder=&g_projectRootPath.\bin;
+%let targetFolder=&jenkinsPath.\bin;
 
 %SASUnitSetup(i_sasunitRootFolder  =&g_sasunitRootPath.
              ,i_projectRootFolder  =&jenkinsPath.
@@ -74,7 +70,7 @@ options mrecall mprint;
              ,i_sasunitTestDBFolder=&jenkinsPath./doc/sasunit/%lowcase(&language.)
              ,i_projectBinFolder   =bin
              ,i_sasunitLanguage    =&language.
-             ,i_sasunitRunAllPgm   =%sysget(SASUNIT_RUNALL)
+             ,i_sasunitRunAllPgm   =&jenkinsPath./saspgm/run_all.sas
              ,i_operatingSystem    =&os.
              ,i_sasVersion         =&version.
              ,i_sasexe             =&sasPath.\&version.\sas.exe
@@ -90,7 +86,7 @@ options mrecall mprint;
              ,i_sasunitTestDBFolder=&jenkinsPath./doc/sasunit/%lowcase(&language.)
              ,i_projectBinFolder   =bin
              ,i_sasunitLanguage    =&language.
-             ,i_sasunitRunAllPgm   =%sysget(SASUNIT_RUNALL)
+             ,i_sasunitRunAllPgm   =&jenkinsPath./saspgm/run_all.sas
              ,i_operatingSystem    =&os.
              ,i_sasVersion         =&version.
              ,i_sasexe             =&sasPath.\&version.\sas.exe
