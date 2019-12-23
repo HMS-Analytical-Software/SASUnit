@@ -37,7 +37,7 @@
    %if %_handleError(&l_macname.
                     ,WrongOS
                     ,(%upcase(&sysscp.) NE WIN) AND (%upcase(&sysscpl.) NE LINUX) AND (%upcase(&sysscpl.) NE AIX)
-                    ,Invalid operating system - only WIN%str(,) LINUX AND AIX
+                    ,Invalid operating system - only WINDOWS%str(,) LINUX AND AIX
                     ,i_verbose=&i_verbose.
                     ) 
    %then %let l_result=1;
@@ -47,6 +47,14 @@
                     ,WrongVer
                     ,(&sysver. NE 9.3) AND (&sysver. NE 9.4)
                     ,Invalid SAS version - only SAS 9.3 and 9.4
+                    ,i_verbose=&i_verbose.
+                    ) 
+   %then %let l_result=1;
+
+   %if %_handleError(&l_macname.
+                    ,WrongVer
+                    ,(&sysver. = 9.3 AND %upcase(&sysscp.) = WIN)
+                    ,SAS version 9.3 is no longer supported under WINDOWS
                     ,i_verbose=&i_verbose.
                     ) 
    %then %let l_result=1;
