@@ -28,7 +28,6 @@
    \param   i_specdoc         optional: path of specification document
    \return  Information on current testcase in macro variables
    
-   
 */ /** \cond */ 
 
 %MACRO initTestcase(i_object   =  
@@ -107,7 +106,7 @@
       );
    QUIT;
 
-   %PUT ========================== test case &l_casid ======================================================;
+   %_issueInfoMessage(&g_currentLogger., %str (========================== test case &l_casid ======================================================))
 
    %if (&g_runmode. ne SASUNIT_INTERACTIVE) %then %do;
       /* reroute SASLOG and SASLIST */

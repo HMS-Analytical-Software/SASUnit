@@ -111,7 +111,7 @@
          %IF &l_symboli = &l_symbolj %THEN %goto label1;
          %LET l_potenz = &l_potenz*2;
       %END;
-      %PUT &g_error.(SASUNIT): assertColumns: invalid symbol &l_symboli in parameter i_allow;
+      %_issueAssertErrorMessage (assertColumns: invalid symbol &l_symboli in parameter i_allow);
       %RETURN;
    %label1:
       %LET l_mask = %sysfunc(bor(&l_mask, &l_potenz));
@@ -122,8 +122,8 @@
 
    /*-- input from parameter i_include should override the input from i_exclude--*/
    %IF (%length(&i_include) > 0 AND %length(&i_exclude) > 0) %THEN %DO;
-     %PUT &g_warning.(SASUNIT): Both parameters i_include and i_exclude have been set.;
-     %PUT &g_warning.(SASUNIT): I_exclude parameter will be dropped;
+      %_issueAssertWarningMessage (assertColumns: Both parameters i_include and i_exclude have been set.);
+      %_issueAssertWarningMessage (assertColumns: I_exclude parameter will be dropped);
      %LET i_exclude =;
    %END;
 
@@ -146,14 +146,14 @@
    %LOCAL l_rc l_actual; 
    %IF NOT %sysfunc(exist(&i_actual,DATA)) AND NOT %sysfunc(exist(&i_actual,VIEW)) %THEN %DO;
       %LET l_rc=2;
-      %LET l_actual=ERROR: actual table not found.;
+      %LET l_actual=&G_ERROR.: actual table not found.;
       %LET l_errMsg=Actual table (&i_actual.) could not be found!;
    %END;
 
    /*-- check if expected dataset exists ----------------------------------------*/
    %ELSE %IF NOT %sysfunc(exist(&i_expected,DATA)) AND NOT %sysfunc(exist(&i_expected,VIEW))%THEN %DO;
       %LET l_rc=2;
-      %LET l_actual=&l_actual ERROR: expected table not found.;
+      %LET l_actual=&l_actual &G_ERROR.: expected table not found.;
       %LET l_errMsg=Expected table (&i_expected.) could not be found!;
    %END;
 
@@ -181,7 +181,7 @@
          %IF %quote(&i_id) NE %THEN %str(ID &i_id;);
          %IF %quote(&i_include) NE %THEN %str(VAR &i_include;);
       RUN;
-      %PUT &g_note.(SASUNIT): sysinfo = &sysinfo;
+      %_issueAssertInfoMessage (assertColumns: sysinfo = &sysinfo); 
       %LET l_compResult = &sysinfo;
 
       %if (&g_runMode.=SASUNIT_BATCH) %then %do;

@@ -21,8 +21,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for i_assertType.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getTestSubfolder: Please specify a value for i_assertType.);
 
 %endTestcase();
 
@@ -33,8 +33,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for i_root.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getTestSubfolder: Please specify a value for i_root.);
 
 %endTestcase();
 
@@ -45,8 +45,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a valid directory for i_root.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getTestSubfolder: Please specify a valid directory for i_root.);
 
 %endTestcase();
 
@@ -57,8 +57,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for i_scnid.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getTestSubfolder: Please specify a value for i_scnid.);
 
 %endTestcase();
 
@@ -69,8 +69,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for i_casid.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getTestSubfolder: Please specify a value for i_casid.);
 
 %endTestcase();
 
@@ -81,8 +81,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for i_tstid.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getTestSubfolder: Please specify a value for i_tstid.);
 
 %endTestcase();
 
@@ -93,8 +93,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for r_path.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getTestSubfolder: Please specify a value for r_path.);
 
 %endTestcase();
 
@@ -105,8 +105,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Macrovariable for return of subfolder path was not declared by a .local-statement.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getTestSubfolder: Macrovariable for return of subfolder path was not declared by a .local-statement.);
 
 %endTestcase();
 

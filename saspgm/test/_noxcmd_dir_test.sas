@@ -43,7 +43,7 @@ run;
    run; 
 %mend addentry; 
 
-/*-- 001 Empty directory ---------------------------------------------------------*/
+/*-- 001 None existent directory ---------------------------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir;
 
 %initScenario(i_desc=Test of _noxcmd_dir.sas);
@@ -51,8 +51,8 @@ run;
 %_noxcmd_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
 %endTestcall;
 
-%assertLog(i_errors=0, i_warnings=0);
-%assertLogMsg(i_logmsg=^ERROR.SASUNIT.: Given directory does not exist:);
+%assertLog(i_errors=1, i_warnings=0);
+%assertLogMsg(i_logmsg=^ERROR: _noxcmd_dir: Given directory does not exist:);
 %endTestcase;
 
 /*-- 002 Empty directory ---------------------------------------------------------*/
@@ -64,7 +64,7 @@ run;
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
-%assertLogMsg(i_logmsg=^NOTE.SASUNIT.: Given directory is empty:);
+%assertLogMsg(i_logmsg=^NOTE: _single_dir: Given directory is empty: );
 %assertColumns(i_expected=dircheck, i_actual=dir, i_desc=check for empty dir file, i_fuzz=0.5)
 %endTestcase;
 

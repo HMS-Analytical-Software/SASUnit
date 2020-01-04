@@ -32,7 +32,8 @@
               ,i_desc     =OS and SAS Version are valid
               );
 %assertLogMsg (i_logmsg=NE WIN);
-%assertLogMsg (i_logmsg=NE 9.2);
+%assertLogMsg (i_logmsg=NE 9.3);
+%assertLogMsg (i_logmsg=%str(= 9.3));
 
 %endTestcase();
 

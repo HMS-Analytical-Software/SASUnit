@@ -22,8 +22,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for r_path.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _createTestSubfolder: Please specify a value for r_path.);
  
 %endTestcase();
 
@@ -34,8 +34,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Macrovariable for return of subfolder path was not declared by a .local-statement.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _createTestSubfolder: Macrovariable for return of subfolder path was not declared by a .local-statement.);
 
 %endTestcase();
 
@@ -47,8 +47,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg(i_logmsg=ERROR.SASUNIT.: Please specify a value for i_assertType.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg(i_logmsg=ERROR: _getTestSubfolder: Please specify a value for i_assertType.);
 %assertEquals(i_expected=_ERROR_
              ,i_actual  =&_path.
              ,i_desc    =Values must be equal
@@ -63,8 +63,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg(i_logmsg=ERROR.SASUNIT.: Please specify a value for i_root.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg(i_logmsg=ERROR: _getTestSubfolder: Please specify a value for i_root.);
 %assertEquals(i_expected=_ERROR_
              ,i_actual  =&_path.
              ,i_desc    =Values must be equal
@@ -79,8 +79,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg(i_logmsg=ERROR.SASUNIT.: Please specify a valid directory for i_root.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg(i_logmsg=ERROR: _getTestSubfolder: Please specify a valid directory for i_root.);
 %assertEquals(i_expected=_ERROR_
              ,i_actual  =&_path.
              ,i_desc    =Values must be equal
@@ -95,8 +95,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg(i_logmsg=ERROR.SASUNIT.: Please specify a value for i_scnid.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg(i_logmsg=ERROR: _getTestSubfolder: Please specify a value for i_scnid.);
 %assertEquals(i_expected=_ERROR_
              ,i_actual  =&_path.
              ,i_desc    =Values must be equal
@@ -111,8 +111,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg(i_logmsg=ERROR.SASUNIT.: Please specify a value for i_casid.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg(i_logmsg=ERROR: _getTestSubfolder: Please specify a value for i_casid.);
 %assertEquals(i_expected=_ERROR_
              ,i_actual  =&_path.
              ,i_desc    =Values must be equal
@@ -127,8 +127,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg(i_logmsg=ERROR.SASUNIT.: Please specify a value for i_tstid.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg(i_logmsg=ERROR: _getTestSubfolder: Please specify a value for i_tstid.);
 %assertEquals(i_expected=_ERROR_
              ,i_actual  =&_path.
              ,i_desc    =Values must be equal

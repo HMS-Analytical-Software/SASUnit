@@ -53,18 +53,18 @@
 
    /*** Check existence of input files */
    %IF (NOT %SYSFUNC(EXIST(&i_mCoverageLibrary..&l_MCoverageName.)) OR &l_MCoverageName=) %THEN %DO;
-     %PUT  ERROR(SASUNIT): Input dataset with converted coverage data does not exist.;
-     %GOTO _macExit;
+      %_issueErrorMessage (&g_currentLogger.,_reportTcgHTML: Input dataset with converted coverage data does not exist.);
+      %GOTO _macExit;
    %END;
    %IF (NOT %SYSFUNC(FILEEXIST(&i_macroLocation./&l_MacroName.)) OR &l_MacroName=) %THEN %DO;
-     %PUT  ERROR(SASUNIT): Input file with macro code does not exist.;
-     %GOTO _macExit;
+      %_issueErrorMessage (&g_currentLogger.,_reportTcgHTML: Input file with macro code does not exist.);
+      %GOTO _macExit;
    %END;
 
    /*** Read records from SAS data set and keep only those of given macro ***/
    /*** Keep only one record per combination of record, type first_line and last_line ***/
-   proc sort data=&i_mCoverageLibrary..&l_MCoverageName. (where=(upcase (MacName)="%scan(%upcase(&l_MacroName.),1,.)")) out=WORK._MCoverage1 nodupkey;
-      by Firstline RecordType LastLine;
+   data WORK._MCoverage1;
+      set &i_mCoverageLibrary..&l_MCoverageName. (where=(upcase (MacName)="%scan(%upcase(&l_MacroName.),1,.)"));
    run;
 
    /*** Get the covered rows of the macro ***/;

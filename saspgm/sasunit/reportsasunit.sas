@@ -32,6 +32,23 @@
    \return Results are created in the subdirectory rep of the test repository or in the directory 
            specified by parameter o_output.
            
+   \todo    Implement new folderstructure
+            Given Path will be without designated subfolder &o_pgmDocPath./rep will not be ctreated anymore.
+            New paths will be: 
+            - &o_pgmDocPath. for index, tree, overview, cas, home-html and icons
+            - &o_pgmDocPath./pgmDoc for Program dokumentation
+            - &o_pgmDocPath./pgmDoc/scn ???
+            - &o_pgmDocPath./pgmDoc/cas ???
+            - &o_pgmDocPath./tempDoc holds contents of tst folder and we bill deleted afterwards
+            - &o_pgmDocPath./img holds images (OK, Manual etc.)
+            - &o_pgmDocPath./scr as current
+            - &o_pgmDocPath./css as current
+            - &o_pgmDocPath./js as current
+            - &o_pgmDocPath./testDoc for whole Testdokumentation
+            - &o_pgmDocPath./testDoc/JSON holds info for crossref
+            - &o_pgmDocPath./testDoc/testCoverage for Test coverage assement            
+                               
+   \todo replace g_verbose
 */ /** \cond */ 
 
 %MACRO reportSASUnit (i_language         = _NONE_
@@ -324,10 +341,10 @@
 
    %GOTO exit;
 %errexit:
-      %PUT;
-      %PUT ======================== Error! reportSASUnit aborted! ==========================================;
-      %PUT;
-      %PUT;
+      %_issueInfoMessage (&g_currentLogger., %str ( ));
+      %_issueInfoMessage (&g_currentLogger., %str (======================== Error! reportSASUnit aborted! ==========================================));
+      %_issueInfoMessage (&g_currentLogger., %str ( ));
+      %_issueInfoMessage (&g_currentLogger., %str ( ));
 %exit:
    PROC DATASETS NOWARN NOLIST LIB=work;
       DELETE %scan(&d_rep.,2,.)

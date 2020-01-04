@@ -47,7 +47,7 @@
    %put &g_note.(SASUNIT): Directory search is:           &i_path;
 
    %*** Change backslashes to slashes ***;
-   %let l_i_path = %qsysfunc (translate (&i_path, /, \));
+   %let l_i_path = %_adaptSASUnitPathToOS(&i_path);
 
    %put &g_note.(SASUNIT): Corrected directory search is: &l_i_path;
 

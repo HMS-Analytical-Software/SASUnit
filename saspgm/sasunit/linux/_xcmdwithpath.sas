@@ -19,7 +19,9 @@
    \param   i_cmd          OS command parameters that contain text
    \return  r_rc           Return Code of %sysexec 
    
- */ /** \cond */ 
+   \todo replace g_verbose
+   \todo implement expected shell rc
+*/ /** \cond */ 
 
 %MACRO _xcmdWithPath(i_cmd_path =
                     ,i_cmd      =
@@ -31,20 +33,25 @@
    %LET logfile=%sysfunc(pathname(work))/___log.txt;
    %LET rc = %_delfile(&logfile);
    
-   %LET l_cmd = %sysfunc(translate(&i_cmd_path.,/ ,\));
+   %LET l_cmd = %_adaptSASUnitPathToOS(&i_cmd_path.);
    %LET l_cmd = &l_cmd. &i_cmd.;
    
    %SYSEXEC &l_cmd > "&logfile";
    %LET &r_rc = &sysrc.;
    
    %IF &g_verbose. %THEN %DO;
-      %PUT ======== OS Command Start ========;
+      %_issueInfoMessage (&g_currentLogger., _xcmdWithPath: %str(======== OS Command Start ========));
        /* Evaluate sysexec´s return code*/
-      %IF &l_rc. = 0 %THEN %PUT &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
-      %ELSE %PUT &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
+      %IF &sysrc. = 0 %THEN %DO;
+         %_issueInfoMessage (&g_currentLogger., _xcmdWithPath: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
+      %END;
+      %ELSE %DO;
+         %_issueErrorMessage (&g_currentLogger., _xcmdWithPath: &sysrc -> An Error occured);
+      %END;
 
       /* put sysexec command to log*/
-      %PUT &g_note.(SASUNIT): SYSEXEC COMMAND IS: &l_cmd > "&logfile";
+      %PUT &g_note.(SASUNIT): SYSEXEC COMMAND IS: ;
+      %_issueInfoMessage (&g_currentLogger., _xcmdWithPath: SYSEXEC COMMAND IS: &l_cmd > "&logfile");
       
       /* write &logfile to the log */
       /* for the following commands "cd", "pwd", "setenv" or "umask" SAS executes
@@ -60,10 +67,12 @@
             putlog _infile_;
          RUN;
       %END;
-      %ELSE %PUT No File Redirection for Commands cd, pwd, setenv and umask;
+      %ELSE DO;
+         %_issueInfoMessage (&g_currentLogger., _xcmdWithPath: No File Redirection for Commands cd, pwd, setenv and umask);
+      %END;
       %LET rc=%sysfunc(filename(filrf));
       
-      %PUT ======== OS Command End ========;
+      %_issueInfoMessage (&g_currentLogger., _xcmdWithPath: %str(======== OS Command End ========));
    %END;
 %MEND _xcmdWithPath; 
 

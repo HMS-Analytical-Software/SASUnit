@@ -36,11 +36,11 @@
    %let l_path_cts=_ERROR_;
 
    %if %nrbquote (&r_path.) = %str() %then %do;
-      %put &g_error.(SASUNIT): Please specify a value for r_path.;
+      %_issueErrorMessage (&g_currentLogger.,_createTestSubfolder: Please specify a value for r_path.);
       %RETURN;
    %end;
    %if not %symexist(&r_path.) %then %do;
-      %put &g_error.(SASUNIT): Macrovariable for return of subfolder path was not declared by a %nrstr(%%)local-statement.;
+      %_issueErrorMessage (&g_currentLogger.,_createTestSubfolder: Macrovariable for return of subfolder path was not declared by a %nrstr(%%)local-statement.);
       %RETURN;
    %end;
    %let &r_path.=_ERROR_;

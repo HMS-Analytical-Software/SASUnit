@@ -27,17 +27,20 @@
       g_sasstart
       g_splash
       g_infile_options
+      g_osDirSeparator
       ;
 
-   %LET g_removedir     =rm -r -f;
-   %LET g_removefile    =rm;
-   %LET g_makedir       =mkdir;
-   %LET g_copydir       =cp -R;
-   %LET g_endcommand    =%str(;);
+   %LET g_removedir       =rm -r -f;
+   %LET g_removefile      =rm;
+   %LET g_makedir         =mkdir;
+   %LET g_copydir         =cp -R;
+   %LET g_endcommand      =%str(;);
    %_xcmd(umask 003);
-   %let g_sasstart      ="%sysfunc(pathname(sasroot))/sasexe/sas";
-   %let g_splash        =;
-   %LET g_infile_options=;
+   %let g_sasstart        ="%sysfunc(pathname(sasroot))/sasexe/sas";
+   %let g_splash          =;
+   %LET g_infile_options  =;
+   %LET g_osCmdFileSuffix =sh;
+   %LET g_osDirSeparator  =/;
 
 %mend _oscmds;
 

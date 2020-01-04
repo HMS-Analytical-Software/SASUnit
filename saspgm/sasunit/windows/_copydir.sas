@@ -20,6 +20,7 @@
    \param   i_to         copy to 
    \return  operation system return code or 0 if OK
 
+   \todo replace g_verbose
 */ /** \cond */ 
 
 %macro _copyDir (i_from
@@ -35,25 +36,33 @@
    %let xmin =%sysfunc(getoption(xmin));
    options noxwait xsync xmin;
 
-   %let i_from = %qsysfunc(translate(&i_from,\,/));
-   %let i_to   = %qsysfunc(translate(&i_to  ,\,/));
-   %let logfile=%sysfunc(pathname(work))\___log.txt;
+   %let l_i_from  = %_makeSASUnitPath(&i_from.);
+   %let l_i_from  = %_adaptSASUnitPathToOS(&l_i_from.);
+   %let l_i_to    = %_makeSASUnitPath(&i_to.);
+   %let l_i_to    = %_adaptSASUnitPathToOS(&l_i_to.);
+   %let logfile = %sysfunc(pathname(work))\___log.txt;
+   
+   %PUT _LOCAL_;
 
    /*-- XCOPY
         /E copy directories (even empty ones) and files recursively 
         /I do not prompt before file or directory creation
         /Y do not prompt before overwriting target
      --*/
-   %sysexec (xcopy "&i_from" "&i_to" /E /I /Y > "&logfile" 2>&1);
+   %sysexec (xcopy &l_i_from &l_i_to /E /I /Y > "&logfile" 2>&1);
    
    %if &g_verbose. %then %do;
-      %put ======== OS Command Start ========;
+      %_issueInfoMessage (&g_currentLogger., _copyDir: %str(======== OS Command Start ========));
        /* Evaluate sysexec´s return code*/
-      %if &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
-      %else %put &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
+      %IF &sysrc. = 0 %THEN %DO;
+         %_issueInfoMessage (&g_currentLogger., _copyDir: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
+      %END;
+      %ELSE %DO;
+         %_issueErrorMessage (&g_currentLogger., _copyDir: &sysrc -> An Error occured);
+      %END;
 
       /* put sysexec command to log*/
-      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: xcopy "&i_from" "&i_to" /E /I /Y > "&logfile";
+      %_issueInfoMessage (&g_currentLogger., _copyDir: xcopy &l_i_from &l_i_to /E /I /Y > "&logfile");
       
       /* write &logfile to the log*/
       data _null_;
@@ -62,6 +71,7 @@
          putlog line;
       run;
       %put ======== OS Command End ========;
+      %_issueInfoMessage (&g_currentLogger., _copyDir: %str(======== OS Command End ========));
    %end;
    
    options &xwait &xsync &xmin;

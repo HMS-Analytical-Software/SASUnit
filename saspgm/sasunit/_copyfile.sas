@@ -22,6 +22,7 @@
    \param   i_file   input file with complete path
    \param   o_file   output file with complete path
 
+   \todo    Check if that can be replaced by %sysfunc(fcopy)
 */ /** \cond */
 
 %MACRO _copyFile (i_file  /* input file */
@@ -37,7 +38,7 @@
       RUN;
    %end;
    %else %do;
-      %PUT &G_NOTE.(SASUNIT): File "&i_file" does not exist. Target file will not be present.;
+      %_issueInfoMessage (&g_currentLogger.,_copyFile: File "&i_file" does not exist. Target file will not be present.);
    %end;
 %MEND _copyFile;
  /** \endcond */

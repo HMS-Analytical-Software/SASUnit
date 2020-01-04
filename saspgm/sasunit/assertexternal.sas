@@ -30,6 +30,7 @@
    \param     i_actualIsPath         Optional parameter: If put to Y, i_actual is checked if it is a valid path (default = "N")
    \param     i_desc                 Optional parameter: description of the assertion to be checked Default = "External comparison")
 
+   \todo replace g_verbose
 */ /** \cond */ 
 
 %MACRO assertExternal (i_script             =
@@ -113,9 +114,10 @@
    %*** Start tests                                           ***;
    %*************************************************************;
    
-   %_xcmdWithPath(i_cmd_path ="&i_script." "&i_expected." "&i_actual."
-                 ,i_cmd      ="&i_modifier." "&i_threshold."
-                 ,r_rc       =l_rc
+   %_xcmdWithPath(i_cmd_path           ="&i_script." "&i_expected." "&i_actual."
+                 ,i_cmd                ="&i_modifier." "&i_threshold."
+                 ,i_expected_shell_rc  =&i_expected_shell_rc.
+                 ,r_rc                 =l_rc
                  );
 
    %IF &l_rc. = &i_expected_shell_rc. %THEN %DO;

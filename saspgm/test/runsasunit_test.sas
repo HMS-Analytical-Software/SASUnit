@@ -25,7 +25,11 @@ run;
 %_switch();
 %endTestcall;
 
-%assertLogMsg (i_logMsg=ERROR.SASUNIT. .NoSourceFiles. in Makro RUNSASUNIT .Condition. 0 EQ 0.);
+%assertLog    (i_errors=5, i_warnings=0);
+%assertLogMsg (i_logMsg=ERROR: ----------------------);
+%assertLogMsg (i_logMsg=ERROR: .NoSourceFiles. in Makro RUNSASUNIT .Condition. 0 EQ 0.);
+%assertLogMsg (i_logMsg=ERROR: MessageText: Error in parameter i_source: no test scenarios found);
+
 
 %endTestcase;
 

@@ -27,17 +27,17 @@
 
    %if (&l_callertype.=scenario) %then %do;
       %if (&g_inScenario. = 1) %then %do;
-         %PUT &g_error.: initScenario must not be called twice!;
+         %_issueErrorMessage(&g_scenarioLogger.,_checkCallingSequence: initScenario must not be called twice!)
          1
          %RETURN;
       %end;
       %if (&g_inTestCall. = 1) %then %do;
-         %PUT &g_error.: initScenario must not be called within a test call!;
+         %_issueErrorMessage(&g_scenarioLogger.,_checkCallingSequence: initScenario must not be called within a test call!)
          1
          %RETURN;
       %end;
       %if (&g_inTestcase. = 1) %then %do;
-         %PUT &g_error.: initScenario must not be called within a test case!;
+         %_issueErrorMessage(&g_scenarioLogger.,_checkCallingSequence: initScenario must not be called within a test case!)
          1
          %RETURN;
       %end;
@@ -46,12 +46,12 @@
    %end;
    %if (&l_callertype.=assert) %then %do;
       %if (&g_inScenario. = 0) %then %do;
-         %PUT &g_error.: Assert must be called after initScenario!;
+         %_issueErrorMessage(&g_scenarioLogger.,_checkCallingSequence: Assert must be called after initScenario!)
          1
          %RETURN;
       %end;
       %if (&g_inTestcase. = 0) %then %do;
-         %PUT &g_error.: Assert must be called after initTestCase!;
+         %_issueErrorMessage(&g_scenarioLogger.,_checkCallingSequence: Assert must be called after initTestCase!)
          1
          %RETURN;
       %end;

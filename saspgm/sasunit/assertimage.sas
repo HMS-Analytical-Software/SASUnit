@@ -33,6 +33,7 @@
                                       modifier -metric ae to specify a number of pixels that may be different
    \param      i_desc                 Optional parameter: description of the assertion to be checked (default = "Comparison of images")
 
+   \todo replace g_verbose
 */ /** \cond */ 
 
 %MACRO assertImage (i_script             =
@@ -187,9 +188,10 @@
    %*** Start tests                                           ***;
    %*************************************************************;
 
-   %_xcmdWithPath(i_cmd_path ="&i_script." "&i_expected." "&i_actual." "&l_path./_image_diff.png"
-                 ,i_cmd      ="&i_modifier." "&i_threshold."
-                 ,r_rc       =l_rc
+   %_xcmdWithPath(i_cmd_path           ="&i_script." "&i_expected." "&i_actual." "&l_path./_image_diff.png"
+                 ,i_cmd                ="&i_modifier." "&i_threshold."
+                 ,i_expected_shell_rc  =&i_expected_shell_rc.
+                 ,r_rc                 =l_rc
                  );
 
    %IF &l_rc. = &i_expected_shell_rc. %THEN %DO;

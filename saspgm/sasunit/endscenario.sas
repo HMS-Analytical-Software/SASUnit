@@ -14,6 +14,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
+
 */
 /** \cond */ 
 %MACRO endScenario(i_messageStyle=ERROR);
@@ -24,12 +25,11 @@
    %endTestCase(i_messageStyle=NOTE);
    %IF &g_inScenario. NE 1 %THEN %DO;
       %IF (&i_messageStyle=ERROR) %THEN %DO;
-         %PUT &g_error.: endScenario must be called after initScenario;
+         %_issueErrorMessage (&g_currentLogger., endScenario: endScenario must be called after initScenario);
       %END;
       %ELSE %DO;
-         %PUT &g_note.(SASUNIT): endScenarios already run by user. This call was issued from _termScenario.;
+         %_issueInfoMessage (&g_currentLogger., endScenario: endScenario already run by user. This call was issued from _termScenario.);
       %END;
-      %RETURN;
       %RETURN;
    %END;
 

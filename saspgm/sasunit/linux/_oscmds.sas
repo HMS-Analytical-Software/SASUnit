@@ -15,6 +15,7 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 
+   \todo replace g_verbose
 */ /** \cond */  
 
 %macro _oscmds;
@@ -27,6 +28,7 @@
       g_sasstart
       g_splash
       g_infile_options
+      g_osDirSeparator
       ;
       
    %local
@@ -34,14 +36,16 @@
    ;   
    %LET l_macname=&sysmacroname;
 
-   %LET g_removedir     =rm -r -f;
-   %LET g_removefile    =rm;
-   %LET g_makedir       =mkdir;
-   %LET g_copydir       =cp -R;
-   %LET g_endcommand    =%str(;);
-   %LET g_sasstart      ="%sysfunc(pathname(sasroot))/bin/sas_&g_language.";
-   %LET g_splash        =;   
-   %LET g_infile_options=;
+   %LET g_removedir       =rm -r -f;
+   %LET g_removefile      =rm;
+   %LET g_makedir         =mkdir;
+   %LET g_copydir         =cp -R;
+   %LET g_endcommand      =%str(;);
+   %LET g_sasstart        ="%sysfunc(pathname(sasroot))/bin/sas_&g_language.";
+   %LET g_splash          =;   
+   %LET g_infile_options  =;
+   %LET g_osCmdFileSuffix =sh;
+   %LET g_osDirSeparator  =/;
    
    %*************************************************************;
    %*** Check if XCMD is allowed                              ***;

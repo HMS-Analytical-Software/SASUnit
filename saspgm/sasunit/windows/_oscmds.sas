@@ -15,6 +15,7 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
+   \todo replace g_verbose
 */ /** \cond */  
 
 %macro _oscmds;
@@ -29,6 +30,8 @@
       g_splash
       g_dateformat
       g_infile_options
+      g_osCmdFileSuffix
+      g_osDirSeparator
       ;
 
    %local
@@ -38,14 +41,16 @@
    
    %LET l_macname=&sysmacroname;
 
-   %LET g_copydir       =xcopy /E /I /Y;
-   %LET g_endcommand    =%str( );
-   %LET g_makedir       =md;
-   %LET g_removedir     =rd /S /Q;
-   %LET g_removefile    =del /S /Q;
-   %LET g_sasstart      ="%sysget(sasroot)/sas.exe";
-   %LET g_splash        =-nosplash;
-   %LET g_infile_options=IGNOREDOSEOF;
+   %LET g_copydir         =xcopy /E /I /Y;
+   %LET g_endcommand      =%str( );
+   %LET g_makedir         =md;
+   %LET g_removedir       =rd /S /Q;
+   %LET g_removefile      =del /S /Q;
+   %LET g_sasstart        ="%sysget(sasroot)/sas.exe";
+   %LET g_splash          =-nosplash;
+   %LET g_infile_options  =IGNOREDOSEOF;
+   %LET g_osCmdFileSuffix =cmd;
+   %LET g_osDirSeparator  =\;
 
    * retrieve dateformat from WINDOWS registry *;
    * Set default if anything goes wrong *;

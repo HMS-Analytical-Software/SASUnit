@@ -20,18 +20,40 @@
    \param   i_to         copy to 
    \return  operation system return code or 0 if OK
 
+   \todo replace g_verbose
 */ /** \cond */ 
 
-%macro _copyDir(i_from
-               ,i_to
-               );
+%macro _copyDir (i_from
+                ,i_to
+                );
 
-   %let l_i_from = %qsysfunc(tranwrd(&i_from, %str( ), %str(\ )));
-   %let l_i_to   = %qsysfunc(tranwrd(&i_to, %str( ), %str(\ )));
+   %LOCAL l_i_from l_i_to logfile;
 
-   %SYSEXEC(cp -R &i_from. &i_to.);
+   %let l_i_from = %_adaptSASUnitPtahToOS(&i_from);
+   %let l_i_to   = %_adaptSASUnitPtahToOS(&i_to);
+   %let logfile  = %sysfunc(pathname(work))/___log.txt;
 
-   %put &g_note.(SASUNIT): sysrc=&sysrc;
+   %SYSEXEC(cp -R &l_i_from. &l_i_to. > "&logfile" 2>&1);
+   %if &g_verbose. %then %do;
+      %_issueInfoMessage (&g_currentLogger., _copyDir: %str(======== OS Command Start ========));
+       /* Evaluate sysexec´s return code*/
+      %IF &sysrc. = 0 %THEN %DO;
+         %_issueInfoMessage (&g_currentLogger., _copyDir: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
+      %END;
+      %ELSE %DO;
+         %_issueErrorMessage (&g_currentLogger., _copyDir: &sysrc -> An Error occured);
+      %END;
 
+      /* put sysexec command to log*/
+      %_issueInfoMessage (&g_currentLogger., _copyDir: SYSEXEC COMMAND IS: cp -R &l_i_from. &l_i_to. > "&logfile" 2>&1);
+      
+      /* write &logfile to the log*/
+      data _null_;
+         infile "&logfile" truncover lrecl=512;
+         input line $512.;
+         putlog line;
+      run;
+      %_issueInfoMessage (&g_currentLogger., _copyDir: %str(======== OS Command End ========));
+   %end;
 %mend _copyDir;
 /** \endcond */

@@ -24,6 +24,7 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 			   
+   \todo replace g_verbose
 */ /** \cond */
 
 %macro _mkdir (dir
@@ -40,14 +41,18 @@
    %SYSEXEC(md "&dir" > "&logfile" 2>&1);  
    
    %if &g_verbose. %then %do;
-      %put ======== OS Command Start ========;
+      %_issueInfoMessage (&g_currentLogger., _mkdir: %str(======== OS Command Start ========));
 
       /* Evaluate sysexec´s return code */
-      %if &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
-      %else %put &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
+      %IF &sysrc. = 0 %THEN %DO;
+         %_issueInfoMessage (&g_currentLogger., _mkdir: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
+      %END;
+      %ELSE %DO;
+         %_issueErrorMessage (&g_currentLogger., _mkdir: &sysrc -> An Error occured);
+      %END;
 
       /* put sysexec command to log*/
-      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: md "&dir" > "&logfile";
+      %_issueInfoMessage (&g_currentLogger., _mkdir: SYSEXEC COMMAND IS: md "&dir" > "&logfile");
       
       /* write &logfile to the log*/
       data _null_;
@@ -55,7 +60,7 @@
          input line $512.;
          putlog line;
       run;
-      %put ======== OS Command End ========;
+      %_issueInfoMessage (&g_currentLogger., _mkdir: %str(======== OS Command End ========));
    %end;
 
    options &xwait &xsync &xmin;

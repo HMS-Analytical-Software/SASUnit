@@ -16,6 +16,6 @@
 */ /** \cond */ 
 
 %MACRO pgm1_1();
-%PUT Call of pgm1_1;
+   %PUT Call of pgm1_1;
 %MEND pgm1_1;
 /** \endcond */

@@ -17,8 +17,11 @@
             
    \param   i_withlibrefs    1..initialize also filerefs and librefs 
                              0..initialize only macro symbols. 
-   \param   i_appendSASAutos Y..append SASAUTOS, in intercative mode append SASAUTOS must be diabled
+   \param   i_appendSASAutos Y..append SASAUTOS, in interactive mode append SASAUTOS must be disabled
                              ..do not append SASAUTOS
+                             
+   \todo    Reimplement target.tsu as name value pair. Use macros %_readTestDBTsu (libref)
+   \todo replace g_verbose
 */ /** \cond */ 
 
 %MACRO _loadEnvironment(i_withlibrefs    =1
@@ -36,6 +39,7 @@
            g_work g_testout g_log g_logfile g_printfile g_caslogfile
            g_testcoverage g_verbose g_crossref g_crossrefsasunit g_rep_encoding
            g_language
+           g_SASUnitLogger g_scenarioLogger g_assertLogger
            ;
 
    %LOCAL i;
@@ -88,7 +92,7 @@
       call symput ('g_sasautos'       , trim(tsu_sasautos));
       call symput ('g_sasautos0'      , trim(tsu_sasautos));
    %DO i=1 %TO 29;                     
-      call symput ("g_sasautos&i"     , trim(tsu_sasautos&i));
+      call symput ("g_sasautos&i."    , trim(tsu_sasautos&i.));
    %END;                              
       call symput ('g_autoexec'       , trim(tsu_autoexec));
       call symput ('g_sascfg'         , trim(tsu_sascfg));
@@ -103,54 +107,56 @@
       call symput ('g_language'       , trim(tsu_language));
    RUN;
 
-   %LET g_project      = &g_project;
-   %LET g_root         = &g_root;
-   %LET g_sasunitroot  = %_abspath(&g_root,&g_sasunitroot);
-   %LET g_sasunit      = %_abspath(&g_root,&g_sasunit);
-   %LET g_sasunit_os   = %_abspath(&g_root,&g_sasunit_os);
-   %LET g_sasautos     = %_abspath(&g_root,&g_sasautos);
+   %LET g_project      = &g_project.;
+   %LET g_root         = &g_root.;
+   %LET g_sasunitroot  = %_abspath(&g_root,&g_sasunitroot.);
+   %LET g_sasunit      = %_abspath(&g_root,&g_sasunit.);
+   %LET g_sasunit_os   = %_abspath(&g_root,&g_sasunit_os.);
+   %LET g_sasautos     = %_abspath(&g_root,&g_sasautos.);
    %DO i=0 %TO 29;
-      %LET g_sasautos&i = %_abspath(&g_root,&&g_sasautos&i);
+      %LET g_sasautos&i = %_abspath(&g_root,&&g_sasautos&i..);
    %END;
-   %LET g_autoexec     = %_abspath(&g_root,&g_autoexec);
-   %LET g_sascfg       = %_abspath(&g_root,&g_sascfg);
-   %LET g_sasuser      = %_abspath(&g_root,&g_sasuser);
-   %LET g_testdata     = %_abspath(&g_root,&g_testdata);
-   %LET g_refdata      = %_abspath(&g_root,&g_refdata);
-   %LET g_doc          = %_abspath(&g_root,&g_doc);
+   %LET g_autoexec     = %_abspath(&g_root,&g_autoexec.);
+   %LET g_sascfg       = %_abspath(&g_root,&g_sascfg.);
+   %LET g_sasuser      = %_abspath(&g_root,&g_sasuser.);
+   %LET g_testdata     = %_abspath(&g_root,&g_testdata.);
+   %LET g_refdata      = %_abspath(&g_root,&g_refdata.);
+   %LET g_doc          = %_abspath(&g_root,&g_doc.);
    %LET g_testcoverage = &g_testcoverage.;
    %LET g_rep_encoding = UTF8;
 
    %LET g_work     = %sysfunc(pathname(work));
-   %LET g_testout  = &g_target/tst;
-   %LET g_log      = &g_target/log;
+   %LET g_testout  = &g_target./tst;
+   %LET g_log      = &g_target./log;
 
    %_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note);
 
-   %IF &i_withlibrefs %THEN %DO;
-         LIBNAME testout "&g_testout";
-         FILENAME testout "&g_testout";
+   %IF &i_withlibrefs. %THEN %DO;
+         LIBNAME testout "&g_testout.";
+         FILENAME testout "&g_testout.";
       %IF %length(&g_testdata) %THEN %DO;
-         LIBNAME testdata "&g_testdata";
-         FILENAME testdata "&g_testdata";
+         LIBNAME testdata "&g_testdata.";
+         FILENAME testdata "&g_testdata.";
          %LET g_testdata = %sysfunc(pathname(testdata));
       %END;
-      %IF %length(&g_refdata) %THEN %DO;
-         LIBNAME refdata "&g_refdata";
-         FILENAME refdata "&g_refdata";
+      %IF %length(&g_refdata.) %THEN %DO;
+         LIBNAME refdata "&g_refdata.";
+         FILENAME refdata "&g_refdata.";
          %LET g_refdata = %sysfunc(pathname(refdata));
       %END;
-      %IF %length(&g_doc) %THEN %DO;
-         FILENAME doc "&g_doc";
+      %IF %length(&g_doc.) %THEN %DO;
+         FILENAME doc "&g_doc.";
       %END;
    %END;
 
-   %IF (&i_appendSASAutos.=Y) %THEN %DO;
-      OPTIONS MAUTOSOURCE APPEND=(SASAUTOS=("&g_sasunit_os"
-      %DO i=0 %TO 29;
-         %IF "&&g_sasautos&i" NE "" %THEN "&&g_sasautos&i";
-      %END;     ));
+   %_insertAutoCallPath ("&g_sasunit_os.");
+   %DO i=0 %TO 29;
+      %IF "&&g_sasautos&i.." NE "" %THEN %_insertAutoCallPath ("&&g_sasautos&i..");
    %END;
+   
+   %LET g_SASUnitLogger  =App.Program.SASUnit;
+   %LET g_scenarioLogger =App.Program.SASUnitScenario;
+   %LET g_assertLogger   =App.Program.SASUnitScenario.Asserts;
    
    %_oscmds;
 

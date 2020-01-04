@@ -21,8 +21,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for i_scnid.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getScenarioTestId: Please specify a value for i_scnid.);
 
 %endTestcase();
 
@@ -33,8 +33,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for r_casid.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getScenarioTestId: Please specify a value for r_casid.);
 
 %endTestcase();
 
@@ -45,8 +45,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Please specify a value for r_tstid.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getScenarioTestId: Please specify a value for r_tstid.);
 
 %endTestcase();
 
@@ -57,8 +57,8 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Macrovariable for return of test case id was not declared by a .local-statement.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getScenarioTestId: Macrovariable for return of test case id was not declared by a .local-statement.);
 
 %endTestcase();
 
@@ -70,14 +70,14 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Macrovariable for return of test assert id was not declared by a .local-statement.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getScenarioTestId: Macrovariable for return of test assert id was not declared by a .local-statement.);
 
 %endTestcase();
 
 %global ret_tstid;
 
-*** Testcase 7 ***; 
+*** Testcase 6 ***; 
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with inexisting tables cas);
 
 /*-- switch to example database -----------------------*/
@@ -88,15 +88,15 @@
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Table target.cas does not exist. Start this macro only within SASUnit.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getScenarioTestId: Table target.cas does not exist. Start this macro only within SASUnit.);
 
 %endTestcase();
 
 data work.cas;
    num=0;
 run;
-*** Testcase 8 ***; 
+*** Testcase 7 ***; 
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with inexisting tables tst);
 
 /*-- switch to example database -----------------------*/
@@ -107,15 +107,15 @@ run;
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Table target.tst does not exist. Start this macro only within SASUnit.);
+%assertLog(i_errors=1,i_warnings=0);
+%assertLogmsg (i_logmsg=ERROR: _getScenarioTestId: Table target.tst does not exist. Start this macro only within SASUnit.);
 
 %endTestcase();
 
 data work.tst;
    num=0;
 run;
-*** Testcase 9 ***; 
+*** Testcase 8 ***; 
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with invalid dataset cas);
 
 /*-- switch to example database -----------------------*/
@@ -126,10 +126,11 @@ run;
 
 %endTestcall;
 
-%assertLog(i_errors=1,i_warnings=0);
+%assertLog(i_errors=3,i_warnings=0);
 %assertEquals (i_actual=&ret_casid.,i_expected=_ERROR_, i_desc=Values must be equal);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Scenario was not found in the test database.);
-%assertLogmsg (i_logmsg=Assert may not be called prior to initTestcase.);
+%assertLogmsg (i_logmsg=ERROR: The following columns were not found in the contributing tables: cas_id. cas_scnid.);
+%assertLogmsg (i_logmsg=ERROR: _getScenarioTestId: Scenario was not found in the test database.);
+%assertLogmsg (i_logmsg=ERROR: _getScenarioTestId: Assert may not be called prior to initTestcase.);
 
 
 %endTestcase();
@@ -141,7 +142,7 @@ data work.cas;
       end;
    end;
 run;
-*** Testcase 10 ***; 
+*** Testcase 9 ***; 
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with inexisting scenario);
 
 /*-- switch to example database -----------------------*/
@@ -152,13 +153,14 @@ run;
 
 %endTestcall;
 
-%assertLog(i_errors=0,i_warnings=0);
+%assertLog(i_errors=2,i_warnings=0);
 %assertEquals (i_actual=&ret_casid.,i_expected=_ERROR_,i_desc=Check that error occured);
-%assertLogmsg (i_logmsg=ERROR.SASUNIT.: Scenario was not found in the test database.);
-%assertLogmsg (i_logmsg=Assert may not be called prior to initTestcase.);
+%assertLogmsg (i_logmsg=ERROR: _getScenarioTestId: Scenario was not found in the test database.);
+%assertLogmsg (i_logmsg=ERROR: _getScenarioTestId: Assert may not be called prior to initTestcase.);
 
 %endTestcase();
 
+*** Testcase 10 ***; 
 data work.tst;
    do tst_scnid=1 to 5;
       do tst_casid=1 to tst_scnid;
@@ -167,7 +169,6 @@ data work.tst;
       end;
    end;
 run;
-*** Testcase 11 ***; 
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with existing scenario without asserts);
 
 /*-- switch to example database -----------------------*/
@@ -184,6 +185,7 @@ run;
 
 %endTestcase();
 
+*** Testcase 11 ***; 
 data work.tst;
    do tst_scnid=1 to 5;
       do tst_casid=1 to tst_scnid;
@@ -193,7 +195,7 @@ data work.tst;
       end;
    end;
 run;
-*** Testcase 12 ***; 
+
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call for existing scenario 1);
 
 /*-- switch to example database -----------------------*/
@@ -210,7 +212,7 @@ run;
 
 %endTestcase();
 
-*** Testcase 13 ***; 
+*** Testcase 12 ***; 
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call for existing scenario 2);
 
 /*-- switch to example database -----------------------*/
@@ -227,7 +229,7 @@ run;
 
 %endTestcase();
 
-*** Testcase 14 ***; 
+*** Testcase 13 ***; 
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call for existing scenario 3);
 
 /*-- switch to example database -----------------------*/
@@ -244,7 +246,7 @@ run;
 
 %endTestcase();
 
-*** Testcase 15 ***; 
+*** Testcase 14 ***; 
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call for existing scenario 4);
 
 /*-- switch to example database -----------------------*/
@@ -261,7 +263,7 @@ run;
 
 %endTestcase();
 
-*** Testcase 16 ***; 
+*** Testcase 15 ***; 
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call for existing scenario 5);
 
 /*-- switch to example database -----------------------*/

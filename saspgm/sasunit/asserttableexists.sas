@@ -75,7 +75,7 @@
    
    %IF %sysfunc(exist(&l_dsname., &i_target.)) %THEN %DO;
       %LET l_table_exist=1;
-      %PUT &g_note.(SASUNIT): &i_target. &l_dsname. exists.;
+      %_issueAssertInfoMessage (assertTableExists: &i_target. &l_dsname. exists.);
       %LET l_errMsg=&i_target &l_dsname exists;
 
       %*** get creation und modification date of tested member ***;
@@ -89,7 +89,7 @@
       run ;
    %END;
    %ELSE %DO;
-      %PUT &g_note.(SASUNIT): &i_target. &l_dsname. does not exist.;
+      %_issueAssertInfoMessage (assertTableExists: &i_target. &l_dsname. does not exist.);
       %LET l_errMsg=&i_target &l_dsname does not exist;
       %LET l_table_exist=0;
    %END;

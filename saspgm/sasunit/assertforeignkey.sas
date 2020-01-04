@@ -302,7 +302,7 @@
    %END;
    %*** if parameter l_unique is set to false, put warning to log, but go on processing ***;
    %ELSE %IF (("&l_unique." EQ "FALSE") AND (&l_cnt1. NE &l_cnt2.))%THEN %DO;
-      %PUT g_warning.(SASUNIT): Parameter i_unique set to false and lookup table not unique;
+      %_issueAssertWarningMessage (assertForeignKey: Parameter i_unique set to false and lookup table not unique);
    %END;
 
    %*** Check whether all keys in the master table are available in the lookup table***;

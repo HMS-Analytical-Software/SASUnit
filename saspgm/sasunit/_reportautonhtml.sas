@@ -151,6 +151,10 @@
          MacName    = scan (_INFILE_, 4, ' ');
       run;
    
+      proc sort data=WORK._MCoverage_all_macros nodupkey;
+         by MacName Firstline RecordType LastLine;
+      run;
+            
       /*-- for every unit under test (see ‘target’ database ): 
        call new macro _reporttcghtml.sas once in order to get a html 
        file showing test coverage for the given unit under test. For every call, 
@@ -267,9 +271,15 @@
    options nocenter;
 
    %let l_title=%str(&g_nls_reportAuton_001. | &g_project. - &g_nls_reportAuton_002.);
-   title j=c "&l_title.";
+   title j=c %sysfunc(quote (&l_title.));
 
    %if (&o_html.) %then %do;
+      %*** because in HTML we want to open the link to SASUnit in a new window, ***;
+      %*** we need to insert raw HTML ***;
+      title j=l "^{RAW <img alt=""SASUnit Downloads"" src=""https://img.shields.io/sourceforge/dm/sasunit.svg"">}" 
+            j=c %sysfunc(quote (&l_title.))
+            j=r "^{RAW <a href=""https://sourceforge.net/projects/sasunit/reviews"" class=""link"" title=""&g_nls_reportAuton_029."" target=""_blank""><img alt=""&g_nls_reportAuton_029."" src=""https://img.shields.io/badge/-%scan(&g_nls_reportAuton_029.,1)%20%scan(&g_nls_reportAuton_029.,2)-brightgreen.svg""</a>}";
+            
       ods html4 file="&o_path./&o_file..html" 
                     (TITLE="&l_title.") 
                     headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'

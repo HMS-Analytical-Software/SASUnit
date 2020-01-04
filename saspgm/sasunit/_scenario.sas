@@ -18,17 +18,20 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
    \param   io_target       path to test database
+
 */ /** \cond */ 
 
 %MACRO _scenario(io_target  = 
                 );
 
-   %LOCAL l_macname; 
+   %LOCAL l_macname g_currentLogger; 
 
    %LET l_macname=&sysmacroname;
 
    OPTIONS MAUTOSOURCE MPRINT MPRINTNEST LINESIZE=MAX;
 
+   %LET g_currentLogger = App.Program.SASUnitScenario;
+   
    /* initialize error handling */
    %_initErrorHandler;
 
@@ -59,7 +62,7 @@
 
    %GOTO exit;
    %errexit:
-      %PUT ========================== Error! Test scenario will be aborted! ================================;
+      %_issueInfoMessage (g_currentLogger., %str (========================== Error! Test scenario will be aborted! ================================));
    LIBNAME target;
    %exit:
 %MEND _scenario;

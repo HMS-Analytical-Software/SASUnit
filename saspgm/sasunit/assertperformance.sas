@@ -19,6 +19,7 @@
    \param   i_desc           description of the assertion to be checked \n
                              default: "Check for runtime"
 
+   \todo replace g_verbose
 */ /** \cond */ 
 
 %MACRO assertPerformance(i_expected=
@@ -32,15 +33,28 @@
       %RETURN;
    %END;
 
-   %LOCAL l_casid l_result l_errMsg;
-
+   %LOCAL
+      l_casid 
+      l_result 
+      l_errMsg
+      l_macname
+   ;
+   
+   %LET l_macname  =&sysmacroname;
+   
    /* determine current case id */
    PROC SQL NOPRINT;
       SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid=&g_scnid;
    QUIT;
    %LET l_casid = &l_casid;
-   %IF &l_casid = . OR &l_casid = %THEN %DO;
-      %PUT &g_error.(SASUNIT): assert must not be called before initTestcase;
+
+   %IF %_handleError(&l_macname.
+                    ,AssertPerformanceOutsideTestcase
+                    ,(&l_casid = . OR &l_casid =)
+                    ,&g_error.(SASUNIT): assert must not be called before initTestcase
+                    ,i_verbose=&g_verbose.
+                    ) 
+                  %THEN %DO;   
       %RETURN;
    %END;
 

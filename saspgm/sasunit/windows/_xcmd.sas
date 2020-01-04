@@ -18,6 +18,7 @@
    \param   i_cmd     OS command with quotes where necessary 
    \return  error symbol &sysrc will be set to a value other than 0, if an error occurs.
 
+   \todo replace g_verbose
  */ /** \cond */ 
 
 %MACRO _xcmd(i_cmd);
@@ -35,13 +36,17 @@
 
 
    %IF &g_verbose. %THEN %DO;
-      %PUT ======== OS Command Start ========;
+      %_issueInfoMessage (&g_currentLogger., _xcmd: %str(======== OS Command Start ========));
        /* Evaluate sysexec´s return code*/
-      %IF &sysrc. = 0 %THEN %PUT &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
-      %ELSE %PUT &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
+      %IF &sysrc. = 0 %THEN %DO;
+         %_issueInfoMessage (&g_currentLogger., _xcmd: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
+      %END;
+      %ELSE %DO;
+         %_issueErrorMessage (&g_currentLogger., _xcmd: &sysrc -> An Error occured);
+      %END;
 
       /* put sysexec command to log*/
-      %PUT &g_note.(SASUNIT): SYSEXEC COMMAND IS: &i_cmd > "&logfile";
+      %_issueInfoMessage (&g_currentLogger., _xcmd: SYSEXEC COMMAND IS: &i_cmd > "&logfile");
       
       /* write &logfile to the log*/
       DATA _NULL_;
@@ -50,7 +55,7 @@
          putlog _infile_;
       RUN;
       
-      %PUT ======== OS Command End ========;
+      %_issueInfoMessage (&g_currentLogger., _xcmd: %str(======== OS Command End ========));
    %END;
 
    OPTIONS &xwait &xsync &xmin;

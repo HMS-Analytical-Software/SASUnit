@@ -15,7 +15,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
-%PUT %Testmakro4(var1 =1
-                ,var2 =2
-                );
+   %PUT %Testmakro4(var1 =1
+                   ,var2 =2
+                   );
 /** \endcond */

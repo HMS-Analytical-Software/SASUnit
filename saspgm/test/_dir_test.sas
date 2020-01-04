@@ -43,7 +43,7 @@ run;
 
 /*-- 001 Empty directory ---------------------------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir;
-%_xcmd(mkdir "&path")
+%_mkdir ("&path.");
 
 %initTestcase(i_object=_dir.sas, i_desc=empty directory)
 %_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);

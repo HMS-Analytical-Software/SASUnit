@@ -12,6 +12,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
+   \test New test calls that catch all messages
 */ /** \cond */ 
 
 %initTestcase(i_object=_mkDir.sas, i_desc=Test with correct call)
@@ -19,7 +20,7 @@
 %_mkdir(&newdir.);
 %endTestcall;
 
-%assertEquals(i_expected=1,  i_actual=%_existDir(&newdir.),  i_desc=check on file existance)
+%assertEquals(i_expected=1,  i_actual=%_existDir(&newdir.),  i_desc=check on file existence)
 %endTestcase;
 
 /** \endcond */

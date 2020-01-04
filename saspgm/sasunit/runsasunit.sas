@@ -35,6 +35,7 @@
    \param   i_recursive    if a search pattern is specified: 1 .. subdirectories of &i_source are searched, too.
                            default 0 ... do not search subdirectories.
                            
+   \todo replace g_verbose
 */ /** \cond */ 
 
 %MACRO runSASUnit(i_source     =
@@ -147,14 +148,14 @@
       RUN;
 
       %IF &l_dorun. %THEN %DO;
-         %PUT ======== test scenario &l_scnid (&l_filename.) will be run ========;
-         %PUT;
-         %PUT;
+         %_issueInfoMessage (&g_currentLogger., %str (======== test scenario &l_scnid (&l_filename.) will be run ========));
+         %_issueInfoMessage (&g_currentLogger., %str ( ));
+         %_issueInfoMessage (&g_currentLogger., %str ( ));
       %END;
       %ELSE %DO;
-         %PUT ======== test scenario &l_scnid (&l_filename.) will not be run ==;
-         %PUT;
-         %PUT;
+         %_issueInfoMessage (&g_currentLogger., %str (======== test scenario &l_scnid (&l_filename.) will not be run ==));
+         %_issueInfoMessage (&g_currentLogger., %str ( ));
+         %_issueInfoMessage (&g_currentLogger., %str ( ));
       %END;
 
       /*-- start test scenario if necessary -------------------------------------*/
@@ -237,11 +238,11 @@
 
    %GOTO exit;
 %errexit:
-      %PUT;
-      %PUT =========================== Error! runSASUnit aborted! ==========================================;
-      %PUT;
-      %PUT;
-
+      %_issueInfoMessage (&g_currentLogger., %str ( ));
+      %_issueInfoMessage (&g_currentLogger., %str (=========================== Error! runSASUnit aborted! ==========================================));
+      %_issueInfoMessage (&g_currentLogger., %str ( ));
+      %_issueInfoMessage (&g_currentLogger., %str ( ));
+      
       %IF %EVAL("%UPCASE(&g_error_code.)" EQ "%UPCASE(NoSourceFiles)") %THEN %DO;
 
          /* ensure that dummy entry for inexisting scenario is present in test database, to be able to report it later

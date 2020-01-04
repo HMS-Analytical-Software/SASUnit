@@ -28,10 +28,10 @@
 
    %IF (&g_inTestCall. NE 1) %THEN %DO;
       %IF (&i_messageStyle=ERROR) %THEN %DO;
-         %PUT &g_error.: endTestcall must be called after initTestcase!;
+         %_issueErrorMessage (&g_currentLogger.,endTestcall: endTestcall must be called after initTestcase!);
       %END;
       %ELSE %DO;
-         %PUT &g_note.(SASUNIT): endTestcall already run by user. This call was issued from endTestcase.;
+         %_issueInfoMessage (&g_currentLogger.,endTestcall: endTestcall already run by user. This call was issued from endTestcase.);
       %END;
       %RETURN;
    %END;

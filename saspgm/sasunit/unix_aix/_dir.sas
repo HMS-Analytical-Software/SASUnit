@@ -26,6 +26,7 @@
    \param   o_out        output dataset, default is work.dir. This dataset contains two columns
                          named filename and changed
 
+   \todo replace g_verbose
 */ /** \cond */
 
 %MACRO _dir(i_path=
@@ -46,7 +47,7 @@
    %let dirfile=%sysfunc(pathname(work))/&o_out..dir.txt;
    filename _dirfile "&dirfile" encoding=&encoding;
 
-   %put &g_note.(SASUNIT): Directory search is: &i_path;
+   %_issueInfoMessage (&g_currentLogger., _dir: Directory search is: &i_path);
 
    %let l_i_path=%qsysfunc(tranwrd(&i_path, %str( ), %str(\ )));
 
@@ -58,19 +59,23 @@
    %if %qsubstr(&path.,1,1) eq %str(%") %then
        %let path = &path.%str(%");
 
-   %put &g_note.(SASUNIT): Adjusted directory is: &path;
-   %put &g_note.(SASUNIT): Dearch pattern is    : &search;
+   %_issueInfoMessage (&g_currentLogger., _dir: Adjusted directory is: &path.);
+   %_issueInfoMessage (&g_currentLogger., _dir: Search pattern is    : &search);
 
    %SYSEXEC(find -L &path. ! -name &path -name "&search." -ls -type f > &dirfile.);
 
    %if &g_verbose. %then %do;
-      %put ======== OS Command Start ========;
+      %_issueInfoMessage (&g_currentLogger., _dir: %str(======== OS Command Start ========));
       /* Evaluate sysexec´s return code */
-      %if &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
-      %else %put &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
+      %IF &sysrc. = 0 %THEN %DO;
+         %_issueInfoMessage (&g_currentLogger., _dir: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
+      %END;
+      %ELSE %DO;
+         %_issueErrorMessage (&g_currentLogger., _dir: &sysrc -> An Error occured);
+      %END;
 
       /* put sysexec command to log*/
-      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: find -L &path. ! -name &path -name "&search." -ls -type f > &dirfile.;
+      %_issueInfoMessage (&g_currentLogger., _dir: SYSEXEC COMMAND IS: find -L &path. ! -name &path -name "&search." -ls -type f > &dirfile.);
       
       /* write &dirfile to the log*/
       data _null_;
@@ -78,7 +83,7 @@
          input line $512.;
          putlog line;
       run;
-      %put ======== OS Command End ========;
+      %_issueInfoMessage (&g_currentLogger., _dir: %str(======== OS Command End ========));
    %end;
    
    data &o_out (keep=membername filename changed);

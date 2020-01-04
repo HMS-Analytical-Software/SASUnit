@@ -31,39 +31,39 @@
    %*** Set return variable to missing, the designed value for an error ***;
 
    %IF %nrbquote (&i_scnid.) eq  %THEN %DO;
-      %PUT &g_error.(SASUNIT): Please specify a value for i_scnid.;
+      %_issueErrorMessage (&g_currentLogger.,_getScenarioTestId: Please specify a value for i_scnid.);
       %RETURN;
    %END;
 
    %IF %nrbquote (&r_casid.) eq  %THEN %DO;
-      %PUT &g_error.(SASUNIT): Please specify a value for r_casid.;
+      %_issueErrorMessage (&g_currentLogger.,_getScenarioTestId: Please specify a value for r_casid.);
       %RETURN;
    %END;
 
    %IF %nrbquote (&r_tstid.) eq  %THEN %DO;
-      %PUT &g_error.(SASUNIT): Please specify a value for r_tstid.;
+      %_issueErrorMessage (&g_currentLogger.,_getScenarioTestId: Please specify a value for r_tstid.);
       %RETURN;
    %END;
 
    %IF not %symexist(&r_casid.) %THEN %DO;
-      %PUT &g_error.(SASUNIT): Macrovariable for return of test case id was not declared by a %nrstr(%%)local-statement.;
+      %_issueErrorMessage (&g_currentLogger.,_getScenarioTestId: Macrovariable for return of test case id was not declared by a %nrstr(%%)local-statement.);
       %RETURN;
    %END;
    %let &r_casid.=_ERROR_;
 
    %IF not %symexist(&r_tstid.) %THEN %DO;
-      %PUT &g_error.(SASUNIT): Macrovariable for return of test assert id was not declared by a %nrstr(%%)local-statement.;
+      %_issueErrorMessage (&g_currentLogger.,_getScenarioTestId: Macrovariable for return of test assert id was not declared by a %nrstr(%%)local-statement.);
       %RETURN;
    %END;
    %let &r_tstid.=_ERROR_;
 
    %IF not %sysfunc (exist (target.cas)) %THEN %DO;
-      %PUT &g_error.(SASUNIT): Table target.cas does not exist. Start this macro only within SASUnit.;
+      %_issueErrorMessage (&g_currentLogger.,_getScenarioTestId: Table target.cas does not exist. Start this macro only within SASUnit.);
       %RETURN;
    %END;
 
    %IF not %sysfunc (exist (target.tst)) %THEN %DO;
-      %PUT &g_error.(SASUNIT): Table target.tst does not exist. Start this macro only within SASUnit.;
+      %_issueErrorMessage (&g_currentLogger.,_getScenarioTestId: Table target.tst does not exist. Start this macro only within SASUnit.);
       %RETURN;
    %END;
 
@@ -73,8 +73,8 @@
    QUIT;
 
    %IF &l_casid_gti = . OR &l_casid_gti = %THEN %DO;
-      %PUT &g_error.(SASUNIT): Scenario was not found in the test database.;
-      %PUT &g_error.(SASUNIT): Assert may not be called prior to initTestcase.;
+      %_issueErrorMessage (&g_currentLogger.,_getScenarioTestId: Scenario was not found in the test database.);
+      %_issueErrorMessage (&g_currentLogger.,_getScenarioTestId: Assert may not be called prior to initTestcase.);
       %RETURN;
    %END;
 

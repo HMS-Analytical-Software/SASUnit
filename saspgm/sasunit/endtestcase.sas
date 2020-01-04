@@ -30,10 +30,10 @@
    %endTestcall(i_messageStyle=NOTE);
    %IF &g_inTestCase. NE 1 %THEN %DO;
       %IF (&i_messageStyle=ERROR) %THEN %DO;
-         %PUT &g_error.: endTestcase must be called after initTestcase!;
+         %_issueErrorMessage (&g_currentLogger.,endTestcase:  endTestcase must be called after initTestcase!)
       %END;
       %ELSE %DO;
-         %PUT &g_note.(SASUNIT): endTestcall already run by user. This call was issued from endScenario.;
+         %_issueInfoMessage (&g_currentLogger.,endTestcase:  endTestcall already run by user. This call was issued from endScenario.)
       %END;
       %RETURN;
    %END;
@@ -43,7 +43,7 @@
       SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid=&g_scnid;
    %LET l_casid = &l_casid;
    %IF &l_casid=. %THEN %DO;
-      %PUT &g_error.(SASUNIT): endTestcase muss nach InitTestcase aufgerufen werden!;
+      %_issueErrorMessage (&g_currentLogger.,endTestcase:  endTestcase must be called after initTestcase!)
       %RETURN;
    %END;
    %IF &i_assertLog %THEN %DO;

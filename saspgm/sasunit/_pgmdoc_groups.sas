@@ -38,15 +38,15 @@
    \ingroup    SASUNIT
 
    \defgroup   SASUNIT_UTIL_OS_WIN   Utility Macros specific for Windows OS
-   \brief      Contains utility macros specific for Windows os
+   \brief      Contains utility macros specific for Windows OS
    \ingroup    SASUNIT_UTIL
 
    \defgroup   SASUNIT_UTIL_OS_LINUX   Utility Macros specific for Linux OS
-   \brief      Contains utility macros specific for Linux os
+   \brief      Contains utility macros specific for Linux OS
    \ingroup    SASUNIT_UTIL
 
    \defgroup   SASUNIT_UTIL_OS_UNIX_AIX  Utility Macros specific for Unix AIX OS
-   \brief      Contains utility macros specific for Unix AIX os
+   \brief      Contains utility macros specific for Unix AIX OS
    \ingroup    SASUNIT_UTIL
 
    \defgroup   SASUNIT_REPORT Reporting 
@@ -56,4 +56,17 @@
    \defgroup   SASUNIT_TEST   Test Scenarios
    \brief      Contains programs for self testing of SASUnit
    \ingroup    SASUNIT
+
+   \defgroup   SASUNIT_TEST_OS_WIN   Test Scenarios specific for Windows OS
+   \brief      Contains utility test scenarios specific for Windows OS
+   \ingroup    SASUNIT_TEST
+   
+   \defgroup   SASUNIT_TEST_OS_LINUX   Test Scenarios specific for Linux OS
+   \brief      Contains utility test scenarios specific for Linux OS
+   \ingroup    SASUNIT_TEST
+
+   \defgroup   SASUNIT_TEST_OS_UNIX_AIX   Test Scenarios specific for Unix AIX OS
+   \brief      Contains utility test scenarios specific for Unix AIX OS
+   \ingroup    SASUNIT_TEST
+
 */

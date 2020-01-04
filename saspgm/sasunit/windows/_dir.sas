@@ -26,6 +26,7 @@
    \param   o_out        output dataset, default is work.dir. This dataset contains two columns
                          named filename and changed
 
+   \todo replace g_verbose
 */ /** \cond */ 
 
 %MACRO _dir (i_path=
@@ -36,8 +37,8 @@
    %local encoding s dirfile xwait xsync xmin l_i_path;
    %let encoding=pcoem850;
 
-   %let l_i_path = %sysfunc(translate(&i_path,\,/));
-   %let l_i_path = %sysfunc(dequote(&l_i_path.));
+   %let l_i_path = %_makeSASunitPath (&i_path);
+   %let l_i_path = %_adaptSASUnitPathToOS (&l_i_path.);
     
    proc sql noprint;
       create table &o_out (filename char(255));
@@ -52,20 +53,28 @@
    
    %let dirfile=%sysfunc(pathname(work))\___dir.txt;
 
-   %put &g_note.(SASUNIT): Directory search is: &i_path;
-   %put &g_note.(SASUNIT): Adjusted directory is: &l_i_path;
+   %_issueInfoMessage (&g_currentLogger., _dir: Directory search is: &i_path.);
+   %_issueInfoMessage (&g_currentLogger., _dir: Adjusted directory is: &l_i_path.);
 
    %IF &i_recursive %then %let s=/S;
    
    %if &g_verbose. %then %do;
-      %put ======== OS Command Start ========;
+      %_issueInfoMessage (&g_currentLogger., _dir: %str(======== OS Command Start ========));
       /* Evaluate sysexec´s return code */
-      %SYSEXEC(dir &s /a-d "&l_i_path" > "&dirfile" 2>&1);
-      %if &sysrc. = 0 %then %put &g_note.(SASUNIT): Sysrc : 0 -> SYSEXEC SUCCESSFUL;
-      %else %put &g_error.(SASUNIT): Sysrc : &sysrc -> An Error occured;
+      %SYSEXEC(dir &s /a-d /on %unquote(&l_i_path.) > "&dirfile" 2>&1);
+      %IF (&sysrc. = 0) %THEN %DO;
+         %_issueInfoMessage (&g_currentLogger., _dir: Sysrc : &sysrc. -> SYSEXEC SUCCESSFUL);
+      %END;
+      %ELSE %IF (&sysrc. = 1) %THEN %DO;
+         %_issueInfoMessage (&g_currentLogger., _dir: Sysrc : &sysrc. -> SYSEXEC SUCCESSFUL);
+         %_issueInfoMessage (&g_currentLogger., _dir: Directory is empty);
+      %END;
+      %ELSE %DO;
+         %_issueErrorMessage (&g_currentLogger., _dir: &sysrc -> An Error occured);
+      %END;
 
       /* put sysexec command to log*/
-      %put &g_note.(SASUNIT): SYSEXEC COMMAND IS: dir &s /a-d "&l_i_path" > "&dirfile";
+      %_issueInfoMessage (&g_currentLogger., _dir: SYSEXEC COMMAND IS: dir &s /a-d /on &l_i_path > &dirfile);
       
       /* write &dirfile to the log*/
       data _null_;
@@ -73,10 +82,10 @@
          input line $512.;
          putlog line;
       run;
-      %put ======== OS Command End ========;
+      %_issueInfoMessage (&g_currentLogger., _dir: %str(======== OS Command End ========));
    %end;
    
-   %SYSEXEC(dir &s /A-D /ON "&l_i_path" > "&dirfile");
+   %SYSEXEC(dir &s /a-d /on %unquote(&l_i_path.) > "&dirfile");
    options &xwait &xsync &xmin;
    
    %_readdirfile (i_dirfile =&dirfile.

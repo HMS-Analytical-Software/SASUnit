@@ -24,11 +24,39 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 
+   \todo replace g_verbose
 */ /** \cond */
 
-%macro _mkdir(dir);
+%macro _mkdir (dir
+              );
+   %LOCAL logfile l_dir;
+              
+   %let logfile=%sysfunc(pathname(work))/___log.txt;
+   %let l_dir = %_adaptSASUnitPathToOS (&dir.);
+  
+   %SYSEXEC(mkdir "&l_dir." > "&logfile" 2>&1);
+   %if &g_verbose. %then %do;
+      %_issueInfoMessage (&g_currentLogger., _mkdir: %str(======== OS Command Start ========));
 
-   %SYSEXEC(mkdir "&dir.");
+      /* Evaluate sysexec´s return code */
+      %IF &sysrc. = 0 %THEN %DO;
+         %_issueInfoMessage (&g_currentLogger., _mkdir: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
+      %END;
+      %ELSE %DO;
+         %_issueErrorMessage (&g_currentLogger., _mkdir: &sysrc -> An Error occured);
+      %END;
+
+      /* put sysexec command to log*/
+      %_issueInfoMessage (&g_currentLogger., _mkdir: SYSEXEC COMMAND IS: mkdir "&l_dir." > "&logfile" 2>&1);
+      
+      /* write &logfile to the log*/
+      data _null_;
+         infile "&logfile" truncover lrecl=512;
+         input line $512.;
+         putlog line;
+      run;
+      %_issueInfoMessage (&g_currentLogger., _mkdir: %str(======== OS Command End ========));
+   %end;
 
 %mend _mkdir; 
 

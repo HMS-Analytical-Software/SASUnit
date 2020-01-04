@@ -31,7 +31,7 @@
                          ,i_pgmIsScenario     = 1
                          );
 
-   %local l_cmdFile l_parms l_parenthesis l_tcgFilePath l_tcgOptionsString l_rc l_macname l_program;
+   %local l_cmdFile l_parms l_tcgFilePath l_tcgOptionsString l_rc l_macname l_program;
    %let l_macname=&sysmacroname.;
    
    /*-- prepare sasuser ---------------------------------------------------*/
@@ -50,7 +50,6 @@
    /*-- set config and autoexec -------------------------------------------*/
    %let l_cmdFile=%sysfunc(pathname(work))/_runprogramspawned.cmd;
    %LET l_parms=;
-   %LET l_parenthesis=(;
    %IF "&g_autoexec" NE "" %THEN %DO;
       %LET l_parms=&l_parms -autoexec ""&g_autoexec"";
    %END;
@@ -67,7 +66,25 @@
       %LET   l_tcgFilePath      = &g_log./&i_scnid..tcg;
       %LET   l_tcgOptionsString = -mcoverage -mcoverageloc = ""&l_tcgFilePath."";
    %END;
+/*
+   %if (&i_pgmIsScenario. = 1) %then %do;
+      %_createscenariologconfigxml(i_projectBinFolder=C:\projects\sasunit\example\bin
+                                  ,i_scnid           =&i_scnid.
+                                  ,i_sasunitLanguage =%lowcase(&g_language.)
+                                  );
+      filename NoLog "C:\projects\sasunit\example\doc\sasunit\en\log4SASUnit_suite_nolog.log";
+      %_createsasunitappender(appenderName=SASUnitNoLogAppender
+                             ,appenderClass=FileRefAppender
+                             ,fileRef=NoLog
+                             );
 
+      %_createsasunitlogger(loggername=App.Program.SASUnit
+                           ,additivity=TRUE
+                           ,appenderList=SASUnitNoLogAppender
+                           ,level=INFO
+                           );
+   %end;
+*/
    %let l_program=%_abspath(&g_root., &i_program.);
    DATA _null_;
       ATTRIB
@@ -83,9 +100,11 @@
       !! "&l_parms. "
       !! "-sysin ""&l_program."" "
       %if (&i_pgmIsScenario. = 1) %then %do;
-      !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%))"" "
+         !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%))"" "
       %end;
-      !! "-log ""&g_log/&i_scnid..log"" "
+/*      %else %do;*/
+         !! "-log ""&g_log/&i_scnid..log"" "
+/*      %end;*/
       !! "-print ""&g_testout/&i_scnid..lst"" "
       !! "&g_splash "
       !! "-noovp "
@@ -101,6 +120,8 @@
       %end;
       !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
       %if (&i_pgmIsScenario. = 1) %then %do;
+/*      !! "-logconfigloc '%sysfunc(pathname(WORK))/sasunit.scnlogconfig.xml' "
+      !! "-logapplname 'Scenario' "*/
       !! "-termstmt ""%nrstr(%%%_termScenario())"" "
       !! "&l_tcgOptionsString. "
       %end;
@@ -111,7 +132,15 @@
    %_executeCMDFile(&l_cmdFile.);
    %LET &r_sysrc. = &sysrc.;
    %LET l_rc=%_delfile(&l_cmdFile.);
-
+/*
+   %if (&i_pgmIsScenario. = 1) %then %do;
+      %_createsasunitlogger(loggername=App.Program.SASUnit
+                           ,additivity=TRUE
+                           ,appenderList=SASUnitSuiteAppender
+                           ,level=INFO
+                           );
+   %end;
+*/
    /*-- delete sasuser ----------------------------------------------------*/
    %let l_cmdFile=%sysfunc(pathname(work))/del_sasuser.cmd;
    DATA _null_;

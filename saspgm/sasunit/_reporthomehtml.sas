@@ -311,8 +311,11 @@
       %*** because in HTML we want to open the link to SASUnit in a new window, ***;
       %*** we need to insert raw HTML ***;
       %let l_title=%str(&g_project | &HTML_Reference. &g_nls_reportHome_001.);
-      title j=c "^{RAW &l_title.}";
-
+      title j=l "^{RAW <a href=""https://sourceforge.net/projects/sasunit/reviews"" class=""link"" title=""&g_nls_reportHome_038."" target=""_blank""><img alt=""&g_nls_reportAuton_029."" src=""https://img.shields.io/badge/-%scan(&g_nls_reportAuton_029.,1)%20%scan(&g_nls_reportAuton_029.,2)%20%nrstr(&#x2605&#x2605&#x2605&#x2605&#x2606)-brightgreen.svg""</a>}"
+            j=c "^{RAW &l_title.}"
+            j=r "^{RAW <a href=""https://sourceforge.net/projects/sasunit/files/Distributions/stats/timeline"" class=""link"" title=""&g_nls_reportHome_038."" target=""_blank""><img alt=""SASUnit Downloads"" src=""https://img.shields.io/sourceforge/dm/sasunit.svg""></a>}"
+            ;
+            
       ods html4 file="&o_path./&o_file..html" 
                     (TITLE="&l_title.") 
                     headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'

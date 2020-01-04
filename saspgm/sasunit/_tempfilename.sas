@@ -27,6 +27,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 			   
    \param   r_tempFile     name of maro variable to contain the generated name 
+
 */ /** \cond */ 
 
 %MACRO _tempFileName(r_TempFile);
@@ -36,7 +37,7 @@
 
    /* store to macro variable */
    %LET &r_TempFile=&syslast;
-   %PUT &g_note.(SASUNIT): Temporary dataset %nrstr(&)&r_tempFile is &&&r_tempFile;
+   %_issueInfoMessage (&g_currentLogger.,_tempFileName: Temporary dataset %nrstr(&)&r_tempFile is &&&r_tempFile);
 
    /* delete again, need only name */
    PROC SQL NOPRINT; 

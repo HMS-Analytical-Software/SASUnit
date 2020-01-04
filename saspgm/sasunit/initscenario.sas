@@ -30,8 +30,10 @@
                    ,i_desc   =_NONE_
                    );
 
-   %global g_inScenario g_inTestCase g_inTestCall g_scnID;
+   %global g_inScenario g_inTestCase g_inTestCall g_scnID g_currentLogger;
    %local l_scenarioPath l_macname;
+
+   %LET g_currentLogger = App.Program.SASUnitScenario;
    
    %_initErrorHandler;
    %LET l_macname=&sysmacroname;
@@ -119,5 +121,10 @@
    %let g_inscenario=1;
 
    %_nls(i_language=&g_LANGUAGE.);
+   
+   %_issueInfoMessage(&g_currentLogger., --------------------------------------------------------------------------------)
+   %_issueInfoMessage(&g_currentLogger., Starting scenario (&g_scnid.) &g_runningProgramFullName. (InitScenario))
+   %_issueInfoMessage(&g_currentLogger., --------------------------------------------------------------------------------)
+   
 %MEND initScenario;
 /** \endcond */

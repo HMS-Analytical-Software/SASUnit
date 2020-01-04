@@ -35,9 +35,11 @@
    \param   i_condition      condition - logical expression, will be evaluated and returned by the macro
    \param   i_text           error message, further information will be issued to the SAS log
    \param   i_verbose        issue message to the SAS log even if i_condition evaluates to true, 
-                             default is 0
-   \param   i_msgytpe        Type of message: ERROR/WARNING (optional: default=ERROR)
+                             default is g_verbose
+   \param   i_msgytpe        Type of message: FATAL/ERROR/WARNING/INFO/DEBUG/TRACE (optional: default=ERROR)
    \return                   evaluated i_condition
+   
+   \todo replace g_verbose by g_log4sasLoggingLevel
 */ /** \cond */
 
 %MACRO _handleError (i_macroname
@@ -48,28 +50,43 @@
                     ,i_msgtype=ERROR
                     );
 
-%IF %unquote(&i_condition) %THEN %DO;
-   1
-   %PUT;
-   %PUT --------------------------------------------------------------------------------;
-   %PUT &i_msgtype.(SASUNIT) [&i_errorcode.] in Makro &i_macroname (Condition: &i_condition);
-   %IF "&i_text" NE ""
-      %THEN %PUT &i_text;
-   %PUT --------------------------------------------------------------------------------;
-   %PUT;
-   %IF %UPCASE(&i_msgtype.) = &G_ERROR. %THEN %DO;
-      %LET g_error_code = &i_errorcode;
+   %let l_messageType = %upcase(&i_msgtype.);
+   
+   %IF (&l_messageType. ne FATAL 
+        AND &l_messageType. ne ERROR
+        AND &l_messageType. ne WARNING
+        AND &l_messageType. ne INFO
+        AND &l_messageType. ne DEBUG
+        AND &l_messageType. ne TRACE
+       ) %THEN %DO;       
+       0
+       %_issueErrorMessage (&g_currentLogger., Wrong message type %str(%()&i_msgtype%str(%)) valid is only FATAL/ERROR/WARNING/INFO/DEBUG/TRACE)
+       %RETURN;
    %END;
-   %LET g_error_msg  = &i_text;
-   %LET g_error_macro= &i_macroname;
-%END;
-%ELSE %DO;
-   0
-   %IF &i_verbose %THEN %DO;
-      %PUT;
-      %PUT handleError: OK: [&i_errorcode.] &i_macroname (Condition: &i_condition);
-      %PUT;
+
+   %IF %unquote(&i_condition.) %THEN %DO;
+      1
+      %_issue&l_messageType.Message(&g_currentLogger., --------------------------------------------------------------------------------)
+      %_issue&l_messageType.Message(&g_currentLogger., [&i_errorcode.] in Makro &i_macroname %str(%()Condition: &i_condition%str(%)))
+      %IF (%nrbquote(&i_text.) NE %str()) %THEN %DO;
+         %_issue&l_messageType.Message(&g_currentLogger., --------------------------------------------------------------------------------)
+         %_issue&l_messageType.Message(&g_currentLogger., MessageText: &i_text.)
+      %END;
+      %_issue&l_messageType.Message(&g_currentLogger., --------------------------------------------------------------------------------)
+      %IF &l_messageType. = ERROR %THEN %DO;
+         %LET g_error_code = &i_errorcode;
+      %END;
+      %LET g_error_msg   = &i_text;
+      %LET g_error_macro = &i_macroname;
    %END;
-%END;
+   %ELSE %DO;
+      0
+      %IF &i_verbose. %THEN %DO;
+         %_issueInfoMessage (&g_currentLogger., OK: [&i_errorcode.] &i_macroname %str(%()Condition: &i_condition%str(%)))
+      %END;
+      %ELSE %DO;
+         %_issueDebugMessage (&g_currentLogger., OK: [&i_errorcode.] &i_macroname %str(%()Condition: &i_condition%str(%)))
+      %END;
+   %END;
 %MEND _handleError;
  /** \endcond */

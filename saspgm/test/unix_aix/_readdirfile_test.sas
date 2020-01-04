@@ -1,5 +1,5 @@
 /** \file
-   \ingroup    SASUNIT_TEST
+   \ingroup    SASUNIT_TEST_OS_UNIX_AIX
 
    \brief      Test of _readdirfile.sas
 

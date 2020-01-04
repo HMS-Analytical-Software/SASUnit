@@ -17,6 +17,10 @@
             
    \param   libref Library for the test database (optionaL: Default=target)
 
+   \todo    Reimplement target.tsu as name value pair. If there is a new parameter only writing this parameter needs to be implemented.   
+            Using it will be automatically possible.  No need to change layout of Test-DB-TSU
+   \todo    Implement macro _writeParameterToTestDBTSU
+   \todo    If there is a need to have it then implement _readParameterFromTestDBTSU
 */
 %macro _createTestDataTSU (libref=target);
       PROC SQL NOPRINT;

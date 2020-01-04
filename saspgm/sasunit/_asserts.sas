@@ -24,6 +24,8 @@
                             Message will be prefixed by '<assertType> failed: '.
    \param  r_casid          optional: return number of current test case 
    \param  r_tstid          optional: return number of this check within test case
+   
+   \todo replace g_verbose
 */ /** \cond */  
 
 
@@ -37,7 +39,10 @@
                 ,r_tstid    = _NONE_       
                 );
 
-   %LOCAL l_errMsg;
+   %LOCAL 
+      l_errMsg
+      l_macname
+   ;
 
    %IF (&r_casid=_NONE_) %THEN %DO;
       %LOCAL l_casid;
@@ -49,11 +54,11 @@
    %END;
 
    %IF (&i_result. eq 0) %THEN %DO;
-      %LET l_errMsg =&i_type.: assert passed.;
+      %LET l_errMsg =%bquote(&i_type.: assert passed.);
    %END;
    %ELSE %IF (&i_result. eq 1) %THEN %DO;
       %IF (%nrbquote(&i_errMsg.) eq _NONE_) %THEN %DO;
-         %LET l_errMsg =&i_type.: assert passed, but manual check necessary.;
+         %LET l_errMsg =%bquote(&i_type.: assert passed, but manual check necessary.);
       %END;
       %ELSE %DO;
          %LET l_errMsg =%bquote(&i_type. manual: &i_errMsg.);
@@ -71,13 +76,19 @@
    PROC SQL NOPRINT;
       /* determine number of test case */
       SELECT max(cas_id) INTO :&r_casid FROM target.cas WHERE cas_scnid=&g_scnid;
-      %IF &&&r_casid=. %THEN %DO;
-         %PUT --------------------------------------------------------------------------------;
-         %PUT &g_error.(SASUNIT): _asserts: Error retrieving testcase id;
-         %PUT --------------------------------------------------------------------------------;
-         %_issueErrorMessage (App.Program.SASUnitAsserts, ERROR: _asserts: Error retrieving testcase id)
-         %RETURN;
-      %END;
+   QUIT;
+
+   %IF %_handleError(&l_macname.
+                    ,NoTestcaseId
+                    ,(&&&r_casid=.)
+                    ,Error retrieving testcase id
+                    ,i_verbose=&g_verbose.
+                    ) 
+                  %THEN %DO;   
+      %RETURN;
+   %END;
+
+   PROC SQL NOPRINT;
       /* generate a new check number */
       SELECT max(tst_id) INTO :&r_tstid 
       FROM target.tst 
@@ -101,24 +112,25 @@
    QUIT;
 
    %IF (&g_verbose.) %THEN %DO;
-         %PUT --------------------------------------------------------------------------------;
       %IF (&i_result. = 2) %THEN %DO;
-         %*_issueErrorMessage (App.Program.SASUnitAsserts, ERROR~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.);
-         %PUT &G_ERROR.(SASUNIT): &l_errMsg.;
+         %_issueAssertErrorMessage (_asserts: %bquote(ERROR~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.));
+         %*_issueInfoMessage  (&g_currentLogger.,_asserts: %bquote(SASUnitAssertError~&l_errMsg.));
       %END;
       %ELSE %DO;
          %IF (&i_result. = 1) %THEN %DO;
-            %*_issueInfoMessage (App.Program.SASUnitAsserts, MANUAL~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.);
+            %_issueAssertInfoMessage (_asserts: %bquote(MANUAL~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.));
+            %*_issueInfoMessage  (&g_currentLogger.,_asserts: %bquote(MANUAL~&l_errMsg.));
          %END;
          %ELSE %DO;
-            %*_issueInfoMessage (App.Program.SASUnitAsserts, OK~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.);
+            %_issueAssertInfoMessage (_asserts: %bquote (OK~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.));
+            %*_issueInfoMessage  (&g_currentLogger.,_asserts: %bquote(OK~&l_errMsg.));
          %END;
-         %PUT &G_NOTE.(SASUNIT): &l_errMsg.;
       %END;
-         %PUT --------------------------------------------------------------------------------;
    %END;
 
-   %PUT ========================== Check &&&r_casid...&&&r_tstid (&i_type) =====================================;
+   %_issueInfoMessage   (App.Program.SASUnitAsserts
+                        ,%str(========================== Check &&&r_casid...&&&r_tstid %(&i_type%) =====================================)
+                        );
 
    %LET &r_casid = %sysfunc(putn(&&&r_casid,z3.));
    %LET &r_tstid = %sysfunc(putn(&&&r_tstid,z3.));

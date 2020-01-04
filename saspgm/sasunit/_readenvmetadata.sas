@@ -30,9 +30,10 @@
       g_runningProgramFullName
       g_xcmd
       g_dirMacro
+      g_useLog4SAS
    ;
 
-   %local l_sysin;
+   %local l_sysin l_string;
 
    %*** Check for execution mode and running program ***;
    %let g_runningProgram         =_NONE_;
@@ -104,13 +105,15 @@
       %let g_runningProgram         =%scan(&g_runningProgramFullName., -1, /);
    %end;
 
+   %*** Check if XCMD is allowed ***;
    %let g_xcmd = %sysfunc(getoption(XCMD));
-
    %if (&g_xcmd. = NOXCMD) %then %do;
       %let g_dirMacro = _noxcmd_dir;
    %end;
    %else %do;
       %let g_dirMacro = _dir;
    %end;
+   
+   %LET g_useLog4SAS    = %eval (%length (%sysfunc (getoption(LOGCONFIGLOC))) > 0);
 %MEND _readEnvMetadata;
 /** \endcond */
