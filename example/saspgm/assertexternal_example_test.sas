@@ -92,7 +92,7 @@
 %initTestcase(i_object   = assertexternal.sas
              ,i_desc     = Successful test with one path and one variable
              );
-%endTestcall()
+%endTestcall();
 
 %assertExternal (i_script             =&assertExternal_script1.
                 ,i_expected           =&assertExternal_work1.
@@ -111,12 +111,13 @@
                 ,i_desc               =%str(Word count of "Lorem" equals 2, but i_actual=3, so i_expected_shell_rc must be 1)
                 ,i_threshold          =NONE
                 );
+%endTestcase();
 
 /* test case 2 ------------------------------------ */
 %initTestcase(i_object   = assertexternal.sas
              ,i_desc     = Tests with with two paths as params und file compare command 
              );
-%endTestcall()
+%endTestcall();
 
 %assertExternal (i_script             =&assertExternal_script2.
                 ,i_expected           =&assertExternal_work1.
@@ -148,7 +149,7 @@
                 ,i_desc               =%str(Compared files do not match, but modifier ignore case used -> test is OK)
                 ,i_threshold          =NONE
                 );
-                
+%endTestcase();
 
 %endScenario();
 /** \endcond */
