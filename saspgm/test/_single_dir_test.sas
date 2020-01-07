@@ -56,7 +56,7 @@ run;
 %endTestcall;
 
 %assertLog(i_errors=0, i_warnings=0);
-%assertLogMsg(i_logmsg=^NOTE.SASUNIT.: Given directory is empty:);
+%assertLogMsg(i_logmsg=^NOTE: _single_dir: Given directory is empty:);
 %assertColumns(i_expected=dircheck, i_actual=_empty_dir, i_desc=check for empty dir file, i_fuzz=0.5)
 %endTestcase;
 

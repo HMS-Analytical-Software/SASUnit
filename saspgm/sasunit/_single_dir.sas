@@ -35,12 +35,6 @@
                    ,o_subdirs=_NONE_
                    );
 
-   %local 
-      l_i_path 
-      l_dir_id
-      l_rc
-   ;
-
    data work._sd_members
       %if (%quote(&i_pattern.) ne _NONE_) %then %do;
          (where=(upcase (membername) like "%upcase(&i_pattern.)"))
@@ -48,7 +42,8 @@
       %if (&o_subdirs. ne _NONE_) %then %do;
          &o_subdirs. (keep=filename)
       %end;
-   ;
+      ;
+      
       length 
          membername 
          filename    $255
@@ -63,10 +58,10 @@
       d_id = dopen("DIR");
       num  = dnum(d_id);
       if (num < 1) then do;
-         putlog "&g_note.(SASUNIT): Given directory is empty:" Directory;
+         rc = log4sas_logevent("&g_currentLogger.", "Info" ,"_single_dir: Given directory is empty: " !! catt (Directory));
       end;
       else do;
-         putlog "&g_note.(SASUNIT): Directory """ Directory +(-1) """ contains " num "entries.";
+         rc = log4sas_logevent("&g_currentLogger.", "Info" ,"_single_dir: Directory """ !! catt (Directory) !! """ contains " !! catt (num) !! "entries.");
       end;
       do i=1 to num;
          membername = dread (d_id, i);
@@ -79,7 +74,7 @@
          end;
          else do;
             d_dir_id = dclose (d_dir_id);
-            putlog "&g_note.(SASUNIT): Directory """ Directory +(-1) """ contains subdirectory """ membername +(-1) """";
+            rc = log4sas_logevent("&g_currentLogger.", "Info" ,'_single_dir: Directory "' !! catt (Directory) !! '" contains subdirectory "' !! catt (membername) !! '"');
             rc = filename (fileref, "");
             %if (&o_subdirs. ne _NONE_) %then %do;
                output &o_subdirs.;

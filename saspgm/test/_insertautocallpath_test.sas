@@ -30,7 +30,7 @@
    ;
 
    %let l_savedAutoCallPath = %sysfunc (getoption (SASAUTOS));
-   %let l_expectedAutoCallPath = %sysfunc (compress (&l_savedAutoCallPath, %str(%(%))));
+   %let l_expectedAutoCallPath = %substr (&l_savedAutoCallPath, 2, %length(&l_savedAutoCallPath.)-2);
 
    filename HUGO "%sysfunc(pathname(WORK))";
 
