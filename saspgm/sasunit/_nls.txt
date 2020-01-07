@@ -107,6 +107,8 @@
  27 EN Download
  28 DE Programmdokumentation
  28 EN Program Documentation
+ 29 DE SASUnit bewerten
+ 29 EN Rate SASUnit
 ---reportCas
   1 DE Testfälle nach Szenarien
   1 EN Test Cases by Scenario
@@ -152,6 +154,8 @@
  21 EN Error in execution of test scenario, see log
  22 DE Letzter Lauf
  22 EN Last Run
+ 23 DE SASUnit bewerten
+ 23 EN Rate SASUnit
 ---reportCmp
   1 DE Tatsächlich erstellte SAS-Tabelle
   1 EN SAS table actually created
@@ -351,6 +355,8 @@
  36 EN Test results
  37 DE SASUnit Version
  37 EN SASUnit version
+ 38 DE SASUnit bewerten
+ 38 EN Rate SASUnit
 ---reportLibrary
   1 DE Prüfbericht - Vergleich der beiden Bibliotheken
   1 EN Test Report - Comparison of two Libraries
@@ -416,6 +422,8 @@
  15 EN manual
  16 DE Fehler in der Testausführung, siehe Log
  16 EN Error in execution of test scenario, see log
+ 17 DE SASUnit bewerten
+ 17 EN Rate SASUnit
 ---reportTableExist
   1 DE Libref ist nicht gültig
   1 EN Libref is invalid
