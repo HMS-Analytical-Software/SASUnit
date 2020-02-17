@@ -39,5 +39,14 @@
    %_render_dataColumn (i_sourceColumn=hlp
                        ,o_targetColumn=&o_targetColumn.
                        );
+                       
+                       
+   href     = catt ('_', put (scn_id, z3.),'_',put (cas_id, z3.),'_',put (tst_id, z3.));
+   %if (&o_html.) %then %do;
+      href_act = catt (href,'_assertrecordcount_rep.html');
+   %end;
+   
+   &o_targetColumn. = catt ("^{style [flyover=""&g_nls_reportRecordCount_007"" url=""", href_act, """] &g_nls_reportRecordCount_006. } ^n ");
+   &o_targetColumn. = catt (hlp, "^n", &o_targetColumn.);
 %mend _render_assertRecordCountAct;
 /** \endcond */

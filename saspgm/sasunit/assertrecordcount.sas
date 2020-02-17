@@ -43,14 +43,14 @@
       %RETURN;
    %END;
 
-   %LOCAL l_dsname l_result l_actual;
+   %LOCAL l_dsname l_result l_actual l_casid l_tstid l_path;
    %LET l_dsname   = %sysfunc(catx(., &i_libref., &i_memname.));
    %LET l_result   = 2;
    %LET l_actual   = -999;
    %LET i_operator = %sysfunc(upcase(&i_operator.));
    %LET l_errmsg   =;
    
-   %IF &i_where = %THEN %LET i_where=1;
+   %IF &i_where. = %THEN %LET i_where=1;
   
    %*************************************************************;
    %*** Check preconditions                                   ***;
@@ -89,6 +89,11 @@
    
    %*** Determine results***;
    PROC SQL noprint;
+      create table work._arcTable as
+         select *
+            from &l_dsname.
+            where &i_where.
+         ;
       select count(*) into :l_actual 
          from &l_dsname.
          where &i_where.
@@ -105,6 +110,29 @@
       %LET l_result = 0;
    %END;
 
+   %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid);
+
+   %*** create subfolder ***;
+   %if (&g_runMode.=SASUNIT_BATCH) %then %do;
+      %_createTestSubfolder (i_assertType   =assertrecordcount
+                            ,i_scnid        =&g_scnid.
+                            ,i_casid        =&l_casid.
+                            ,i_tstid        =&l_tstid.
+                            ,r_path         =l_path
+                            );
+
+      %*** create library listing ***;
+      *** Capture tables instead of ODS DOCUMENT ***;
+      libname _arcLib "&l_path.";
+      data _arcLib._arcTable;
+         set WORK._arcTable;
+      run;
+      libname _arcLib clear;
+   %end;
+
+   proc datasets lib=work nolist memtype=(data view);
+      delete _arcTable;
+   quit;
 %Update:
    *** update result in test database ***;
    %_asserts(i_type     = assertRecordCount
