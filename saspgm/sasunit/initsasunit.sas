@@ -60,13 +60,11 @@
                                 supported values: "en" / "de"
                                 default: %sysget(SASUNIT_LANGUAGE)
                                 
-   \todo    implement _makeSASUnitPath and _adaptSAUnitPathToOS as os-dependant macros including test scenarios and use only paths with slashes inside SASUnit
    \todo    implement os-indepedant version of assertText and assertImage. All os-dependant info needs to be packed inside the script files. See assertText.cmd
-   \todo    move assertText scearios to os-dependant scenario folder and eliminate adaptToOs-macros 
+   \todo    move assertText scenarios to os-dependant scenario folder and eliminate adaptToOs-macros 
    \todo    Are all checks for Shell vs. SASUnit-Parameters necessary only in Batch?
    \todo    Do not use %sysget in SASUnit anywhere except for Shell- vs. SASUnit-Parameters and in run_all.sas
-   \todo    Implement macro _insertAutocallpath
-   \todo    Abort if error and batchmode (ABORT 9 at the end of this macro
+   \todo    Abort if error and batchmode (ABORT 9 at the end of this macro)
    \todo    Implement _setLog4SASLogLevel
    \todo    Name all macros that especially deal with log4SAS as _ccccLog4SASCcccccc
    \todo    replace g_verbose
@@ -368,29 +366,45 @@
    %END; /* i=1 %TO 29 */
 
    /*-- check if autoexec exists where specified --------------------------------*/
-   %*** because we need to specify a real blank (%str( )) as parameter, ***;
-   %*** we need to use a different method of assignment.                ***;
-   %*** KILL ME: Why that? ***;
-   %LET l_autoexec=%trim(&i_autoexec);
-   %LET l_autoexec_abs=%_abspath(&l_root,&l_autoexec);
+   %*** In case of no autoexec you need to specify a real blank as value ***;
+   %*** because we need to specify a real blank (%str( )) as parameter,  ***;
+   %*** we need to use a different method of assignment.                 ***;
+   %LET l_autoexec=%trim(&i_autoexec.);
+   %LET l_autoexec_abs=%_abspath(&l_root.,&l_autoexec.);
    %IF %_handleError(&l_macname.
-                    ,AutoexecNotFound
-                    ,"&l_autoexec" NE "" AND NOT %sysfunc(fileexist(&l_autoexec_abs%str( )))
-                    ,Error in parameter i_autoexec: file not found
-                    ,i_verbose=&i_verbose.
+                    ,AutoexecIsGiven
+                    ,"&l_autoexec" NE ""
+                    ,Parameter i_autoexec was not given by user so no autoxece will be used for calling scanrios
+                    ,i_msgtype=INFO
                     ) 
-      %THEN %GOTO errexit;
+      %THEN %DO;
+      %IF %_handleError(&l_macname.
+                       ,AutoexecNotFound
+                       ,NOT %sysfunc(fileexist(&l_autoexec_abs.))
+                       ,Error in parameter i_autoexec: file not found
+                       ,i_verbose=&i_verbose.
+                       ) 
+         %THEN %GOTO errexit;
+   %END;
 
    /*-- check if sascfg exists where specified ----------------------------------*/
-   %LET l_sascfg=&i_sascfg;
+   %LET l_sascfg=%trim(&i_sascfg);
    %LET l_sascfg_abs=%_abspath(&l_root,&l_sascfg);
    %IF %_handleError(&l_macname.
-                    ,SASCfgNotFound
-                    ,"&l_sascfg" NE "" AND NOT %sysfunc(fileexist(&l_sascfg_abs%str( )))
+                    ,SASCfgIsGiven
+                    ,"&l_sascfg" NE ""
                     ,Error in parameter i_sascfg: file not found
-                    ,i_verbose=&i_verbose.
+                    ,i_msgtype=INFO
                     ) 
-      %THEN %GOTO errexit;
+      %THEN %DO;
+      %IF %_handleError(&l_macname.
+                       ,SASCfgNotFound
+                       ,NOT %sysfunc(fileexist(&l_sascfg_abs.))
+                       ,Error in parameter i_sascfg: file not found
+                       ,i_verbose=&i_verbose.
+                       ) 
+         %THEN %GOTO errexit;
+   %END;
 
    /*-- check sasuser folder ----------------------------------------------------*/
    %LET l_sasuser=&i_sasuser;
@@ -446,23 +460,38 @@
    %ELSE %IF (%upcase(&sysscpl.) = AIX) %THEN %DO;
       %LET l_sasunit_os = &l_sasunit./unix_aix;
    %END;
+   %LET l_sasunit_os=&l_sasunit_os.;
    %LET l_abspath_sasunit_os=%_abspath(&l_sasunitroot.,&l_sasunit_os.);
 
    /*-- os-specific sasunit folder ----------------------------------------------------------*/
-   %LET l_sasunit_os=&l_sasunit_os.;
    %IF %_handleError(&l_macname.
-                    ,InvalidSASUnitDir
+                    ,InvalidSASUnitOSDir
                     ,"&l_abspath_sasunit_os." EQ "" OR NOT %sysfunc(fileexist(&l_abspath_sasunit_os./_oscmds.sas))
-                    ,Error in parameter i_sasunit: os-specific SASUnit macro programs not found
+                    ,Error in parameter l_sasunit_os: folder for os-specific SASUnit macro programs not found!
+                    ,i_verbose=&i_verbose.
+                    ) 
+      %THEN %GOTO errexit;
+   %IF %_handleError(&l_macname.
+                    ,SASUnitOsMacroNotFound
+                    ,"&l_abspath_sasunit_os." EQ "" OR NOT %sysfunc(fileexist(&l_abspath_sasunit_os./_oscmds.sas))
+                    ,Error in parameter i_sasunit: os-specific SASUnit macro _oscmds not found!
+                    ,i_verbose=&i_verbose.
+                    ) 
+      %THEN %GOTO errexit;
+   %IF %_handleError(&l_macname.
+                    ,SASUnitOsMacroNotFound
+                    ,"&l_abspath_sasunit_os." EQ "" OR NOT %sysfunc(fileexist(&l_abspath_sasunit_os./_makesasunitpath.sas))
+                    ,Error in parameter i_sasunit: os-specific SASUnit macro _makesasunitpath not found!
                     ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
 
-   %include "&l_abspath_sasunit_os./_makeSASUnitPath.sas";
+   %include "&l_abspath_sasunit_os./_makesasunitpath.sas";
    
    /******************************************************************************/
    /*** End of Step three                                                      ***/
    /******************************************************************************/
+   
    %LET l_root=%_makeSASUnitPath(&l_root.);
    %LET l_sasunitroot=%_makeSASUnitPath(&l_sasunitroot.);
    %LET l_sasunit=%_makeSASUnitPath(&l_sasunit.);
@@ -473,14 +502,15 @@
       %LET l_sasautos&i=%_makeSASUnitPath(&&l_sasautos&i);
    %END; /* i=1 %TO 29 */
 
-   %_insertAutocallPath ("&l_sasunit.");
-   %_insertAutocallPath ("&l_abspath_sasunit_os.");
+   %_insertAutocallPath (&l_sasunit.);
+   %_insertAutocallPath (&l_abspath_sasunit_os.);
    OPTIONS NOQUOTELENMAX;
 
    /*-- Under linux g_language is used in _oscmds -------------------------------------------*/
    /*-- Moving this call after _loadenvironment causes other errors -------------------------*/
    /*-- So g_language is simply set here ----------------------------------------------------*/
    %let g_language=&i_language.;
+   %let g_overwrite=&i_overwrite.;
 
    %_oscmds;
    
@@ -528,30 +558,22 @@
          %LET l_cmdfile=%sysfunc(pathname(WORK))/remove_dir.cmd;
          DATA _null_;
             FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
-            PUT "&g_removedir ""&l_target_abs/log""&g_endcommand";
-            PUT "&g_removedir ""&l_target_abs/tst""&g_endcommand";
-            PUT "&g_removedir ""&l_target_abs/rep""&g_endcommand";
+            PUT "&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./log)&g_endcommand";
+            PUT "&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./doc)&g_endcommand";
          RUN;
          %_executeCMDFile(&l_cmdfile.);
          %LET l_rc=%_delfile(&l_cmdfile.);
          %LET rc = %sysfunc (sleep(2,1));
-         %LET l_cmdfile=%sysfunc(pathname(WORK))/make_dir.cmd;
-         DATA _null_;
-            FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
-            PUT "&g_makedir ""&l_target_abs/log""&g_endcommand";
-            PUT "&g_makedir ""&l_target_abs/tst""&g_endcommand";
-            PUT "&g_makedir ""&l_target_abs/rep""&g_endcommand";
-         RUN;
-         %_executeCMDFile(&l_cmdfile.);
-         %LET l_rc=%_delfile(&l_cmdfile.);
-
-         %LET l_cmdfile=%sysfunc(pathname(WORK))/make_dir_cr.cmd;
-         DATA _null_;
-            FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
-            PUT "&g_makedir ""&l_target_abs/tst/crossreference""&g_endcommand";
-         RUN;
-         %_executeCMDFile(&l_cmdfile.);
-         %LET l_rc=%_delfile(&l_cmdfile.);
+         %_mkDir (&l_target_abs./log
+                 ,makeCompletePath = 0
+                 );
+         %_mkDir (&l_target_abs./doc/testDoc
+                 ,makeCompletePath = 1
+                 );
+         %_mkDir (&l_target_abs./doc/tempDoc/crossreference
+                 ,makeCompletePath = 1
+                 );
+              
       %END; /* %if &l_newdb */
 
       /*-- check folders -----------------------------------------------------------*/
@@ -563,16 +585,23 @@
                        ) 
          %THEN %GOTO errexit;
       %IF %_handleError(&l_macname.
-                       ,NoTstDir
-                       ,NOT %_existdir(&l_target_abs./tst)
-                       ,folder &l_target_abs./tst does not exist
+                       ,NoRepDir
+                       ,NOT %_existdir(&l_target_abs./doc)
+                       ,folder &l_target_abs./doc does not exist
                        ,i_verbose=&i_verbose.
                        ) 
          %THEN %GOTO errexit;
       %IF %_handleError(&l_macname.
                        ,NoRepDir
-                       ,NOT %_existdir(&l_target_abs./rep)
-                       ,folder &l_target_abs./rep does not exist
+                       ,NOT %_existdir(&l_target_abs./doc/tempDoc)
+                       ,folder &l_target_abs./doc/tempDoc does not exist
+                       ,i_verbose=&i_verbose.
+                       ) 
+         %THEN %GOTO errexit;
+      %IF %_handleError(&l_macname.
+                       ,NoRepDir
+                       ,NOT %_existdir(&l_target_abs./doc/tempDoc/crossreference)
+                       ,folder &l_target_abs./doc/tempDoc/crossreference does not exist
                        ,i_verbose=&i_verbose.
                        ) 
          %THEN %GOTO errexit;
@@ -648,7 +677,7 @@
          DELETE check;
       QUIT;
 
-      %LET l_rc=%_delFile(&l_work/run.sas);
+      %LET l_rc=%_delFile(&l_work/check_spawning.sas);
    %END;
 
    %_createExamineeTable;
@@ -670,16 +699,20 @@
    %_issueInfoMessage(&g_currentLogger., %str ( ));
 
    %RETURN;
+   
 %errexit:
    %_issueErrorMessage(&g_currentLogger., %str ( ));
    %_issueErrorMessage(&g_currentLogger., %str (===================== Errors occured! Check log files! ===========================================));
    %_issueErrorMessage(&g_currentLogger., %str ( ));
-   %RETURN;
+   %goto EndSASUnit;
+   
 %fatalexit:
    %_issueFatalMessage(&g_currentLogger., %str ( ));
    %_issueFatalMessage(&g_currentLogger., %str (===================== Fatal errors occured! test suite aborted! ===========================================));
    %_issueFatalMessage(&g_currentLogger., %str ( ));
-   LIBNAME target;
+   
+%EndSASUnit:   
+   LIBNAME target clear;
    endsas;
 %MEND initSASUnit;
 
