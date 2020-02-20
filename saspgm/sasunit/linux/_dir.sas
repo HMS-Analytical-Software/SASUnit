@@ -46,10 +46,7 @@
 
    %put &g_note.(SASUNIT): Directory search is:           &i_path;
 
-   %*** Change backslashes to slashes ***;
-   %let l_i_path = %_adaptSASUnitPathToOS(&i_path);
-
-   %put &g_note.(SASUNIT): Corrected directory search is: &l_i_path;
+   %let l_i_path = &i_path;
 
    %*** remove quotes around the path ***;
    %if (%qsubstr(&l_i_path,1,1) = %str(%')) %then %do;
@@ -81,6 +78,10 @@
    %put &g_note.(SASUNIT): Adjusted directory is:         &l_i_path;
    %put &g_note.(SASUNIT): Search pattern is    :         &l_i_name;
 
+   %let l_i_path =%_adaptSASUnitPathToOS (&l_i_path);
+   
+   %put &g_note.(SASUNIT): OS-Adjusted directory is:      &l_i_path;
+   
    %IF &i_recursive=0 %then %let s=-maxdepth 1;
 
    filename _dir pipe "find -P ""&l_i_path."" &s. &l_i_name. -type f -printf ""%nrstr(%h/%f\t%TD\t%TT\t\r\n)""" encoding=&encoding.;
