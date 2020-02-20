@@ -149,9 +149,9 @@
       %END;
    %END;
 
-   %_insertAutoCallPath ("&g_sasunit_os.");
+   %_insertAutoCallPath (&g_sasunit_os.)
    %DO i=0 %TO 29;
-      %IF "&&g_sasautos&i.." NE "" %THEN %_insertAutoCallPath ("&&g_sasautos&i..");
+      %_insertAutoCallPath (&&g_sasautos&i..)
    %END;
    
    %LET g_SASUnitLogger  =App.Program.SASUnit;
@@ -173,6 +173,6 @@
    %GOTO exit;
 %errexit:
    LIBNAME target;
- %exit:
+%exit:
 %MEND _loadEnvironment;
 /** \endcond */
