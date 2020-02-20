@@ -18,7 +18,7 @@
    \param   i_cmd     OS command with quotes where necessary 
    \return  error symbol &sysrc will be set to a value other than 0, if an error occurs.
 
-    \todo replace g_verbose
+   \todo replace g_verbose
 */ /** \cond */ 
 
 %MACRO _xcmd(i_cmd);
@@ -48,14 +48,14 @@
       %LET rc=%sysfunc(filename(filrf,&logfile));
       %LET rc = %sysfunc(fexist(&filrf));
 
-      %IF (&rc) %THEN %DO;
+      %IF (&rc.) %THEN %DO;
          DATA _NULL_;
             infile "&logfile" truncover;
             input;
             putlog _infile_;
          RUN;
       %END;
-      %ELSE DO;
+      %ELSE %DO;
          %_issueInfoMessage (&g_currentLogger., _xcmd: No File Redirection for Commands cd, pwd, setenv and umask);
       %END;
       %LET rc=%sysfunc(filename(filrf));
