@@ -64,7 +64,6 @@
    \todo    move assertText scenarios to os-dependant scenario folder and eliminate adaptToOs-macros 
    \todo    Are all checks for Shell vs. SASUnit-Parameters necessary only in Batch?
    \todo    Do not use %sysget in SASUnit anywhere except for Shell- vs. SASUnit-Parameters and in run_all.sas
-   \todo    Abort if error and batchmode (ABORT 9 at the end of this macro)
    \todo    Implement _setLog4SASLogLevel
    \todo    Name all macros that especially deal with log4SAS as _ccccLog4SASCcccccc
    \todo    replace g_verbose
@@ -187,7 +186,7 @@
 
    /*-- Check value of incoming parameters ---------------------------------------------*/
    /*-- Theses parameters must be set --------------------------------------------------*/
-   %let l_parameterNames = i_root io_target i_project i_sasunit i_sasautos i_doc i_language i_testdata i_refdata; /* i_logpath i_scnlogpath */
+   %let l_parameterNames = i_root io_target i_project i_sasunit i_sasautos i_language i_testdata i_refdata; /* i_testdb_path i_logpath i_scnlogpath */
 
    %_checkListOfParameters (i_listOfParameters    = &l_parameterNames.
                            ,i_returnCodeVariable  = l_goOn
@@ -200,7 +199,7 @@
    %end;
 
    /*-- Theses parameters may be given --------------------------------------------------*/
-   %let l_parameterNames = i_sasuser;
+   %let l_parameterNames = i_sasuser i_doc;
    %DO l_i=1 %TO 29;
       %let l_parameterNames = &l_parameterNames. i_sasautos&l_i.;
    %END;
@@ -274,7 +273,6 @@
    libname _tmp "&i_sasunit.";
    %let l_sasunit=%sysfunc (pathname(_tmp));
    libname _tmp clear;
-
 
    /*-- root folder -------------------------------------------------------------*/
    %IF %_handleError(&l_macname.
@@ -558,8 +556,8 @@
          %LET l_cmdfile=%sysfunc(pathname(WORK))/remove_dir.cmd;
          DATA _null_;
             FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
-            PUT "&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./log)&g_endcommand";
-            PUT "&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./doc)&g_endcommand";
+            PUT %sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./log)&g_endcommand));
+            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./doc)&g_endcommand));
          RUN;
          %_executeCMDFile(&l_cmdfile.);
          %LET l_rc=%_delfile(&l_cmdfile.);
