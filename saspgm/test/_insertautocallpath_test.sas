@@ -16,7 +16,7 @@
 
 %initScenario (i_desc=Test of _insertautocallpath.sas);
 
-%macro testcase(i_object=_insertautocallpath.sas, i_desc=%str(Call with new Path));
+%macro testcase(i_object=_insertautocallpath.sas, i_desc=%str(Call with new Path as fileref));
    /*****************
    documentation
    ******************
@@ -55,7 +55,7 @@
    %endTestcase()
 %mend testcase; %testcase;
 
-%macro testcase(i_object=_insertautocallpath.sas, i_desc=%str(Call with existing Path));
+%macro testcase(i_object=_insertautocallpath.sas, i_desc=%str(Call with existing Path as fileref));
    /*****************
    documentation
    ******************
@@ -71,6 +71,7 @@
    %let l_savedAutoCallPath = %sysfunc (getoption (SASAUTOS));
    %let l_expectedAutoCallPath = %substr (&l_savedAutoCallPath, 2, %length(&l_savedAutoCallPath.)-2);
    
+   filename Fritz "%sysfunc(pathname(WORK))";
    %_insertAutoCallPath(Fritz);
 
    /* start testcase */
@@ -84,6 +85,80 @@
    /* assert */
    %assertLog     (i_errors=0, i_warnings=0);
    %assertEquals  (i_expected = %str(%(&l_expectedAutoCallPath. Fritz%))
+                  ,i_actual   = %sysfunc (getoption (SASAUTOS))
+                  ,i_desc     = Path shoud be equal
+                  );
+
+   options SASAUTOS=&l_savedAutoCallPath.;
+
+   /* end testcase */
+   %endTestcase()
+%mend testcase; %testcase;
+
+%macro testcase(i_object=_insertautocallpath.sas, i_desc=%str(Call with new Path));
+   /*****************
+   documentation
+   ******************
+   setup  [...] 
+   call   [...]
+   assert [...]
+   *****************/
+   %local 
+      l_savedAutoCallPath
+      l_expectedAutoCallPath
+   ;
+
+   %let l_savedAutoCallPath = %sysfunc (getoption (SASAUTOS));
+   %let l_expectedAutoCallPath = %substr (&l_savedAutoCallPath, 2, %length(&l_savedAutoCallPath.)-2);
+
+   /* start testcase */
+   %initTestcase(i_object=&i_object., i_desc=&i_desc.);
+
+   /* call */
+   %_insertAutoCallPath(%sysfunc(pathname(WORK)));
+
+   %endTestcall()
+
+   /* assert */
+   %assertLog     (i_errors=0, i_warnings=0);
+   %assertEquals  (i_expected = %quote((&l_expectedAutoCallPath. "%sysfunc(pathname(WORK))"))
+                  ,i_actual   = %sysfunc (getoption (SASAUTOS))
+                  ,i_desc     = Path shoud be equal
+                  );
+
+   options SASAUTOS=&l_savedAutoCallPath.;
+
+   /* end testcase */
+   %endTestcase()
+%mend testcase; %testcase;
+
+%macro testcase(i_object=_insertautocallpath.sas, i_desc=%str(Call with existing Path as path));
+   /*****************
+   documentation
+   ******************
+   setup  [...] 
+   call   [...]
+   assert [...]
+   *****************/
+   %local 
+      l_savedAutoCallPath
+      l_expectedAutoCallPath
+   ;
+
+   %let l_savedAutoCallPath = %sysfunc (getoption (SASAUTOS));
+   %let l_expectedAutoCallPath = %substr (&l_savedAutoCallPath, 2, %length(&l_savedAutoCallPath.)-2);
+   
+   /* start testcase */
+   %initTestcase(i_object=&i_object., i_desc=&i_desc.);
+
+   /* call */
+   %_insertAutoCallPath(%sysfunc(pathname(WORK)));
+
+   %endTestcall()
+
+   /* assert */
+   %assertLog     (i_errors=0, i_warnings=0);
+   %assertEquals  (i_expected = %str(%(&l_expectedAutoCallPath. "%sysfunc(pathname(WORK))"%))
                   ,i_actual   = %sysfunc (getoption (SASAUTOS))
                   ,i_desc     = Path shoud be equal
                   );
