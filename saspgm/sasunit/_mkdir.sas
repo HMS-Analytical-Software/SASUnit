@@ -13,11 +13,6 @@
    \author     \$Author: klandwich $
    \date       \$Date: 2019-02-28 16:50:25 +0100 (Do, 28 Feb 2019) $
 
-   \todo document parameters
-   \test New test calls that catch all messages
-   \todo Dlete os-dependant macros
-
-   
    \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/linux/_mkdir.sas $
@@ -25,6 +20,13 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 
+   \param dir              Path that shall be created in the file system.
+   \param makeCompletePath Flag with value zero or other. If flag is zero then only one subfolder will be created and the parent folder has to exist.
+                           Parent folder is the folder right next to the last folder in given path.
+                           If flag is unequal to zero then all missing folders in the path will be created.
+   
+   \test New test calls that catch all messages
+   \todo Delete os-dependant macros
 */ /** \cond */
 
 %macro _mkdir (dir
@@ -64,11 +66,20 @@
          length 
             osPath ParentFolder Directory NewDirectory $32000
             FolderName $256
+            osPathPrefix $2;            
          ;
 
-         osPath = "&l_osPath.";
-         numOfFolders = count (osPath, "/")+1;
-         ParentFolder = scan(osPath, 1, "/");
+         osPath       = "&l_osPath.";
+         osPathPrefix = "";
+         *** Let all paths start with /                                 ***;
+         *** Cut off and remember volumename when running under windows ***;
+         if (index (osPath,':')) then do;
+          osPathPrefix = scan (osPath, 1, '/');
+          osPath       = scan (osPath, 2, ':');
+         end;
+         
+         numOfFolders = count (osPath, "/");
+         ParentFolder = catt (osPathPrefix, "/", scan (osPath, 1, "/"));
          do i=2 to numOfFolders;
             FolderName   = scan(osPath, i, "/");
             Directory    = catx ("/", ParentFolder, FolderName);
@@ -89,7 +100,7 @@
          %_issueErrorMessage (&g_currentLogger.,_mkdir: Folder &l_folderName. could not be created in directory &l_parentFolder..);
       %end;
       %if (%bquote(&l_result.) = %bquote (&l_osPath.)) %then %do;
-         %if (&makeCompletePath.) %then %do;
+         %if (&makeCompletePath. ne 0) %then %do;
             %_issueInfoMessage (&g_currentLogger.,_mkdir: FolderTree &l_osPath. sucessfully created.);
          %end;
          %else %do;
