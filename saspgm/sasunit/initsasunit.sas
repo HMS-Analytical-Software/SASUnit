@@ -355,7 +355,7 @@
       %LET l_sasautos&i.=&&i_sasautos&i..;
       %LET l_sasautos_abs=%_abspath(&l_root,&&l_sasautos&i..);
       %IF %_handleError(&l_macname.
-                    ,InvalidAutocallPath
+                       ,InvalidAutocallPath
                        ,"&l_sasautos_abs" NE "" AND NOT %_existdir(&l_sasautos_abs)
                        ,Error in parameter i_sasautos&i: folder not found
                        ,i_verbose=&i_verbose.
@@ -372,7 +372,7 @@
    %IF %_handleError(&l_macname.
                     ,AutoexecIsGiven
                     ,"&l_autoexec" NE ""
-                    ,Parameter i_autoexec was not given by user so no autoxece will be used for calling scanrios
+                    ,Parameter i_autoexec was not given by user so no autoexec will be used for calling scenarios
                     ,i_msgtype=INFO
                     ) 
       %THEN %DO;
@@ -386,12 +386,12 @@
    %END;
 
    /*-- check if sascfg exists where specified ----------------------------------*/
-   %LET l_sascfg=%trim(&i_sascfg);
-   %LET l_sascfg_abs=%_abspath(&l_root,&l_sascfg);
+   %LET l_sascfg=%trim(&i_sascfg.);
+   %LET l_sascfg_abs=%_abspath(&l_root.,&l_sascfg.);
    %IF %_handleError(&l_macname.
                     ,SASCfgIsGiven
                     ,"&l_sascfg" NE ""
-                    ,Error in parameter i_sascfg: file not found
+                    ,Parameter i_sascfg was not given by user so no project config file will be used for calling scenarios
                     ,i_msgtype=INFO
                     ) 
       %THEN %DO;
@@ -504,11 +504,12 @@
    %_insertAutocallPath (&l_abspath_sasunit_os.);
    OPTIONS NOQUOTELENMAX;
 
+   %let g_overwrite=&i_overwrite.;
+   
    /*-- Under linux g_language is used in _oscmds -------------------------------------------*/
    /*-- Moving this call after _loadenvironment causes other errors -------------------------*/
    /*-- So g_language is simply set here ----------------------------------------------------*/
    %let g_language=&i_language.;
-   %let g_overwrite=&i_overwrite.;
 
    %_oscmds;
    
@@ -565,13 +566,9 @@
          %_mkDir (&l_target_abs./log
                  ,makeCompletePath = 0
                  );
-         %_mkDir (&l_target_abs./doc/testDoc
+         %_mkDir (&l_target_abs./rep
                  ,makeCompletePath = 1
                  );
-         %_mkDir (&l_target_abs./doc/tempDoc/crossreference
-                 ,makeCompletePath = 1
-                 );
-              
       %END; /* %if &l_newdb */
 
       /*-- check folders -----------------------------------------------------------*/
@@ -584,22 +581,8 @@
          %THEN %GOTO errexit;
       %IF %_handleError(&l_macname.
                        ,NoRepDir
-                       ,NOT %_existdir(&l_target_abs./doc)
+                       ,NOT %_existdir(&l_target_abs./rep)
                        ,folder &l_target_abs./doc does not exist
-                       ,i_verbose=&i_verbose.
-                       ) 
-         %THEN %GOTO errexit;
-      %IF %_handleError(&l_macname.
-                       ,NoRepDir
-                       ,NOT %_existdir(&l_target_abs./doc/tempDoc)
-                       ,folder &l_target_abs./doc/tempDoc does not exist
-                       ,i_verbose=&i_verbose.
-                       ) 
-         %THEN %GOTO errexit;
-      %IF %_handleError(&l_macname.
-                       ,NoRepDir
-                       ,NOT %_existdir(&l_target_abs./doc/tempDoc/crossreference)
-                       ,folder &l_target_abs./doc/tempDoc/crossreference does not exist
                        ,i_verbose=&i_verbose.
                        ) 
          %THEN %GOTO errexit;
