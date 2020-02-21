@@ -558,7 +558,8 @@
          DATA _null_;
             FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
             PUT %sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./log)&g_endcommand));
-            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./doc)&g_endcommand));
+            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./rep)&g_endcommand));
+            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./tst)&g_endcommand));
          RUN;
          %_executeCMDFile(&l_cmdfile.);
          %LET l_rc=%_delfile(&l_cmdfile.);
@@ -567,8 +568,12 @@
                  ,makeCompletePath = 0
                  );
          %_mkDir (&l_target_abs./rep
+                 ,makeCompletePath = 0
+                 );
+         %_mkDir (&l_target_abs./tst/crossreference
                  ,makeCompletePath = 1
                  );
+              
       %END; /* %if &l_newdb */
 
       /*-- check folders -----------------------------------------------------------*/
@@ -694,7 +699,7 @@
    
 %EndSASUnit:   
    LIBNAME target clear;
-   endsas;
+   %abort 9;
 %MEND initSASUnit;
 
 /** \endcond */
