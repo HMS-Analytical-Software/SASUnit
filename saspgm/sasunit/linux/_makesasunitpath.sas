@@ -18,7 +18,12 @@
    \todo    eliminate %PUT            
 */ /** \cond */
 %macro _makeSASUnitPath (path);
-   %qsysfunc(dequote(&path.))
+   %local l_path;
+   %let l_path=&path.;
+   %if (%length (&path.) > 0) %then %do;
+      %let l_path = %qsysfunc (dequote (&path.));
+   %end;
+   &l_path.
 %mend _makeSASUnitPath; 
 /** \endcond */
 
