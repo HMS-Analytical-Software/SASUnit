@@ -20,8 +20,8 @@
    %local l_path;
    
    %*** escape all blanks with backslashes ***;
-   %let l_path = %sysfunc (tranwrd (&path., %str ( ), %str (\ )));
-   %let l_path = %sysfunc (tranwrd (&l_path., %str (\\ ), %str (\ )));
+   %let l_path = %qsysfunc (tranwrd (&path., %str ( ), %str (\ )));
+   %let l_path = %qsysfunc (tranwrd (&l_path., %str (\\ ), %str (\ )));
    &l_path.
 %mend _adaptSASUnitPathToOS; 
 /** \endcond */
