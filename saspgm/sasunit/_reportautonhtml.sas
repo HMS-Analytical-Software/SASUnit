@@ -276,12 +276,13 @@
    %if (&o_html.) %then %do;
       %*** because in HTML we want to open the link to SASUnit in a new window, ***;
       %*** we need to insert raw HTML ***;
-      title j=l "^{RAW <img alt=""SASUnit Downloads"" src=""https://img.shields.io/sourceforge/dm/sasunit.svg"">}" 
+      title j=l "^{RAW <a href=""https://sourceforge.net/projects/sasunit/reviews"" class=""link"" title=""&g_nls_reportHome_038."" target=""_blank""><img alt=""&g_nls_reportAuton_029."" src=""https://img.shields.io/badge/-%scan(&g_nls_reportAuton_029.,1)%20%scan(&g_nls_reportAuton_029.,2)%20%nrstr(&#x2605&#x2605&#x2605&#x2605&#x2606)-brightgreen.svg""</a>}"
             j=c %sysfunc(quote (&l_title.))
-            j=r "^{RAW <a href=""https://sourceforge.net/projects/sasunit/reviews"" class=""link"" title=""&g_nls_reportAuton_029."" target=""_blank""><img alt=""&g_nls_reportAuton_029."" src=""https://img.shields.io/badge/-%scan(&g_nls_reportAuton_029.,1)%20%scan(&g_nls_reportAuton_029.,2)-brightgreen.svg""</a>}";
+            j=r "^{RAW <a href=""https://sourceforge.net/projects/sasunit/files/Distributions/stats/timeline"" class=""link"" title=""&g_nls_reportHome_038."" target=""_blank""><img alt=""SASUnit Downloads"" src=""https://img.shields.io/sourceforge/dm/sasunit.svg""></a>}"
+            ;
             
       ods html4 file="&o_path./&o_file..html" 
-                    (TITLE="&l_title.") 
+                    (TITLE=%sysfunc(quote (&l_title.))) 
                     headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
