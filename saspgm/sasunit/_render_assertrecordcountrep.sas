@@ -46,7 +46,7 @@
    LIBNAME _arcLib "&l_path";
 
    %IF (&o_html.) %then %do;
-      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._assertrecordcount_rep.html" style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
+      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._assertrecordcount_rep.html" style=styles.&i_style. stylesheet=(URL="./../css/&i_style..css")
                 encoding="&g_rep_encoding.";
    %END;
 

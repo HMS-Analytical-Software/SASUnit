@@ -40,7 +40,33 @@
 
    /*-- determine number of scenarios 
      and number of test cases per unit under test ----------------------------*/
-   %LOCAL d_rep1 d_rep2 l_tcg_res l_pgmLibraries l_pgmLib l_title l_logpath l_cAuton l_numOfRealScenarios;
+   %LOCAL 
+      d_rep1 
+      d_rep2 
+      l_tcg_res 
+      l_pgmLibraries 
+      l_pgmLib 
+      l_title 
+      l_logpath 
+      l_cAuton 
+      l_numOfRealScenarios
+      l_htmlTitle_center
+      l_htmlTitle_left
+      l_htmlTitle_right
+      l_titleShort
+   ;
+
+   %let l_title     =%nrbquote(^{style [url="http://sourceforge.net/projects/sasunit/" postimage="SASUnit_Logo.png"]SASUnit});
+   %let l_title     =%str(&g_project. | &l_title. &g_nls_reportAuton_002. | &g_nls_reportAuton_001.);
+   %let l_titleShort=%str(&g_project. | &g_nls_reportAuton_002. | &g_nls_reportAuton_001.);
+   %*** because in HTML we want to open the link to SASUnit in a new window, ***;
+   %*** we need to insert raw HTML ***;
+   %let l_htmlTitle_center=<a href="http://sourceforge.net/projects/sasunit/" class="link" title="SASUnit" target="_blank">SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" title="SASUnit" width=26px height=26px align="top" border="0"></a>;
+   %let l_htmlTitle_center=%str(&g_project | &l_htmlTitle_center. &g_nls_reportHome_001.);
+   %let l_htmlTitle_left  = <a href="https://sourceforge.net/projects/sasunit/reviews" class="link" title="&g_nls_reportHome_038." target="_blank"><img alt="&g_nls_reportAuton_029.";
+   %let l_htmlTitle_left  = &l_htmlTitle_left. src="https://img.shields.io/badge/-%scan(&g_nls_reportAuton_029.,1)%20%scan(&g_nls_reportAuton_029.,2)%20%nrstr(&#x2605&#x2605&#x2605&#x2605&#x2606)-brightgreen.svg"</a>;
+   %let l_htmlTitle_right = <a href="https://sourceforge.net/projects/sasunit/files/Distributions/stats/timeline" class="link" title="&g_nls_reportHome_038." target="_blank">;
+   %let l_htmlTitle_right = &l_htmlTitle_right.<img alt="SASUnit Downloads" src="https://img.shields.io/sourceforge/dm/sasunit.svg"></a>;
 
    %_tempFileName(d_rep1)
    %_tempFileName(d_rep2)
@@ -113,8 +139,8 @@
                   ,i_macroList    = macrolistDependency
                   );
       /* Use Json Files to create JavaScript file containing dependency information */
-      %_dependency_agg(i_path = &g_target/tst/crossreference
-                      ,o_file = &l_output/js/data.refs.js
+      %_dependency_agg(i_path = &g_target./doc/tempDoc/crossreference
+                      ,o_file = &l_output./js/data.refs.js
                       );
 
       /* Delete data sets after json files have been created */
@@ -132,6 +158,7 @@
       %LET l_rc =%_delFile("&g_log/000.tcg");
 
       %LET l_logpath=%_escapeBlanks(&g_log.);
+      %_mkdir (&g_target./doc/testDoc/testCoverage);
 
       FILENAME allfiles "&l_logpath./*.tcg";
       DATA _NULL_;
@@ -143,7 +170,7 @@
       
       data WORK._MCoverage_all_macros;
          length MacName $40;
-         infile "&g_log/000.tcg";
+         infile "&l_logpath/000.tcg";
          input;
          RecordType = input (scan (_INFILE_, 1, ' '), ??8.);
          FirstLine  = input (scan (_INFILE_, 2, ' '), ??8.);
@@ -238,7 +265,7 @@
                                 ,i_mCoverageName            = _MCoverage_all_macros
                                 ,i_mCoverageLibrary         = WORK
                                 ,o_outputFile               = tcg_%SCAN(&l_currentUnitFileName.,1,.)
-                                ,o_outputPath               = &g_target/rep
+                                ,o_outputPath               = &g_target./doc/testDoc/testCoverage
                                 ,o_resVarName               = l_tcg_res
                                 ,o_html                     = &o_html.
                                 ,i_style                    = &i_style.
@@ -270,24 +297,23 @@
    footnote;
    options nocenter;
 
-   %let l_title=%str(&g_nls_reportAuton_001. | &g_project. - &g_nls_reportAuton_002.);
    title j=c %sysfunc(quote (&l_title.));
 
    %if (&o_html.) %then %do;
       %*** because in HTML we want to open the link to SASUnit in a new window, ***;
       %*** we need to insert raw HTML ***;
-      title j=l "^{RAW <a href=""https://sourceforge.net/projects/sasunit/reviews"" class=""link"" title=""&g_nls_reportHome_038."" target=""_blank""><img alt=""&g_nls_reportAuton_029."" src=""https://img.shields.io/badge/-%scan(&g_nls_reportAuton_029.,1)%20%scan(&g_nls_reportAuton_029.,2)%20%nrstr(&#x2605&#x2605&#x2605&#x2605&#x2606)-brightgreen.svg""</a>}"
-            j=c %sysfunc(quote (&l_title.))
-            j=r "^{RAW <a href=""https://sourceforge.net/projects/sasunit/files/Distributions/stats/timeline"" class=""link"" title=""&g_nls_reportHome_038."" target=""_blank""><img alt=""SASUnit Downloads"" src=""https://img.shields.io/sourceforge/dm/sasunit.svg""></a>}"
-            ;
+      title j=l %sysfunc (quote(^{RAW &l_htmlTitle_left.}))
+            j=c %sysfunc (quote(^{RAW &l_htmlTitle_center.}))
+            j=r %sysfunc (quote(^{RAW &l_htmlTitle_right.}))
+      ;
             
       ods html4 file="&o_path./&o_file..html" 
-                    (TITLE=%sysfunc(quote (&l_title.))) 
+                    (TITLE=%sysfunc (quote (&l_titleShort.)))
                     headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
                     encoding="&g_rep_encoding.";
-      %_reportPageTopHTML(i_title   = &l_title.
+      %_reportPageTopHTML(i_title   = &l_titleShort.;
                          ,i_current = 4
                          )
    %end;
@@ -376,26 +402,26 @@
             LinkTitle3  = "&g_nls_reportAuton_017. " !! cas_obj;
             LinkTitle4  = trim(cas_obj) !! " &g_nls_reportAuton_025.";
             LinkTitle5  = trim(cas_obj) !! " &g_nls_reportAuton_026.";
-            pgmexa_name = catt ("pgm_", put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", ""));
+            pgmexa_name = catt (put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", ""));
             
             *** HTML-links are destination specific ***;
             %if (&o_html.) %then %do;
-               LinkColumn1 = catt ("src/", put (coalesce (exa_auton,99),z2.), "/", exa_pgm);
+               LinkColumn1 = catt ("testDoc/src/", put (coalesce (exa_auton,99),z2.), "/", exa_pgm);
                LinkColumn2 = catt ("cas_overview.html#SCN", PUT(scn_id,z3.), "_");
                IF compress(cas_obj) ne '' THEN DO;
                   IF index(cas_obj,'/') GT 0 THEN DO;
-                     LinkColumn3 =  'tcg_'||trim(LEFT(SCAN(SUBSTR(cas_obj, findw(cas_obj, SCAN(cas_obj, countw(cas_obj,'/'),'/'))),1,".") !! ".html"));
+                     LinkColumn3 =  'testDoc/testCoverage/tcg_'||trim(LEFT(SCAN(SUBSTR(cas_obj, findw(cas_obj, SCAN(cas_obj, countw(cas_obj,'/'),'/'))),1,".") !! ".html"));
                   END;
                   ELSE DO;
-                     LinkColumn3 =  'tcg_'||TRIM(LEFT(SCAN(cas_obj,1,".") !! ".html"));
+                     LinkColumn3 =  'testDoc/testCoverage/tcg_'||TRIM(LEFT(SCAN(cas_obj,1,".") !! ".html"));
                   END;
                END;
                LinkColumn4 = "&g_nls_reportAuton_023.";
                LinkColumn5 = "&g_nls_reportAuton_024.";
 
                pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.),'_"');
-               if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmexa_name) !! ".html")) then do;
-                  pgmColumn=catt (pgmColumn, ' url="', pgmexa_name, '.html" flyover="&g_nls_reportAuton_028."]', cas_obj,'}');
+               if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/pgmDoc/" !! trim(pgmexa_name) !! ".html")) then do;
+                  pgmColumn=catt (pgmColumn, ' url="pgmDoc/', pgmexa_name, '.html" flyover="&g_nls_reportAuton_028."]', cas_obj,'}');
                end;
                else do;
                   pgmColumn=catt (pgmColumn, ' url="', LinkColumn1, '" flyover="', LinkTitle1, '"]', cas_obj,'}');

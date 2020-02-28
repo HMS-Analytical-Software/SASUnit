@@ -342,7 +342,7 @@
                     (TITLE="&l_title.") 
                     headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                    style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
+                    style=styles.&i_style. stylesheet=(URL="./../../css/&i_style..css")
                     encoding="&g_rep_encoding.";
    %end;
 

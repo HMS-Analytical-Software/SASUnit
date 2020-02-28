@@ -33,6 +33,8 @@
    \param   o_path           Folder where the documentation should be created in
    \param   o_pgmdoc_sasunit Create program documentation for SASUnit macros
    \param   i_style          Name of the SAS style and css file to be used. 
+   \param   o_pgmDocFolder   Name of subfolder for program documentation
+   \param   i_testDocFolder  Name of subfolder for test documnetation (used in links to sourcec odes)
    
    \return program documentation
 */ /** \cond */
@@ -43,12 +45,14 @@
                      ,o_path=
                      ,o_pgmdoc_sasunit=
                      ,i_style=
+                     ,i_srcFolder=src
+                     ,o_pgmDocFolder=
+                     ,i_testDocFolder=
                      );
 
    %local 
       l_anzMacros 
       i 
-      l_Path 
       l_outputPath 
       l_macroName 
       l_pageName
@@ -59,6 +63,8 @@
       l_anzScns
    ;
 
+   %let l_outputPath = &o_path./&o_pgmDocFolder.;
+   
    %if (%sysfunc(exist (WORK._bugdoc))) %then %do;
       proc delete data=WORK._bugdoc;
       run;
@@ -158,11 +164,11 @@
          from work.exa
          order by exa_id
          ;
-      select catt ("src/", put (exa_auton, z2.), "/", exa_pgm) into :l_macroLink1-:l_macroLink%cmpres(&l_anzMacros.)
+      select catt ("../&i_testDocFolder./&i_srcFolder./", put (exa_auton, z2.), "/", exa_pgm) into :l_macroLink1-:l_macroLink%cmpres(&l_anzMacros.)
          from work.exa
          order by exa_id
          ;
-      select catt ("pgm_", put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", "")) into :l_pageName1-:l_pageName%cmpres(&l_anzMacros.)
+      select catt (put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", "")) into :l_pageName1-:l_pageName%cmpres(&l_anzMacros.)
          from work.exa
          order by exa_id
          ;
@@ -229,11 +235,11 @@
 
          %let l_pageName = &&l_pageName&i..;
          %if (&o_html.) %then %do;
-            ods html4 file="&o_Path./&l_pageName..html"
+            ods html4 file="&l_outputPath./&l_pageName..html"
                        (TITLE="&l_title.") 
-                       headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
+                       headtext='<link rel="shortcut icon" href="./../favicon.ico" type="image/x-icon" />'
                        metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                       style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
+                       style=styles.&i_style. stylesheet=(URL="./../css/&i_style..css")
                        encoding="&g_rep_encoding.";
          %end;
 
@@ -281,10 +287,10 @@
       select scn_abs_path into :l_scnFileName1-:l_scnFileName%cmpres(&l_anzScns.)
          from work.scn
          ;
-      select catt ("src/scn/scn_", put (scn_id, z3.), ".sas") into :l_scnLink1-:l_scnLink%cmpres(&l_anzScns.)
+      select catt ("../&i_testDocFolder./src/scn/scn_", put (scn_id, z3.), ".sas") into :l_scnLink1-:l_scnLink%cmpres(&l_anzScns.)
          from work.scn
          ;
-      select catt ("pgm_scn_", put (scn_id, z3.)) into :l_scnPageName1-:l_scnPageName%cmpres(&l_anzScns.)
+      select catt ("scn_", put (scn_id, z3.)) into :l_scnPageName1-:l_scnPageName%cmpres(&l_anzScns.)
          from work.scn
          ;
       select trim(scn_pgm) into :l_scnName1-:l_scnName%cmpres(&l_anzScns.)
@@ -364,11 +370,11 @@
 
          %let l_pageName = &&l_scnPageName&i..;
          %if (&o_html.) %then %do;
-            ods html4 file="&o_Path./&l_pageName..html"
+            ods html4 file="&l_outputPath./&l_pageName..html"
                        (TITLE="&l_title.") 
-                       headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
+                       headtext='<link rel="shortcut icon" href="./../favicon.ico" type="image/x-icon" />'
                        metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                       style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
+                       style=styles.&i_style. stylesheet=(URL="./../css/&i_style..css")
                        encoding="&g_rep_encoding.";
          %end;
 
@@ -392,14 +398,14 @@
    %end;
 
    %if (&o_html.) %then %do;
-      ods html4 file="&o_Path./_PgmDoc_Lists.html" style=styles.&i_style. stylesheet=(url="css/&i_style..css"); 
+      ods html4 file="&l_outputPath./_PgmDoc_Lists.html" style=styles.&i_style. stylesheet=(url="../css/&i_style..css"); 
    %end;
    
    %let l_anzToDo=%_nobs(_ToDoDoc);
    %let l_anzTest=%_nobs(_TestDoc);
    %let l_anzBug =%_nobs(_BugDoc);
    %let l_anzDep =%_nobs(_DepDoc);
-
+   
    title j=c "&g_nls_reportPgmDoc_019.";
    %if (%eval(&l_anzToDo.+&l_anzTest.+&l_anzBug.+&l_anzDep.)) %then %do;
       %if (&l_anzToDo.) %then %do;

@@ -23,7 +23,7 @@
                      <ToDo>
                      <Bug>
                      <Test>
-                     <Depracated>
+                     <Deprecated>
                    <files>
                      <each autocall path>
                        <each macro source file>
@@ -44,6 +44,7 @@
    \param   o_pgmdoc         Creates source code documentation per examinee (0 / 1)
    \param   o_pgmdoc_sasunit Creates source code documentation also for sasunit macros (0 / 1)
    \param   i_style          Name of the SAS style and css file to be used. 
+   \param   o_pgmDocFolder   Name of the subfolder in rep folder to hold all test documentation html pages
 
    \return results will be written to folder &g_target/rep 
 */ /** \cond */ 
@@ -53,6 +54,8 @@
                        ,o_pgmdoc         =0
                        ,o_pgmdoc_sasunit =0
                        ,i_style          =
+                       ,o_pgmDocFolder   =
+                       ,i_repdataexa     =
                        );
 
 %LOCAL l_title;
@@ -99,7 +102,7 @@ DATA &d_tree1. (KEEP=label popup target lvl leaf rc);
    IF first.cas_id THEN DO;
       label  = put(cas_id,z3.);
       popup  = "&g_nls_reportTree_004 " !! put (cas_id,z3.) !! ': &#x0D;' !! cas_desc;
-      target = 'cas_' !! put(scn_id,z3.) !! "_" !! put (cas_id,z3.) !! ".html";
+      target = 'testDoc/cas_' !! put(scn_id,z3.) !! "_" !! put (cas_id,z3.) !! ".html";
       lvl    = 3;
       leaf   = 0;
       rc     = cas_res;
@@ -108,7 +111,7 @@ DATA &d_tree1. (KEEP=label popup target lvl leaf rc);
 
    label  = put (tst_id, z3.) !! ' (' !! trim(tst_type) !! ')';
    popup  = "&g_nls_reportTree_005 " !! put (tst_id,z3.) !! ': &#x0D;' !! tst_desc;
-   target = 'cas_' !! put(scn_id,z3.) !! "_" !! put (cas_id,z3.) !! ".html#TST" !! put (tst_id,z3.);
+   target = 'testDoc/cas_' !! put(scn_id,z3.) !! "_" !! put (cas_id,z3.) !! ".html#TST" !! put (tst_id,z3.);
    lvl    = 4;
    leaf   = 1;
    rc     = tst_res;
@@ -190,7 +193,7 @@ DATA &d_tree2. (KEEP=label popup target lvl leaf rc);
    IF first.cas_id THEN DO;
       label  = put(scn_id,z3.) !! "_" !! put(cas_id,z3.);
       popup  = "&g_nls_reportTree_012 " !! put(scn_id,z3.) !! ", &g_nls_reportTree_013 " !! put (cas_id,z3.) !! ': &#x0D;' !! cas_desc;
-      target = 'cas_' !! put(scn_id,z3.) !! "_" !! put (cas_id,z3.) !! ".html";
+      target = "testDoc/" !! 'cas_' !! put(scn_id,z3.) !! "_" !! put (cas_id,z3.) !! ".html";
       lvl    = 4;
       leaf   = 0;
       rc     = cas_res;
@@ -199,7 +202,7 @@ DATA &d_tree2. (KEEP=label popup target lvl leaf rc);
 
    label  = put (tst_id, z3.) !! ' (' !! trim(tst_type) !! ')';
    popup  = "&g_nls_reportTree_014 " !! put (tst_id,z3.) !! '&#x0D;' !! tst_desc;
-   target = 'cas_' !! put(scn_id,z3.) !! "_" !! put (cas_id,z3.) !! ".html#TST" !! put (tst_id,z3.);
+   target = "testDoc/" !! 'cas_' !! put(scn_id,z3.) !! "_" !! put (cas_id,z3.) !! ".html#TST" !! put (tst_id,z3.);
    lvl    = 5;
    leaf   = 1;
    rc     = tst_res;
@@ -238,18 +241,18 @@ RUN;
       set work._GrpDoc_2;
       length pgmscn_name pgmexa_name target $255;
       if (not missing (scn_id)) then do;
-         pgmscn_name  = catt ("pgm_scn_", put (scn_id, z3.) !! ".html");
-         if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmscn_name))) then do;
-            target = catt (pgmscn_name);
+         pgmscn_name  = catt ("scn_", put (scn_id, z3.) !! ".html");
+         if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/&o_pgmDocFolder./" !! trim(pgmscn_name))) then do;
+            target = catt ("&o_pgmDocFolder./", pgmscn_name);
          end;
          else do;
             target = catt ("src/scn/scn_", put (scn_id, z3.), ".sas");
          end;
       end;
       else if (not missing (exa_auton)) then do;
-         pgmexa_name = catt ("pgm_", put (exa_auton, z2.), "_", tranwrd (child, ".sas", ".html"));
-         if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmexa_name))) then do;
-            target = catt (pgmexa_name);
+         pgmexa_name = catt (put (exa_auton, z2.), "_", tranwrd (child, ".sas", ".html"));
+         if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/&o_pgmDocFolder./" !! trim(pgmexa_name))) then do;
+            target = catt ("&o_pgmDocFolder./", pgmexa_name);
          end;
          else do;
             target = catt ("src/", put (coalesce (exa_auton, 99), z2.), "/", child);
@@ -454,21 +457,9 @@ RUN;
    run;
 
    /*-- generate tree structure 4: program documentation Part II --------------------------*/
-   proc sql noprint;
-      create table work._repdata2 as 
-         select distinct exa.*
-                ,tsu.*
-                ,tsu_sasautos as tsu_sasautos0
-                ,cas.cas_obj
-         from target.exa left join target.cas
-              on exa.exa_id=cas.cas_exaid
-              ,target.tsu
-         order by exa_auton, exa_id;
-   quit;
-
    DATA &d_tree5. (KEEP=label popup target lvl leaf rc);
       LENGTH label popup target $255 lvl leaf  8;
-      SET work._repdata2
+      SET &i_repdataexa.
       %if (&o_pgmdoc_sasunit. ne 1) %then %do;
          (where=(exa_auton >= 2))
       %end;
@@ -479,7 +470,7 @@ RUN;
       IF _n_=1 THEN DO;
          label  = "&g_nls_reportTree_019";
          popup  = "";
-         target = "_PgmDoc_Lists.html";
+         target = "&o_pgmDocFolder./_PgmDoc_Lists.html";
          lvl    = 2;
          leaf   = 1;
          OUTPUT;
@@ -532,7 +523,7 @@ RUN;
             OTHERWISE popup=label;
          END;
          popup = "&g_nls_reportTree_018: " !! '&#x0D;' !! popup;
-         target = catt ("pgm_", put (exa_auton, z2.), "_", tranwrd (trim (exa_pgm), ".sas", ".html"));
+         target = catt ("&o_pgmDocFolder./", put (exa_auton, z2.), "_", tranwrd (trim (exa_pgm), ".sas", ".html"));
          lvl    = 4;
          leaf   = 1;
          rc     = .;
@@ -573,12 +564,12 @@ DATA _null_;
    END;
 
    if (not missing (rc)) then do;
-      class_suffix = scan (put (rc, PictNameHTML.), 1, '.');
+      class_suffix = scan (scan (put (rc, PictNameHTML.), 2, '/'), 1, '.');
    end;
    if (leaf) then do;
       PUT "<li>";
       PUT "<label class=""file" class_suffix +(-1) """><a " @;
-      _target = scan (catt ("&g_target./rep/", target),1,"#");
+      _target = scan (catt ("&g_target./doc/", target),1,"#");
       if (not missing (target) and fileexist (_target)) then do;
          PUT "href=""" target +(-1) """ " @;
       end;

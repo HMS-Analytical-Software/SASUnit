@@ -46,9 +46,9 @@
 
    %IF &l_obs GT 0 %THEN %DO;
       %*** Dir for deletion of /rep, /tst and /log files *;
-      %_dir(i_path=&l_target./rep/, o_out=rep);
+      %_dir(i_path=&l_target./doc/, o_out=rep);
       %_dir(i_path=&l_target./log/, o_out=log);
-      %_dir(i_path=&l_target./tst/, o_out=tst);
+      %_dir(i_path=&l_target./doc/tempDoc/, o_out=tst);
 
       %let l_filesToDelete = %sysfunc(pathname(work))/_scenarioFilesToDelete.sas;
       DATA _NULL_;
@@ -82,9 +82,9 @@
       %LET l_rc=%_delfile(&l_filesToDelete.);
 
       %*** Deletion of /tst folders ***;
-      %_dir(i_path=&l_target./tst/, i_recursive=1, o_out=tst_folder);
+      %_dir(i_path=&l_target./doc/tempDoc/, i_recursive=1, o_out=tst_folder);
       
-      %LET l_len = %sysfunc(length(&l_target./tst/));
+      %LET l_len = %sysfunc(length(&l_target./doc/tempDoc/));
 
       DATA foldersToDelete;
          SET tst_folder;
@@ -112,7 +112,7 @@
          DATA _NULL_;
             FILE "&l_foldersToDelete";
             SET foldersToDelete;
-            PUT "&g_removedir ""&l_target./tst/" folder+(-1)"""&g_endcommand";
+            PUT "&g_removedir ""&l_target./doc/tempDoc/" folder+(-1)"""&g_endcommand";
          RUN;
          %_executeCMDFile(&l_foldersToDelete);
          %LET l_rc=%_delfile(&l_foldersToDelete);

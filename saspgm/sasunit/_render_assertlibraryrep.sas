@@ -41,7 +41,7 @@
    title;footnote;
 
    %_getTestSubfolder (i_assertType=assertLibrary
-                      ,i_root      =&g_target./tst
+                      ,i_root      =&g_target./doc/tempDoc
                       ,i_scnid     =&i_scnid.
                       ,i_casid     =&i_casid.
                       ,i_tstid     =&i_tstid.
@@ -53,7 +53,7 @@
    %if (&o_html.) %then %do;
       ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_exp.html" 
                 style=styles.&i_style. 
-                stylesheet=(URL="css/&i_style..css")
+                stylesheet=(URL="./../css/&i_style..css")
                 encoding="&g_rep_encoding.";
    %end;
 
@@ -75,7 +75,7 @@
       %_closeHtmlPage(&i_style.);
       ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_act.html" 
                 style=styles.&i_style. 
-                stylesheet=(URL="css/&i_style..css")
+                stylesheet=(URL="./../css/&i_style..css")
                 encoding="&g_rep_encoding.";
    %end;
    %if (%sysfunc (libref(_test))=0) %then %do;
@@ -93,7 +93,7 @@
       %_closeHtmlPage(&i_style.);
       ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._library_rep.html" 
                 style=styles.&i_style. 
-                stylesheet=(URL="css/&i_style..css")
+                stylesheet=(URL="./../css/&i_style..css")
                 encoding="&g_rep_encoding.";
    %end;
    

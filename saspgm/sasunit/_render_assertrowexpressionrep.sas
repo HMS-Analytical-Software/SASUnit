@@ -41,7 +41,7 @@
   TITLE;FOOTNOTE;
 
   %_getTestSubfolder (i_assertType=assertRowExpression
-                     ,i_root      =&g_target./tst
+                     ,i_root      =&g_target./doc/tempDoc
                      ,i_scnid     =&i_scnid.
                      ,i_casid     =&i_casid.
                      ,i_tstid     =&i_tstid.
@@ -51,7 +51,7 @@
    LIBNAME _areLib "&l_path";
 
    %IF (&o_html.) %then %do;
-      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._are_rep.html" style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
+      ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._are_rep.html" style=styles.&i_style. stylesheet=(URL="./../css/&i_style..css")
                 encoding="&g_rep_encoding.";
    %END;
 

@@ -126,7 +126,7 @@
    %LET g_rep_encoding = UTF8;
 
    %LET g_work     = %sysfunc(pathname(work));
-   %LET g_testout  = &g_target./tst;
+   %LET g_testout  = &g_target./doc/tempDoc;
    %LET g_log      = &g_target./log;
 
    %_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note);

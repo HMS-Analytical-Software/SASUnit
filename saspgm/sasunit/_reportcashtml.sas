@@ -38,9 +38,25 @@
       l_scnid
       l_title 
       l_footnote
-;
+      l_htmlTitle_center
+      l_htmlTitle_left
+      l_htmlTitle_right
+      l_titleShort
+   ;
 
    %LET l_nls_reportcas_errors   = %STR(error(s));
+
+   %let l_title     =%nrbquote(^{style [url="http://sourceforge.net/projects/sasunit/" postimage="SASUnit_Logo.png"]SASUnit});
+   %let l_title     =%str(&g_project. | &l_title. &g_nls_reportCas_002. |  &g_nls_reportCas_001.);
+   %let l_titleShort=%str(&g_project. | &g_nls_reportCas_002. |  &g_nls_reportCas_001.);
+   %*** because in HTML we want to open the link to SASUnit in a new window, ***;
+   %*** we need to insert raw HTML ***;
+   %let l_htmlTitle_center=<a href="http://sourceforge.net/projects/sasunit/" class="link" title="SASUnit" target="_blank">SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" title="SASUnit" width=26px height=26px align="top" border="0"></a>;
+   %let l_htmlTitle_center=%str(&g_project | &l_htmlTitle_center. &g_nls_reportHome_001.);
+   %let l_htmlTitle_left  = <a href="https://sourceforge.net/projects/sasunit/reviews" class="link" title="&g_nls_reportHome_038." target="_blank"><img alt="&g_nls_reportAuton_029.";
+   %let l_htmlTitle_left  = &l_htmlTitle_left. src="https://img.shields.io/badge/-%scan(&g_nls_reportAuton_029.,1)%20%scan(&g_nls_reportAuton_029.,2)%20%nrstr(&#x2605&#x2605&#x2605&#x2605&#x2606)-brightgreen.svg"</a>;
+   %let l_htmlTitle_right = <a href="https://sourceforge.net/projects/sasunit/files/Distributions/stats/timeline" class="link" title="&g_nls_reportHome_038." target="_blank">;
+   %let l_htmlTitle_right = &l_htmlTitle_right.<img alt="SASUnit Downloads" src="https://img.shields.io/sourceforge/dm/sasunit.svg"></a>;
 
    data work._case_report;
       SET &i_repdata. end=eof;
@@ -98,7 +114,7 @@
          scn_pgm      = scan (scn_abs_path, -1, "/");
          scn_duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid      = put (scn_id, z3.);
-         pgmdoc_name  = catt ("pgm_scn_", put (scn_id, z3.));
+         pgmdoc_name  = catt ("scn_", put (scn_id, z3.));
 
          %_render_idColumn   (i_sourceColumn=scn_id
                              ,i_format=z3.
@@ -117,13 +133,13 @@
             LinkTitle2   = "&g_nls_reportScn_011";
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
-               if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/"!!trim(pgmdoc_name)!!".html")) then do;
-                  LinkColumn1 = catt (pgmdoc_name, ".html");
+               if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/pgmDoc/"!!trim(pgmdoc_name)!!".html")) then do;
+                  LinkColumn1 = catt ("pgmDoc/", pgmdoc_name, ".html");
                end;
                else do;
-                  LinkColumn1 = catt ("src/scn/scn_", put (scn_id,z3.), ".sas");
+                  LinkColumn1 = catt ("testDoc/src/scn/scn_", put (scn_id,z3.), ".sas");
                end;
-               LinkColumn2  = c_scnid !! "_log.html";
+               LinkColumn2  = catt ("testDoc/", c_scnid,  "_log.html");
             %end;
             %_render_dataColumn (i_sourceColumn=scn_path
                                 ,i_linkColumn  =LinkColumn1
@@ -151,7 +167,7 @@
 
          duration    = put (cas_end - cas_start, ??&g_nls_reportScn_013.) !! " s";
          c_casid     = put (cas_id, z3.);
-         pgmdoc_name = catt ("pgm_", put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", ""));
+         pgmdoc_name = catt (put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", ""));
 
          %_render_idColumn   (i_sourceColumn=cas_id
                              ,i_format=z3.
@@ -171,14 +187,14 @@
             LinkTitle5  = "&g_nls_reportCas_006";
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
-               LinkColumn3 = "cas_" !! c_scnid !! "_" !! c_casid !! ".html";
-               if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmdoc_name) !! ".html")) then do;
-                  LinkColumn4 = catt (pgmdoc_name, ".html");
+               LinkColumn3 = catt ("testDoc/cas_", c_scnid, "_", c_casid,  ".html");
+               if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/pgmDoc/" !! trim(pgmdoc_name) !! ".html")) then do;
+                  LinkColumn4 = catt ("pgmDoc/", pgmdoc_name, ".html");
                end;
                else do;
-                  LinkColumn4 = catt ("src/", put (coalesce (exa_auton,99),z2.), "/", exa_pgm);
+                  LinkColumn4 = catt ("testDoc/src/", put (coalesce (exa_auton,99),z2.), "/", exa_pgm);
                end;
-               LinkColumn5 = c_scnid !! "_" !! c_casid !! "_log.html";
+               LinkColumn5 = catt ("testDoc/", c_scnid, "_", c_casid, "_log.html");
             %end;
 
             %_render_dataColumn (i_sourceColumn=cas_desc
@@ -208,17 +224,23 @@
 
    options nocenter;
 
-   %let l_title=%str(&g_nls_reportCas_001 | &g_project - &g_nls_reportCas_002);
-   title j=c "&l_title.";
+   title j=c %sysfunc(quote(&l_title.));
 
    %if (&o_html.) %then %do;
+      %*** because in HTML we want to open the link to SASUnit in a new window, ***;
+      %*** we need to insert raw HTML ***;
+      title j=l %sysfunc (quote(^{RAW &l_htmlTitle_left.}))
+            j=c %sysfunc (quote(^{RAW &l_htmlTitle_center.}))
+            j=r %sysfunc (quote(^{RAW &l_htmlTitle_right.}))
+      ;
+            
       ods html4 file="&o_path./&o_file..html" 
-                    (TITLE="&l_title.") 
+                    (TITLE=%sysfunc (quote (&l_titleShort.)))
                     headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
                     encoding="&g_rep_encoding.";
-      %_reportPageTopHTML(i_title   = &l_title.
+      %_reportPageTopHTML(i_title   = &l_titleShort.;
                          ,i_current = 3
                          )
    %end;

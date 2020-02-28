@@ -19,7 +19,7 @@
                So there is no need to change anything with this macro concerning NOXCMD
 
    \param   i_path      Path containing JSON files that will be aggregated 
-   \param   o_file      JavaScript file in rep/js containing a JSON object for visualisation
+   \param   o_file      JavaScript file in doc/js containing a JSON object for visualisation
 
 */ /** \cond */ 
 

@@ -25,9 +25,9 @@
                          1 = "&g_sasunitroot./resources/html/manual.png"
                          2 = "&g_sasunitroot./resources/html/error.png"
                          OTHER="?????";
-      value PictNameHTML 0 = "ok.png"
-                         1 = "manual.png"
-                         2 = "error.png"
+      value PictNameHTML 0 = "images/ok.png"
+                         1 = "images/manual.png"
+                         2 = "images/error.png"
                          OTHER="?????";
       value PictDesc     0 = "OK"
                          1 = "&g_nls_reportDetail_026"

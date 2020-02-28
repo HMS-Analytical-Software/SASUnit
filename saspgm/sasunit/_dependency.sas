@@ -48,7 +48,7 @@
       RUN;
 
       /* Create Json for calling hierachy (macros called by A) */
-      FILENAME json_out "&g_target/tst/crossreference/&l_name._caller.json";
+      FILENAME json_out "&g_target/doc/tempDoc/crossreference/&l_name._caller.json";
       DATA _NULL_;
          FILE json_out;
       RUN;
@@ -61,7 +61,7 @@
       RUN;
 
       /* Create Json for calling hierachy in reverse direction (macros that call A) */
-      FILENAME json_out "&g_target/tst/crossreference/&l_name._called.json";
+      FILENAME json_out "&g_target/doc/tempDoc/crossreference/&l_name._called.json";
       DATA _NULL_;
          FILE json_out;
       RUN;

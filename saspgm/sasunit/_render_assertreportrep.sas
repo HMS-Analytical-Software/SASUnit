@@ -41,7 +41,7 @@
    title;footnote;
 
    %_getTestSubfolder (i_assertType=assertReport
-                      ,i_root      =&g_target./tst
+                      ,i_root      =&g_target./doc/tempDoc
                       ,i_scnid     =&i_scnid.
                       ,i_casid     =&i_casid.
                       ,i_tstid     =&i_tstid.

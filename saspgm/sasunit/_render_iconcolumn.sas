@@ -15,15 +15,17 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 			   
-   \param   i_sourceColumnname name of the column holding the value
+   \param   i_sourceColumnname Name of the column holding the value
    \param   o_html             Test report in HTML-format?
-   \param   i_targetColumn     name of the column holding the ODS formatted value
+   \param   o_targetColumn     Name of the column holding the ODS formatted value
+   \param   i_iconOffset       Offset for the image name format. (Optional: Default=.)
 
 */ /** \cond */ 
 
 %macro _render_iconColumn (i_sourceColumn=
                           ,o_html=0
                           ,o_targetColumn=
+                          ,i_iconOffset=.
                           );
 
    %local l_pictNameFmt;
@@ -33,6 +35,6 @@
       %let l_pictNameFmt=PictNameHTML.;
    %end;
 
-   &o_targetColumn. = '^{style [postimage="' !! trim(put (&i_sourceColumn., &l_pictNameFmt.)) !! '" flyover="' !! trim(put (&i_sourceColumn., PictDesc.)) !! '" fontsize=0pt]' !! &i_sourceColumn !! '}';
+   &o_targetColumn. = '^{style [postimage="' !! "&i_iconOffset./" !! trim(put (&i_sourceColumn., &l_pictNameFmt.)) !! '" flyover="' !! trim(put (&i_sourceColumn., PictDesc.)) !! '" fontsize=0pt]' !! &i_sourceColumn !! '}';
 %mend _render_iconColumn;
 /** \endcond */

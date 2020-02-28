@@ -357,6 +357,8 @@
  37 EN SASUnit version
  38 DE SASUnit bewerten
  38 EN Rate SASUnit
+ 39 DE Hauptseite
+ 39 EN Main Page
 ---reportLibrary
   1 DE Prüfbericht - Vergleich der beiden Bibliotheken
   1 EN Test Report - Comparison of two Libraries
@@ -458,6 +460,12 @@
   4 EN Variable i_recordsExp < 0
   5 DE Der Parameter i_operator ist nicht gültig
   5 EN Parameter i_operator not valid
+  6 DE Tabelle mit den gezählten Sätzen
+  6 EN Table with counted observations
+  7 DE Öfnnen der Tabelle mit den gezählten Sätzen
+  7 EN Open table with counted observations
+  8 DE Assert Record Count - Ergebnisse
+  8 EN Assert Record Count - Results
 ---reportForeignKey
   1 DE Libref der Stammtabelle nicht gültig oder die Datei existiert nicht
   1 EN Libref of master table not valid or data set does not exist

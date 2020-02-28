@@ -37,7 +37,7 @@
       by exa_auton exa_pgm;
    run;
 
-   %let l_output_path = %_abspath(&g_root., &g_target.)/rep;
+   %let l_output_path = %_abspath(&g_root., &g_target.)/doc/testDoc;
    %let l_rc          = %sysfunc (dcreate (src, &l_output_path.));
    %let l_output_path = &l_output_path./src;
    %let l_saspgm      = %sysfunc(pathname(work))/CopyMacrosToRep.sas;
@@ -60,7 +60,7 @@
       by scn_id;
    run;
 
-   %let l_output_path = %_abspath(&g_root., &g_target.)/rep/src;
+   %let l_output_path = %_abspath(&g_root., &g_target.)/doc/testDoc/src;
    %let l_rc          = %sysfunc (dcreate (scn, &l_output_path.));
    %let l_output_path = &l_output_path./scn;
    %let l_saspgm      = %sysfunc(pathname(work))/CopyMacrosToRep.sas;

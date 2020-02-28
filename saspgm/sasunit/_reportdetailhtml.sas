@@ -128,7 +128,7 @@
          scn_abs_path = resolve ('%_abspath(&g_root.,' !! trim(scn_path) !! ')');
          idx          = find (scn_abs_path, '/', -length (scn_abs_path))+1;
          scn_pgm      = substr (scn_abs_path, idx);
-         pgmscn_name  = catt ("pgm_scn_", put (scn_id, z3.));
+         pgmscn_name  = catt ("scn_", put (scn_id, z3.));
          scn_duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid      = put (scn_id, z3.);
          c_casid      = put (cas_id, z3.);
@@ -148,7 +148,7 @@
          else do;
             cas_obj      = resolve ('%_stdpath(&g_sasunitroot./saspgm/sasunit,' !! trim(cas_abs_path) !! ')');
          end;
-         pgmexa_name = catt ("pgm_", put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", ""));
+         pgmexa_name = catt (put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", ""));
 
          %_render_DataColumn (i_sourceColumn=scn_duration
                              ,o_targetColumn=scnDurationColumn
@@ -165,6 +165,7 @@
          %_render_IconColumn (i_sourceColumn=tst_res
                              ,o_html=&o_html.
                              ,o_targetColumn=resultColumn
+                             ,i_iconOffset=./..
                              );
 
          *** Any destination that renders links shares this if ***;
@@ -176,16 +177,16 @@
             LinkTitle5   = "&g_nls_reportDetail_007";
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
-               LinkColumn1  = catt("cas_overview.html#SCN", c_scnid, "_");
-               if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmscn_name))) then do;
-                  LinkColumn2 = catt (pgmscn_name, ".html");
+               LinkColumn1  = catt("./../cas_overview.html#SCN", c_scnid, "_");
+               if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/pgmDoc/" !! trim(pgmscn_name) !! ".html")) then do;
+                  LinkColumn2 = catt ("./../pgmDoc/", pgmscn_name, ".html");
                end;
                else do;
                   LinkColumn2 = catt ("src/scn/scn_", put (scn_id, z3.), ".sas");
                end;
                LinkColumn3  = c_scnid !! "_log.html";
-               if (&o_pgmdoc. = 1 and fileexist ("&g_target./rep/" !! trim(pgmexa_name))) then do;
-                  LinkColumn4 = catt (pgmexa_name, ".html");
+               if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/pgmDoc/" !! trim(pgmexa_name) !! ".html")) then do;
+                  LinkColumn4 = catt ("./../pgmDoc/", pgmexa_name, ".html");
                end;
                else do;
                   LinkColumn4 = catt ("src/", put (coalesce (exa_auton,99),z2.), "/", exa_pgm);
@@ -250,9 +251,9 @@
          %if (&o_html.) %then %do;
             ods html4 file="&o_path./&o_file._%sysfunc (putn (&i_cas., z3.)).html" 
                           (TITLE="&l_title.") 
-                          headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
+                          headtext='<link rel="shortcut icon" href="./../favicon.ico" type="image/x-icon" />'
                           metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
-                          style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
+                          style=styles.&i_style. stylesheet=(URL="./../css/&i_style..css")
                           encoding="&g_rep_encoding.";
             %_reportPageTopHTML(i_title   = &l_title.
                                ,i_current = 0

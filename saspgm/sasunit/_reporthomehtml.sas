@@ -30,24 +30,33 @@
                        ,i_style   =
                        );
 
-%LOCAL i
-       HTML_Reference
-       Reference
-       l_title
-       l_htmlTitle
-       l_footnote
-       l_scn_failed
-       l_cas_failed
-       l_tst_failed
-       l_runtime
-       l_scn_run
-       l_i
-       ;
+   %LOCAL 
+      i
+      l_title
+      l_htmlTitle_center
+      l_htmlTitle_left
+      l_htmlTitle_right
+      l_footnote
+      l_scn_failed
+      l_cas_failed
+      l_tst_failed
+      l_runtime
+      l_scn_run
+      l_i
+      l_titleShort
+      ;
 
-   %LET Reference=%nrbquote(^{style [url="http://sourceforge.net/projects/sasunit/" postimage="SASUnit_Logo.png"]SASUnit});
+   %let l_title      =%nrbquote(^{style [url="http://sourceforge.net/projects/sasunit/" postimage="SASUnit_Logo.png"]SASUnit});
+   %let l_title      =%str(&g_project. | &l_title. &g_nls_reportHome_001. | &g_nls_reportHome_039.);
+   %let l_titleShort =%str(&g_project. | &g_nls_reportHome_001. | &g_nls_reportHome_039.);
    %*** because in HTML we want to open the link to SASUnit in a new window, ***;
    %*** we need to insert raw HTML ***;
-   %LET HTML_Reference=<a href='http://sourceforge.net/projects/sasunit/' class='link' title='SASUnit' target='_blank'>SASUnit <img src='SASUnit_Logo.png' alt='SASUnit' title='SASUnit' width=26px height=26px align='top' border='0'></a>;
+   %let l_htmlTitle_center=<a href="http://sourceforge.net/projects/sasunit/" class="link" title="SASUnit" target="_blank">SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" title="SASUnit" width=26px height=26px align="top" border="0"></a>;
+   %let l_htmlTitle_center=%str(&g_project | &l_htmlTitle_center. &g_nls_reportHome_001. | &g_nls_reportHome_039.);
+   %let l_htmlTitle_left  = <a href="https://sourceforge.net/projects/sasunit/reviews" class="link" title="&g_nls_reportHome_038." target="_blank"><img alt="&g_nls_reportAuton_029.";
+   %let l_htmlTitle_left  = &l_htmlTitle_left. src="https://img.shields.io/badge/-%scan(&g_nls_reportAuton_029.,1)%20%scan(&g_nls_reportAuton_029.,2)%20%nrstr(&#x2605&#x2605&#x2605&#x2605&#x2606)-brightgreen.svg"</a>;
+   %let l_htmlTitle_right = <a href="https://sourceforge.net/projects/sasunit/files/Distributions/stats/timeline" class="link" title="&g_nls_reportHome_038." target="_blank">;
+   %let l_htmlTitle_right = &l_htmlTitle_right.<img alt="SASUnit Downloads" src="https://img.shields.io/sourceforge/dm/sasunit.svg"></a>;
 
    %let l_scn_failed=0;
    %let l_cas_failed=0;
@@ -301,7 +310,6 @@
       END;
    run;
 
-   %let l_title = %str(&g_project | &Reference. &g_nls_reportHome_001.);
    title j=c %sysfunc(quote(&l_title.));
 
    %_reportFooter(o_html=&o_html.);
@@ -311,19 +319,18 @@
    %if (&o_html.) %then %do;
       %*** because in HTML we want to open the link to SASUnit in a new window, ***;
       %*** we need to insert raw HTML ***;
-      %let l_htmlTitle=%str(&g_project | &HTML_Reference. &g_nls_reportHome_001.);
-      title j=l "^{RAW <a href=""https://sourceforge.net/projects/sasunit/reviews"" class=""link"" title=""&g_nls_reportHome_038."" target=""_blank""><img alt=""&g_nls_reportAuton_029."" src=""https://img.shields.io/badge/-%scan(&g_nls_reportAuton_029.,1)%20%scan(&g_nls_reportAuton_029.,2)%20%nrstr(&#x2605&#x2605&#x2605&#x2605&#x2606)-brightgreen.svg""</a>}"
-            j=c "^{RAW &l_htmlTitle.}"
-            j=r "^{RAW <a href=""https://sourceforge.net/projects/sasunit/files/Distributions/stats/timeline"" class=""link"" title=""&g_nls_reportHome_038."" target=""_blank""><img alt=""SASUnit Downloads"" src=""https://img.shields.io/sourceforge/dm/sasunit.svg""></a>}"
-            ;
+      title j=l %sysfunc (quote(^{RAW &l_htmlTitle_left.}))
+            j=c %sysfunc (quote(^{RAW &l_htmlTitle_center.}))
+            j=r %sysfunc (quote(^{RAW &l_htmlTitle_right.}))
+      ;
             
       ods html4 file="&o_path./&o_file..html" 
-                    (TITLE="&g_project | &g_nls_reportHome_001.") 
+                    (TITLE=%sysfunc (quote (&l_titleShort.)))
                     headtext='<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />'
                     metatext="http-equiv=""Content-Style-Type"" content=""text/css"" /><meta http-equiv=""Content-Language"" content=""&i_language."" /"
                     style=styles.&i_style. stylesheet=(URL="css/&i_style..css")
                     encoding="&g_rep_encoding.";
-      %_reportPageTopHTML(i_title   = %str(&g_project | &g_nls_reportHome_001.);
+      %_reportPageTopHTML(i_title   = &l_titleShort.;
                          ,i_current = 1
                          )
    %end;
