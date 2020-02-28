@@ -18,7 +18,12 @@
    \todo    eliminate %PUT            
 */ /** \cond */
 %macro _makeSASUnitPath (path);
-   &path.
+   %local l_path;
+   
+   %*** escape all blanks with backslashes ***;
+   %let l_path = %sysfunc (tranwrd (&i_path., %str ( ), %str (\ )));
+   %let l_path = %sysfunc (tranwrd (&i_path., %str (\\ ), %str (\ )));
+   &l_path.
 %mend _makeSASUnitPath; 
 /** \endcond */
 
