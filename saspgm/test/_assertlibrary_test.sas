@@ -43,7 +43,7 @@ run;
                 );
 %assertEquals   (i_expected=2, i_actual=&sal_rc., i_desc=Must be identical);
 %markTest()
-%_xcmd(&g_removedir "&g_target./tst/_&scnid._&casid._&tstid._assertlibrary");
+%_xcmd(&g_removedir "&g_target./doc/tempDoc/_&scnid._&casid._&tstid._assertlibrary");
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
@@ -53,7 +53,7 @@ run;
                 );
 %assertEquals   (i_expected=2, i_actual=&sal_rc., i_desc=Must be identical);
 %markTest()
-%_xcmd(&g_removedir "&g_target./tst/_&scnid._&casid._&tstid._assertlibrary");
+%_xcmd(&g_removedir "&g_target./doc/tempDoc/_&scnid._&casid._&tstid._assertlibrary");
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
@@ -64,7 +64,7 @@ run;
                 );
 %assertEquals   (i_expected=2, i_actual=&sal_rc., i_desc=Must be identical);
 %markTest()
-%_xcmd(&g_removedir "&g_target./tst/_&scnid._&casid._&tstid._assertlibrary");
+%_xcmd(&g_removedir "&g_target./doc/tempDoc/_&scnid._&casid._&tstid._assertlibrary");
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
@@ -75,7 +75,7 @@ run;
                 );
 %assertEquals   (i_expected=2, i_actual=&sal_rc., i_desc=Must be identical);
 %markTest()
-%_xcmd(&g_removedir "&g_target./tst/_&scnid._&casid._&tstid._assertlibrary");
+%_xcmd(&g_removedir "&g_target./doc/tempDoc/_&scnid._&casid._&tstid._assertlibrary");
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
@@ -86,7 +86,7 @@ run;
                 );
 %assertEquals   (i_expected=2, i_actual=&sal_rc., i_desc=Must be identical);
 %markTest()
-%_xcmd(&g_removedir "&g_target./tst/_&scnid._&casid._&tstid._assertlibrary");
+%_xcmd(&g_removedir "&g_target./doc/tempDoc/_&scnid._&casid._&tstid._assertlibrary");
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
@@ -98,7 +98,7 @@ run;
                 );
 %assertEquals   (i_expected=0, i_actual=&sal_rc., i_desc=Must be identical);
 %markTest()
-%_xcmd(&g_removedir "&g_target./tst/_&scnid._&casid._&tstid._assertlibrary");
+%_xcmd(&g_removedir "&g_target./doc/tempDoc/_&scnid._&casid._&tstid._assertlibrary");
 
 %let sal_rc=-1;
 %_assertLibrary (i_expected=_ref
@@ -110,7 +110,7 @@ run;
                 );
 %assertEquals   (i_expected=0, i_actual=&sal_rc., i_desc=Must be identical);
 %markTest()
-%_xcmd(&g_removedir "&g_target./tst/_&scnid._&casid._&tstid._assertlibrary");
+%_xcmd(&g_removedir "&g_target./doc/tempDoc/_&scnid._&casid._&tstid._assertlibrary");
 
 %assertLog (i_errors=0, i_warnings=0)
 

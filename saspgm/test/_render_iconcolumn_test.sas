@@ -13,14 +13,15 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
 
+%initScenario (i_desc=Test of _render_iconColumn.sas);
 
 %LET g_nls_reportDetail_025=Error occured;
 %LET g_nls_reportDetail_026=Manual check;
 %LET g_nls_reportDetail_027=Undefined result;
 proc format lib=work;
-   value PictName     0 = "&g_sasunit./resources/html/ok.png"
-                      1 = "&g_sasunit./resources/sasunit/html/manual.png"
-                      2 = "&g_sasunit./resources/sasunit/html/error.png"
+   value PictName     0 = "&g_sasunitroot./resources/html/ok.png"
+                      1 = "&g_sasunitroot./resources/sasunit/html/manual.png"
+                      2 = "&g_sasunitroot./resources/sasunit/html/error.png"
                       OTHER="?????";
    value PictNameHTML 0 = "ok.png"
                       1 = "manual.png"
@@ -40,7 +41,7 @@ data work.input;
 run;
 data work.expected;
    set work.input;
-   _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
+   _output = "^{style [postimage=""./" !! trim(put (Num, PictNameHTML.))
                    !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
 run;
 %initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with missing value);
@@ -64,7 +65,7 @@ data work.input;
 run;
 data work.expected;
    set work.input;
-   _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
+   _output = "^{style [postimage=""./" !! trim(put (Num, PictNameHTML.))
                    !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
 run;
 %initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with negative value);
@@ -88,7 +89,7 @@ data work.input;
 run;
 data work.expected;
    set work.input;
-   _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
+   _output = "^{style [postimage=""./" !! trim(put (Num, PictNameHTML.))
                    !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
 run;
 %initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with result OK);
@@ -112,7 +113,7 @@ data work.input;
 run;
 data work.expected;
    set work.input;
-   _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
+   _output = "^{style [postimage=""./" !! trim(put (Num, PictNameHTML.))
                    !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
 run;
 %initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with result Manual);
@@ -136,7 +137,7 @@ data work.input;
 run;
 data work.expected;
    set work.input;
-   _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
+   _output = "^{style [postimage=""./" !! trim(put (Num, PictNameHTML.))
                    !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
 run;
 %initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with result Error);
@@ -160,7 +161,7 @@ data work.input;
 run;
 data work.expected;
    set work.input;
-   _output = "^{style [postimage=""" !! trim(put (Num, PictNameHTML.))
+   _output = "^{style [postimage=""./" !! trim(put (Num, PictNameHTML.))
                    !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
 run;
 %initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with high value);
@@ -176,4 +177,29 @@ run;
 
 %endTestcase();
 
+*** Testcase 7 ***; 
+data work.input;
+   Length _formatName $80 _output $1000;
+   Num=0;
+   output;
+run;
+data work.expected;
+   set work.input;
+   _output = "^{style [postimage=""Hugo/" !! trim(put (Num, PictNameHTML.))
+                   !! """ flyover=""" !! trim(put (Num, PictDesc.)) !! '" fontsize=0pt]' !! Num !! '}';
+run;
+%initTestcase(i_object=_render_iconColumn.sas, i_desc=Call with result OK and iconOffset Hugo);
+data work.actual;
+   set work.input;
+   %_render_iconColumn (i_sourceColumn=Num,o_html=1,o_targetColumn=_output,i_iconOffset=Hugo);
+run;
+
+%endTestcall;
+
+%assertLog(i_errors=0,i_warnings=0);
+%assertColumns (i_expected=work.Expected,i_actual=work.actual);
+
+%endTestcase();
+
+%endScenario ();
 /** \endcond */

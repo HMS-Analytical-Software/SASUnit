@@ -17,12 +17,13 @@
 %MACRO _createTestFiles;  
  
    /* Create folders */
-   %_mkdir(%SYSFUNC(PATHNAME(work))/tst);
-   %_mkdir(%SYSFUNC(PATHNAME(work))/tst/jsonFolder);
+   %_mkdir(%SYSFUNC(PATHNAME(work))/doc);
+   %_mkdir(%SYSFUNC(PATHNAME(work))/doc/tempDoc);
+   %_mkdir(%SYSFUNC(PATHNAME(work))/doc/tempDoc/jsonFolder);
    %_mkdir(%SYSFUNC(PATHNAME(work))/result);
    
  /* Create json files to aggregate with macro under test */
-   FILENAME jsonfile "%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file1_caller.json";
+   FILENAME jsonfile "%SYSFUNC(PATHNAME(work))/doc/tempDoc/jsonFolder/file1_caller.json";
  
    DATA macro_1_caller_exp;
       length line $100;
@@ -45,7 +46,7 @@
       END;
    RUN;
 
-   FILENAME jsonfile "%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file1_called.json";
+   FILENAME jsonfile "%SYSFUNC(PATHNAME(work))/doc/tempDoc/jsonFolder/file1_called.json";
    DATA _NULL_;
       length line $100;
       array macro_A_called[10] $100 _temporary_ (
@@ -64,7 +65,7 @@
       END;
    RUN;
 
-   FILENAME jsonfile "%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file2_caller.json";
+   FILENAME jsonfile "%SYSFUNC(PATHNAME(work))/doc/tempDoc/jsonFolder/file2_caller.json";
    DATA _NULL_;
       length line $100;
       array macro_A_caller[10] $100 _temporary_ (
@@ -83,7 +84,7 @@
       END;
    RUN;
    
-   FILENAME jsonfile "%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file2_called.json";
+   FILENAME jsonfile "%SYSFUNC(PATHNAME(work))/doc/tempDoc/jsonFolder/file2_called.json";
    DATA _NULL_;
       length line $100;
       array macro_A_caller[10] $100 _temporary_ (
@@ -137,16 +138,16 @@
 /* test case 1 ------------------------------------ */
 %initTestcase(i_object=_dependency_agg.sas, i_desc=Test if JSON and JavaScript files have been created and json object is well formed);
 %_switch();
-   %_dependency_agg(i_path = %SYSFUNC(PATHNAME(work))/tst/jsonFolder
+   %_dependency_agg(i_path = %SYSFUNC(PATHNAME(work))/doc/tempDoc/jsonFolder
                    ,o_file = %SYSFUNC(PATHNAME(work))/result/data.refs.js);
 %_switch();
 %endTestcall();
    %markTest();
       /* Files and folder test */
-      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file1_caller.json)) ,i_expected=1, i_desc=Json file file1_caller.json created successfully );
-      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file1_called.json)) ,i_expected=1, i_desc=Json file file1_called.json created successfully );
-      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file2_caller.json)) ,i_expected=1, i_desc=Json file file2_caller.json created successfully );
-      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tst/jsonFolder/file2_called.json)) ,i_expected=1, i_desc=Json file file2_called.json created successfully );
+      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/doc/tempDoc/jsonFolder/file1_caller.json)) ,i_expected=1, i_desc=Json file file1_caller.json created successfully );
+      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/doc/tempDoc/jsonFolder/file1_called.json)) ,i_expected=1, i_desc=Json file file1_called.json created successfully );
+      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/doc/tempDoc/jsonFolder/file2_caller.json)) ,i_expected=1, i_desc=Json file file2_caller.json created successfully );
+      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/doc/tempDoc/jsonFolder/file2_called.json)) ,i_expected=1, i_desc=Json file file2_called.json created successfully );
       %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/result/data.refs.js))   ,i_expected=1, i_desc=JavaScript file data.refs.js created successfully );
       
       FILENAME actual "%SYSFUNC(PATHNAME(work))/result/data.refs.js";
