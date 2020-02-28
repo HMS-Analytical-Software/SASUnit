@@ -16,6 +16,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
    \todo replace g_verbose
+   \todo check for usage of g_sasstart. If still used then store in target.tsu
 */ /** \cond */  
 
 %macro _oscmds;
@@ -25,13 +26,11 @@
       g_endcommand
       g_makedir
       g_removedir
-      g_removefile
       g_sasstart
       g_splash
       g_dateformat
       g_infile_options
       g_osCmdFileSuffix
-      g_osDirSeparator
       ;
 
    %local
@@ -45,12 +44,10 @@
    %LET g_endcommand      =%str( );
    %LET g_makedir         =md;
    %LET g_removedir       =rd /S /Q;
-   %LET g_removefile      =del /S /Q;
    %LET g_sasstart        ="%sysget(sasroot)/sas.exe";
    %LET g_splash          =-nosplash;
    %LET g_infile_options  =IGNOREDOSEOF;
    %LET g_osCmdFileSuffix =cmd;
-   %LET g_osDirSeparator  =\;
 
    * retrieve dateformat from WINDOWS registry *;
    * Set default if anything goes wrong *;
@@ -71,7 +68,6 @@
       %let G_ERROR_CODE =;
       %GOTO Exit;
    %END;
-
 
    %let xwait=%sysfunc(getoption(xwait));
    %let xsync=%sysfunc(getoption(xsync));

@@ -21,6 +21,8 @@
    \param   r_sysrc             Name of macro variable holding rc of spawning call
 
    \return  error symbol &sysrc will be set to a value other than 0, if an error occurs.
+   
+   \todo check for usage of _adaptSASUnitPathToOS
 */ 
 /** \cond */ 
 
@@ -31,7 +33,7 @@
                          ,i_pgmIsScenario     = 1
                          );
 
-   %local l_cmdFile l_parms l_parenthesis l_tcgFilePath l_tcgOptionsString l_tcgOptionsStringLINUX l_rc l_macname l_program;
+   %local l_cmdFile l_parms l_tcgFilePath l_tcgOptionsString l_rc l_macname l_program;
    %let l_macname=&sysmacroname.;
    
    /*-- prepare sasuser ---------------------------------------------------*/
@@ -50,12 +52,11 @@
    /*-- set config and autoexec -------------------------------------------*/
    %let l_cmdFile=%sysfunc(pathname(work))/_runprogramspawned.cmd;
    %LET l_parms=;
-   %LET l_parenthesis=(;
    %IF "&g_autoexec" NE "" %THEN %DO;
       %LET l_parms=&l_parms -autoexec ""&g_autoexec"";
    %END;
    %IF "&g_sascfg" NE "" %THEN %DO;
-     /*options SET=SASCFGPATH "&g_sascfg.";*/
+     options SET=SASCFGPATH "&g_sascfg.";
    %END;
  
    %IF &i_generateMcoverage. EQ 1 %THEN %DO;
@@ -109,7 +110,7 @@
    RUN;
    %_executeCMDFile(&l_cmdFile.);
    %LET l_rc=%_delfile(&l_cmdFile.);
-   
+
 %mend _runprogramspawned;   
 
 /** \endcond */

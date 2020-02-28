@@ -33,7 +33,8 @@
    %LET logfile=%sysfunc(pathname(work))/___log.txt;
    %LET rc = %_delfile(&logfile);
    
-   %LET l_cmd = %_adaptSASUnitPathToOS(&i_cmd_path.);
+   %let l_cmd  = %_makeSASUnitPath(&i_cmd_path.);
+   %let l_cmd  = %_adaptSASUnitPathToOS(&l_cmd.);
    %LET l_cmd = &l_cmd. &i_cmd.;
    
    %SYSEXEC &l_cmd > "&logfile";

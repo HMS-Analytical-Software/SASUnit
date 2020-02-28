@@ -74,8 +74,8 @@
          *** Let all paths start with /                                 ***;
          *** Cut off and remember volumename when running under windows ***;
          if (index (osPath,':')) then do;
-          osPathPrefix = scan (osPath, 1, '/');
-          osPath       = scan (osPath, 2, ':');
+            osPathPrefix = scan (osPath, 1, '/');
+            osPath       = scan (osPath, 2, ':');
          end;
          
          numOfFolders = count (osPath, "/");

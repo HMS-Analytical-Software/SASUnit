@@ -24,9 +24,7 @@
                             Message will be prefixed by '<assertType> failed: '.
    \param  r_casid          optional: return number of current test case 
    \param  r_tstid          optional: return number of this check within test case
-   
-   \todo replace g_verbose
-*/ /** \cond */  
+   */ /** \cond */  
 
 
 %MACRO _asserts (i_type     =       
@@ -82,7 +80,6 @@
                     ,NoTestcaseId
                     ,(&&&r_casid=.)
                     ,Error retrieving testcase id
-                    ,i_verbose=&g_verbose.
                     ) 
                   %THEN %DO;   
       %RETURN;
@@ -111,20 +108,15 @@
       );
    QUIT;
 
-   %IF (&g_verbose.) %THEN %DO;
-      %IF (&i_result. = 2) %THEN %DO;
-         %_issueAssertErrorMessage (_asserts: %bquote(ERROR~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.));
-         %*_issueInfoMessage  (&g_currentLogger.,_asserts: %bquote(SASUnitAssertError~&l_errMsg.));
+   %IF (&i_result. = 2) %THEN %DO;
+      %_issueAssertErrorMessage (_asserts: %bquote(ERROR~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.));
+   %END;
+   %ELSE %DO;
+      %IF (&i_result. = 1) %THEN %DO;
+         %_issueAssertInfoMessage (_asserts: %bquote(MANUAL~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.));
       %END;
       %ELSE %DO;
-         %IF (&i_result. = 1) %THEN %DO;
-            %_issueAssertInfoMessage (_asserts: %bquote(MANUAL~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.));
-            %*_issueInfoMessage  (&g_currentLogger.,_asserts: %bquote(MANUAL~&l_errMsg.));
-         %END;
-         %ELSE %DO;
-            %_issueAssertInfoMessage (_asserts: %bquote (OK~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.));
-            %*_issueInfoMessage  (&g_currentLogger.,_asserts: %bquote(OK~&l_errMsg.));
-         %END;
+         %_issueAssertInfoMessage (_asserts: %bquote (OK~&g_scnid.~%cmpres(&&&r_casid..)~&&&r_tstid..~&i_type~&i_result~&i_expected.~&i_actual.~&l_errMsg~&i_desc.));
       %END;
    %END;
 

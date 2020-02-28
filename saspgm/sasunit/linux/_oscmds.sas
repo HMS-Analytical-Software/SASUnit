@@ -16,41 +16,40 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 
    \todo replace g_verbose
+   \todo check for usage of g_sasstart. If still used then store in target.tsu
 */ /** \cond */  
 
 %macro _oscmds;
 
    %global 
       g_removedir 
-      g_makedir
       g_copydir
       g_endcommand
+      g_makedir
       g_sasstart
       g_splash
       g_infile_options
-      g_osDirSeparator
+      g_osCmdFileSuffix
       ;
       
    %local
       l_macroName 
    ;   
-   %LET l_macname=&sysmacroname;
+   %LET l_macroName=&sysmacroname;
 
    %LET g_removedir       =rm -r -f;
-   %LET g_removefile      =rm;
-   %LET g_makedir         =mkdir;
    %LET g_copydir         =cp -R;
    %LET g_endcommand      =%str(;);
+   %LET g_makedir         =mkdir;
    %LET g_sasstart        ="%sysfunc(pathname(sasroot))/bin/sas_&g_language.";
    %LET g_splash          =;   
    %LET g_infile_options  =;
    %LET g_osCmdFileSuffix =sh;
-   %LET g_osDirSeparator  =/;
    
    %*************************************************************;
    %*** Check if XCMD is allowed                              ***;
    %*************************************************************;
-   %IF %_handleError(&l_macname.
+   %IF %_handleError(&l_macroName.
                  ,NOXCMD
                  ,(%sysfunc(getoption(XCMD)) = NOXCMD)
                  ,Your SAS Session does not allow XCMD%str(,) therefore functionality is restricted.

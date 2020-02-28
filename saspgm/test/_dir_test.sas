@@ -70,15 +70,15 @@ data dircheck1; set dircheck; run;
 
 /*-- 003 recursive call with subdirectories --------------------------------------*/
 %let path = %sysfunc(pathname(work))/testdir/one;
-%_xcmd(mkdir "&path")
+%_mkdir ("&path.");
 %addentry(&path/file_one_1.dat)
 %addentry(&path/file_one_2.dat)
 %let path = %sysfunc(pathname(work))/testdir/one/one;
-%_xcmd(mkdir "&path")
+%_mkdir ("&path.");
 %addentry(&path/file_one_one_1.dat)
 %addentry(&path/file_one_one_2.dat)
 %let path = %sysfunc(pathname(work))/testdir/two;
-%_xcmd(mkdir "&path")
+%_mkdir ("&path.");
 %addentry(&path/file_two_1.dat)
 %addentry(&path/file_two_2.dat)
 

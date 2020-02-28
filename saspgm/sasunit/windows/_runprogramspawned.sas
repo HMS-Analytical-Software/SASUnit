@@ -21,6 +21,8 @@
    \param   r_sysrc             Name of macro variable holding rc of spawning call
 
    \return  error symbol &sysrc will be set to a value other than 0, if an error occurs.
+   
+   \todo check for usage of _adaptSASUnitPathToOS
 */ 
 /** \cond */ 
 
@@ -31,14 +33,15 @@
                          ,i_pgmIsScenario     = 1
                          );
 
-   %local l_cmdFile l_parms l_tcgFilePath l_tcgOptionsString l_rc l_macname l_program;
+   %local l_cmdFile l_parms l_tcgFilePath l_tcgOptionsString l_rc l_macname l_program l_path;
    %let l_macname=&sysmacroname.;
    
    /*-- prepare sasuser ---------------------------------------------------*/
    %let l_cmdFile=%sysfunc(pathname(work))/prep_sasuser.cmd;
+   %let l_path=%sysfunc(pathname(work))/sasuser;
    DATA _null_;
       FILE "&l_cmdFile.";
-      PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
+      PUT "&g_removedir ""&l_path.""&g_endcommand";
       PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       %IF %length(&g_sasuser) %THEN %DO;
          PUT "&g_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
@@ -112,12 +115,7 @@
       !! "-nosyntaxcheck "
       !! "-mautosource "
       !! "-mcompilenote all "
-      %if (&sysver. = 9.2) %then %do;
-         !! "-sasautos (SASAUTOS ""&g_sasunit"") "
-      %end;
-      %else %do;
-         !! "-append SASAUTOS ""&g_sasunit"" "
-      %end;
+      !! "-append SASAUTOS ""&g_sasunit"" "
       !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
       %if (&i_pgmIsScenario. = 1) %then %do;
 /*      !! "-logconfigloc '%sysfunc(pathname(WORK))/sasunit.scnlogconfig.xml' "

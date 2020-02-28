@@ -18,7 +18,8 @@
 %initScenario(i_desc=%str(Test of reportSASUnit.sas));
 
 %let workpath =%sysfunc(pathname(WORK));
-%let rc       =%sysfunc (dcreate(rep, &workpath.));
+%let rc       =%sysfunc (dcreate(doc, &workpath.));
+%let rc       =%sysfunc (dcreate(testDoc, &workpath./doc));
 
 %let G_REVISION  =N.N.N;
 %let G_VERSION   =NNN;
@@ -43,9 +44,12 @@ run;
                     ,o_path          =
                     ,o_pgmdoc_sasunit=
                     ,i_style         =
+                    ,i_srcFolder     =
+                    ,o_pgmDocFolder  =
+                    ,i_testDocFolder =
                     );
 
-   %PUT NOTE(SASUNIT):---->Doing _repoprtPgmDoc;
+   %_issueInfoMessage (&g_currentLogger., ---->Doing _repoprtPgmDoc);
 %MEND;
 
 %MACRO _reportTreeHTML(i_repdata        =
@@ -53,9 +57,11 @@ run;
                       ,o_pgmdoc         =
                       ,o_pgmdoc_sasunit =
                       ,i_style          =
+                      ,o_pgmDocFolder   =
+                      ,i_repdataexa     =
                       );
                       
-   %PUT NOTE(SASUNIT):---->Doing _repoprtTreeHtml;
+   %_issueInfoMessage (&g_currentLogger., ---->Doing _repoprtTreeHtml);
 %MEND;
 
 %macro testcase(i_object=reportSASUnit.sas, i_desc=%str(Call without any scenarios in runSASUnit));

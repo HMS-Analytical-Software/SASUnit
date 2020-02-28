@@ -34,20 +34,20 @@
    \param   i_errorcode      error code unique to the calling macro
    \param   i_condition      condition - logical expression, will be evaluated and returned by the macro
    \param   i_text           error message, further information will be issued to the SAS log
-   \param   i_verbose        issue message to the SAS log even if i_condition evaluates to true, 
-                             default is g_verbose
    \param   i_msgytpe        Type of message: FATAL/ERROR/WARNING/INFO/DEBUG/TRACE (optional: default=ERROR)
+   \param   i_verbose        deprecated parameter
+                             
    \return                   evaluated i_condition
    
-   \todo replace g_verbose by g_log4sasLoggingLevel
+   \todo change last info message to debug message when SASUnit uses log4sas
 */ /** \cond */
 
 %MACRO _handleError (i_macroname
                     ,i_errorcode      
                     ,i_condition      
                     ,i_text           
-                    ,i_verbose=&g_verbose.
                     ,i_msgtype=ERROR
+                    ,i_verbose=
                     );
 
    %let l_messageType = %upcase(&i_msgtype.);
@@ -80,13 +80,8 @@
       %LET g_error_macro = &i_macroname;
    %END;
    %ELSE %DO;
+      %_issueInfoMessage (&g_currentLogger., OK: [&i_errorcode.] &i_macroname %str(%()Condition: &i_condition%str(%)))
       0
-      %IF &i_verbose. %THEN %DO;
-         %_issueInfoMessage (&g_currentLogger., OK: [&i_errorcode.] &i_macroname %str(%()Condition: &i_condition%str(%)))
-      %END;
-      %ELSE %DO;
-         %_issueDebugMessage (&g_currentLogger., OK: [&i_errorcode.] &i_macroname %str(%()Condition: &i_condition%str(%)))
-      %END;
    %END;
 %MEND _handleError;
  /** \endcond */
