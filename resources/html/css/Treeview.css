@@ -90,73 +90,73 @@ ol.hms-treeview
 
 .hms-treeview  input:not(:checked) + label.nodemanual::before
 {
-	background: url("../FolderClosedManual.png") no-repeat;
+	background: url("../images/FolderClosedManual.png") no-repeat;
 	background-position: center center;
 }
 
 .hms-treeview  input:not(:checked) + label.nodeok::before
 {
-	background: url("../FolderClosedOK.png") no-repeat;
+	background: url("../images/FolderClosedOK.png") no-repeat;
 	background-position: center center;
 }
 
 .hms-treeview  input:not(:checked) + label.nodeerror::before
 {
-	background: url("../FolderClosedERROR.png") no-repeat;
+	background: url("../images/FolderClosedERROR.png") no-repeat;
 	background-position: center center;
 }
 
 .hms-treeview  input:not(:checked) + label.node::before
 {
-	background: url("../FolderClosed.png") no-repeat;
+	background: url("../images/FolderClosed.png") no-repeat;
 	background-position: center center;
 }
 
 .hms-treeview input:checked + label.nodemanual::before
 {
-	background: url("../FolderOpenedManual.png") no-repeat;
+	background: url("../images/FolderOpenedManual.png") no-repeat;
 	background-position: center center;
 }
 
 .hms-treeview input:checked + label.nodeok::before
 {
-	background: url("../FolderOpenedOK.png") no-repeat;
+	background: url("../images/FolderOpenedOK.png") no-repeat;
 	background-position: center center;
 }
 
 .hms-treeview input:checked + label.nodeerror::before
 {
-	background: url("../FolderOpenedERROR.png") no-repeat;
+	background: url("../images/FolderOpenedERROR.png") no-repeat;
 	background-position: center center;
 }
 
 .hms-treeview input:checked + label.node::before
 {
-	background: url("../FolderOpened.png") no-repeat;
+	background: url("../images/FolderOpened.png") no-repeat;
 	background-position: center center;
 }
 
 label.file
 {
-	background: url("../File.png") no-repeat;
+	background: url("../images/File.png") no-repeat;
 	background-position: center left;
 }
 
 label.fileok
 {
-	background: url("../FileOK.png") no-repeat;
+	background: url("../images/FileOK.png") no-repeat;
 	background-position: center left;
 }
 
 label.filemanual
 {
-	background: url("../FileMANUAL.png") no-repeat;
+	background: url("../images/FileMANUAL.png") no-repeat;
 	background-position: center left;
 }
 
 label.fileerror
 {
-	background: url("../FileERROR.png") no-repeat;
+	background: url("../images/FileERROR.png") no-repeat;
 	background-position: center left;
 }
 
