@@ -33,7 +33,7 @@
 
    data _test.tsu;
       set target.tsu;
-      call missing (of _all_);
+      stop;
    run;
    data _test.scn;
       set target.scn;

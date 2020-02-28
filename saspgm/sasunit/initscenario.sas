@@ -54,7 +54,7 @@
        ) %then %return;
    %if (%_handleError(&l_macname.
                      ,CallSequenceScenario
-                     ,&g_inTestCall. EQ 1
+                     ,(&g_inTestCall. EQ 1)
                      ,initScenario must not be called within a testcall!
                      ,i_verbose=0
                      ) 
@@ -109,12 +109,7 @@
    
    /* set global macro symbols and librefs / filerefs  */
    /* includes creation of autocall paths */
-   %if (&g_runMode.=SASUNIT_INTERACTIVE) %then %do;
-      %_loadenvironment (i_appendSASAutos=N);
-   %end;
-   %else %do;
-      %_loadenvironment (i_appendSASAutos=Y);
-   %end;
+   %_loadenvironment ();
    
    options linesize=max;
    

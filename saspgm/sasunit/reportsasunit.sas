@@ -32,22 +32,6 @@
    \return Results are created in the subdirectory rep of the test repository or in the directory 
            specified by parameter o_output.
            
-   \todo    Implement new folderstructure
-            Given Path will be without designated subfolder &o_pgmDocPath./rep will not be ctreated anymore.
-            New paths will be: 
-            - &o_pgmDocPath. for index, tree, overview, cas, home-html and icons
-            - &o_pgmDocPath./pgmDoc for Program dokumentation
-            - &o_pgmDocPath./pgmDoc/scn ???
-            - &o_pgmDocPath./pgmDoc/cas ???
-            - &o_pgmDocPath./tempDoc holds contents of tst folder and we bill deleted afterwards
-            - &o_pgmDocPath./img holds images (OK, Manual etc.)
-            - &o_pgmDocPath./scr as current
-            - &o_pgmDocPath./css as current
-            - &o_pgmDocPath./js as current
-            - &o_pgmDocPath./testDoc for whole Testdokumentation
-            - &o_pgmDocPath./testDoc/JSON holds info for crossref
-            - &o_pgmDocPath./testDoc/testCoverage for Test coverage assement            
-                               
    \todo replace g_verbose
 */ /** \cond */ 
 
@@ -74,7 +58,7 @@
 
    %IF "&o_junit" NE "0" %THEN %LET o_junit=1;
 
-   %IF "&o_pgmdoc" EQ "_DEFAULT_" %THEN %LET o_pgmdoc=%sysget(SASUNIT_OVERWRITE);
+   %IF "&o_pgmdoc" EQ "_DEFAULT_" %THEN %LET o_pgmdoc=&g_overwrite.;
 
    %IF "&o_pgmdoc" NE "1" %THEN %LET o_pgmdoc=0;
 
@@ -97,14 +81,14 @@
 
    /*-- check if target folder exists -------------------------------------------*/
    %LOCAL l_output; 
-   %IF %length(&o_output) %THEN %LET l_output=&o_output;
-   %ELSE %LET l_output =&g_target./rep;
+   %IF %length(&o_output.) %THEN %LET l_output=&o_output;
+   %ELSE %LET l_output =&g_target./doc;
    %LET l_output=%_abspath(&g_root,&l_output);
 
    %IF %_handleError(&l_macname.
                     ,InvalidOutputDir
-                    ,NOT %_existDir(&l_output)
-                    ,Error in parameter o_output: target folder does not exist
+                    ,NOT %_existDir(&l_output.)
+                    ,Error in parameter o_output: target &l_output. folder does not exist
                     ,i_verbose=&g_verbose.
                     ) 
       %THEN %GOTO errexit;
@@ -120,10 +104,13 @@
 
    %LOCAL 
       d_rep 
+      d_repexa
    ;
    %_tempFilename(d_rep)
-
-   %_createRepData(d_reporting=&d_rep.);
+   %_tempFilename(d_repexa)
+   %_createRepData(d_reporting =&d_rep.
+                  ,d_repexa    =&d_repexa.
+                  );
 
    %IF (%sysfunc(exist (d_rep.))) %THEN %GOTO errexit;
 
@@ -171,8 +158,11 @@
    ods path (PREPEND) _style.template(READ);
    ods path (PREPEND) WORK.template(UPDATE);
 
+   %_mkdir (&l_output./testDoc);
    %_copyMacrosToRepSrc (o_pgmdoc_sasunit=&o_pgmdoc_sasunit.);
+   
    %IF (&o_pgmdoc.=1) %THEN %DO;
+      %_mkdir (&l_output./pgmDoc);
       %_reportPgmDoc(i_language      =&i_language.
                     ,i_repdata       =&d_rep.
                     ,o_html          =&o_html.
@@ -180,6 +170,9 @@
                     ,o_path          =&l_output.
                     ,o_pgmdoc_sasunit=&o_pgmdoc_sasunit.
                     ,i_style         =&i_style.
+                    ,i_srcFolder     =src
+                    ,o_pgmDocFolder  =pgmDoc
+                    ,i_testDocFolder =testDoc
                     );
    %END;
    %IF (&o_html.=1) %THEN %DO;
@@ -191,7 +184,7 @@
 
          IF _n_=1 THEN DO;
             /*-- only if testreport is generated competely anew --------------------*/
-            IF missing(tsu_lastrep) OR &o_force THEN DO;
+            IF tsu_lastrep=0 OR &o_force THEN DO;
                /*-- copy static files - images, css etc. ---------------------------*/
                PUT '%_copydir(' /
                    "    &g_sasunitroot./resources" '/html/%str(*)' /
@@ -216,25 +209,29 @@
             /*-- only if a test scenario has been run since last report ------------*/
             IF &l_lastrun > tsu_lastrep OR &l_bOnlyInexistingScnFound. OR &o_force. THEN DO;
                /*-- create table of contents ---------------------------------------*/
-               PUT '%_reportTreeHTML('                           /
-                   "    i_repdata        = &d_rep"               /
-                   "   ,o_html           = &l_output/tree.html"  /
-                   "   ,o_pgmdoc         = &o_pgmdoc"            /
-                   "   ,o_pgmdoc_sasunit = &o_pgmdoc_sasunit"    /
-                   "   ,i_style          = &i_style."            /
+               PUT '%_reportTreeHTML('                            /
+                   "    i_repdata        = &d_rep."               /
+                   "   ,o_html           = &l_output./tree.html"  /
+                   "   ,o_pgmdoc         = &o_pgmdoc"             /
+                   "   ,o_pgmdoc_sasunit = &o_pgmdoc_sasunit"     /
+                   "   ,i_style          = &i_style."             /
+                   "   ,o_pgmDocFolder   = pgmDoc"                /
+                   "   ,i_repdataexa     = &d_repexa."            /
                    ")";
                if (&o_pdf.) then do;
                   PUT "ods pdf file=""&l_output./SASUnit_Test_Doc.pdf"" style=styles.&i_style. cssstyle=""css/&i_style..css""" /
                       " startpage=never;";
                end;
                /*-- create list of test scenarios ----------------------------------*/
-               PUT '%_reportScnHTML('              /
-                   "    i_repdata = &d_rep."       /
-                   "   ,o_html    = &o_html."      /
-                   "   ,o_path    = &l_output."    /
-                   "   ,o_file    = scn_overview"  /
-                   "   ,o_pgmdoc  = &o_pgmdoc"     /
-                   "   ,i_style   = &i_style."     /
+               PUT '%_reportScnHTML('                    /
+                   "    i_repdata       = &d_rep."       /
+                   "   ,o_html          = &o_html."      /
+                   "   ,o_path          = &l_output."    /
+                   "   ,o_file          = scn_overview"  /
+                   "   ,o_pgmdoc        = &o_pgmdoc"     /
+                   "   ,i_style         = &i_style."     /
+                   "   ,o_pgmDocFolder  = pgmDoc"       /
+                   "   ,o_testDocFolder = testDoc"       /
                    ")";
                if (&o_pdf.) then do;
                   PUT "ods pdf startpage=now;";
@@ -276,14 +273,14 @@
                PUT '%_reportLogHTML(' / 
                    "    i_log     = &g_log/" scn_id z3. ".log"  /
                    "   ,i_title   = &g_nls_reportSASUnit_002 " scn_id z3. " (" cas_obj +(-1) ")" /
-                   "   ,o_html    = &l_output/" scn_id z3. "_log.html" /
+                   "   ,o_html    = &l_output/testDoc/" scn_id z3. "_log.html" /
                    ")";
                /*-- compile detail information for test case -----------------------*/
                PUT '%_reportDetailHTML('              /
                    "    i_repdata = &d_rep"           /
                    "   ,i_scnid   = " scn_id z3.      /
                    "   ,o_html    = &o_html."         /
-                   "   ,o_path    = &l_output."       /
+                   "   ,o_path    = &l_output./testDoc/"       /
                    "   ,o_file    = cas_" scn_id z3.  /
                    "   ,i_style   = &i_style."        /
                    ")";
@@ -299,7 +296,7 @@
                PUT '%_reportLogHTML(' /
                    "    i_log     = &g_log/" scn_id z3. "_" cas_id z3. ".log" /
                    "   ,i_title   = &g_nls_reportSASUnit_003 " cas_id z3. " &g_nls_reportSASUnit_004 " scn_id z3. " (" cas_obj +(-1) ")" /
-                   "   ,o_html    = &l_output/" scn_id z3. "_" cas_id z3. "_log.html" /
+                   "   ,o_html    = &l_output/testDoc/" scn_id z3. "_" cas_id z3. "_log.html" /
                    ")";
             END;
 
@@ -333,11 +330,7 @@
    %END;
 
    /*-- save last report date ---------------------------------------------------*/
-   PROC SQL NOPRINT;
-      UPDATE target.tsu 
-         SET tsu_lastrep = %sysfunc(datetime())
-      ;
-   QUIT;
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_lastrep, i_parameterValue=%sysfunc(datetime()));
 
    %GOTO exit;
 %errexit:

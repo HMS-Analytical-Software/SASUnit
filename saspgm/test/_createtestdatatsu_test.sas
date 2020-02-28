@@ -33,7 +33,7 @@
 
    data _test.tsu;
       set target.tsu;
-      call missing (of _all_);
+      stop;
    run;
 
    /* start testcase */

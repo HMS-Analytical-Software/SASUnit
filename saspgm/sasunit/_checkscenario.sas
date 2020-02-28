@@ -51,6 +51,7 @@
    %LOCAL 
       l_cntObs
       d_dependency
+      l_tsu_lastinit
    ;
 
    %LET l_cntObs = 0;
@@ -154,6 +155,11 @@
                       ,o_dependency     = &d_dependency.
                       ,o_macroList      = &d_macroList.
                       );
+                      
+      %_readParameterFromTestDBtsu (i_parameterName  = tsu_lastinit
+                                   ,o_parameterValue = l_tsu_lastinit
+                                   ,o_defaultValue   = .
+                                   );
 
       *** Update o_scenariosToRun with dependency information by _crossrefrence ***;
       proc sql noprint;
@@ -162,7 +168,7 @@
             select distinct exa_id as exa_id_called, exa_pgm as exa_pgm_called, Caller, CalledByCaller
                from target.exa left join &d_dependency.
                on CalledByCaller = exa_pgm
-               where exa_changed >= (select tsu_lastinit from target.tsu)
+               where exa_changed >= &l_tsu_lastinit.
                      and not missing (caller);
          *** Join exa_id for caller ***;
          create table work._modifiedExaWithCallerID as

@@ -30,6 +30,8 @@
          For executing all calling macros of an examinee we still need sourcecode scanning.
          Or we need to store this call reference from last run.
 
+   \todo replace g_verbose
+   \todo Why not use g_sasunit_os. Or even better filter i_examinee for exa_auton >= 2 if no SASUNit macros?
 */ /** \cond */ 
 
 %MACRO _crossReference(i_includeSASUnit  =0
@@ -54,7 +56,9 @@
           l_path2
           n
           nobs
-          nobs_old;
+          nobs_old
+          l_sasunit_os
+   ;
    
    %IF &g_verbose. =0 %THEN %DO;
       %let l_source =%sysfunc(getoption(source));
@@ -81,11 +85,9 @@
    /* l_includeSASUnit = 1: include sasunit macros in scan   */
    /* Paths for SASUnit macros will be omitted if l_includeSASUnit = 0 */
    %IF &l_includeSASUnit. = 0 %THEN %DO;
-      PROC SQL noprint;
-         select tsu_sasunit_os into: l_sasunit_os
-         from target.tsu
-      ;
-      QUIT;
+      %_readParameterFromTestDBtsu (i_parameterName  = tsu_sasunit_os
+                                   ,o_parameterValue = l_sasunit_os
+                                   );
       
       %LET l_path1 = %_abspath(&g_root,&g_sasunit)/%;
       %LET l_path2 = %_abspath(&g_root,&l_sasunit_os)/%;

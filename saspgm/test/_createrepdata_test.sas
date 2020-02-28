@@ -293,7 +293,9 @@ run;
 %initTestcase(i_object=_createRepData.sas, i_desc=Test with correct call);
 
 %_switch();
-%_createRepData(d_reporting=work._myReportingDataset);
+%_createRepData(d_reporting=work._myReportingDataset
+               ,d_repexa   =work._myExaDataset
+               );
 %_switch();
 
 %endTestcall;

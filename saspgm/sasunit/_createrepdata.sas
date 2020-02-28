@@ -17,9 +17,12 @@
             
    \param   d_reporting Name of dataset to be created
 
+   \todo replace g_verbose
 */ /** \cond */ 
 
-%macro _createRepData (d_reporting=);
+%macro _createRepData (d_reporting    =
+                      ,d_repexa       =
+                      );
    /*-- generate temporary datasets ---------------------------------------------*/
    %LOCAL 
       d_scn 
@@ -167,9 +170,32 @@
    QUIT;
 
    /*-- create reporting dataset ------------------------------------------------*/
-   %LOCAL i;
+   %LOCAL i l_lastrep;
+   *** Check if all entries are present ***;
+   %_readParameterFromTestDBtsu (i_parameterName  =tsu_lastrep
+                                ,o_parameterValue =l_lastrep
+                                ,i_silent         =1
+                                );
 
-PROC SQL NOPRINT;
+   %if (&l_lastrep. = _NONE_) %then %do;
+       %_writeParameterToTestDBtsu (i_parameterName  =tsu_lastrep        
+                                   ,i_parameterValue =0
+                                   );
+   %end;
+   
+   PROC TRANSPOSE data=target.tsu out=work._tsu;
+      id tsu_parameterName;
+      var tsu_parameterValue;
+   RUN;
+   
+   DATA work._tsu;
+      set work._tsu (rename=(tsu_lastinit=char_lastinit tsu_lastrep=char_lastrep));
+      tsu_lastinit = input (char_lastinit, best32.);
+      tsu_lastrep  = input (char_lastrep,  best32.);
+      drop char_: _NAME_;
+   RUN;
+
+   PROC SQL NOPRINT;
       CREATE TABLE &d_reporting. (COMPRESS=YES) AS
       SELECT 
           tsu_project    
@@ -178,8 +204,7 @@ PROC SQL NOPRINT;
          ,tsu_sasunit    
          ,tsu_sasunit_os
          ,tsu_sasautos   
-         ,tsu_sasautos as tsu_sasautos0
-   %DO i=1 %TO 29;
+   %DO i=0 %TO 29;
          ,tsu_sasautos&i 
    %END;
          ,tsu_autoexec   
@@ -221,7 +246,7 @@ PROC SQL NOPRINT;
          ,tst_res
          ,tst_errmsg
       FROM 
-          target.tsu
+          work._tsu
          ,target.scn
          ,&d_cas.
          ,&d_tst.
@@ -241,6 +266,17 @@ PROC SQL NOPRINT;
       CREATE UNIQUE INDEX idx2 ON &d_reporting. (exa_auton, exa_id, scn_id, cas_id, tst_id);
    QUIT;
 
+   proc sql noprint;
+      create table &d_repexa. as 
+         select distinct exa.*
+                ,_tsu.*
+                ,cas.cas_obj
+         from target.exa left join target.cas
+              on exa.exa_id=cas.cas_exaid
+              ,work._tsu
+         order by exa_auton, exa_id;
+   quit;
+   
    %IF %_handleError(&l_macname.
                     ,ErrorTestDB
                     ,&syserr. NE 0
@@ -264,6 +300,7 @@ PROC SQL NOPRINT;
         %scan(&d_cas.,2,.)
         %scan(&d_tst.,2,.)
         %scan(&d_exa.,2,.)
+        _tsu
              ;
    QUIT;
 %mend _createRepData;

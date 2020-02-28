@@ -267,7 +267,9 @@ data work.tsu;
 run;
 
 %_switch();
-%_createRepData(d_reporting=work._junit_repdata); 
+%_createRepData(d_reporting=work._junit_repdata
+               ,d_repexa   =work._junit_repExa
+               ); 
 %_switch();
 
 %_reportCreateTagset;

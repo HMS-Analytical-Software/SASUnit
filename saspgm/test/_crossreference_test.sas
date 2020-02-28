@@ -23,23 +23,33 @@
    %LET l_work = %SYSFUNC(pathname(work));
    
    %*** Create test data base ***;
-   PROC SQL NOPRINT;
-      CREATE TABLE work.tsu(COMPRESS=CHAR)(                                      
-          tsu_sasunitroot  CHAR(1000)        /* root path to sasunit files */
-         ,tsu_sasunit      CHAR(1000)
-         ,tsu_sasunit_os   CHAR(1000)        /* os-specific sasunit macros */
-         ,tsu_sasautos     CHAR(1000)
-         %DO i=1 %TO 9;
-            ,tsu_sasautos&i   CHAR(1000)     /* auto call paths */
-         %END;
-      );
-
-      INSERT INTO work.tsu(tsu_sasunitroot,tsu_sasunit,tsu_sasunit_os,tsu_sasautos,tsu_sasautos1,tsu_sasautos2)
-      VALUES ("&l_work", 'saspgm/sasunit/', "saspgm/sasunit/linux/", 'saspgm/sasunit/', 'saspgm/testfolder1/', 'saspgm/testfolder2/');
-   QUIT;
-
+   %_createTestDataTSU (libref=work);
+   %_writeParameterToTestDBtsu (i_parameterName  =tsu_sasunitroot
+                               ,i_parameterValue =&l_work.
+                               ,i_libref         =work
+                               );
+   %_writeParameterToTestDBtsu (i_parameterName  =tsu_sasunit
+                               ,i_parameterValue =saspgm/sasunit
+                               ,i_libref         =work
+                               );
+   %_writeParameterToTestDBtsu (i_parameterName  =tsu_sasunit_os
+                               ,i_parameterValue =saspgm/sasunit/linux
+                               ,i_libref         =work
+                               );
+   %_writeParameterToTestDBtsu (i_parameterName  =tsu_sasautos 
+                               ,i_parameterValue =saspgm/sasunit
+                               ,i_libref         =work
+                               );
+   %_writeParameterToTestDBtsu (i_parameterName  =tsu_sasautos1 
+                               ,i_parameterValue =saspgm/testfolder1
+                               ,i_libref         =work
+                               );
+   %_writeParameterToTestDBtsu (i_parameterName  =tsu_sasautos2
+                               ,i_parameterValue =saspgm/testfolder2
+                               ,i_libref         =work
+                               );
+   
    %*** Create folder structure for the test ***;  
-
    %_mkdir(&l_work./saspgm);
    %_mkdir(&l_work./saspgm/sasunit);
    %_mkdir(&l_work./saspgm/sasunit/linux);

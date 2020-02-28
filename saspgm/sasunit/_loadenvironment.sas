@@ -17,15 +17,11 @@
             
    \param   i_withlibrefs    1..initialize also filerefs and librefs 
                              0..initialize only macro symbols. 
-   \param   i_appendSASAutos Y..append SASAUTOS, in interactive mode append SASAUTOS must be disabled
-                             ..do not append SASAUTOS
                              
-   \todo    Reimplement target.tsu as name value pair. Use macros %_readTestDBTsu (libref)
    \todo replace g_verbose
 */ /** \cond */ 
 
 %MACRO _loadEnvironment(i_withlibrefs    =1
-                       ,i_appendSASAutos =Y
                        );
  
    %LOCAL l_macname; %LET l_macname=&sysmacroname;
@@ -52,7 +48,7 @@
 
    %IF %_handleError(&l_macname.
                     ,InvalidTsu
-                    ,%_nobs(target.tsu) NE 1
+                    ,%_nobs(target.tsu) < 1
                     ,invalid test database: target.tsu
                     ,i_verbose=0
                     ) 
@@ -84,27 +80,7 @@
 
    DATA _null_;
       SET target.tsu;
-      call symput ('g_project'        , trim(tsu_project));
-      call symput ('g_root'           , trim(tsu_root));
-      call symput ('g_sasunitroot'    , trim(tsu_sasunitroot));
-      call symput ('g_sasunit'        , trim(tsu_sasunit));
-      call symput ('g_sasunit_os'     , trim(tsu_sasunit_os));
-      call symput ('g_sasautos'       , trim(tsu_sasautos));
-      call symput ('g_sasautos0'      , trim(tsu_sasautos));
-   %DO i=1 %TO 29;                     
-      call symput ("g_sasautos&i."    , trim(tsu_sasautos&i.));
-   %END;                              
-      call symput ('g_autoexec'       , trim(tsu_autoexec));
-      call symput ('g_sascfg'         , trim(tsu_sascfg));
-      call symput ('g_sasuser'        , trim(tsu_sasuser));
-      call symput ('g_testdata'       , trim(tsu_testdata));
-      call symput ('g_refdata'        , trim(tsu_refdata));
-      call symput ('g_doc'            , trim(tsu_doc));
-      call symput ('g_testcoverage'   , put (tsu_testcoverage, z1.));
-      call symput ('g_verbose'        , put (tsu_verbose, z1.));
-      call symput ('g_crossref'       , put (tsu_crossref, z1.));
-      call symput ('g_crossrefsasunit', put (tsu_crossrefsasunit, z1.));
-      call symput ('g_language'       , trim(tsu_language));
+      call symputx (catt ("G_", substr (tsu_parameterName,5)), trim(tsu_parameterValue), tsu_parameterScope);
    RUN;
 
    %LET g_project      = &g_project.;
@@ -137,12 +113,10 @@
       %IF %length(&g_testdata) %THEN %DO;
          LIBNAME testdata "&g_testdata.";
          FILENAME testdata "&g_testdata.";
-         %LET g_testdata = %sysfunc(pathname(testdata));
       %END;
       %IF %length(&g_refdata.) %THEN %DO;
          LIBNAME refdata "&g_refdata.";
          FILENAME refdata "&g_refdata.";
-         %LET g_refdata = %sysfunc(pathname(refdata));
       %END;
       %IF %length(&g_doc.) %THEN %DO;
          FILENAME doc "&g_doc.";

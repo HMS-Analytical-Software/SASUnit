@@ -23,7 +23,6 @@
 %let G_REVISION  =N.N.N;
 %let G_VERSION   =NNN;
 
-
 proc cimport file="&g_refdata./empty_test_db_tsu.cport" data=work.tsu;
 run;
 proc cimport file="&g_refdata./empty_test_db_exa.cport" data=work.exa;
@@ -36,7 +35,9 @@ proc cimport file="&g_refdata./empty_test_db_tst.cport" data=work.tst;
 run;
 
 %_switch();
-%_createRepData(d_reporting=work._testRep);
+%_createRepData(d_reporting=work._testRep
+               ,d_repexa   =work._repExa
+               );
 %_switch();
 
 %_reportCreateFormats;
