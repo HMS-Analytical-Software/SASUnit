@@ -154,7 +154,7 @@
    %LOCAL 
       l_macname
       l_current_dbversion l_newdb
-      l_target_abs l_abs 
+      l_target l_abs 
       l_root l_sasunitroot l_sasunit l_sasunit_os l_abspath_sasunit_os
       l_autoexec    l_autoexec_abs
       l_sascfg      l_sascfg_abs
@@ -269,9 +269,14 @@
    %let l_sasunitroot=%sysfunc (pathname(_tmp));
    libname _tmp clear;
 
-   /*-- Get SASUnit macro paths ----------*/
+   /*-- Get SASUnit macro path ----------*/
    libname _tmp "&i_sasunit.";
    %let l_sasunit=%sysfunc (pathname(_tmp));
+   libname _tmp clear;
+
+   /*-- Get SASUnit target path ----------*/
+   libname _tmp "&io_target.";
+   %let l_target=%sysfunc (pathname(_tmp));
    libname _tmp clear;
 
    /*-- root folder -------------------------------------------------------------*/
@@ -284,20 +289,19 @@
       %THEN %GOTO errexit;
 
    /*-- check for target directory ----------------------------------------------*/
-   %LET l_target_abs=%_abspath(&i_root,&io_target);
    %IF %_handleError(&l_macname.
                     ,InvalidPath
-                    ,"&l_target_abs" EQ "" OR NOT %_existDir(&l_target_abs)
+                    ,"&l_target." EQ "" OR NOT %_existDir(&l_target.)
                     ,Error in parameter io_target: target directory does not exist
                     ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
 
-   LIBNAME target "&l_target_abs";
+   LIBNAME target "&l_target.";
    %IF %_handleError(&l_macname
                     ,InvalidLibrary
                     ,%quote(&syslibrc.) NE 0
-                    ,Error in parameter io_target: target directory &l_target_abs. cannot be assigned as a SAS library
+                    ,Error in parameter io_target: target directory &l_target. cannot be assigned as a SAS library
                     ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
@@ -308,8 +312,6 @@
                     ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
-
-   %LET l_target_abs=%sysfunc (pathname (target));
 
    /*-- sasunit root folder -------------------------------------------------------------*/
    %LET l_sasunitroot=&l_sasunitroot;
@@ -494,7 +496,7 @@
    %LET l_sasunitroot=%_makeSASUnitPath(&l_sasunitroot.);
    %LET l_sasunit=%_makeSASUnitPath(&l_sasunit.);
    %LET l_sasunit_os=%_makeSASUnitPath(&l_sasunit_os.);
-   %LET l_target_abs=%_makeSASUnitPath(&l_target_abs.);
+   %LET l_target=%_makeSASUnitPath(&l_target.);
    %LET l_sasautos=%_makeSASUnitPath(&l_sasautos.);
    %DO i=1 %TO 29;
       %LET l_sasautos&i=%_makeSASUnitPath(&&l_sasautos&i);
@@ -524,17 +526,10 @@
    *** Check tsu db version                      ***;
    *** Is there a need to recreate the database? ***;
    %IF &l_newdb. ne 1 %THEN %DO;
-      data _null_;
-         if (exist ("target.tsu")) then do;
-            did = open ("target.tsu");
-            if varnum (did, "tsu_dbVersion") then do;
-               rc            = fetch (did);
-               tsu_dbVersion = getvarc (did, varnum (did, "tsu_dbVersion"));
-               call symput ("l_current_dbversion", trim(tsu_dbVersion));
-            end;
-            did = close(did);
-         end;
-      run;
+      %_readParameterFromTestDBtsu (i_parameterName  =tsu_dbVersion 
+                                   ,o_parameterValue =l_current_dbversion
+                                   );
+      
       %LET l_newdb=%eval ("&l_current_dbversion." NE "&g_db_version.");
    %END;
 
@@ -557,20 +552,19 @@
          %LET l_cmdfile=%sysfunc(pathname(WORK))/remove_dir.cmd;
          DATA _null_;
             FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
-            PUT %sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./log)&g_endcommand));
-            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./rep)&g_endcommand));
-            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target_abs./tst)&g_endcommand));
+            PUT %sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target./log)&g_endcommand));
+            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target./doc)&g_endcommand));
          RUN;
          %_executeCMDFile(&l_cmdfile.);
          %LET l_rc=%_delfile(&l_cmdfile.);
          %LET rc = %sysfunc (sleep(2,1));
-         %_mkDir (&l_target_abs./log
+         %_mkDir (&l_target./log
                  ,makeCompletePath = 0
                  );
-         %_mkDir (&l_target_abs./rep
-                 ,makeCompletePath = 0
+         %_mkDir (&l_target./doc/testDoc
+                 ,makeCompletePath = 1
                  );
-         %_mkDir (&l_target_abs./tst/crossreference
+         %_mkDir (&l_target./doc/tempDoc/crossreference
                  ,makeCompletePath = 1
                  );
               
@@ -579,49 +573,61 @@
       /*-- check folders -----------------------------------------------------------*/
       %IF %_handleError(&l_macname.
                        ,NoLogDir
-                       ,NOT %_existdir(&l_target_abs./log)
-                       ,folder &l_target_abs./log does not exist
+                       ,NOT %_existdir(&l_target./log)
+                       ,folder &l_target./log does not exist
                        ,i_verbose=&i_verbose.
                        ) 
          %THEN %GOTO errexit;
       %IF %_handleError(&l_macname.
                        ,NoRepDir
-                       ,NOT %_existdir(&l_target_abs./rep)
-                       ,folder &l_target_abs./doc does not exist
+                       ,NOT %_existdir(&l_target./doc)
+                       ,folder &l_target./doc does not exist
+                       ,i_verbose=&i_verbose.
+                       ) 
+         %THEN %GOTO errexit;
+      %IF %_handleError(&l_macname.
+                       ,NoRepDir
+                       ,NOT %_existdir(&l_target./doc/tempDoc)
+                       ,folder &l_target./doc/tempDoc does not exist
+                       ,i_verbose=&i_verbose.
+                       ) 
+         %THEN %GOTO errexit;
+      %IF %_handleError(&l_macname.
+                       ,NoRepDir
+                       ,NOT %_existdir(&l_target./doc/tempDoc/crossreference)
+                       ,folder &l_target./doc/tempDoc/crossreference does not exist
                        ,i_verbose=&i_verbose.
                        ) 
          %THEN %GOTO errexit;
    %END; 
 
    /*-- update parameters ----------------------------------------------------*/
-   PROC SQL NOPRINT;
-      UPDATE target.tsu 
-            SET tsu_sasautos  = "&l_sasautos"
-      %DO i=1 %TO 29;
-               ,tsu_sasautos&i. = "&&l_sasautos&i"
-      %END; /* i=1 %TO 29 */
-               ,tsu_project         = "&i_project"
-               ,tsu_target          = "&io_target"
-               ,tsu_root            = "&l_root"
-               ,tsu_sasunitroot     = "&l_sasunitroot"
-               ,tsu_sasunit         = "&l_sasunit"
-               ,tsu_sasunit_os      = "&l_sasunit_os"
-               ,tsu_autoexec        = "&l_autoexec"
-               ,tsu_sascfg          = "&l_sascfg"
-               ,tsu_sasuser         = "&l_sasuser"
-               ,tsu_testdata        = "&l_testdata"
-               ,tsu_refdata         = "&l_refdata"
-               ,tsu_doc             = "&l_doc"
-               ,tsu_testcoverage    =&i_testcoverage.
-               ,tsu_verbose         =&i_verbose.
-               ,tsu_crossref        =&i_crossref.
-               ,tsu_crossrefsasunit =&i_crossrefsasunit.
-               ,tsu_language        ="&i_language.";
-   QUIT;
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasautos         ,i_parameterValue =&l_sasautos.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasautos0        ,i_parameterValue =&l_sasautos.);
+   %DO i=1 %TO 29;
+      %_writeParameterToTestDBtsu (i_parameterName=tsu_sasautos&i.   ,i_parameterValue =&&l_sasautos&i.);
+   %END; /* i=1 %TO 29 */
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_project          ,i_parameterValue =&i_project.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_target           ,i_parameterValue =&l_target.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_root             ,i_parameterValue =&l_root.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunitroot      ,i_parameterValue =&l_sasunitroot.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunit          ,i_parameterValue =&l_sasunit.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunit_os       ,i_parameterValue =&l_sasunit_os.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_autoexec         ,i_parameterValue =&l_autoexec.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sascfg           ,i_parameterValue =&l_sascfg.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasuser          ,i_parameterValue =&l_sasuser.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_testdata         ,i_parameterValue =&l_testdata.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_refdata          ,i_parameterValue =&l_refdata.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_doc              ,i_parameterValue =&l_doc.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_testcoverage     ,i_parameterValue =&i_testcoverage.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_verbose          ,i_parameterValue =&i_verbose.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_crossref         ,i_parameterValue =&i_crossref.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_crossrefsasunit  ,i_parameterValue =&i_crossrefsasunit.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_language         ,i_parameterValue =&i_language.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_overwrite        ,i_parameterValue =&i_overwrite.);
 
    /*-- load relevant information from test database to global macro symbols ----*/
    %_loadEnvironment (i_withLibrefs   =0
-                     ,i_appendSASAutos=Y
                      )
 
    /* Correct Termstring in Textfiles */
@@ -668,12 +674,10 @@
 
    %_createExamineeTable;
 
-   PROC SQL NOPRINT;
-      /*-- save time of initialization ---------------------------------------------*/
-      UPDATE target.tsu SET tsu_lastinit = %sysfunc(datetime());
-      /*-- update column tsu_dbVersion ------------------------------------------*/
-      UPDATE target.tsu SET tsu_dbVersion = "&g_db_version.";
-   QUIT;
+   /*-- save time of initialization ---------------------------------------------*/
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_lastinit         ,i_parameterValue =%sysfunc(datetime()));
+   /*-- update column tsu_dbVersion ------------------------------------------*/
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_dbVersion        ,i_parameterValue =&g_db_version.);
 
    %IF (&g_runMode. = SASUNIT_INTERACTIVE) %THEN %DO;
       %_reportCreateStyle;
