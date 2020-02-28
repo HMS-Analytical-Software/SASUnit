@@ -29,6 +29,7 @@
                     2 ...  Fehler (ggfs. auch Warnungen) aufgetreten
                     3 ...  Fehler im Ablauf dieses Makros
 
+   \todo replace g_verbose
 */ /** \cond */ 
 
 %MACRO _reportLogHTML(i_log     =

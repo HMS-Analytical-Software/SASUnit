@@ -55,9 +55,3 @@
 .
 %MEND _getAutocallNumber;
 /** \endcond */
-/*
-%LET g_sasautos=c:\projects\sasunit\saspgm\sasunit;
-%LET g_sasautos1=c:\temp;
-
-%put %_getAutocallNumber(deldir.sas);
-*/

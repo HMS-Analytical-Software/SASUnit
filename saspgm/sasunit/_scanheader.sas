@@ -20,6 +20,7 @@
             
    \param   MacroName   Name of the macro that resides inside flatfile under FilePath
    \param   FilePath    Path and name of a SASautocall macro
+   \param   LinkName    Url to be used as Link for entries.
    \param   LibOutDoc   Library of data set holding the header portion of the program documentation (optional: Default=WORK)
    \param   DataOutDoc  Name of data set holding the header portion of the program documentation (optional: Default=_ProgramHeader)
    \param   LibOutPgm   Library of data set holding the source code portion of the program documentation (optional: Default=WORK)

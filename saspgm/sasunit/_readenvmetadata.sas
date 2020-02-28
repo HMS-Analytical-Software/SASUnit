@@ -33,10 +33,12 @@
       g_useLog4SAS
    ;
 
-   %local l_sysin l_string;
+   %local l_sysin;
 
    %*** Check for execution mode and running program ***;
+   %let g_runMode                =_NONE_;
    %let g_runningProgram         =_NONE_;
+   %let g_runEnvironment         =_NONE_;
    %let g_runningProgramFullName =_NONE_;
 
    %let l_sysin=%qsysfunc(getoption(SYSIN));
