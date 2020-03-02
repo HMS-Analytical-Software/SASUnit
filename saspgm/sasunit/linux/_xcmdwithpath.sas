@@ -42,7 +42,7 @@
    
    %IF &g_verbose. %THEN %DO;
       %_issueInfoMessage (&g_currentLogger., _xcmdWithPath: %str(======== OS Command Start ========));
-       /* Evaluate sysexec´s return code*/
+      /* Evaluate sysexec´s return code*/
       %IF &sysrc. = 0 %THEN %DO;
          %_issueInfoMessage (&g_currentLogger., _xcmdWithPath: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
       %END;
@@ -68,7 +68,7 @@
             putlog _infile_;
          RUN;
       %END;
-      %ELSE DO;
+      %ELSE %DO;
          %_issueInfoMessage (&g_currentLogger., _xcmdWithPath: No File Redirection for Commands cd, pwd, setenv and umask);
       %END;
       %LET rc=%sysfunc(filename(filrf));
