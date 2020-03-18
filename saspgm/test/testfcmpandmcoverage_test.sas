@@ -4,6 +4,7 @@
 
 */
 /** \cond */
+%initScenario (i_desc=%str(Test Scenario for MCOVERAGE and FCMP, will always be run because macro Gest_VarianceFormulaType is generated on the fly));
 
 %initTestcase (i_object=TestFCMPandMCoverage.sas, i_desc=Checking MCOVERAGE and simple PROC FCMP call);
 %TestFCMPandMCoverage;
@@ -53,4 +54,6 @@ options &mcoverage.;
 
 %assertEquals(i_actual=&FormulaType. , i_expected=1, i_desc=Return Code);
 %endTestcase();
+
+%endScenario();
 /** \endcond */

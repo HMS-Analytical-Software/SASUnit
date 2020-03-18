@@ -13,6 +13,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
+%initScenario (i_desc=Test of _existVar.sas);
 
 %initTestcase(i_object=_existVar.sas, i_desc=Test for numeric variable age)
 %let rc=%_existVar (sashelp.class
@@ -43,4 +44,5 @@
 %assertEquals(i_expected=1,  i_actual=&rc.,  i_desc=Variable name does not exist)
 %endTestcase;
 
+%endScenario();
 /** \endcond */

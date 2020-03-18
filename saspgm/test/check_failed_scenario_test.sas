@@ -8,6 +8,7 @@
    \sa         \$HeadURL$
 
 */ /** \cond */ 
+%initScenario (i_desc=%str(Testcall for scenario with error only in scenario log - has to fail! 1 error %(file WORK.CLASS.DATA does not exist%)))
 
 data test;
    set work.class;
@@ -18,3 +19,6 @@ run;
 %endTestcall()
 %assertLog(i_errors=0, i_warnings=0, i_desc=everything is OK)
 %endTestcase()
+
+%endScenario();
+/** \endcond */

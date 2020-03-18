@@ -14,10 +14,13 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
+%initScenario (i_desc=Test of the tree building and the functionality for program libraries);
 
 %initTestcase(i_object=pgm1_1.sas, i_desc=call of program 1 in library 1)
 %pgm1_1()
 %initTestcase(i_object=pgm1_2.sas, i_desc=call of program 2 in library 1)
 %pgm1_2()
 %endTestcase;
+
+%endScenario();
 /** \endcond */

@@ -12,6 +12,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
+%initScenario (i_desc=Test of _render_assertPerformanceAct.sas)
 
 %LET G_NLS_REPORTDETAIL_045=Message found; 
 %LET G_NLS_REPORTDETAIL_046=Message not found; 
@@ -118,4 +119,5 @@ run;
 
 %endTestcase();
 
+%endScenario();
 /** \endcond */

@@ -13,6 +13,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
+%initScenario (i_desc=Test of _getScenarioTestId.sas);
 
 *** Testcase 1 ***; 
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with missing parameters);
@@ -280,4 +281,5 @@ run;
 
 %endTestcase();
 
+%endScenario();
 /** \endcond */

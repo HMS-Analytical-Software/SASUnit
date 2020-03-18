@@ -13,6 +13,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
+%initScenario (i_desc=Test of _existDir.sas);
 
 %let existing = %sysfunc(pathname(work));
 %let existing2 = %sysfunc(pathname(work))/;
@@ -36,4 +37,5 @@
 %assertEquals(i_expected=0, i_actual=&exists, i_desc=folder does not exists)
 %endTestcase;
 
+%endScenario();
 /** \endcond */

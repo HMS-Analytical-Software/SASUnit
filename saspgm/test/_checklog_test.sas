@@ -13,6 +13,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
+%initScenario (i_desc=Test of _checkLog.sas);
+
 %Macro _checklog_test;
 
 %LOCAL
@@ -207,4 +209,6 @@
 %EXIT:
 %Mend _checklog_test;
 %_checklog_test;
+
+%endScenario();
 /** \endcond */

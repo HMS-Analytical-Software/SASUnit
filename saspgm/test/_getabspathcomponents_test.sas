@@ -9,6 +9,7 @@
    \sa         \$HeadURL$
 
 */ /** \cond */ 
+%initScenario (i_desc=Test of _getAbsPathComponents.sas);
 
 /* Testcase 1 ****************************************************************/
 %initTestcase(i_object=_getAbsPathComponents.sas
@@ -42,5 +43,5 @@
 %assertEquals(i_expected=test.sas, i_actual=&r_fileName       , i_desc=fileName)
 %endTestcase()
 
-
+%endScenario();
 /** \endcond */

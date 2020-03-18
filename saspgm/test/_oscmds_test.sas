@@ -16,6 +16,7 @@
          That should be tested too.   
 
 */ /** \cond */ 
+%initScenario (i_desc=Test of _osCmds.sas);
 
 %initTestcase(i_object=_osCmds.sas, i_desc=check for correct values)
 
@@ -52,4 +53,5 @@
 %assertEquals(i_expected=&_osCmdFileSuffix.,    i_actual=&g_osCmdFileSuffix.,    i_desc=check g_osCmdFileSuffix for identical value)
 %endTestcase;
 
+%endScenario();
 /** \endcond */

@@ -14,6 +14,7 @@
 
    \test New test calls that catch all messages
 */ /** \cond */ 
+%initScenario (i_desc=Test of _mkDir.sas);
 
 %initTestcase(i_object=_mkDir.sas, i_desc=Test with correct call)
 %let newdir=%sysfunc(pathname(work))/in;
@@ -23,4 +24,5 @@
 %assertEquals(i_expected=1,  i_actual=%_existDir(&newdir.),  i_desc=check on file existence)
 %endTestcase;
 
+%endScenario();
 /** \endcond */

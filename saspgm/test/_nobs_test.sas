@@ -13,6 +13,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
+%initScenario (i_desc=Test of _nobs.sas);
       
 data test1;
    do i=1 to 100;
@@ -40,4 +41,6 @@ run;
 %assertEquals(i_expected=0, i_actual=&g_nobs, i_desc=number of observations must be 0)
 %assertLog()
 %endTestcase;
+
+%endScenario();
 /** \endcond */

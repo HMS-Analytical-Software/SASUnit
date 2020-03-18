@@ -16,6 +16,8 @@
 */ 
 /** \cond */ 
 
+%initScenario(i_desc =Tests for use of autoexec file);
+
 /* test case 1 ------------------------------------*/
 %initTestcase(i_object=_dummy_macro.sas, i_desc=special autoexec should be used);
 
@@ -31,4 +33,5 @@ run;
 
 %endTestcase()
 
-/** \endcond */ 
+%endScenario();
+/** \endcond */

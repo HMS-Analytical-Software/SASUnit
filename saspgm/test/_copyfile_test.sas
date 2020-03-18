@@ -13,6 +13,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
+%initScenario (i_desc=Test of _copyFile.sas);
 
 %initTestcase(i_object=_copyFile.sas, i_desc=Test with correct call)
 %let infile=&g_refdata./class.xlsx;
@@ -25,4 +26,5 @@
 %assertEquals(i_expected=1,  i_actual=%sysfunc(fileexist(&outfile.)),  i_desc=check on file existance)
 %endTestcase;
 
+%endScenario();
 /** \endcond */

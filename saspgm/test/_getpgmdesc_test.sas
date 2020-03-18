@@ -13,6 +13,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
+%initScenario (i_desc=Test of _getPgmDesc.sas);
+
 %LET g_desc = NIX; 
 %initTestcase(i_object=_getPgmDesc.sas, i_desc=Test with brief tag)
 %_getPgmDesc(i_pgmfile=&g_testdata./macro_with_brief_tag.sas
@@ -33,4 +35,5 @@
 %assertEquals(i_expected=&g_testdata./macro_without_brief_tag.sas,  i_actual=&g_desc.,  i_desc=check on equality)
 %endTestcase;
 
+%endScenario();
 /** \endcond */

@@ -15,6 +15,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */  
+%initScenario (i_desc=Test of the tree building and the functionality for program libraries - 
+               will always run because program pgm3_2.sas is being generated on the fly);
 
 %initTestcase(i_object=pgm1_1.sas, i_desc=call of program 1 in library 1)
 %pgm1_1()
@@ -40,4 +42,6 @@ run;
 %include "&g_work/pgm3_2.sas";
 %pgm3_2()
 %endTestcase;
+
+%endScenario();
 /** \endcond */

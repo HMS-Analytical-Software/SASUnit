@@ -12,6 +12,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 */ /** \cond */ 
+%initScenario (i_desc=Test of _render_assertManualExp.sas);
 
 *** Testcase 1 ***; 
 data work._input;
@@ -37,4 +38,6 @@ run;
 %assertColumns (i_expected=work.Expected,i_actual=work.actual);
 
 %endTestcase();
+
+%endScenario();
 /** \endcond */

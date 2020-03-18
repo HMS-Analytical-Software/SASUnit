@@ -13,7 +13,8 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
-      
+%initScenario (i_desc=Test of _getTestSubfolder.sas);
+
 *** Testcase 1 ***; 
 %initTestcase(i_object=_getTestSubfolder.sas, i_desc=call with missing parameters);
 
@@ -126,4 +127,5 @@
 
 %endTestcase();
 
+%endScenario();
 /** \endcond */

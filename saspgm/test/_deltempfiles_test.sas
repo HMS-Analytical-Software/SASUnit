@@ -13,6 +13,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
+%initScenario (i_desc=Test of _delTempFiles.sas);
 
 data;
 set sashelp.class;
@@ -25,4 +26,5 @@ run;
 %assertTableExists(i_libref=work, i_memname=data1, i_desc=check on table abscence, i_not=1)
 %endTestcase;
 
+%endScenario();
 /** \endcond */
