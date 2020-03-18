@@ -56,7 +56,7 @@
          RUN;
       %END;
       %ELSE %DO;
-         %_issueInfoMessage (&g_currentLogger., _xcmd: No File Redirection for Commands cd, pwd, setenv and umask);
+         %_issueInfoMessage (&g_currentLogger., %str(_xcmd: No File Redirection for Commands cd, pwd, setenv and umask));
       %END;
       %LET rc=%sysfunc(filename(filrf));
       
