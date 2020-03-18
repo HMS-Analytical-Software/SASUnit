@@ -99,8 +99,9 @@
                     ,%_nobs(&d_dir) EQ 0
                     ,Error in parameter i_source: no test scenarios found
                     ,i_verbose=&g_verbose.
+                    ,i_msgType=WARNING
                     ) 
-      %THEN %GOTO errexit;
+      %THEN %GOTO emptyexit;
 
    data &d_scn_pre.;
       set &d_dir.;
@@ -237,64 +238,62 @@
    %END; /* loop for all scenarios */
 
    %GOTO exit;
+%emptyexit:
+
+      /* ensure that dummy entry for inexisting scenario is present in test database, to be able to report it later
+      */
+      %LET l_scn = %_stdPath(&g_root., &l_source.);
+
+      %LET l_nscncount = 0;
+      PROC SQL NOPRINT;
+         SELECT Count(scn_id)
+            INTO :l_nscncount SEPARATED BY ''
+         FROM target.scn
+         WHERE Upcase(scn_path) = "%UPCASE(&l_scn.)";
+      QUIT;
+
+      %IF %EVAL(&l_nscncount. EQ 0) %THEN %DO;
+
+         %LET l_scndesc = %STR(Scenario not found - has to fail!);
+        
+         PROC SQL NOPRINT;
+            SELECT max(scn_id) INTO :l_scnid FROM target.scn;
+            %IF &l_scnid=. %THEN %LET l_scnid=0;
+            %LET l_scnid = %eval(&l_scnid+1);
+            INSERT INTO target.scn 
+               ( 
+                 scn_id
+                ,scn_path
+                ,scn_desc
+                ,scn_start
+                ,scn_end
+                ,scn_rc
+                ,scn_errorcount
+                ,scn_warningcount
+                ,scn_res
+               )
+               VALUES 
+               (
+                   &l_scnid
+                  ,"&l_scn."
+                  ,"&l_scndesc."
+                  ,.
+                  ,.
+                  ,.
+                  ,.
+                  ,.
+                  ,2
+               )
+            ;
+         QUIT;
+      %END; /* if scenario is not present in database */
+
 %errexit:
       %_issueInfoMessage (&g_currentLogger., %str ( ));
       %_issueInfoMessage (&g_currentLogger., %str (=========================== Error! runSASUnit aborted! ==========================================));
       %_issueInfoMessage (&g_currentLogger., %str ( ));
       %_issueInfoMessage (&g_currentLogger., %str ( ));
-      
-      %IF %EVAL("%UPCASE(&g_error_code.)" EQ "%UPCASE(NoSourceFiles)") %THEN %DO;
-
-         /* ensure that dummy entry for inexisting scenario is present in test database, to be able to report it later
-         */
-         %LET l_scn = %_stdPath(&g_root., &l_source.);
-
-         %LET l_nscncount = 0;
-         PROC SQL NOPRINT;
-            SELECT Count(scn_id)
-               INTO :l_nscncount SEPARATED BY ''
-            FROM target.scn
-            WHERE Upcase(scn_path) = "%UPCASE(&l_scn.)";
-         QUIT;
-
-         %IF %EVAL(&l_nscncount. EQ 0) %THEN %DO;
-
-            %LET l_scndesc = %STR(Scenario not found - has to fail!);
            
-            PROC SQL NOPRINT;
-               SELECT max(scn_id) INTO :l_scnid FROM target.scn;
-               %IF &l_scnid=. %THEN %LET l_scnid=0;
-               %LET l_scnid = %eval(&l_scnid+1);
-               INSERT INTO target.scn 
-                  ( 
-                    scn_id
-                   ,scn_path
-                   ,scn_desc
-                   ,scn_start
-                   ,scn_end
-                   ,scn_rc
-                   ,scn_errorcount
-                   ,scn_warningcount
-                   ,scn_res
-                  )
-                  VALUES 
-                  (
-                      &l_scnid
-                     ,"&l_scn."
-                     ,"&l_scndesc."
-                     ,.
-                     ,.
-                     ,.
-                     ,.
-                     ,.
-                     ,2
-                  )
-               ;
-            QUIT;
-         %END; /* if scenario is not present in database */
-      %END;
-
-     
 %exit:
    PROC DATASETS NOLIST NOWARN LIB=%scan(&d_scn_pre,1,.);
       DELETE %scan(&d_dir,2,.);
