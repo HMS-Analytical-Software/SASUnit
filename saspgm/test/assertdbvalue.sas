@@ -57,5 +57,4 @@ quit;
 %assertEquals(i_expected=&i_val, i_actual=&l_val, i_desc=&i_desc)
 
 %mend assertDBValue;
- 
-/** \endcond */
+ /** \endcond */

@@ -108,5 +108,4 @@ proc catalog catalog=work.SASMACR entrytype=MACRO;
 run;quit;
 
 %endScenario();
-
 /** \endcond */

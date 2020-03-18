@@ -211,4 +211,5 @@ proc sort data=dircheck out=dirchecktxt; by filename; where filename contains "f
 %assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file)
 %endTestcase;
 
+%endScenario();
 /** \endcond */

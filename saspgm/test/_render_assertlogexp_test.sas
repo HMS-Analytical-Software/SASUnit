@@ -70,4 +70,5 @@ run;
 
 %endTestcase();
 
+%endScenario();
 /** \endcond */

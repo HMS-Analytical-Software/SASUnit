@@ -6,9 +6,9 @@
    
    \details    Asserts will issue messages into a separate log file when using log4sas.
 
-   \version    \$Revision: 000 $
-   \author     \$Author: author $
-   \date       \$Date:  $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
    
    \param     message      Message to be captured by the logger
 

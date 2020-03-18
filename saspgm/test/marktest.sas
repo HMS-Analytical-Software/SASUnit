@@ -34,5 +34,4 @@ quit;
 %let tstid = %substr(00&tstid,%length(&tstid));
 
 %mend markTest;
- 
 /** \endcond */

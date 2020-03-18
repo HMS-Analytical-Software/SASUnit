@@ -57,5 +57,4 @@
             AND tst_id = &l_tstid.;
    quit;
 %mend assertMustFail;
- 
 /** \endcond */

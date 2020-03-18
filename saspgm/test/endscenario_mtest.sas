@@ -13,7 +13,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
-
 %initScenario(i_desc=Test of endScenario.sas);
 
 %_nls(i_language=de);
@@ -29,3 +28,4 @@
 %let g_scnid = 017;
 
 %endScenario();
+/** \endcond **/

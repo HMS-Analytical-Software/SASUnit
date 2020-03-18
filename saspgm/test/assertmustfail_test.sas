@@ -105,4 +105,5 @@ run;
 %assertColumns(i_expected=work.expected, i_actual=work.tst);
 %endTestcase();
 
+%endScenario();
 /** \endcond */

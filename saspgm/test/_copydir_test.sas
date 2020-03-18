@@ -33,4 +33,5 @@
 %assertEquals(i_expected=1,  i_actual=%sysfunc(fileexist(&outdir./class.png)),  i_desc=check on file existance)
 %endTestcase;
 
+%endScenario();
 /** \endcond */

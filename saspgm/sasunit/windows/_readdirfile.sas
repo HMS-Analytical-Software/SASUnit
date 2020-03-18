@@ -12,13 +12,13 @@
                filename (name of file with absolute path, path separator is slash) 
                changed (last modification data as SAS datetime).
 
-   \version    \$Revision: 616 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2018-10-29 11:56:33 +0100 (Mo, 29 Okt 2018) $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
    
    \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/windows/_dir.sas $
+   \sa         \$HeadURL$
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.

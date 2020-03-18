@@ -4,9 +4,9 @@
 
    \brief      Issues a Wrning message to a logger
    
-   \version    \$Revision: 000 $
-   \author     \$Author: author $
-   \date       \$Date:  $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
    
    \param     loggername   Name of the logger to capture the message
    \param     message      Message to be captured by the logger

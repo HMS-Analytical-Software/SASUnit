@@ -21,4 +21,5 @@
 
 %endTestcase;
 
-%endScenario();/** \endcond */
+%endScenario();
+/** \endcond */

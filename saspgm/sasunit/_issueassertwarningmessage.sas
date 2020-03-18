@@ -9,9 +9,9 @@
                This is fatal when not using log4sas because it will generate additonal warnings in the log file
                Therefore we will capture g_useLog4SAS and only issue that message in the separate log file
 
-   \version    \$Revision: 000 $
-   \author     \$Author: author $
-   \date       \$Date:  $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
    
    \param     message      Message to be captured by the logger
 

@@ -5,13 +5,13 @@
    \brief      This macro checks operating system and sas version against the requirments of the current implementation 
 
 
-   \version    \$Revision: 508 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2017-06-19 12:13:04 +0200 (Mo, 19 Jun 2017) $
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
    
    \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/sasunit/_closehtmlpage.sas $
+   \sa         \$HeadURL$
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.

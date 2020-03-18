@@ -8,7 +8,6 @@
    \sa         \$HeadURL$
 
 */ /** \cond */ 
-
 %initScenario(i_desc =Tests for calls to macros including special characters as parameter);
 
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));

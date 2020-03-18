@@ -119,9 +119,8 @@
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /* test case 1 ------------------------------------ */
-
 %initTestcase(i_object   =assertText.sas
-             ,i_desc     =Texts with invalid input parameters
+             ,i_desc     =Tests with invalid input parameters
              )
 %endTestcall()
 
@@ -138,7 +137,6 @@
       %assertDBValue(tst,act,-2)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-      %assertLog (i_errors=0, i_warnings=0);
 
    
    %assertText(i_script            =&assertText_NotExistend.
@@ -154,7 +152,6 @@
       %assertDBValue(tst,act,-3)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-      %assertLog (i_errors=0, i_warnings=0);
 
    %assertText(i_script            =&assertText_script.
               ,i_expected          =
@@ -169,7 +166,6 @@
       %assertDBValue(tst,act,-4)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-      %assertLog (i_errors=0, i_warnings=0);
       
    %assertText(i_script            =&assertText_script.
               ,i_expected          =&g_work./DoesNotExist.txt
@@ -184,7 +180,6 @@
       %assertDBValue(tst,act,-5)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-      %assertLog (i_errors=0, i_warnings=0);
       
    %assertText(i_script            =&assertText_script.
               ,i_expected          =&assertText_work1.
@@ -199,7 +194,6 @@
       %assertDBValue(tst,act,-6)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-      %assertLog (i_errors=0, i_warnings=0);
       
    %assertText(i_script            =&assertText_script.
               ,i_expected          =&assertText_work1.
@@ -214,7 +208,6 @@
       %assertDBValue(tst,act,-7)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-      %assertLog (i_errors=0, i_warnings=0);
       
    %assertText(i_script            =&assertText_script.
               ,i_expected          =&assertText_work1.
@@ -229,10 +222,11 @@
       %assertDBValue(tst,act,-8)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
-      %assertLog (i_errors=0, i_warnings=0);
+
+%assertLog (i_errors=0, i_warnings=0);
+%endTestcase();
       
 /* test case 2 ------------------------------------ */
-
 %initTestcase(i_object   =assertText.sas
              ,i_desc     =Successfull tests
              )
@@ -255,13 +249,17 @@
               );
    %assertLog (i_errors=0, i_warnings=0);
    
+
+%assertLog (i_errors=0, i_warnings=0);
+%endTestcase();
+
+/* test case 3 ------------------------------------ */
 %initTestcase(
              i_object   = assertText.sas
             ,i_desc     = Specific tests with modifiers for &assertText_OS. compare tool &assertText_CompTool.
    )
 %endTestcall()
 
-/* test case 3 ------------------------------------ */
    %assertText(i_script            =&assertText_script.
               ,i_expected          =&assertText_work1.
               ,i_actual            =&g_work./text3.txt
@@ -302,8 +300,8 @@
               ,i_desc              =%str(Files do match, extra blanks in text, but compress blanks modifier &assertText_mod2. used)
               );
               
-   %assertLog (i_errors=0, i_warnings=0);
-   %endTestcase();
+%assertLog (i_errors=0, i_warnings=0);
+%endTestcase();
 
-   %endScenario();
+%endScenario();
 /** \endcond */

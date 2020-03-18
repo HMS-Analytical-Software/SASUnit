@@ -127,4 +127,5 @@ run;
 
 %endTestcase();
 
+%endScenario();
 /** \endcond */

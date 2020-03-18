@@ -72,5 +72,4 @@ proc datasets lib=work nolist;
 run;quit;
 
 %endScenario();
-
 /** \endcond */

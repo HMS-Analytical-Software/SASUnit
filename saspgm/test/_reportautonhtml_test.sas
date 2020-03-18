@@ -13,8 +13,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
 */ /** \cond */ 
-
-
 %initScenario(i_desc=%str(Test of _reportAutonHTML.sas));
 
 %let workpath =%sysfunc(pathname(WORK));

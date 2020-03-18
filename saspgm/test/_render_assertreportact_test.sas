@@ -304,4 +304,5 @@ run;
 
 %endTestcase();
 
+%endScenario();
 /** \endcond */

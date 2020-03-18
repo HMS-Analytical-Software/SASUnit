@@ -116,16 +116,18 @@
              )
 %endTestcall()
 
-%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./rose.jpg))       , i_expected=1, i_desc=File successful copied);
-%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./rose_copy.jpg))  , i_expected=1, i_desc=File successful copied);
-%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./reconstruct.jpg)), i_expected=1, i_desc=File successful modified);
-%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image1.))    , i_expected=1, i_desc=Image rose.jpg  successful copied);
-%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image2.))    , i_expected=1, i_desc=Image rose_copy.jpg  successful copied);
-%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image3.))    , i_expected=1, i_desc=Image reconstruct.jpg  successful copied);
-%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image4.))    , i_expected=1, i_desc=Image class.jpg  successful copied);
-%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image5.))    , i_expected=1, i_desc=Image class1.jpg  successful copied);
-%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image6.))    , i_expected=1, i_desc=Image class2.jpg  successful copied);
-%assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image7.))    , i_expected=1, i_desc=Image class3.jpg  successful copied);
+   %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./rose.jpg))       , i_expected=1, i_desc=File successful copied);
+   %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./rose_copy.jpg))  , i_expected=1, i_desc=File successful copied);
+   %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&g_work./reconstruct.jpg)), i_expected=1, i_desc=File successful modified);
+   %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image1.))    , i_expected=1, i_desc=Image rose.jpg  successful copied);
+   %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image2.))    , i_expected=1, i_desc=Image rose_copy.jpg  successful copied);
+   %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image3.))    , i_expected=1, i_desc=Image reconstruct.jpg  successful copied);
+   %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image4.))    , i_expected=1, i_desc=Image class.jpg  successful copied);
+   %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image5.))    , i_expected=1, i_desc=Image class1.jpg  successful copied);
+   %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image6.))    , i_expected=1, i_desc=Image class2.jpg  successful copied);
+   %assertEquals(i_actual=%SYSFUNC(FILEEXIST(&assertImage_image7.))    , i_expected=1, i_desc=Image class3.jpg  successful copied);
+
+%endTestcase();
 
 %*** test case 2 ------------------------------------ ***;
 %initTestcase(i_object   = assertImage.sas
@@ -134,14 +136,14 @@
 %endTestcall()
 
 %*** No 1-4 ***;
-%assertImage(i_script             =
-            ,i_expected           =
-            ,i_actual             =
-            ,i_expected_shell_rc  =
-            ,i_modifier           =
-            ,i_threshold          =
-            ,i_desc               =Script Parameter is empty
-            );                        
+   %assertImage(i_script             =
+               ,i_expected           =
+               ,i_actual             =
+               ,i_expected_shell_rc  =
+               ,i_modifier           =
+               ,i_threshold          =
+               ,i_desc               =Script Parameter is empty
+               );                        
            
    %markTest()
       %assertDBValue(tst,exp,## )
@@ -150,14 +152,14 @@
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %*** No 5-8 ***;
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =
-            ,i_actual             = 
-            ,i_expected_shell_rc  =
-            ,i_modifier           =
-            ,i_threshold          =
-            ,i_desc               =Expected Image Parameter is empty
-            );                        
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =
+               ,i_actual             = 
+               ,i_expected_shell_rc  =
+               ,i_modifier           =
+               ,i_threshold          =
+               ,i_desc               =Expected Image Parameter is empty
+               );                        
            
    %markTest()
       %assertDBValue(tst,exp,## )
@@ -166,14 +168,14 @@
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %*** No 9-12 ***;
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =&assertImage_image1.
-            ,i_actual             =
-            ,i_expected_shell_rc  =
-            ,i_modifier           =
-            ,i_threshold          =
-            ,i_desc               =Actual Image Parameter is empty
-            );                        
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =&assertImage_image1.
+               ,i_actual             =
+               ,i_expected_shell_rc  =
+               ,i_modifier           =
+               ,i_threshold          =
+               ,i_desc               =Actual Image Parameter is empty
+               );                        
            
    %markTest()
       %assertDBValue(tst,exp,##&assertImage_image1.)
@@ -182,14 +184,14 @@
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %*** No 13-16 ***;
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =&assertImage_image1.
-            ,i_actual             =&assertImage_image2.
-            ,i_expected_shell_rc  =
-            ,i_modifier           =
-            ,i_threshold          =
-            ,i_desc               =Expected Shell RC Parameter is empty
-            );                        
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =&assertImage_image1.
+               ,i_actual             =&assertImage_image2.
+               ,i_expected_shell_rc  =
+               ,i_modifier           =
+               ,i_threshold          =
+               ,i_desc               =Expected Shell RC Parameter is empty
+               );                        
            
    %markTest()
       %assertDBValue(tst,exp,#.jpg#&assertImage_image1.)
@@ -198,14 +200,14 @@
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %*** No 17-20 ***;
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =&assertImage_image1.
-            ,i_actual             =&assertImage_image2.
-            ,i_expected_shell_rc  =0
-            ,i_modifier           =
-            ,i_threshold          =
-            ,i_desc               =Modifier Parameter is empty
-            );                        
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =&assertImage_image1.
+               ,i_actual             =&assertImage_image2.
+               ,i_expected_shell_rc  =0
+               ,i_modifier           =
+               ,i_threshold          =
+               ,i_desc               =Modifier Parameter is empty
+               );                        
            
    %markTest()
       %assertDBValue(tst,exp,0#.jpg#&assertImage_image1.)
@@ -214,31 +216,30 @@
       %*assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 %*** No 21-24 ***;
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =&assertImage_image1.
-            ,i_actual             =&assertImage_image2.
-            ,i_expected_shell_rc  =0
-            ,i_modifier           =-metric RMSE
-            ,i_threshold          =
-            ,i_desc               =Threshold Parameter is empty
-            );                        
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =&assertImage_image1.
+               ,i_actual             =&assertImage_image2.
+               ,i_expected_shell_rc  =0
+               ,i_modifier           =-metric RMSE
+               ,i_threshold          =
+               ,i_desc               =Threshold Parameter is empty
+               );                        
            
    %markTest()
       %assertDBValue(tst,exp,0#.jpg#&assertImage_image1.)
       %assertDBValue(tst,act,0#.jpg#&assertImage_image2.)
       %assertDBValue(tst,res,0)
-      %*assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
 
 %*** No 25-28 ***;
-%assertImage(i_script             =&assertImage_NotExistend.
-            ,i_expected           =&assertImage_image1.
-            ,i_actual             =&assertImage_image2.
-            ,i_expected_shell_rc  =1
-            ,i_modifier           =-metric RMSE
-            ,i_threshold          =
-            ,i_desc               =Script does not exist
-            );                        
+   %assertImage(i_script             =&assertImage_NotExistend.
+               ,i_expected           =&assertImage_image1.
+               ,i_actual             =&assertImage_image2.
+               ,i_expected_shell_rc  =1
+               ,i_modifier           =-metric RMSE
+               ,i_threshold          =
+               ,i_desc               =Script does not exist
+               );                        
            
    %markTest()
       %assertDBValue(tst,exp,1##&assertImage_image1.)
@@ -246,35 +247,36 @@
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
 
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =&assertImage_NotExistend.  
-            ,i_actual             =&assertImage_image2.    
-            ,i_expected_shell_rc  =1                   
-            ,i_modifier           =-metric RMSE
-            ,i_threshold          =
-            ,i_desc               =Image1 does not exist
-            );
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =&assertImage_NotExistend.  
+               ,i_actual             =&assertImage_image2.    
+               ,i_expected_shell_rc  =1                   
+               ,i_modifier           =-metric RMSE
+               ,i_threshold          =
+               ,i_desc               =Image1 does not exist
+               );
    %markTest()
       %assertDBValue(tst,exp,1#&assertImage_shell_ext.#&assertImage_NotExistend.)
       %assertDBValue(tst,act,-5#.jpg#&assertImage_image2.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
            
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =&assertImage_image1.  
-            ,i_actual             =&assertImage_NotExistend.    
-            ,i_expected_shell_rc  =1                   
-            ,i_modifier           =-metric RMSE
-            ,i_threshold          =
-            ,i_desc               =Image2 does not exist
-            );
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =&assertImage_image1.  
+               ,i_actual             =&assertImage_NotExistend.    
+               ,i_expected_shell_rc  =1                   
+               ,i_modifier           =-metric RMSE
+               ,i_threshold          =
+               ,i_desc               =Image2 does not exist
+               );
    %markTest()
       %assertDBValue(tst,exp,1#.jpg#&assertImage_image1.)
       %assertDBValue(tst,act,-7#&assertImage_shell_ext.#&assertImage_NotExistend.)
       %assertDBValue(tst,res,2)
       %assertMustFail(i_casid=&casid.,i_tstid=&tstid.);
            
-   %assertLog (i_errors=0, i_warnings=0);
+%assertLog (i_errors=0, i_warnings=0);
+%endTestcase();
 
 %*** test case 3 ------------------------------------ ***;
 %initTestcase(i_object   = assertImage.sas
@@ -282,46 +284,49 @@
              )
 %endTestcall()
 
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =&assertImage_image1.  
-            ,i_actual             =&assertImage_image2.    
-            ,i_expected_shell_rc  =0                   
-            ,i_modifier           =-metric ae                  
-            ,i_desc               =Images match
-            );
-            
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =&assertImage_image1.  
-            ,i_actual             =&assertImage_image3.    
-            ,i_expected_shell_rc  =1                   
-            ,i_modifier           =-metric ae                  
-            ,i_desc               =Images do not match
-            );
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =&assertImage_image1.  
+               ,i_actual             =&assertImage_image2.    
+               ,i_expected_shell_rc  =0                   
+               ,i_modifier           =-metric ae                  
+               ,i_desc               =Images match
+               );
+               
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =&assertImage_image1.  
+               ,i_actual             =&assertImage_image3.    
+               ,i_expected_shell_rc  =1                   
+               ,i_modifier           =-metric ae                  
+               ,i_desc               =Images do not match
+               );
 
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =&assertImage_image1.  
-            ,i_actual             =&assertImage_image3.    
-            ,i_expected_shell_rc  =0                   
-            ,i_modifier           =-metric ae %nrbquote(-fuzz 25%)
-            ,i_desc               =%str(Images do not match, but threshold param used with fuzz)
-            );
-     
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =&assertImage_image4.  
-            ,i_actual             =&assertImage_image5.
-            ,i_expected_shell_rc  =1                   
-            ,i_modifier           =-metric ae                  
-            ,i_desc               =%str(Comparence of pngs, images do not match)
-            );
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =&assertImage_image1.  
+               ,i_actual             =&assertImage_image3.    
+               ,i_expected_shell_rc  =0                   
+               ,i_modifier           =-metric ae %nrbquote(-fuzz 25%)
+               ,i_desc               =%str(Images do not match, but threshold param used with fuzz)
+               );
+        
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =&assertImage_image4.  
+               ,i_actual             =&assertImage_image5.
+               ,i_expected_shell_rc  =1                   
+               ,i_modifier           =-metric ae                  
+               ,i_desc               =%str(Comparence of pngs, images do not match)
+               );
 
-%assertImage(i_script             =&assertImage_script.
-            ,i_expected           =&assertImage_image6. 
-            ,i_actual             =&assertImage_image7.
-            ,i_expected_shell_rc  =0
-            ,i_threshold          =60
-            ,i_modifier           =-metric ae /* -metric ae counts the absolute amount of different pixels */
-            ,i_desc               =Graphs do not match%str(,) i_modifier set to "-metric ae" and i_threshold allowing 60 pixels to be different
-            );
+   %assertImage(i_script             =&assertImage_script.
+               ,i_expected           =&assertImage_image6. 
+               ,i_actual             =&assertImage_image7.
+               ,i_expected_shell_rc  =0
+               ,i_threshold          =60
+               ,i_modifier           =-metric ae /* -metric ae counts the absolute amount of different pixels */
+               ,i_desc               =Graphs do not match%str(,) i_modifier set to "-metric ae" and i_threshold allowing 60 pixels to be different
+               );
+
+%assertLog (i_errors=0, i_warnings=0);
+%endTestcase();
 
 %endScenario();
 /** \endcond */

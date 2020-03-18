@@ -32,4 +32,5 @@ run;
 %assertLog()
 %endTestcase()
 
+%endScenario();
 /** \endcond */

@@ -53,4 +53,5 @@ options sasautos=&old_sasautos.;
 
 %endTestcase()
 
-/** \endcond */ 
+%endScenario();
+/** \endcond */
