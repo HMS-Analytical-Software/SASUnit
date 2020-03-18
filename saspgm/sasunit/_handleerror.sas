@@ -59,7 +59,7 @@
         AND &l_messageType. ne DEBUG
         AND &l_messageType. ne TRACE
        ) %THEN %DO;       
-       0
+       1
        %_issueErrorMessage (&g_currentLogger., Wrong message type %str(%()&i_msgtype%str(%)) valid is only FATAL/ERROR/WARNING/INFO/DEBUG/TRACE)
        %RETURN;
    %END;
