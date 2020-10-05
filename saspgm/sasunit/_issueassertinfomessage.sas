@@ -5,6 +5,8 @@
    \brief      Issues an info message within an assert to a logger
    
    \details    Asserts will issue messages into a separate log file when using log4sas.
+               When an assert fails we want to issue a real warning message.
+               This is fatal when not using log4sas because it will generate additonal warnings in the log file
 
    \version    \$Revision$
    \author     \$Author$
@@ -12,13 +14,9 @@
    
    \param     message      Message to be captured by the logger
 
-   \return    message      Message in the associated appender
-*/
+   \return    message      Message in the associated logger and appender
+*//** \cond */
 %macro _issueassertinfomessage(message);
-   %if (&g_useLog4SAS.) %then %do;
-      %_issueInfoMessage (&g_assertLogger., &message.);
-   %end;
-   %else %do;
-      %_issueDebugMessage (&g_currentLogger., Log4SAS is turned off. No Log for assert Messages present.);
-   %end;
+   %_issueInfoMessage (&g_log4SASAssertLogger., &message.);
 %mend _issueassertinfomessage;
+/** \endcond */

@@ -32,10 +32,7 @@
    \param      i_threshold            Optional parameter: further parameter to be passed to the script. Default is 0. To be used especially with
                                       modifier -metric ae to specify a number of pixels that may be different
    \param      i_desc                 Optional parameter: description of the assertion to be checked (default = "Comparison of images")
-
-   \todo replace g_verbose
 */ /** \cond */ 
-
 %MACRO assertImage (i_script             =
                    ,i_expected           =
                    ,i_actual             =
@@ -80,7 +77,6 @@
                  ,NOXCMD
                  ,(%sysfunc(getoption(XCMD)) = NOXCMD)
                  ,Your SAS Session does not allow XCMD%str(,) therefore assertImage cannot be run.
-                 ,i_verbose=&g_verbose.
                  ) 
    %THEN %DO;
       %LET l_rc    =0;
@@ -188,8 +184,8 @@
    %*** Start tests                                           ***;
    %*************************************************************;
 
-   %_xcmdWithPath(i_cmd_path           ="&i_script." "&i_expected." "&i_actual." "&l_path./_image_diff.png"
-                 ,i_cmd                ="&i_modifier." "&i_threshold."
+   %_xcmdWithPath(i_cmd_path           ="&i_script."
+                 ,i_cmd                ="&i_expected." "&i_actual." "&l_path./_image_diff.png" "&i_modifier." "&i_threshold."
                  ,i_expected_shell_rc  =&i_expected_shell_rc.
                  ,r_rc                 =l_rc
                  );

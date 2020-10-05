@@ -21,7 +21,6 @@
    \param   o_targetColumn name of the target column holding the ODS formatted value
 
 */ /** \cond */  
-
 %macro _render_assertPerformanceExp (i_sourceColumn=
                                     ,i_format=_NONE_
                                     ,o_html=0

@@ -24,7 +24,6 @@
    \param     o_listVars       optional: Names the variables to be listed in the report
    
 */ /** \cond */ 
-
 %MACRO assertRowExpression(i_libref         = 
                           ,i_memname        = 
                           ,i_where          =

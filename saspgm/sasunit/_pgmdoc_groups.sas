@@ -53,6 +53,14 @@
    \brief      Contains macros for reporting
    \ingroup    SASUNIT_UTIL
 
+   \defgroup   SASUNIT_SETUP SASUnit Setup 
+   \brief      Contains macros for setting up SASUnit
+   \ingroup    SASUNIT_UTIL
+
+   \defgroup   SASUNIT_LOG4SAS SASUnit Log4SAS
+   \brief      Contains macros dealing with Log4SAS
+   \ingroup    SASUNIT_UTIL
+
    \defgroup   SASUNIT_TEST   Test Scenarios
    \brief      Contains programs for self testing of SASUnit
    \ingroup    SASUNIT
@@ -68,5 +76,4 @@
    \defgroup   SASUNIT_TEST_OS_UNIX_AIX   Test Scenarios specific for Unix AIX OS
    \brief      Contains utility test scenarios specific for Unix AIX OS
    \ingroup    SASUNIT_TEST
-
 */

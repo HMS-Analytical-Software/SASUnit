@@ -20,9 +20,7 @@
    \param   o_path         path for output file
    \param   o_file         name of the outputfile without extension
    \param   i_style        name of the SAS style and css file to be used. 
-
 */ /** \cond */ 
-
 %MACRO _reportHomeHTML (i_repdata = 
                        ,o_html    = 0
                        ,o_path    =
@@ -83,7 +81,7 @@
               1 = "&g_nls_reportHome_027."
            ;
      value $RowHeader 
-          %do i=1 %to 37;
+          %do i=1 %to 44;
              %let l_i=%sysfunc(putn (&i., z3.));
               "&l_i." = "&&g_nls_reportHome_&l_i.."
           %end;
@@ -106,23 +104,19 @@
          idColumn = "004";
          parameterColumn="^{style [flyover=""&g_root.""]%str(&)g_root}";
          valueColumn=catt ("^{style [flyover=""", "&g_root.", """ url=""file:///", "&g_root.", """]", trim(tsu_root), "}");
-         Category="PROJECT";
          output;
          idColumn = "005";
          parameterColumn="^{style [flyover=""&g_target.""]%str(&)g_target}";
          valueColumn=catt ("^{style [flyover=""&g_target."" url=""file:///&g_target.""]", tsu_target, "}");
-         Category="PROJECT";
          output;
          if (tsu_sasautos ne "") then do;
             idColumn = "006";
             parameterColumn="^{style [flyover=""&g_sasautos.""]%str(&)g_sasautos}";
             valueColumn=catt ("^{style [flyover=""&g_sasautos."" url=""file:///&g_sasautos.""]", tsu_sasautos, "}");
-            Category="PROJECT";
             output;
             %DO i=1 %TO 29;
             if (tsu_sasautos&i. ne "") then do;
                idColumn = "006";
-               Category="PROJECT";
                parameterColumn=catt("^{style [flyover=""&&g_sasautos&i.""]%str(&)g_sasautos&i.}");
                valueColumn=catt ("^{style [flyover=""&&g_sasautos&i."" url=""file:///&&g_sasautos&i.""]", tsu_sasautos&i., "}");
                output;
@@ -133,21 +127,18 @@
             idColumn = "010";
             parameterColumn="^{style [flyover=""&g_testdata.""]%str(&)g_testdata}";
             valueColumn=catt ("^{style [flyover=""&g_testdata."" url=""file:///&g_testdata.""]", tsu_testdata, "}");
-            Category="PROJECT";
             output;
          end;
          if (tsu_refdata ne "") then do;
             idColumn = "011";
             parameterColumn="^{style [flyover=""&g_refdata.""]%str(&)g_refdata}";
             valueColumn=catt ("^{style [flyover=""&g_refdata."" url=""file:///&g_refdata.""]", tsu_refdata, "}");
-            Category="PROJECT";
             output;
          end;
          if (tsu_doc ne "") then do;
             idColumn = "012";
             parameterColumn="^{style [flyover=""&g_doc.""]%str(&)g_doc}";
             valueColumn=catt ("^{style [flyover=""&g_doc."" url=""file:///&g_doc.""]", tsu_doc, "}");
-            Category="PROJECT";
             output;
          end;
 
@@ -156,25 +147,20 @@
          parameterColumn="^{style [flyover=""&g_sasunit.""]%str(&)g_sasunit}";
          valueColumn=catt ("^{style [flyover=""%trim(&g_sasunit.)"" url=""file:///%trim(&g_sasunit.)""]", tsu_sasunit, "}");
          Category="SASUnit";
-         SortColumn+1;
          output;
          idColumn = "013";
          parameterColumn="^{style [flyover=""&g_sasunit_os.""]%str(&)g_sasunit_os}";
          valueColumn=catt ("^{style [flyover=""%trim(&g_sasunit_os.)"" url=""file:///%trim(&g_sasunit_os.)""]", tsu_sasunit_os, "}");
-         Category="SASUnit";
          SortColumn+1;
          output;
          idColumn = "037";
          parameterColumn="^{style [flyover=""&g_version.""]%str(&)g_version}";
          valueColumn="&g_version.";
-         Category="SASUnit";
-         SortColumn+1;
          output;
          if (tsu_dbVersion ne "") then do;
             idColumn = "022";
             parameterColumn="^{style [flyover=""&g_db_version.""]%str(&)g_db_version}";
             valueColumn=tsu_dbVersion;
-            Category="SASUnit";
             SortColumn+1;
             output;
          end;
@@ -182,50 +168,59 @@
             idColumn = "014";
             parameterColumn="^_";
             valueColumn=catt ('^{style [flyover="', getoption("LOG"), '" url="', "file:///" , getoption("LOG"), '"]', resolve('%_stdPath (i_root=&g_root, i_path=%sysfunc(getoption(log)))'), "}");
-            Category="SASUnit";
             SortColumn+1;
             output;
          end;
+         idColumn = "040";
+         parameterColumn="^{style [flyover=""&g_logFolder.""]%str(&)g_logFolder}";
+         valueColumn=catt ("^{style [flyover=""&g_logFolder."" url=""file:///&g_logFolder.""]", tsu_logFolder, "}");
+         output;
+         idColumn = "041";
+         parameterColumn="^{style [flyover=""&g_scnLogFolder.""]%str(&)g_scnLogFolder}";
+         valueColumn=catt ("^{style [flyover=""&g_scnLogFolder."" url=""file:///&g_scnLogFolder.""]", tsu_scnLogFolder, "}");
+         output;
+         idColumn = "042";
+         parameterColumn="^{style [flyover=""&g_log4SASSuiteLogLevel.""]%str(&)g_log4SASSuiteLogLevel}";
+         valueColumn=catt ("^{style [flyover=""&g_log4SASSuiteLogLevel.""]", tsu_log4SASSuiteLogLevel, "}");
+         output;
+         idColumn = "043";
+         parameterColumn="^{style [flyover=""&g_log4SASScenarioLogLevel.""]%str(&)g_log4SASScenarioLogLevel}";
+         valueColumn=catt ("^{style [flyover=""&g_log4SASScenarioLogLevel.""]", tsu_log4SASScenarioLogLevel, "}");
+         output;
+         idColumn = "044";
+         parameterColumn="^{style [flyover=""&g_reportFolder.""]%str(&)g_reportFolder}";
+         valueColumn=catt ("^{style [flyover=""&g_reportFolder."" url=""file:///&g_reportFolder.""]", tsu_reportFolder, "}");
+         output;
          idColumn = "021";
          parameterColumn="SASUNIT_LANGUAGE";
          valueColumn="%sysget(SASUNIT_LANGUAGE)";
-         Category="SASUnit";
          SortColumn+1;
          output;
          idColumn = "033";
          parameterColumn='&g_rep_encoding';
          valueColumn="&g_rep_encoding.";
-         Category="SASUnit";
-         SortColumn+1;
          output;
          idColumn = "029";
          parameterColumn='SASUNIT_COVERAGEASSESSMENT';
          valueColumn=catt (put (%sysget(SASUNIT_COVERAGEASSESSMENT), YESNO.));
-         Category="SASUnit";
          SortColumn+1;
          output;
          idColumn = "029";
          parameterColumn='&g_testcoverage';
          valueColumn=catt (put (&G_TESTCOVERAGE., YESNO.));
-         Category="SASUnit";
          output;
          idColumn = "030";
          parameterColumn="SASUNIT_OVERWRITE";
          valueColumn=put (%sysget(SASUNIT_OVERWRITE), YESNO.);
          Category="SASUnit";
-         SortColumn+1;
          output;
          idColumn = "031";
          parameterColumn='&g_crossref';
          valueColumn=put (&g_crossref., YESNO.);
-         Category="SASUnit";
-         SortColumn+1;
          output;
          idColumn = "032";
          parameterColumn='&g_crossrefsasunit';
          valueColumn=put (&g_crossrefsasunit., YESNO.);
-         Category="SASUnit";
-         SortColumn+1;
          output;
 
          /*** Section TestResults                                                         ***/
@@ -233,22 +228,18 @@
          parameterColumn="^_";
          valueColumn="%_nobs(target.scn) (%cmpres(&l_scn_failed.))";
          Category="TestResults";
-         SortColumn+1;
          output;
          idColumn = "017";
          parameterColumn="^_";
          valueColumn="%_nobs(target.cas) (%cmpres(&l_cas_failed.))";
-         Category="TestResults";
          output;
          idColumn = "018";
          parameterColumn="^_";
          valueColumn="%_nobs(target.tst) (%cmpres(&l_tst_failed.))";
-         Category="TestResults";
          output;
          idColumn = "034";
          parameterColumn="^_";
          valueColumn = put (&l_runtime., time8.);
-         Category="TestResults";
          output;
          idColumn = "035";
          parameterColumn="^_";
@@ -256,7 +247,6 @@
                             ,put (datetime() - dhms("&sysdate."d,hour("&systime.:00"t),minute("&systime.:00"t),second("&systime.:00"t)), time8.)
                             ,"(%cmpres(&l_scn_run.))"
                             );
-         Category="TestResults";
          output;
 
          /*** Section XSAS_Session                                                        ***/

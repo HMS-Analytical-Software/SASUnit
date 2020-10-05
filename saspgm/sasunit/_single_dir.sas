@@ -27,7 +27,6 @@
                          named membername, filename and changed (optional: default = work.dir)
    \param   o_subDirs    output dataset. This dataset contains one column named directory and
                          holds all subdirectories (optional: default = _NONE_)
-
 */ /** \cond */ 
 %MACRO _single_dir (i_dsPath=
                    ,i_pattern=_NONE_

@@ -35,7 +35,6 @@
                Further more the result data set dependency from macro _crossreference in work is used
 
 */ /** \cond */ 
-
 %MACRO _checkScenario(i_examinee       = 
                      ,i_scn_pre        =
                      ,i_crossref       =&G_CROSSREF.

@@ -24,7 +24,6 @@
                             (default error_symbol)
 
 */ /** \cond */ 
-
 %MACRO _detectSymbols(r_note_symbol    = note_symbol
                      ,r_warning_symbol = warning_symbol
                      ,r_error_symbol   = error_symbol

@@ -20,7 +20,6 @@
    \param   o_targetColumn       name of the target column holding the ODS formatted value
 
 */ /** \cond */ 
-
 %MACRO _render_assertTextAct (i_sourceColumn=
                              ,o_html=
                              ,o_targetColumn=

@@ -16,7 +16,7 @@
 
 %initScenario (i_desc=Test of _issueassertinfomessage.sas);
 
-%macro testcase(i_object=_issueassertinfomessage.sas, i_desc=%str(Call with logging level Info, which is default));
+%macro testcase(i_object=_issueassertinfomessage.sas, i_desc=%str(Correct call of examinee));
    /*****************
    documentation
    ******************
@@ -25,8 +25,6 @@
    assert [...]
    *****************/
 
-   %let g_UseLog4SAS = 1;
-   
    /* start testcase */
    %initTestcase(i_object=&i_object., i_desc=&i_desc.);
 
@@ -38,33 +36,6 @@
    /* assert */
    %assertLog     (i_errors=0, i_warnings=0);
    %assertLogMsg  (i_logMsg=^NOTE: Dies ist meine Info-Meldung!);
-
-   /* end testcase */
-   %endTestcase()
-%mend testcase; %testcase;
-
-%macro testcase(i_object=_issueassertinfomessage.sas, i_desc=%str(Call with logging level Info, and debug message));
-   /*****************
-   documentation
-   ******************
-   setup  [...] 
-   call   [...]
-   assert [...]
-   *****************/
-
-   %let g_UseLog4SAS = 0;
-   
-   /* start testcase */
-   %initTestcase(i_object=&i_object., i_desc=&i_desc.);
-
-   /* call */
-   %_issueassertinfomessage(Dies ist meine Info-Meldung!);
-
-   %endTestcall()
-
-   /* assert */
-   %assertLog     (i_errors=0, i_warnings=0);
-   %assertLogMsg  (i_logMsg=^NOTE: Dies ist meine Info-Meldung!, i_not=1);
 
    /* end testcase */
    %endTestcase()

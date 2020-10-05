@@ -37,7 +37,6 @@
    \return    ODS documents with the contents of the libraries and a SAS file with the comparison result.
 
 */ /** \cond */ 
-
 %MACRO assertLibrary (i_actual       = _NONE_
                      ,i_expected     = _NONE_
                      ,i_desc         = Compare libraries

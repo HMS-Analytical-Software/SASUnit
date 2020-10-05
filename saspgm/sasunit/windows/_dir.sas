@@ -25,8 +25,6 @@
    \param   i_recursive  1 .. search recursively in subdirectories, default is 0
    \param   o_out        output dataset, default is work.dir. This dataset contains two columns
                          named filename and changed
-
-   \todo replace g_verbose
 */ /** \cond */ 
 
 %MACRO _dir (i_path=
@@ -53,37 +51,38 @@
    
    %let dirfile=%sysfunc(pathname(work))\___dir.txt;
 
-   %_issueInfoMessage (&g_currentLogger., _dir: Directory search is: &i_path.);
-   %_issueInfoMessage (&g_currentLogger., _dir: Adjusted directory is: &l_i_path.);
+   %_issueDebugMessage (&g_currentLogger., _dir: Directory search is: &i_path.);
+   %_issueDebugMessage (&g_currentLogger., _dir: Adjusted directory is: &l_i_path.);
 
    %IF &i_recursive %then %let s=/S;
    
-   %if &g_verbose. %then %do;
-      %_issueInfoMessage (&g_currentLogger., _dir: %str(======== OS Command Start ========));
-      /* Evaluate sysexec´s return code */
-      %SYSEXEC(dir &s /a-d /on %unquote(&l_i_path.) > "&dirfile" 2>&1);
-      %IF (&sysrc. = 0) %THEN %DO;
-         %_issueInfoMessage (&g_currentLogger., _dir: Sysrc : &sysrc. -> SYSEXEC SUCCESSFUL);
-      %END;
-      %ELSE %IF (&sysrc. = 1) %THEN %DO;
-         %_issueInfoMessage (&g_currentLogger., _dir: Sysrc : &sysrc. -> SYSEXEC SUCCESSFUL);
-         %_issueInfoMessage (&g_currentLogger., _dir: Directory is empty);
-      %END;
-      %ELSE %DO;
-         %_issueErrorMessage (&g_currentLogger., _dir: &sysrc -> An Error occured);
-      %END;
+   %_issueTraceMessage (&g_currentLogger., _dir: %str(======== OS Command Start ========));
+   /* Evaluate sysexec´s return code */
+   %SYSEXEC(dir &s /a-d /on %unquote(&l_i_path.) > "&dirfile" 2>&1);
+   %IF (&sysrc. = 0) %THEN %DO;
+      %_issueTraceMessage (&g_currentLogger., _dir: Sysrc : &sysrc. -> SYSEXEC SUCCESSFUL);
+   %END;
+   %ELSE %IF (&sysrc. = 1) %THEN %DO;
+      %_issueTraceMessage (&g_currentLogger., _dir: Sysrc : &sysrc. -> SYSEXEC SUCCESSFUL);
+      %_issueTraceMessage (&g_currentLogger., _dir: Directory is empty);
+   %END;
+   %ELSE %DO;
+      %_issueErrorMessage (&g_currentLogger., _dir: &sysrc -> An Error occured);
+   %END;
 
-      /* put sysexec command to log*/
-      %_issueInfoMessage (&g_currentLogger., _dir: SYSEXEC COMMAND IS: dir &s /a-d /on &l_i_path > &dirfile);
-      
+   /* put sysexec command to log*/
+   %_issueTraceMessage (&g_currentLogger., _dir: SYSEXEC COMMAND IS: dir &s /a-d /on &l_i_path > &dirfile);
+   
+   %if (&g_currentLogLevel. = TRACE) %then %do;
       /* write &dirfile to the log*/
       data _null_;
          infile "&dirfile" truncover lrecl=512;
          input line $512.;
          putlog line;
       run;
-      %_issueInfoMessage (&g_currentLogger., _dir: %str(======== OS Command End ========));
    %end;
+
+   %_issueTraceMessage (&g_currentLogger., _dir: %str(======== OS Command End ========));
    
    %SYSEXEC(dir &s /a-d /on %unquote(&l_i_path.) > "&dirfile");
    options &xwait &xsync &xmin;

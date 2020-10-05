@@ -30,10 +30,8 @@
          For executing all calling macros of an examinee we still need sourcecode scanning.
          Or we need to store this call reference from last run.
 
-   \todo replace g_verbose
    \todo Why not use g_sasunit_os. Or even better filter i_examinee for exa_auton >= 2 if no SASUNit macros?
 */ /** \cond */ 
-
 %MACRO _crossReference(i_includeSASUnit  =0
                       ,i_examinee        =
                       ,o_listcalling     =
@@ -60,7 +58,7 @@
           l_sasunit_os
    ;
    
-   %IF &g_verbose. =0 %THEN %DO;
+   %IF (&g_log4SASSuiteLogLevel. ne DEBUG AND &g_log4SASSuiteLogLevel. ne TRACE) %THEN %DO;
       %let l_source =%sysfunc(getoption(source));
       %let l_notes  =%sysfunc(getoption(notes));
       %let l_mprint =%sysfunc(getoption(mprint));
@@ -261,7 +259,7 @@
       BY caller calledByCaller;
    RUN;
    
-   %IF &g_verbose =0 %THEN %DO;
+   %IF (&g_log4SASSuiteLogLevel. ne DEBUG AND &g_log4SASSuiteLogLevel. ne TRACE) %THEN %DO;
       options &l_source &l_notes &l_mprint;
    %END;
 

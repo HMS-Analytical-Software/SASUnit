@@ -19,7 +19,14 @@ ods html file="%sysfunc(pathname(WORK))\TEST.HMTL";
 
 %initTestcase(i_object=_closeHTMLPage.sas, i_desc=Test with correct call);
 
+%let l_mprint     = %sysfunc(getoption(MPRINT));
+%let l_mprintnest = %sysfunc(getoption(MPRINTNEST));
+
+options mprint mprintnest;
+
 %_closeHTMLPage(Default);
+
+options &l_mprint. &l_mprintnest.;
 
 %endTestcall;
 

@@ -16,7 +16,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 			   
 */ /** \cond */ 
-
 %MACRO _reportFooterHTML (
                          );
       %local l_footnote;
@@ -30,5 +29,4 @@
       footnote  %sysfunc(quote(^{RAW <hr size="1">}));
       footnote2 j=r %sysfunc(quote(&l_footnote.));   
 %MEND _reportFooterHTML;
-
 /** \endcond */

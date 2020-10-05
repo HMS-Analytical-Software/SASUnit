@@ -21,7 +21,6 @@
    \param      i_Libref          Libref pointing to test db (optional: Default=target)
 
 */ /** \cond */ 
-
 %MACRO _writeParameterToTestDBtsu (i_parameterName  = 
                                   ,i_parameterValue =
                                   ,i_parameterScope =G

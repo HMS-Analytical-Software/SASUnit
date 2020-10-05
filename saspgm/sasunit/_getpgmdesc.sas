@@ -21,7 +21,6 @@
    \return  descriptive text of program
 
 */ /** \cond */ 
-
 %MACRO _getPgmDesc (i_pgmfile =
                    ,r_desc    = desc
                    ); 

@@ -15,52 +15,63 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 			   
-   \param   i_cmd     OS command with quotes where necessary 
+   \param   i_cmdFile            Command file to be executed by the OS
+   \param   i_operator           Operator for evaluation of the shell command return code
+   \param   i_expected_shell_rc  Command file to be executed by the OS
+   
    \return  error symbol &sysrc will be set to a value other than 0, if an error occurs.
+*/ /** \cond */ 
+%MACRO _xcmd(i_cmd
+            ,i_operator
+            ,i_expected_shell_rc
+            );
 
-   \todo replace g_verbose
- */ /** \cond */ 
-
-%MACRO _xcmd(i_cmd);
-
-   %LOCAL xwait xsync xmin logfile;
+   %LOCAL xwait xsync xmin logfile l_operator l_expected_shell_rc;
    %LET xwait=%sysfunc(getoption(xwait));
    %LET xsync=%sysfunc(getoption(xsync));
    %LET xmin =%sysfunc(getoption(xmin));
+   
+   %let l_operator=EQ;
+   %if (%length (&i_operator) > 0) %then %do;
+      %let l_operator=&i_operator.;
+   %end;
+   
+   %let l_expected_shell_rc=0;      
+   %if (%length(&i_expected_shell_rc) > 0) %then %do;
+      %let l_expected_shell_rc=&i_expected_shell_rc.;      
+   %end;
 
    OPTIONS noxwait xsync xmin;
    
    %LET logfile=%sysfunc(pathname(work))\___log.txt;
 
-   %SYSEXEC &i_cmd > "&logfile"; 
+   %SYSEXEC &i_cmd > "&logfile";
+/*   %SYSTASK COMMAND "&i_cmd > ""&logfile""" wait; */
 
+   %_issueDebugMessage (&g_currentLogger., _xcmd: %str(======== OS Command Start ========));
+    /* Evaluate sysexec´s return code*/
+   %IF (&sysrc. &l_operator. &l_expected_shell_rc) %THEN %DO;
+      %_issueDebugMessage (&g_currentLogger., _xcmd: Sysrc : &sysrc. -> SYSEXEC SUCCESSFUL);
+   %END;
+   %ELSE %DO;
+      %_issueErrorMessage (&g_currentLogger., _xcmd: &sysrc -> An Error occured);
+   %END;
 
-   %IF &g_verbose. %THEN %DO;
-      %_issueInfoMessage (&g_currentLogger., _xcmd: %str(======== OS Command Start ========));
-       /* Evaluate sysexec´s return code*/
-      %IF &sysrc. = 0 %THEN %DO;
-         %_issueInfoMessage (&g_currentLogger., _xcmd: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
-      %END;
-      %ELSE %DO;
-         %_issueErrorMessage (&g_currentLogger., _xcmd: &sysrc -> An Error occured);
-      %END;
-
-      /* put sysexec command to log*/
-      %_issueInfoMessage (&g_currentLogger., _xcmd: SYSEXEC COMMAND IS: &i_cmd > "&logfile");
-      
+   /* put sysexec command to log*/
+   %_issueDebugMessage (&g_currentLogger., _xcmd: SYSEXEC COMMAND IS: &i_cmd > "&logfile");
+   
+   %if (&g_currentLogLevel. = DEBUG or &g_currentLogLevel. = TRACE) %then %do;
       /* write &logfile to the log*/
       DATA _NULL_;
          infile "&logfile" truncover;
          input;
          putlog _infile_;
       RUN;
-      
-      %_issueInfoMessage (&g_currentLogger., _xcmd: %str(======== OS Command End ========));
-   %END;
-
+   %end;
+   
+   %_issueDebugMessage (&g_currentLogger., _xcmd: %str(======== OS Command End ========));
+   
    OPTIONS &xwait &xsync &xmin;
 
 %MEND _xcmd; 
-
 /** \endcond */
-

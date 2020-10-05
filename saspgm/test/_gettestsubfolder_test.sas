@@ -15,6 +15,8 @@
 */ /** \cond */ 
 %initScenario (i_desc=Test of _getTestSubfolder.sas);
 
+%let g_currentLogger = &g_assertLogger.;
+
 *** Testcase 1 ***; 
 %initTestcase(i_object=_getTestSubfolder.sas, i_desc=call with missing parameters);
 

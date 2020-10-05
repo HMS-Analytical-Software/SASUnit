@@ -21,7 +21,6 @@
    \return  1 .. directory exists, 0 .. directory does not exists
 
 */ /** \cond */ 
-
 %MACRO _existDir(i_dir
                 );
    %LOCAL rc did filrf;

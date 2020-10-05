@@ -16,7 +16,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
 */ /** \cond */ 
-
 %MACRO _createExamineeTable;
 
    %GLOBAL

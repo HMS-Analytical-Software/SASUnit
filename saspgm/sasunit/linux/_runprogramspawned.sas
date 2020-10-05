@@ -62,7 +62,7 @@
    %IF &i_generateMcoverage. EQ 1 %THEN %DO;
       /*-- generate a local macro variable containing the 
            path to the generated coverage file if necessary ---------------*/
-      %LET   l_tcgFilePath      = &g_log./&i_scnid..tcg;
+      %LET   l_tcgFilePath      = &g_scnLogFolder./&i_scnid..tcg;
       %LET   l_tcgOptionsString = options mcoverage mcoverageloc='%sysfunc(tranwrd(&l_tcgFilePath.,%str( ), %str(\ )))';
    %END;
 
@@ -83,7 +83,7 @@
       %if (&i_pgmIsScenario. = 1) %then %do;
       !! "-initstmt ""&l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%))"" "
       %end;
-      !! "-log   %sysfunc(tranwrd(&g_log/&i_scnid..log, %str( ), %str(\ ))) "
+      !! "-log   %sysfunc(tranwrd(&g_scnLogFolder/&i_scnid..log, %str( ), %str(\ ))) "
       !! "-print %sysfunc(tranwrd(&g_testout/&i_scnid..lst, %str( ), %str(\ ))) "
       !! "-noovp "
       !! "-nosyntaxcheck "

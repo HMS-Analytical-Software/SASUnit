@@ -20,7 +20,6 @@
    \param      o_targetColumn   name of the target column holding the ODS formatted value
 
 */ /** \cond */ 
-
 %macro _render_assertrecordcountrep (i_assertype =
                                    ,i_repdata   =
                                    ,i_scnid     =
@@ -36,7 +35,7 @@
   TITLE;FOOTNOTE;
 
   %_getTestSubfolder (i_assertType=&i_assertype.
-                     ,i_root      =&g_target./doc/tempDoc
+                     ,i_root      =&g_reportFolder./tempDoc
                      ,i_scnid     =&i_scnid.
                      ,i_casid     =&i_casid.
                      ,i_tstid     =&i_tstid.

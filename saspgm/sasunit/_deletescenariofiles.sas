@@ -20,11 +20,8 @@
                So there is no need to change anything with this macro concerning NOXCMD
 
    \param      i_scenariosToRun  Data set containing all scenarios that have to run
-
+\todo check paths for log files etc.
 */ /** \cond */  
-
-
-
 %MACRO _deleteScenarioFiles(i_scenariosToRun=
                            );
    %LOCAL l_len l_nobs l_obs l_scnDel l_target l_foldersToDelete l_filesToDelete;

@@ -26,7 +26,6 @@
    \param   i_not          negates the assertion, if set to 1 (optional: default = 0)
    
 */ /** \cond */ 
-
 %MACRO assertLogMsg (i_logmsg   =       
                     ,i_desc     = Scan for log messages  
                     ,i_not      = 0

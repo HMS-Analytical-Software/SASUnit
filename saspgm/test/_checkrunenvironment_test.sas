@@ -23,7 +23,14 @@
 /*-- Case 1: Successful Call --*/
 %initTestcase(i_object = _checkRunEnvironment.sas, i_desc = Successful call)
 
-%let g_cre_result=%_checkRunEnvironment(1);
+%let l_mprint = %sysfunc(getoption(MPRINT));
+%let l_mlogic = %sysfunc(getoption(MLOGIC));
+
+options mprint mlogic;
+
+%let g_cre_result=%_checkRunEnvironment;
+
+options &l_mprint. &l_mlogic.;
 
 %endTestcall();
 

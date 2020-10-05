@@ -20,7 +20,6 @@
    \retval  r_tstid  actual value of the assert
 
 */ /** \cond */ 
-
 %macro _getScenarioTestId (i_scnid=
                           ,r_casid=
                           ,r_tstid=

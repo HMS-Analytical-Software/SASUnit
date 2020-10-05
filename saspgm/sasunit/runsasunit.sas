@@ -34,10 +34,7 @@
                            \%initSASUnit will be used as prefix to the specified path
    \param   i_recursive    if a search pattern is specified: 1 .. subdirectories of &i_source are searched, too.
                            default 0 ... do not search subdirectories.
-                           
-   \todo replace g_verbose
 */ /** \cond */ 
-
 %MACRO runSASUnit(i_source     =
                  ,i_recursive  = 0
                  );
@@ -75,6 +72,8 @@
 
    %LET l_macname=&sysmacroname;
 
+   %_issueInfoMessage (&g_currentLogger., %str (============================ runSASUnit is starting... ==========================));
+   
    %_tempFileName(d_scenariosToRun);
    %_tempFileName(d_scn_pre);
    %_tempFileName(d_dir);
@@ -84,7 +83,6 @@
                     ,NoTestDB
                     ,NOT %sysfunc(exist(target.tsu)) OR NOT %symexist(g_project)
                     ,%nrstr(test database cannot be accessed, call initSASUnit before runSASUnit)
-                    ,i_verbose=&g_verbose.
                     )
       %THEN %GOTO errexit;
 
@@ -98,7 +96,6 @@
                     ,NoSourceFiles
                     ,%_nobs(&d_dir) EQ 0
                     ,Error in parameter i_source: no test scenarios found
-                    ,i_verbose=&g_verbose.
                     ,i_msgType=WARNING
                     ) 
       %THEN %GOTO emptyexit;
@@ -135,6 +132,8 @@
       ;
    QUIT;
 
+   %_issueInfoMessage (&g_currentLogger., %str (============================ runSASUnit will start scenarios ==========================));
+   
    /*-- loop over all test scenarios --------------------------------------------*/
    %DO i=1 %TO &l_nscn.;
 
@@ -150,13 +149,9 @@
 
       %IF &l_dorun. %THEN %DO;
          %_issueInfoMessage (&g_currentLogger., %str (======== test scenario &l_scnid (&l_filename.) will be run ========));
-         %_issueInfoMessage (&g_currentLogger., %str ( ));
-         %_issueInfoMessage (&g_currentLogger., %str ( ));
       %END;
       %ELSE %DO;
          %_issueInfoMessage (&g_currentLogger., %str (======== test scenario &l_scnid (&l_filename.) will not be run ==));
-         %_issueInfoMessage (&g_currentLogger., %str ( ));
-         %_issueInfoMessage (&g_currentLogger., %str ( ));
       %END;
 
       /*-- start test scenario if necessary -------------------------------------*/
@@ -174,7 +169,7 @@
          QUIT;
        
          %LET l_c_scnid        = %substr(00&l_scnid.,%length(&l_scnid));
-         %LET l_scnlogfullpath = &g_log/&l_c_scnid..log;
+         %LET l_scnlogfullpath = &g_scnLogFolder./&l_c_scnid..log;
          %_runProgramSpawned(i_program          =&l_filename
                             ,i_scnid            =&l_c_scnid.
                             ,i_generateMcoverage=&g_testcoverage.
@@ -183,7 +178,7 @@
                      
          /*-- delete listing if empty -------------------------------------------*/
          %LET l_filled=0;
-         %LET l_lstfile=&g_testout/%substr(00&l_scnid,%length(&l_scnid)).lst;
+         %LET l_lstfile=&g_testout./%substr(00&l_scnid,%length(&l_scnid)).lst;
          %IF %SYSFUNC(FILEEXIST("&l_lstfile")) %THEN %DO;
            DATA _null_;
               INFILE "&l_lstfile";
@@ -289,10 +284,7 @@
       %END; /* if scenario is not present in database */
 
 %errexit:
-      %_issueInfoMessage (&g_currentLogger., %str ( ));
       %_issueInfoMessage (&g_currentLogger., %str (=========================== Error! runSASUnit aborted! ==========================================));
-      %_issueInfoMessage (&g_currentLogger., %str ( ));
-      %_issueInfoMessage (&g_currentLogger., %str ( ));
            
 %exit:
    PROC DATASETS NOLIST NOWARN LIB=%scan(&d_scn_pre,1,.);
@@ -300,5 +292,7 @@
       DELETE %scan(&d_scenariosToRun,2,.);
       DELETE %scan(&d_scn_pre,2,.);
    QUIT;
+   
+   %_issueInfoMessage (&g_currentLogger., %str (============================ runSASUnit has finished starting scenarios ==========================));
 %MEND runSASUnit;
 /** \endcond */

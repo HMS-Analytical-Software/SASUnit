@@ -25,15 +25,22 @@
    \param   i_desc            description of the test case (optional: No default)
 
 */ /** \cond */ 
-
 %MACRO initScenario(i_object =_AUTOMATIC_
                    ,i_desc   =_NONE_
                    );
 
-   %global g_inScenario g_inTestCase g_inTestCall g_scnID g_currentLogger;
+   %global g_inScenario g_inTestCase g_inTestCall g_scnID g_currentLogger g_currentLogLevel g_scenarioLogger g_assertLogger;
    %local l_scenarioPath l_macname;
 
-   %LET g_currentLogger = App.Program.SASUnitScenario;
+   %let g_scenarioLogger = App.Program.SASUnitScenario;
+   %let g_assertLogger   = App.Program.SASUnitScenario.Asserts;
+
+   %LET g_currentLogger   = &g_scenarioLogger;
+   %LET g_currentLogLevel = DEBUG;
+   /*** Setting logging information  ***/
+   %_setLog4SASLogLevel (loggername =&g_currentlogger.
+                        ,level      =&g_currentLogLevel.
+                        );   
    
    %_initErrorHandler;
    %LET l_macname=&sysmacroname;
@@ -68,6 +75,17 @@
    
    %local l_changed l_scnID;
    %let l_scnid =0;
+
+   /* set global macro symbols and librefs / filerefs  */
+   /* includes creation of autocall paths */
+   %_loadenvironment (i_caller=SCENARIO);
+   
+   %LET g_currentLogger   = &g_log4SASScenarioLogger.;
+   %LET g_currentLogLevel = &g_log4SASScenarioLogLevel.;
+   /*** Setting logging information  ***/
+   %_setLog4SASLogLevel (loggername =&g_currentLogger.
+                        ,level      =&g_currentLogLevel.
+                        );   
 
    %if (%bquote(&i_object.) ne _AUTOMATIC_) %then %do;
        %let l_scenarioPath           =%_stdPath(&g_ROOT, &i_object.);
@@ -106,10 +124,6 @@
       delete from target.cas where cas_scnid=&g_scnID.;
       delete from target.tst where tst_scnid=&g_scnID.;
    quit;
-   
-   /* set global macro symbols and librefs / filerefs  */
-   /* includes creation of autocall paths */
-   %_loadenvironment ();
    
    options linesize=max;
    

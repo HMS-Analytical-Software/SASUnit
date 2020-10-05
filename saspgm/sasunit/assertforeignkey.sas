@@ -36,7 +36,6 @@
                                  default: "Check for foreign key relation"
 
 */ /** \cond */ 
-
 %MACRO assertForeignKey (i_mstrLib           = 
                         ,i_mstMem            = 
                         ,i_mstKey            = 

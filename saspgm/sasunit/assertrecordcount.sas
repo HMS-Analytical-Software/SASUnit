@@ -27,7 +27,6 @@
                                default: "Check for a specific number of records"
    
 */ /** \cond */ 
-
 %MACRO assertRecordCount(i_libref         = 
                         ,i_memname        = 
                         ,i_operator       = EQ

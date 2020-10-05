@@ -18,7 +18,6 @@
    \param   o_file         Filepath for the XML-report
 
 */ /** \cond */ 
-
 %MACRO _reportJUnitXML(i_repdata =
                       ,o_file    =
                       );
@@ -142,5 +141,4 @@
    run;quit;
 
 %MEND _reportJUnitXML;
-
 /** \endcond */

@@ -26,7 +26,6 @@
                            only for numerical values 
                            
 */ /** \cond */ 
-
 %MACRO assertEquals (i_expected =      
                     ,i_actual   =      
                     ,i_desc     = Compare Values

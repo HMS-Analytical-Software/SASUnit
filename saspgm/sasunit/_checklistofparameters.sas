@@ -21,7 +21,6 @@
    \param      i_returnCodeVariable Name of macrovariable to receive return code
 
 */ /** \cond */ 
-
 %MACRO _checkListOfParameters (i_listOfParameters     = 
                               ,i_returnCodeVariable   =
                               ,i_callingMacroName     =     

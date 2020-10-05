@@ -21,8 +21,6 @@
    \param   i_current      number of the active tab, default is 1
 
 */ /** \cond */ 
-
-
 %MACRO _reportTabsHTML (i_tabnames
                        ,i_pages
                        ,i_current = 1

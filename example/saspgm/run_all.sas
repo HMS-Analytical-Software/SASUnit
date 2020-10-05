@@ -26,32 +26,35 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 
-*/ /** \cond */  
-
+*/
+/** \cond */  
 OPTIONS 
    MPRINT MAUTOSOURCE NOMLOGIC NOSYMBOLGEN
-   APPEND=(SASAUTOS "%sysget(SASUNIT_ROOT)/saspgm/sasunit") /* SASUnit macro library */
+   APPEND=(SASAUTOS "%sysget(SASUNIT_ROOT)/saspgm/sasunit")
 ;
 
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root            = .                                                /* root path, all other paths can then be relative paths */
-  ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))  /* Output of SASUnit: test repository, logs, results, reports */
-  ,i_overwrite       = %sysget(SASUNIT_OVERWRITE)                       /* set to 1 to force all test scenarios to be run, else only changed 
-                                                                           scenarios or scenarios with changed unit under test will be run*/
-  ,i_project         = SASUnit Examples                                 /* Name of project, for report */
-  ,i_sasunit         = %sysget(SASUNIT_ROOT)/saspgm/sasunit             /* SASUnit macro library */
-  ,i_sasautos        = saspgm                                           /* Search for units under test here */
-  ,i_testdata        = dat                                              /* test data, libref testdata */
-  ,i_refdata         = dat                                              /* reference data, libref refdata */
-  ,i_doc             = doc/spec
-  ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
-  ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)              /* set to 1 to assess test coverage assessment */
-  ,i_verbose         = %sysget(SASUNIT_VERBOSE)
-  ,i_crossref        = %sysget(SASUNIT_CROSSREFERENCE)
-  ,i_crossrefsasunit = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
-  ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
+   i_root                     = %sysget (SASUNIT_PROJECT_ROOT)
+  ,io_target                  = %sysget (SASUNIT_TEST_DB_FOLDER)
+  ,i_overwrite                = %sysget (SASUNIT_OVERWRITE)
+  ,i_project                  = SASUnit Examples                                  /* Name of project, for report */
+  ,i_sasunit                  = %sysget (SASUNIT_ROOT)/saspgm/sasunit
+  ,i_sasautos                 = saspgm                                            /* Search for units under test here */
+  ,i_testdata                 = dat                                               /* test data, libref testdata */
+  ,i_refdata                  = dat                                               /* reference data, libref refdata */
+  ,i_doc                      = doc/spec
+  ,i_sascfg                   = %sysget (SASUNIT_SAS_CFG)
+  ,i_testcoverage             = %sysget (SASUNIT_COVERAGEASSESSMENT)
+  ,i_crossref                 = %sysget (SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit          = %sysget (SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language                 = %lowcase (%sysget (SASUNIT_LANGUAGE))
+  ,i_logFolder                = %sysget (SASUNIT_LOG_FOLDER)
+  ,i_scnLogFolder             = %sysget (SASUNIT_SCN_LOG_FOLDER)
+  ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
+  ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
+  ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
   )
 
 /* Run specified test scenarios. There can be more than one call to runSASUnit */

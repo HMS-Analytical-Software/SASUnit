@@ -25,7 +25,6 @@
    \param   o_path         output folder
 
 */ /** \cond */ 
-
 %MACRO _render_assertTextRep (i_assertype=
                              ,i_repdata  =
                              ,i_scnid    =
@@ -41,7 +40,7 @@
    title;footnote;
 
    %_getTestSubfolder (i_assertType=asserttext
-                      ,i_root      =&g_target./doc/tempDoc
+                      ,i_root      =&g_reportFolder./tempDoc
                       ,i_scnid     =&i_scnid.
                       ,i_casid     =&i_casid.
                       ,i_tstid     =&i_tstid.

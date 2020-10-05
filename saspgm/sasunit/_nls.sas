@@ -24,7 +24,6 @@
    
    \return     macro symbols in global symbol table
 */ /** \cond */ 
-
 %MACRO _nls (i_language = 
             );
 

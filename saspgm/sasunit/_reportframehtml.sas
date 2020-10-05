@@ -20,7 +20,6 @@
    \param   i_style        Name of the SAS style and css file to be used. 
 
 */ /** \cond */ 
-
 %MACRO _reportFrameHTML (i_repdata = 
                         ,o_html    = 0
                         ,i_style   =

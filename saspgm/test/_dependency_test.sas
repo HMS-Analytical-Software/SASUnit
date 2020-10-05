@@ -54,9 +54,8 @@
    RUN;
    
    /* Create folders */
-   %_mkdir(%SYSFUNC(PATHNAME(work))/doc);
-   %_mkdir(%SYSFUNC(PATHNAME(work))/doc/tempDoc);
-   %_mkdir(%SYSFUNC(PATHNAME(work))/doc/tempDoc/crossreference);
+   %_mkdir(%SYSFUNC(PATHNAME(work))/tempDoc);
+   %_mkdir(%SYSFUNC(PATHNAME(work))/tempDoc/crossreference);
    
  /* Create expected json files for assert columns */
    DATA macro_1_called_exp;
@@ -166,23 +165,27 @@
 /* create test files */
 %_createTestFiles;
 
+%let g_reportFolderSave = &g_reportFolder.;
+
 /* test case 1 ------------------------------------ */
 %initTestcase(i_object=_dependency.sas, i_desc=Test if JSON files have been created);
+%let g_reportFolder=%SYSFUNC(PATHNAME(work));
 %_switch();
    %_dependency(i_dependencies=listcalling_test, i_macroList=dir_test);
 %_switch();
+%let g_reportFolder=&g_reportFolderSave.;
 %endTestcall();
    %markTest();
       /* Files and folder test */
-      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/doc/tempDoc/crossreference/macro_A_called.json)) ,i_expected=1, i_desc=Json File macro_A_called.json created successfully );
-      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/doc/tempDoc/crossreference/macro_A_caller.json)) ,i_expected=1, i_desc=Json File macro_A_caller.json created successfully );
-      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/doc/tempDoc/crossreference/macro_1_called.json)) ,i_expected=1, i_desc=Json File macro_1_called.json created successfully );
-      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/doc/tempDoc/crossreference/macro_1_caller.json)) ,i_expected=1, i_desc=Json File macro_1_caller.json created successfully );
+      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tempDoc/crossreference/macro_A_called.json)) ,i_expected=1, i_desc=Json File macro_A_called.json created successfully );
+      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tempDoc/crossreference/macro_A_caller.json)) ,i_expected=1, i_desc=Json File macro_A_caller.json created successfully );
+      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tempDoc/crossreference/macro_1_called.json)) ,i_expected=1, i_desc=Json File macro_1_called.json created successfully );
+      %assertEquals(i_actual=%SYSFUNC(FILEEXIST(%SYSFUNC(PATHNAME(work))/tempDoc/crossreference/macro_1_caller.json)) ,i_expected=1, i_desc=Json File macro_1_caller.json created successfully );
       %assertLog (i_errors=0, i_warnings=0);
 %endTestcase(i_assertLog=0);
 
 /* test case 2 ------------------------------------ */
-filename in "%sysfunc(pathname(work))/doc/tempDoc/crossreference/macro_A_called.json";
+filename in "%sysfunc(pathname(work))/tempDoc/crossreference/macro_A_called.json";
 DATA macro_A_called;
    length line $100;
    infile in;
@@ -190,7 +193,7 @@ DATA macro_A_called;
    line = _infile_;
 RUN;
 
-filename in "%sysfunc(pathname(work))/doc/tempDoc/crossreference/macro_A_caller.json";
+filename in "%sysfunc(pathname(work))/tempDoc/crossreference/macro_A_caller.json";
 DATA macro_A_caller;
    length line $100;
    infile in;
@@ -198,7 +201,7 @@ DATA macro_A_caller;
    line = _infile_;
 run;
 
-filename in "%sysfunc(pathname(work))/doc/tempDoc/crossreference/macro_1_called.json";
+filename in "%sysfunc(pathname(work))/tempDoc/crossreference/macro_1_called.json";
 DATA macro_1_called;
    length line $100;
    infile in;
@@ -206,7 +209,7 @@ DATA macro_1_called;
    line = _infile_;
 RUN;
 
-filename in "%sysfunc(pathname(work))/doc/tempDoc/crossreference/macro_1_caller.json";
+filename in "%sysfunc(pathname(work))/tempDoc/crossreference/macro_1_caller.json";
 DATA macro_1_caller;
    length line $100;
    infile in;
@@ -229,11 +232,13 @@ filename in;
 
 /* test case 3 ------------------------------------ */
 %initTestcase(i_object=_dependency.sas, i_desc=Test correct representation of sibling relationships);
+%let g_reportFolder=%SYSFUNC(PATHNAME(work));
 %_switch();
    %_dependency(i_dependencies=siblings, i_macroList=siblings_dir);
 %_switch();
+%let g_reportFolder=&g_reportFolderSave.;
 
-filename in "%sysfunc(pathname(work))/doc/tempDoc/crossreference/parent_caller.json";
+filename in "%sysfunc(pathname(work))/tempDoc/crossreference/parent_caller.json";
 DATA parent_caller;
    length line $100;
    infile in;
@@ -241,7 +246,7 @@ DATA parent_caller;
    line = _infile_;
 RUN;
 
-filename in "%sysfunc(pathname(work))/doc/tempDoc/crossreference/parent_called.json";
+filename in "%sysfunc(pathname(work))/tempDoc/crossreference/parent_called.json";
 DATA parent_called;
    length line $100;
    infile in;

@@ -30,7 +30,6 @@
    \param      i_style             Name of the SAS style and css file to be used. 
 
 */ /** \cond */ 
-
 %macro _reportTcgHTML(i_macroName=
                      ,i_macroLocation=
                      ,i_mCoverageName=

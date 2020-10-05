@@ -23,7 +23,6 @@
    \param      i_parentList      Used to detect self-referential loops (like A -> B -> A) in every branch of the tree. If 
                                  a loop is detected the macro return to the parent node.
 */ /** \cond */ 
-
 %MACRO _dependency_wr(i_node=
                      ,i_dependencies=
                      ,i_direction=
@@ -118,3 +117,4 @@
 
    %END; /* End if */
 %MEND _dependency_wr;
+/** \endcond */

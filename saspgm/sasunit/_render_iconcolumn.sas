@@ -21,7 +21,6 @@
    \param   i_iconOffset       Offset for the image name format. (Optional: Default=.)
 
 */ /** \cond */ 
-
 %macro _render_iconColumn (i_sourceColumn=
                           ,o_html=0
                           ,o_targetColumn=

@@ -23,7 +23,6 @@
    \return  file name extension or empty if file name does not contain a dot
 
 */ /** \cond */ 
-
 %MACRO _getExtension (i_file  
                      ); 
 

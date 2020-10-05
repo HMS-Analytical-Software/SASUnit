@@ -18,10 +18,7 @@
    \param   i_expected       expected value  
    \param   i_desc           description of the assertion to be checked \n
                              default: "Check for runtime"
-
-   \todo replace g_verbose
 */ /** \cond */ 
-
 %MACRO assertPerformance(i_expected=
                         ,i_desc    = Check for run time
                   );
@@ -52,7 +49,6 @@
                     ,AssertPerformanceOutsideTestcase
                     ,(&l_casid = . OR &l_casid =)
                     ,&g_error.(SASUNIT): assert must not be called before initTestcase
-                    ,i_verbose=&g_verbose.
                     ) 
                   %THEN %DO;   
       %RETURN;
@@ -82,7 +78,3 @@
             )
 %MEND assertPerformance;
 /** \endcond */
-
-
-
-

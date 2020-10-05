@@ -30,7 +30,6 @@
       g_runningProgramFullName
       g_xcmd
       g_dirMacro
-      g_useLog4SAS
    ;
 
    %local l_sysin;
@@ -115,7 +114,5 @@
    %else %do;
       %let g_dirMacro = _dir;
    %end;
-   
-   %LET g_useLog4SAS    = %eval (%length (%sysfunc (getoption(LOGCONFIGLOC))) > 0);
 %MEND _readEnvMetadata;
 /** \endcond */

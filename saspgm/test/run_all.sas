@@ -19,28 +19,32 @@ OPTIONS
    MPRINT MAUTOSOURCE NOMLOGIC NOSYMBOLGEN
    APPEND=(SASAUTOS "%sysget(SASUNIT_ROOT)/saspgm/sasunit") /* SASUnit macro library */
 ;
-
+/**/
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root            = .
-  ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
-  ,i_overwrite       = %sysget(SASUNIT_OVERWRITE)
-  ,i_project         = SASUnit Self Test
-  ,i_sasunit         = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos        = saspgm/sasunit
-  ,i_sasautos1       = saspgm/test
-  ,i_sasautos2       = saspgm/test/pgmlib1
-  ,i_sasautos3       = saspgm/test/pgmlib2
-  ,i_testdata        = dat
-  ,i_refdata         = dat
-  ,i_doc             = doc/spec
-  ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
-  ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose         = %sysget(SASUNIT_VERBOSE)
-  ,i_crossref        = %sysget(SASUNIT_CROSSREFERENCE)
-  ,i_crossrefsasunit = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
-  ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
+   i_root                     = %sysget (SASUNIT_PROJECT_ROOT)
+  ,io_target                  = %sysget (SASUNIT_TEST_DB_FOLDER)
+  ,i_overwrite                = %sysget (SASUNIT_OVERWRITE)
+  ,i_project                  = SASUnit Self Test
+  ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
+  ,i_sasautos                 = saspgm/sasunit
+  ,i_sasautos1                = saspgm/test
+  ,i_sasautos2                = saspgm/test/pgmlib1
+  ,i_sasautos3                = saspgm/test/pgmlib2
+  ,i_testdata                 = dat
+  ,i_refdata                  = dat
+  ,i_doc                      = doc/spec
+  ,i_sascfg                   = %sysget (SASUNIT_SAS_CFG)
+  ,i_testcoverage             = %sysget (SASUNIT_COVERAGEASSESSMENT)
+  ,i_crossref                 = %sysget (SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit          = %sysget (SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language                 = %lowcase (%sysget (SASUNIT_LANGUAGE))
+  ,i_logFolder                = %sysget (SASUNIT_LOG_FOLDER)
+  ,i_scnLogFolder             = %sysget (SASUNIT_SCN_LOG_FOLDER)
+  ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
+  ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
+  ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
 );
 
 %runSASUnit(i_source = %str(saspgm/test/reportsasunit_inexisting_scenario_has_to_fail));
@@ -79,48 +83,57 @@ data _null_;
 run;
 
 %initSASUnit(
-   i_root            = .
-  ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
-  ,i_overwrite       = 0
-  ,i_project         = SASUnit Self Test
-  ,i_sasunit         = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos        = saspgm/sasunit
-  ,i_sasautos1       = saspgm/test
-  ,i_sasautos2       = saspgm/test/pgmlib1
-  ,i_sasautos3       = saspgm/test/pgmlib2
-  ,i_testdata        = dat
-  ,i_refdata         = dat
-  ,i_doc             = doc/spec
-  ,i_sascfg          = &ConfigName.
-  ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose         = %sysget(SASUNIT_VERBOSE)
-  ,i_crossref        = %sysget(SASUNIT_CROSSREFERENCE)
-  ,i_crossrefsasunit = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
-  ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
+   i_root                     = %sysget (SASUNIT_PROJECT_ROOT)
+  ,io_target                  = %sysget (SASUNIT_TEST_DB_FOLDER)
+  ,i_overwrite                = 0
+  ,i_project                  = SASUnit Self Test
+  ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
+  ,i_sasautos                 = saspgm/sasunit
+  ,i_sasautos1                = saspgm/test
+  ,i_sasautos2                = saspgm/test/pgmlib1
+  ,i_sasautos3                = saspgm/test/pgmlib2
+  ,i_testdata                 = dat
+  ,i_refdata                  = dat
+  ,i_doc                      = doc/spec
+  ,i_sascfg                   = &ConfigName.
+  ,i_testcoverage             = %sysget (SASUNIT_COVERAGEASSESSMENT)
+  ,i_crossref                 = %sysget (SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit          = %sysget (SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language                 = %lowcase (%sysget (SASUNIT_LANGUAGE))
+  ,i_logFolder                = %sysget (SASUNIT_LOG_FOLDER)
+  ,i_scnLogFolder             = %sysget (SASUNIT_SCN_LOG_FOLDER)
+  ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
+  ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
+  ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
 )
 
 %runSASUnit(i_source = saspgm/test/assert_i_config_usage_configtest.sas);
 
 %initSASUnit(
-   i_root            = .
-  ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
-  ,i_overwrite       = 0
-  ,i_project         = SASUnit Self Test
-  ,i_sasunit         = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos        = saspgm/sasunit
-  ,i_sasautos1       = saspgm/test
-  ,i_sasautos2       = saspgm/test/pgmlib1
-  ,i_sasautos3       = saspgm/test/pgmlib2
-  ,i_testdata        = dat
-  ,i_refdata         = dat
-  ,i_doc             = doc/spec
-  ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
-  ,i_autoexec        = &AutoexecName2.
-  ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose         = %sysget(SASUNIT_VERBOSE)
-  ,i_crossref        = %sysget(SASUNIT_CROSSREFERENCE)
-  ,i_crossrefsasunit = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
-  ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
+   i_root                     = %sysget (SASUNIT_PROJECT_ROOT)
+  ,io_target                  = %sysget (SASUNIT_TEST_DB_FOLDER)
+  ,i_overwrite                = 0
+  ,i_project                  = SASUnit Self Test
+  ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
+  ,i_sasautos                 = saspgm/sasunit
+  ,i_sasautos1                = saspgm/test
+  ,i_sasautos2                = saspgm/test/pgmlib1
+  ,i_sasautos3                = saspgm/test/pgmlib2
+  ,i_testdata                 = dat
+  ,i_refdata                  = dat
+  ,i_doc                      = doc/spec
+  ,i_sascfg                   = %sysget (SASUNIT_SAS_CFG)
+  ,i_autoexec                 = &AutoexecName2.
+  ,i_testcoverage             = %sysget (SASUNIT_COVERAGEASSESSMENT)
+  ,i_crossref                 = %sysget (SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit          = %sysget (SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language                 = %lowcase (%sysget (SASUNIT_LANGUAGE))
+  ,i_logFolder                = %sysget (SASUNIT_LOG_FOLDER)
+  ,i_scnLogFolder             = %sysget (SASUNIT_SCN_LOG_FOLDER)
+  ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
+  ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
+  ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
+
 )
 
 %runSASUnit(i_source = saspgm/test/assert_i_autoexec_usage_configtest.sas);
@@ -128,25 +141,29 @@ run;
 *** Recreate the old config and autoexec to ensure the right settings ***;
 *** if you use SASUnit without overwrite afterwards                   ***;
 %initSASUnit(
-   i_root            = .
-  ,io_target         = doc/sasunit/%lowcase(%sysget(SASUNIT_LANGUAGE))
-  ,i_overwrite       = 0
-  ,i_project         = SASUnit Self Test
-  ,i_sasunit         = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos        = saspgm/sasunit
-  ,i_sasautos1       = saspgm/test
-  ,i_sasautos2       = saspgm/test/pgmlib1
-  ,i_sasautos3       = saspgm/test/pgmlib2
-  ,i_testdata        = dat
-  ,i_refdata         = dat
-  ,i_doc             = doc/spec
-  ,i_sascfg          = bin/sasunit.%sysget(SASUNIT_SAS_VERSION).%lowcase(%sysget(SASUNIT_HOST_OS)).%lowcase(%sysget(SASUNIT_LANGUAGE)).cfg
-  ,i_autoexec        = %str( )
-  ,i_testcoverage    = %sysget(SASUNIT_COVERAGEASSESSMENT)
-  ,i_verbose         = %sysget(SASUNIT_VERBOSE)
-  ,i_crossref        = %sysget(SASUNIT_CROSSREFERENCE)
-  ,i_crossrefsasunit = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
-  ,i_language        = %lowcase(%sysget(SASUNIT_LANGUAGE))
+   i_root                     = %sysget (SASUNIT_PROJECT_ROOT)
+  ,io_target                  = %sysget (SASUNIT_TEST_DB_FOLDER)
+  ,i_overwrite                = 0
+  ,i_project                  = SASUnit Self Test
+  ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
+  ,i_sasautos                 = saspgm/sasunit
+  ,i_sasautos1                = saspgm/test
+  ,i_sasautos2                = saspgm/test/pgmlib1
+  ,i_sasautos3                = saspgm/test/pgmlib2
+  ,i_testdata                 = dat
+  ,i_refdata                  = dat
+  ,i_doc                      = doc/spec
+  ,i_sascfg                   = %sysget (SASUNIT_SAS_CFG)
+  ,i_autoexec                 = %str( )
+  ,i_testcoverage             = %sysget (SASUNIT_COVERAGEASSESSMENT)
+  ,i_crossref                 = %sysget (SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit          = %sysget (SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language                 = %lowcase (%sysget (SASUNIT_LANGUAGE))
+  ,i_logFolder                = %sysget (SASUNIT_LOG_FOLDER)
+  ,i_scnLogFolder             = %sysget (SASUNIT_SCN_LOG_FOLDER)
+  ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
+  ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
+  ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
 );
 
 %reportSASUnit(

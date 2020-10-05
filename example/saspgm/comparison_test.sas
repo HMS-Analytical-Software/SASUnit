@@ -181,19 +181,15 @@ ods printer close;
 %endTestcall()
 
    %assertExternal (i_script             =&assertExternal_script.
-                   ,i_expected           =&assertText_work1.
-                   ,i_actual             =4
+                   ,i_parameters         =%_adaptSASUnitPathToOS(&assertText_work1.) "4"
                    ,i_expected_shell_rc  =0
-                   ,i_expectedIsPath     =Y
                    ,i_desc               =Word count of "Lorem" equals 4
                    );
                    
    %assertExternal (i_script             =&assertExternal_script.
-                   ,i_expected           =&assertText_work1.
-                   ,i_actual             =3
+                   ,i_parameters         =%_adaptSASUnitPathToOS(&assertText_work1.) "3"
                    ,i_expected_shell_rc  =1
-                   ,i_expectedIsPath     =Y
-                   ,i_desc               =%str(Word count of "Lorem" equals 4, but i_actual=3, so i_expected_shell_rc must be 1 to make test green)
+                   ,i_desc               =%str(Word count of "Lorem" equals 4, but expected count is 3, so i_expected_shell_rc must be 1 to make test green)
                    );
   
    %assertLog (i_errors=0, i_warnings=0);

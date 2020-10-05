@@ -21,7 +21,6 @@
    \param   o_targetColumn   name of the target column holding the ODS formatted value
 
 */ /** \cond */ 
-
 %macro _render_assertReportAct (i_sourceColumn=
                                ,i_expectedColumn=tst_exp
                                ,o_html=0

@@ -18,7 +18,6 @@
    \param   o_html         Test report in HTML-format?
 
 */ /** \cond */ 
-
 %MACRO _reportFooter (o_html=0
                      );
    %local l_footnote;

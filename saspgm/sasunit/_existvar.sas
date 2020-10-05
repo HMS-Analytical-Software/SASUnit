@@ -24,7 +24,6 @@
    \return  1 ..  variable existst, 0 ... variable does not existst
 
 */ /** \cond */ 
-
 %MACRO _existVar (i_data       
                  ,i_var        
                  ,i_vartype    

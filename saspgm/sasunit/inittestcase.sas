@@ -29,7 +29,6 @@
    \return  Information on current testcase in macro variables
    
 */ /** \cond */ 
-
 %MACRO initTestcase(i_object   =  
                    ,i_desc     =  
                    ,i_specdoc  =  
@@ -110,8 +109,8 @@
 
    %if (&g_runmode. ne SASUNIT_INTERACTIVE) %then %do;
       /* reroute SASLOG and SASLIST */
-      %LET g_logfile   =&g_log/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log;
-      %LET g_printfile =&g_testout/%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).lst;
+      %LET g_logfile   =&g_scnLogFolder./%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log;
+      %LET g_printfile =&g_testout./%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).lst;
       %LET g_caslogfile=&g_logfile.;
       PROC PRINTTO 
          NEW 
@@ -119,6 +118,20 @@
          PRINT="&g_printfile."
       ;
       RUN;
+/*
+*** Check why this is not working      
+      filename _logfile "g_logfile";
+      %_createLog4SASAppender(appenderName=SASUnitTestCaseAppender
+                             ,appenderClass=FileRefAppender
+                             ,fileRef=_logfile
+                             ,threshold=&g_log4SASScenarioLogLevel.
+                             );
+      %_createLog4SASLogger(loggername=App.Program
+                           ,additivity=FALSE
+                           ,appenderList=SASUnitTestCaseAppender
+                           ,level=&g_log4SASScenarioLogLevel.
+                           );
+*/      
       options linesize=max;
    %end;
 %MEND initTestcase;

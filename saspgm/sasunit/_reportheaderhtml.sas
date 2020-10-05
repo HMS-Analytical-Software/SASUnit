@@ -19,7 +19,6 @@
    \param   i_style  Name of the SAS style and css file to be used. 
    
 */ /** \cond */ 
-
 %MACRO _reportHeaderHTML (i_title
                          ,i_style
                          );

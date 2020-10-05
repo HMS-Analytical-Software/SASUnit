@@ -20,17 +20,21 @@
    \param   io_target       path to test database
 
 */ /** \cond */ 
-
 %MACRO _scenario(io_target  = 
                 );
 
-   %LOCAL l_macname g_currentLogger; 
+   %LOCAL l_macname g_currentLogger g_currentLogLevel; 
 
    %LET l_macname=&sysmacroname;
 
    OPTIONS MAUTOSOURCE MPRINT MPRINTNEST LINESIZE=MAX;
 
-   %LET g_currentLogger = App.Program.SASUnitScenario;
+   %LET g_currentLogger   = App.Program.SASUnitScenario;
+   %LET g_currentLogLevel = DEBUG;
+   /*** Setting logging information  ***/
+   %_setLog4SASLogLevel (loggername =&g_currentlogger.
+                        ,level      =&g_currentLogLevel.
+                        );   
    
    /* initialize error handling */
    %_initErrorHandler;

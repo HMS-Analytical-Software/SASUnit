@@ -24,11 +24,7 @@
    \param makeCompletePath Flag with value zero or other. If flag is zero then only one subfolder will be created and the parent folder has to exist.
                            Parent folder is the folder right next to the last folder in given path.
                            If flag is unequal to zero then all missing folders in the path will be created.
-   
-   \test New test calls that catch all messages
-   \todo Delete os-dependant macros
 */ /** \cond */
-
 %macro _mkdir (dir
               ,makeCompletePath = 0
               );
@@ -46,7 +42,7 @@
       
       /*** Checking if path already exists, then there is nothing to do ***/
       %if (%sysfunc (fileexist (&l_osPath.))) %then %do;
-         %_issueInfoMessage (&g_currentLogger.,_mkdir: Folder &l_osPath. already exists.);
+         %_issueTraceMessage (&g_currentLogger.,_mkdir: Folder &l_osPath. already exists.);
          %goto exit;
       %end;
       
@@ -101,15 +97,14 @@
       %end;
       %if (%bquote(&l_result.) = %bquote (&l_osPath.)) %then %do;
          %if (&makeCompletePath. ne 0) %then %do;
-            %_issueInfoMessage (&g_currentLogger.,_mkdir: FolderTree &l_osPath. sucessfully created.);
+            %_issueDebugMessage (&g_currentLogger.,_mkdir: FolderTree &l_osPath. sucessfully created.);
          %end;
          %else %do;
-            %_issueInfoMessage (&g_currentLogger.,_mkdir: Folder &l_folderName. sucessfully created.);
+            %_issueDebugMessage (&g_currentLogger.,_mkdir: Folder &l_folderName. sucessfully created.);
          %end;
       %end;
 
    %exit:
    
 %mend _mkdir; 
-
 /** \endcond */

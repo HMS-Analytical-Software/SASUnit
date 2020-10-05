@@ -25,9 +25,7 @@
    \param   i_manual             1: in case of a positive check result, write an entry indicating a manual check (empty rectangle). \n
                                  0: in case of a positive check result, write an entry indicating OK (green hook). \n
                                  default: 1
-   \todo replace g_verbose
 */ /** \cond */ 
-
 %MACRO assertReport (i_expected           =       
                     ,i_actual             =       
                     ,i_desc               = Compare documents
@@ -124,7 +122,6 @@
                     ,NOXCMD
                     ,(%sysfunc(getoption(XCMD)) = NOXCMD)
                     ,Your SAS Session does not allow XCMD%str(,) therefore check your report in the report viewer.
-                    ,i_verbose=&g_verbose.
                     ) 
                   %THEN %DO;
       %LET l_rc    =1;

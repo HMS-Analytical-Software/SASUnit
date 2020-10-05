@@ -22,7 +22,6 @@
                            default: "Manual assert (placeholder)"
                            
 */ /** \cond */ 
-
 %MACRO assertManual (i_desc =Manual assert serves as placeholder);
 
    /*-- verify correct sequence of calls-----------------------------------------*/

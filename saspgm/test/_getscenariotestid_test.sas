@@ -15,6 +15,8 @@
 */ /** \cond */ 
 %initScenario (i_desc=Test of _getScenarioTestId.sas);
 
+%let g_currentLogger = &g_assertLogger.;
+
 *** Testcase 1 ***; 
 %initTestcase(i_object=_getScenarioTestId.sas, i_desc=call with missing parameters);
 

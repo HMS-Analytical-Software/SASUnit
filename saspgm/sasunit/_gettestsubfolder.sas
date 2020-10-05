@@ -23,7 +23,6 @@
    \retval  r_path       Complete absolute path for test outputs
 
 */ /** \cond */ 
-
 %macro _getTestSubfolder (i_assertType=
                          ,i_root      =%sysfunc(pathname(testout))
                          ,i_scnid     =

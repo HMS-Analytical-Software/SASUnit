@@ -25,7 +25,6 @@
    \param   o_treatMissings      optional: Handling of missing values in the master data set: Possible parameters are IGNORE, DISALLOW, VALUE(default)
 
 */ /** \cond */ 
-
 %MACRO assertPrimaryKey (i_library        = _NONE_
                         ,i_dataset        = _NONE_
                         ,i_variables      = _NONE_

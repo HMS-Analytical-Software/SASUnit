@@ -19,10 +19,9 @@
    \param      o_parameterValue  Name of variable to receive value read from test db (tsu)
    \param      o_parameterScope  Scope of Parameter (G, L, or _AUTOMATIC_)
    \param      i_Libref          Libref pointing to test  db (optional: Default=target)
-   \param      i_silent          Turn WARNING into INFO if set to 1 (0/1) (optional: Default=0)
+   \param      i_silent          Turn WARNING into DEBUG if set to 1 (0/1) (optional: Default=0)
 
 */ /** \cond */ 
-
 %MACRO _readParameterFromTestDBtsu (i_parameterName  = 
                                    ,o_parameterValue =
                                    ,i_libref         = target
@@ -48,10 +47,10 @@
          
       %if (%quote(&l_parameterValue.) = _NONE_) %then %do;
          %if (&i_silent.) %then %do;
-            %_issueInfoMessage (&g_currentLogger., Parameter &i_parametername was not found!);
+            %_issueDebugMessage (&g_currentLogger., _readParameterFromTestDBtsu: Parameter &i_parametername was not found!);
          %end;
          %else %do;
-            %_issueWarningMessage (&g_currentLogger., Parameter &i_parametername was not found!);
+            %_issueWarningMessage (&g_currentLogger., _readParameterFromTestDBtsu: Parameter &i_parametername was not found!);
          %end;
          %let l_parameterValue = &o_defaultValue.;
       %end;

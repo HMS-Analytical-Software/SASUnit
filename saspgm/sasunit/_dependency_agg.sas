@@ -22,7 +22,6 @@
    \param   o_file      JavaScript file in doc/js containing a JSON object for visualisation
 
 */ /** \cond */ 
-
 %MACRO _dependency_agg(i_path =
                       ,o_file =
                       );
@@ -111,3 +110,4 @@
    FILENAME aggregJS;
 
 %MEND _dependency_agg;
+/** \endcond */

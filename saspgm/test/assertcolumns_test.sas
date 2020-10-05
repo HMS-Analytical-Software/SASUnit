@@ -34,7 +34,7 @@ run;
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,)
 %assertDBValue(tst,res,0)
-%let tst_path=&g_testout/_&scnid._&casid._&tstid._assertcolumns;
+%let tst_path=&g_reportFolder./tempDoc/_&scnid._&casid._&tstid._assertcolumns;
 libname _acLib "&tst_path.";
 %assertEquals(i_expected=&g_DokumentFileExistsNoXCMD., i_actual=%sysfunc(fileexist(&tst_path./_columns_rep.sas7bitm)), i_desc=ODS document in testout)
 %assertEquals(i_expected=&g_DokumentFileExistsNoXCMD., i_actual=%sysfunc(exist(_acLib._columns_act)), i_desc=i_actual in testout)
@@ -56,7 +56,7 @@ run;
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,COMPVAR)
 %assertDBValue(tst,res,0)
-%let tst_path=&g_testout/_&scnid._&casid._&tstid._assertcolumns;
+%let tst_path=&g_reportFolder./tempDoc/_&scnid._&casid._&tstid._assertcolumns;
 libname _acLib "&tst_path.";
 %assertEquals(i_expected=&g_DokumentFileExistsNoXCMD., i_actual=%sysfunc(fileexist(&tst_path./_columns_rep.sas7bitm)), i_desc=ODS document in testout)
 %assertEquals(i_expected=&g_DokumentFileExistsNoXCMD., i_actual=%sysfunc(exist(_acLib._columns_act)), i_desc=i_actual in testout)
@@ -184,7 +184,7 @@ run;
 %assertDBValue(tst,exp,DSLABEL LABEL COMPVAR)
 %assertDBValue(tst,act,)
 %assertDBValue(tst,res,0)
-%let tst_path=&g_testout/_&scnid._&casid._&tstid._assertcolumns;
+%let tst_path=&g_reportFolder./tempDoc/_&scnid._&casid._&tstid._assertcolumns;
 libname _acLib "&tst_path.";
 %assertEquals(i_expected=&g_DokumentFileExistsNoXCMD., i_actual=%sysfunc(fileexist(&tst_path./_columns_rep.sas7bitm)), i_desc=ODS document in testout)
 %assertEquals(i_expected=&g_DokumentFileExistsNoXCMD., i_actual=%sysfunc(exist(_acLib._columns_act)), i_desc=view i_actual in testout)

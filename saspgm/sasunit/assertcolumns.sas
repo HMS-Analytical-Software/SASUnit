@@ -54,7 +54,6 @@
             the actual data set are written to _acLib
             
 */ /** \cond */ 
-
 %MACRO assertColumns (i_expected     =      
                      ,i_actual       =      
                      ,i_desc         = Compare datasets
@@ -124,7 +123,7 @@
    %IF (%length(&i_include) > 0 AND %length(&i_exclude) > 0) %THEN %DO;
       %_issueAssertWarningMessage (assertColumns: Both parameters i_include and i_exclude have been set.);
       %_issueAssertWarningMessage (assertColumns: I_exclude parameter will be dropped);
-     %LET i_exclude =;
+      %LET i_exclude =;
    %END;
 
    /*-- get current ids for test case and test --------- ------------------------*/

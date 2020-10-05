@@ -29,7 +29,6 @@
                            If the library hasn't been assigned successfully parameter i_not has no effect.
                            
 */ /** \cond */
-
 %MACRO assertTableExists (i_libref  =
                          ,i_memname =
                          ,i_target  = DATA

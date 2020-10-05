@@ -20,7 +20,6 @@
    \return  standardized path
 
 */ /** \cond */ 
-
 %MACRO _stdPath(i_root
                ,i_path
                );
@@ -52,5 +51,4 @@
          &i_path
    %END;
 %MEND _stdPath;
-
 /** \endcond */

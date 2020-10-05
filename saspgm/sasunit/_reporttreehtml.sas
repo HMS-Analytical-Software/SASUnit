@@ -44,11 +44,10 @@
    \param   o_pgmdoc         Creates source code documentation per examinee (0 / 1)
    \param   o_pgmdoc_sasunit Creates source code documentation also for sasunit macros (0 / 1)
    \param   i_style          Name of the SAS style and css file to be used. 
-   \param   o_pgmDocFolder   Name of the subfolder in rep folder to hold all test documentation html pages
+   \param   o_pgmDocFolder   Name of the subfolder in doc folder to hold all test documentation html pages
 
-   \return results will be written to folder &g_target/rep 
+   \return results will be written to folder &g_reportFolder./doc 
 */ /** \cond */ 
-
 %MACRO _reportTreeHTML (i_repdata        = 
                        ,o_html           =0
                        ,o_pgmdoc         =0
@@ -242,7 +241,7 @@ RUN;
       length pgmscn_name pgmexa_name target $255;
       if (not missing (scn_id)) then do;
          pgmscn_name  = catt ("scn_", put (scn_id, z3.) !! ".html");
-         if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/&o_pgmDocFolder./" !! trim(pgmscn_name))) then do;
+         if (&o_pgmdoc. = 1 and fileexist ("&g_reportFolder./&o_pgmDocFolder./" !! trim(pgmscn_name))) then do;
             target = catt ("&o_pgmDocFolder./", pgmscn_name);
          end;
          else do;
@@ -251,7 +250,7 @@ RUN;
       end;
       else if (not missing (exa_auton)) then do;
          pgmexa_name = catt (put (exa_auton, z2.), "_", tranwrd (child, ".sas", ".html"));
-         if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/&o_pgmDocFolder./" !! trim(pgmexa_name))) then do;
+         if (&o_pgmdoc. = 1 and fileexist ("&g_reportFolder./&o_pgmDocFolder./" !! trim(pgmexa_name))) then do;
             target = catt ("&o_pgmDocFolder./", pgmexa_name);
          end;
          else do;
@@ -569,7 +568,7 @@ DATA _null_;
    if (leaf) then do;
       PUT "<li>";
       PUT "<label class=""file" class_suffix +(-1) """><a " @;
-      _target = scan (catt ("&g_target./doc/", target),1,"#");
+      _target = scan (catt ("&g_reportFolder./", target),1,"#");
       if (not missing (target) and fileexist (_target)) then do;
          PUT "href=""" target +(-1) """ " @;
       end;

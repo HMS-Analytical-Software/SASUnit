@@ -29,7 +29,6 @@
    \param   r_tempFile     name of maro variable to contain the generated name 
 
 */ /** \cond */ 
-
 %MACRO _tempFileName(r_TempFile);
 
    /* create empty dataset */
@@ -37,7 +36,7 @@
 
    /* store to macro variable */
    %LET &r_TempFile=&syslast;
-   %_issueInfoMessage (&g_currentLogger.,_tempFileName: Temporary dataset %nrstr(&)&r_tempFile is &&&r_tempFile);
+   %_issueDebugMessage (&g_currentLogger.,_tempFileName: Temporary dataset %nrstr(&)&r_tempFile is &&&r_tempFile);
 
    /* delete again, need only name */
    PROC SQL NOPRINT; 

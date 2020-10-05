@@ -25,7 +25,6 @@
    \param   o_path         output folder
 
 */ /** \cond */ 
-
 %MACRO _render_assertColumnsRep (i_assertype=
                                 ,i_repdata  =
                                 ,i_scnid    =
@@ -41,14 +40,16 @@
    title;footnote;
 
    %_getTestSubfolder (i_assertType=assertColumns
-                      ,i_root      =&g_target./doc/tempDoc
+                      ,i_root      =&g_reportFolder./tempDoc
                       ,i_scnid     =&i_scnid.
                       ,i_casid     =&i_casid.
                       ,i_tstid     =&i_tstid.
                       ,r_path      =l_path
                       );
 
-   LIBNAME _acLib "&l_path";
+   %put ---->&=&l_path.;
+
+   LIBNAME _acLib "&l_path.";
 
    %if (&o_html.) %then %do;
       ODS HTML4 FILE="&o_path/_&i_scnid._&i_casid._&i_tstid._cmp_exp.html" style=styles.&i_style. stylesheet=(URL="./../css/&i_style..css")

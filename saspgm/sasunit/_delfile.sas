@@ -22,7 +22,6 @@
    \return     0 if OK, system code otherwise  
                
 */ /** \cond */ 
-
 %MACRO _delFile(i_file   
                );
 

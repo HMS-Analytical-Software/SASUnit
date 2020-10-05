@@ -359,6 +359,16 @@
  38 EN Rate SASUnit
  39 DE Hauptseite
  39 EN Main Page
+ 40 DE Verzeichnis für Logdateien der SASUnit Suite
+ 40 EN Folder for log files of SASUnit suite
+ 41 DE Verzeichnis für Logdateien der Szenarien
+ 41 EN Folder for log files of scenarios
+ 42 DE Log4SAS Logging Level für SASUnit Suite
+ 42 EN Log4SAS logging level for SASUnit suite
+ 43 DE Log4SAS Logging Level für Szenarien
+ 43 EN Log4SAS logging level for scenarios
+ 44 DE Verzeichnis für die SASUnit Test Dokumentation
+ 44 EN Folder for SASUnit test documentation
 ---reportLibrary
   1 DE Prüfbericht - Vergleich der beiden Bibliotheken
   1 EN Test Report - Comparison of two Libraries

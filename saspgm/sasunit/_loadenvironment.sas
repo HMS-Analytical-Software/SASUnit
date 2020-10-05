@@ -18,13 +18,13 @@
    \param   i_withlibrefs    1..initialize also filerefs and librefs 
                              0..initialize only macro symbols. 
                              
-   \todo replace g_verbose
 */ /** \cond */ 
-
-%MACRO _loadEnvironment(i_withlibrefs    =1
+%MACRO _loadEnvironment(i_withlibrefs     =1
+                       ,i_caller          =SUITE
                        );
  
-   %LOCAL l_macname; %LET l_macname=&sysmacroname;
+   %LOCAL l_macname; %LET l_macname=&sysmacroname.;
+   %LOCAL l_log4SAScurrentLogLevel;
 
    %GLOBAL g_sasunitroot g_target g_project g_root g_sasunit g_sasunit_os g_autoexec g_sascfg g_sasuser
            g_sasautos   
@@ -32,8 +32,8 @@
            g_sasautos10 g_sasautos11 g_sasautos12 g_sasautos13 g_sasautos14 g_sasautos15 g_sasautos16 g_sasautos17 g_sasautos18 g_sasautos19 
            g_sasautos20 g_sasautos21 g_sasautos22 g_sasautos23 g_sasautos24 g_sasautos25 g_sasautos26 g_sasautos27 g_sasautos28 g_sasautos29 
            g_testdata g_refdata g_doc g_error g_warning g_note
-           g_work g_testout g_log g_logfile g_printfile g_caslogfile
-           g_testcoverage g_verbose g_crossref g_crossrefsasunit g_rep_encoding
+           g_work g_testout g_logfile g_printfile g_caslogfile
+           g_testcoverage g_crossref g_crossrefsasunit g_rep_encoding
            g_language
            g_SASUnitLogger g_scenarioLogger g_assertLogger
            ;
@@ -50,7 +50,6 @@
                     ,InvalidTsu
                     ,%_nobs(target.tsu) < 1
                     ,invalid test database: target.tsu
-                    ,i_verbose=0
                     ) 
       %THEN %GOTO errexit;
 
@@ -58,7 +57,6 @@
                     ,MissingCas
                     ,NOT %sysfunc(exist(target.cas))
                     ,invalid test database: target.cas
-                    ,i_verbose=0
                     ) 
       %THEN %GOTO errexit;
 
@@ -66,7 +64,6 @@
                     ,MissingScn
                     ,NOT %sysfunc(exist(target.scn))
                     ,invalid test database: target.scn
-                    ,i_verbose=0
                     ) 
       %THEN %GOTO errexit;
 
@@ -74,7 +71,6 @@
                     ,MissingTst
                     ,NOT %sysfunc(exist(target.tst))
                     ,invalid test database: target.tst
-                    ,i_verbose=0
                     ) 
       %THEN %GOTO errexit;
 
@@ -102,14 +98,16 @@
    %LET g_rep_encoding = UTF8;
 
    %LET g_work     = %sysfunc(pathname(work));
-   %LET g_testout  = &g_target./doc/tempDoc;
-   %LET g_log      = &g_target./log;
+   %LET g_testout  = &g_reportFolder./testDoc;
+   %LET g_tempout  = &g_reportFolder./tempDoc;
 
    %_detectSymbols(r_error_symbol=g_error, r_warning_symbol=g_warning, r_note_symbol=g_note);
 
    %IF &i_withlibrefs. %THEN %DO;
          LIBNAME testout "&g_testout.";
          FILENAME testout "&g_testout.";
+         LIBNAME tempout "&g_tempout.";
+         FILENAME tempout "&g_tempout.";
       %IF %length(&g_testdata) %THEN %DO;
          LIBNAME testdata "&g_testdata.";
          FILENAME testdata "&g_testdata.";
@@ -128,18 +126,30 @@
       %_insertAutoCallPath (&&g_sasautos&i..)
    %END;
    
-   %LET g_SASUnitLogger  =App.Program.SASUnit;
-   %LET g_scenarioLogger =App.Program.SASUnitScenario;
-   %LET g_assertLogger   =App.Program.SASUnitScenario.Asserts;
+   %_oscmds
    
-   %_oscmds;
+   %if (&i_caller. = SCENARIO) %then %do;
+      %let l_log4SAScurrentLogLevel=&g_log4SASScenarioLogLevel.;
+      %_setLog4SASLogLevel (loggername =&g_log4SASSuiteLogger.
+                           ,level      =&g_log4SASSuiteLogLevel.
+                           );   
+   %end;
+   %else %do;
+      %let l_log4SAScurrentLogLevel=&g_log4SASSuiteLogLevel.;
+      %_setLog4SASLogLevel (loggername =&g_log4SASScenarioLogger.
+                           ,level      =&g_log4SASScenarioLogLevel.
+                           );   
+      %_setLog4SASLogLevel (loggername =&g_log4SASAssertLogger.
+                           ,level      =&g_log4SASAssertLogLevel.
+                           );   
+   %end;
 
-   OPTIONS MAUTOSOURCE LINESIZE=MAX NOQUOTELENMAX MPRINT MPRINTNEST MCOMPILENOTE=ALL MAUTOLOCDISPLAY;
-   %IF (&g_verbose. = 1) %THEN %DO;
-      OPTIONS NOMLOGIC NOMLOGICNEST NOSYMBOLGEN ;
+   OPTIONS SOURCE SOURCE2 NOTES MAUTOSOURCE LINESIZE=MAX NOQUOTELENMAX NOMPRINT NOMLOGIC NOSYMBOLGEN NOMPRINTNEST NOMLOGICNEST MCOMPILENOTE=NONE NOMAUTOLOCDISPLAY;
+   %IF (&l_log4SAScurrentLogLevel.=DEBUG) %THEN %DO;
+      OPTIONS MPRINT MLOGIC SYMBOLGEN;
    %END;
-   %ELSE %DO;
-      OPTIONS NOMLOGIC NOMLOGICNEST NOSYMBOLGEN;
+   %ELSE %IF (&l_log4SAScurrentLogLevel.=TRACE) %THEN %DO;
+      OPTIONS MPRINT MLOGIC SYMBOLGEN MPRINTNEST MLOGICNEST MCOMPILENOTE=ALL MAUTOLOCDISPLAY;
    %END;
 
    %put _global_;

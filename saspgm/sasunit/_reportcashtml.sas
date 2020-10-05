@@ -23,7 +23,6 @@
    \param   i_style        Name of the SAS style and css file to be used. 
 
 */ /** \cond */ 
-
 %MACRO _reportCasHTML (i_repdata = 
                       ,o_html    = 0
                       ,o_path    =
@@ -133,7 +132,7 @@
             LinkTitle2   = "&g_nls_reportScn_011";
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
-               if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/pgmDoc/"!!trim(pgmdoc_name)!!".html")) then do;
+               if (&o_pgmdoc. = 1 and fileexist ("&g_reportFolder./doc/pgmDoc/"!!trim(pgmdoc_name)!!".html")) then do;
                   LinkColumn1 = catt ("pgmDoc/", pgmdoc_name, ".html");
                end;
                else do;
@@ -188,7 +187,7 @@
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
                LinkColumn3 = catt ("testDoc/cas_", c_scnid, "_", c_casid,  ".html");
-               if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/pgmDoc/" !! trim(pgmdoc_name) !! ".html")) then do;
+               if (&o_pgmdoc. = 1 and fileexist ("&g_reportFolder./doc/pgmDoc/" !! trim(pgmdoc_name) !! ".html")) then do;
                   LinkColumn4 = catt ("pgmDoc/", pgmdoc_name, ".html");
                end;
                else do;

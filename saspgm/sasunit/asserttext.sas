@@ -29,10 +29,7 @@
    \param      i_modifier             Optional parameter: modifiers for the compare (default = ' ')
    \param      i_desc                 Optional parameter: description of the assertion to be checked (default = "Comparion of texts")
    \param      i_threshold            Optional parameter: further parameter to be passed to the script (default = 1)
-
-   \todo replace g_verbose
 */ /** \cond */ 
-
 %MACRO assertText (i_script            =
                   ,i_expected          =
                   ,i_actual            =
@@ -74,7 +71,6 @@
                  ,NOXCMD
                  ,(%sysfunc(getoption(XCMD)) = NOXCMD)
                  ,Your SAS Session does not allow XCMD%str(,) therefore assertText cannot be run.
-                 ,i_verbose=&g_verbose.
                  ) 
    %THEN %DO;
       %LET l_rc    =0;
@@ -167,8 +163,8 @@
    %*** Start tests                                           ***;
    %*************************************************************;
    
-   %_xcmdWithPath(i_cmd_path           ="&i_script." "&i_expected." "&i_actual." "&l_path./_text_diff.txt"
-                 ,i_cmd                ="&i_modifier." "&i_threshold."
+   %_xcmdWithPath(i_cmd_path           ="&i_script."
+                 ,i_cmd                ="&i_expected." "&i_actual." "&l_path./_text_diff.txt" "&i_modifier." "&i_threshold."
                  ,i_expected_shell_rc  =&i_expected_shell_rc.
                  ,r_rc                 =l_rc
                  );

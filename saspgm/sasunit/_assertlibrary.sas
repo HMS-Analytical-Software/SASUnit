@@ -30,7 +30,6 @@
 
    \retval    o_result       Return code of the assert 0: OK / 1: ERROR
 */ /** \cond */ 
-
 %macro _assertlibrary (i_actual      =_NONE_
                       ,i_expected    =_NONE_
                       ,i_ExcludeList =_NONE_

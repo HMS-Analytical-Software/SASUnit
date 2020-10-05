@@ -19,8 +19,6 @@
    \param   i_from       root of directory tree
    \param   i_to         copy to 
    \return  operation system return code or 0 if OK
-
-   \todo replace g_verbose
 */ /** \cond */ 
 
 %macro _copyDir (i_from
@@ -51,19 +49,19 @@
      --*/
    %sysexec (xcopy &l_i_from &l_i_to /E /I /Y > "&logfile" 2>&1);
    
-   %if &g_verbose. %then %do;
-      %_issueInfoMessage (&g_currentLogger., _copyDir: %str(======== OS Command Start ========));
-       /* Evaluate sysexec´s return code*/
-      %IF &sysrc. = 0 %THEN %DO;
-         %_issueInfoMessage (&g_currentLogger., _copyDir: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
-      %END;
-      %ELSE %DO;
-         %_issueErrorMessage (&g_currentLogger., _copyDir: &sysrc -> An Error occured);
-      %END;
+   %_issueDebugMessage (&g_currentLogger., _copyDir: %str(======== OS Command Start ========));
+    /* Evaluate sysexec´s return code*/
+   %IF &sysrc. = 0 %THEN %DO;
+      %_issueDebugMessage (&g_currentLogger., _copyDir: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
+   %END;
+   %ELSE %DO;
+      %_issueErrorMessage (&g_currentLogger., _copyDir: &sysrc -> An Error occured);
+   %END;
 
-      /* put sysexec command to log*/
-      %_issueInfoMessage (&g_currentLogger., _copyDir: xcopy &l_i_from &l_i_to /E /I /Y > "&logfile");
+   /* put sysexec command to log*/
+   %_issueDebugMessage (&g_currentLogger., _copyDir: xcopy &l_i_from &l_i_to /E /I /Y > "&logfile");
       
+   %if (&g_currentLogLevel. = DEBUG or &g_currentLogLevel. = TRACE) %then %do;
       /* write &logfile to the log*/
       data _null_;
          infile "&logfile" truncover lrecl=512;
@@ -71,8 +69,9 @@
          putlog line;
       run;
       %put ======== OS Command End ========;
-      %_issueInfoMessage (&g_currentLogger., _copyDir: %str(======== OS Command End ========));
    %end;
+
+   %_issueDebugMessage (&g_currentLogger., _copyDir: %str(======== OS Command End ========));
    
    options &xwait &xsync &xmin;
 

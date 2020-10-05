@@ -16,10 +16,7 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
    \param   d_reporting Name of dataset to be created
-
-   \todo replace g_verbose
 */ /** \cond */ 
-
 %macro _createRepData (d_reporting    =
                       ,d_repexa       =
                       );
@@ -216,6 +213,11 @@
          ,tsu_lastinit
          ,tsu_lastrep
          ,tsu_dbversion
+         ,tsu_logFolder
+         ,tsu_scnLogFolder
+         ,tsu_log4SASSuiteLogLevel
+         ,tsu_log4SASScenarioLogLevel
+         ,tsu_reportFolder
          ,scn_id     
          ,scn_path   
          ,scn_desc   
@@ -281,7 +283,6 @@
                     ,ErrorTestDB
                     ,&syserr. NE 0
                     ,%nrstr(Fehler beim Zugriff auf die Testdatenbank)
-                    ,i_verbose=&g_verbose.
                     )
       %THEN %GOTO errexit;
    %GOTO exit;

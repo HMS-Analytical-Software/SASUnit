@@ -6,8 +6,7 @@
    
    \details    Asserts will issue messages into a separate log file when using log4sas.
                When an assert fails we want to issue a real error message.
-               This is fatal when not using log4sas becuase it will generate additional erros in the log file
-               Therefore we will capture g_useLog4SAS and only issue that message in the separate log file
+               This is fatal when not using log4sas because it will generate additional erros in the log file
 
    \version    \$Revision$
    \author     \$Author$
@@ -15,14 +14,9 @@
    
    \param     message      Message to be captured by the logger
 
-   \return    message      Message in the associated appender
-*/
+   \return    message      Message in the associated logger and appender
+*//** \cond */
 %macro _issueasserterrormessage(message);
-   %if (&g_useLog4SAS.) %then %do;
-      %_issueErrorMessage (&g_assertLogger., &message.);
-   %end;
-   %else %do;
-      %_issueDebugMessage (&g_currentLogger., Log4SAS is turned off. No Log for assert Messages present.);
-   %end;
+   %_issueErrorMessage (&g_log4SASAssertLogger., &message.);
 %mend _issueasserterrormessage;
-
+/** \endcond */

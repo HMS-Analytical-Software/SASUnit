@@ -29,7 +29,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-			   
+            
    \param   i_macroname      name of macro where error condition occured
    \param   i_errorcode      error code unique to the calling macro
    \param   i_condition      condition - logical expression, will be evaluated and returned by the macro
@@ -38,10 +38,7 @@
    \param   i_verbose        deprecated parameter
                              
    \return                   evaluated i_condition
-   
-   \todo change last info message to debug message when SASUnit uses log4sas
 */ /** \cond */
-
 %MACRO _handleError (i_macroname
                     ,i_errorcode      
                     ,i_condition      
@@ -80,7 +77,7 @@
       %LET g_error_macro = &i_macroname;
    %END;
    %ELSE %DO;
-      %_issueInfoMessage (&g_currentLogger., OK: [&i_errorcode.] &i_macroname %str(%()Condition: &i_condition%str(%)))
+      %_issueDebugMessage (&g_currentLogger., OK: [&i_errorcode.] &i_macroname %str(%()Condition: &i_condition%str(%)))
       0
    %END;
 %MEND _handleError;

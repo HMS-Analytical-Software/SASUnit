@@ -20,7 +20,6 @@
    \param   o_targetColumn name of the target column holding the ODS formatted value
 
 */ /** \cond */  
-
 %macro _render_assertLogMsgExp (i_sourceColumn=
                                ,o_html=0
                                ,o_targetColumn=

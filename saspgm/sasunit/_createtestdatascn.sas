@@ -17,7 +17,7 @@
             
    \param   libref Library for the test database (optionaL: Default=target)
 
-*/
+*//** \cond */
 %macro _createTestDataSCN (libref=target);
    PROC SQL NOPRINT;
       CREATE TABLE &libref..scn(COMPRESS=CHAR)
@@ -35,3 +35,4 @@
       );
    QUIT;
 %mend _createTestDataSCN;
+/** \endcond */

@@ -24,9 +24,7 @@
                             Message will be prefixed by '<assertType> failed: '.
    \param  r_casid          optional: return number of current test case 
    \param  r_tstid          optional: return number of this check within test case
-   */ /** \cond */  
-
-
+*/ /** \cond */  
 %MACRO _asserts (i_type     =       
                 ,i_expected =       
                 ,i_actual   =       

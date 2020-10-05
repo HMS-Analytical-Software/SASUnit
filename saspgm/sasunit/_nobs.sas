@@ -18,7 +18,6 @@
    \param   i_data       SAS dataset (one or two level name) 
    \return  number of observations or 0, if dataset cannot be found
 */ /** \cond */ 
-
 %MACRO _nobs(i_data
             );
 

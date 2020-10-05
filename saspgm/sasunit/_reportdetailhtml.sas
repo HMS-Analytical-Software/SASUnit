@@ -23,8 +23,12 @@
    \param   o_file         name of the outputfile without extension
    \param   i_style        name of the SAS style and css file to be used. 
 
-*/ /** \cond */ 
+\todo Are these changes suitable for other programs?
 
+\todo Can we speed up report generartion by applying a keep in the first datastep?
+
+
+*/ /** \cond */ 
 %MACRO _reportDetailHTML (i_repdata =
                          ,i_scnid   =
                          ,i_casid   = 
@@ -132,21 +136,11 @@
          scn_duration = put (scn_end - scn_start, ??&g_nls_reportScn_013.) !! " s";
          c_scnid      = put (scn_id, z3.);
          c_casid      = put (cas_id, z3.);
-         c_autonM2    = compress (exa_auton-2,2.);
-         if (exa_auton = 0) then do;
-            cas_abs_path = resolve ('%_abspath(&g_sasunit.,' !! trim(cas_obj) !! ')');   
-         end;
-         else if (exa_auton = 1) then do;
-            cas_abs_path = resolve ('%_abspath(&g_sasunit_os.,' !! trim(cas_obj) !! ')');   
-         end;
-         else do;
-            cas_abs_path = resolve ('%_abspath(&g_sasautos' !! trim(c_autonM2) !! '.,' !! trim(cas_obj) !! ')');
-         end;
          if (exa_auton >= 2) then do;
-            cas_obj      = resolve ('%_stdpath(&g_root.,' !! trim(cas_abs_path) !! ')');
+            cas_obj      = resolve ('%_stdpath(&g_root.,' !! trim(exa_filename) !! ')');
          end;
          else do;
-            cas_obj      = resolve ('%_stdpath(&g_sasunitroot./saspgm/sasunit,' !! trim(cas_abs_path) !! ')');
+            cas_obj      = resolve ('%_stdpath(&g_sasunitroot./saspgm/sasunit,' !! trim(exa_filename) !! ')');
          end;
          pgmexa_name = catt (put (exa_auton, z2.), "_", tranwrd (exa_pgm, ".sas", ""));
 
@@ -178,14 +172,14 @@
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;
                LinkColumn1  = catt("./../cas_overview.html#SCN", c_scnid, "_");
-               if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/pgmDoc/" !! trim(pgmscn_name) !! ".html")) then do;
+               if (&o_pgmdoc. = 1 and fileexist ("&g_reportFolder./doc/pgmDoc/" !! trim(pgmscn_name) !! ".html")) then do;
                   LinkColumn2 = catt ("./../pgmDoc/", pgmscn_name, ".html");
                end;
                else do;
                   LinkColumn2 = catt ("src/scn/scn_", put (scn_id, z3.), ".sas");
                end;
                LinkColumn3  = c_scnid !! "_log.html";
-               if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/pgmDoc/" !! trim(pgmexa_name) !! ".html")) then do;
+               if (&o_pgmdoc. = 1 and fileexist ("&g_reportFolder./doc/pgmDoc/" !! trim(pgmexa_name) !! ".html")) then do;
                   LinkColumn4 = catt ("./../pgmDoc/", pgmexa_name, ".html");
                end;
                else do;
@@ -257,6 +251,7 @@
                           encoding="&g_rep_encoding.";
             %_reportPageTopHTML(i_title   = &l_title.
                                ,i_current = 0
+                               ,i_offset  =../
                                )
          %end;
          %LET l_c_scnid = %substr(00&i_cas.,%length(&i_cas));
@@ -351,7 +346,7 @@
       %end;
 
       proc datasets lib=work nolist memtype=(view data);
-         *delete _test_overview _test_report;
+         delete _test_overview _test_report;
       run;
    %end;
 %MEND _reportDetailHTML;

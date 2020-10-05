@@ -17,8 +17,6 @@
             
    \return
 */ /** \cond */ 
-
-
 %MACRO _termScenario();
    %endScenario(i_messageStyle=NOTE);
 %MEND _termScenario;

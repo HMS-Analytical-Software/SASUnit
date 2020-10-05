@@ -12,7 +12,7 @@
    \param     message      Message to be captured by the logger
 
    \return    message      Message in the associated appender
-*/
+*//** \cond */
 %macro _issueFatalMessage(loggername, message);
    %if (%length(&loggername.)=0) %then %do; 
       %put WARNING: loggername is null;
@@ -27,4 +27,4 @@
       %put ERROR: _rc is NOT null: &_rc.;  
    %end;
 %mend _issueFatalMessage;
-
+/** \endcond */

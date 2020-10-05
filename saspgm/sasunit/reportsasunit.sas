@@ -31,10 +31,7 @@
    
    \return Results are created in the subdirectory rep of the test repository or in the directory 
            specified by parameter o_output.
-           
-   \todo replace g_verbose
 */ /** \cond */ 
-
 %MACRO reportSASUnit (i_language         = _NONE_
                      ,o_html             = 1
                      ,o_pdf              = 0
@@ -51,6 +48,8 @@
    %LOCAL l_macname; 
    %LET l_macname=&sysmacroname;
 
+   %_issueInfoMessage (&g_currentLogger., %str (============================ reportSASUnit is starting... ==========================));
+   
    /*-- check parameters --------------------------------------------------------*/
    %IF "&o_html"  NE "1" %THEN %LET o_html =0;
 
@@ -73,23 +72,22 @@
    %END;
 
    %if (&i_language. = _NONE_) %then %do;
-      %_nls (i_language=&g_language)
+      %_nls (i_language=&g_language.)
    %end;
    %else %do;
-      %_nls (i_language=&i_language)
+      %_nls (i_language=&i_language.)
    %end;
 
    /*-- check if target folder exists -------------------------------------------*/
    %LOCAL l_output; 
    %IF %length(&o_output.) %THEN %LET l_output=&o_output;
-   %ELSE %LET l_output =&g_target./doc;
-   %LET l_output=%_abspath(&g_root,&l_output);
+   %ELSE %LET l_output =&g_reportFolder.;
+   %LET l_output=%_abspath(&g_root,&l_output.);
 
    %IF %_handleError(&l_macname.
                     ,InvalidOutputDir
                     ,NOT %_existDir(&l_output.)
                     ,Error in parameter o_output: target &l_output. folder does not exist
-                    ,i_verbose=&g_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -98,7 +96,6 @@
                     ,NoTestDB
                     ,NOT %sysfunc(exist(target.tsu)) OR NOT %symexist(g_project)
                     ,%nrstr(Test database cannot be accessed, call initSASUnit before reportSASUnit)
-                    ,i_verbose=&g_verbose.
                     )
       %THEN %GOTO errexit;
 
@@ -188,12 +185,12 @@
                /*-- copy static files - images, css etc. ---------------------------*/
                PUT '%_copydir(' /
                    "    &g_sasunitroot./resources" '/html/%str(*)' /
-                   "   ,&l_output" /
+                   "   ,&l_output." /
                    ")";
                /*-- create frame HTML page -----------------------------------------*/
                PUT '%_reportFrameHTML('                   /
                    "    i_repdata = &d_rep"               /
-                   "   ,o_html    = &l_output/index.html" /
+                   "   ,o_html    = &l_output./index.html" /
                    "   ,i_style   = &i_style."            /
                    ")";
             END;
@@ -201,9 +198,9 @@
             IF tsu_lastinit > tsu_lastrep OR &o_force. THEN DO;
                /*-- convert SAS-log from initSASUnit -------------------------------*/
                PUT '%_reportLogHTML('                            /
-                   "    i_log     = &g_log/000.log"              /
-                   "   ,i_title   = &g_nls_reportSASUnit_001"    /
-                   "   ,o_html    = &l_output/000_log.html"      /
+                   "    i_log     = &g_scnLogFolder./000.log"              /
+                   "   ,i_title   = &g_nls_reportSASUnit_001."    /
+                   "   ,o_html    = &l_output./testDoc/000_log.html"      /
                    ")";
             END;
             /*-- only if a test scenario has been run since last report ------------*/
@@ -271,16 +268,16 @@
             IF scn_start > tsu_lastrep OR &o_force THEN DO;
                /*-- convert logfile of scenario ------------------------------------*/
                PUT '%_reportLogHTML(' / 
-                   "    i_log     = &g_log/" scn_id z3. ".log"  /
+                   "    i_log     = &g_scnLogFolder./" scn_id z3. ".log"  /
                    "   ,i_title   = &g_nls_reportSASUnit_002 " scn_id z3. " (" cas_obj +(-1) ")" /
-                   "   ,o_html    = &l_output/testDoc/" scn_id z3. "_log.html" /
+                   "   ,o_html    = &l_output./testDoc/" scn_id z3. "_log.html" /
                    ")";
                /*-- compile detail information for test case -----------------------*/
                PUT '%_reportDetailHTML('              /
                    "    i_repdata = &d_rep"           /
                    "   ,i_scnid   = " scn_id z3.      /
                    "   ,o_html    = &o_html."         /
-                   "   ,o_path    = &l_output./testDoc/"       /
+                   "   ,o_path    = &l_output./testDoc"       /
                    "   ,o_file    = cas_" scn_id z3.  /
                    "   ,i_style   = &i_style."        /
                    ")";
@@ -294,9 +291,9 @@
             IF first.cas_id AND scn_id NE . AND cas_id NE . THEN DO;
                /*-- convert logfile of test case -----------------------------------*/
                PUT '%_reportLogHTML(' /
-                   "    i_log     = &g_log/" scn_id z3. "_" cas_id z3. ".log" /
+                   "    i_log     = &g_scnLogFolder./" scn_id z3. "_" cas_id z3. ".log" /
                    "   ,i_title   = &g_nls_reportSASUnit_003 " cas_id z3. " &g_nls_reportSASUnit_004 " scn_id z3. " (" cas_obj +(-1) ")" /
-                   "   ,o_html    = &l_output/testDoc/" scn_id z3. "_" cas_id z3. "_log.html" /
+                   "   ,o_html    = &l_output./testDoc/" scn_id z3. "_" cas_id z3. "_log.html" /
                    ")";
             END;
 
@@ -334,14 +331,12 @@
 
    %GOTO exit;
 %errexit:
-      %_issueInfoMessage (&g_currentLogger., %str ( ));
       %_issueInfoMessage (&g_currentLogger., %str (======================== Error! reportSASUnit aborted! ==========================================));
-      %_issueInfoMessage (&g_currentLogger., %str ( ));
-      %_issueInfoMessage (&g_currentLogger., %str ( ));
 %exit:
    PROC DATASETS NOWARN NOLIST LIB=work;
       DELETE %scan(&d_rep.,2,.)
              ;
    QUIT;
+   %_issueInfoMessage (&g_currentLogger., %str (============================ reposrtSASUnit has finished creating documentation ==========================));
 %MEND reportSASUnit;
 /** \endcond */

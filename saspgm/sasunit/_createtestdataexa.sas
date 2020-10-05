@@ -17,7 +17,7 @@
             
    \param   libref Library for the test database (optionaL: Default=target)
 
-*/
+*//** \cond */
 %macro _createTestDataEXA (libref=target);
    PROC SQL NOPRINT;
       CREATE TABLE &libref..exa(COMPRESS=CHAR)
@@ -32,3 +32,4 @@
       );
    QUIT;
 %mend _createTestDataEXA;
+/** \endcond */

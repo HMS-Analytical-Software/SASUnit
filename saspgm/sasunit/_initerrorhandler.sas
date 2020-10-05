@@ -19,7 +19,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 			   
 */ /** \cond */ 
-
 %MACRO _initErrorHandler;
 
    /* global signal for return of error conditions to calling macros programs */

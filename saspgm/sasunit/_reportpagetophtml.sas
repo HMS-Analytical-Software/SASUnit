@@ -19,13 +19,13 @@
    \param   i_current      number of the active tab, default is 1
 
 */ /** \cond */  
-
 %MACRO _reportPageTopHTML (i_title   =
                           ,i_current = 1
+                          ,i_offset  =
                           );
 
       %_reportTabsHTML(&g_nls_reportPageTop_001
-                      ,overview.html scn_overview.html cas_overview.html auton_overview.html
+                      ,&i_offset.overview.html &i_offset.scn_overview.html &i_offset.cas_overview.html &i_offset.auton_overview.html
                       ,i_current=&i_current
                       )
 %MEND _reportPageTopHTML;

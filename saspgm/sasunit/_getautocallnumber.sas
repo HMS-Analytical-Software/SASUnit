@@ -22,7 +22,6 @@
    \return           number of autocall library 0..10 or . if program file cannot be found
 
 */ /** \cond */ 
-
 %MACRO _getAutocallNumber (i_object
                           );
 

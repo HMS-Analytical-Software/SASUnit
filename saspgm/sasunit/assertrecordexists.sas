@@ -21,7 +21,6 @@
                            default: "Check for existence of specific records"
    
 */ /** \cond */ 
-
 %MACRO assertRecordExists (i_dataset      =      
                           ,i_whereExpr    =      
                           ,i_desc         = Check for existence of specific records

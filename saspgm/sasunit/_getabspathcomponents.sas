@@ -23,7 +23,6 @@
 
    \retval  o_pathWithoutName name of a result macro variable with the path without the file name
 */ /** \cond */ 
-
 %MACRO _getAbsPathComponents (i_absPath =
                              ,o_fileName =
                              ,o_pathWithoutName =

@@ -20,27 +20,15 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
    \param     i_script               Path of shell script
-   \param     i_expected             First parameter for script
-   \param     i_actual               Second parameter for script
-   \param     i_expected_shell_rc    Optional parameter: Expected return code of scipt. The shell return code and i_expected_shell_rc are compared 
+   \param     i_parameters           Parameter for script
+   \param     i_expected_shell_rc    Optional parameter: Expected return code of script. The shell return code and i_expected_shell_rc are compared 
                                      to determine success of assert (default = 0)
-   \param     i_modifier             Optional parameter: modifier used in script (default = ' ')
-   \param     i_threshold            Optional parameter: threshold above which the test is successful (default = "NONE")
-   \param     i_expectedIsPath       Optional parameter: If set to Y, i_expected is checked if it is a valid path (default = "N")
-   \param     i_actualIsPath         Optional parameter: If put to Y, i_actual is checked if it is a valid path (default = "N")
    \param     i_desc                 Optional parameter: description of the assertion to be checked Default = "External comparison")
-
-   \todo replace g_verbose
-*/ /** \cond */ 
-
+*/ 
+/** \cond */ 
 %MACRO assertExternal (i_script             =
-                      ,i_expected           =
-                      ,i_actual             =
+                      ,i_parameters         =
                       ,i_expected_shell_rc  =0
-                      ,i_modifier           =
-                      ,i_threshold          =NONE
-                      ,i_expectedIsPath     =N
-                      ,i_actualIsPath       =N
                       ,i_desc               =External comparison
                       );
 
@@ -51,13 +39,11 @@
       %RETURN;
    %END;
 
-   %LOCAL  l_actual
-           l_cmdFile
-           l_errmsg
-           l_expected
+   %LOCAL  l_errmsg
            l_rc
            l_result
            l_macname
+           l_script
    ;
   
    %LET l_errmsg   =;
@@ -70,28 +56,11 @@
    %*************************************************************;
 
    %*** Check if i_script file exists ***;
-   %IF NOT %SYSFUNC(FILEEXIST(&i_script.)) %THEN %DO;
+   %let l_script = %_adaptSASUnitPathToOS(&i_script.);
+   %IF NOT %SYSFUNC(FILEEXIST(&l_script.)) %THEN %DO;
       %LET l_rc = -2;
-      %LET l_errMsg=Script file &i_script. does not exist!;
+      %LET l_errMsg=Script file &i_script. (&l_script) does not exist!;
       %GOTO Update;
-   %END;
-
-   %*** Check if i_expected is a path and if so, whether it exists ***;
-   %IF &i_expectedIsPath. EQ Y %THEN %DO; 
-      %IF NOT %SYSFUNC(FILEEXIST(&i_expected.)) %THEN %DO;
-         %LET l_rc = -3;
-         %LET l_errMsg=Path &i_expected. does not exist!;
-         %GOTO Update;
-      %END;
-   %END;
-
-   %*** Check if i_actual is a path and if so, whether it exists ***;
-   %IF &i_actualIsPath. EQ Y %THEN %DO; 
-      %IF NOT %SYSFUNC(FILEEXIST(&i_actual.)) %THEN %DO;
-         %LET l_rc = -4;
-         %LET l_errMsg=Path &i_actual. does not exist!;
-         %GOTO Update;
-      %END;
    %END;
 
    %*************************************************************;
@@ -101,9 +70,7 @@
                  ,NOXCMD
                  ,(%sysfunc(getoption(XCMD)) = NOXCMD)
                  ,Your SAS Session does not allow XCMD%str(,) therefore assertExternal cannot be run.
-                 ,i_verbose=&g_verbose.
-                 ) 
-   %THEN %DO;
+                 ) %THEN %DO;
       %LET l_rc    =0;
       %LET l_result=2;
       %LET l_errmsg=Your SAS Session does not allow XCMD%str(,) therefore assertExternal cannot be run.;
@@ -113,9 +80,8 @@
    %*************************************************************;
    %*** Start tests                                           ***;
    %*************************************************************;
-   
-   %_xcmdWithPath(i_cmd_path           ="&i_script." "&i_expected." "&i_actual."
-                 ,i_cmd                ="&i_modifier." "&i_threshold."
+   %_xcmdWithPath(i_cmd_path           =&l_script. 
+                 ,i_cmd                =&i_parameters.
                  ,i_expected_shell_rc  =&i_expected_shell_rc.
                  ,r_rc                 =l_rc
                  );

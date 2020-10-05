@@ -17,15 +17,21 @@
 
 %global g_inScenario g_inTestCase g_inTestCall;
 
+%let g_currentLogger = &g_assertLogger.;
+
 %initTestCase (i_object=_checkCallingSequence.sas
               ,i_desc=Test cases for parameters
               );
-%endTestCall;
+%put &=g_scnid.;
+%endTestCall();
+%put &=g_scnid.;
 %assertEquals (i_expected=-1
               ,i_actual  =%_checkCallingSequence(i_callerType=Hugo)
               ,i_desc    =Call with invalid callerType
               );
-%endTestCase;
+%put &=g_scnid.;
+%endTestCase();
+%put &=g_scnid.;
 
 %initTestCase (i_object=_checkCallingSequence.sas
               ,i_desc=Test cases for scenarios

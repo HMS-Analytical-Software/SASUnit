@@ -63,72 +63,79 @@
    \todo    implement os-indepedant version of assertText and assertImage. All os-dependant info needs to be packed inside the script files. See assertText.cmd
    \todo    move assertText scenarios to os-dependant scenario folder and eliminate adaptToOs-macros 
    \todo    Are all checks for Shell vs. SASUnit-Parameters necessary only in Batch?
-   \todo    Do not use %sysget in SASUnit anywhere except for Shell- vs. SASUnit-Parameters and in run_all.sas
-   \todo    Implement _setLog4SASLogLevel
-   \todo    Name all macros that especially deal with log4SAS as _ccccLog4SASCcccccc
-   \todo    replace g_verbose
    \todo    I think there should be no need to call _loadEnvironment within SASUnit. runall does not need autocall paths to all folders!
             Check that and change implementation for initSASUnit and loadEnvironment
-*//** \cond */ 
+   \todo check new parms for Logfiles and reportfolder
+   \todo check regenerate empty folders; check not to delete test_db_folder
 
-%MACRO initSASUnit(i_root            = 
-                  ,io_target         = 
-                  ,i_overwrite       =0
-                  ,i_project         = 
-                  ,i_sasunit         =%sysget(SASUNIT_ROOT)/saspgm/sasunit
-                  ,i_sasautos        =
-                  ,i_sasautos1       =
-                  ,i_sasautos2       =
-                  ,i_sasautos3       =
-                  ,i_sasautos4       =
-                  ,i_sasautos5       =
-                  ,i_sasautos6       =
-                  ,i_sasautos7       =
-                  ,i_sasautos8       =
-                  ,i_sasautos9       =
-                  ,i_sasautos10      =
-                  ,i_sasautos11      =
-                  ,i_sasautos12      =
-                  ,i_sasautos13      =
-                  ,i_sasautos14      =
-                  ,i_sasautos15      =
-                  ,i_sasautos16      =
-                  ,i_sasautos17      =
-                  ,i_sasautos18      =
-                  ,i_sasautos19      =
-                  ,i_sasautos20      =
-                  ,i_sasautos21      =
-                  ,i_sasautos22      =
-                  ,i_sasautos23      =
-                  ,i_sasautos24      =
-                  ,i_sasautos25      =
-                  ,i_sasautos26      =
-                  ,i_sasautos27      =
-                  ,i_sasautos28      =
-                  ,i_sasautos29      =
-                  ,i_autoexec        =
-                  ,i_sascfg          =
-                  ,i_sasuser         =
-                  ,i_testdata        = 
-                  ,i_refdata         = 
-                  ,i_doc             = 
-                  ,i_testcoverage    =1
-                  ,i_verbose         =0
-                  ,i_crossref        =1
-                  ,i_crossrefsasunit =0
-                  ,i_language        =%sysget(SASUNIT_LANGUAGE)
-                  ,i_logpath         =
-                  ,i_scnlogpath      =
+*//** \cond */ 
+%MACRO initSASUnit(i_root                    =
+                  ,io_target                 =
+                  ,i_overwrite               =0
+                  ,i_project                 =
+                  ,i_sasunit                 =%sysget(SASUNIT_ROOT)/saspgm/sasunit
+                  ,i_sasautos                =
+                  ,i_sasautos1               =
+                  ,i_sasautos2               =
+                  ,i_sasautos3               =
+                  ,i_sasautos4               =
+                  ,i_sasautos5               =
+                  ,i_sasautos6               =
+                  ,i_sasautos7               =
+                  ,i_sasautos8               =
+                  ,i_sasautos9               =
+                  ,i_sasautos10              =
+                  ,i_sasautos11              =
+                  ,i_sasautos12              =
+                  ,i_sasautos13              =
+                  ,i_sasautos14              =
+                  ,i_sasautos15              =
+                  ,i_sasautos16              =
+                  ,i_sasautos17              =
+                  ,i_sasautos18              =
+                  ,i_sasautos19              =
+                  ,i_sasautos20              =
+                  ,i_sasautos21              =
+                  ,i_sasautos22              =
+                  ,i_sasautos23              =
+                  ,i_sasautos24              =
+                  ,i_sasautos25              =
+                  ,i_sasautos26              =
+                  ,i_sasautos27              =
+                  ,i_sasautos28              =
+                  ,i_sasautos29              =
+                  ,i_autoexec                =
+                  ,i_sascfg                  =
+                  ,i_sasuser                 =
+                  ,i_testdata                = 
+                  ,i_refdata                 = 
+                  ,i_doc                     = 
+                  ,i_testcoverage            =1
+                  ,i_verbose                 =0
+                  ,i_crossref                =1
+                  ,i_crossrefsasunit         =0
+                  ,i_language                =%sysget(SASUNIT_LANGUAGE)
+                  ,i_logFolder               =
+                  ,i_scnLogFolder            =
+                  ,i_log4SASSuiteLogLevel    =
+                  ,i_log4SASScenarioLogLevel =
+                  ,i_reportFolder            =
                   );
 
-   %GLOBAL g_version g_revision g_db_version g_verbose g_error g_warning g_note g_runMode g_language g_currentLogger;
+   %GLOBAL g_version g_revision g_db_version g_error g_warning g_note g_runMode g_language g_currentLogger g_currentLogLevel;
 
    %LET g_version    = 2.0.2;
    %LET g_db_version = 2.1;
    %LET g_revision   = $Revision$;
    %LET g_revision   = %scan(&g_revision,2,%str( $:));
    
-   %LET g_currentLogger = App.Program.SASUnit;
+   %LET g_log4SASSuiteLogger     = App.Program.SASUnit;
+   %LET g_currentLogger          = &g_log4SASSuiteLogger.;
+   %LET g_currentLogLevel        = &i_log4SASSuiteLogLevel.;
+   /*** Setting logging information  ***/
+   %_setLog4SASLogLevel (loggername =&g_currentlogger.
+                        ,level      =&g_currentLogLevel.
+                        );   
    
    %_issueInfoMessage(&g_currentLogger., --------------------------------------------------------------------------------)
    %_issueInfoMessage(&g_currentLogger., Starting SASUnit (InitSASUnit) in version &g_version..)
@@ -143,7 +150,7 @@
    %_readEnvMetadata;
    
    /*-- check for operation system and SAS version -------------------------------*/
-   %IF (%_checkRunEnvironment(&i_verbose.) ne 0) %THEN %GOTO errexit;
+   %IF (%_checkRunEnvironment ne 0) %THEN %GOTO errexit;
 
    /******************************************************************************/
    /*** Step two                                                               ***/
@@ -176,6 +183,7 @@
       l_rc
       l_parameterNames
       l_goOn
+      l_logFolder l_scnLogFolder l_reportFolder
    ;
    
    /*-- Initialize error handler --------------------------------------------------------*/
@@ -186,7 +194,7 @@
 
    /*-- Check value of incoming parameters ---------------------------------------------*/
    /*-- Theses parameters must be set --------------------------------------------------*/
-   %let l_parameterNames = i_root io_target i_project i_sasunit i_sasautos i_language i_testdata i_refdata; /* i_testdb_path i_logpath i_scnlogpath */
+   %let l_parameterNames = i_root io_target i_project i_sasunit i_sasautos i_language i_testdata i_refdata i_logFolder i_scnLogFolder i_reportFolder; 
 
    %_checkListOfParameters (i_listOfParameters    = &l_parameterNames.
                            ,i_returnCodeVariable  = l_goOn
@@ -224,10 +232,6 @@
    %IF (&i_crossref. NE 1) %THEN %DO;
       %LET i_crossref = 0;
    %END;
-   %IF (&i_verbose. NE 0) %THEN %DO;
-      %LET i_verbose = 1;
-   %END;
-   %LET g_verbose   = &i_verbose;
    %IF (&i_testcoverage. NE 1)%THEN %DO;
       %LET i_testcoverage = 0;
    %END;
@@ -284,7 +288,6 @@
                     ,InvalidPath
                     ,"&l_root" NE "" AND NOT %_existdir(&l_root)
                     ,%str(Error in parameter i_root: folder must exist when specified)
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -293,7 +296,6 @@
                     ,InvalidPath
                     ,"&l_target." EQ "" OR NOT %_existDir(&l_target.)
                     ,Error in parameter io_target: target directory does not exist
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -302,14 +304,12 @@
                     ,InvalidLibrary
                     ,%quote(&syslibrc.) NE 0
                     ,Error in parameter io_target: target directory &l_target. cannot be assigned as a SAS library
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
    %IF %_handleError(&l_macname.
                     ,LibraryNotWritable
                     ,%quote(&syserr.) NE 0
                     ,Error in parameter io_target: target directory not writeable
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -319,7 +319,6 @@
                     ,InvalidPath
                     ,"&l_sasunitroot" NE "" AND NOT %_existdir(&l_sasunitroot)
                     ,%str(Error in parameter l_sasunitroot: folder must exist when specified)
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -329,7 +328,6 @@
                     ,InvalidPath
                     ,"&l_abs." EQ "" OR NOT %sysfunc(fileexist(&l_abs./_scenario.sas))
                     ,Error in parameter i_sasunit: SASUnit macro programs not found
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -338,7 +336,6 @@
                     ,InvalidPath
                     ,%index (&l_sasunit.,&l_sasunitroot.) NE 1
                     ,Invalid path to SASUnit - SASUnit root is &l_sasunitroot. - SASUnit path is &l_sasunit.
-                    ,i_verbose=&i_verbose.
                     ) 
    %THEN %GOTO errexit;
 
@@ -349,7 +346,6 @@
                     ,InvalidAutocallPath
                     ,"&l_sasautos_abs" NE "" AND NOT %_existdir(&l_sasautos_abs)
                     ,Error in parameter i_sasautos: folder not found
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
    
@@ -360,7 +356,6 @@
                        ,InvalidAutocallPath
                        ,"&l_sasautos_abs" NE "" AND NOT %_existdir(&l_sasautos_abs)
                        ,Error in parameter i_sasautos&i: folder not found
-                       ,i_verbose=&i_verbose.
                        ) 
          %THEN %GOTO errexit;
    %END; /* i=1 %TO 29 */
@@ -375,14 +370,13 @@
                     ,AutoexecIsGiven
                     ,"&l_autoexec" NE ""
                     ,Parameter i_autoexec was not given by user so no autoexec will be used for calling scenarios
-                    ,i_msgtype=INFO
+                    ,i_msgtype=DEBUG
                     ) 
       %THEN %DO;
       %IF %_handleError(&l_macname.
                        ,AutoexecNotFound
                        ,NOT %sysfunc(fileexist(&l_autoexec_abs.))
                        ,Error in parameter i_autoexec: file not found
-                       ,i_verbose=&i_verbose.
                        ) 
          %THEN %GOTO errexit;
    %END;
@@ -394,14 +388,13 @@
                     ,SASCfgIsGiven
                     ,"&l_sascfg" NE ""
                     ,Parameter i_sascfg was not given by user so no project config file will be used for calling scenarios
-                    ,i_msgtype=INFO
+                    ,i_msgtype=DEBUG
                     ) 
       %THEN %DO;
       %IF %_handleError(&l_macname.
                        ,SASCfgNotFound
                        ,NOT %sysfunc(fileexist(&l_sascfg_abs.))
                        ,Error in parameter i_sascfg: file not found
-                       ,i_verbose=&i_verbose.
                        ) 
          %THEN %GOTO errexit;
    %END;
@@ -413,7 +406,6 @@
                     ,InvalidSasuserPath
                     ,"&l_sasuser_abs" NE "" AND NOT %_existdir(&l_sasuser_abs)
                     ,Error in parameter i_sasuser: folder not found
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -424,7 +416,6 @@
                     ,InvalidTestdataPath
                     ,"&l_testdata_abs" NE "" AND NOT %_existdir(&l_testdata_abs)
                     ,Error in parameter i_testdata: folder not found
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -435,7 +426,6 @@
                     ,InvalidRefdataPath
                     ,"&l_refdata_abs" NE "" AND NOT %_existdir(&l_refdata_abs)
                     ,Error in parameter i_refdata: folder not found
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -446,7 +436,6 @@
                     ,InvalidDoc
                     ,"&l_doc_abs" NE "" AND NOT %_existdir(&l_doc_abs)
                     ,Error in parameter i_doc: folder not found
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -468,21 +457,18 @@
                     ,InvalidSASUnitOSDir
                     ,"&l_abspath_sasunit_os." EQ "" OR NOT %sysfunc(fileexist(&l_abspath_sasunit_os./_oscmds.sas))
                     ,Error in parameter l_sasunit_os: folder for os-specific SASUnit macro programs not found!
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
    %IF %_handleError(&l_macname.
                     ,SASUnitOsMacroNotFound
                     ,"&l_abspath_sasunit_os." EQ "" OR NOT %sysfunc(fileexist(&l_abspath_sasunit_os./_oscmds.sas))
                     ,Error in parameter i_sasunit: os-specific SASUnit macro _oscmds not found!
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
    %IF %_handleError(&l_macname.
                     ,SASUnitOsMacroNotFound
                     ,"&l_abspath_sasunit_os." EQ "" OR NOT %sysfunc(fileexist(&l_abspath_sasunit_os./_makesasunitpath.sas))
                     ,Error in parameter i_sasunit: os-specific SASUnit macro _makesasunitpath not found!
-                    ,i_verbose=&i_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -501,6 +487,9 @@
    %DO i=1 %TO 29;
       %LET l_sasautos&i=%_makeSASUnitPath(&&l_sasautos&i);
    %END; /* i=1 %TO 29 */
+   %LET l_logFolder=%_makeSASUnitPath(&i_logFolder.);
+   %LET l_scnLogFolder=%_makeSASUnitPath(&i_scnLogFolder.);
+   %LET l_reportFolder=%_makeSASUnitPath(&i_reportFolder.);
 
    %_insertAutocallPath (&l_sasunit.);
    %_insertAutocallPath (&l_abspath_sasunit_os.);
@@ -540,7 +529,6 @@
                        ,ErrorCreateDB
                        ,&syserr. NE 0
                        ,Error on creation of test database
-                       ,i_verbose=&i_verbose.
                        ) 
          %THEN %GOTO errexit;
    %END; /* %if &l_newdb */
@@ -552,19 +540,23 @@
          %LET l_cmdfile=%sysfunc(pathname(WORK))/remove_dir.cmd;
          DATA _null_;
             FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
-            PUT %sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target./log)&g_endcommand));
-            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_target./doc)&g_endcommand));
+            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_reportFolder.)&g_endcommand));
+/*            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&i_logFolder.)&g_endcommand));*/
+            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_scnLogFolder.)&g_endcommand));            
          RUN;
          %_executeCMDFile(&l_cmdfile.);
          %LET l_rc=%_delfile(&l_cmdfile.);
          %LET rc = %sysfunc (sleep(2,1));
-         %_mkDir (&l_target./log
-                 ,makeCompletePath = 0
-                 );
-         %_mkDir (&l_target./doc/testDoc
+         %_mkDir (&i_logFolder.
                  ,makeCompletePath = 1
                  );
-         %_mkDir (&l_target./doc/tempDoc/crossreference
+         %_mkDir (&i_scnLogFolder.
+                 ,makeCompletePath = 1
+                 );
+         %_mkDir (&l_reportFolder./testDoc/testCoverage
+                 ,makeCompletePath = 1
+                 );
+         %_mkDir (&l_reportFolder./tempDoc/crossreference
                  ,makeCompletePath = 1
                  );
               
@@ -573,61 +565,80 @@
       /*-- check folders -----------------------------------------------------------*/
       %IF %_handleError(&l_macname.
                        ,NoLogDir
-                       ,NOT %_existdir(&l_target./log)
-                       ,folder &l_target./log does not exist
-                       ,i_verbose=&i_verbose.
+                       ,NOT %_existdir(&l_logFolder.)
+                       ,folder &l_logFolder. does not exist
+                       ) 
+         %THEN %GOTO errexit;
+      %IF %_handleError(&l_macname.
+                       ,NoScnLogDir
+                       ,NOT %_existdir(&l_scnLogFolder.)
+                       ,folder &l_scnLogFolder. does not exist
                        ) 
          %THEN %GOTO errexit;
       %IF %_handleError(&l_macname.
                        ,NoRepDir
-                       ,NOT %_existdir(&l_target./doc)
-                       ,folder &l_target./doc does not exist
-                       ,i_verbose=&i_verbose.
+                       ,NOT %_existdir(&l_reportFolder.)
+                       ,folder &l_reportFolder. does not exist
                        ) 
          %THEN %GOTO errexit;
       %IF %_handleError(&l_macname.
                        ,NoRepDir
-                       ,NOT %_existdir(&l_target./doc/tempDoc)
-                       ,folder &l_target./doc/tempDoc does not exist
-                       ,i_verbose=&i_verbose.
+                       ,NOT %_existdir(&l_reportFolder./testDoc)
+                       ,folder &l_reportFolder./testDoc does not exist
                        ) 
          %THEN %GOTO errexit;
       %IF %_handleError(&l_macname.
                        ,NoRepDir
-                       ,NOT %_existdir(&l_target./doc/tempDoc/crossreference)
-                       ,folder &l_target./doc/tempDoc/crossreference does not exist
-                       ,i_verbose=&i_verbose.
+                       ,NOT %_existdir(&l_reportFolder./tempDoc)
+                       ,folder &l_reportFolder./tempDoc does not exist
+                       ) 
+         %THEN %GOTO errexit;
+      %IF %_handleError(&l_macname.
+                       ,NoRepDir
+                       ,NOT %_existdir(&l_reportFolder./tempDoc/crossreference)
+                       ,folder &l_reportFolder./tempDoc/crossreference does not exist
                        ) 
          %THEN %GOTO errexit;
    %END; 
 
    /*-- update parameters ----------------------------------------------------*/
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasautos         ,i_parameterValue =&l_sasautos.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasautos0        ,i_parameterValue =&l_sasautos.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasautos                  ,i_parameterValue =&l_sasautos.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasautos0                 ,i_parameterValue =&l_sasautos.);
    %DO i=1 %TO 29;
-      %_writeParameterToTestDBtsu (i_parameterName=tsu_sasautos&i.   ,i_parameterValue =&&l_sasautos&i.);
+      %_writeParameterToTestDBtsu (i_parameterName=tsu_sasautos&i.            ,i_parameterValue =&&l_sasautos&i.);
    %END; /* i=1 %TO 29 */
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_project          ,i_parameterValue =&i_project.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_target           ,i_parameterValue =&l_target.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_root             ,i_parameterValue =&l_root.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunitroot      ,i_parameterValue =&l_sasunitroot.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunit          ,i_parameterValue =&l_sasunit.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunit_os       ,i_parameterValue =&l_sasunit_os.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_autoexec         ,i_parameterValue =&l_autoexec.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_sascfg           ,i_parameterValue =&l_sascfg.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasuser          ,i_parameterValue =&l_sasuser.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_testdata         ,i_parameterValue =&l_testdata.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_refdata          ,i_parameterValue =&l_refdata.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_doc              ,i_parameterValue =&l_doc.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_testcoverage     ,i_parameterValue =&i_testcoverage.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_verbose          ,i_parameterValue =&i_verbose.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_crossref         ,i_parameterValue =&i_crossref.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_crossrefsasunit  ,i_parameterValue =&i_crossrefsasunit.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_language         ,i_parameterValue =&i_language.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_overwrite        ,i_parameterValue =&i_overwrite.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_project                   ,i_parameterValue =&i_project.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_target                    ,i_parameterValue =&l_target.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_root                      ,i_parameterValue =&l_root.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_project_bin               ,i_parameterValue =&i_root./bin);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunitroot               ,i_parameterValue =&l_sasunitroot.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunit                   ,i_parameterValue =&l_sasunit.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunit_os                ,i_parameterValue =&l_sasunit_os.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_autoexec                  ,i_parameterValue =&l_autoexec.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sascfg                    ,i_parameterValue =&l_sascfg.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_sasuser                   ,i_parameterValue =&l_sasuser.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_testdata                  ,i_parameterValue =&l_testdata.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_refdata                   ,i_parameterValue =&l_refdata.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_doc                       ,i_parameterValue =&l_doc.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_testcoverage              ,i_parameterValue =&i_testcoverage.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_verbose                   ,i_parameterValue =&i_verbose.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_crossref                  ,i_parameterValue =&i_crossref.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_crossrefsasunit           ,i_parameterValue =&i_crossrefsasunit.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_language                  ,i_parameterValue =&i_language.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_overwrite                 ,i_parameterValue =&i_overwrite.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_log4SASSuiteLogger        ,i_parameterValue =&g_log4SASSuiteLogger.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_log4SASSuiteLogLevel      ,i_parameterValue =&i_log4SASSuiteLogLevel.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_log4SASScenarioLogger     ,i_parameterValue =App.Program.SASUnitScenario);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_log4SASScenarioLogLevel   ,i_parameterValue =&i_log4SASScenarioLogLevel.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_log4SASAssertLogger       ,i_parameterValue =App.Program.SASUnitScenario.Asserts);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_log4SASAssertLogLevel     ,i_parameterValue =&i_log4SASScenarioLogLevel.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_logFolder                 ,i_parameterValue =&l_logFolder.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_scnLogFolder              ,i_parameterValue =&l_scnLogFolder.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_reportFolder              ,i_parameterValue =&l_reportFolder.);
 
    /*-- load relevant information from test database to global macro symbols ----*/
    %_loadEnvironment (i_withLibrefs   =0
+                     ,i_caller        =SUITE
                      )
 
    /* Correct Termstring in Textfiles */
@@ -661,7 +672,6 @@
                        ,ErrorSASCall2
                        ,NOT %sysfunc(exist(work.check))
                        ,Error spawning SAS process in initialization
-                       ,i_verbose=&i_verbose.
                        ) 
          %THEN %GOTO errexit;
 
@@ -684,26 +694,18 @@
       %_reportCreateTagset;
    %END;
 
-   %_issueInfoMessage(&g_currentLogger., %str ( ));
    %_issueInfoMessage(&g_currentLogger., %str (============================ SASUnit has been initialized successfully ==========================));
-   %_issueInfoMessage(&g_currentLogger., %str ( ));
-
    %RETURN;
    
 %errexit:
-   %_issueErrorMessage(&g_currentLogger., %str ( ));
    %_issueErrorMessage(&g_currentLogger., %str (===================== Errors occured! Check log files! ===========================================));
-   %_issueErrorMessage(&g_currentLogger., %str ( ));
    %goto EndSASUnit;
    
 %fatalexit:
-   %_issueFatalMessage(&g_currentLogger., %str ( ));
    %_issueFatalMessage(&g_currentLogger., %str (===================== Fatal errors occured! test suite aborted! ===========================================));
-   %_issueFatalMessage(&g_currentLogger., %str ( ));
    
 %EndSASUnit:   
    LIBNAME target clear;
    %abort 9;
 %MEND initSASUnit;
-
 /** \endcond */

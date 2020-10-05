@@ -23,7 +23,6 @@
    \param   o_targetColumn name of the target column holding the ODS formatted value
 
 */ /** \cond */  
-
 %macro _render_dataColumn (i_sourceColumn=
                           ,i_format=_NONE_
                           ,i_linkColumn=_NONE_

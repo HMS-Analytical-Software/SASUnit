@@ -26,7 +26,6 @@
    \param   i_language     Language of the report (DE, EN) - refer to _nls (optional: Default=&G_LANGUAGE.
 
 */ /** \cond */ 
-
 %MACRO _reportAutonHTML (i_repdata     = 
                         ,o_html        = 0
                         ,o_path        =
@@ -139,7 +138,7 @@
                   ,i_macroList    = macrolistDependency
                   );
       /* Use Json Files to create JavaScript file containing dependency information */
-      %_dependency_agg(i_path = &g_target./doc/tempDoc/crossreference
+      %_dependency_agg(i_path = &g_reportFolder./tempDoc/crossreference
                       ,o_file = &l_output./js/data.refs.js
                       );
 
@@ -155,10 +154,10 @@
         This is done in order to get one file containing coverage data 
         of all calls to the macros under test -----------------------------------*/
 
-      %LET l_rc =%_delFile("&g_log/000.tcg");
+      %LET l_rc =%_delFile("&g_scnLogFolder/000.tcg");
 
-      %LET l_logpath=%_escapeBlanks(&g_log.);
-      %_mkdir (&g_target./doc/testDoc/testCoverage);
+      %LET l_logpath=%_escapeBlanks(&g_scnLogFolder.);
+      %_mkdir (&g_reportFolder./testDoc/testCoverage);
 
       FILENAME allfiles "&l_logpath./*.tcg";
       DATA _NULL_;
@@ -259,13 +258,13 @@
 
             %IF ("&l_currentUnitFileName." NE "" AND "&l_currentUnitLocation." NE "" 
                  AND %SYSFUNC(FILEEXIST(&l_currentUnitLocation./&l_currentUnitFileName.)) 
-                 AND %SYSFUNC(FILEEXIST(&g_log./000.tcg)) ) %THEN %DO;
+                 AND %SYSFUNC(FILEEXIST(&g_scnLogFolder./000.tcg)) ) %THEN %DO;
                  %_reporttcghtml(i_macroName                = &l_currentUnitFileName.
                                 ,i_macroLocation            = &l_currentUnitLocation.
                                 ,i_mCoverageName            = _MCoverage_all_macros
                                 ,i_mCoverageLibrary         = WORK
                                 ,o_outputFile               = tcg_%SCAN(&l_currentUnitFileName.,1,.)
-                                ,o_outputPath               = &g_target./doc/testDoc/testCoverage
+                                ,o_outputPath               = &g_reportFolder./testDoc/testCoverage
                                 ,o_resVarName               = l_tcg_res
                                 ,o_html                     = &o_html.
                                 ,i_style                    = &i_style.
@@ -420,7 +419,7 @@
                LinkColumn5 = "&g_nls_reportAuton_024.";
 
                pgmColumn=catt ('^{style [htmlid="AUTON', put(exa_auton,z3.), '_', put(exa_id,z3.),'_"');
-               if (&o_pgmdoc. = 1 and fileexist ("&g_target./doc/pgmDoc/" !! trim(pgmexa_name) !! ".html")) then do;
+               if (&o_pgmdoc. = 1 and fileexist ("&g_reportFolder./doc/pgmDoc/" !! trim(pgmexa_name) !! ".html")) then do;
                   pgmColumn=catt (pgmColumn, ' url="pgmDoc/', pgmexa_name, '.html" flyover="&g_nls_reportAuton_028."]', cas_obj,'}');
                end;
                else do;

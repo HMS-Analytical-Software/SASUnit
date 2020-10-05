@@ -22,14 +22,16 @@
    \param   i_file   input file with complete path
    \param   o_file   output file with complete path
 
-   \todo    Check if that can be replaced by %sysfunc(fcopy)
+   \remark   fcopy is only valid in SAS 9.4. Not in SAS 9.3.
 */ /** \cond */
-
 %MACRO _copyFile (i_file  /* input file */
                  ,o_file  /* output file */
                  );
 
    %if (%sysfunc (fileexist (&i_file.))) %then %do;
+/*      filename _src "&i_file" RECFM=N;
+      filename _tgt "&o_file" RECFM=N;
+      %let rc = %sysfunc (fcopy (_src, _tgt));*/
       DATA _null_;
          INFILE "&i_file" RECFM=N LRECL=1048576 LENGTH=l SHAREBUFFERS BLKSIZE=32768;
          FILE "&o_file" RECFM=N LRECL=32768 BLKSIZE=1048576;

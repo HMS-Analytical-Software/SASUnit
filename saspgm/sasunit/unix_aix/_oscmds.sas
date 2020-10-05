@@ -14,11 +14,7 @@
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
-
-   \todo replace g_verbose
-   \todo check for usage of g_sasstart. If still used then store in target.tsu
 */ /** \cond */  
-
 %macro _oscmds;
 
    %global 
@@ -53,7 +49,6 @@
                  ,NOXCMD
                  ,(%sysfunc(getoption(XCMD)) = NOXCMD)
                  ,Your SAS Session does not allow XCMD%str(,) therefore functionality is restricted.
-                 ,i_verbose=&g_verbose.
                  ,i_msgtype=WARNING
                  ) 
    %THEN %DO;
@@ -65,5 +60,4 @@
    %END;
 
 %mend _oscmds;
-
 /** \endcond */

@@ -24,7 +24,6 @@
 			   
 */ 
 /** \cond */ 
-
 %MACRO _delTempFiles;
 
    %IF NOT %symexist(g_deltempfiles_debug) %THEN %DO;

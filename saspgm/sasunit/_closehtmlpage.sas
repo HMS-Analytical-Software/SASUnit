@@ -29,7 +29,6 @@
    \param   i_style  Name of the SAS style and css file to be used. 
    
 */ /** \cond */ 
-
 %macro _closeHTMLPage (i_style);
    %_openDummyHtmlPage  (&i_style.);
 %mend _closeHTMLPage;

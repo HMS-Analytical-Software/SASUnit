@@ -28,10 +28,7 @@
                     1 ...  Warnungen aufgetreten
                     2 ...  Fehler (ggfs. auch Warnungen) aufgetreten
                     3 ...  Fehler im Ablauf dieses Makros
-
-   \todo replace g_verbose
 */ /** \cond */ 
-
 %MACRO _reportLogHTML(i_log     =
                      ,i_title   = SAS-Log
                      ,o_html    = 0
@@ -67,7 +64,6 @@
                     ,LogNotFound
                     ,&syserr. NE 0
                     ,Fehler beim Zugriff auf den Log
-                    ,i_verbose=&g_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -216,7 +212,6 @@
                     ,ErrorWriteHTML
                     ,&syserr. NE 0
                     ,Fehler beim Schreiben der HTML-Datei
-                    ,i_verbose=&g_verbose.
                     ) 
       %THEN %GOTO errexit;
 
@@ -228,5 +223,4 @@
 %errexit:
 %exit:
 %MEND _reportLogHTML;
-
 /** \endcond */

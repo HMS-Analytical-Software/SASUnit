@@ -26,7 +26,6 @@
    \param   i_linkTitle_called   Flyover for this link
    
 */ /** \cond */ 
-
 %macro _render_crossrefColumn (i_sourceColumn       =
                               ,o_targetColumn       =
                               ,i_linkColumn_caller  =

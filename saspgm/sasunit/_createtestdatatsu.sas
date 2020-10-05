@@ -17,7 +17,7 @@
             
    \param   libref Library for the test database (optional: Default=target)
 
-*/
+*//** \cond */
 %macro _createTestDataTSU (libref=target);
    PROC SQL NOPRINT;
       CREATE TABLE &libref..tsu(COMPRESS=CHAR)
@@ -28,3 +28,4 @@
       );
    QUIT;
 %mend _createTestDataTSU;
+/** \endcond */

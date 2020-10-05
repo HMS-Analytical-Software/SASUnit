@@ -23,7 +23,6 @@
                                  For all of these files .json files will be created.
 
 */ /** \cond */ 
-
 %MACRO _dependency(i_dependencies =
                   ,i_macroList    = dir
                   );
@@ -48,7 +47,7 @@
       RUN;
 
       /* Create Json for calling hierachy (macros called by A) */
-      FILENAME json_out "&g_target/doc/tempDoc/crossreference/&l_name._caller.json";
+      FILENAME json_out "&g_reportFolder./tempDoc/crossreference/&l_name._caller.json";
       DATA _NULL_;
          FILE json_out;
       RUN;
@@ -61,7 +60,7 @@
       RUN;
 
       /* Create Json for calling hierachy in reverse direction (macros that call A) */
-      FILENAME json_out "&g_target/doc/tempDoc/crossreference/&l_name._called.json";
+      FILENAME json_out "&g_reportFolder./tempDoc/crossreference/&l_name._called.json";
       DATA _NULL_;
          FILE json_out;
       RUN;
@@ -76,3 +75,4 @@
       FILENAME json_out;
    %END;
 %MEND _dependency;
+/** \endcond */

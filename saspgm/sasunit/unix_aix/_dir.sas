@@ -25,10 +25,7 @@
    \param   i_recursive  1 .. search recursively in subdirectories, default is 0
    \param   o_out        output dataset, default is work.dir. This dataset contains two columns
                          named filename and changed
-
-   \todo replace g_verbose
 */ /** \cond */
-
 %MACRO _dir(i_path=
            ,i_recursive=0
            ,o_out=work.dir
@@ -64,27 +61,28 @@
 
    %SYSEXEC(find -L &path. ! -name &path -name "&search." -ls -type f > &dirfile.);
 
-   %if &g_verbose. %then %do;
-      %_issueInfoMessage (&g_currentLogger., _dir: %str(======== OS Command Start ========));
-      /* Evaluate sysexec´s return code */
-      %IF &sysrc. = 0 %THEN %DO;
-         %_issueInfoMessage (&g_currentLogger., _dir: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
-      %END;
-      %ELSE %DO;
-         %_issueErrorMessage (&g_currentLogger., _dir: &sysrc -> An Error occured);
-      %END;
+   %_issueDebugMessage (&g_currentLogger., _dir: %str(======== OS Command Start ========));
+   /* Evaluate sysexec´s return code */
+   %IF &sysrc. = 0 %THEN %DO;
+      %_issueDebugMessage (&g_currentLogger., _dir: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
+   %END;
+   %ELSE %DO;
+      %_issueErrorMessage (&g_currentLogger., _dir: &sysrc -> An Error occured);
+   %END;
 
-      /* put sysexec command to log*/
-      %_issueInfoMessage (&g_currentLogger., _dir: SYSEXEC COMMAND IS: find -L &path. ! -name &path -name "&search." -ls -type f > &dirfile.);
+   /* put sysexec command to log*/
+   %_issueDebugMessage (&g_currentLogger., _dir: SYSEXEC COMMAND IS: find -L &path. ! -name &path -name "&search." -ls -type f > &dirfile.);
       
+   %if (&g_currentLogLevel. = DEBUG or &g_currentLogLevel. = TRACE) %then %do;
       /* write &dirfile to the log*/
       data _null_;
          infile "&dirfile" truncover lrecl=512;
          input line $512.;
          putlog line;
       run;
-      %_issueInfoMessage (&g_currentLogger., _dir: %str(======== OS Command End ========));
    %end;
+   
+   %_issueDebugMessage (&g_currentLogger., _dir: %str(======== OS Command End ========));
    
    data &o_out (keep=membername filename changed);
       array dum{7} $;

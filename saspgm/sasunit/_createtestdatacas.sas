@@ -17,7 +17,7 @@
             
    \param   libref Library for the test database (optionaL: Default=target)
 
-*/
+*//** \cond */
 %macro _createTestDataCAS (libref=target);
       PROC SQL NOPRINT;
          CREATE TABLE &libref..cas(COMPRESS=CHAR)
@@ -34,3 +34,4 @@
          );
       QUIT;
 %mend _createTestDataCAS;
+/** \endcond */

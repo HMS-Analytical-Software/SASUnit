@@ -26,7 +26,6 @@
    \return  timestamp in the form yyyy-mm-dd-hh-ss.sss
 
 */ /** \cond */ 
-
 %MACRO _timestamp(dt);
    %LOCAL dt d t;
    %IF &dt= %THEN %LET dt=%sysfunc(datetime());

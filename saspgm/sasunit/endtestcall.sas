@@ -21,7 +21,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
 */ /** \cond */ 
-
 %MACRO endTestcall(i_messageStyle=ERROR);
 
    %GLOBAL g_inTestCall g_inTestCase;
@@ -42,14 +41,23 @@
 
    %IF (&g_runmode. ne SASUNIT_INTERACTIVE) %THEN %DO;
       /* restore log and listing of test scenario */
-      %LET g_logfile  =&g_log/%substr(00&g_scnid,%length(&g_scnid)).log;
+      %LET g_logfile  =&g_scnLogFolder./%substr(00&g_scnid,%length(&g_scnid)).log;
       %LET g_printfile=&&g_testout/%substr(00&g_scnid,%length(&g_scnid)).lst;
 
       PROC PRINTTO 
          LOG=LOG
          PRINT=PRINT
       ;
-      RUN;
+      RUN;     
+/*
+*** Check why this is not working      
+      %_createLog4SASLogger(loggername=App.Program
+                           ,additivity=FALSE
+                           ,appenderList=SASUnitScenarioAppender
+                           ,level=&g_log4SASScenarioLogLevel.
+                           );
+      filename _logfile clear;
+*/                           
    %END;
 
    /* determine and store end time */

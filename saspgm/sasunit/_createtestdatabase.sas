@@ -17,7 +17,7 @@
             
    \param   libref Library for the test database (optional: Default=target)
 
-*/
+*//** \cond */
 %macro _createTestDataBase (libref=target);
    %_createtestdatatsu (libref=&libref.);
    %_createtestdatascn (libref=&libref.);
@@ -25,3 +25,4 @@
    %_createtestdatatst (libref=&libref.);
    %_createtestdataexa (libref=&libref.);
 %mend _createTestDataBase;
+/** \endcond */

@@ -20,7 +20,6 @@
 
    \return           modified path
 */ /** \cond */ 
-
 %MACRO _absPath (i_root
                 ,i_path 
                 );

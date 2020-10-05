@@ -16,7 +16,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 			   
 */ /** \cond */ 
-
 %MACRO _reportCreateTagset;
 
       PROC TEMPLATE;
@@ -99,5 +98,4 @@
       RUN; /* PROC TEMPLATE */
 
 %MEND _reportCreateTagset;
-
 /** \endcond */

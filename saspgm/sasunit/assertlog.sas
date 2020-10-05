@@ -23,7 +23,6 @@
                            default: "Scan log for errors"
    
 */ /** \cond */ 
-
 %MACRO assertLog (i_errors   = 0
                  ,i_warnings = 0
                  ,i_desc     = Scan log for errors

@@ -16,7 +16,6 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
 */ /** \cond */ 
-
 %macro _reportCreateStyle ;
 
    proc template;
@@ -1827,5 +1826,4 @@
       end;
    run;
 %mend;
-
 /** \endcond */
