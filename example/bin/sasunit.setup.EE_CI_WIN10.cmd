@@ -17,8 +17,8 @@ SET SASUNIT_SAS_CFG=%SASUNIT_SASPATH%\nls\%SASUNIT_LANGUAGE%\sasv9.cfg
 
 REM --------------------------------------------------------------------------------
 REM --- EnvVars for SAS Unit Configuration -----------------------------------------
-SET SASUNIT_ROOT=C:\jenkins\workspace\SASUnit (9.4 64-Bit %SASUNIT_LANGUAGE% unicode, Windows 10 64-Bit de)
-SET SASUNIT_PROJECTROOT=C:\jenkins\workspace\SASUnit (9.4 64-Bit %SASUNIT_LANGUAGE% unicode, Windows 10 64-Bit de)\example
+SET SASUNIT_ROOT=C:\jenkins1\workspace\SASUnit (9.4 64-Bit %SASUNIT_LANGUAGE% unicode, Windows 10 64-Bit de)
+SET SASUNIT_PROJECTROOT=C:\jenkins1\workspace\SASUnit (9.4 64-Bit %SASUNIT_LANGUAGE% unicode, Windows 10 64-Bit de)\example
 SET SASUNIT_TESTDB_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\testdb
 SET SASUNIT_LOG_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\logs
 SET SASUNIT_SCN_LOG_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\scn_logs
@@ -49,8 +49,6 @@ echo.
 
 echo "Creating script files for starting SASUnit ..."
 "%SASUNIT_SAS_EXE%" -CONFIG "%SASUNIT_SAS_CFG%" -no$syntaxcheck -noovp -nosplash -log "bin/sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log" -sysin "%SASUNIT_ROOT%/saspgm/sasunit/runsasunitsetup.sas"
-
-pause
 
 if %ERRORLEVEL%==0 goto normalexit
 @echo. 
