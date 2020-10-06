@@ -30,20 +30,20 @@ SET SASUNIT_SCN_LOG_LEVEL=INFO
 echo.
 echo --- EnvVars for SAS Configuration ----------------------------------------------
 echo Operating system                   = %SASUNIT_HOST_OS%
-echo SAS Version                        = %SASUNIT_SAS_VERSION%
-echo SAS Installation Path              = %SASUNIT_SASPATH%
-echo SAS Executable                     = %SASUNIT_SAS_EXE%
-echo SAS Config File                    = %SASUNIT_SAS_CFG%
+echo SAS version                        = %SASUNIT_SAS_VERSION%
+echo SAS installation path              = %SASUNIT_SASPATH%
+echo SAS executable                     = %SASUNIT_SAS_EXE%
+echo SAS config file                    = %SASUNIT_SAS_CFG%
 echo --- EnvVars for SAS Unit Configuration -----------------------------------------
 echo SASUnit root path                  = %SASUNIT_ROOT%
-echo Project root Path                  = %SASUNIT_PROJECTROOT%
+echo Project root path                  = %SASUNIT_PROJECTROOT%
 echo Path to SASUnit test database      = %SASUNIT_TESTDB_PATH%
 echo Path to SASUnit log files          = %SASUNIT_LOG_PATH%
 echo Path to SASUnit scenario log files = %SASUNIT_SCN_LOG_PATH%
 echo Path to SASUnit documentation      = %SASUNIT_REPORT_PATH%
 echo Name and path of run_all program   = %SASUNIT_RUNALL%
 echo Logging level for SASUnit Suite    = %SASUNIT_LOG_LEVEL%
-echo logging Level for Scenarios        = %SASUNIT_SCN_LOG_LEVEL%
+echo Logging level for scenarios        = %SASUNIT_SCN_LOG_LEVEL%
 echo --------------------------------------------------------------------------------
 echo.
 
