@@ -66,6 +66,12 @@
       %LET   l_tcgOptionsString = options mcoverage mcoverageloc='%sysfunc(tranwrd(&l_tcgFilePath.,%str( ), %str(\ )))';
    %END;
 
+   %_createScnLogConfigXmlFile (i_projectBinFolder=&g_project_bin.
+                               ,i_scnid           =&i_scnid.
+                               ,i_sasunitLanguage =%lowcase(&g_language.)
+                               ,o_scnLogConfigfile=%sysfunc(pathname(WORK))/sasunit.scnlogconfig.xml
+                               );
+                               
    %let l_program=%_abspath(&g_root., &i_program.);
    DATA _null_;
       ATTRIB
@@ -81,9 +87,8 @@
       !! "&l_parms. "
       !! "-sysin %sysfunc(tranwrd(&l_program., %str( ), %str(\ ))) "
       %if (&i_pgmIsScenario. = 1) %then %do;
-      !! "-initstmt ""&l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%))"" "
+         !! "-initstmt ""&l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%))"" "
       %end;
-      !! "-log   %sysfunc(tranwrd(&g_scnLogFolder./&i_scnid..log, %str( ), %str(\ ))) "
       !! "-print %sysfunc(tranwrd(&g_testout/&i_scnid..lst, %str( ), %str(\ ))) "
       !! "-noovp "
       !! "-nosyntaxcheck "
@@ -91,6 +96,8 @@
       !! "-mcompilenote all "
       !! "-sasautos SASAUTOS -append SASAUTOS ""&g_sasunit"" "
       !! "-sasuser %sysfunc(pathname(work))/sasuser "
+      !! "-logconfigloc '%sysfunc(pathname(WORK))/sasunit.scnlogconfig.xml' "
+      !! "-logapplname 'Scenario' "
       %if (&i_pgmIsScenario. = 1) %then %do;
       !! "-termstmt ""%nrstr(%%_termScenario())"" "
       %end;
@@ -98,7 +105,7 @@
       PUT _sCmdString;
    RUN;
 
-   %_executeCMDFile(&l_cmdFile.);
+   %_executeCMDFile(&l_cmdFile.,LE,2);
    %LET &r_sysrc. = &sysrc.;
    %LET l_rc=%_delfile(&l_cmdFile.);
 
@@ -111,6 +118,6 @@
    %_executeCMDFile(&l_cmdFile.);
    %LET l_rc=%_delfile(&l_cmdFile.);
 
-%mend _runprogramspawned;   
+   %mend _runprogramspawned;   
 
 /** \endcond */

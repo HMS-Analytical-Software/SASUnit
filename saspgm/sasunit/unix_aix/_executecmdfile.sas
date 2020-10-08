@@ -15,17 +15,21 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 
-   \param   i_cmdFile    Command file to be executed by the OS
+   \param   i_cmdFile            Command file to be executed by the OS
+   \param   i_operator           Operator for evaluation of the shell command return code
+   \param   i_expected_shell_rc  Command file to be executed by the OS
 
 */ 
 /** \cond */ 
 
 %macro _executeCMDFile(i_cmdFile
+                      ,i_operator
+                      ,i_expected_shell_rc
                       );
                  
    %_xcmd(chmod u+x "&i_cmdFile.")
    %_xcmd(sed -e 's/\r//g' "&i_cmdFile." > ~/temp.; mv ~/temp. "&i_cmdFile.");
-   %_xcmd("&i_cmdFile.")
+   %_xcmd("&i_cmdFile.", &i_operator., &i_expected_shell_rc.)
 
 %mend _executeCMDFile;   
 

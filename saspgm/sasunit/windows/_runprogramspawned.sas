@@ -33,15 +33,14 @@
                          ,i_pgmIsScenario     = 1
                          );
 
-   %local l_cmdFile l_parms l_tcgFilePath l_tcgOptionsString l_rc l_macname l_program l_path;
+   %local l_cmdFile l_parms l_tcgFilePath l_tcgOptionsString l_rc l_macname l_program;
    %let l_macname=&sysmacroname.;
    
    /*-- prepare sasuser ---------------------------------------------------*/
    %let l_cmdFile=%sysfunc(pathname(work))/prep_sasuser.cmd;
-   %let l_path=%sysfunc(pathname(work))/sasuser;
    DATA _null_;
       FILE "&l_cmdFile.";
-      PUT "&g_removedir ""&l_path.""&g_endcommand";
+      PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       %IF %length(&g_sasuser) %THEN %DO;
          PUT "&g_copydir ""&g_sasuser"" ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
@@ -75,21 +74,6 @@
                                ,i_sasunitLanguage =%lowcase(&g_language.)
                                ,o_scnLogConfigfile=%sysfunc(pathname(WORK))/sasunit.scnlogconfig.xml
                                );
-/*
-   %if (&i_pgmIsScenario. = 1) %then %do;
-      filename NoLog "C:\projects\sasunit\example\doc\sasunit\en\log4SASUnit_suite_nolog.log";
-      %_createsasunitappender(appenderName=SASUnitNoLogAppender
-                             ,appenderClass=FileRefAppender
-                             ,fileRef=NoLog
-                             );
-
-      %_createsasunitlogger(loggername=App.Program.SASUnit
-                           ,additivity=TRUE
-                           ,appenderList=SASUnitNoLogAppender
-                           ,level=INFO
-                           );
-   %end;
-*/
 
    %let l_program=%_abspath(&g_root., &i_program.);
    DATA _null_;
@@ -108,9 +92,6 @@
       %if (&i_pgmIsScenario. = 1) %then %do;
          !! "-initstmt ""%nrstr(%%%_scenario%(io_target=)&g_target%nrstr(%))"" "
       %end;
-/*      %else %do;
-         !! "-log ""&g_scnLogFolder./&i_scnid..log"" "
-      %end;*/
       !! "-print ""&g_testout/&i_scnid..lst"" "
       !! "&g_splash "
       !! "-noovp "
