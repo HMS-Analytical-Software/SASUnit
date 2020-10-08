@@ -107,4 +107,7 @@
       put "elif [ $RETVAL -eq 2 ]";
       put "	then printf ""\nSAS ended with errors! Check run_all.log for details!\n""";
       put "fi";
+   run;
+   
+   %sysexec chmod a+x &i_sasunitCommandFile..sh;
 %mend _createBatchFile;

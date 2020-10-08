@@ -18,7 +18,7 @@ export SASUNIT_HOST_OS=linux
 export SASUNIT_SAS_VERSION=9.3
 export SASUNIT_SASPATH=/usr/local/SASHome/SASFoundation/$SASUNIT_SAS_VERSION/bin
 export SASUNIT_SAS_EXE=$SASUNIT_SASPATH/sas_$SASUNIT_LANGUAGE
-export SASUNIT_SAS_CFG=./bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg
+export SASUNIT_SAS_CFG=/usr/local/SASHome/SASFoundation/$SASUNIT_SAS_VERSION/nls/$SASUNIT_LANGUAGE/sasv9.cfg
 
 # --------------------------------------------------------------------------------
 # --- EnvVars for SAS Unit Configuration -----------------------------------------
@@ -28,7 +28,7 @@ export SASUNIT_TESTDB_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/testdb
 export SASUNIT_LOG_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/logs
 export SASUNIT_SCN_LOG_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/scn_logs
 export SASUNIT_REPORT_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/doc
-export SASUNIT_RUNALL=$SASUNIT_PROJECTROOT/saspgm/test/run_all.sas
+export SASUNIT_RUNALL=$SASUNIT_PROJECTROOT/saspgm/run_all.sas
 export SASUNIT_LOG_LEVEL=INFO
 export SASUNIT_SCN_LOG_LEVEL=INFO
 

@@ -19,10 +19,10 @@
 */ /** \cond */
 %macro _makeSASUnitPath (path);
    %local l_path;
-   
-   %*** escape all blanks with backslashes ***;
-   %let l_path = %sysfunc (tranwrd (&i_path., %str ( ), %str (\ )));
-   %let l_path = %sysfunc (tranwrd (&i_path., %str (\\ ), %str (\ )));
+   %let l_path=&path.;
+   %if (%length (&path.) > 0) %then %do;
+      %let l_path = %qsysfunc (dequote (&path.));
+   %end;
    &l_path.
 %mend _makeSASUnitPath; 
 /** \endcond */

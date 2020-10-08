@@ -29,7 +29,6 @@
    data _null_;
       file "&i_sasunitCommandFile..sh";
       
-
       put "#!/bin/bash";
       put "# This file is part of SASUnit, the Unit testing framework for SAS(R) programs.";
       put "# For copyright information and terms of usage under the GPL license see included file readme.txt";
@@ -97,7 +96,7 @@
       put "echo";
       put;
       put "echo ""Starting SASUnit ...""";
-      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin ""$SASUNIT_RUNALL""";
+      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin $SASUNIT_RUNALL -log $SASUNIT_LOG_FOLDER/run_all.log";
       put;
       put "# Show SAS exit status";
       put "RETVAL=$?";
@@ -106,4 +105,7 @@
       put "elif [ $RETVAL -eq 2 ]";
       put "	then printf ""\nSAS ended with errors! Check run_all.log for details!\n""";
       put "fi";
+   run;
+   
+   %sysexec chmod a+x &i_sasunitCommandFile..sh;
 %mend _createBatchFile;
