@@ -39,7 +39,7 @@
                   ,i_actual  =&l_sasunitPath1.
                   ,i_desc    =Path with ending \ is changed correctly
                   );
-   %assertEquals  (i_expected=/var/opt/TEMP/Test/
+   %assertEquals  (i_expected=/var/opt/TEMP/Test
                   ,i_actual  =&l_sasunitPath2.
                   ,i_desc    =Path without ending \ is changed correctly
                   );

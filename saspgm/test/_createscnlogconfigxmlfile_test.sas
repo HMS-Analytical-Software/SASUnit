@@ -28,7 +28,7 @@
    %_createScnLogConfigTemplate(i_projectBinFolder    =%sysfunc(pathname(WORK))
                                ,i_sasunitLogFolder    =%sysfunc(pathname(WORK))/logs
                                ,i_sasunitScnLogfolder =%sysfunc(pathname(WORK))/scnLogs
-                               ,i_sasunitLanguage     =XX
+                               ,i_sasunitLanguage     =xx
                                );
                                
    /* start testcase */
@@ -37,7 +37,7 @@
    /* call */
    %_createScnLogConfigXmlFile(i_projectBinFolder =%sysfunc(pathname(WORK))
                               ,i_scnid            =0X0
-                              ,i_sasunitLanguage  =XX
+                              ,i_sasunitLanguage  =xx
                               ,o_scnLogConfigfile =%sysfunc(pathname(WORK))\sasunit.scnlogconfig.xx.xml
                               );
 
