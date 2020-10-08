@@ -22,8 +22,8 @@ export SASUNIT_SAS_CFG=/usr/local/SASHome/SASFoundation/$SASUNIT_SAS_VERSION/nls
 
 # --------------------------------------------------------------------------------
 # --- EnvVars for SAS Unit Configuration -----------------------------------------
-export SASUNIT_ROOT=/usr/exchange/sasunit
-export SASUNIT_PROJECTROOT=/usr/exchange/sasunit/example
+export SASUNIT_ROOT=$workspace
+export SASUNIT_PROJECTROOT=$workspace/example
 export SASUNIT_TESTDB_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/testdb
 export SASUNIT_LOG_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/logs
 export SASUNIT_SCN_LOG_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/scn_logs
