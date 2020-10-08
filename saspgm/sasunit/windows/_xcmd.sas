@@ -46,7 +46,6 @@
    %LET logfile=%sysfunc(pathname(work))\___log.txt;
 
    %SYSEXEC &i_cmd > "&logfile";
-/*   %SYSTASK COMMAND "&i_cmd > ""&logfile""" wait; */
 
    %_issueDebugMessage (&g_currentLogger., _xcmd: %str(======== OS Command Start ========));
     /* Evaluate sysexec´s return code*/
