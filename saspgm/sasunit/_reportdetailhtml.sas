@@ -22,12 +22,6 @@
    \param   o_path         path for output file
    \param   o_file         name of the outputfile without extension
    \param   i_style        name of the SAS style and css file to be used. 
-
-\todo Are these changes suitable for other programs?
-
-\todo Can we speed up report generartion by applying a keep in the first datastep?
-
-
 */ /** \cond */ 
 %MACRO _reportDetailHTML (i_repdata =
                          ,i_scnid   =

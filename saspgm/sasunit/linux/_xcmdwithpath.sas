@@ -19,8 +19,6 @@
    \param   i_cmd          OS command parameters that contain text
    \param   i_expected_shell_rc  Expected return value after completion of the OS-command (Optional: Default=0)
    \return  r_rc           Return Code of %sysexec 
-   
-   \todo replace g_verbose
 */ /** \cond */ 
 
 %MACRO _xcmdWithPath(i_cmd_path           =

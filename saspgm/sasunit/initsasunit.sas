@@ -63,10 +63,8 @@
    \todo    implement os-indepedant version of assertText and assertImage. All os-dependant info needs to be packed inside the script files. See assertText.cmd
    \todo    move assertText scenarios to os-dependant scenario folder and eliminate adaptToOs-macros 
    \todo    Are all checks for Shell vs. SASUnit-Parameters necessary only in Batch?
-   \todo    I think there should be no need to call _loadEnvironment within SASUnit. runall does not need autocall paths to all folders!
-            Check that and change implementation for initSASUnit and loadEnvironment
-   \todo check new parms for Logfiles and reportfolder
-   \todo check regenerate empty folders; check not to delete test_db_folder
+   \todo    check new parms for Logfiles and reportfolder
+   \todo    check regeneration of empty folders; check not to delete test_db_folder
 
 *//** \cond */ 
 %MACRO initSASUnit(i_root                    =

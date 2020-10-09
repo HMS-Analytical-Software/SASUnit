@@ -18,9 +18,6 @@
    \param   i_cmd_path     OS command parameters containing paths. Slashes will be transformed to Backslashes
    \param   i_cmd          OS command parameters that contain text
    \return  r_rc           Return Code of %sysexec 
-   
-   \todo replace g_verbose
-   \todo implement expected shell rc
 */ /** \cond */ 
 
 %MACRO _xcmdWithPath(i_cmd_path =

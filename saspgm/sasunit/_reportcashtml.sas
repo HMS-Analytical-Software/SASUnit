@@ -47,11 +47,11 @@
 
    %let l_title     =%nrbquote(^{style [url="http://sourceforge.net/projects/sasunit/" postimage="SASUnit_Logo.png"]SASUnit});
    %let l_title     =%str(&g_project. | &l_title. &g_nls_reportCas_002. |  &g_nls_reportCas_001.);
-   %let l_titleShort=%str(&g_project. | &g_nls_reportCas_002. |  &g_nls_reportCas_001.);
+   %let l_titleShort=%str(&g_project. | &g_nls_reportCas_002. | &g_nls_reportCas_001.);
    %*** because in HTML we want to open the link to SASUnit in a new window, ***;
    %*** we need to insert raw HTML ***;
    %let l_htmlTitle_center=<a href="http://sourceforge.net/projects/sasunit/" class="link" title="SASUnit" target="_blank">SASUnit <img src="SASUnit_Logo.png" alt="SASUnit" title="SASUnit" width=26px height=26px align="top" border="0"></a>;
-   %let l_htmlTitle_center=%str(&g_project | &l_htmlTitle_center. &g_nls_reportHome_001.);
+   %let l_htmlTitle_center=%str(&g_project | &l_htmlTitle_center. &g_nls_reportHome_001. | &g_nls_reportCas_001.);
    %let l_htmlTitle_left  = <a href="https://sourceforge.net/projects/sasunit/reviews" class="link" title="&g_nls_reportHome_038." target="_blank"><img alt="&g_nls_reportAuton_029.";
    %let l_htmlTitle_left  = &l_htmlTitle_left. src="https://img.shields.io/badge/-%scan(&g_nls_reportAuton_029.,1)%20%scan(&g_nls_reportAuton_029.,2)%20%nrstr(&#x2605&#x2605&#x2605&#x2605&#x2606)-brightgreen.svg"</a>;
    %let l_htmlTitle_right = <a href="https://sourceforge.net/projects/sasunit/files/Distributions/stats/timeline" class="link" title="&g_nls_reportHome_038." target="_blank">;

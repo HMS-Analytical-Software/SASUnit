@@ -21,8 +21,6 @@
    \param   r_sysrc             Name of macro variable holding rc of spawning call
 
    \return  error symbol &sysrc will be set to a value other than 0, if an error occurs.
-   
-   \todo check for usage of _adaptSASUnitPathToOS
 */ 
 /** \cond */ 
 

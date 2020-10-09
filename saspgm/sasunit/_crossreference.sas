@@ -29,8 +29,6 @@
          We could use this for the d3d graphics to speed up reporting a bit.
          For executing all calling macros of an examinee we still need sourcecode scanning.
          Or we need to store this call reference from last run.
-
-   \todo Why not use g_sasunit_os. Or even better filter i_examinee for exa_auton >= 2 if no SASUNit macros?
 */ /** \cond */ 
 %MACRO _crossReference(i_includeSASUnit  =0
                       ,i_examinee        =
@@ -39,23 +37,18 @@
                       ,o_macroList       =
                       );
 
-   %LOCAL l_callVar
-          l_DoxyHeader
+   %LOCAL 
           l_filename
           l_includeSASUnit
           l_loop
           l_mprint
           l_nobs
           l_notes
-          l_path
-          l_sasunit 
           l_source
-          l_path1
-          l_path2
           n
           nobs
           nobs_old
-          l_sasunit_os
+          l_where
    ;
    
    %IF (&g_log4SASSuiteLogLevel. ne DEBUG AND &g_log4SASSuiteLogLevel. ne TRACE) %THEN %DO;
@@ -71,8 +64,13 @@
    %ELSE %LET l_includeSASUnit=0;
    
    /* Keep all .sas files and get macro names*/
+   %LET l_where = 1;
+   %IF &l_includeSASUnit. = 0 %THEN %DO;
+      %LET l_where = %str(exa_auton >= 2);
+   %END;
+   
    DATA &o_macroList.;
-      SET &i_examinee.;
+      SET &i_examinee. (where=(&l_where.));
       IF index(exa_filename,'.sas') = 0 THEN delete;
       loca = length(exa_filename) - length(scan(exa_filename,-1,'/')) + 1;
       name = substr(exa_filename,loca);
@@ -80,21 +78,6 @@
       drop loca;
    RUN;
    
-   /* l_includeSASUnit = 1: include sasunit macros in scan   */
-   /* Paths for SASUnit macros will be omitted if l_includeSASUnit = 0 */
-   %IF &l_includeSASUnit. = 0 %THEN %DO;
-      %_readParameterFromTestDBtsu (i_parameterName  = tsu_sasunit_os
-                                   ,o_parameterValue = l_sasunit_os
-                                   );
-      
-      %LET l_path1 = %_abspath(&g_root,&g_sasunit)/%;
-      %LET l_path2 = %_abspath(&g_root,&l_sasunit_os)/%;
-      *** Omit SASUnit macropaths ***;  
-      DATA &o_macroList.;
-         SET &o_macroList.(WHERE=(exa_filename not like "&l_path1" AND exa_filename not like "&l_path2"));
-      RUN;
-   %END;
- 
    PROC SORT DATA=&o_macroList. NODUPKEY;
       BY exa_filename;
    RUN;
@@ -122,7 +105,7 @@
          DATA work.helper;
             IF _N_ = 1 THEN DO;
                retain pattern1 ptrn_Com_1_o ptrn_Com_1_c;
-               retain l_DoxyHeader 0 comment 0;
+               retain comment 0;
                length line $ 256
                       caller called $ 80;
                pattern1 = prxparse('/%/');

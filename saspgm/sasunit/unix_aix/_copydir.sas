@@ -19,8 +19,6 @@
    \param   i_from       root of directory tree
    \param   i_to         copy to 
    \return  operation system return code or 0 if OK
-
-   \todo replace g_verbose
 */ /** \cond */ 
 
 %macro _copyDir (i_from
