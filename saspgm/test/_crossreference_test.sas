@@ -95,6 +95,13 @@
    data work.cr_dir;
       set work.cr_dir;
       exa_filename=filename;
+      exa_auton = 2;
+      if (index (exa_filename, "%_makeSASUnitPath(%sysfunc(pathname(work))/saspgm/sasunit)")) then do;
+         exa_auton = 0;
+      end;
+      if (index (exa_filename, "%_makeSASUnitPath(sysfunc(pathname(work))/saspgm/sasunit/linux)")) then do;
+         exa_auton = 1;
+      end;
    run;
    %_crossReference(i_includeSASUnit  =1
                    ,i_examinee        =work.cr_dir
@@ -159,6 +166,13 @@
    data work.cr_dir;
       set work.cr_dir;
       exa_filename=filename;
+      exa_auton = 2;
+      if (index (exa_filename, "%_makeSASUnitPath(%sysfunc(pathname(work))/saspgm/sasunit)")) then do;
+         exa_auton = 0;
+      end;
+      if (index (exa_filename, "%_makeSASUnitPath(sysfunc(pathname(work))/saspgm/sasunit/linux)")) then do;
+         exa_auton = 1;
+      end;
    run;
    %_crossReference(i_includeSASUnit  =0
                    ,i_examinee        =work.cr_dir
