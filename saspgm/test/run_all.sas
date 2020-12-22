@@ -133,7 +133,6 @@ run;
   ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
   ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
   ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
-
 )
 
 %runSASUnit(i_source = saspgm/test/assert_i_autoexec_usage_configtest.sas);

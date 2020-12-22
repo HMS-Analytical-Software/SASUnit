@@ -15,7 +15,7 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param   libref Library for the test database (optionaL: Default=target)
+   \param   libref Library for the test database (optional: Default=target)
 
 *//** \cond */
 %macro _createTestDataSCN (libref=target);

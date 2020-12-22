@@ -43,8 +43,6 @@
          call symputx ("l_parameterValue", tsu_parameterValue, "L");
       run;
 
-      %put _LOCAL_;
-         
       %if (%quote(&l_parameterValue.) = _NONE_) %then %do;
          %if (&i_silent.) %then %do;
             %_issueDebugMessage (&g_currentLogger., _readParameterFromTestDBtsu: Parameter &i_parametername was not found!);

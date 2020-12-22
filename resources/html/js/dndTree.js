@@ -12,7 +12,7 @@
 
 $(document).ready( function() {
 
-    // Reading parameter vakues from URL
+    // Reading parameter values from URL
 	function readParameterFromURL(){
 	   var value = [], parameter;
 	   var parameters = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
