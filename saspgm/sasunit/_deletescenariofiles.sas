@@ -20,11 +20,10 @@
                So there is no need to change anything with this macro concerning NOXCMD
 
    \param      i_scenariosToRun  Data set containing all scenarios that have to run
-\todo check paths for log files etc.
 */ /** \cond */  
 %MACRO _deleteScenarioFiles(i_scenariosToRun=
                            );
-   %LOCAL l_len l_nobs l_obs l_scnDel l_target l_foldersToDelete l_filesToDelete;
+   %LOCAL l_len l_nobs l_obs l_scnDel l_target l_foldersToDelete l_filesToDelete l_scnLogFolder l_reportFolder;
    %LET l_target = %_abspath(&g_root, &g_target);
    
    PROC SQL NOPRINT;
@@ -41,11 +40,19 @@
       ;
    QUIT;
 
+   %_readParameterFromTestDBtsu (i_parameterName  =tsu_scnLogFolder
+                                ,o_parameterValue =l_scnLogFolder
+                                );
+   %_readParameterFromTestDBtsu (i_parameterName  =tsu_reportFolder
+                                ,o_parameterValue =l_reportFolder
+                                );
+
    %IF &l_obs GT 0 %THEN %DO;
       %*** Dir for deletion of /rep, /tst and /log files *;
-      %_dir(i_path=&l_target./doc/, o_out=rep);
-      %_dir(i_path=&l_target./log/, o_out=log);
-      %_dir(i_path=&l_target./doc/tempDoc/, o_out=tst);
+      %_dir(i_path=&l_reportFolder./testDoc/            , o_out=rep);
+      %_dir(i_path=&l_reportFolder./testDoc/testCoverage, o_out=tcg);
+      %_dir(i_path=&l_reportFolder./tempDoc/            , o_out=tst, i_recursive=1);
+      %_dir(i_path=&l_scnLogFolder./                    , o_out=log);
 
       %let l_filesToDelete = %sysfunc(pathname(work))/_scenarioFilesToDelete.sas;
       DATA _NULL_;
@@ -74,6 +81,12 @@
                PUT '%PUT Delete ' filename ' RC: %_delfile(' filename ');';
             END;
          END;
+         DO l=1 TO numobs_tcg;
+            SET tcg nobs=numobs_tcg point=l;
+            IF index(membername, put(scn_id,z3.)) = 1 THEN DO;
+               PUT '%PUT Delete ' filename ' RC: %_delfile(' filename ');';
+            END;
+         END;
       RUN;
       %INCLUDE "&l_filesToDelete.";
       %LET l_rc=%_delfile(&l_filesToDelete.);
@@ -97,8 +110,7 @@
          KEEP id folder;
       RUN;
       
-      %LET l_nobs = %_nobs(foldersToDelete);
-      
+      %LET l_nobs = %_nobs(foldersToDelete);      
       %*** Write and execute cmd file only if table foldersToDelete is not empty ***;
       %IF &l_nobs > 0 %THEN %DO;
          PROC SORT DATA = foldersToDelete nodupkey;

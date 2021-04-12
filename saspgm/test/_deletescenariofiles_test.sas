@@ -46,72 +46,88 @@
       ;
    QUIT;
 
-   %*** Create folder structure for the test ***;  
-   %_mkdir(%sysfunc(pathname(work))/log);
-   %_mkdir(%sysfunc(pathname(work))/doc);
-   %_mkdir(%sysfunc(pathname(work))/doc/tempDoc);
-   %_mkdir(%sysfunc(pathname(work))/doc/tempDoc/_001_005_004_assertlibrary);
-   %_mkdir(%sysfunc(pathname(work))/doc/tempDoc/_001_009_001_assertlibrary);
-   %_mkdir(%sysfunc(pathname(work))/doc/tempDoc/_002_002_001_assertreport);
-   %_mkdir(%sysfunc(pathname(work))/doc/tempDoc/_003_002_001_assertreport);
+   %*** Create folder structure for the test ***;     
+   %_mkdir(&g_tsuScnLogFolder.);
+   %_mkdir(&g_tsuReportFolder.);
+   %_mkdir(&g_tsuReportFolder./tempDoc);
+   %_mkdir(&g_tsuReportFolder./tempDoc/_001_005_004_assertlibrary);
+   %_mkdir(&g_tsuReportFolder./tempDoc/_001_009_001_assertlibrary);
+   %_mkdir(&g_tsuReportFolder./tempDoc/_002_002_001_assertreport);
+   %_mkdir(&g_tsuReportFolder./tempDoc/_003_002_001_assertreport);
+   %_mkdir(&g_tsuReportFolder./testDoc);
+   %_mkdir(&g_tsuReportFolder./testDoc/testCoverage);
  
    %*** Create test files ***;
    %DO i=1 %TO 3;
-      %*** Create "/log" files ***;
+      %*** Create scenario log files ***;
       DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/log/00&i..log";
+         FILE "&g_tsuScnLogFolder./00&i..log";
          PUT "hugo&i.";
       RUN;
       DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/log/00&i..tcg";
-         PUT "hugo&i.";
-      RUN;
-      DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/log/00&i._003.log";
+         FILE "&g_tsuScnLogFolder./00&i._003.log";
          PUT "hugo&i.";
       RUN;
 
-      %*** Create "/doc" files ***;
+      %*** Create test coverage files ***;
       DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/doc/cas_00&i._004.html";
-         PUT "hugo&i.";
-      RUN;
-      DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/doc/00&i._004_006.html";
+         FILE "&g_tsuReportFolder./testDoc/testCoverage/00&i..tcg";
          PUT "hugo&i.";
       RUN;
       
-      %*** Create "/tst" files ***;
+      %*** Create test doc files ***;
       DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/doc/tempDoc/00&i..lst";
+         FILE "&g_tsuReportFolder./testDoc/cas_00&i._004.html";
          PUT "hugo&i.";
       RUN;
       DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/doc/tempDoc/00&i._003.lst";
+         FILE "&g_tsuReportFolder./testDoc/00&i._004_006.html";
          PUT "hugo&i.";
       RUN;
       DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/doc/tempDoc/_001_005_004_assertlibrary/test.sas7bdat";
+         FILE "&g_tsuReportFolder./testDoc/00&i..lst";
          PUT "hugo&i.";
       RUN;
       DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/doc/tempDoc/_001_009_001_assertlibrary/test1.sas7bdat";
+         FILE "&g_tsuReportFolder./testDoc/00&i._003.lst";
+         PUT "hugo&i.";
+      RUN;
+      
+      %*** Create temp doc files ***;
+      DATA _NULL_;
+         FILE "&g_tsuReportFolder./tempDoc/_001_005_004_assertlibrary/test.sas7bdat";
          PUT "hugo&i.";
       RUN;
       DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/doc/tempDoc/_002_002_001_assertreport/test.sas7bdat";
+         FILE "&g_tsuReportFolder./tempDoc/_001_009_001_assertlibrary/test1.sas7bdat";
          PUT "hugo&i.";
       RUN;
       DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/doc/tempDoc/_001_005_004_assertlibrary/test1.sas7bdat";
+         FILE "&g_tsuReportFolder./tempDoc/_002_002_001_assertreport/test.sas7bdat";
+         PUT "hugo&i.";
+      RUN;
+      DATA _NULL_;
+         FILE "&g_tsuReportFolder./tempDoc/_001_005_004_assertlibrary/test1.sas7bdat";
          PUT "hugo&i.";
       RUN;  
       DATA _NULL_;
-         FILE "%sysfunc(pathname(work))/doc/tempDoc/_003_002_001_assertreport/test.sas7bdat";
+         FILE "&g_tsuReportFolder./tempDoc/_003_002_001_assertreport/test.sas7bdat";
          PUT "hugo&i.";
       RUN;      
    %END;
 %MEND _deleteScenarioFiles_crtTstFls;
+
+%let g_tsuScnLogFolder=%sysfunc(pathname(work))/scn_logs;
+%let g_tsuReportFolder=%sysfunc(pathname(work))/doc;
+
+data work.tsu;
+   set target.tsu;
+run;
+
+proc sql;
+   update work.tsu set tsu_parameterValue = "&g_tsuScnLogFolder." where tsu_parameterName = "TSU_SCNLOGFOLDER";
+   update work.tsu set tsu_parameterValue = "&g_tsuReportFolder." where tsu_parameterName = "TSU_REPORTFOLDER";
+quit;
 
 %initScenario (i_desc=Test of _deleteScenarioFiles.sas)
 
@@ -129,27 +145,31 @@
 %endTestcall()
 
 %markTest()
-   /* Folder Test */
-   %assertEquals(i_actual=%_existDir(%sysfunc(pathname(work))/doc/tempDoc/_001_005_004_assertlibrary),i_expected=0, i_desc=Test if folders tst/_001* exists%str(,) folder to delete _001_005_004_assertlibrary);
-   %assertEquals(i_actual=%_existDir(%sysfunc(pathname(work))/doc/tempDoc/_001_009_001_assertlibrary),i_expected=0, i_desc=Test if folders tst/_001* exists%str(,) folder to delete _001_009_001_assertlibrary);
-   %assertEquals(i_actual=%_existDir(%sysfunc(pathname(work))/doc/tempDoc/_002_002_001_assertreport), i_expected=1, i_desc=Test if folders tst/_001* exists%str(,) folder not to delete _002_002_001_assertreport);
-   %assertEquals(i_actual=%_existDir(%sysfunc(pathname(work))/doc/tempDoc/_003_002_001_assertreport), i_expected=1, i_desc=Test if folders tst/_001* exists%str(,) folder not to delete _003_002_001_assertreport);
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/doc/tempDoc/001.lst)),          i_expected=0, i_desc=Test if file tst/001.lst exists%str(,) file to delete 001.lst);
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/doc/tempDoc/001_003.lst)),      i_expected=0, i_desc=Test if file tst/001_*.lst exists%str(,) file to delete 001_003.lst);
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/doc/tempDoc/002.lst)),          i_expected=1, i_desc=Test if file tst/002.lst exists%str(,) file not to delete 002.lst);
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/doc/tempDoc/002_003.lst)),      i_expected=1, i_desc=Test if file tst/002_*.lst exists%str(,) file not to delete 002_003.lst);
-   /* Folder Log */
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/log/001.log)),          i_expected=0, i_desc=Test if files log/_001* exists%str(,) file to delete 001.log);  
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/log/001.tcg)),          i_expected=0, i_desc=Test if files log/_001* exists%str(,) file to delete 001.tcg);
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/log/001_003.log)),      i_expected=0, i_desc=Test if files log/_001* exists%str(,) file to delete 001_003.log);
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/log/003.log)),          i_expected=1, i_desc=Test if files log/_001* exists%str(,) file not to delete 003.log);
-   /* Folder Rep */
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/doc/001_004_006.html)), i_expected=0, i_desc=Test if files rep/001* exists%str(,) file to delete 001_004_006.html);  
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/doc/002_004_006.html)), i_expected=1, i_desc=Test if files rep/002* exists%str(,) file not to delete 002_004_006.html);  
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/doc/003_004_006.html)), i_expected=1, i_desc=Test if files rep/003* exists%str(,) file not to delete 003_004_006.html);      
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/doc/cas_001_004.html)), i_expected=0, i_desc=Test if files rep/cas_001* exists%str(,) file to delete cas_001_004.html);  
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/doc/cas_002_004.html)), i_expected=1, i_desc=Test if files rep/cas_002* exists%str(,) file not to delete cas_002_004.html);
-   %assertEquals(i_actual=%sysfunc(fileexist(%sysfunc(pathname(work))/doc/cas_003_004.html)), i_expected=1, i_desc=Test if files rep/cas_003* exists%str(,) file not to delete cas_003_004.html);
+   /* Folder tempDoc */
+   %assertEquals(i_actual=%_existDir(&g_tsuReportFolder./tempDoc/_001_005_004_assertlibrary),i_expected=0, i_desc=Test if folders tst/_001* exists%str(,) folder to delete _001_005_004_assertlibrary);
+   %assertEquals(i_actual=%_existDir(&g_tsuReportFolder./tempDoc/_001_009_001_assertlibrary),i_expected=0, i_desc=Test if folders tst/_001* exists%str(,) folder to delete _001_009_001_assertlibrary);
+   %assertEquals(i_actual=%_existDir(&g_tsuReportFolder./tempDoc/_002_002_001_assertreport), i_expected=1, i_desc=Test if folders tst/_001* exists%str(,) folder not to delete _002_002_001_assertreport);
+   %assertEquals(i_actual=%_existDir(&g_tsuReportFolder./tempDoc/_003_002_001_assertreport), i_expected=1, i_desc=Test if folders tst/_001* exists%str(,) folder not to delete _003_002_001_assertreport);
+
+   /* Folder scnLog */
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuScnLogFolder./001.log)),          i_expected=0, i_desc=Test if files log/_001* exists%str(,) file to delete 001.log);  
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuScnLogFolder./001_003.log)),      i_expected=0, i_desc=Test if files log/_001* exists%str(,) file to delete 001_003.log);
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuScnLogFolder./003.log)),          i_expected=1, i_desc=Test if files log/_001* exists%str(,) file not to delete 003.log);
+
+   /* Folder testDoc */
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuReportFolder./testDoc/001.lst)),          i_expected=0, i_desc=Test if file tst/001.lst exists%str(,) file to delete 001.lst);
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuReportFolder./testDoc/001_003.lst)),      i_expected=0, i_desc=Test if file tst/001_*.lst exists%str(,) file to delete 001_003.lst);
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuReportFolder./testDoc/002.lst)),          i_expected=1, i_desc=Test if file tst/002.lst exists%str(,) file not to delete 002.lst);
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuReportFolder./testDoc/002_003.lst)),      i_expected=1, i_desc=Test if file tst/002_*.lst exists%str(,) file not to delete 002_003.lst);
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuReportFolder./testDoc/001_004_006.html)), i_expected=0, i_desc=Test if files rep/001* exists%str(,) file to delete 001_004_006.html);  
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuReportFolder./testDoc/002_004_006.html)), i_expected=1, i_desc=Test if files rep/002* exists%str(,) file not to delete 002_004_006.html);  
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuReportFolder./testDoc/003_004_006.html)), i_expected=1, i_desc=Test if files rep/003* exists%str(,) file not to delete 003_004_006.html);      
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuReportFolder./testDoc/cas_001_004.html)), i_expected=0, i_desc=Test if files rep/cas_001* exists%str(,) file to delete cas_001_004.html);  
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuReportFolder./testDoc/cas_002_004.html)), i_expected=1, i_desc=Test if files rep/cas_002* exists%str(,) file not to delete cas_002_004.html);
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuReportFolder./testDoc/cas_003_004.html)), i_expected=1, i_desc=Test if files rep/cas_003* exists%str(,) file not to delete cas_003_004.html);
+
+   /* Folder testDoc/TestCoverage */
+   %assertEquals(i_actual=%sysfunc(fileexist(&g_tsuReportFolder./testDoc/TestCoverage/001.tcg)),          i_expected=0, i_desc=Test if files log/_001* exists%str(,) file to delete 001.tcg);
 %endTestcase(i_assertLog=0)
 
 %endScenario();

@@ -192,7 +192,7 @@
 
    /*-- Check value of incoming parameters ---------------------------------------------*/
    /*-- Theses parameters must be set --------------------------------------------------*/
-   %let l_parameterNames = i_root io_target i_project i_sasunit i_sasautos i_language i_testdata i_refdata i_logFolder i_scnLogFolder i_reportFolder; 
+   %let l_parameterNames = i_root io_target i_project i_sasunit i_sasautos i_language i_testdata i_refdata; 
 
    %_checkListOfParameters (i_listOfParameters    = &l_parameterNames.
                            ,i_returnCodeVariable  = l_goOn
@@ -204,6 +204,21 @@
       %goto %errexit;
    %end;
 
+   /*-- Check value of incoming parameters ---------------------------------------------*/
+   /*-- Theses parameters must be set only in batch mode -------------------------------*/
+   %if (&g_runMode. = SASUNIT_BATCH) %then %do;
+      %let l_parameterNames = i_logFolder i_scnLogFolder i_reportFolder; 
+
+      %_checkListOfParameters (i_listOfParameters    = &l_parameterNames.
+                              ,i_returnCodeVariable  = l_goOn
+                              ,i_callingMacroName    = &l_macname.
+                              ,i_MessageLevel        = DEBUG
+                              ,i_MissingValueAllowed = NO
+                              );
+      %if (&l_goOn. = STOP) %then %do;
+         %goto %errexit;
+      %end;
+   %end;
    /*-- Theses parameters may be given --------------------------------------------------*/
    %let l_parameterNames = i_sasuser i_doc;
    %DO l_i=1 %TO 29;
@@ -377,6 +392,7 @@
                        ,Error in parameter i_autoexec: file not found
                        ) 
          %THEN %GOTO errexit;
+      %_issueInfoMessage (&g_currentLogger., initSASUnit: Using the following autoexec file: &l_autoexec_abs.);
    %END;
 
    /*-- check if sascfg exists where specified ----------------------------------*/
@@ -395,6 +411,7 @@
                        ,Error in parameter i_sascfg: file not found
                        ) 
          %THEN %GOTO errexit;
+      %_issueInfoMessage (&g_currentLogger., initSASUnit: Using the following config file: &l_sascfg_abs.);
    %END;
 
    /*-- check sasuser folder ----------------------------------------------------*/

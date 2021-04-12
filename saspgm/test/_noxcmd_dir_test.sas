@@ -51,8 +51,8 @@ run;
 %_noxcmd_dir(i_path=%sysfunc(pathname(work))/testdir, i_recursive=0, o_out=dir);
 %endTestcall;
 
-%assertLog(i_errors=1, i_warnings=0);
-%assertLogMsg(i_logmsg=^ERROR: _noxcmd_dir: Given directory does not exist:);
+%assertLog(i_errors=0, i_warnings=0);
+%assertLogMsg(i_logmsg=^NOTE: _noxcmd_dir: Given directory does not exist or file pattern has no matches:);
 %endTestcase;
 
 /*-- 002 Empty directory ---------------------------------------------------------*/

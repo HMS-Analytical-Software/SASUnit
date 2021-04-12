@@ -68,7 +68,7 @@
          WHERE scn_id = &i_scnid;
 
          LENGTH 
-            scn_abs_path cas_abs_path pgmscn_name pgmexa_name $256 
+            scn_abs_path pgmscn_name pgmexa_name $256 
             hlp hlp2    $200
             errcountmsg $50
             LinkTitle1
@@ -90,7 +90,6 @@
             expectedColumn $1000
             actualColumn $1000
             resultColumn $1000
-            c_autonM2    $2
             ;
          label 
             scnDescriptionColumn="&g_nls_reportDetail_029."
@@ -108,16 +107,16 @@
             resultColumn        ="&g_nls_reportDetail_014."
             ;
                 
-            *** initalizing variables that MAY be used in a specific assert   ***;
-            if (_N_=1) then do;
-               hlp="";
-                hlp2="";
-                errcountmsg="";
-                href="";
-                href_act="";
-                href_exp="";
-                href_rep="";
-            end;
+         *** initalizing variables that MAY be used in a specific assert   ***;
+         if (_N_=1) then do;
+            hlp="";
+            hlp2="";
+            errcountmsg="";
+            href="";
+            href_act="";
+            href_exp="";
+            href_rep="";
+         end;
 
          if tst_act="" then tst_act='^_';
          if tst_exp="" then tst_exp='^_';
@@ -161,7 +160,7 @@
             LinkTitle1   = trim ("&g_nls_reportDetail_003") !!" " !! c_scnid;
             LinkTitle2   = "&g_nls_reportDetail_004" !! byte(13) !! scn_abs_path;
             LinkTitle3   = "&g_nls_reportDetail_005";
-            LinkTitle4   = "&g_nls_reportDetail_006" !! byte(13) !! cas_abs_path;
+            LinkTitle4   = "&g_nls_reportDetail_006" !! byte(13) !! exa_filename;
             LinkTitle5   = "&g_nls_reportDetail_007";
             *** HTML-links are destinations specific ***;
             %if (&o_html.) %then %do;

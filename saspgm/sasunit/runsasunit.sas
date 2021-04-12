@@ -91,7 +91,7 @@
 
    /*-- find out all test scenarios ---------------------------------------------*/
    %LET l_source = %_abspath(&g_root, &i_source);
-   %_dir(i_path=&l_source, i_recursive=&i_recursive, o_out=&d_dir.)
+   %_noxcmd_dir(i_path=&l_source, i_recursive=&i_recursive, o_out=&d_dir.)
    %IF %_handleError(&l_macname.
                     ,NoSourceFiles
                     ,%_nobs(&d_dir) EQ 0
@@ -102,6 +102,8 @@
 
    data &d_scn_pre.;
       set &d_dir.;
+      informat _ALL_;
+      attrib _ALL_ label='';
    run;
 
    /* check which test scenarios must be run */
