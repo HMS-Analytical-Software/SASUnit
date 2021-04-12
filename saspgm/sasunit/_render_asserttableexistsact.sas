@@ -27,10 +27,10 @@
                                    
    hlp2 = scan(&i_sourceColumn., 1, "#");
    select (hlp2);
-      when (-2) hlp = "&g_nls_reportTableExist_009.";
-      when (-1) hlp = "&g_nls_reportTableExist_001.";
-      when ( 0) hlp = "&g_nls_reportTableExist_002.";
-      when ( 1) hlp = "&g_nls_reportTableExist_003.";
+      when ("-2") hlp = "&g_nls_reportTableExist_009.";
+      when ("-1") hlp = "&g_nls_reportTableExist_001.";
+      when ("0")  hlp = "&g_nls_reportTableExist_002.";
+      when ("1")  hlp = "&g_nls_reportTableExist_003.";
        otherwise;
    end;
 

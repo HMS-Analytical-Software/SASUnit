@@ -27,11 +27,11 @@
          
    hlp = trim(left(&i_sourceColumn.));
    select (hlp);
-       when (-1) hlp = "&g_nls_reportRecordCount_001.";
-       when (-2) hlp = "&g_nls_reportRecordCount_002.";
-       when (-3) hlp = "&g_nls_reportRecordCount_003.";
-       when (-4) hlp = "&g_nls_reportRecordCount_004.";
-       when (-5) hlp = "&g_nls_reportRecordCount_005.";
+       when ("-1") hlp = "&g_nls_reportRecordCount_001.";
+       when ("-2") hlp = "&g_nls_reportRecordCount_002.";
+       when ("-3") hlp = "&g_nls_reportRecordCount_003.";
+       when ("-4") hlp = "&g_nls_reportRecordCount_004.";
+       when ("-5") hlp = "&g_nls_reportRecordCount_005.";
        otherwise hlp = trim(hlp);
    end;
 

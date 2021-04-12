@@ -83,24 +83,25 @@
       "" !! &g_sasstart. 
       !! " " 
       !! "&l_parms. "
-      !! "-sysin %sysfunc(tranwrd(&l_program., %str( ), %str(\ ))) "
+      !! "-sysin ""%_adaptSASunitPathToOS(&l_program.)"" "
       %if (&i_pgmIsScenario. = 1) %then %do;
          !! "-initstmt ""&l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%))"" "
       %end;
-      !! "-print %sysfunc(tranwrd(&g_testout/&i_scnid..lst, %str( ), %str(\ ))) "
+      !! "-print ""%_adaptSASunitPathToOS(&g_testout.)/&i_scnid..lst"" "
       !! "-noovp "
       !! "-nosyntaxcheck "
       !! "-mautosource "
       !! "-mcompilenote all "
       !! "-sasautos SASAUTOS -append SASAUTOS ""&g_sasunit"" "
-      !! "-sasuser %sysfunc(pathname(work))/sasuser "
-      !! "-logconfigloc '%sysfunc(pathname(WORK))/sasunit.scnlogconfig.xml' "
-      !! "-logapplname 'Scenario' "
+      !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
+      !! "-logconfigloc ""%sysfunc(pathname(WORK))/sasunit.scnlogconfig.xml"" "
+      !! "-logapplname ""Scenario"" "
       %if (&i_pgmIsScenario. = 1) %then %do;
       !! "-termstmt ""%nrstr(%%_termScenario())"" "
       %end;
       !! "";
       PUT _sCmdString;
+      PUTLOG _sCmdString;
    RUN;
 
    %_executeCMDFile(&l_cmdFile.,LE,2);

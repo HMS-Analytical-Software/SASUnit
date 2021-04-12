@@ -61,9 +61,16 @@
                        ,i_sasunitLogLevel          =
                        ,i_sasunitScnLogLevel       =
                        );
-                       
+
+   %local
+      l_sasunitCommandFile
+   ;
+   
+   %let l_sasunitCommandFile =%_makeSASUnitPath (&i_sasunitCommandFile.);
+   %let l_sasunitCommandFile =%_adaptSASUnitPathToOS (&l_sasunitCommandFile.);
+   
    data _null_;
-      file "&i_sasunitCommandFile..sh";
+      file "&l_sasunitCommandFile..sh";
       
       put "#!/bin/bash";
       put "# This file is part of SASUnit, the Unit testing framework for SAS(R) programs.";
@@ -80,13 +87,13 @@
       put "export SASUNIT_SAS_CFG=&i_sasConfig.";
       put "# --------------------------------------------------------------------------------";
       put "# --- EnvVars for SAS Unit Configuration -----------------------------------------";
-      put "export SASUNIT_ROOT=&i_sasunitRootFolder.";
-      put "export SASUNIT_PROJECT_ROOT=&i_projectRootFolder.";
-      put "export SASUNIT_TEST_DB_FOLDER=&i_sasunitTestDBFolder.";
-      put "export SASUNIT_LOG_FOLDER=&i_sasunitLogFolder.";
-      put "export SASUNIT_SCN_LOG_FOLDER=&i_sasunitScnLogFolder.";
-      put "export SASUNIT_RUNALL=&i_sasunitRunAllPgm.";
-      put "export SASUNIT_REPORT_FOLDER=&i_sasunitReportFolder.";
+      put "export SASUNIT_ROOT=""&i_sasunitRootFolder.""";
+      put "export SASUNIT_PROJECT_ROOT=""&i_projectRootFolder.""";
+      put "export SASUNIT_TEST_DB_FOLDER=""&i_sasunitTestDBFolder.""";
+      put "export SASUNIT_LOG_FOLDER=""&i_sasunitLogFolder.""";
+      put "export SASUNIT_SCN_LOG_FOLDER=""&i_sasunitScnLogFolder.""";
+      put "export SASUNIT_RUNALL=""&i_sasunitRunAllPgm.""";
+      put "export SASUNIT_REPORT_FOLDER=""&i_sasunitReportFolder.""";
       put "export SASUNIT_OVERWRITE=&i_sasunitOverwrite.";
       put "export SASUNIT_LANGUAGE=&i_sasunitLanguage.";
       put "export SASUNIT_COVERAGEASSESSMENT=&i_sasunitTestCoverage.";
@@ -132,7 +139,7 @@
       put "echo";
       put;
       put "echo ""Starting SASUnit ...""";
-      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin $SASUNIT_RUNALL -log $SASUNIT_LOG_FOLDER/run_all.log";
+      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin ""$SASUNIT_RUNALL"" -LOGCONFIGLOC ""./bin/sasunit.logconfig.&i_sasunitLanguage..xml"" /*-log ""$SASUNIT_LOG_FOLDER/run_all.log""*/";
       put;
       put "# Show SAS exit status";
       put "RETVAL=$?";
@@ -143,6 +150,6 @@
       put "fi";
    run;
    
-   %sysexec chmod a+x &i_sasunitCommandFile..sh;
+   %sysexec chmod a+x &l_sasunitCommandFile..sh;
 %mend _createBatchFile;
 /** \endcond */

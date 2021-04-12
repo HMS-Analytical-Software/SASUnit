@@ -27,21 +27,21 @@
 
    hlp = trim(left(&i_sourceColumn.));
    select (hlp);
-       when (-1)  hlp = "&g_nls_reportPrimaryKey_008.";
-       when (-2)  hlp = "&g_nls_reportPrimaryKey_009.";
-       when (-3)  hlp = "&g_nls_reportPrimaryKey_010.";
-       when (-4)  hlp = "&g_nls_reportPrimaryKey_011.";
-       when (-5)  hlp = "&g_nls_reportPrimaryKey_012.";
-       when (-6)  hlp = "&g_nls_reportPrimaryKey_013.";
-       when (-8)  hlp = "&g_nls_reportPrimaryKey_014.";
-       when (-9)  hlp = "&g_nls_reportPrimaryKey_015.";
-       when (-10) hlp = "&g_nls_reportPrimaryKey_016.";
-       when (-12) hlp = "&g_nls_reportPrimaryKey_017.";
-       when (-7)  hlp = "&g_nls_reportPrimaryKey_018.";
-       when (-11) hlp = "&g_nls_reportPrimaryKey_019.";
-       when (-13) hlp = "&g_nls_reportPrimaryKey_020.";
-       when (0)   hlp = "&g_nls_reportPrimaryKey_007.";
-       when (1)   hlp = "&g_nls_reportPrimaryKey_006.";
+       when ("-1")  hlp = "&g_nls_reportPrimaryKey_008.";
+       when ("-2")  hlp = "&g_nls_reportPrimaryKey_009.";
+       when ("-3")  hlp = "&g_nls_reportPrimaryKey_010.";
+       when ("-4")  hlp = "&g_nls_reportPrimaryKey_011.";
+       when ("-5")  hlp = "&g_nls_reportPrimaryKey_012.";
+       when ("-6")  hlp = "&g_nls_reportPrimaryKey_013.";
+       when ("-8")  hlp = "&g_nls_reportPrimaryKey_014.";
+       when ("-9")  hlp = "&g_nls_reportPrimaryKey_015.";
+       when ("-10") hlp = "&g_nls_reportPrimaryKey_016.";
+       when ("-12") hlp = "&g_nls_reportPrimaryKey_017.";
+       when ("-7")  hlp = "&g_nls_reportPrimaryKey_018.";
+       when ("-11") hlp = "&g_nls_reportPrimaryKey_019.";
+       when ("-13") hlp = "&g_nls_reportPrimaryKey_020.";
+       when ("0")   hlp = "&g_nls_reportPrimaryKey_007.";
+       when ("1")   hlp = "&g_nls_reportPrimaryKey_006.";
        otherwise hlp = catx(" ",hlp,"sonst &g_nls_reportPrimaryKey_006.");
    end;
    

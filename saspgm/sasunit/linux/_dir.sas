@@ -84,7 +84,7 @@
    
    %IF &i_recursive=0 %then %let s=-maxdepth 1;
 
-   filename _dir pipe "find -P ""&l_i_path."" &s. &l_i_name. -type f -printf ""%nrstr(%h/%f\t%TD\t%TT\t\r\n)""" encoding=&encoding.;
+   filename _dir pipe "find -P &l_i_path. &s. &l_i_name. -type f -printf ""%nrstr(%h/%f\t%TD\t%TT\t\r\n)""" encoding=&encoding.;
 
    data &o_out. (keep=membername filename changed);
       length membername filename $255;

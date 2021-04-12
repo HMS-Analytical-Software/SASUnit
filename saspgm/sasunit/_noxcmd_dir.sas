@@ -28,9 +28,9 @@
 
 */ /** \cond */ 
 %MACRO _noxcmd_dir (i_path=
-                ,i_recursive=0
-                ,o_out=dir
-                );
+                   ,i_recursive=0
+                   ,o_out=dir
+                   );
 
    %local 
       l_i_path 
@@ -41,9 +41,8 @@
    ;
 
    *** make path look alike under all OSs ***;
-   %let l_i_path   = %qsysfunc(translate(%qsysfunc(dequote(&i_path.)),/,\));
+   %let l_i_path   = %_makeSASUnitPath(&i_path.);
    %let l_i_pattern=_NONE_;
-
    *** Delete target dataset   ***;
    %if (%sysfunc (exist (&o_out., DATA))) %then %do;
       proc delete data=&o_out.;
@@ -58,7 +57,7 @@
    filename DIR "%unquote(&l_i_path.)";
    %let l_path_exists=%sysfunc (fileref (DIR));
    %if (&l_path_exists. ne 0) %then %do;
-      %_issueErrorMessage (&g_currentLogger.,_noxcmd_dir: Given directory does not exist: &l_i_path.);
+      %_issueInfoMessage (&g_currentLogger.,_noxcmd_dir: Given directory does not exist or file pattern has no matches: &l_i_path.);
       filename DIR clear;
       %goto exit;
    %end;
@@ -68,6 +67,22 @@
       %let l_i_pattern =%qscan (&l_i_path.,-1,/);
       %let l_i_path    =%substr (&l_i_path.,1,%index(&l_i_path., &l_i_pattern.)-2);
       %let l_i_pattern =%upcase(&l_i_pattern);
+
+      *** Using like operator. It uses the follwoing wildcards '%' and '_' ***;
+      *** To search form them as literals they maust be escaped. I am using '^' ***;
+
+      *** Save existing perecent signs and underscores with enclosing ^ and @ ***;
+      %let l_i_pattern =%sysfunc(tranwrd (&l_i_pattern., %str(%%), %str(^%%@)));
+      %let l_i_pattern =%sysfunc(tranwrd (&l_i_pattern., %str(_), %str(^_@)));
+
+      *** Change * and ? to % and _ ***;
+      %let l_i_pattern =%qsysfunc(translate (&l_i_pattern., %str(%%), %str(*)));
+      %let l_i_pattern =%qsysfunc(translate (&l_i_pattern., _, ?));
+
+      *** Replace saved percent signs and undercores to ^% and ^_ ***;
+      %let l_i_pattern =%qsysfunc(tranwrd (&l_i_pattern., %str(^%%@), %str(^%%)));
+      %let l_i_pattern =%qsysfunc(tranwrd (&l_i_pattern., %str(^_@), %str(^_)));
+
       %let l_i_pattern =%sysfunc(translate (&l_i_pattern., %str(%%), %str(*))); 
       %let l_i_pattern =%sysfunc(translate (&l_i_pattern., _, ?)); 
       filename DIR clear;

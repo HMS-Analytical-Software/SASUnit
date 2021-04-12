@@ -26,13 +26,13 @@
                              );
    hlp = TRIM(LEFT(&i_sourceColumn.));
    SELECT (hlp);
-       WHEN (-2)  hlp = "&g_nls_reportText_010.";
-       WHEN (-3)  hlp = "&g_nls_reportText_007.";
-       WHEN (-4)  hlp = "&g_nls_reportText_011.";
-       WHEN (-5)  hlp = "&g_nls_reportText_008.";
-       WHEN (-6)  hlp = "&g_nls_reportText_012.";
-       WHEN (-7)  hlp = "&g_nls_reportText_009.";
-       WHEN (-8)  hlp = "&g_nls_reportText_013.";
+       WHEN ("-2")  hlp = "&g_nls_reportText_010.";
+       WHEN ("-3")  hlp = "&g_nls_reportText_007.";
+       WHEN ("-4")  hlp = "&g_nls_reportText_011.";
+       WHEN ("-5")  hlp = "&g_nls_reportText_008.";
+       WHEN ("-6")  hlp = "&g_nls_reportText_012.";
+       WHEN ("-7")  hlp = "&g_nls_reportText_009.";
+       WHEN ("-8")  hlp = "&g_nls_reportText_013.";
 
        otherwise hlp = hlp;
    end;

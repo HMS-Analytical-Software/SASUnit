@@ -26,6 +26,7 @@
                                ,o_html=0
                                ,o_targetColumn=
                                );
+                               
    IF &i_sourceColumn. EQ '^_' OR &i_sourceColumn. EQ '' THEN DO;
       %** While actual report does not exist, render the column in error state ***;
       &i_sourceColumn. = "&g_nls_reportDetail_048";

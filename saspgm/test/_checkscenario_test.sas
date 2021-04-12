@@ -29,7 +29,7 @@
    /* Create test DB */
    DATA scn_single;
       length scn_path $255;
-      format scn_end datetime20.;
+      format scn_end scn_changed datetime20.;
       scn_id = 1; scn_path = "saspgm/test/pgmlib1/scenario1.sas"; scn_end = &scn_changed.; scn_changed=&scn_changed.;output;
       scn_id = 2; scn_path = "saspgm/test/pgmlib1/scenario2.sas"; scn_end = &scn_changed.; scn_changed=&scn_changed.;output;
       scn_id = 3; scn_path = "saspgm/test/pgmlib1/scenario3.sas"; scn_end = &scn_changed.; scn_changed=&scn_changed.;output;
@@ -38,7 +38,7 @@
 
    DATA scn_multi;
       length scn_path $255;
-      format scn_end datetime20.;
+      format scn_end scn_changed datetime20.;
       scn_id = 1; scn_path = "saspgm/test/pgmlib1/scenario1.sas"; scn_end = &scn_changed.; scn_changed=&scn_changed.;output;
       scn_id = 2; scn_path = "saspgm/test/pgmlib1/scenario2.sas"; scn_end = &scn_changed.; scn_changed=&scn_changed.;output;
       scn_id = 3; scn_path = "saspgm/test/pgmlib1/scenario3.sas"; scn_end = &scn_changed.; scn_changed=&scn_changed.;output;
@@ -591,12 +591,12 @@ libname target "&g_target.";
                   ,i_desc=6 observations in test db expected
                   );
 %assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
-                  ,i_recordsExp=2
+                  ,i_recordsExp=4
                   ,i_where=dorun ne 0
                   ,i_desc=2 scenarios should be run
                   );
 %assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
-                  ,i_recordsExp=4
+                  ,i_recordsExp=2
                   ,i_where=dorun = 0
                   ,i_desc=4 Scenario should not be run
                   );

@@ -28,20 +28,20 @@
 
    hlp = trim(left(&i_sourceColumn.));
    select (hlp);
-       when (-1)  hlp = "&g_nls_reportForeignKey_001.";
-       when (-2)  hlp = "&g_nls_reportForeignKey_002.";
-       when (-3)  hlp = "&g_nls_reportForeignKey_003.";
-       when (-4)  hlp = "&g_nls_reportForeignKey_004.";
-       when (-5)  hlp = "&g_nls_reportForeignKey_005.";
-       when (-6)  hlp = "&g_nls_reportForeignKey_006.";
-       when (-7)  hlp = "&g_nls_reportForeignKey_007.";
-       when (-8)  hlp = "&g_nls_reportForeignKey_008.";
-       when (-19) hlp = "&g_nls_reportForeignKey_019.";
-       when (-20) hlp = "&g_nls_reportForeignKey_020.";
-       when (-21) hlp = "&g_nls_reportForeignKey_021.";
-       when (-22) hlp = "&g_nls_reportForeignKey_022.";
-       when (-23) hlp = "&g_nls_reportForeignKey_023.";
-       when (-24) hlp = "&g_nls_reportForeignKey_024.";
+       when ("-1")  hlp = "&g_nls_reportForeignKey_001.";
+       when ("-2")  hlp = "&g_nls_reportForeignKey_002.";
+       when ("-3")  hlp = "&g_nls_reportForeignKey_003.";
+       when ("-4")  hlp = "&g_nls_reportForeignKey_004.";
+       when ("-5")  hlp = "&g_nls_reportForeignKey_005.";
+       when ("-6")  hlp = "&g_nls_reportForeignKey_006.";
+       when ("-7")  hlp = "&g_nls_reportForeignKey_007.";
+       when ("-8")  hlp = "&g_nls_reportForeignKey_008.";
+       when ("-19") hlp = "&g_nls_reportForeignKey_019.";
+       when ("-20") hlp = "&g_nls_reportForeignKey_020.";
+       when ("-21") hlp = "&g_nls_reportForeignKey_021.";
+       when ("-22") hlp = "&g_nls_reportForeignKey_022.";
+       when ("-23") hlp = "&g_nls_reportForeignKey_023.";
+       when ("-24") hlp = "&g_nls_reportForeignKey_024.";
        otherwise hlp = catx(" ",hlp,"&g_nls_reportForeignKey_025.");
    end;
    

@@ -27,9 +27,9 @@
 
    hlp = TRIM(LEFT(&i_sourceColumn.));
    SELECT (hlp);
-       WHEN (-2)  hlp = "&g_nls_reportExternal_001.";
-       WHEN (-3)  hlp = "&g_nls_reportExternal_002.";
-       WHEN (-4)  hlp = "&g_nls_reportExternal_003.";
+       WHEN ("-2")  hlp = "&g_nls_reportExternal_001.";
+       WHEN ("-3")  hlp = "&g_nls_reportExternal_002.";
+       WHEN ("-4")  hlp = "&g_nls_reportExternal_003.";
 
        otherwise hlp = hlp;
    end;

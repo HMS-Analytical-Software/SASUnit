@@ -38,8 +38,8 @@
       hlp = catx(" ",hlp,hlp2);
       hlp2 = scan(&i_sourceColumn., 3, ":");
       select (hlp2);
-         when (0) hlp = catt(hlp," &g_nls_reportTableExist_007.");
-         when (1) hlp = catt(hlp," &g_nls_reportTableExist_008.");
+         when ("0") hlp = catt(hlp," &g_nls_reportTableExist_007.");
+         when ("1") hlp = catt(hlp," &g_nls_reportTableExist_008.");
          otherwise;
       end;
    end;

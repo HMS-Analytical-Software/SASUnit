@@ -36,7 +36,7 @@
 
    data work._sd_members
       %if (%quote(&i_pattern.) ne _NONE_) %then %do;
-         (where=(upcase (membername) like "%upcase(&i_pattern.)"))
+         (where=(upcase (membername) like "%qupcase(&i_pattern.)" escape '^'))
       %end;
       %if (&o_subdirs. ne _NONE_) %then %do;
          &o_subdirs. (keep=filename)
@@ -60,7 +60,7 @@
          rc = log4sas_logevent("&g_currentLogger.", "Info" ,"_single_dir: Given directory is empty: " !! catt (Directory));
       end;
       else do;
-         rc = log4sas_logevent("&g_currentLogger.", "Info" ,"_single_dir: Directory """ !! catt (Directory) !! """ contains " !! catt (num) !! "entries.");
+         rc = log4sas_logevent("&g_currentLogger.", "Info" ,"_single_dir: Directory """ !! catt (Directory) !! """ contains " !! catt (num) !! " entries.");
       end;
       do i=1 to num;
          membername = dread (d_id, i);

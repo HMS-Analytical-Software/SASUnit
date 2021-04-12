@@ -30,13 +30,13 @@
    imagepath = SCAN(TRIM(LEFT(&i_sourceColumn.)),3,"#");
 
    SELECT (hlp);
-       WHEN (-2)  hlp = "&g_nls_reportImage_009.";
-       WHEN (-3)  hlp = "&g_nls_reportImage_001.";
-       WHEN (-4)  hlp = "&g_nls_reportImage_010.";
-       WHEN (-5)  hlp = "&g_nls_reportImage_002.";
-       WHEN (-6)  hlp = "&g_nls_reportImage_011.";
-       WHEN (-7)  hlp = "&g_nls_reportImage_003.";
-       WHEN (-8)  hlp = "&g_nls_reportImage_012.";
+       WHEN ("-2")  hlp = "&g_nls_reportImage_009.";
+       WHEN ("-3")  hlp = "&g_nls_reportImage_001.";
+       WHEN ("-4")  hlp = "&g_nls_reportImage_010.";
+       WHEN ("-5")  hlp = "&g_nls_reportImage_002.";
+       WHEN ("-6")  hlp = "&g_nls_reportImage_011.";
+       WHEN ("-7")  hlp = "&g_nls_reportImage_003.";
+       WHEN ("-8")  hlp = "&g_nls_reportImage_012.";
 
        otherwise hlp = hlp;
    end;
