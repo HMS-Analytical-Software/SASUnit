@@ -42,7 +42,7 @@
 
    %IF &syserr NE 0 %THEN %GOTO errexit;
 
-   %LET encoding=wlatin1;
+   %LET encoding=latin9;
 
    %put &g_note.(SASUNIT): Directory search is:           &i_path;
 
