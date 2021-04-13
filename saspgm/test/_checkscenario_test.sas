@@ -97,7 +97,9 @@
 
    data tsu;
       set target.tsu;
-      tsu_lastinit=&scn_changed.;
+      if (tsu_parameterName = "TSU_LASTINIT") then do;
+         tsu_parameterValue = "&scn_changed.";
+      end;
    run;
 %MEND _createTestFiles;
 
@@ -591,12 +593,12 @@ libname target "&g_target.";
                   ,i_desc=6 observations in test db expected
                   );
 %assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
-                  ,i_recordsExp=4
+                  ,i_recordsExp=2
                   ,i_where=dorun ne 0
                   ,i_desc=2 scenarios should be run
                   );
 %assertRecordCount(i_libref=work, i_memname=ScenariosToRun, i_operator=EQ
-                  ,i_recordsExp=2
+                  ,i_recordsExp=4
                   ,i_where=dorun = 0
                   ,i_desc=4 Scenario should not be run
                   );
