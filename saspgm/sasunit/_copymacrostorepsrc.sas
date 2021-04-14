@@ -38,7 +38,7 @@
    run;
 
    %let l_output_path = %_abspath(&g_root., &g_reportFolder.);
-   %let l_rc          = %sysfunc (dcreate (testdoc, &l_output_path.));
+   %let l_rc          = %sysfunc (dcreate (testDoc, &l_output_path.));
    %let l_output_path = &l_output_path./testDoc;
    %let l_rc          = %sysfunc (dcreate (src, &l_output_path.));
    %let l_output_path = &l_output_path./src;
