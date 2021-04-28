@@ -89,7 +89,7 @@
    data &o_out. (keep=membername filename changed);
       length membername filename $255;
       format changed datetime20.;
-      infile _dir delimiter='09'x truncover encoding=&sysencoding.;
+      infile _dir delimiter='09'x truncover;
       input filename $ d:mmddyy8. t:time8.;
       changed = dhms (d, hour(t), minute(t), 0);
       loca = length(filename) - length(scan(filename,-1,'/')) + 1;
