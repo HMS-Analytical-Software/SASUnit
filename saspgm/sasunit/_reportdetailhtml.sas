@@ -277,7 +277,9 @@
 
          *** Second print should contain no title but footnotes ***;
          title;
-         %_reportFooter(o_html=&o_html.);
+         %_reportFooter(o_html=&o_html.
+                       ,i_offset=../
+                       );
 
          proc report data=work._test_report (where=(cas_id=&i_cas.)) nowd missing
              style(lines)=blindData

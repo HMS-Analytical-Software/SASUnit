@@ -16,19 +16,21 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 			   
    \param   o_html         Test report in HTML-format?
+   \param   i_offset       Offset for links to SASUnit logo
 
 */ /** \cond */ 
 %MACRO _reportFooter (o_html=0
+                     ,i_offset  =
                      );
    %local l_footnote;
    %if (&o_html.) %then %do;
-      %_reportFooterHTML;
+      %_reportFooterHTML(i_offset  = &i_offset.);
    %end;
    %else %do;
       %let l_footnote=&g_nls_reportFooter_001. %sysfunc (putn(%sysfunc(today()),&g_nls_reportFooter_002.));
       %let l_footnote=&l_footnote.%str(,) %sysfunc (putn(%sysfunc(today()),&g_nls_reportFooter_003.));
       %let l_footnote=&l_footnote.%str(,) %sysfunc (putn(%sysfunc(time()), time8.0)) &g_nls_reportFooter_004.;
-      %let l_footnote=&l_footnote. ^{style [URL="http://sourceforge.net/projects/sasunit/" hreftarget="_blank" postimage="&g_reportfolder./SASUnit_Logo.png"] SASUnit} Version &g_version (&g_revision);
+      %let l_footnote=&l_footnote. ^{style [URL="http://sourceforge.net/projects/sasunit/" hreftarget="_blank" postimage="&i_offset.SASUnit_Logo.png"] SASUnit} Version &g_version (&g_revision);
       footnote '^{leaders "_"}_';
       footnote2 j=r %sysfunc(quote(&l_footnote.));
    %end;
