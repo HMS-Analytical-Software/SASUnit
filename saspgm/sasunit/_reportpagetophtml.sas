@@ -17,6 +17,7 @@
 			   
    \param   i_title        Title line of HTML page
    \param   i_current      number of the active tab, default is 1
+   \param   i_offset       Offset for links to other html-pages
 
 */ /** \cond */  
 %MACRO _reportPageTopHTML (i_title   =

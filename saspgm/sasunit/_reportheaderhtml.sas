@@ -15,7 +15,7 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param   i_title        page title (displayed in browser window)
+   \param   i_title  page title (displayed in browser window)
    \param   i_style  Name of the SAS style and css file to be used. 
    
 */ /** \cond */ 
