@@ -32,8 +32,7 @@
             ,o_out=work.dir
             );
 
-   %local encoding s dirfile xwait xsync xmin l_i_path;
-   %let encoding=pcoem850;
+   %local s dirfile xwait xsync xmin l_i_path;
 
    %let l_i_path = %_makeSASunitPath (&i_path);
    %let l_i_path = %_adaptSASUnitPathToOS (&l_i_path.);
@@ -88,7 +87,7 @@
    options &xwait &xsync &xmin;
    
    %_readdirfile (i_dirfile =&dirfile.
-                 ,i_encoding=&encoding.
+                 ,i_encoding=&g_OSEncoding.
                  ,o_out     =&o_out.
                  );   
 

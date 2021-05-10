@@ -33,6 +33,7 @@
    \param      i_sasunitReportFolder   Name of the folder where the SASUnit documentation (test and program) should be stored.
    \param      i_sasunitLogLevel       Log4SSAS Logging level that is used for SASUnit suite
    \param      i_sasunitScnLogLevel    Log4SSAS Logging level that is used for all senarios
+   \param      i_OSEncoding           Encoding of OS which can be different from encoding of SAS session
 */ /** \cond */
 %macro _createBatchFiles(i_operatingSystem         =
                         ,i_sasVersion              =
@@ -49,6 +50,7 @@
                         ,i_sasunitReportFolder     =
                         ,i_sasunitLogLevel         =
                         ,i_sasunitScnLogLevel      =
+                        ,i_OSEncoding              =
                         );
 
    %local
@@ -78,6 +80,7 @@
                     ,i_sasunitLogLevel          =&i_sasunitLogLevel.
                     ,i_sasunitScnLogLevel       =&i_sasunitScnLogLevel.
                     ,i_sasunitReportFolder      =&i_sasunitReportFolder.
+                    ,i_OSEncoding               =&i_OSEncoding.
                     );
    %_createBatchFile(i_sasunitCommandFile=&i_projectBinFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..overwrite.full
                     ,i_operatingSystem          =&i_operatingSystem.
@@ -100,6 +103,7 @@
                     ,i_sasunitLogLevel          =&i_sasunitLogLevel.
                     ,i_sasunitScnLogLevel       =&i_sasunitScnLogLevel.
                     ,i_sasunitReportFolder      =&i_sasunitReportFolder.
+                    ,i_OSEncoding               =&i_OSEncoding.
                     );
    %_createBatchFile(i_sasunitCommandFile=&i_projectBinFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..fast
                     ,i_operatingSystem          =&i_operatingSystem.
@@ -122,6 +126,7 @@
                     ,i_sasunitLogLevel          =&i_sasunitLogLevel.
                     ,i_sasunitScnLogLevel       =&i_sasunitScnLogLevel.
                     ,i_sasunitReportFolder      =&i_sasunitReportFolder.
+                    ,i_OSEncoding               =&i_OSEncoding.
                     );
    %_createBatchFile(i_sasunitCommandFile=&i_projectBinFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..full
                     ,i_operatingSystem          =&i_operatingSystem.
@@ -144,6 +149,7 @@
                     ,i_sasunitLogLevel          =&i_sasunitLogLevel.
                     ,i_sasunitScnLogLevel       =&i_sasunitScnLogLevel.
                     ,i_sasunitReportFolder      =&i_sasunitReportFolder.
+                    ,i_OSEncoding               =&i_OSEncoding.
                     );
 
    %_createBatchFile(i_sasunitCommandFile=&i_projectBinFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..debug
@@ -167,6 +173,7 @@
                     ,i_sasunitLogLevel          =DEBUG
                     ,i_sasunitScnLogLevel       =DEBUG
                     ,i_sasunitReportFolder      =&i_sasunitReportFolder.
+                    ,i_OSEncoding               =&i_OSEncoding.
                     );
    %_createBatchFile(i_sasunitCommandFile=&i_projectBinFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..trace
                     ,i_operatingSystem          =&i_operatingSystem.
@@ -189,6 +196,7 @@
                     ,i_sasunitLogLevel          =TRACE
                     ,i_sasunitScnLogLevel       =TRACE
                     ,i_sasunitReportFolder      =&i_sasunitReportFolder.
+                    ,i_OSEncoding               =&i_OSEncoding.
                     );
 %mend _createBatchFiles;
 /** \endcond */

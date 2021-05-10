@@ -15,6 +15,7 @@ fi
 # --------------------------------------------------------------------------------
 # --- EnvVars for SAS Configuration ----------------------------------------------
 export SASUNIT_HOST_OS=linux
+export SASUNIT_HOST_ENCODING=WLATIN1
 export SASUNIT_SAS_VERSION=9.3
 export SASUNIT_SASPATH=/usr/local/SASHome/SASFoundation/$SASUNIT_SAS_VERSION/bin
 export SASUNIT_SAS_EXE=$SASUNIT_SASPATH/sas_$SASUNIT_LANGUAGE
@@ -34,6 +35,7 @@ export SASUNIT_SCN_LOG_LEVEL=INFO
 
 echo "--- EnvVars for SAS Configuration ----------------------------------------------"
 echo "Operating system                   = $SASUNIT_HOST_OS"
+echo "Host OS encoding                   = $SASUNIT_HOST_ENCODING"
 echo "SAS version                        = $SASUNIT_SAS_VERSION"
 echo "SAS installation path              = $SASUNIT_SASPATH"
 echo "SAS executable                     = $SASUNIT_SAS_EXE"

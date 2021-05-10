@@ -55,6 +55,7 @@ proc options option=logparm;run;
   ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
   ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
   ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
+  ,i_OSEncoding               = %sysget (SASUNIT_HOST_ENCODING)
   )
 
 /* Run specified test scenarios. There can be more than one call to runSASUnit */

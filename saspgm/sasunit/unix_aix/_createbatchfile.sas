@@ -38,6 +38,7 @@
    \param      i_sasunitCrossRefSASUnit   Flag if cross reference reports for SASUnit macros should be generated (0 / 1)
    \param      i_sasunitLogLevel          Log4SSAS Logging level that is used for SASUnit suite
    \param      i_sasunitScnLogLevel       Log4SSAS Logging level that is used for all senarios
+   \param      i_OSEncoding               Encoding of OS which can be different from encoding of SAS session
 */ /** \cond */
 %macro _createBatchFile(i_sasunitCommandFile       =
                        ,i_operatingSystem          =
@@ -60,12 +61,19 @@
                        ,i_sasunitCrossRefSASUnit   =
                        ,i_sasunitLogLevel          =
                        ,i_sasunitScnLogLevel       =
+                       ,i_OSEncoding               =
                        );
                        
+   %local
+      l_sasunitCommandFile
+   ;
+   
+   %let l_sasunitCommandFile =%_makeSASUnitPath (&i_sasunitCommandFile.);
+   %let l_sasunitCommandFile =%_adaptSASUnitPathToOS (&l_sasunitCommandFile.);
+   
    data _null_;
       file "&i_sasunitCommandFile..sh";
       
-
       put "#!/bin/bash";
       put "# This file is part of SASUnit, the Unit testing framework for SAS(R) programs.";
       put "# For copyright information and terms of usage under the GPL license see included file readme.txt";
@@ -76,18 +84,19 @@
       put "# --------------------------------------------------------------------------------";
       put "# --- EnvVars for SAS Configuration ----------------------------------------------";
       put "export SASUNIT_HOST_OS=&i_operatingSystem.";
+      put "export SASUNIT_HOST_ENCODING=&i_OSEncoding.";
       put "export SASUNIT_SAS_VERSION=&i_sasVersion.";
       put "export SASUNIT_SAS_EXE=&i_sasExe.";
       put "export SASUNIT_SAS_CFG=&i_sasConfig.";
       put "# --------------------------------------------------------------------------------";
       put "# --- EnvVars for SAS Unit Configuration -----------------------------------------";
-      put "export SASUNIT_ROOT=&i_sasunitRootFolder.";
-      put "export SASUNIT_PROJECT_ROOT=&i_projectRootFolder.";
-      put "export SASUNIT_TEST_DB_FOLDER=&i_sasunitTestDBFolder.";
-      put "export SASUNIT_LOG_FOLDER=&i_sasunitLogFolder.";
-      put "export SASUNIT_SCN_LOG_FOLDER=&i_sasunitScnLogFolder.";
-      put "export SASUNIT_RUNALL=&i_sasunitRunAllPgm.";
-      put "export SASUNIT_REPORT_FOLDER=&i_sasunitReportFolder.";
+      put "export SASUNIT_ROOT=""&i_sasunitRootFolder.""";
+      put "export SASUNIT_PROJECT_ROOT=""&i_projectRootFolder.""";
+      put "export SASUNIT_TEST_DB_FOLDER=""&i_sasunitTestDBFolder.""";
+      put "export SASUNIT_LOG_FOLDER=""&i_sasunitLogFolder.""";
+      put "export SASUNIT_SCN_LOG_FOLDER=""&i_sasunitScnLogFolder.""";
+      put "export SASUNIT_RUNALL=""&i_sasunitRunAllPgm.""";
+      put "export SASUNIT_REPORT_FOLDER=""&i_sasunitReportFolder.""";
       put "export SASUNIT_OVERWRITE=&i_sasunitOverwrite.";
       put "export SASUNIT_LANGUAGE=&i_sasunitLanguage.";
       put "export SASUNIT_COVERAGEASSESSMENT=&i_sasunitTestCoverage.";
@@ -109,32 +118,33 @@
       put "fi";
       put "echo";
       put "echo --- EnvVars for SAS Configuration ----------------------------------------------";
-      put 'echo Host Operating System     = %SASUNIT_HOST_OS%';
-      put 'echo SAS Version               = %SASUNIT_SAS_VERSION%';
-      put 'echo SAS Exceutable            = %SASUNIT_SAS_EXE%';
-      put 'echo SAS Config File           = %SASUNIT_SAS_CFG%';
+      put 'echo Host Operating System     = $SASUNIT_HOST_OS';
+      put 'echo Host OS Encoding          = $SASUNIT_HOST_ENCODING';
+      put 'echo SAS Version               = $SASUNIT_SAS_VERSION';
+      put 'echo SAS Exceutable            = $SASUNIT_SAS_EXE';
+      put 'echo SAS Config File           = $SASUNIT_SAS_CFG';
       put "echo --- EnvVars for SAS Unit Configuration -----------------------------------------";
-      put 'echo SASUnit Root Path         = %SASUNIT_ROOT%';
-      put 'echo Project Root Path         = %SASUNIT_PROJECT_ROOT%';
-      put 'echo Folder for TestDB         = %SASUNIT_TEST_DB_FOLDER%';
-      put 'echo Folder for Log Files      = %SASUNIT_LOG_FOLDER%';
-      put 'echo Folder for Scn Log Files  = %SASUNIT_SCN_LOG_FOLDER%';
-      put 'echo Folder for Reports        = %SASUNIT_REPORT_FOLDER%';
-      put 'echo Name of RUN_ALL Program   = %SASUNIT_RUNALL%';
-      put 'echo Overwrite                 = %SASUNIT_OVERWRITE%';
-      put 'echo Language                  = %SASUNIT_LANGUAGE%';
-      put 'echo Testcoverage              = %SASUNIT_COVERAGEASSESSMENT%';
-      put 'echo Program Documentation     = %SASUNIT_PGMDOC%';
-      put 'echo PgmDoc for SASUnit        = %SASUNIT_PGMDOC_SASUNIT%';
-      put 'echo Crossreference            = %SASUNIT_CROSSREFERENCE%';
-      put 'echo Crossref for SASUnit      = %SASUNIT_CROSSREFERENCE_SASUNIT%';
-      put 'echo Log Level for RUN_ALL     = %SASUNIT_LOGLEVEL%';
-      put 'echo Log Level for Scenarios   = %SASUNIT_SCN_LOGLEVEL%';
-      put 'echo SASUnit config            = bin\sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg';
+      put 'echo SASUnit Root Path         = $SASUNIT_ROOT';
+      put 'echo Project Root Path         = $SASUNIT_PROJECT_ROOT';
+      put 'echo Folder for TestDB         = $SASUNIT_TEST_DB_FOLDER';
+      put 'echo Folder for Log Files      = $SASUNIT_LOG_FOLDER%;
+      put 'echo Folder for Scn Log Files  = $SASUNIT_SCN_LOG_FOLDER';
+      put 'echo Folder for Reports        = $SASUNIT_REPORT_FOLDER';
+      put 'echo Name of RUN_ALL Program   = $SASUNIT_RUNALL';
+      put 'echo Overwrite                 = $SASUNIT_OVERWRITE';
+      put 'echo Language                  = $SASUNIT_LANGUAGE';
+      put 'echo Testcoverage              = $SASUNIT_COVERAGEASSESSMENT';
+      put 'echo Program Documentation     = $SASUNIT_PGMDOC';
+      put 'echo PgmDoc for SASUnit        = $SASUNIT_PGMDOC_SASUNIT';
+      put 'echo Crossreference            = $SASUNIT_CROSSREFERENCE';
+      put 'echo Crossref for SASUnit      = $SASUNIT_CROSSREFERENCE_SASUNIT';
+      put 'echo Log Level for RUN_ALL     = $SASUNIT_LOGLEVEL';
+      put 'echo Log Level for Scenarios   = $SASUNIT_SCN_LOGLEVEL';
+      put 'echo SASUnit config            = bin\sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg';
       put "echo";
       put;
       put "echo ""Starting SASUnit ...""";
-      put "/opt/sas/sas94/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE -nosyntaxcheck -noovp";
+      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin ""$SASUNIT_RUNALL"" -LOGCONFIGLOC ""./bin/sasunit.logconfig.&i_sasunitLanguage..xml"" /*-log ""$SASUNIT_LOG_FOLDER/run_all.log""*/";
       put;
       put "# Show SAS exit status";
       put "RETVAL=$?";

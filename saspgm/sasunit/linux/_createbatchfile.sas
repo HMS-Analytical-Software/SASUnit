@@ -38,6 +38,7 @@
    \param      i_sasunitCrossRefSASUnit   Flag if cross reference reports for SASUnit macros should be generated (0 / 1)
    \param      i_sasunitLogLevel          Log4SSAS Logging level that is used for SASUnit suite
    \param      i_sasunitScnLogLevel       Log4SSAS Logging level that is used for all senarios
+   \param      i_OSEncoding               Encoding of OS which can be different from encoding of SAS session
 */ /** \cond */
 %macro _createBatchFile(i_sasunitCommandFile       =
                        ,i_operatingSystem          =
@@ -60,6 +61,7 @@
                        ,i_sasunitCrossRefSASUnit   =
                        ,i_sasunitLogLevel          =
                        ,i_sasunitScnLogLevel       =
+                       ,i_OSEncoding               =
                        );
 
    %local
@@ -82,6 +84,7 @@
       put "# --------------------------------------------------------------------------------";
       put "# --- EnvVars for SAS Configuration ----------------------------------------------";
       put "export SASUNIT_HOST_OS=&i_operatingSystem.";
+      put "export SASUNIT_HOST_ENCODING=&i_OSEncoding.";
       put "export SASUNIT_SAS_VERSION=&i_sasVersion.";
       put "export SASUNIT_SAS_EXE=&i_sasExe.";
       put "export SASUNIT_SAS_CFG=&i_sasConfig.";
@@ -116,6 +119,7 @@
       put "echo";
       put "echo --- EnvVars for SAS Configuration ----------------------------------------------";
       put 'echo Host Operating System     = $SASUNIT_HOST_OS';
+      put 'echo Host OS Encoding          = $SASUNIT_HOST_ENCODING';
       put 'echo SAS Version               = $SASUNIT_SAS_VERSION';
       put 'echo SAS Exceutable            = $SASUNIT_SAS_EXE';
       put 'echo SAS Config File           = $SASUNIT_SAS_CFG';
@@ -136,6 +140,7 @@
       put 'echo Crossref for SASUnit      = $SASUNIT_CROSSREFERENCE_SASUNIT';
       put 'echo Log Level for RUN_ALL     = $SASUNIT_LOGLEVEL';
       put 'echo Log Level for Scenarios   = $SASUNIT_SCN_LOGLEVEL';
+      put 'echo SASUnit config            = bin\sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg';
       put "echo";
       put;
       put "echo ""Starting SASUnit ...""";

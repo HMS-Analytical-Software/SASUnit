@@ -369,6 +369,8 @@
  43 EN Log4SAS logging level for scenarios
  44 DE Verzeichnis für die SASUnit Test Dokumentation
  44 EN Folder for SASUnit test documentation
+ 45 DE Codierung des Betriebssystems
+ 45 EN Encoding of operating system
 ---reportLibrary
   1 DE Prüfbericht - Vergleich der beiden Bibliotheken
   1 EN Test Report - Comparison of two Libraries

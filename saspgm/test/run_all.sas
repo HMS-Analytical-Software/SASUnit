@@ -45,6 +45,8 @@ proc options option=logparm;run;
   ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
   ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
   ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
+  ,i_resourceFolder           = %sysget(SASUNIT_ROOT)/resources
+  ,i_OSEncoding               = %sysget (SASUNIT_HOST_ENCODING)
 );
 
 %runSASUnit(i_source = %str(saspgm/test/reportsasunit_inexisting_scenario_has_to_fail));

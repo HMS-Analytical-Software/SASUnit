@@ -25,7 +25,6 @@
    \param   i_recursive  1 .. search recursively in subdirectories, default is 0
    \param   o_out        output dataset, default is work.dir. This dataset contains two columns
                          named filename and changed
-   \todo    Establish a golbal parameter for encoding of os
 */ /** \cond */
 
 %MACRO _dir (i_path=
@@ -33,7 +32,7 @@
             ,o_out=work.dir
             );
 
-   %LOCAL dirfile encoding s l_i_path l_i_name;
+   %LOCAL dirfile s l_i_path l_i_name;
 
    data &o_out ;
        length filename $255;
@@ -41,8 +40,6 @@
    run;
 
    %IF &syserr NE 0 %THEN %GOTO errexit;
-
-   %LET encoding=utf8;
 
    %put &g_note.(SASUNIT): Directory search is:           &i_path;
 
@@ -84,7 +81,7 @@
    
    %IF &i_recursive=0 %then %let s=-maxdepth 1;
 
-   filename _dir pipe "find -P &l_i_path. &s. &l_i_name. -type f -printf ""%nrstr(%h/%f\t%TD\t%TT\t\r\n)""" encoding=&encoding.;
+   filename _dir pipe "find -P &l_i_path. &s. &l_i_name. -type f -printf ""%nrstr(%h/%f\t%TD\t%TT\t\r\n)""" encoding=&g_OSEncoding.;
 
    data &o_out. (keep=membername filename changed);
       length membername filename $255;

@@ -10,6 +10,7 @@ if /i "%~1" == "" (SET SASUNIT_LANGUAGE=en) else (SET SASUNIT_LANGUAGE=%1)
 REM --------------------------------------------------------------------------------
 REM --- EnvVars for SAS Configuration ----------------------------------------------
 SET SASUNIT_HOST_OS=windows
+SET SASUNIT_HOST_ENCODING=PCOEM850
 SET SASUNIT_SAS_VERSION=9.4
 SET SASUNIT_SASPATH=C:\Program Files\SASHome2\SASFoundation\%SASUNIT_SAS_VERSION%
 SET SASUNIT_SAS_EXE=%SASUNIT_SASPATH%\sas.exe
@@ -30,6 +31,7 @@ SET SASUNIT_SCN_LOG_LEVEL=INFO
 echo.
 echo -----------------------------------------------------------
 echo Operating system                   = %SASUNIT_HOST_OS%
+echo Host OS Encoding                   = %SASUNIT_HOST_ENCODING%
 echo SAS Version                        = %SASUNIT_SAS_VERSION%
 echo SAS Installation Path              = %SASUNIT_SASPATH%
 echo SAS Executable                     = %SASUNIT_SAS_EXE%

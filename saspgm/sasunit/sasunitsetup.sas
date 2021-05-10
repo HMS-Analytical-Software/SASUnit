@@ -31,6 +31,7 @@
    \param i_sasunitReportFolder  Path and name of the folder where the documentation should be geenarted in
    \param i_sasunitLogLevel      Default logging level for SASUnit suite
    \param i_sasunitScnLogLevel   Default logging level for SASUnit scenarios
+   \param i_OSEncoding           Encoding of OS which can be different from encoding of SAS session
 */ /** \cond */
 %macro SASUnitSetup (i_sasunitRootFolder  =
                     ,i_projectRootFolder  =
@@ -47,6 +48,7 @@
                     ,i_sasunitReportFolder=
                     ,i_sasunitLogLevel    =
                     ,i_sasunitScnLogLevel =
+                    ,i_OSEncoding         =
                     );
 
    %local
@@ -116,6 +118,7 @@
                      ,i_sasunitReportFolder     =&i_sasunitReportFolder.
                      ,i_SASUnitLogLevel         =&i_SASUnitLogLevel.
                      ,i_SASUnitScnLogLevel      =&i_SASUnitScnLogLevel.
+                     ,i_OSEncoding              =&i_OSEncoding.
                      );
    %_createConfigFile(i_projectBinFolder =&i_projectBinFolder.
                      ,i_projectRootFolder=&i_projectRootFolder.

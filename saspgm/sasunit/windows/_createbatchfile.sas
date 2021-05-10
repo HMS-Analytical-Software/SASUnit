@@ -38,6 +38,7 @@
    \param      i_sasunitCrossRefSASUnit   Flag if cross reference reports for SASUnit macros should be generated (0 / 1)
    \param      i_sasunitLogLevel          Log4SSAS Logging level that is used for SASUnit suite
    \param      i_sasunitScnLogLevel       Log4SSAS Logging level that is used for all senarios
+   \param      i_OSEncoding               Encoding of OS which can be different from encoding of SAS session
 */ /** \cond */
 %macro _createBatchFile(i_sasunitCommandFile       =
                        ,i_operatingSystem          =
@@ -60,6 +61,7 @@
                        ,i_sasunitCrossRefSASUnit   =
                        ,i_sasunitLogLevel          =
                        ,i_sasunitScnLogLevel       =
+                       ,i_OSEncoding               =
                        );
                        
    data _null_;
@@ -75,6 +77,7 @@
       put "REM --------------------------------------------------------------------------------";
       put "REM --- EnvVars for SAS Configuration ----------------------------------------------";
       put "SET SASUNIT_HOST_OS=&i_operatingSystem.";
+      put "SET SASUNIT_HOST_ENCODING=&i_OSEncoding.";
       put "SET SASUNIT_SAS_VERSION=&i_sasVersion.";
       put "SET SASUNIT_SAS_EXE=&i_sasExe.";
       put "SET SASUNIT_SAS_CFG=&i_sasConfig.";
@@ -111,6 +114,7 @@
       put "echo.";
       put "echo --- EnvVars for SAS Configuration ----------------------------------------------";
       put 'echo Host Operating System     = %SASUNIT_HOST_OS%';
+      put 'echo Host OS Encoding          = %SASUNIT_HOST_ENCODING%';
       put 'echo SAS Version               = %SASUNIT_SAS_VERSION%';
       put 'echo SAS Exceutable            = %SASUNIT_SAS_EXE%';
       put 'echo SAS Config File           = %SASUNIT_SAS_CFG%';

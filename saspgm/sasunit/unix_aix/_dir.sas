@@ -31,7 +31,7 @@
            ,o_out=work.dir
            );
 
-   %LOCAL dirfile encoding s l_i_path;
+   %LOCAL dirfile s l_i_path;
 
    proc sql noprint;
       create table &o_out (filename char(255));
@@ -39,10 +39,9 @@
 
    %IF (not %sysfunc (exist (&o_out))) %THEN %GOTO errexit;
 
-   %let encoding=pcoem850;
    %let s =;
    %let dirfile=%sysfunc(pathname(work))/&o_out..dir.txt;
-   filename _dirfile "&dirfile" encoding=&encoding;
+   filename _dirfile "&dirfile" encoding=&g_OSEncoding.;
 
    %_issueInfoMessage (&g_currentLogger., _dir: Directory search is: &i_path);
 

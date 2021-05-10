@@ -81,7 +81,7 @@
               1 = "&g_nls_reportHome_027."
            ;
      value $RowHeader 
-          %do i=1 %to 44;
+          %do i=1 %to 45;
              %let l_i=%sysfunc(putn (&i., z3.));
               "&l_i." = "&&g_nls_reportHome_&l_i.."
           %end;
@@ -115,12 +115,12 @@
             valueColumn=catt ("^{style [flyover=""&g_sasautos."" url=""file:///&g_sasautos.""]", tsu_sasautos, "}");
             output;
             %DO i=1 %TO 29;
-            if (tsu_sasautos&i. ne "") then do;
-               idColumn = "006";
-               parameterColumn=catt("^{style [flyover=""&&g_sasautos&i.""]%str(&)g_sasautos&i.}");
-               valueColumn=catt ("^{style [flyover=""&&g_sasautos&i."" url=""file:///&&g_sasautos&i.""]", tsu_sasautos&i., "}");
-               output;
-            end;
+               if (tsu_sasautos&i. ne "") then do;
+                  idColumn = "006";
+                  parameterColumn=catt("^{style [flyover=""&&g_sasautos&i.""]%str(&)g_sasautos&i.}");
+                  valueColumn=catt ("^{style [flyover=""&&g_sasautos&i."" url=""file:///&&g_sasautos&i.""]", tsu_sasautos&i., "}");
+                  output;
+               end;
             %END;
          end;
          if (tsu_testdata ne "") then do;
@@ -147,11 +147,11 @@
          parameterColumn="^{style [flyover=""&g_sasunit.""]%str(&)g_sasunit}";
          valueColumn=catt ("^{style [flyover=""%trim(&g_sasunit.)"" url=""file:///%trim(&g_sasunit.)""]", tsu_sasunit, "}");
          Category="SASUnit";
+         SortColumn+1;
          output;
          idColumn = "013";
          parameterColumn="^{style [flyover=""&g_sasunit_os.""]%str(&)g_sasunit_os}";
          valueColumn=catt ("^{style [flyover=""%trim(&g_sasunit_os.)"" url=""file:///%trim(&g_sasunit_os.)""]", tsu_sasunit_os, "}");
-         SortColumn+1;
          output;
          idColumn = "037";
          parameterColumn="^{style [flyover=""&g_version.""]%str(&)g_version}";
@@ -295,6 +295,11 @@
          idColumn = "020";
          parameterColumn='&SYSUSERID';
          valueColumn="&SYSUSERID.";
+         Category="XSAS_Session";
+         output;
+         idColumn = "045";
+         parameterColumn='&g_osencoding';
+         valueColumn="&G_OSENCODING.";
          Category="XSAS_Session";
          output;
       END;

@@ -31,6 +31,7 @@
    \param i_sasunitReportFolder  Path and name of the folder where the documentation should be geenarted in
    \param i_sasunitLogLevel      Default logging level for SASUnit suite
    \param i_sasunitScnLogLevel   Default logging level for SASUnit scenarios
+   \param i_OSEncoding           Encoding of OS which can be different from encoding of SAS session
 */ /** \cond */
 %let g_sSASUnitRootFolder     = %sysget (SASUNIT_ROOT);
 %let g_sProjectRootFolder     = %sysget (SASUNIT_PROJECTROOT);
@@ -47,6 +48,7 @@
 %let g_sSASUnitLogLevel       = %sysget (SASUNIT_LOG_LEVEL);
 %let g_sSASUnitScnLogLevel    = %sysget (SASUNIT_SCN_LOG_LEVEL);
 %let g_currentLogger          = App.Program;
+%let g_OSEncoding             = %sysget (SASUNIT_HOST_ENCODING);
 
 options mrecall mprint;
 options append=(SASAUTOS=("&g_sSASUnitRootFolder./saspgm/sasunit" "&g_sSASUnitRootFolder./saspgm/sasunit/%lowcase(%sysget(SASUNIT_HOST_OS))"));
@@ -66,5 +68,6 @@ options append=(SASAUTOS=("&g_sSASUnitRootFolder./saspgm/sasunit" "&g_sSASUnitRo
              ,i_sasunitReportFolder =&g_sSASUnitReportFolder.
              ,i_sasunitLogLevel     =&g_sSASUnitLogLevel.
              ,i_sasunitScnLogLevel  =&g_sSASUnitScnLogLevel.
+             ,i_OSEncoding          =&g_OSEncoding.
              );     
 /** \endcond */             

@@ -118,6 +118,8 @@
                   ,i_log4SASSuiteLogLevel    =
                   ,i_log4SASScenarioLogLevel =
                   ,i_reportFolder            =
+                  ,i_resourceFolder          =%sysget(SASUNIT_ROOT)/resources
+                  ,i_OSEncoding              =%sysget(SASUNIT_HOST_ENCODING)
                   );
 
    %GLOBAL g_version g_revision g_db_version g_error g_warning g_note g_runMode g_language g_currentLogger g_currentLogLevel;
@@ -192,7 +194,7 @@
 
    /*-- Check value of incoming parameters ---------------------------------------------*/
    /*-- Theses parameters must be set --------------------------------------------------*/
-   %let l_parameterNames = i_root io_target i_project i_sasunit i_sasautos i_language i_testdata i_refdata; 
+   %let l_parameterNames = i_root io_target i_project i_sasunit i_sasautos i_language i_testdata i_refdata i_OSEncoding; 
 
    %_checkListOfParameters (i_listOfParameters    = &l_parameterNames.
                            ,i_returnCodeVariable  = l_goOn
@@ -650,6 +652,7 @@
    %_writeParameterToTestDBtsu (i_parameterName=tsu_logFolder                 ,i_parameterValue =&l_logFolder.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_scnLogFolder              ,i_parameterValue =&l_scnLogFolder.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_reportFolder              ,i_parameterValue =&l_reportFolder.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_OSEncoding                ,i_parameterValue =&i_OSEncoding.);
 
    /*-- load relevant information from test database to global macro symbols ----*/
    %_loadEnvironment (i_withLibrefs   =0
