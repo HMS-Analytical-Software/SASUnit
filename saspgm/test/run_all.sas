@@ -23,9 +23,9 @@ OPTIONS
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root                     = %sysget (SASUNIT_PROJECT_ROOT)
-  ,io_target                  = %sysget (SASUNIT_TEST_DB_FOLDER)
-  ,i_overwrite                = %sysget (SASUNIT_OVERWRITE)
+   i_root                     = %sysget(SASUNIT_PROJECT_ROOT)
+  ,io_target                  = %sysget(SASUNIT_TEST_DB_FOLDER)
+  ,i_overwrite                = %sysget(SASUNIT_OVERWRITE)
   ,i_project                  = SASUnit Self Test
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
   ,i_sasautos                 = saspgm/sasunit
@@ -35,18 +35,18 @@ proc options option=logparm;run;
   ,i_testdata                 = dat
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec
-  ,i_sascfg                   = %sysget (SASUNIT_SAS_CFG)
-  ,i_testcoverage             = %sysget (SASUNIT_COVERAGEASSESSMENT)
-  ,i_crossref                 = %sysget (SASUNIT_CROSSREFERENCE)
-  ,i_crossrefsasunit          = %sysget (SASUNIT_CROSSREFERENCE_SASUNIT)
-  ,i_language                 = %lowcase (%sysget (SASUNIT_LANGUAGE))
-  ,i_logFolder                = %sysget (SASUNIT_LOG_FOLDER)
-  ,i_scnLogFolder             = %sysget (SASUNIT_SCN_LOG_FOLDER)
-  ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
-  ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
-  ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
+  ,i_sascfg                   = %sysget(SASUNIT_SAS_CFG)
+  ,i_testcoverage             = %sysget(SASUNIT_COVERAGEASSESSMENT)
+  ,i_crossref                 = %sysget(SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit          = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language                 = %lowcase(%sysget(SASUNIT_LANGUAGE))
+  ,i_logFolder                = %sysget(SASUNIT_LOG_FOLDER)
+  ,i_scnLogFolder             = %sysget(SASUNIT_SCN_LOG_FOLDER)
+  ,i_log4SASSuiteLogLevel     = %sysget(SASUNIT_LOGLEVEL)
+  ,i_log4SASScenarioLogLevel  = %sysget(SASUNIT_SCN_LOGLEVEL)
+  ,i_reportFolder             = %sysget(SASUNIT_REPORT_FOLDER)
   ,i_resourceFolder           = %sysget(SASUNIT_ROOT)/resources
-  ,i_OSEncoding               = %sysget (SASUNIT_HOST_ENCODING)
+  ,i_OSEncoding               = %sysget(SASUNIT_HOST_ENCODING)
 );
 
 %runSASUnit(i_source = %str(saspgm/test/reportsasunit_inexisting_scenario_has_to_fail));
@@ -59,9 +59,9 @@ proc options option=logparm;run;
 /* for autoexec. Then a separate autoexec file is created.                       */
 /* To ensure the use of these files there will be set a macro variable different */
 /* In each autoexec file and tested in special testcases.                        */
-%let ConfigName   =%sysfunc (pathname(work))/config_for_testing.cfg;
-%let AutoexecName1=%sysfunc (pathname(work))/autoexec_for_config_test.sas;
-%let AutoexecName2=%sysfunc (pathname(work))/autoexec_for_autoexec_test.sas;
+%let ConfigName   =%sysfunc(pathname(work))/config_for_testing.cfg;
+%let AutoexecName1=%sysfunc(pathname(work))/autoexec_for_config_test.sas;
+%let AutoexecName2=%sysfunc(pathname(work))/autoexec_for_autoexec_test.sas;
 
 data _null_;
    file "&ConfigName.";
@@ -85,8 +85,8 @@ data _null_;
 run;
 
 %initSASUnit(
-   i_root                     = %sysget (SASUNIT_PROJECT_ROOT)
-  ,io_target                  = %sysget (SASUNIT_TEST_DB_FOLDER)
+   i_root                     = %sysget(SASUNIT_PROJECT_ROOT)
+  ,io_target                  = %sysget(SASUNIT_TEST_DB_FOLDER)
   ,i_overwrite                = 0
   ,i_project                  = SASUnit Self Test
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
@@ -98,22 +98,24 @@ run;
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec
   ,i_sascfg                   = &ConfigName.
-  ,i_testcoverage             = %sysget (SASUNIT_COVERAGEASSESSMENT)
-  ,i_crossref                 = %sysget (SASUNIT_CROSSREFERENCE)
-  ,i_crossrefsasunit          = %sysget (SASUNIT_CROSSREFERENCE_SASUNIT)
-  ,i_language                 = %lowcase (%sysget (SASUNIT_LANGUAGE))
-  ,i_logFolder                = %sysget (SASUNIT_LOG_FOLDER)
-  ,i_scnLogFolder             = %sysget (SASUNIT_SCN_LOG_FOLDER)
-  ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
-  ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
-  ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
+  ,i_testcoverage             = %sysget(SASUNIT_COVERAGEASSESSMENT)
+  ,i_crossref                 = %sysget(SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit          = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language                 = %lowcase(%sysget(SASUNIT_LANGUAGE))
+  ,i_logFolder                = %sysget(SASUNIT_LOG_FOLDER)
+  ,i_scnLogFolder             = %sysget(SASUNIT_SCN_LOG_FOLDER)
+  ,i_log4SASSuiteLogLevel     = %sysget(SASUNIT_LOGLEVEL)
+  ,i_log4SASScenarioLogLevel  = %sysget(SASUNIT_SCN_LOGLEVEL)
+  ,i_reportFolder             = %sysget(SASUNIT_REPORT_FOLDER)
+  ,i_resourceFolder           = %sysget(SASUNIT_ROOT)/resources
+  ,i_OSEncoding               = %sysget(SASUNIT_HOST_ENCODING)
 )
 
 %runSASUnit(i_source = saspgm/test/assert_i_config_usage_configtest.sas);
 
 %initSASUnit(
-   i_root                     = %sysget (SASUNIT_PROJECT_ROOT)
-  ,io_target                  = %sysget (SASUNIT_TEST_DB_FOLDER)
+   i_root                     = %sysget(SASUNIT_PROJECT_ROOT)
+  ,io_target                  = %sysget(SASUNIT_TEST_DB_FOLDER)
   ,i_overwrite                = 0
   ,i_project                  = SASUnit Self Test
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
@@ -124,17 +126,19 @@ run;
   ,i_testdata                 = dat
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec
-  ,i_sascfg                   = %sysget (SASUNIT_SAS_CFG)
+  ,i_sascfg                   = %sysget(SASUNIT_SAS_CFG)
   ,i_autoexec                 = &AutoexecName2.
-  ,i_testcoverage             = %sysget (SASUNIT_COVERAGEASSESSMENT)
-  ,i_crossref                 = %sysget (SASUNIT_CROSSREFERENCE)
-  ,i_crossrefsasunit          = %sysget (SASUNIT_CROSSREFERENCE_SASUNIT)
-  ,i_language                 = %lowcase (%sysget (SASUNIT_LANGUAGE))
-  ,i_logFolder                = %sysget (SASUNIT_LOG_FOLDER)
-  ,i_scnLogFolder             = %sysget (SASUNIT_SCN_LOG_FOLDER)
-  ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
-  ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
-  ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
+  ,i_testcoverage             = %sysget(SASUNIT_COVERAGEASSESSMENT)
+  ,i_crossref                 = %sysget(SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit          = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language                 = %lowcase(%sysget(SASUNIT_LANGUAGE))
+  ,i_logFolder                = %sysget(SASUNIT_LOG_FOLDER)
+  ,i_scnLogFolder             = %sysget(SASUNIT_SCN_LOG_FOLDER)
+  ,i_log4SASSuiteLogLevel     = %sysget(SASUNIT_LOGLEVEL)
+  ,i_log4SASScenarioLogLevel  = %sysget(SASUNIT_SCN_LOGLEVEL)
+  ,i_reportFolder             = %sysget(SASUNIT_REPORT_FOLDER)
+  ,i_resourceFolder           = %sysget(SASUNIT_ROOT)/resources
+  ,i_OSEncoding               = %sysget(SASUNIT_HOST_ENCODING)
 )
 
 %runSASUnit(i_source = saspgm/test/assert_i_autoexec_usage_configtest.sas);
@@ -142,8 +146,8 @@ run;
 *** Recreate the old config and autoexec to ensure the right settings ***;
 *** if you use SASUnit without overwrite afterwards                   ***;
 %initSASUnit(
-   i_root                     = %sysget (SASUNIT_PROJECT_ROOT)
-  ,io_target                  = %sysget (SASUNIT_TEST_DB_FOLDER)
+   i_root                     = %sysget(SASUNIT_PROJECT_ROOT)
+  ,io_target                  = %sysget(SASUNIT_TEST_DB_FOLDER)
   ,i_overwrite                = 0
   ,i_project                  = SASUnit Self Test
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
@@ -154,17 +158,19 @@ run;
   ,i_testdata                 = dat
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec
-  ,i_sascfg                   = %sysget (SASUNIT_SAS_CFG)
+  ,i_sascfg                   = %sysget(SASUNIT_SAS_CFG)
   ,i_autoexec                 = %str( )
-  ,i_testcoverage             = %sysget (SASUNIT_COVERAGEASSESSMENT)
-  ,i_crossref                 = %sysget (SASUNIT_CROSSREFERENCE)
-  ,i_crossrefsasunit          = %sysget (SASUNIT_CROSSREFERENCE_SASUNIT)
-  ,i_language                 = %lowcase (%sysget (SASUNIT_LANGUAGE))
-  ,i_logFolder                = %sysget (SASUNIT_LOG_FOLDER)
-  ,i_scnLogFolder             = %sysget (SASUNIT_SCN_LOG_FOLDER)
-  ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
-  ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
-  ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
+  ,i_testcoverage             = %sysget(SASUNIT_COVERAGEASSESSMENT)
+  ,i_crossref                 = %sysget(SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit          = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language                 = %lowcase(%sysget(SASUNIT_LANGUAGE))
+  ,i_logFolder                = %sysget(SASUNIT_LOG_FOLDER)
+  ,i_scnLogFolder             = %sysget(SASUNIT_SCN_LOG_FOLDER)
+  ,i_log4SASSuiteLogLevel     = %sysget(SASUNIT_LOGLEVEL)
+  ,i_log4SASScenarioLogLevel  = %sysget(SASUNIT_SCN_LOGLEVEL)
+  ,i_reportFolder             = %sysget(SASUNIT_REPORT_FOLDER)
+  ,i_resourceFolder           = %sysget(SASUNIT_ROOT)/resources
+  ,i_OSEncoding               = %sysget(SASUNIT_HOST_ENCODING)
 );
 
 %reportSASUnit(

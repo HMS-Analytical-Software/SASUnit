@@ -36,26 +36,26 @@ OPTIONS
 proc options option=logparm;run;
 
 %initSASUnit(
-   i_root                     = %sysget (SASUNIT_PROJECT_ROOT)
-  ,io_target                  = %sysget (SASUNIT_TEST_DB_FOLDER)
-  ,i_overwrite                = %sysget (SASUNIT_OVERWRITE)
+   i_root                     = %sysget(SASUNIT_PROJECT_ROOT)
+  ,io_target                  = %sysget(SASUNIT_TEST_DB_FOLDER)
+  ,i_overwrite                = %sysget(SASUNIT_OVERWRITE)
   ,i_project                  = SASUnit Examples                                  /* Name of project, for report */
-  ,i_sasunit                  = %sysget (SASUNIT_ROOT)/saspgm/sasunit
+  ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
   ,i_sasautos                 = saspgm                                            /* Search for units under test here */
   ,i_testdata                 = dat                                               /* test data, libref testdata */
   ,i_refdata                  = dat                                               /* reference data, libref refdata */
   ,i_doc                      = doc/spec
-  ,i_sascfg                   = %sysget (SASUNIT_SAS_CFG)
-  ,i_testcoverage             = %sysget (SASUNIT_COVERAGEASSESSMENT)
-  ,i_crossref                 = %sysget (SASUNIT_CROSSREFERENCE)
-  ,i_crossrefsasunit          = %sysget (SASUNIT_CROSSREFERENCE_SASUNIT)
-  ,i_language                 = %lowcase (%sysget (SASUNIT_LANGUAGE))
-  ,i_logFolder                = %sysget (SASUNIT_LOG_FOLDER)
-  ,i_scnLogFolder             = %sysget (SASUNIT_SCN_LOG_FOLDER)
-  ,i_log4SASSuiteLogLevel     = %sysget (SASUNIT_LOGLEVEL)
-  ,i_log4SASScenarioLogLevel  = %sysget (SASUNIT_SCN_LOGLEVEL)
-  ,i_reportFolder             = %sysget (SASUNIT_REPORT_FOLDER)
-  ,i_OSEncoding               = %sysget (SASUNIT_HOST_ENCODING)
+  ,i_sascfg                   = %sysget(SASUNIT_SAS_CFG)
+  ,i_testcoverage             = %sysget(SASUNIT_COVERAGEASSESSMENT)
+  ,i_crossref                 = %sysget(SASUNIT_CROSSREFERENCE)
+  ,i_crossrefsasunit          = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
+  ,i_language                 = %lowcase(%sysget(SASUNIT_LANGUAGE))
+  ,i_logFolder                = %sysget(SASUNIT_LOG_FOLDER)
+  ,i_scnLogFolder             = %sysget(SASUNIT_SCN_LOG_FOLDER)
+  ,i_log4SASSuiteLogLevel     = %sysget(SASUNIT_LOGLEVEL)
+  ,i_log4SASScenarioLogLevel  = %sysget(SASUNIT_SCN_LOGLEVEL)
+  ,i_reportFolder             = %sysget(SASUNIT_REPORT_FOLDER)
+  ,i_OSEncoding               = %sysget(SASUNIT_HOST_ENCODING)
   )
 
 /* Run specified test scenarios. There can be more than one call to runSASUnit */
