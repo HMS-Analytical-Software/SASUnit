@@ -140,7 +140,7 @@
       put 'echo Crossref for SASUnit      = $SASUNIT_CROSSREFERENCE_SASUNIT';
       put 'echo Log Level for RUN_ALL     = $SASUNIT_LOGLEVEL';
       put 'echo Log Level for Scenarios   = $SASUNIT_SCN_LOGLEVEL';
-      put 'echo SASUnit config            = bin\sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg';
+      put 'echo SASUnit config            = bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg';
       put "echo";
       put;
       put "echo ""Starting SASUnit ...""";
