@@ -37,7 +37,7 @@
                 (where=(exa_auton >=2))
          %end;
          %else %do;
-                (where=(exa_auton > 0))
+                (where=(exa_auton >= 0))
          %end;
       ;
    run;
