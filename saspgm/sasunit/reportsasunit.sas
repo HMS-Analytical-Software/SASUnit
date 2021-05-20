@@ -142,9 +142,9 @@
 
    *** create style ****;
    %local l_rc;
-   %let l_rc = %_delfile(&g_sasunitroot./resources/style/template.sas7bitm);
+   %let l_rc = %_delfile(&g_resourceFolder./style/template.sas7bitm);
 
-   libname _style "&g_sasunitroot./resources/style";
+   libname _style "&g_resourceFolder./style";
 
    ods path reset;
    ods path (PREPEND) _style.template(UPDATE);
@@ -184,7 +184,7 @@
             IF tsu_lastrep=0 OR &o_force THEN DO;
                /*-- copy static files - images, css etc. ---------------------------*/
                PUT '%_copydir(' /
-                   "    &g_sasunitroot./resources" '/html/%str(*)' /
+                   "    &g_resourceFolder." '/html/%str(*)' /
                    "   ,&l_output." /
                    ")";
                /*-- create frame HTML page -----------------------------------------*/

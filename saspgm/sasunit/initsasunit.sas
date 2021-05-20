@@ -20,49 +20,60 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param   i_root              optional: root path for all other paths except i_sasunit, is used for paths that do not begin 
-                                with a drive letter or a slash/backslash
-   \param   io_target           Path for the test repository and the generated documentation, has to exist
-   \param   i_overwrite         0 (default) .. create test repository only in case it does not already exist
-                                1 .. test repository is always created newly 
-   \param   i_project           optional: (in case test repository already exists): name of project
-   \param   i_sasunit           optional: absolute installation path of SAS programs from SASUnit. It is checked whether installationpath
-                                is starting with path in environment variable SASUNIT_ROOT set by script file
-   \param   i_sasautos          optional: i_sasautos, i_sasautos1 .. i_sasautos9: search paths for the programs 
-                                under test and other sas macros invoked in test scenarios or programs under test
-                                (the filename SASAUTOS predefined by SAS is always included at the beginning of
-                                the search path)
-   \param   i_autoexec          optional: a SAS program that is always invoked before a start of a test scenario
-   \param   i_sascfg            optional: a SAS configuration file that is used for every invocation of a
-                                test scenario
-   \param   i_sasuser           optional: Template for a SASUSER directory including configuration catalogs.
-                                A temporary SASUSER directory is created, existing only for the duration of a 
-                                test scenario, in which all files are copied out of the specified directory.
-   \param   i_testdata          optional: directory containing test data, has to exist in case parameter is set
-                                (is accessed readonly)
-   \param   i_refdata           optional: directory containing reference data, has to exist in case parameter is set
-                                (is accessed readonly)
-   \param   i_doc               optional: directory containing specification documents, etc., has to exist
-                                in case parameter is set (is accessed readonly)
-   \param   i_testcoverage      optional: controls whether assessment of test coverage is activated
-                                0 .. no assessment of test coverage
-                                1 (default) .. assessment of test coverage is activated
-   \param   i_verbose           optional: controls whether results of asserts are written to the SAS log
-                                0 (default).. no results written to SAS log
-                                1 .. results are written to SAS log
-   \param   i_crossref          optional: controls whether the cross reference is created
-                                0  .. cross reference will not be created 
-                                1 (default).. cross reference will be created                                                      
-   \param   i_crossrefsasunit   optional: controls whether the SASUnit core macros are included in the scan for dependencies
-                                0 (default) .. SASUnit core macros are not included
-                                1 .. SASUnit core macros are included
-   \param   i_language          optional: specifying the language that should be used. This parameter is necessary to avoid using the respective environment variable under linux 
-                                supported values: "en" / "de"
-                                default: %sysget(SASUNIT_LANGUAGE)
-                                
+   \param   i_root                     optional: root path for all other paths except i_sasunit, is used for paths that do not begin 
+                                       with a drive letter or a slash/backslash
+   \param   io_target                  Path for the test repository and the generated documentation, has to exist
+   \param   i_overwrite                0 (default) .. create test repository only in case it does not already exist
+                                       1 .. test repository is always created newly 
+   \param   i_project                  optional: (in case test repository already exists): name of project
+   \param   i_sasunit                  optional: absolute installation path of SAS programs from SASUnit. It is checked whether installationpath
+                                       is starting with path in environment variable SASUNIT_ROOT set by script file
+   \param   i_sasautos                 optional: i_sasautos, i_sasautos1 .. i_sasautos9: search paths for the programs 
+                                       under test and other sas macros invoked in test scenarios or programs under test
+                                       (the filename SASAUTOS predefined by SAS is always included at the beginning of
+                                       the search path)
+   \param   i_autoexec                 optional: a SAS program that is always invoked before a start of a test scenario
+   \param   i_sascfg                   optional: a SAS configuration file that is used for every invocation of a test scenario
+   \param   i_sasuser                  optional: Template for a SASUSER directory including configuration catalogs.
+                                       A temporary SASUSER directory is created, existing only for the duration of a 
+                                       test scenario, in which all files are copied out of the specified directory.
+   \param   i_testdata                 optional: directory containing test data, has to exist in case parameter is set
+                                       (is accessed readonly)
+   \param   i_refdata                  optional: directory containing reference data, has to exist in case parameter is set
+                                       (is accessed readonly)
+   \param   i_doc                      optional: directory containing specification documents, etc., has to exist
+                                       in case parameter is set (is accessed readonly)
+   \param   i_testcoverage             optional: controls whether assessment of test coverage is activated
+                                       0 .. no assessment of test coverage
+                                       1 (default) .. assessment of test coverage is activated
+   \param   i_verbose                  optional: controls whether results of asserts are written to the SAS log
+                                       0 (default).. no results written to SAS log
+                                       1 .. results are written to SAS log
+   \param   i_crossref                 optional: controls whether the cross reference is created
+                                       0  .. cross reference will not be created 
+                                       1 (default).. cross reference will be created                                                      
+   \param   i_crossrefsasunit          optional: controls whether the SASUnit core macros are included in the scan for dependencies
+                                       0 (default) .. SASUnit core macros are not included
+                                       1 .. SASUnit core macros are included
+   \param   i_language                 optional: specifying the language that should be used. This parameter is necessary to avoid using the respective environment variable under linux 
+                                       supported values: "en" / "de"
+                                       default: %sysget(SASUNIT_LANGUAGE)
+   \param   i_logFolder                specifying the folder for overall logfiles like run_all.log and log file for SASUnit test suite
+   \param   i_scnLogFolder             specifying the folder for scenario log files
+   \param   i_log4SASSuiteLogLevel     optional specifying the log4sas logging level for test suite
+                                       default: INFO
+   \param   i_log4SASScenarioLogLevel  optional specifying the log4sas logging level for scenarios
+                                       default: INFO
+   \param   i_reportFolder             specifying the output folder for reporting
+   \param   i_resourceFolder           optional specifying the input folder for SASUnit reporting source like icons and css- and java script files 
+                                       default: %sysget(SASUNIT_ROOT)/resources
+   \param   i_OSEncoding               optional specifying the encoding of the operating system. This may be different from the ensoding of the sas ssession
+                                       default: %sysget(SASUNIT_HOST_ENCODING)
+   \param   i_SASUnitRoot              optional specifying the root folder of SASUnit
+                                       default: %sysget(SASUNIT_ROOT)
+
    \todo    implement os-indepedant version of assertText and assertImage. All os-dependant info needs to be packed inside the script files. See assertText.cmd
    \todo    move assertText scenarios to os-dependant scenario folder and eliminate adaptToOs-macros 
-   \todo    Are all checks for Shell vs. SASUnit-Parameters necessary only in Batch?
    \todo    check new parms for Logfiles and reportfolder
    \todo    check regeneration of empty folders; check not to delete test_db_folder
 
@@ -115,28 +126,29 @@
                   ,i_language                =%sysget(SASUNIT_LANGUAGE)
                   ,i_logFolder               =
                   ,i_scnLogFolder            =
-                  ,i_log4SASSuiteLogLevel    =
-                  ,i_log4SASScenarioLogLevel =
+                  ,i_log4SASSuiteLogLevel    =INFO
+                  ,i_log4SASScenarioLogLevel =INFO
                   ,i_reportFolder            =
                   ,i_resourceFolder          =%sysget(SASUNIT_ROOT)/resources
                   ,i_OSEncoding              =%sysget(SASUNIT_HOST_ENCODING)
+                  ,i_SASUnitRoot             =%sysget(SASUNIT_ROOT)
                   );
 
-   %GLOBAL g_version g_revision g_db_version g_error g_warning g_note g_runMode g_language g_currentLogger g_currentLogLevel;
+   %GLOBAL g_version g_revision g_db_version g_error g_warning g_note g_runMode g_language g_currentLogger g_currentLogLevel g_log4SASScenarioLogger;
 
    %LET g_version    = 2.0.2;
    %LET g_db_version = 2.1;
    %LET g_revision   = $Revision$;
    %LET g_revision   = %scan(&g_revision,2,%str( $:));
    
-   %LET g_log4SASSuiteLogger     = App.Program.SASUnit;
-   %LET g_currentLogger          = &g_log4SASSuiteLogger.;
+   %LET l_log4SASSuiteLogger     = App.Program.SASUnit;
+   %LET g_currentLogger          = &l_log4SASSuiteLogger.;
    %LET g_currentLogLevel        = &i_log4SASSuiteLogLevel.;
    /*** Setting logging information  ***/
    %_setLog4SASLogLevel (loggername =&g_currentlogger.
                         ,level      =&g_currentLogLevel.
                         );   
-   
+                        
    %_issueInfoMessage(&g_currentLogger., --------------------------------------------------------------------------------)
    %_issueInfoMessage(&g_currentLogger., Starting SASUnit (InitSASUnit) in version &g_version..)
    %_issueInfoMessage(&g_currentLogger., SASUnit DB Version is &g_db_version..)
@@ -194,7 +206,7 @@
 
    /*-- Check value of incoming parameters ---------------------------------------------*/
    /*-- Theses parameters must be set --------------------------------------------------*/
-   %let l_parameterNames = i_root io_target i_project i_sasunit i_sasautos i_language i_testdata i_refdata i_OSEncoding; 
+   %let l_parameterNames = i_root io_target i_project i_sasunit i_sasautos i_language i_testdata i_refdata i_OSEncoding i_SASUnitRoot; 
 
    %_checkListOfParameters (i_listOfParameters    = &l_parameterNames.
                            ,i_returnCodeVariable  = l_goOn
@@ -209,7 +221,7 @@
    /*-- Check value of incoming parameters ---------------------------------------------*/
    /*-- Theses parameters must be set only in batch mode -------------------------------*/
    %if (&g_runMode. = SASUNIT_BATCH) %then %do;
-      %let l_parameterNames = i_logFolder i_scnLogFolder i_reportFolder; 
+      %let l_parameterNames = i_logFolder i_scnLogFolder i_reportFolder i_resourceFolder; 
 
       %_checkListOfParameters (i_listOfParameters    = &l_parameterNames.
                               ,i_returnCodeVariable  = l_goOn
@@ -262,19 +274,18 @@
    /***    Checking validity of parameter values                               ***/
    /******************************************************************************/
    /*-- check shell values vs. parameters ------------------------------------------*/
-   /*** KILL ME: Check only in BATCH Mode ?
-      %IF (&g_runMode. = SASUNIT_BATCH) %THEN %DO;
-   ***/   
-   %LET l_testcoverage=%sysget (SASUNIT_COVERAGEASSESSMENT);
-   %IF (&l_testcoverage. ne ) %THEN %DO;
-      %IF (&l_testcoverage. ne &i_testcoverage.) %THEN %DO;
-          %_issueWarningMessage (&g_currentLogger., initSASUnit: Shell variable SASUNIT_COVERAGEASSESSMENT not passed correctly to parameter i_testcoverage!);
+   %IF (&g_runMode. = SASUNIT_BATCH) %THEN %DO;
+      %LET l_testcoverage=%sysget (SASUNIT_COVERAGEASSESSMENT);
+      %IF (&l_testcoverage. ne ) %THEN %DO;
+         %IF (&l_testcoverage. ne &i_testcoverage.) %THEN %DO;
+             %_issueWarningMessage (&g_currentLogger., initSASUnit: Shell variable SASUNIT_COVERAGEASSESSMENT not passed correctly to parameter i_testcoverage!);
+         %END;
       %END;
-   %END;
-   %LET l_overwrite=%sysget(SASUNIT_OVERWRITE);
-   %IF (&l_overwrite. ne ) %THEN %DO;
-      %IF (&l_overwrite. ne &i_overwrite.) %THEN %DO;
-          %_issueWarningMessage (&g_currentLogger., initSASUnit: Shell variable SASUNIT_OVERWRITE not passed correctly to parameter i_overwrite!);
+      %LET l_overwrite=%sysget(SASUNIT_OVERWRITE);
+      %IF (&l_overwrite. ne ) %THEN %DO;
+         %IF (&l_overwrite. ne &i_overwrite.) %THEN %DO;
+             %_issueWarningMessage (&g_currentLogger., initSASUnit: Shell variable SASUNIT_OVERWRITE not passed correctly to parameter i_overwrite!);
+         %END;
       %END;
    %END;
 
@@ -284,7 +295,7 @@
    libname _tmp clear;
 
    /*-- Get SASUnit root path from environment variable ----------*/
-   libname _tmp "%sysget(SASUNIT_ROOT)";
+   libname _tmp "&i_SASUnitRoot.";
    %let l_sasunitroot=%sysfunc (pathname(_tmp));
    libname _tmp clear;
 
@@ -453,6 +464,15 @@
                     ,InvalidDoc
                     ,"&l_doc_abs" NE "" AND NOT %_existdir(&l_doc_abs)
                     ,Error in parameter i_doc: folder not found
+                    ) 
+      %THEN %GOTO errexit;
+
+   /*-- resource folder ----------------------------------------------------------*/
+   %LET l_abs=%_abspath(&l_root.,&i_resourceFolder.);
+   %IF %_handleError(&l_macname.
+                    ,InvalidPath
+                    ,"&l_doc_abs" NE "" AND NOT %_existdir(&l_doc_abs)
+                    ,Error in parameter i_resourceFolder: folder not found
                     ) 
       %THEN %GOTO errexit;
 
@@ -643,7 +663,7 @@
    %_writeParameterToTestDBtsu (i_parameterName=tsu_crossrefsasunit           ,i_parameterValue =&i_crossrefsasunit.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_language                  ,i_parameterValue =&i_language.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_overwrite                 ,i_parameterValue =&i_overwrite.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_log4SASSuiteLogger        ,i_parameterValue =&g_log4SASSuiteLogger.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_log4SASSuiteLogger        ,i_parameterValue =&l_log4SASSuiteLogger.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_log4SASSuiteLogLevel      ,i_parameterValue =&i_log4SASSuiteLogLevel.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_log4SASScenarioLogger     ,i_parameterValue =App.Program.SASUnitScenario);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_log4SASScenarioLogLevel   ,i_parameterValue =&i_log4SASScenarioLogLevel.);
@@ -652,6 +672,7 @@
    %_writeParameterToTestDBtsu (i_parameterName=tsu_logFolder                 ,i_parameterValue =&l_logFolder.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_scnLogFolder              ,i_parameterValue =&l_scnLogFolder.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_reportFolder              ,i_parameterValue =&l_reportFolder.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_resourceFolder            ,i_parameterValue =&i_resourceFolder.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_OSEncoding                ,i_parameterValue =&i_OSEncoding.);
 
    /*-- load relevant information from test database to global macro symbols ----*/
