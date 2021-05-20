@@ -35,7 +35,6 @@
            g_work g_testout g_logfile g_printfile g_caslogfile
            g_testcoverage g_crossref g_crossrefsasunit g_rep_encoding
            g_language
-           g_SASUnitLogger g_scenarioLogger g_assertLogger
            ;
 
    %LOCAL i;
