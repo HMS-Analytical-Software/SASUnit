@@ -35,9 +35,10 @@
    %let l_macname=&sysmacroname.;
    
    /*-- prepare sasuser ---------------------------------------------------*/
-   %let l_cmdFile=%sysfunc(pathname(work))/prep_sasuser.cmd;
+   %let l_cmdFile=%sysfunc(pathname(work))/prep_sasuser.sh;
    DATA _null_;
       FILE "&l_cmdFile.";
+      PUT "#!/bin/bash";
       PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       %IF %length(&g_sasuser) %THEN %DO;
@@ -48,12 +49,12 @@
    %LET l_rc=%_delfile(&l_cmdFile.);
 
    /*-- set config and autoexec -------------------------------------------*/
-   %let l_cmdFile=%sysfunc(pathname(work))/_runprogramspawned.cmd;
+   %let l_cmdFile=%sysfunc(pathname(work))/_runprogramspawned.sh;
    %LET l_parms=;
-   %IF "&g_autoexec" NE "" %THEN %DO;
+   %IF "&g_autoexec." NE "" %THEN %DO;
       %LET l_parms=&l_parms -autoexec ""&g_autoexec"";
    %END;
-   %IF "&g_sascfg" NE "" %THEN %DO;
+   %IF "&g_sascfg." NE "" %THEN %DO;
      options SET=SASCFGPATH "&g_sascfg.";
    %END;
  
@@ -100,6 +101,7 @@
       !! "-termstmt ""%nrstr(%%_termScenario())"" "
       %end;
       !! "";
+      PUT "#!/bin/bash";
       PUT _sCmdString;
       PUTLOG _sCmdString;
    RUN;
@@ -109,9 +111,10 @@
    %LET l_rc=%_delfile(&l_cmdFile.);
 
    /*-- delete sasuser ----------------------------------------------------*/
-   %let l_cmdFile=%sysfunc(pathname(work))/del_sasuser.cmd;
+   %let l_cmdFile=%sysfunc(pathname(work))/del_sasuser.sh;
    DATA _null_;
       FILE "&l_cmdFile.";
+      PUT "#!/bin/bash";
       PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
    RUN;
    %_executeCMDFile(&l_cmdFile.);
