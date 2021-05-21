@@ -36,10 +36,15 @@
                         );
 
    %local
+     l_sasConfig
 	  l_sasunitRunAllPgm
+     l_sasunitLogFolder
    ;
 
-   %let l_sasunitRunAllPgm    =%_stdPath(&i_projectRootFolder., &i_sasunitRunAllPgm.);
+   %let l_sasConfig           =%_makeSASUnitpath(&i_sasConfig.);
+   %let l_sasunitRunAllPgm    =%_makeSASUnitpath(&i_sasunitRunAllPgm.);
+   %let l_sasunitRunAllPgm    =%_stdPath(&i_projectRootFolder., &l_sasunitRunAllPgm.);
+   %let l_sasunitLogFolder    =%_makeSASUnitpath(&i_sasunitLogFolder.);
 
    data _NULL_;
       file "&i_projectBinFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..cfg";
@@ -52,10 +57,10 @@
       put "   \date generated on %sysfunc(putn (%sysfunc(datetime()), nldatm.))";
       put "*/";
       put;
-      put "-CONFIG ""&i_sasconfig.""";
-      put "-sysin ""&l_sasunitRunAllPgm."""; 
-      put "-log ""&i_sasunitLogFolder./runall.log""";
-      put "-print ""&i_sasunitLogFolder./runall.lst""";
+      put %sysfunc (quote (-CONFIG %_adaptSASUnitPathToOS(&l_sasConfig.)));
+      put %sysfunc (quote (-sysin  %_adaptSASUnitPathToOS(&l_sasunitRunAllPgm.)));
+      put %sysfunc (quote (-log    %_adaptSASUnitPathToOS(&l_sasunitLogFolder.)));
+      put %sysfunc (quote (-print  %_adaptSASUnitPathToOS(&l_sasunitLogFolder.)));
    run;
 
 %mend _createConfigFile;
