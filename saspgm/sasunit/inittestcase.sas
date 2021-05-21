@@ -112,26 +112,14 @@
       %LET g_logfile   =&g_scnLogFolder./%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).log;
       %LET g_printfile =&g_testout./%sysfunc(putn(&g_scnid,z3.))_%sysfunc(putn(&l_casid,z3.)).lst;
       %LET g_caslogfile=&g_logfile.;
+      
       PROC PRINTTO 
          NEW 
          LOG="&g_logfile."
          PRINT="&g_printfile."
       ;
       RUN;
-/*
-*** Check why this is not working      
-      filename _logfile "g_logfile";
-      %_createLog4SASAppender(appenderName=SASUnitTestCaseAppender
-                             ,appenderClass=FileRefAppender
-                             ,fileRef=_logfile
-                             ,threshold=&g_log4SASScenarioLogLevel.
-                             );
-      %_createLog4SASLogger(loggername=App.Program
-                           ,additivity=FALSE
-                           ,appenderList=SASUnitTestCaseAppender
-                           ,level=&g_log4SASScenarioLogLevel.
-                           );
-*/      
+      
       options linesize=max;
    %end;
 %MEND initTestcase;
