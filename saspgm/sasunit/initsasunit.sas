@@ -576,7 +576,7 @@
          /*-- regenerate empty folders ------------------------------------------------*/
          %LET l_cmdfile=%sysfunc(pathname(WORK))/remove_dir.cmd;
          DATA _null_;
-            FILE "&l_cmdfile." encoding=pcoem850; /* wg. Umlauten in Pfaden */
+            FILE "&l_cmdfile." encoding=&i_OSEncoding.; /* wg. Umlauten in Pfaden */
             PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_reportFolder.)&g_endcommand));
 /*            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&i_logFolder.)&g_endcommand));*/
             PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_scnLogFolder.)&g_endcommand));            
@@ -695,8 +695,8 @@
       QUIT;
 
       DATA _null_;
-         FILE "&l_work/check_spawning.sas";
-         PUT "LIBNAME awork ""&l_work"";";
+         FILE "&l_work./check_spawning.sas";
+         PUT "LIBNAME awork ""&l_work."";";
          PUT "DATA awork.check; RUN;";
       RUN;
       
