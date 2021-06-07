@@ -15,14 +15,16 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 
-   \param   i_cmd_path     OS command parameters containing paths. Slashes will be transformed to Backslashes
+   \param   i_cmd_path     OS command parameters containing paths.
    \param   i_cmd          OS command parameters that contain text
+   \param   i_expected_shell_rc  Expected return value after completion of the OS-command (Optional: Default=0)
    \return  r_rc           Return Code of %sysexec 
 */ /** \cond */ 
 
-%MACRO _xcmdWithPath(i_cmd_path =
-                    ,i_cmd      =
-                    ,r_rc       =l_rc
+%MACRO _xcmdWithPath(i_cmd_path           =
+                    ,i_cmd                =
+                    ,i_expected_shell_rc  =0
+                    ,r_rc                 =l_rc
                     );
                     
    %LOCAL logfile l_cmd rc filrf;
@@ -38,12 +40,12 @@
    %LET &r_rc = &sysrc.;
    
    %_issueDebugMessage (&g_currentLogger., _xcmdWithPath: %str(======== OS Command Start ========));
-    /* Evaluate sysexec´s return code*/
-   %IF &sysrc. = 0 %THEN %DO;
-      %_issueDebugMessage (&g_currentLogger., _xcmdWithPath: Sysrc : 0 -> SYSEXEC SUCCESSFUL);
+   /* Evaluate sysexec´s return code*/
+   %IF &sysrc. = &i_expected_shell_rc. %THEN %DO;
+      %_issueDebugMessage (&g_currentLogger., _xcmdWithPath: Sysrc=ExpectedRC: &sysrc.=&i_expected_shell_rc. -> SYSEXEC SUCCESSFUL);
    %END;
    %ELSE %DO;
-      %_issueErrorMessage (&g_currentLogger., _xcmdWithPath: &sysrc -> An Error occured);
+      %_issueErrorMessage (&g_currentLogger., _xcmdWithPath: Sysrc<>ExpectedRC: &sysrc.<>&i_expected_shell_rc. -> An Error occured);
    %END;
 
    /* put sysexec command to log*/

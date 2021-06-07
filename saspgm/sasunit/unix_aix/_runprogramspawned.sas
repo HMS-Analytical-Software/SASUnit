@@ -35,9 +35,10 @@
    %let l_macname=&sysmacroname.;
    
    /*-- prepare sasuser ---------------------------------------------------*/
-   %let l_cmdFile=%sysfunc(pathname(work))/prep_sasuser.cmd;
+   %let l_cmdFile=%sysfunc(pathname(work))/prep_sasuser.sh;
    DATA _null_;
       FILE "&l_cmdFile.";
+      PUT "#!/bin/bash";
       PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       PUT "&g_makedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
       %IF %length(&g_sasuser) %THEN %DO;
@@ -48,12 +49,12 @@
    %LET l_rc=%_delfile(&l_cmdFile.);
 
    /*-- set config and autoexec -------------------------------------------*/
-   %let l_cmdFile=%sysfunc(pathname(work))/_runprogramspawned.cmd;
+   %let l_cmdFile=%sysfunc(pathname(work))/_runprogramspawned.sh;
    %LET l_parms=;
-   %IF "&g_autoexec" NE "" %THEN %DO;
+   %IF "&g_autoexec." NE "" %THEN %DO;
       %LET l_parms=&l_parms -autoexec ""&g_autoexec"";
    %END;
-   %IF "&g_sascfg" NE "" %THEN %DO;
+   %IF "&g_sascfg." NE "" %THEN %DO;
      options SET=SASCFGPATH "&g_sascfg.";
    %END;
  
@@ -83,24 +84,26 @@
       "" !! &g_sasstart. 
       !! " " 
       !! "&l_parms. "
-      !! "-sysin %sysfunc(tranwrd(&l_program., %str( ), %str(\ ))) "
+      !! "-sysin ""%_adaptSASunitPathToOS(&l_program.)"" "
       %if (&i_pgmIsScenario. = 1) %then %do;
          !! "-initstmt ""&l_tcgOptionsString.; %nrstr(%%_scenario%(io_target=)&g_target%nrstr(%))"" "
       %end;
-      !! "-print %sysfunc(tranwrd(&g_testout/&i_scnid..lst, %str( ), %str(\ ))) "
+      !! "-print ""%_adaptSASunitPathToOS(&g_testout.)/&i_scnid..lst"" "
       !! "-noovp "
       !! "-nosyntaxcheck "
       !! "-mautosource "
       !! "-mcompilenote all "
       !! "-sasautos SASAUTOS -append SASAUTOS ""&g_sasunit"" "
-      !! "-sasuser %sysfunc(pathname(work))/sasuser "
-      !! "-logconfigloc '%sysfunc(pathname(WORK))/sasunit.scnlogconfig.xml' "
-      !! "-logapplname 'Scenario' "
+      !! "-sasuser ""%sysfunc(pathname(work))/sasuser"" "
+      !! "-logconfigloc ""%sysfunc(pathname(WORK))/sasunit.scnlogconfig.xml"" "
+      !! "-logapplname ""Scenario"" "
       %if (&i_pgmIsScenario. = 1) %then %do;
       !! "-termstmt ""%nrstr(%%_termScenario())"" "
       %end;
       !! "";
+      PUT "#!/bin/bash";
       PUT _sCmdString;
+      PUTLOG _sCmdString;
    RUN;
 
    %_executeCMDFile(&l_cmdFile.,LE,2);
@@ -108,9 +111,10 @@
    %LET l_rc=%_delfile(&l_cmdFile.);
 
    /*-- delete sasuser ----------------------------------------------------*/
-   %let l_cmdFile=%sysfunc(pathname(work))/del_sasuser.cmd;
+   %let l_cmdFile=%sysfunc(pathname(work))/del_sasuser.sh;
    DATA _null_;
       FILE "&l_cmdFile.";
+      PUT "#!/bin/bash";
       PUT "&g_removedir ""%sysfunc(pathname(work))/sasuser""&g_endcommand";
    RUN;
    %_executeCMDFile(&l_cmdFile.);

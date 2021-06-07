@@ -63,7 +63,7 @@
                        ,i_sasunitScnLogLevel       =
                        ,i_OSEncoding               =
                        );
-                       
+
    %local
       l_sasunitCommandFile
    ;
@@ -72,7 +72,7 @@
    %let l_sasunitCommandFile =%_adaptSASUnitPathToOS (&l_sasunitCommandFile.);
    
    data _null_;
-      file "&i_sasunitCommandFile..sh";
+      file "&l_sasunitCommandFile..sh";
       
       put "#!/bin/bash";
       put "# This file is part of SASUnit, the Unit testing framework for SAS(R) programs.";
@@ -127,7 +127,7 @@
       put 'echo SASUnit Root Path         = $SASUNIT_ROOT';
       put 'echo Project Root Path         = $SASUNIT_PROJECT_ROOT';
       put 'echo Folder for TestDB         = $SASUNIT_TEST_DB_FOLDER';
-      put 'echo Folder for Log Files      = $SASUNIT_LOG_FOLDER%;
+      put 'echo Folder for Log Files      = $SASUNIT_LOG_FOLDER';
       put 'echo Folder for Scn Log Files  = $SASUNIT_SCN_LOG_FOLDER';
       put 'echo Folder for Reports        = $SASUNIT_REPORT_FOLDER';
       put 'echo Name of RUN_ALL Program   = $SASUNIT_RUNALL';
@@ -155,6 +155,6 @@
       put "fi";
    run;
    
-   %sysexec chmod a+x &i_sasunitCommandFile..sh;
+   %sysexec chmod a+x &l_sasunitCommandFile..sh;
 %mend _createBatchFile;
 /** \endcond */

@@ -20,15 +20,16 @@
    \param   i_to         copy to 
    \return  operation system return code or 0 if OK
 */ /** \cond */ 
-
 %macro _copyDir (i_from
                 ,i_to
                 );
 
    %LOCAL l_i_from l_i_to logfile;
 
-   %let l_i_from = %_adaptSASUnitPathToOS(&i_from);
-   %let l_i_to   = %_adaptSASUnitPathToOS(&i_to);
+   %let l_i_from  = %_makeSASUnitPath(&i_from.);
+   %let l_i_from  = %_adaptSASUnitPathToOS(&l_i_from.);
+   %let l_i_to    = %_makeSASUnitPath(&i_to.);
+   %let l_i_to    = %_adaptSASUnitPathToOS(&l_i_to.);
    %let logfile  = %sysfunc(pathname(work))/___log.txt;
 
    %SYSEXEC(cp -R &l_i_from. &l_i_to. > "&logfile" 2>&1);
@@ -53,6 +54,7 @@
          putlog line;
       run;
    %end;
+   
    %_issueDebugMessage (&g_currentLogger., _copyDir: %str(======== OS Command End ========));
 %mend _copyDir;
 /** \endcond */
