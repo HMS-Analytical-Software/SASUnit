@@ -30,7 +30,7 @@
 
    /* call */
    %_createLogConfigFile(i_projectBinFolder=%sysfunc(pathname(WORK))
-                        ,i_sasunitLogFolder=%sysfunc(pathname(WORK))/logs
+                        ,i_sasunitLogFolder=./logs
                         ,i_sasunitLanguage =XX
                         );
    %endTestcall()
@@ -42,10 +42,10 @@
                  ,i_desc    =New log config xml file must exist
                  );
 
-   /*%assertText (i_expected = &g_refdata./sasunit.scnlogconfig.xx.xml
-               ,i_actual   = %sysfunc(pathname(WORK))/sasunit.scnlogconfig.xx.xml
+   %assertText (i_expected = &g_refdata./sasunit.logconfig.xx.xml
+               ,i_actual   = %sysfunc(pathname(WORK))/sasunit.logconfig.xx.xml
                ,i_desc     = Log config file created correctly
-               );*/
+               );
 
    /* end testcase */
    %endTestcase()

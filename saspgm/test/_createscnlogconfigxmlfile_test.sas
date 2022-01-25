@@ -26,8 +26,8 @@
    *****************/
 
    %_createScnLogConfigTemplate(i_projectBinFolder    =%sysfunc(pathname(WORK))
-                               ,i_sasunitLogFolder    =%sysfunc(pathname(WORK))/logs
-                               ,i_sasunitScnLogfolder =%sysfunc(pathname(WORK))/scnLogs
+                               ,i_sasunitLogFolder    =./logs
+                               ,i_sasunitScnLogfolder =./scnLogs
                                ,i_sasunitLanguage     =xx
                                );
                                
@@ -49,6 +49,11 @@
                  ,i_expected=1
                  ,i_desc    =New scn log config xml file must exist
                  );
+
+   %assertText (i_expected = &g_refdata./sasunit.scnlogconfig.xx.xml
+               ,i_actual   = %sysfunc(pathname(WORK))/sasunit.scnlogconfig.xx.xml
+               ,i_desc     = Scn-Log config file created correctly
+               );
                  
    /* end testcase */
    %endTestcase()
