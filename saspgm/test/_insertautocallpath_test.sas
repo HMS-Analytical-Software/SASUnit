@@ -12,6 +12,7 @@
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
 
+   \todo Azfruf mit Pfad, der in einem berits hinzugefügten Pfad vollständig enthalten ist.
 */ /** \cond */ 
 
 %initScenario (i_desc=Test of _insertautocallpath.sas);
@@ -159,6 +160,46 @@
    /* assert */
    %assertLog     (i_errors=0, i_warnings=0);
    %assertEquals  (i_expected = %str(%(&l_expectedAutoCallPath. "%sysfunc(pathname(WORK))"%))
+                  ,i_actual   = %sysfunc (getoption (SASAUTOS))
+                  ,i_desc     = Path shoud be equal
+                  );
+
+   options SASAUTOS=&l_savedAutoCallPath.;
+
+   /* end testcase */
+   %endTestcase()
+%mend testcase; %testcase;
+
+%macro testcase(i_object=_insertautocallpath.sas, i_desc=%str(Call with subset of existing Path as path));
+   /*****************
+   documentation
+   ******************
+   setup  [...] 
+   call   [...]
+   assert [...]
+   *****************/
+   %local 
+      l_savedAutoCallPath
+      l_expectedAutoCallPath
+   ;
+
+   %let l_savedAutoCallPath = %sysfunc (getoption (SASAUTOS));
+   %let l_expectedAutoCallPath = %substr (&l_savedAutoCallPath, 2, %length(&l_savedAutoCallPath.)-2);
+   
+   %*_makedir(%sysfunc(pathname(WORK))/testdir);
+   %_insertAutoCallPath(%sysfunc(pathname(WORK))/testdir);
+   
+   /* start testcase */
+   %initTestcase(i_object=&i_object., i_desc=&i_desc.);
+
+   /* call */
+   %_insertAutoCallPath(%sysfunc(pathname(WORK)));
+
+   %endTestcall()
+
+   /* assert */
+   %assertLog     (i_errors=0, i_warnings=0);
+   %assertEquals  (i_expected = %str(%(&l_expectedAutoCallPath. "%sysfunc(pathname(WORK))/testdir" "%sysfunc(pathname(WORK))"%))
                   ,i_actual   = %sysfunc (getoption (SASAUTOS))
                   ,i_desc     = Path shoud be equal
                   );

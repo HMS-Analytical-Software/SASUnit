@@ -33,7 +33,7 @@
       %_issueTraceMessage (&g_currentLogger., Searching for Autocallpath &autocallpath);
 
       %let l_currentAutoCallPath=%sysfunc (getoption (SASAUTOS));
-      %let l_found=%index (&l_currentAutoCallPath., &autocallpath.);
+      %let l_found=%sysfunc (findw (&l_currentAutoCallPath., &autocallpath., %str(% %"%(%)), I));
       
       %if (&l_found. > 0) %then %do;
          %_issueDebugMessage (&g_currentLogger., Autocallpath &autocallpath already set.);
