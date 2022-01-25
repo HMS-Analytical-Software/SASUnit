@@ -60,7 +60,7 @@
          rc = log4sas_logevent("&g_currentLogger.", "Info" ,"_single_dir: Given directory is empty: " !! catt (Directory));
       end;
       else do;
-         rc = log4sas_logevent("&g_currentLogger.", "Info" ,"_single_dir: Directory """ !! catt (Directory) !! """ contains " !! catt (num) !! " entries.");
+         rc = log4sas_logevent("&g_currentLogger.", "Debug" ,"_single_dir: Directory """ !! catt (Directory) !! """ contains " !! catt (num) !! " entries.");
       end;
       do i=1 to num;
          membername = dread (d_id, i);
@@ -73,7 +73,7 @@
          end;
          else do;
             d_dir_id = dclose (d_dir_id);
-            rc = log4sas_logevent("&g_currentLogger.", "Info" ,'_single_dir: Directory "' !! catt (Directory) !! '" contains subdirectory "' !! catt (membername) !! '"');
+            rc = log4sas_logevent("&g_currentLogger.", "Debug" ,'_single_dir: Directory "' !! catt (Directory) !! '" contains subdirectory "' !! catt (membername) !! '"');
             rc = filename (fileref, "");
             %if (&o_subdirs. ne _NONE_) %then %do;
                output &o_subdirs.;
