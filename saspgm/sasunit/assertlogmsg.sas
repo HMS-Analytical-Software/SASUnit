@@ -18,18 +18,21 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param   i_logmsg       message of interest (Perl Regular Expression), non-case-sensitive log scan,
-                           special characters have to be quoted with a prefixed single backslash,
-                           see http://support.sas.com/onlinedoc/913/getDoc/de/lrdict.hlp/a002288677.htm#a002405779
-   \param   i_desc         description of the assertion to be checked \n
-                           default: "Scan for log messages"
-   \param   i_not          negates the assertion, if set to 1 (optional: default = 0)
+   \param   i_logmsg          message of interest (Perl Regular Expression), non-case-sensitive log scan,
+                              special characters have to be quoted with a prefixed single backslash,
+                              see http://support.sas.com/onlinedoc/913/getDoc/de/lrdict.hlp/a002288677.htm#a002405779
+   \param   i_desc            description of the assertion to be checked \n
+                              default: "Scan for log messages"
+   \param   i_not             negates the assertion, if set to 1 (optional: default = 0)
+   \param   i_logfile         for testing purposes it is necessary to provide a logfile name (optional: default = &g_caslogfile.)
+   \param   i_case_sensitive  flag if regEx should be treated caseSensitiv 0/1 (optional: default = 1)
    
 */ /** \cond */ 
-%MACRO assertLogMsg (i_logmsg   =       
-                    ,i_desc     = Scan for log messages  
-                    ,i_not      = 0
-                    ,i_logfile  = &g_caslogfile.
+%MACRO assertLogMsg (i_logmsg          =       
+                    ,i_desc            = Scan for log messages  
+                    ,i_not             = 0
+                    ,i_logfile         = &g_caslogfile.
+                    ,i_case_sensitive  = 1
                     );
 
    /*-- verify correct sequence of calls-----------------------------------------*/
@@ -39,9 +42,18 @@
       %RETURN;
    %END;
 
-   %LOCAL l_casid l_msg_found l_actual l_expected l_assert_failed l_errmsg;
+   %LOCAL 
+      l_casid 
+      l_msg_found 
+      l_actual 
+      l_expected 
+      l_assert_failed 
+      l_errmsg
+      l_regex_modfifer
+   ;
+
    PROC SQL NOPRINT;
-   /* determine number of the current test case */
+      /* determine number of the current test case */
       SELECT max(cas_id) INTO :l_casid FROM target.cas WHERE cas_scnid = &g_scnid;
    QUIT;
 
@@ -57,16 +69,23 @@
       %goto exit;
    %END;
 
+   %if (&i_case_sensitive.) %then %do;
+      %let l_regex_modfifer =;
+   %end;
+   %else %do;
+      %let l_regex_modfifer =i;
+   %end;
+
    /* Scanne den Log */
    %LET l_msg_found=0;
    DATA _null_;
       RETAIN pattern_id;
       IF _n_=1 THEN DO;
-         pattern_id = prxparse("/%upcase(&i_logmsg)/");
+         pattern_id = prxparse("/&i_logmsg/&l_regex_modfifer.");
       END;
       INFILE "&i_logfile." END=eof TRUNCOVER &g_infile_options.;
       INPUT logrec $char256.;
-      logrec = upcase(logrec);
+      logrec = logrec;
       IF prxmatch (pattern_id, logrec) THEN DO;
          call symput ('l_msg_found', '1');
       END;
