@@ -6,7 +6,7 @@ rem or https://sourceforge.net/p/sasunit/wiki/readme/.
 SET sasunit_expected=%1%
 SET sasunit_actual=%2%
 SET sasunit_diff_dest=%3%
-SET sasunit_mod=/C
+SET sasunit_mod=%~4%
 SET sasunit_threshold=%5%
 
 ECHO sasunit_expected: %sasunit_expected%

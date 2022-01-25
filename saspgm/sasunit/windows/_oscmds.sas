@@ -27,6 +27,8 @@
       g_dateformat
       g_infile_options
       g_osCmdFileSuffix
+      g_assertTextIgnoreCase
+      g_assertTextCompressBlanks
       ;
 
    %local
@@ -36,14 +38,16 @@
    
    %LET l_macname=&sysmacroname;
 
-   %LET g_copydir         =xcopy /E /I /Y;
-   %LET g_endcommand      =%str( );
-   %LET g_makedir         =md;
-   %LET g_removedir       =rd /S /Q;
-   %LET g_sasstart        ="%sysfunc(pathname(sasroot))/sas.exe";
-   %LET g_splash          =-nosplash;
-   %LET g_infile_options  =IGNOREDOSEOF;
-   %LET g_osCmdFileSuffix =cmd;
+   %LET g_copydir                   =xcopy /E /I /Y;
+   %LET g_endcommand                =%str( );
+   %LET g_makedir                   =md;
+   %LET g_removedir                 =rd /S /Q;
+   %LET g_sasstart                  ="%sysfunc(pathname(sasroot))/sas.exe";
+   %LET g_splash                    =-nosplash;
+   %LET g_infile_options            =IGNOREDOSEOF;
+   %LET g_osCmdFileSuffix           =cmd;
+   %LET g_assertTextIgnoreCase      =/C;
+   %LET g_assertTextCompressBlanks  =/W;
 
    * retrieve dateformat from WINDOWS registry *;
    * Set default if anything goes wrong *;

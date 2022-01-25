@@ -26,6 +26,8 @@
       g_splash
       g_infile_options
       g_osCmdFileSuffix
+      g_assertTextIgnoreCase
+      g_assertTextCompressBlanks
       ;
       
    %local
@@ -33,14 +35,16 @@
    ;   
    %LET l_macroName=&sysmacroname;
 
-   %LET g_removedir       =rm -r -f;
-   %LET g_copydir         =cp -R;
-   %LET g_endcommand      =%str(;);
-   %LET g_makedir         =mkdir;
-   %LET g_sasstart        ="%sysfunc(pathname(sasroot))/bin/sas_&g_language.";
-   %LET g_splash          =;   
-   %LET g_infile_options  =;
-   %LET g_osCmdFileSuffix =sh;
+   %LET g_removedir                 =rm -r -f;
+   %LET g_copydir                   =cp -R;
+   %LET g_endcommand                =%str(;);
+   %LET g_makedir                   =mkdir;
+   %LET g_sasstart                  ="%sysfunc(pathname(sasroot))/bin/sas_&g_language.";
+   %LET g_splash                    =;   
+   %LET g_infile_options            =;
+   %LET g_osCmdFileSuffix           =sh;
+   %LET g_assertTextIgnoreCase      =-i;
+   %LET g_assertTextCompressBlanks  =-b;
    
    %*************************************************************;
    %*** Check if XCMD is allowed                              ***;

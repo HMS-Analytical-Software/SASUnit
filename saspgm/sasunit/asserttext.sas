@@ -22,15 +22,15 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
-   \param      i_script               Path of shell script
+   \param      i_script               Optional Parameter: Path of shell script (default=&g_sasunit_os.,assertText.&g_osCmdFileSuffix.)
    \param      i_expected             Path of first text file (expected)
    \param      i_actual               Path of second text file (actual)
    \param      i_expected_shell_rc    Optional parameter: Expected return value of called script i_script (default = 0)
    \param      i_modifier             Optional parameter: modifiers for the compare (default = ' ')
-   \param      i_desc                 Optional parameter: description of the assertion to be checked (default = "Comparion of texts")
+   \param      i_desc                 Optional parameter: description of the assertion to be checked (default = "Comparison of texts")
    \param      i_threshold            Optional parameter: further parameter to be passed to the script (default = 1)
 */ /** \cond */ 
-%MACRO assertText (i_script            =
+%MACRO assertText (i_script            =_NONE_
                   ,i_expected          =
                   ,i_actual            =
                   ,i_expected_shell_rc =0
@@ -46,17 +46,18 @@
       %RETURN;
    %END;
 
-   %LOCAL  l_actual
-           l_casid 
+   %LOCAL  l_casid 
            l_cmdFile
-           l_errmsg
+           l_errmsg           
            l_expected
+           l_actual
            l_path
-           retVal
            l_result
            l_rc
            l_tstid
            l_macname
+           l_script
+           l_diff_file
    ;
 
    %LET l_errmsg  =;
@@ -89,11 +90,18 @@
       %LET l_errMsg=Parameter i_script is empty!;
       %GOTO Update;
    %END;
-   %IF NOT %SYSFUNC(FILEEXIST(&i_script.)) %THEN %DO;
+   
+   %LET l_script = &i_script.;
+   %IF ("&i_script." = "_NONE_") %THEN %DO;
+       %LET l_script = &g_sasunit_os./assertText.&g_osCmdFileSuffix.;
+   %END;
+   %IF NOT %SYSFUNC(FILEEXIST(&l_script.)) %THEN %DO;
       %LET l_rc = -3;
-      %LET l_errMsg=Script file &i_script. does not exist!;
+      %LET l_errMsg=Script file &l_script. does not exist!;
       %GOTO Update;
    %END;
+   %LET l_script = %_makeSASUnitPath (&l_script.);
+   %LET l_script = %_adaptSASUnitPathToOS (&l_script.);
 
    %*** Check if i_expected is a path ***;
    %IF (%length(&i_expected.) <= 0) %THEN %DO;
@@ -144,6 +152,8 @@
       %LET l_errMsg=Path &i_expected. does not exist!;
       %GOTO Update;
    %END;
+   %LET l_expected = %_makeSASUnitPath (&i_expected.);
+   %LET l_expected = %_adaptSASUnitPathToOS (&l_expected.);
    
    %*** Check if i_actual exists ***;
    %IF NOT %SYSFUNC(FILEEXIST(&i_actual.)) %THEN %DO;
@@ -151,6 +161,8 @@
       %LET l_errMsg=Path &i_actual. does not exist!;
       %GOTO Update;
    %END;
+   %LET l_actual = %_makeSASUnitPath (&i_actual.);
+   %LET l_actual = %_adaptSASUnitPathToOS (&l_actual.);
    
    %*** Check if i_expected_shell_rc is given ***;
    %IF (%length(&i_expected_shell_rc.) <= 0) %THEN %DO;
@@ -158,16 +170,23 @@
       %LET l_errMsg=Parameter i_expected_shell_rc is empty!;
       %GOTO Update;
    %END;
+   
+   %LET l_diff_file = %_makeSASUnitPath (&l_path./_text_diff.txt);
+   %LET l_diff_file = %_adaptSASUnitPathToOS (&l_diff_file.);
 
    %*************************************************************;
    %*** Start tests                                           ***;
    %*************************************************************;
-   
-   %_xcmdWithPath(i_cmd_path           ="&i_script."
-                 ,i_cmd                ="&i_expected." "&i_actual." "&l_path./_text_diff.txt" "&i_modifier." "&i_threshold."
+   %let l_rc=HUGO;
+   %PUT ------>;
+   %PUT _LOCAL_;
+   %_xcmdWithPath(i_cmd_path           =&l_script.
+                 ,i_cmd                =&l_expected. &l_actual. &l_diff_file. "&i_modifier." "&i_threshold."
                  ,i_expected_shell_rc  =&i_expected_shell_rc.
                  ,r_rc                 =l_rc
                  );
+   %PUT ------>>;
+   %PUT _LOCAL_;
    
    %IF &l_rc. = &i_expected_shell_rc. %THEN %DO;
       %LET l_result = 0;
