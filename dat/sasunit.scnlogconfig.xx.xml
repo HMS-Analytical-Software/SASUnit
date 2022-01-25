@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<logging:configuration xmlns:logging="http://www.sas.com/xml/logging/1.0/">
+   <!-- Basic Appender that protocols into Scenario Logfile log file -->
+   <appender name="SASUnitScenarioAppender" class="FileAppender">
+      <param name="File"           value="./scnLogs/0X0.log"/>
+      <param name="Append"         value="FALSE"/>
+      <param name="ImmediateFlush" value="TRUE"/>
+   </appender>
+
+   <!-- combining Appender that protocols into an ovarall Scenario Logfile log file -->
+   <appender name="SASUnitScenarioAggAppender" class="FileAppender">
+      <param name="File"           value="./scnLogs/all_scenarios.log"/>
+      <param name="Append"         value="TRUE"/>
+      <param name="ImmediateFlush" value="TRUE"/>
+      <layout>
+         <param name="ConversionPattern" value="%d{ISO8601} %r [%t] %-5p %c %u - %m"/>
+      </layout>
+   </appender>
+
+   <!-- Appender for tracking outcome of asserts -->
+   <appender name="SASUnitAssertsAppender" class="FileAppender">
+      <param name="File"           value="./logs/log4sasunit_asserts.log"/>
+      <param name="Append"         value="TRUE"/>
+      <param name="ImmediateFlush" value="TRUE"/>
+   </appender>
+
+   <!-- Insert your project specific appenders here! -->
+   <!-- End of project specific appenders! -->
+
+   <!-- Redirect all messages to SASUnit scenario log file -->
+   <logger name="App.Program" additivity="TRUE" immutability="FALSE">
+      <level value="INFO"/>
+      <appender-ref ref="SASUnitScenarioAppender"/>
+   </logger>
+
+   <logger name="App.Program.SASUnitScenario" additivity="FALSE" immutability="FALSE">
+      <level value="INFO"/>
+      <appender-ref ref="SASUnitScenarioAggAppender"/>
+   </logger>
+
+   <!-- New logger for SASUnit messages by assertions; Will be used to track outcome of asserts -->
+   <!-- New logger will be protocolling in special logfile -->
+   <!-- Perhaps in a later release asserts will be running without test data base -->
+   <logger name="App.Program.SASUnitScenario.Asserts" additivity="FALSE" immutability="FALSE">
+      <level value="INFO"/>
+      <appender-ref ref="SASUnitAssertsAppender"/>
+   </logger>
+
+   <!-- Insert your project specific loggers here! -->
+   <!-- End of loggers specific appenders! -->
+
+   <!-- Root-Logger must always be present, even with an empty definition -->
+   <root />
+</logging:configuration>

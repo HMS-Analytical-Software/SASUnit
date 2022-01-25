@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<logging:configuration xmlns:logging="http://www.sas.com/xml/logging/1.0/">
+   <!-- Basic Appender that protocols into RunAll log file -->
+   <appender name="SASUnitRunAllAppender" class="FileAppender">
+      <param name="File"           value="./logs/log4sasunit_run_all.log"/>
+      <param name="Append"         value="FALSE"/>
+      <param name="ImmediateFlush" value="TRUE"/>
+   </appender>
+
+   <!-- Appender for an aggregated protocol -->
+   <appender name="SASUnitSuiteAppender" class="FileAppender">
+      <param name="File"           value="./logs/log4sasunit_suite.log"/>
+      <param name="Append"         value="FALSE"/>
+      <param name="ImmediateFlush" value="TRUE"/>
+      <layout>
+         <param name="ConversionPattern" value="%d{ISO8601} %r [%t] %-5p %c %u - %m"/>
+      </layout>
+   </appender>
+
+   <!-- Insert your project specific appenders here! -->
+   <!-- End of project specific appenders! -->
+
+   <!-- Redirect all messages to SASUnit RunAll log file -->
+   <logger name="App.Program" additivity="TRUE" immutability="FALSE">
+      <level value="INFO"/>
+      <appender-ref ref="SASUnitRunAllAppender"/>
+   </logger>
+
+   <!-- New logger for SASUnit messages; Messages shall be propagated to App.Program -->
+   <logger name="App.Program.SASUnit" additivity="TRUE" immutability="FALSE">
+      <level value="INFO"/>
+      <appender-ref ref="SASUnitSuiteAppender"/>
+   </logger>
+
+   <!-- Insert your project specific loggers here! -->
+   <!-- End of loggers specific appenders! -->
+
+   <!-- Root-Logger must always be present, even with an empty definition -->
+   <root />
+</logging:configuration>
