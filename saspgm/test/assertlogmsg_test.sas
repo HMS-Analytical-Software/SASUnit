@@ -25,6 +25,7 @@ data _NULL_;
    put "LINE1: Here is some unimportant text";
    put " LINE2: Here is some unimportant text";
    put"&G_NOTE.: This note is to show, that regex is working.";
+   put"&G_NOTE.: This note is to show, that regEx is case InSeNsItIvE working.";
 run;
 
 %initTestcase(i_object=assertLogMsg.sas, i_desc=reading log file without errors)
@@ -93,6 +94,26 @@ run;
       %assertDBValue(tst,type,assertLogMsg)
       %assertDBValue(tst,exp,2that regex.+ is)
       %assertDBValue(tst,act,2)
+      %assertDBValue(tst,res,0)
+%assertLogMsg(i_logMsg  =insensitive
+             ,i_desc    =string with regexp case sensitiv
+             ,i_logfile =&l_filename.
+             ,i_not     =1
+             )
+   %markTest();
+      %assertDBValue(tst,type,assertLogMsg)
+      %assertDBValue(tst,exp,2insensitive)
+      %assertDBValue(tst,act,2)
+      %assertDBValue(tst,res,0)      
+%assertLogMsg(i_logMsg           =insensitive
+             ,i_desc             =string with regexp case insensitiv
+             ,i_logfile          =&l_filename.
+             ,i_case_sensitive   =0
+             )
+   %markTest();
+      %assertDBValue(tst,type,assertLogMsg)
+      %assertDBValue(tst,exp,1insensitive)
+      %assertDBValue(tst,act,1)
       %assertDBValue(tst,res,0)
 %endTestcase(i_assertLog=(&g_runmode.=SASUNIT_BATCH))
 

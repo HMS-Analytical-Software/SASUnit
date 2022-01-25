@@ -40,7 +40,7 @@
    
 /* test case 2 ------------------------------------ */
 
-%initTestcase(i_object   =assertText.sas
+%initTestcase(i_object   =assertTrue.sas
              ,i_desc     =Successfull tests
              )
 %endTestcall()
