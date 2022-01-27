@@ -49,21 +49,18 @@
                      ,CallSequenceScenario
                      ,(&g_inScenario. EQ 1)
                      ,initScenario must not be called twice!
-                     ,i_verbose=0
                      ) 
        ) %then %return;
    %if (%_handleError(&l_macname.
                      ,CallSequenceScenario
                      ,(&g_inTestCase. EQ 1)
                      ,initScenario must not be called within a testcase!
-                     ,i_verbose=0
                      ) 
        ) %then %return;
    %if (%_handleError(&l_macname.
                      ,CallSequenceScenario
                      ,(&g_inTestCall. EQ 1)
                      ,initScenario must not be called within a testcall!
-                     ,i_verbose=0
                      ) 
        ) %then %return;
        

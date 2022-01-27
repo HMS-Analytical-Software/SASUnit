@@ -44,7 +44,6 @@
                           ,NonExistentParameter
                           ,not %sysfunc (symexist (&l_parameterName.))
                           ,%str(Error in parameterizing &i_callingMacroName.: Parameter &l_parameterName. is non-existent)
-                          ,i_verbose=1
                           ) 
                %THEN %GOTO exit;
          %if (%upcase(&i_MissingValueAllowed.) = NO) %then %do;
@@ -52,7 +51,6 @@
                              ,MissingParameter
                              ,"&&&l_parameterName" EQ ""
                              ,%str(Error in parameterizing &i_callingMacroName.: Parameter &l_parameterName. is missing)
-                             ,i_verbose=1
                              ) 
                   %THEN %GOTO exit;
          %end;
