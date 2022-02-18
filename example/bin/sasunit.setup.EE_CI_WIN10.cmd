@@ -18,8 +18,8 @@ SET SASUNIT_SAS_CFG=%SASUNIT_SASPATH%\nls\%SASUNIT_LANGUAGE%\sasv9.cfg
 
 REM --------------------------------------------------------------------------------
 REM --- EnvVars for SAS Unit Configuration -----------------------------------------
-SET SASUNIT_ROOT=C:\jenkins1\workspace\00773_KF_SAS_SASUNIT\SASUnit (9.4 64-Bit %SASUNIT_LANGUAGE% unicode, Windows 10 64-Bit de)
-SET SASUNIT_PROJECTROOT=C:\jenkins1\workspace\00773_KF_SAS_SASUNIT\SASUnit (9.4 64-Bit %SASUNIT_LANGUAGE% unicode, Windows 10 64-Bit de)\example
+SET SASUNIT_ROOT=%WORKSPACE%
+SET SASUNIT_PROJECTROOT=%WORKSPACE%\example
 SET SASUNIT_TESTDB_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\testdb
 SET SASUNIT_LOG_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\logs
 SET SASUNIT_SCN_LOG_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\scn_logs
