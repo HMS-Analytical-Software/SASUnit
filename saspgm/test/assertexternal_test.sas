@@ -12,7 +12,9 @@
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-*/ /** \cond */ 
+   \todo remove adaptToOS
+*/ 
+/** \cond */ 
 %MACRO _createTestfiles;
    DATA _NULL_;
       FILE "&g_work./text1.txt";
@@ -94,7 +96,7 @@
       %let expected_word_count_multiplier = 0;
    %end;
 %MEND _adaptToEnv;
-%MACRO markTextIfNOXCMD(exp,act,res);
+%MACRO markTestIfNOXCMD(exp,act,res);
    %if ((%sysfunc(getoption(XCMD)) = NOXCMD)) %then %do;
       %markTest()
          %assertDBValue(tst,exp,&exp.);
@@ -144,14 +146,14 @@
                    ,i_expected_shell_rc  =0
                    ,i_desc               =Word count of "Lorem" equals 2
                    );
-   %markTextIfNOXCMD(0,0,2);
+   %markTestIfNOXCMD(0,0,2);
                 
    %assertExternal (i_script             =&assertExternal_script1.
                    ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) "3"
                    ,i_expected_shell_rc  =1
                    ,i_desc               =%str(Word count of "Lorem" equals 2, but i_actual=3, so i_expected_shell_rc must be 1)
                    );
-   %markTextIfNOXCMD(1,0,2);
+   %markTestIfNOXCMD(1,0,2);
 
 %assertLog (i_errors=0, i_warnings=0);
 %endTestcase();
@@ -168,21 +170,21 @@
                    ,i_expected_shell_rc  =0
                    ,i_desc               =Compared files match
                    );
-   %markTextIfNOXCMD(0,0,2);
+   %markTestIfNOXCMD(0,0,2);
                 
    %assertExternal (i_script             =&assertExternal_script2.
                    ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) %_adaptSASUnitPathToOS(&assertExternal_work2.)
                    ,i_expected_shell_rc  =1
                    ,i_desc               =Compared files do not match
                    );
-   %markTextIfNOXCMD(1,0,2);
+   %markTestIfNOXCMD(1,0,2);
                 
    %assertExternal (i_script             =&assertExternal_script2.
                    ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) %_adaptSASUnitPathToOS(&assertExternal_work2.) &assertExternal_mod1.
                    ,i_expected_shell_rc  =0
                    ,i_desc               =%str(Compared files do not match, but modifier ignore case used -> test is OK)
                    );
-   %markTextIfNOXCMD(0,0,2);
+   %markTestIfNOXCMD(0,0,2);
    
 %assertLog (i_errors=0, i_warnings=0);
 %endTestcase();
