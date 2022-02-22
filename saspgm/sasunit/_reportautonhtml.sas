@@ -339,7 +339,8 @@
                 resultColumn
                 linkTitle0  linkTitle1  LinkTitle2  LinkTitle3  LinkTitle4  LinkTitle5
                 linkColumn0 linkColumn1 LinkColumn2 LinkColumn3 LinkColumn4 LinkColumn5 $1000
-                _autonColumn autonColumn scn_abs_path pgmdoc_name $400;
+                _autonColumn scn_abs_path pgmdoc_name $400;
+         length autonColumn $600;
          set work._auton_report (where=(exa_auton=&l_pgmLib.));
          ARRAY sa(0:29) tsu_sasautos tsu_sasautos1-tsu_sasautos29;
          label 
