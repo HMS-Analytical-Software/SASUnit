@@ -228,12 +228,19 @@ RUN;
          %if (&o_pgmdoc_sasunit. = 0) %then %do;
             (where=(exa_auton >= 2))
          %end;
-         on _GrpDoc.childPath = exa.exa_filename;
+         %if (&o_pgmdoc_sasunit. = 1) %then %do;
+            on _GrpDoc.childPath = exa.exa_filename
+            group by exa_filename
+         %end;
+         having exa_auton=min(exa_auton)
+         
+      ;
       create table work._GrpDoc_2 as
          select _GrpDoc_1.*,
                 scn.scn_id
          from work._GrpDoc_1 left join work.scn
-         on _GrpDoc_1.childPath = scn.scn_abs_path;
+         on _GrpDoc_1.childPath = scn.scn_abs_path
+      ;
    quit;
 
    data work._GrpDoc_3;
@@ -530,6 +537,14 @@ RUN;
       END;
    RUN;
 %end;
+
+data target.d_tree4;
+   set &d_tree4.;
+run;
+
+data target._GrpDoc;
+   set work._GrpDoc;
+run;
 
 /*-- Lookahead für Level -----------------------------------------------------*/
 DATA &d_tree. &d_la. (KEEP=lvl RENAME=(lvl=nextlvl));
