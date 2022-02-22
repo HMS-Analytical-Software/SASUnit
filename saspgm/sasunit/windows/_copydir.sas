@@ -68,7 +68,6 @@
          input line $512.;
          putlog line;
       run;
-      %put ======== OS Command End ========;
    %end;
 
    %_issueDebugMessage (&g_currentLogger., _copyDir: %str(======== OS Command End ========));
