@@ -538,14 +538,6 @@ RUN;
    RUN;
 %end;
 
-data target.d_tree4;
-   set &d_tree4.;
-run;
-
-data target._GrpDoc;
-   set work._GrpDoc;
-run;
-
 /*-- Lookahead für Level -----------------------------------------------------*/
 DATA &d_tree. &d_la. (KEEP=lvl RENAME=(lvl=nextlvl));
    SET &d_tree1. &d_tree2. 
