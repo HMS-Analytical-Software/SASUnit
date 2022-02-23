@@ -43,32 +43,5 @@
    %endTestcase()
 %mend testcase; %testcase;
 
-%macro testcase(i_object=_issueasserterrormessage.sas, i_desc=%str(Call with logging level Info, and debug message));
-   /*****************
-   documentation
-   ******************
-   setup  [...] 
-   call   [...]
-   assert [...]
-   *****************/
-
-   %let g_UseLog4SAS = 0;
-   
-   /* start testcase */
-   %initTestcase(i_object=&i_object., i_desc=&i_desc.);
-
-   /* call */
-   %_issueasserterrormessage(Dies ist meine Fehlermeldung!);
-
-   %endTestcall()
-
-   /* assert */
-   %assertLog     (i_errors=0, i_warnings=0);
-   %assertLogMsg  (i_logMsg=^ERROR: Dies ist meine Fehlermeldung!, i_not=1);
-
-   /* end testcase */
-   %endTestcase()
-%mend testcase; %testcase;
-
 %endScenario();
 /** \endcond */
