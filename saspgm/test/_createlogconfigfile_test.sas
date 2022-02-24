@@ -53,9 +53,6 @@
    filename fdel "%sysfunc(pathname(WORK))/sasunit.logconfig.xx.xml";
    %put %sysfunc(fdelete(fdel));
    filename fdel clear;
-   filename fdel "%sysfunc(pathname(WORK))/sasunit.logconfig.xx.xml";
-   %put %sysfunc(fdelete(fdel));
-   filename fdel clear;
 %mend testcase; %testcase;
 
 %endScenario();
