@@ -26,26 +26,30 @@
       g_splash
       g_infile_options
       g_osCmdFileSuffix
+      g_assertTextIgnoreCase
+      g_assertTextCompressBlanks
       ;
       
    %local
       l_macroName 
    ;   
-   %LET l_macname=&sysmacroname;
+   %LET l_macroName=&sysmacroname;
 
-   %LET g_removedir       =rm -r -f;
-   %LET g_copydir         =cp -R;
-   %LET g_endcommand      =%str(;);
-   %LET g_makedir         =mkdir;
-   %LET g_sasstart        ="%sysfunc(pathname(sasroot))/bin/sas_&g_language.";
-   %LET g_splash          =;   
-   %LET g_infile_options  =;
-   %LET g_osCmdFileSuffix =sh;
+   %LET g_removedir                 =rm -r -f;
+   %LET g_copydir                   =cp -R;
+   %LET g_endcommand                =%str( );
+   %LET g_makedir                   =mkdir;
+   %LET g_sasstart                  ="%sysfunc(pathname(sasroot))/bin/sas_&g_language.";
+   %LET g_splash                    =;   
+   %LET g_infile_options            =;
+   %LET g_osCmdFileSuffix           =sh;
+   %LET g_assertTextIgnoreCase      =-i;
+   %LET g_assertTextCompressBlanks  =-b;
    
    %*************************************************************;
    %*** Check if XCMD is allowed                              ***;
    %*************************************************************;
-   %IF %_handleError(&l_macname.
+   %IF %_handleError(&l_macroName.
                  ,NOXCMD
                  ,(%sysfunc(getoption(XCMD)) = NOXCMD)
                  ,Your SAS Session does not allow XCMD%str(,) therefore functionality is restricted.
@@ -58,6 +62,8 @@
    %ELSE %DO;
       %_xcmd(umask 0033);
    %END;
+   
+   options nobomfile;
 
 %mend _oscmds;
 /** \endcond */

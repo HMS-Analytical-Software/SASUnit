@@ -37,7 +37,7 @@
 
    %LET g_removedir                 =rm -r -f;
    %LET g_copydir                   =cp -R;
-   %LET g_endcommand                =%str(;);
+   %LET g_endcommand                =%str( );
    %LET g_makedir                   =mkdir;
    %LET g_sasstart                  ="%sysfunc(pathname(sasroot))/bin/sas_&g_language.";
    %LET g_splash                    =;   
@@ -62,6 +62,8 @@
    %ELSE %DO;
       %_xcmd(umask 0033);
    %END;
+   
+   options nobomfile;
 
 %mend _oscmds;
 /** \endcond */
