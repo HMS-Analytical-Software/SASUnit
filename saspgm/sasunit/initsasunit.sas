@@ -134,7 +134,7 @@
 
    %GLOBAL g_version g_revision g_db_version g_error g_warning g_note g_runMode g_language g_currentLogger g_currentLogLevel g_log4SASScenarioLogger;
 
-   %LET g_version    = 2.0.2;
+   %LET g_version    = 2.1;
    %LET g_db_version = 2.1;
    %LET g_revision   = $Revision$;
    %LET g_revision   = %scan(&g_revision,2,%str( $:));
