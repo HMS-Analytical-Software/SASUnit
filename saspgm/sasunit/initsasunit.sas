@@ -576,7 +576,6 @@
          DATA _null_;
             FILE "&l_cmdfile." encoding=&i_OSEncoding.; /* wg. Umlauten in Pfaden */
             PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_reportFolder.)&g_endcommand));
-/*            PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&i_logFolder.)&g_endcommand));*/
             PUT %Sysfunc (quote (&g_removedir %_adaptSASUnitPathToOS (&l_scnLogFolder.)&g_endcommand));            
          RUN;
          %_executeCMDFile(&l_cmdfile.);
