@@ -2,10 +2,7 @@
    \file
    \ingroup    SASUNIT_ASSERT
 
-   \brief      Check whether there are differences between the value of a macro variable and an expected value. 
-   
-               The values can be character string or numerical.
-               Optionally one can define a deviation for numerical values so that the  values can be deviating from each other less than a maximal deviation of i_fuzz.
+   \brief      Servers as a placeholder for manual actions. Similar the assetReport but does not rely on output files
 
    \version    \$Revision$
    \author     \$Author$
@@ -19,10 +16,10 @@
                or https://sourceforge.net/p/sasunit/wiki/readme/.
             
    \param   i_desc         description of the assertion to be checked \n
-                           default: "Manual assert (placeholder)"
-                           
+                           default: "Manual assert serves as placeholder"
+
 */ /** \cond */ 
-%MACRO assertManual (i_desc =Manual assert serves as placeholder);
+%MACRO assertManual (i_desc =Manual assert - serves as placeholder);
 
    /*-- verify correct sequence of calls-----------------------------------------*/
    %GLOBAL g_inTestCase;
