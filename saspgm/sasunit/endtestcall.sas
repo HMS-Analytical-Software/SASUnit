@@ -30,7 +30,7 @@
          %_issueErrorMessage (&g_currentLogger.,endTestcall: endTestcall must be called after initTestcase!);
       %END;
       %ELSE %DO;
-         %_issueInfoMessage (&g_currentLogger.,endTestcall: endTestcall already run by user. This call was issued from endTestcase.);
+         %_issueTraceMessage (&g_currentLogger.,endTestcall: endTestcall already run by user. This call was issued from endTestcasedTestcall.);
       %END;
       %RETURN;
    %END;

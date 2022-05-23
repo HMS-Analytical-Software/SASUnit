@@ -26,13 +26,13 @@
    %GLOBAL g_inTestCase g_inTestCall;
    %LOCAL l_casid l_assertLog l_result;   
 
-   %endTestcall(i_messageStyle=NOTE);
+   %endTestcall(i_messageStyle=TRACE);
    %IF &g_inTestCase. NE 1 %THEN %DO;
       %IF (&i_messageStyle=ERROR) %THEN %DO;
          %_issueErrorMessage (&g_currentLogger.,endTestcase: endTestcase must be called after initTestcase!)
       %END;
       %ELSE %DO;
-         %_issueInfoMessage (&g_currentLogger.,endTestcase: endTestcall already run by user. This call was issued from endScenario.)
+         %_issueTraceMessage (&g_currentLogger.,endTestcase: endTestcall already run by user. This call was issued from endScenario.)
       %END;
       %RETURN;
    %END;

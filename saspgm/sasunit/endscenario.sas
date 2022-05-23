@@ -21,14 +21,14 @@
 
    /*-- verify correct sequence of calls-----------------------------------------*/
    %GLOBAL g_inScenario g_scnID;
-   %endTestCall(i_messageStyle=NOTE);
-   %endTestCase(i_messageStyle=NOTE);
+   %endTestCall(i_messageStyle=TRACE);
+   %endTestCase(i_messageStyle=TRACE);
    %IF &g_inScenario. NE 1 %THEN %DO;
       %IF (&i_messageStyle=ERROR) %THEN %DO;
          %_issueErrorMessage (&g_currentLogger., endScenario: endScenario must be called after initScenario);
       %END;
       %ELSE %DO;
-         %_issueInfoMessage (&g_currentLogger., endScenario: endScenario already run by user. This call was issued from _termScenario.);
+         %_issueTraceMessage (&g_currentLogger., endScenario: endScenario already run by user. This call was issued from _termScenario.);
       %END;
       %RETURN;
    %END;
