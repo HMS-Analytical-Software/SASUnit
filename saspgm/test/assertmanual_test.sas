@@ -24,7 +24,7 @@
 %markTest()
 options mlogic symbolgen mprint source notes;
 %assertDBValue(tst,type,assertManual)
-%assertDBValue(tst,desc,Manual assert serves as placeholder)
+%assertDBValue(tst,desc,Manual assert - serves as placeholder)
 %assertDBValue(tst,exp,)
 %assertDBValue(tst,act,)
 %assertDBValue(tst,res,1)

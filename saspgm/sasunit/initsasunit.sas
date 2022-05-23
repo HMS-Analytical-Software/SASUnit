@@ -71,10 +71,6 @@
                                        default: %sysget(SASUNIT_HOST_ENCODING)
    \param   i_SASUnitRoot              optional specifying the root folder of SASUnit
                                        default: %sysget(SASUNIT_ROOT)
-
-   \todo    check new parms for Logfiles and reportfolder
-   \todo    check regeneration of empty folders; check not to delete test_db_folder
-
 *//** \cond */ 
 %MACRO initSASUnit(i_root                    =
                   ,io_target                 =

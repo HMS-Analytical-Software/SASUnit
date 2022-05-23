@@ -4,8 +4,10 @@
 
    \brief      This assert checks whether a certain number of records exist in a data set specified by parameters i_libref and i_memname.
    
-               Furthermore a where condition can be specified (if not specified set to 1) as well as the number of expected records 
+   \deatils    Furthermore a where condition can be specified (if not specified set to 1) as well as the number of expected records 
                in the data set that meet the given where condition.
+               
+               All counted records are displayed in a report page.
 
    \version    \$Revision$
    \author     \$Author$

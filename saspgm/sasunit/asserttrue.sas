@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_ASSERT
 
-   \brief      Check whether a condition is true.
+   \brief      Check whether a condition is true (provided by Chuck Castillo).
    
                For NUMERIC types a 0 evaluates to false, all other numbers evaluate to true
                
