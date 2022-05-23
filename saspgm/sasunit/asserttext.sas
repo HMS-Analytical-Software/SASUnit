@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_ASSERT
 
-   \brief      This assert does a text compare for text files. The logic doing the compare is found in a script file.
+   \brief      This assert compares the text within two text files. The logic doing the compare is found in a script file.
 
    \details    The actual compare is done via a script file found in folder saspgm/sasunit/OS.
                For windows the script file is assertText_fc.cmd. The fc command is used to do the compare.
