@@ -24,8 +24,6 @@
    \param     i_expected_shell_rc    Optional parameter: Expected return code of script. The shell return code and i_expected_shell_rc are compared 
                                      to determine success of assert (default = 0)
    \param     i_desc                 Optional parameter: description of the assertion to be checked Default = "External comparison")
-
-   \todo remove adaptToOS in test scenario
 */ 
 /** \cond */ 
 %MACRO assertExternal (i_script             =
