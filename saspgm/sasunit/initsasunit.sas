@@ -71,6 +71,10 @@
                                        default: %sysget(SASUNIT_HOST_ENCODING)
    \param   i_SASUnitRoot              optional specifying the root folder of SASUnit
                                        default: %sysget(SASUNIT_ROOT)
+   \param   i_pgmDoc                   optional specifying if program documentation for project macros shall be created
+                                       default: %sysget(SASUNIT_PGMDOC)
+   \param   i_pgmDocSASUnit            optional specifying if program documentation for SASUnit macros shall be created
+                                       default: %sysget(SASUNIT_PGMDOC_SASUNIT)
    \todo Script file for report only
 *//** \cond */ 
 %MACRO initSASUnit(i_root                    =
@@ -127,6 +131,8 @@
                   ,i_resourceFolder          =%sysget(SASUNIT_RESOURCE_FOLDER)
                   ,i_OSEncoding              =%sysget(SASUNIT_HOST_ENCODING)
                   ,i_SASUnitRoot             =%sysget(SASUNIT_ROOT)
+                  ,i_pgmDoc                  =%sysget(SASUNIT_PGMDOC)
+                  ,i_pgmDocSASUnit           =%sysget(SASUNIT_PGMDOC_SASUNIT)
                   );
 
    %GLOBAL g_version g_revision g_db_version g_error g_warning g_note g_runMode g_language g_currentLogger g_currentLogLevel g_log4SASScenarioLogger;
@@ -668,6 +674,8 @@
    %_writeParameterToTestDBtsu (i_parameterName=tsu_reportFolder              ,i_parameterValue =&l_reportFolder.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_resourceFolder            ,i_parameterValue =&i_resourceFolder.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_OSEncoding                ,i_parameterValue =&i_OSEncoding.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_pgmDoc                    ,i_parameterValue =&i_pgmDoc.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_pgmDocSASUnit             ,i_parameterValue =&i_pgmDocSASUnit.);
 
    /*-- load relevant information from test database to global macro symbols ----*/
    %_loadEnvironment (i_withLibrefs   =0

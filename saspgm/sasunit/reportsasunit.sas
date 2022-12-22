@@ -8,8 +8,6 @@
    \author     \$Author$
    \date       \$Date$
    
-   \todo        pgmdoc_sasunit is valid only in conjunction with crossref_sasunit. Otherwise SASUnit macros are not added to exa table
-   
    \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$

@@ -43,7 +43,7 @@
       %LET l_auto=;
       %IF %symexist(g_sasautos&l_autonr) %THEN %LET l_auto=&&g_sasautos&l_autonr;
    %END;
-   %IF (&g_crossrefsasunit.) %THEN %DO;
+   %IF (&g_crossrefsasunit. OR &g_pgmDocSASUnit.) %THEN %DO;
       %LET l_auto=&g_sasunit;
       %LET l_auto=%quote(&l_auto/);
       %&g_dirmacro.(i_path=&l_auto.*.sas, o_out=&d_dir);
