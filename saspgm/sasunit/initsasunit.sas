@@ -5,7 +5,7 @@
    \brief      Initialization of a test suite that may comprise several test scenarios. 
 
                An existing test repository is opened or a new test repository is created.
-               It conists of two steps:
+               It consists of two steps:
                - validate configuration of initSASUnit
                - Setting up SASUnit session
 
@@ -26,7 +26,7 @@
    \param   i_overwrite                0 (default) .. create test repository only in case it does not already exist
                                        1 .. test repository is always created newly 
    \param   i_project                  optional: (in case test repository already exists): name of project
-   \param   i_sasunit                  optional: absolute installation path of SAS programs from SASUnit. It is checked whether installationpath
+   \param   i_sasunit                  optional: absolute installation path of SAS programs from SASUnit. It is checked whether installation path
                                        is starting with path in environment variable SASUNIT_ROOT set by script file
    \param   i_sasautos                 optional: i_sasautos, i_sasautos1 .. i_sasautos9: search paths for the programs 
                                        under test and other sas macros invoked in test scenarios or programs under test
@@ -38,11 +38,11 @@
                                        A temporary SASUSER directory is created, existing only for the duration of a 
                                        test scenario, in which all files are copied out of the specified directory.
    \param   i_testdata                 optional: directory containing test data, has to exist in case parameter is set
-                                       (is accessed readonly)
+                                       (is accessed read-only)
    \param   i_refdata                  optional: directory containing reference data, has to exist in case parameter is set
-                                       (is accessed readonly)
+                                       (is accessed read-only)
    \param   i_doc                      optional: directory containing specification documents, etc., has to exist
-                                       in case parameter is set (is accessed readonly)
+                                       in case parameter is set (is accessed read-only)
    \param   i_testcoverage             optional: controls whether assessment of test coverage is activated
                                        0 .. no assessment of test coverage
                                        1 (default) .. assessment of test coverage is activated
@@ -58,19 +58,20 @@
    \param   i_language                 optional: specifying the language that should be used. This parameter is necessary to avoid using the respective environment variable under linux 
                                        supported values: "en" / "de"
                                        default: %sysget(SASUNIT_LANGUAGE)
-   \param   i_logFolder                specifying the folder for overall logfiles like run_all.log and log file for SASUnit test suite
+   \param   i_logFolder                specifying the folder for overall log files like run_all.log and log file for SASUnit test suite
    \param   i_scnLogFolder             specifying the folder for scenario log files
    \param   i_log4SASSuiteLogLevel     optional specifying the log4sas logging level for test suite
                                        default: INFO
    \param   i_log4SASScenarioLogLevel  optional specifying the log4sas logging level for scenarios
                                        default: INFO
    \param   i_reportFolder             specifying the output folder for reporting
-   \param   i_resourceFolder           optional specifying the input folder for SASUnit reporting source like icons and css- and java script files 
-                                       default: %sysget(SASUNIT_ROOT)/resources
-   \param   i_OSEncoding               optional specifying the encoding of the operating system. This may be different from the ensoding of the sas ssession
+   \param   i_resourceFolder           specifying the input folder for SASUnit reporting source like icons and css- and java script files 
+                                       default: %sysget(SASUNIT_RESOURCE_PATH)
+   \param   i_OSEncoding               optional specifying the encoding of the operating system. This may be different from the encoding of the sas session
                                        default: %sysget(SASUNIT_HOST_ENCODING)
    \param   i_SASUnitRoot              optional specifying the root folder of SASUnit
                                        default: %sysget(SASUNIT_ROOT)
+   \todo Script file for report only
 *//** \cond */ 
 %MACRO initSASUnit(i_root                    =
                   ,io_target                 =
@@ -123,14 +124,14 @@
                   ,i_log4SASSuiteLogLevel    =INFO
                   ,i_log4SASScenarioLogLevel =INFO
                   ,i_reportFolder            =
-                  ,i_resourceFolder          =%sysget(SASUNIT_ROOT)/resources
+                  ,i_resourceFolder          =%sysget(SASUNIT_RESOURCE_FOLDER)
                   ,i_OSEncoding              =%sysget(SASUNIT_HOST_ENCODING)
                   ,i_SASUnitRoot             =%sysget(SASUNIT_ROOT)
                   );
 
    %GLOBAL g_version g_revision g_db_version g_error g_warning g_note g_runMode g_language g_currentLogger g_currentLogLevel g_log4SASScenarioLogger;
 
-   %LET g_version    = 2.1;
+   %LET g_version    = 2.1.1;
    %LET g_db_version = 2.1;
    %LET g_revision   = $Revision$;
    %LET g_revision   = %scan(&g_revision,2,%str( $:));

@@ -16,39 +16,42 @@
                For copyright information and terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme/.
 
-   \param i_sasunitRootFolder    Path and name of the root folder of SASUnit
-   \param i_projectRootFolder    Path and name of the root folder of the project
-   \param i_sasunitLogFolder     Path and name of the folder for SASUnit suite log files (run_all.log and new ones)
-   \param i_sasunitScnLogFolder  Path and name of the folder for SASUnit scenario log files (001.log, 001_001.log etc.)
-   \param i_sasunitTestDBFolder  Path and name of the folder for SASUnit test data base (tsu, exa, scn, cas, tst)
-   \param i_projectBinFolder     Path and name of the folder where the binaries of the project should reside
-   \param i_sasunitLanguage      Language that should be used inside SASUnit (de or en)
-   \param i_sasunitRunAllPgm     Path an name of run_all.sas
-   \param i_operatingSystem      Operating system that is used to execute SASUnit
-   \param i_sasVersion           SAS Version that is used to run SASUnit
-   \param i_sasExe               Path and name of the sas executable
-   \param i_sasConfig            Path and name of the sas config file
-   \param i_sasunitReportFolder  Path and name of the folder where the documentation should be geenarted in
-   \param i_sasunitLogLevel      Default logging level for SASUnit suite
-   \param i_sasunitScnLogLevel   Default logging level for SASUnit scenarios
-   \param i_OSEncoding           Encoding of OS which can be different from encoding of SAS session
+   \param i_sasunitRootFolder       Path and name of the root folder of SASUnit
+   \param i_projectRootFolder       Path and name of the root folder of the project
+   \param i_sasunitLogFolder        Path and name of the folder for SASUnit suite log files (run_all.log and new ones)
+   \param i_sasunitScnLogFolder     Path and name of the folder for SASUnit scenario log files (001.log, 001_001.log etc.)
+   \param i_sasunitTestDBFolder     Path and name of the folder for SASUnit test data base (tsu, exa, scn, cas, tst)
+   \param i_projectBinFolder        Path and name of the folder where the binaries of the project should reside
+   \param i_sasunitLanguage         Language that should be used inside SASUnit (de or en)
+   \param i_sasunitRunAllPgm        Path an name of run_all.sas
+   \param i_operatingSystem         Operating system that is used to execute SASUnit
+   \param i_sasVersion              SAS Version that is used to run SASUnit
+   \param i_sasExe                  Path and name of the sas executable
+   \param i_sasConfig               Path and name of the sas config file
+   \param i_sasunitReportFolder     Path and name of the folder where the documentation should be generated in
+   \param i_sasunitResourceFolder   Path and name of the folder where the resource files (css, js, html) are located
+   \param i_sasunitLogLevel         Default logging level for SASUnit suite
+   \param i_sasunitScnLogLevel      Default logging level for SASUnit scenarios
+   \param i_OSEncoding              Encoding of OS which can be different from encoding of SAS session
+   \todo Script file for report only
 */ /** \cond */
-%macro SASUnitSetup (i_sasunitRootFolder  =
-                    ,i_projectRootFolder  =
-                    ,i_sasunitLogFolder   =
-                    ,i_sasunitScnLogFolder=
-                    ,i_sasunitTestDBFolder=
-                    ,i_projectBinFolder   =
-                    ,i_sasunitLanguage    =
-                    ,i_sasunitRunAllPgm   =
-                    ,i_operatingSystem    =
-                    ,i_sasVersion         =
-                    ,i_sasExe             =
-                    ,i_sasConfig          =
-                    ,i_sasunitReportFolder=
-                    ,i_sasunitLogLevel    =
-                    ,i_sasunitScnLogLevel =
-                    ,i_OSEncoding         =
+%macro SASUnitSetup (i_sasunitRootFolder    =
+                    ,i_projectRootFolder    =
+                    ,i_sasunitLogFolder     =
+                    ,i_sasunitScnLogFolder  =
+                    ,i_sasunitTestDBFolder  =
+                    ,i_projectBinFolder     =
+                    ,i_sasunitLanguage      =
+                    ,i_sasunitRunAllPgm     =
+                    ,i_operatingSystem      =
+                    ,i_sasVersion           =
+                    ,i_sasExe               =
+                    ,i_sasConfig            =
+                    ,i_sasunitReportFolder  =
+                    ,i_sasunitResourceFolder=
+                    ,i_sasunitLogLevel      =
+                    ,i_sasunitScnLogLevel   =
+                    ,i_OSEncoding           =
                     );
 
    %local
@@ -116,6 +119,7 @@
                      ,i_sasunitRunAllPgm        =&i_sasunitRunAllPgm.
                      ,i_sasunitLanguage         =&l_sasunitLanguage.
                      ,i_sasunitReportFolder     =&i_sasunitReportFolder.
+                     ,i_sasunitResourceFolder   =&i_sasunitResourceFolder.
                      ,i_SASUnitLogLevel         =&i_SASUnitLogLevel.
                      ,i_SASUnitScnLogLevel      =&i_SASUnitScnLogLevel.
                      ,i_OSEncoding              =&i_OSEncoding.

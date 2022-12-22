@@ -30,6 +30,7 @@
    \param      i_sasunitPgmDoc            Flag if program documentation for project macros should be generated (0 / 1)
    \param      i_sasunitRunAllPgm         Name of the program that starts all scenarios, containing calls \%initSASUnit, \%runSASUnit and \%reportSASUnit.
    \param      i_sasunitReportFolder      Name of the folder where the SASUnit documentation (test and program) should be stored.
+   \param      i_sasunitResourceFolder    Path and name of the folder where the resource files (css, js, html) are located
    \param      i_sasunitOverwrite         Flag if all scenarios should be started or only scenarios where scenario or examinee have chenged since last run (0 / 1)
    \param      i_sasunitLanguage          Language that should be used in the SAS session. It is also part of the name of the config file.
    \param      i_sasunitTestCoverage      Flag if test coverage should be generated (0 / 1)
@@ -53,6 +54,7 @@
                        ,i_sasunitPgmDoc            =
                        ,i_sasunitRunAllPgm         =
                        ,i_sasunitReportFolder      =
+                       ,i_sasunitResourceFolder    =
                        ,i_sasunitOverwrite         =
                        ,i_sasunitLanguage          =
                        ,i_sasunitTestCoverage      =
@@ -90,6 +92,7 @@
       put "SET SASUNIT_SCN_LOG_FOLDER=&i_sasunitScnLogFolder.";
       put "SET SASUNIT_RUNALL=&i_sasunitRunAllPgm.";
       put "SET SASUNIT_REPORT_FOLDER=&i_sasunitReportFolder.";
+      put "SET SASUNIT_RESOURCE_FOLDER=&i_sasunitResourceFolder.";
       put "SET SASUNIT_OVERWRITE=&i_sasunitOverwrite.";
       put "SET SASUNIT_LANGUAGE=&i_sasunitLanguage.";
       put "SET SASUNIT_COVERAGEASSESSMENT=&i_sasunitTestCoverage.";
@@ -116,7 +119,7 @@
       put 'echo Host Operating System     = %SASUNIT_HOST_OS%';
       put 'echo Host OS Encoding          = %SASUNIT_HOST_ENCODING%';
       put 'echo SAS Version               = %SASUNIT_SAS_VERSION%';
-      put 'echo SAS Exceutable            = %SASUNIT_SAS_EXE%';
+      put 'echo SAS Executable            = %SASUNIT_SAS_EXE%';
       put 'echo SAS Config File           = %SASUNIT_SAS_CFG%';
       put "echo --- EnvVars for SAS Unit Configuration -----------------------------------------";
       put 'echo SASUnit Root Path         = %SASUNIT_ROOT%';
@@ -125,6 +128,7 @@
       put 'echo Folder for Log Files      = %SASUNIT_LOG_FOLDER%';
       put 'echo Folder for Scn Log Files  = %SASUNIT_SCN_LOG_FOLDER%';
       put 'echo Folder for Reports        = %SASUNIT_REPORT_FOLDER%';
+      put 'echo Folder for Resource Files = %SASUNIT_RESOURCE_FOLDER%';
       put 'echo Name of RUN_ALL Program   = %SASUNIT_RUNALL%';
       put 'echo Overwrite                 = %SASUNIT_OVERWRITE%';
       put 'echo Language                  = %SASUNIT_LANGUAGE%';

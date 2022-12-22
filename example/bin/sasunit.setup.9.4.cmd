@@ -24,6 +24,7 @@ SET SASUNIT_TESTDB_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\testdb
 SET SASUNIT_LOG_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\logs
 SET SASUNIT_SCN_LOG_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\scn_logs
 SET SASUNIT_REPORT_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\doc
+SET SASUNIT_RESOURCE_PATH=%SASUNIT_ROOT%\resources
 SET SASUNIT_RUNALL=%SASUNIT_PROJECTROOT%\saspgm\run_all.sas
 SET SASUNIT_LOG_LEVEL=INFO
 SET SASUNIT_SCN_LOG_LEVEL=INFO
@@ -43,6 +44,7 @@ echo Path to SASUnit test database      = %SASUNIT_TESTDB_PATH%
 echo Path to SASUnit log files          = %SASUNIT_LOG_PATH%
 echo Path to SASUnit scenario log files = %SASUNIT_SCN_LOG_PATH%
 echo Path to SASUnit documentation      = %SASUNIT_REPORT_PATH%
+echo Path to SASUnit resource files     = %SASUNIT_RESOURCE_PATH%
 echo Name and path of run_all program   = %SASUNIT_RUNALL%
 echo Logging level for SASUnit Suite    = %SASUNIT_LOG_LEVEL%
 echo logging Level for Scenarios        = %SASUNIT_SCN_LOG_LEVEL%
@@ -56,8 +58,8 @@ if %ERRORLEVEL%==0 goto normalexit
 @echo. 
 @echo Exit code: %ERRORLEVEL%
 @echo. 
-if %ERRORLEVEL%==1 @echo SAS ended with warnings. Review run_all.log for details.
-if %ERRORLEVEL%==2 @echo SAS ended with errors! Check run_all.log for details!
+if %ERRORLEVEL%==1 @echo SAS ended with warnings. Review sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log for details.
+if %ERRORLEVEL%==2 @echo SAS ended with errors! Check sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log for details!
 @echo. 
 pause
 :normalexit
