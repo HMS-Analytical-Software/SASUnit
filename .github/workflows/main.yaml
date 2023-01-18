@@ -4,6 +4,12 @@ on:
     branches:
       - '**'
 
+inputs:
+  sasUnitVersion:
+    required: false
+    description: The used version of SASUnit
+    default: "some_path"
+
 jobs:
   test:
     name: Run Self Tests
@@ -16,10 +22,21 @@ jobs:
       - uses: ./.github/actions/trim_line_endings
       - uses: ./.github/actions/set_execution_rights
       - run: bin/sasunit.setup.EE_CI_CentOS.${{ matrix.language }}.sh
-      # - SASUnit Plugin: Selftest, bin/sasunit.9.4.${{ matrix.language }}.fast.sh
-      # - SASUnit Plugin: Selftest, bin/sasunit.9.4.linux.${{ matrix.language }}.overwrite.full.sh
       - run: example/bin/sasunit.setup.EE_CI_CentOS.${{ matrix.language }}.sh
-      # - SASUnit Plugin: Selftest, example/bin/sasunit.9.4.linux.${{ matrix.language }}.overwrite.full.sh
+
+      - uses: ./.github/actions/sas_unit
+        with:
+          sasUnitVersion: ${{ inputs.sasUnitVersion }}
+          script: bin/sasunit.9.4.${{ matrix.language }}.fast.sh
+      - uses: ./.github/actions/sas_unit
+        with:
+          sasUnitVersion: ${{ inputs.sasUnitVersion }}
+          script: bin/sasunit.9.4.linux.${{ matrix.language }}.overwrite.full.sh
+      - uses: ./.github/actions/sas_unit
+        with:
+          sasUnitVersion: ${{ inputs.sasUnitVersion }}
+          script: example/bin/sasunit.9.4.linux.de.overwrite.full.sh
+
       - uses: actions/upload-artifact@v3
         if: success() || failure()
         with:

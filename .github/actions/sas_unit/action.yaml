@@ -1,0 +1,15 @@
+name: Run SAS Unit
+description: Runs the specified SAS Unit version on the given script
+inputs:
+  sasUnitVersion:
+    description: Version of SAS Unit to use
+    required: true
+  script:
+    description: The script to run
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run SAS Test
+      run: ${{ inputs.sasUnitVersion }} "${{ inputs.script }}"
