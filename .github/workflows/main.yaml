@@ -14,12 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/trim_line_endings
-      - name: Set execution rights
-        run: |
-          chmod a+x bin/sasunit.setup.EE_CI_CentOS*sh
-          chmod a+x example/bin/sasunit.setup.EE_CI_CentOS*sh
-          chmod a+x saspgm/sasunit/linux/assert*.sh
-          chmod a+x saspgm/sasunit/unix_aix/assert*.sh
+      - uses: ./.github/actions/set_execution_rights
       - run: cd bin && ./sasunit.setup.EE_CI_CentOS.${{ matrix.language }}.sh
       # - SASUnit Plugin: Selftest, bin/sasunit.9.4.de.fast.sh
       # - SASUnit Plugin: Selftest, bin/sasunit.9.4.linux.de.overwrite.full.sh
