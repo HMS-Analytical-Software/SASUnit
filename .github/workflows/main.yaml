@@ -13,18 +13,7 @@ jobs:
         language: [en, de]
     steps:
       - uses: actions/checkout@v3
-      - name: Remove Line Endings
-        run: |
-          ls
-          sed -i -e "s/\r//g" example/saspgm/*.sas
-          sed -i -e 's/\r//g' saspgm/sasunit/*.sas
-          sed -i -e 's/\r//g' saspgm/sasunit/*.txt
-          sed -i -e 's/\r//g' saspgm/sasunit/linux/*.sas
-          sed -i -e 's/\r//g' saspgm/sasunit/linux/*.sh
-          sed -i -e 's/\r//g' saspgm/sasunit/unix_aix/*.sas
-          sed -i -e 's/\r//g' saspgm/sasunit/unix_aix/*.sh
-          sed -i -e 's/\r//g' dat/*.txt
-          sed -i -e 's/\r//g' dat/*.xml 
+      - uses: ./.github/workflows/trim_line_endings
       - name: Set execution rights
         run: |
           chmod a+x bin/sasunit.setup.EE_CI_CentOS*sh
