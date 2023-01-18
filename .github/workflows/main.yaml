@@ -15,32 +15,22 @@ jobs:
       - uses: actions/checkout@v3
       - name: Remove Line Endings
         run: |
-          cd example/saspgm/
-          sed -i -e "s/\r//g" ./*.sas
-          cd saspgm/sasunit
-          sed -i -e 's/\r//g' ./*.sas
-          sed -i -e 's/\r//g' ./*.txt
-          cd saspgm/sasunit/linux
-          sed -i -e 's/\r//g' ./*.sas
-          sed -i -e 's/\r//g' ./*.sh
-          cd saspgm/sasunit/unix_aix
-          sed -i -e 's/\r//g' ./*.sas
-          sed -i -e 's/\r//g' ./*.sh
-          cd dat
-          sed -i -e 's/\r//g' ./*.txt
-          sed -i -e 's/\r//g' ./*.xml 
+          ls
+          sed -i -e "s/\r//g" example/saspgm/*.sas
+          sed -i -e 's/\r//g' saspgm/sasunit/*.sas
+          sed -i -e 's/\r//g' saspgm/sasunit/*.txt
+          sed -i -e 's/\r//g' saspgm/sasunit/linux/*.sas
+          sed -i -e 's/\r//g' saspgm/sasunit/linux/*.sh
+          sed -i -e 's/\r//g' saspgm/sasunit/unix_aix/*.sas
+          sed -i -e 's/\r//g' saspgm/sasunit/unix_aix/*.sh
+          sed -i -e 's/\r//g' dat/*.txt
+          sed -i -e 's/\r//g' dat/*.xml 
       - name: Set execution rights
         run: |
-          cd bin
-          chmod a+x sasunit.setup.EE_CI_CentOS*sh
-          cd ..
-          cd example/bin
-          chmod a+x sasunit.setup.EE_CI_CentOS*sh
-          cd ../..
-          cd saspgm/sasunit/linux
-          chmod a+x assert*.sh
-          cd saspgm/sasunit/unix_aix
-          chmod a+x assert*.sh
+          chmod a+x bin/sasunit.setup.EE_CI_CentOS*sh
+          chmod a+x example/bin/sasunit.setup.EE_CI_CentOS*sh
+          chmod a+x saspgm/sasunit/linux/assert*.sh
+          chmod a+x saspgm/sasunit/unix_aix/assert*.sh
       - run: cd bin && ./sasunit.setup.EE_CI_CentOS.${{ matrix.language }}.sh
       # - SASUnit Plugin: Selftest, bin/sasunit.9.4.de.fast.sh
       # - SASUnit Plugin: Selftest, bin/sasunit.9.4.linux.de.overwrite.full.sh
