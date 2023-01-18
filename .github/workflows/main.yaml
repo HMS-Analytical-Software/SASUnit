@@ -11,4 +11,4 @@ jobs:
       matrix:
         language: [en, de]
     steps:
-    - echo ${{ matrix.language }}
+      - echo ${{ matrix.language }}
