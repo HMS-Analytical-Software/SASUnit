@@ -12,4 +12,41 @@ jobs:
       matrix:
         language: [en, de]
     steps:
-      - run: echo ${{ matrix.language }}
+      - uses: actions/checkout@v3
+      - name: Remove Line Endings
+        run: |
+          cd $WORKSPACE/example/saspgm/
+          sed -i -e "s/\r//g" ./*.sas
+          cd $WORKSPACE/saspgm/sasunit
+          sed -i -e 's/\r//g' ./*.sas
+          sed -i -e 's/\r//g' ./*.txt
+          cd $WORKSPACE/saspgm/sasunit/linux
+          sed -i -e 's/\r//g' ./*.sas
+          sed -i -e 's/\r//g' ./*.sh
+          cd $WORKSPACE/saspgm/sasunit/unix_aix
+          sed -i -e 's/\r//g' ./*.sas
+          sed -i -e 's/\r//g' ./*.sh
+          cd $WORKSPACE/dat
+          sed -i -e 's/\r//g' ./*.txt
+          sed -i -e 's/\r//g' ./*.xml 
+      - name: Set execution rights
+        run: |
+          cd $WORKSPACE/bin
+          chmod a+x sasunit.setup.EE_CI_CentOS*sh
+          cd ..
+          cd $WORKSPACE/example/bin
+          chmod a+x sasunit.setup.EE_CI_CentOS*sh
+          cd ../..
+          cd $WORKSPACE/saspgm/sasunit/linux
+          chmod a+x assert*.sh
+          cd $WORKSPACE/saspgm/sasunit/unix_aix
+          chmod a+x assert*.sh
+      - run: cd $WORKSPACE/bin && ./sasunit.setup.EE_CI_CentOS.${{ matrix.language }}.sh
+      # - SASUnit Plugin: Selftest, bin/sasunit.9.4.de.fast.sh
+      # - SASUnit Plugin: Selftest, bin/sasunit.9.4.linux.de.overwrite.full.sh
+      - run: cd $WORKSPACE/example/bin && ./sasunit.setup.EE_CI_CentOS.${{ matix.language }}.sh
+      # - SASUnit Plugin: Selftest, example/bin/sasunit.9.4.linux.de.overwrite.full.sh
+      # - archive: **/*run_all.log,**/*junit.xml
+      # - html report: de/doc/index.html
+      # - html report: example/de/doc/index.html
+      # - junit results **/*junit.xml
