@@ -44,7 +44,7 @@ jobs:
       - run: cd $WORKSPACE/bin && ./sasunit.setup.EE_CI_CentOS.${{ matrix.language }}.sh
       # - SASUnit Plugin: Selftest, bin/sasunit.9.4.de.fast.sh
       # - SASUnit Plugin: Selftest, bin/sasunit.9.4.linux.de.overwrite.full.sh
-      - run: cd $WORKSPACE/example/bin && ./sasunit.setup.EE_CI_CentOS.${{ matix.language }}.sh
+      - run: cd $WORKSPACE/example/bin && ./sasunit.setup.EE_CI_CentOS.${{ matrix.language }}.sh
       # - SASUnit Plugin: Selftest, example/bin/sasunit.9.4.linux.de.overwrite.full.sh
       # - archive: **/*run_all.log,**/*junit.xml
       # - html report: de/doc/index.html
