@@ -13,7 +13,7 @@ jobs:
         language: [en, de]
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/workflows/trim_line_endings
+      - uses: ./.github/actions/trim_line_endings
       - name: Set execution rights
         run: |
           chmod a+x bin/sasunit.setup.EE_CI_CentOS*sh
