@@ -13,3 +13,4 @@ runs:
   steps:
     - name: Run SAS Test
       run: ${{ inputs.sasUnitVersion }} "${{ inputs.script }}"
+      shell: bash
