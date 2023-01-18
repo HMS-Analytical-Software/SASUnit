@@ -4,11 +4,8 @@ on:
     branches:
       - '**'
 
-inputs:
-  sasUnitVersion:
-    required: false
-    description: The used version of SASUnit
-    default: "some_path"
+env:
+  sasUnitVersion: "some_path"
 
 jobs:
   test:
@@ -26,15 +23,15 @@ jobs:
 
       - uses: ./.github/actions/sas_unit
         with:
-          sasUnitVersion: ${{ inputs.sasUnitVersion }}
+          sasUnitVersion: ${{ env.sasUnitVersion }}
           script: bin/sasunit.9.4.${{ matrix.language }}.fast.sh
       - uses: ./.github/actions/sas_unit
         with:
-          sasUnitVersion: ${{ inputs.sasUnitVersion }}
+          sasUnitVersion: ${{ env.sasUnitVersion }}
           script: bin/sasunit.9.4.linux.${{ matrix.language }}.overwrite.full.sh
       - uses: ./.github/actions/sas_unit
         with:
-          sasUnitVersion: ${{ inputs.sasUnitVersion }}
+          sasUnitVersion: ${{ env.sasUnitVersion }}
           script: example/bin/sasunit.9.4.linux.de.overwrite.full.sh
 
       - uses: actions/upload-artifact@v3
