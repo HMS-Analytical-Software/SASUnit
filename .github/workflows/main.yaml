@@ -1,0 +1,14 @@
+
+on:
+  push:
+    branches:
+      - main
+
+jobs: 
+  test:
+    name: Run Self Tests
+    strategy:
+      matrix:
+        language: [en, de]
+    steps:
+    - echo ${{ matrix.language }}
