@@ -4,11 +4,12 @@ on:
     branches:
       - '**'
 
-jobs: 
+jobs:
   test:
     name: Run Self Tests
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         language: [en, de]
     steps:
-      - echo ${{ matrix.language }}
+      - run: echo ${{ matrix.language }}
