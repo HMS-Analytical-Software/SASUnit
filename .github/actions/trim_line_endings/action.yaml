@@ -4,12 +4,12 @@ runs:
     - name: Remove Line Endings
       shell: bash
       run: |
-        sed -i -e "s/\r//g" $GITHUB_ACTION_PATH/example/saspgm/*.sas
-        sed -i -e 's/\r//g' $GITHUB_ACTION_PATH/saspgm/sasunit/*.sas
-        sed -i -e 's/\r//g' $GITHUB_ACTION_PATH/saspgm/sasunit/*.txt
-        sed -i -e 's/\r//g' $GITHUB_ACTION_PATH/saspgm/sasunit/linux/*.sas
-        sed -i -e 's/\r//g' $GITHUB_ACTION_PATH/saspgm/sasunit/linux/*.sh
-        sed -i -e 's/\r//g' $GITHUB_ACTION_PATH/saspgm/sasunit/unix_aix/*.sas
-        sed -i -e 's/\r//g' $GITHUB_ACTION_PATH/saspgm/sasunit/unix_aix/*.sh
-        sed -i -e 's/\r//g' $GITHUB_ACTION_PATH/dat/*.txt
-        sed -i -e 's/\r//g' $GITHUB_ACTION_PATH/dat/*.xml
+        sed -i -e "s/\r//g" example/saspgm/*.sas
+        sed -i -e 's/\r//g' saspgm/sasunit/*.sas
+        sed -i -e 's/\r//g' saspgm/sasunit/*.txt
+        sed -i -e 's/\r//g' saspgm/sasunit/linux/*.sas
+        sed -i -e 's/\r//g' saspgm/sasunit/linux/*.sh
+        sed -i -e 's/\r//g' saspgm/sasunit/unix_aix/*.sas
+        sed -i -e 's/\r//g' saspgm/sasunit/unix_aix/*.sh
+        sed -i -e 's/\r//g' dat/*.txt
+        sed -i -e 's/\r//g' dat/*.xml
