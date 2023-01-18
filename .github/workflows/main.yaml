@@ -18,10 +18,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/trim_line_endings
       - uses: ./.github/actions/set_execution_rights
-      - run: |
-          ls
-          bin/sasunit.setup.EE_CI_CentOS.${{ matrix.language }}.sh
-      - run: example/bin/sasunit.setup.EE_CI_CentOS.${{ matrix.language }}.sh
+      - run: bin/sasunit.setup.EE_CI_CentOS.sh ${{ matrix.language }}
+      - run: example/bin/sasunit.setup.EE_CI_CentOS.sh ${{ matrix.language }}
 
       - uses: ./.github/actions/sas_unit
         with:
