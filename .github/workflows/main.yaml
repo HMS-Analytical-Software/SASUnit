@@ -20,7 +20,19 @@ jobs:
       # - SASUnit Plugin: Selftest, bin/sasunit.9.4.linux.${{ matrix.language }}.overwrite.full.sh
       - run: example/bin/sasunit.setup.EE_CI_CentOS.${{ matrix.language }}.sh
       # - SASUnit Plugin: Selftest, example/bin/sasunit.9.4.linux.${{ matrix.language }}.overwrite.full.sh
-      # - archive: **/*run_all.log,**/*junit.xml
-      # - html report: ${{ matrix.language }}/doc/index.html
-      # - html report: example/${{ matrix.language }}/doc/index.html
-      # - junit results **/*junit.xml
+      - uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+          name: Logs and Test Results
+          path: |
+            "**/*run_all.log"
+            "**/*junit.xml"
+            ${{ matrix.language }}/doc/index.html
+            example/${{ matrix.language }}/doc/index.html
+          if-no-files-found: warn
+      - uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Test Report
+          path: "**/*junit.xml"
+          reporter: java-junit
