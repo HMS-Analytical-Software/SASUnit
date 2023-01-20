@@ -5,12 +5,13 @@ on:
       - '**'
 
 env:
-  sasUnitVersion: "some_path"
+  sasUnitVersion: "Self Test"
+  sasUnitPath: "C:\jenkins1\workspace\00773_KF_SAS_SASUNIT\SASUnit"
 
 jobs:
   test:
     name: Run Self Tests
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, WIN10]
     strategy:
       matrix:
         language: [en, de]
