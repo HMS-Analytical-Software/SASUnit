@@ -2,7 +2,7 @@ runs:
   using: "composite"
   steps:
     - name: Set execution rights
-      shell: bash
+      shell: pwsh
       run: |
         chmod a+x bin/sasunit.setup.EE_CI_CentOS*sh
         chmod a+x example/bin/sasunit.setup.EE_CI_CentOS*sh

@@ -26,9 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-        shell: ${{ matrix.shell }}
+        shell: pwsh
       - run: example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-        shell: ${{ matrix.shell }}
+        shell: pwsh
 
       - uses: ./.github/actions/sas_unit
         with:
