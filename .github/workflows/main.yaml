@@ -6,7 +6,7 @@ on:
 
 env:
   sasUnitVersion: "Self Test"
-  sasUnitPath: "C:\jenkins1\workspace\00773_KF_SAS_SASUNIT\SASUnit"
+  sasUnitPath: "C:\\jenkins1\\workspace\\00773_KF_SAS_SASUNIT\\SASUnit"
 
 jobs:
   test:
@@ -33,15 +33,15 @@ jobs:
       - uses: ./.github/actions/sas_unit
         with:
           sasUnitVersion: ${{ env.sasUnitVersion }}
-          script: bin\sasunit.9.4.windows.${{ matrix.language }}.fast.cmd
+          script: bin\\sasunit.9.4.windows.${{ matrix.language }}.fast.cmd
       - uses: ./.github/actions/sas_unit
         with:
           sasUnitVersion: ${{ env.sasUnitVersion }}
-          script: bin\sasunit.9.4.windows.${{ matrix.language }}.overwrite.full.cmd
+          script: bin\\sasunit.9.4.windows.${{ matrix.language }}.overwrite.full.cmd
       - uses: ./.github/actions/sas_unit
         with:
           sasUnitVersion: ${{ env.sasUnitVersion }}
-          script: example\bin\sasunit.9.4.windows.${{ matrix.language }}.overwrite.full.cmd
+          script: example\\bin\\sasunit.9.4.windows.${{ matrix.language }}.overwrite.full.cmd
 
       - uses: actions/upload-artifact@v3
         if: success() || failure()
