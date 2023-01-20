@@ -19,16 +19,13 @@ jobs:
         include:
           - platform: WIN10
             extension: cmd
-            shell: pwsh
         # - platform: CentOS
         #   extension: sh
         #   shell: bash
     steps:
       - uses: actions/checkout@v3
       - run: bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-        shell: pwsh
       - run: example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-        shell: pwsh
 
       - uses: ./.github/actions/sas_unit
         with:
