@@ -14,25 +14,33 @@ jobs:
     strategy:
       matrix:
         language: [en, de]
+        platform: [WIN10] # CentOS
+        include:
+          - platform: WIN10
+            extension: cmd
+            shell: pwsh
+          - platform: CentOS
+            extension: sh
+            shell: bash
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/trim_line_endings
-      - uses: ./.github/actions/set_execution_rights
-      - run: bin/sasunit.setup.EE_CI_CentOS.sh ${{ matrix.language }}
-      - run: example/bin/sasunit.setup.EE_CI_CentOS.sh ${{ matrix.language }}
+      - run: bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+        shell: ${{ matrix.shell }}
+      - run: example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+        shell: ${{ matrix.shell }}
 
       - uses: ./.github/actions/sas_unit
         with:
           sasUnitVersion: ${{ env.sasUnitVersion }}
-          script: bin/sasunit.9.4.${{ matrix.language }}.fast.sh
+          script: bin\sasunit.9.4.windows.${{ matrix.language }}.fast.cmd
       - uses: ./.github/actions/sas_unit
         with:
           sasUnitVersion: ${{ env.sasUnitVersion }}
-          script: bin/sasunit.9.4.linux.${{ matrix.language }}.overwrite.full.sh
+          script: bin\sasunit.9.4.windows.${{ matrix.language }}.overwrite.full.cmd
       - uses: ./.github/actions/sas_unit
         with:
           sasUnitVersion: ${{ env.sasUnitVersion }}
-          script: example/bin/sasunit.9.4.linux.de.overwrite.full.sh
+          script: example\bin\sasunit.9.4.windows.${{ matrix.language }}.overwrite.full.cmd
 
       - uses: actions/upload-artifact@v3
         if: success() || failure()
