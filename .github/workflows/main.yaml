@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         language: [en, de]
-        platform: [WIN10] # CentOS
+        platform: [WIN10, CentOS]
         include:
           - platform: WIN10
             extension: cmd
@@ -27,9 +27,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - if: matrix.runner == Linux 
+      - if: matrix.platform == "CentOS" 
         uses: ./.github/actions/trim_line_endings
-      - if: matrix.runner == Linux 
+      - if: matrix.platform == "CentOS"
         uses: ./.github/actions/set_execution_rights
       - run: bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
       - run: example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
