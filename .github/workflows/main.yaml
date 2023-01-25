@@ -39,17 +39,19 @@ jobs:
           sasUnitVersion: ${{ env.sasUnitVersion }}
           sasUnitPath: ${{ env.sasUnitPath }}
           script: bin\\sasunit.9.4.windows.${{ matrix.language }}.fast.cmd
+          shell: ${{ matrix.shell }}
       - uses: ./.github/actions/sas_unit
         with:
           sasUnitVersion: ${{ env.sasUnitVersion }}
           script: bin\\sasunit.9.4.windows.${{ matrix.language }}.overwrite.full.cmd
           sasUnitPath: ${{ env.sasUnitPath }}
+          shell: ${{ matrix.shell }}
       - uses: ./.github/actions/sas_unit
         with:
           sasUnitVersion: ${{ env.sasUnitVersion }}
           sasUnitPath: ${{ env.sasUnitPath }}
           script: example\\bin\\sasunit.9.4.windows.${{ matrix.language }}.overwrite.full.cmd
-
+          shell: ${{ matrix.shell }}
       - uses: actions/upload-artifact@v3
         if: success() || failure()
         with:
