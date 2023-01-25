@@ -7,7 +7,7 @@ on:
 env:
   sasUnitVersion: "Self Test"
   sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en" # "C:\\jenkins1\\workspace\\00773_KF_SAS_SASUNIT\\SASUnit"
-  WORKSPACE: RUNNER_WORKSPACE
+  WORKSPACE: ${{ RUNNER_WORKSPACE }}
 
 jobs:
   test:
