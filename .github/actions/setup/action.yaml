@@ -1,0 +1,40 @@
+name: Run SAS Setup
+description: Creates neccessary files and runs setup scripts.
+inputs:
+  language:
+    description: Either de or en
+    required: true
+  shell:
+    description: Shell to use
+    required: true
+env:
+  # SAS Configuration
+  SASUNIT_HOST_OS: linux
+  SASUNIT_HOST_ENCODING: UTF8
+  SASUNIT_SAS_VERSION: 9.4
+  SASUNIT_SASPATH: /opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/bin
+  SASUNIT_SAS_EXE: $SASUNIT_SASPATH/sas_$SASUNIT_LANGUAGE
+  SASUNIT_SAS_CFG: /opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/nls/$SASUNIT_LANGUAGE/sasv9.cfg
+
+  # SAS Unit Configuration
+  SASUNIT_ROOT: $WORKSPACE
+  SASUNIT_PROJECTROOT: $WORKSPACE
+  SASUNIT_TESTDB_PATH: $SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/testdb
+  SASUNIT_LOG_PATH: $SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/logs
+  SASUNIT_SCN_LOG_PATH: $SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/scn_logs
+  SASUNIT_REPORT_PATH: $SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/doc
+  SASUNIT_RESOURCE_PATH: $SASUNIT_ROOT/resources
+  SASUNIT_RUNALL: $SASUNIT_PROJECTROOT/saspgm/test/run_all.sas
+  SASUNIT_LOG_LEVEL: INFO
+  SASUNIT_SCN_LOG_LEVEL: INFO
+  SAS_LOG_FILE: $SASUNIT_PROJECTROOT/bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log
+  
+runs:
+  using: "composite"
+  steps:
+    - name: Env Information
+      shell: ${{ inputs.shell }}
+      run: env | grep SASUNIT_
+    - name: Creating script files for starting SASUnit
+      shell: ${{ inputs.shell }}
+      run: "$SASUNIT_SAS_EXE" -nosyntaxcheck -noovp -log "./bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log" -sysin "$SASUNIT_ROOT/saspgm/sasunit/runsasunitsetup.sas"

@@ -34,6 +34,10 @@ jobs:
       - if: ${{ matrix.platform == 'CentOS' }}
         uses: ./.github/actions/set_execution_rights
       - run: bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+      - uses: ./.github/actions/setup
+        with:
+          language: ${{ matrix.language }}
+          shell: ${{ matrix.shell }}
       - run: example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
 
       - uses: ./.github/actions/sas_unit
