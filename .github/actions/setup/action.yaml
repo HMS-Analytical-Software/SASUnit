@@ -37,4 +37,4 @@ runs:
       run: env | grep SASUNIT_
     - name: Creating script files for starting SASUnit
       shell: ${{ inputs.shell }}
-      run: "$SASUNIT_SAS_EXE" -nosyntaxcheck -noovp -log "./bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log" -sysin "$SASUNIT_ROOT/saspgm/sasunit/runsasunitsetup.sas"
+      run: $SASUNIT_SAS_EXE -nosyntaxcheck -noovp -log "$SASUNIT_PROJECTROOT/bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log" -sysin "$SASUNIT_ROOT/saspgm/sasunit/runsasunitsetup.sas"
