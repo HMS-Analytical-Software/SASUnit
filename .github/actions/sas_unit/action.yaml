@@ -18,5 +18,7 @@ runs:
   using: "composite"
   steps:
     - name: Run SAS Test
-      run: ${{ inputs.script }} "${{ inputs.sasUnitPath }}"
+      run: |
+        cd bin # this is only needed to counteract the cd .. in the script
+        ${{ inputs.script }} "${{ inputs.sasUnitPath }}"
       shell: ${{ inputs.shell }}
