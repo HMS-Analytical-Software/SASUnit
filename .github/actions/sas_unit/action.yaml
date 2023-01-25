@@ -10,10 +10,13 @@ inputs:
   script:
     description: The script to run
     required: true
+  shell:
+    description: Shell to use
+    required: true
 
 runs:
   using: "composite"
   steps:
     - name: Run SAS Test
       run: ${{ inputs.sasUnitPath }} "${{ inputs.script }}"
-      shell: pwshell
+      shell: ${{ inputs.shell }}
