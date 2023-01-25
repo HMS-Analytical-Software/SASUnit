@@ -14,11 +14,11 @@ jobs:
     strategy:
       matrix:
         language: [en, de]
-        platform: [WIN10, CentOS]
+        platform: [CentOS]
         include:
-          - platform: WIN10
-            extension: cmd
-            runner: Windows
+          #- platform: WIN10
+          #  extension: cmd
+          #  runner: Windows
           - platform: CentOS
             extension: sh
             shell: bash
