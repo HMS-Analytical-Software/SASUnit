@@ -20,10 +20,12 @@ jobs:
           #- platform: WIN10
           #  extension: cmd
           #  runner: Windows
+          #  os_name: windows
           - platform: CentOS
             extension: sh
             shell: bash
             runner: Linux
+            os_name: linux
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v3
@@ -44,19 +46,19 @@ jobs:
         with:
           sasUnitVersion: ${{ env.sasUnitVersion }}
           sasUnitPath: ${{ env.sasUnitPath }}
-          script: bin/sasunit.9.4.windows.${{ matrix.language }}.fast.cmd
+          script: bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.fast.${{ matrix.extension }}
           shell: ${{ matrix.shell }}
       - uses: ./.github/actions/sas_unit
         with:
           sasUnitVersion: ${{ env.sasUnitVersion }}
-          script: bin/sasunit.9.4.windows.${{ matrix.language }}.overwrite.full.cmd
+          script: bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
           sasUnitPath: ${{ env.sasUnitPath }}
           shell: ${{ matrix.shell }}
       - uses: ./.github/actions/sas_unit
         with:
           sasUnitVersion: ${{ env.sasUnitVersion }}
           sasUnitPath: ${{ env.sasUnitPath }}
-          script: example/bin/sasunit.9.4.windows.${{ matrix.language }}.overwrite.full.cmd
+          script: example/bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
           shell: ${{ matrix.shell }}
       - uses: actions/upload-artifact@v3
         if: success() || failure()
