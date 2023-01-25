@@ -26,7 +26,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v3
-      - run:  export WORKSPACE=${{ GITHUB_WORKSPACE }}; env
+      - run:  export WORKSPACE=$GITHUB_WORKSPACE; env
       
       - if: ${{ matrix.platform == 'CentOS' }}
         uses: ./.github/actions/trim_line_endings
