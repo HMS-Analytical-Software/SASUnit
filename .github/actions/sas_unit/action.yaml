@@ -4,6 +4,9 @@ inputs:
   sasUnitVersion:
     description: Version of SAS Unit to use
     required: true
+  sasUnitPath:
+    description: Path to the chosen SAS Unit version
+    required: true
   script:
     description: The script to run
     required: true
@@ -12,5 +15,5 @@ runs:
   using: "composite"
   steps:
     - name: Run SAS Test
-      run: ${{ inputs.sasUnitVersion }} "${{ inputs.script }}"
+      run: ${{ inputs.sasUnitPath }} "${{ inputs.script }}"
       shell: pwshell
