@@ -81,8 +81,6 @@
       put "# For copyright information and terms of usage under the GPL license see included file readme.txt";
       put "# or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.";
       put;
-      put "cd ..";
-      put;
       put "# --------------------------------------------------------------------------------";
       put "# --- EnvVars for SAS Configuration ----------------------------------------------";
       put "export SASUNIT_HOST_OS=&i_operatingSystem.";

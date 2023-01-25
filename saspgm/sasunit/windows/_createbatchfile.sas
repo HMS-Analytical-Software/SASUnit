@@ -74,8 +74,6 @@
       put "REM For copyright information and terms of usage under the GPL license see included file readme.txt";
       put "REM or https://sourceforge.net/p/sasunit/wiki/readme/.";
       put;
-      put "cd ..";
-      put;
       put "REM --------------------------------------------------------------------------------";
       put "REM --- EnvVars for SAS Configuration ----------------------------------------------";
       put "SET SASUNIT_HOST_OS=&i_operatingSystem.";
