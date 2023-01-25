@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - if: matrix.platform == "CentOS" 
+      - if: matrix.platform == "CentOS"
         uses: ./.github/actions/trim_line_endings
       - if: matrix.platform == "CentOS"
         uses: ./.github/actions/set_execution_rights
