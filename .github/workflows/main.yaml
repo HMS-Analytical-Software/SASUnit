@@ -7,7 +7,6 @@ on:
 env:
   sasUnitVersion: "Self Test"
   sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en" # "C:\\jenkins1\\workspace\\00773_KF_SAS_SASUNIT\\SASUnit"
-  WORKSPACE: ${{ RUNNER_WORKSPACE }}
 
 jobs:
   test:
@@ -27,7 +26,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v3
-      - run: env
+      - run:  export WORKSPACE=${{ env.RUNNER_WORKSPACE }}; env
       
       - if: ${{ matrix.platform == 'CentOS' }}
         uses: ./.github/actions/trim_line_endings
