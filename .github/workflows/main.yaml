@@ -33,7 +33,7 @@ jobs:
         uses: ./.github/actions/trim_line_endings
       - if: ${{ matrix.platform == 'CentOS' }}
         uses: ./.github/actions/set_execution_rights
-      - run: bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+
       - uses: ./.github/actions/setup
         with:
           language: ${{ matrix.language }}
