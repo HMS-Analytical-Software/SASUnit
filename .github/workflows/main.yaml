@@ -11,7 +11,6 @@ env:
 jobs:
   test:
     name: Run Self Tests
-    runs-on: [self-hosted, Windows]
     strategy:
       matrix:
         language: [en, de]
@@ -19,9 +18,12 @@ jobs:
         include:
           - platform: WIN10
             extension: cmd
-        # - platform: CentOS
-        #   extension: sh
-        #   shell: bash
+            runner: Windows
+          - platform: CentOS
+            extension: sh
+            shell: bash
+            runner: Linux
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v3
       - run: bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
