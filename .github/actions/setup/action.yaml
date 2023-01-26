@@ -11,30 +11,28 @@ env:
   SASUNIT_HOST_OS: linux
   SASUNIT_HOST_ENCODING: UTF8
   SASUNIT_SAS_VERSION: 9.4
+  SASUNIT_LANGUAGE: ${{ inputs.language }}
+  SASUNIT_ROOT: ${{ github.workspace }}
+  SASUNIT_PROJECTROOT: ${{ github.workspace }}
 
 runs:
   using: "composite"
+  env:
+    SASUNIT_SAS_EXE: /opt/sas/sas94M7/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/bin/sas_$SASUNIT_LANGUAGE
+    SASUNIT_SAS_CFG: /opt/sas/sas94M7/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/nls/$SASUNIT_LANGUAGE/sasv9.cfg
+    SASUNIT_TESTDB_PATH: $SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/testdb
+    SASUNIT_LOG_PATH: ${{ SASUNIT_PROJECTROOT }}/${{ env.SASUNIT_LANGUAGE }}/logs
+    SASUNIT_SCN_LOG_PATH: ${{ SASUNIT_PROJECTROOT }}/${{ SASUNIT_LANGUAGE }}/scn_logs
+    SASUNIT_REPORT_PATH: ${{ SASUNIT_PROJECTROOT }}/${{ SASUNIT_LANGUAGE }}/doc
+    SASUNIT_RESOURCE_PATH: ${{ SASUNIT_ROOT }}/resources
+    SASUNIT_RUNALL: ${{ SASUNIT_PROJECTROOT }}/saspgm/test/run_all.sas
+    SASUNIT_LOG_LEVEL: INFO
+    SASUNIT_SCN_LOG_LEVEL: INFO
+    
   steps:
     - name: Creating script files for starting SASUnit
       shell: ${{ inputs.shell }}
       run: |
-        export SASUNIT_HOST_OS=linux
-        export SASUNIT_HOST_ENCODING=UTF8
-        export SASUNIT_SAS_VERSION=9.4
-        export SASUNIT_LANGUAGE=${{ inputs.language }}
-        export SASUNIT_SASPATH=/opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/bin
-        export SASUNIT_SAS_EXE=$SASUNIT_SASPATH/sas_$SASUNIT_LANGUAGE
-        export SASUNIT_SAS_CFG=/opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/nls/$SASUNIT_LANGUAGE/sasv9.cfg
-        export SASUNIT_ROOT=$WORKSPACE
-        export SASUNIT_PROJECTROOT=$WORKSPACE
-        export SASUNIT_TESTDB_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/testdb
-        export SASUNIT_LOG_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/logs
-        export SASUNIT_SCN_LOG_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/scn_logs
-        export SASUNIT_REPORT_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/doc
-        export SASUNIT_RESOURCE_PATH=$SASUNIT_ROOT/resources
-        export SASUNIT_RUNALL=$SASUNIT_PROJECTROOT/saspgm/test/run_all.sas
-        export SASUNIT_LOG_LEVEL=INFO
-        export SASUNIT_SCN_LOG_LEVEL=INFO
-
+        env
         $SASUNIT_SAS_EXE -nosyntaxcheck -noovp -log "$SASUNIT_PROJECTROOT/bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log" -sysin "$SASUNIT_ROOT/saspgm/sasunit/runsasunitsetup.sas"
 
