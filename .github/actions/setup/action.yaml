@@ -8,28 +8,33 @@ inputs:
     description: Shell to use
     required: true
 env:
-  SASUNIT_HOST_OS: linux
-  SASUNIT_HOST_ENCODING: UTF8
-  SASUNIT_SAS_VERSION: 9.4
-  SASUNIT_LANGUAGE: ${{ inputs.language }}
-  SASUNIT_ROOT: ${{ github.workspace }}
-  SASUNIT_PROJECTROOT: ${{ github.workspace }}
 
 runs:
   using: "composite"
-  env:
-    SASUNIT_SAS_EXE: /opt/sas/sas94M7/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/bin/sas_$SASUNIT_LANGUAGE
-    SASUNIT_SAS_CFG: /opt/sas/sas94M7/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/nls/$SASUNIT_LANGUAGE/sasv9.cfg
-    SASUNIT_TESTDB_PATH: $SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/testdb
-    SASUNIT_LOG_PATH: ${{ SASUNIT_PROJECTROOT }}/${{ env.SASUNIT_LANGUAGE }}/logs
-    SASUNIT_SCN_LOG_PATH: ${{ SASUNIT_PROJECTROOT }}/${{ SASUNIT_LANGUAGE }}/scn_logs
-    SASUNIT_REPORT_PATH: ${{ SASUNIT_PROJECTROOT }}/${{ SASUNIT_LANGUAGE }}/doc
-    SASUNIT_RESOURCE_PATH: ${{ SASUNIT_ROOT }}/resources
-    SASUNIT_RUNALL: ${{ SASUNIT_PROJECTROOT }}/saspgm/test/run_all.sas
-    SASUNIT_LOG_LEVEL: INFO
-    SASUNIT_SCN_LOG_LEVEL: INFO
-    
+
   steps:
+    - name: Set General Env
+      run: |
+        echo SASUNIT_HOST_OS=linux >> $GITHUB_ENV
+        echo SASUNIT_HOST_ENCODING=UTF8 >> $GITHUB_ENV
+        echo SASUNIT_SAS_VERSION=9.4 >> $GITHUB_ENV
+        echo SASUNIT_LANGUAGE=${{ inputs.language }} >> $GITHUB_ENV
+        echo SASUNIT_ROOT=$WORKSPACE >> $GITHUB_ENV
+        echo SASUNIT_PROJECTROOT=$WORKSPACE >> $GITHUB_ENV
+        echo SASUNIT_LOG_LEVEL=INFO >> $GITHUB_ENV
+        echo SASUNIT_SCN_LOG_LEVEL=INFO >> $GITHUB_ENV
+
+    - name: Set paths
+      run: |
+       echo SASUNIT_SAS_EXE=/opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE >> $GITHUB_ENV
+       echo SASUNIT_SAS_CFG=/opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/nls/$SASUNIT_LANGUAGE/sasv9.cfg >> $GITHUB_ENV
+       echo SASUNIT_TESTDB_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/testdb >> $GITHUB_ENV
+       echo SASUNIT_LOG_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/logs >> $GITHUB_ENV
+       echo SASUNIT_SCN_LOG_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/scn_logs >> $GITHUB_ENV
+       echo SASUNIT_REPORT_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/doc >> $GITHUB_ENV
+       echo SASUNIT_RESOURCE_PATH=$SASUNIT_ROOT/resources >> $GITHUB_ENV
+       echo SASUNIT_RUNALL=$SASUNIT_PROJECTROOT/saspgm/test/run_all.sas >> $GITHUB_ENV
+    
     - name: Creating script files for starting SASUnit
       shell: ${{ inputs.shell }}
       run: |
