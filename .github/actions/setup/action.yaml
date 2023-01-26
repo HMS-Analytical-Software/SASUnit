@@ -57,14 +57,14 @@ runs:
       if: runner.os == 'Windows'
       shell: ${{ inputs.shell }}
       run: |
-       echo SASUNIT_SAS_EXE=/opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE >> $Env:GITHUB_ENV
-       echo SASUNIT_SAS_CFG=/opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/nls/$SASUNIT_LANGUAGE/sasv9.cfg >> $Env:GITHUB_ENV
-       echo SASUNIT_TESTDB_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/testdb >> $Env:GITHUB_ENV
-       echo SASUNIT_LOG_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/logs >> $Env:GITHUB_ENV
-       echo SASUNIT_SCN_LOG_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/scn_logs >> $Env:GITHUB_ENV
-       echo SASUNIT_REPORT_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/doc >> $Env:GITHUB_ENV
-       echo SASUNIT_RESOURCE_PATH=$SASUNIT_ROOT/resources >> $Env:GITHUB_ENV
-       echo SASUNIT_RUNALL=$SASUNIT_PROJECTROOT/saspgm/test/run_all.sas >> $Env:GITHUB_ENV
+       echo SASUNIT_SAS_EXE=/opt/sas/sas94M7/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/bin/sas_${{ env.SASUNIT_LANGUAGE }} >> $Env:GITHUB_ENV
+       echo SASUNIT_SAS_CFG=/opt/sas/sas94M7/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/nls/${{ env.SASUNIT_LANGUAGE }}/sasv9.cfg >> $Env:GITHUB_ENV
+       echo SASUNIT_TESTDB_PATH=${{ env.SASUNIT_PROJECTROOT }}/${{ env.SASUNIT_LANGUAGE }}/testdb >> $Env:GITHUB_ENV
+       echo SASUNIT_LOG_PATH=${{ env.SASUNIT_PROJECTROOT }}/${{ env.SASUNIT_LANGUAGE }}/logs >> $Env:GITHUB_ENV
+       echo SASUNIT_SCN_LOG_PATH=${{ env.SASUNIT_PROJECTROOT }}/${{ env.SASUNIT_LANGUAGE }}/scn_logs >> $Env:GITHUB_ENV
+       echo SASUNIT_REPORT_PATH=${{ env.SASUNIT_PROJECTROOT }}/${{ env.SASUNIT_LANGUAGE }}/doc >> $Env:GITHUB_ENV
+       echo SASUNIT_RESOURCE_PATH=${{ env.SASUNIT_ROOT }}/resources >> $Env:GITHUB_ENV
+       echo SASUNIT_RUNALL=${{ env.SASUNIT_PROJECTROOT }}/saspgm/test/run_all.sas >> $Env:GITHUB_ENV
     
     - name: Creating script files for starting SASUnit (Linux)
       if: runner.os == 'Linux'
