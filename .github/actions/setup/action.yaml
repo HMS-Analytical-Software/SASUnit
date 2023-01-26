@@ -58,7 +58,7 @@ runs:
       if: runner.os == 'Windows'
       shell: ${{ inputs.shell }}
       run: |
-       echo SASUNIT_SASPATH=C:/Program Files/SASHome2/SASFoundation/${{ env.SASUNIT_SAS_VERSION }} >> $Env:GITHUB_ENV
+       echo SASUNIT_SASPATH="C:/Program Files/SASHome2/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}" >> $Env:GITHUB_ENV
        echo SASUNIT_SAS_EXE=${{ env.SASUNIT_SASPATH }}/sas.exe >> $Env:GITHUB_ENV
        echo SASUNIT_SAS_CFG=${{ env.SASUNIT_SASPATH }}/nls/${{ env.SASUNIT_LANGUAGE }}/sasv9.cfg >> $Env:GITHUB_ENV
        echo SASUNIT_TESTDB_PATH=${{ env.SASUNIT_PROJECTROOT }}/${{ env.SASUNIT_LANGUAGE }}/testdb >> $Env:GITHUB_ENV
