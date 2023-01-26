@@ -39,13 +39,17 @@ runs:
     - name: Creating script files for starting SASUnit (Linux)
       if: runner.os == 'Linux'
       shell: ${{ inputs.shell }}
+      env:
+        ENV_CONTEXT: ${{ toJson(env) }}
       run: |
-        env
+        echo "$ENV_CONTEXT"
         $SASUNIT_SAS_EXE -nosyntaxcheck -noovp -log "$SASUNIT_PROJECTROOT/bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log" -sysin "$SASUNIT_ROOT/saspgm/sasunit/runsasunitsetup.sas"
 
     - name: Creating script files for starting SASUnit (Windows)
       if: runner.os == 'Windows'
       shell: ${{ inputs.shell }}
+      env:
+        ENV_CONTEXT: ${{ toJson(env) }}
       run: |
-        env
+        echo "$ENV_CONTEXT"
         Invoke-Expression ${{ env.SASUNIT_SAS_EXE }} -nosyntaxcheck -noovp -log "${{env.SASUNIT_PROJECTROOT}}/bin/sasunit.setup.${{env.SASUNIT_SAS_VERSION}}.${{env.SASUNIT_LANGUAGE}}.log" -sysin "${{env.SASUNIT_ROOT}}/saspgm/sasunit/runsasunitsetup.sas"
