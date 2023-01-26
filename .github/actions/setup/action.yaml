@@ -59,7 +59,7 @@ runs:
       shell: ${{ inputs.shell }}
       run: |
        echo SASUNIT_SAS_EXE="" >> $Env:GITHUB_ENV
-       echo SASUNIT_SAS_CFG="C:/'Program Files'/SASHome2/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/nls/${{ env.SASUNIT_LANGUAGE }}/sasv9.cfg" >> $Env:GITHUB_ENV
+       echo SASUNIT_SAS_CFG="C:/Program` Files/SASHome2/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/nls/${{ env.SASUNIT_LANGUAGE }}/sasv9.cfg" >> $Env:GITHUB_ENV
        echo SASUNIT_TESTDB_PATH="${{ env.SASUNIT_PROJECTROOT }}/${{ env.SASUNIT_LANGUAGE }}/testdb" >> $Env:GITHUB_ENV
        echo SASUNIT_LOG_PATH="${{ env.SASUNIT_PROJECTROOT }}/${{ env.SASUNIT_LANGUAGE }}/logs" >> $Env:GITHUB_ENV
        echo SASUNIT_SCN_LOG_PATH="${{ env.SASUNIT_PROJECTROOT }}/${{ env.SASUNIT_LANGUAGE }}/scn_logs" >> $Env:GITHUB_ENV
@@ -77,4 +77,4 @@ runs:
       if: runner.os == 'Windows'
       shell: ${{ inputs.shell }}
       run: |
-        Invoke-Expression -Command 'C:/"Program Files"/SASHome2/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/sas.exe -CONFIG "${{ env.SASUNIT_SAS_CFG}}" -no$syntaxcheck -noovp -nosplash -log "${{env.SASUNIT_PROJECTROOT}}/bin/sasunit.setup.${{env.SASUNIT_SAS_VERSION}}.${{env.SASUNIT_LANGUAGE}}.log" -sysin "${{ env.SASUNIT_ROOT }}/saspgm/sasunit/runsasunitsetup.sas"'
+        Invoke-Expression -Command 'C:/Program` Files/SASHome2/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/sas.exe -CONFIG "${{ env.SASUNIT_SAS_CFG }}" -no$syntaxcheck -noovp -nosplash -log "${{env.SASUNIT_PROJECTROOT}}/bin/sasunit.setup.${{env.SASUNIT_SAS_VERSION}}.${{env.SASUNIT_LANGUAGE}}.log" -sysin "${{ env.SASUNIT_ROOT }}/saspgm/sasunit/runsasunitsetup.sas"'
