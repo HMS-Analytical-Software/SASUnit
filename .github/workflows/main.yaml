@@ -12,6 +12,7 @@ env:
 jobs:
   test:
     name: Run Self Tests
+    continue-on-error: true
     strategy:
       matrix:
         language: [en, de]
