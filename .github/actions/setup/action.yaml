@@ -79,5 +79,4 @@ runs:
       if: runner.os == 'Windows'
       shell: ${{ inputs.shell }}
       run: |
-        echo ${{ env.SASUNIT_SAS_EXE }} -nosyntaxcheck -noovp -log "${{env.SASUNIT_PROJECTROOT}}/bin/sasunit.setup.${{env.SASUNIT_SAS_VERSION}}.${{env.SASUNIT_LANGUAGE}}.log" -sysin "${{env.SASUNIT_ROOT}}/saspgm/sasunit/runsasunitsetup.sas"
-        "${{ env.SASUNIT_SAS_EXE }}" -nosyntaxcheck -noovp -log "${{env.SASUNIT_PROJECTROOT}}/bin/sasunit.setup.${{env.SASUNIT_SAS_VERSION}}.${{env.SASUNIT_LANGUAGE}}.log" -sysin "${{env.SASUNIT_ROOT}}/saspgm/sasunit/runsasunitsetup.sas"
+        "${{ env.SASUNIT_SAS_EXE }}" -CONFIG "${{ env.SASUNIT_SAS_CFG}}" -no$syntaxcheck -noovp -nosplash -log "${{env.SASUNIT_PROJECTROOT}}/bin/sasunit.setup.${{env.SASUNIT_SAS_VERSION}}.${{env.SASUNIT_LANGUAGE}}.log" -sysin "${{ env.SASUNIT_ROOT }}/saspgm/sasunit/runsasunitsetup.sas"
