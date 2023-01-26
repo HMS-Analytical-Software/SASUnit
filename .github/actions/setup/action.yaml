@@ -14,6 +14,7 @@ runs:
 
   steps:
     - name: Set General Env
+      shell: ${{ inputs.shell }}
       run: |
         echo SASUNIT_HOST_OS=linux >> $GITHUB_ENV
         echo SASUNIT_HOST_ENCODING=UTF8 >> $GITHUB_ENV
@@ -25,6 +26,7 @@ runs:
         echo SASUNIT_SCN_LOG_LEVEL=INFO >> $GITHUB_ENV
 
     - name: Set paths
+      shell: ${{ inputs.shell }}
       run: |
        echo SASUNIT_SAS_EXE=/opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/bin/sas_$SASUNIT_LANGUAGE >> $GITHUB_ENV
        echo SASUNIT_SAS_CFG=/opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/nls/$SASUNIT_LANGUAGE/sasv9.cfg >> $GITHUB_ENV
