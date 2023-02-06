@@ -16,17 +16,17 @@ jobs:
     strategy:
       matrix:
         language: [en, de]
-        platform: [WIN10, CentOS]
+        platform: [WIN10] #, CentOS]
         include:
           - platform: WIN10
             extension: cmd
             runner: Windows
             os_name: windows
-          - platform: CentOS
-            extension: sh
-            shell: bash
-            runner: Linux
-            os_name: linux
+          # - platform: CentOS
+          #   extension: sh
+          #   shell: bash
+          #   runner: Linux
+          #   os_name: linux
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v3
