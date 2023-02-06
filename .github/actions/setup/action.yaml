@@ -15,11 +15,7 @@ runs:
     - name: Platform specific env (Linux)
       if: runner.os == 'Linux'
       shell: ${{ inputs.shell }}
-      run |
-        # this variable needs to be stored to access it via ${{ env.MY_ENV }}
-        # otherwise there are platform specific differences
-        #   bash: $GITHUB_ENV
-        #   powershell: $Env:GITHUB_ENV
+      run: |
         echo MY_ENV=$GITHUB_ENV >> $GITHUB_ENV
         
         echo SASUNIT_HOST_OS=linux >> $GITHUB_ENV
