@@ -13,7 +13,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        language: [en, de]
+        language: [en] #, de]
         platform: [WIN10] #, CentOS]
         include:
           - platform: WIN10

@@ -78,3 +78,4 @@ runs:
       shell: ${{ inputs.shell }}
       run: |
         Invoke-Expression -Command 'C:/Program` Files/SASHome2/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/sas.exe -CONFIG "${{ env.SASUNIT_SAS_CFG }}" -no$syntaxcheck -noovp -nosplash -log "${{env.SASUNIT_PROJECTROOT}}/bin/sasunit.setup.${{env.SASUNIT_SAS_VERSION}}.${{env.SASUNIT_LANGUAGE}}.log" -sysin "${{ env.SASUNIT_ROOT }}/saspgm/sasunit/runsasunitsetup.sas"'
+        ls bin
