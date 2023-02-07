@@ -21,6 +21,7 @@ jobs:
             runner: Windows
             os_name: windows
             sasUnitPath: "C:\\jenkins1\\workspace\\00773_KF_SAS_SASUNIT\\SASUnit"
+            shell: pwsh
           # - platform: CentOS
           #   extension: sh
           #   shell: bash
