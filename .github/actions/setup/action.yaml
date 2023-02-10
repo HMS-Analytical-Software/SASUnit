@@ -72,11 +72,13 @@ runs:
       shell: ${{ inputs.shell }}
       run: |
         $SASUNIT_SAS_EXE -nosyntaxcheck -noovp -log "$SASUNIT_PROJECTROOT/bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log" -sysin "$SASUNIT_ROOT/saspgm/sasunit/runsasunitsetup.sas"
+        ls bin
 
     - name: Creating script files for starting SASUnit (Windows)
       if: runner.os == 'Windows'
       shell: ${{ inputs.shell }}
       run: |
+        echo 'C:/Program` Files/SASHome2/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/sas.exe -CONFIG "${{ env.SASUNIT_SAS_CFG }}" -no$syntaxcheck -noovp -nosplash -log "${{env.SASUNIT_PROJECTROOT}}/bin/sasunit.setup.${{env.SASUNIT_SAS_VERSION}}.${{env.SASUNIT_LANGUAGE}}.log" -sysin "${{ env.SASUNIT_ROOT }}/saspgm/sasunit/runsasunitsetup.sas"'
         Invoke-Expression -Command 'C:/Program` Files/SASHome2/SASFoundation/${{ env.SASUNIT_SAS_VERSION }}/sas.exe -CONFIG "${{ env.SASUNIT_SAS_CFG }}" -no$syntaxcheck -noovp -nosplash -log "${{env.SASUNIT_PROJECTROOT}}/bin/sasunit.setup.${{env.SASUNIT_SAS_VERSION}}.${{env.SASUNIT_LANGUAGE}}.log" -sysin "${{ env.SASUNIT_ROOT }}/saspgm/sasunit/runsasunitsetup.sas"'
         echo $?
         ls bin
