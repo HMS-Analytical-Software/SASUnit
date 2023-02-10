@@ -38,6 +38,7 @@ runs:
         SASUNIT_RUNALL: C:/actions-runner/_work/SASUnit/SASUnit/saspgm/test/run_all.sas
         SASUNIT_REPORT_FOLDER: C:/actions-runner/_work/SASUnit/SASUnit/${{ inputs.language }}/doc
         SASUNIT_RESOURCE_FOLDER: C:/actions-runner/_work/SASUnit/SASUnit/resources
+        SASUNIT_LANGUAGE: ${{ inputs.language }}
         SASUNIT_OVERWRITE: 0
         SASUNIT_COVERAGEASSESSMENT: 1
         SASUNIT_PGMDOC: 1
@@ -48,5 +49,4 @@ runs:
         SASUNIT_SCN_LOGLEVEL: INFO
       shell: ${{ inputs.shell }}
       run: |
-        $Env:SASUNIT_LANGUAGE = ${{ inputs.language }}
         Invoke-Expression 'C:/Program` Files/SASHome2/SASFoundation/9.4/sas.exe -CONFIG "bin/sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC "bin/sasunit.logconfig.${{ inputs.language }}.xml"'

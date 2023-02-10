@@ -50,6 +50,7 @@ jobs:
           sasUnitPath: ${{ matrix.sasUnitPath }}
           script: bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.fast.${{ matrix.extension }}
           shell: ${{ matrix.shell }}
+          language: ${{ matrix.language }}
       #- uses: ./.github/actions/sas_unit
       #  with:
       #    script: bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
