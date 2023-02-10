@@ -50,4 +50,5 @@ runs:
       shell: ${{ inputs.shell }}
       run: |
         echo bin/sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg
-        Invoke-Expression 'C:/Program` Files/SASHome2/SASFoundation/9.4/sas.exe -CONFIG "bin/sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC "bin/sasunit.logconfig.${{ inputs.language }}.xml"' && echo successful
+        Invoke-Expression 'C:/Program` Files/SASHome2/SASFoundation/9.4/sas.exe -CONFIG "bin/sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC "bin/sasunit.logconfig.${{ inputs.language }}.xml"'
+        echo $LastExitCode $?
