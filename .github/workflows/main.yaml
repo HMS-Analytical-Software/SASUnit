@@ -13,8 +13,8 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        language: [en] #, de]
-        platform: [WIN10]
+        language: [en, de]
+        platform: [WIN10, CentOS]
         include:
           - platform: WIN10
             extension: cmd
@@ -27,7 +27,7 @@ jobs:
             shell: bash
             runner: Linux
             os_name: linux
-            sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en" # "C:\\jenkins1\\workspace\\00773_KF_SAS_SASUNIT\\SASUnit"
+            sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en"
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v3
