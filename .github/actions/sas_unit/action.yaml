@@ -18,7 +18,7 @@ runs:
   using: "composite"
   steps:
     - name: Debug output
-      run: ls
+      run: ls bin
       shell: ${{ inputs.shell }}
     - name: Run SAS Test
       run: ${{ inputs.script }} "${{ inputs.sasUnitPath }}"
