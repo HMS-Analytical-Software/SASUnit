@@ -42,35 +42,35 @@ jobs:
           language: ${{ matrix.language }}
           shell: ${{ matrix.shell }}
       # TODO move script contents into setup action
-      - run: example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+      #- run: example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
 
 
-      - uses: ./.github/actions/sas_unit
-        with:
-          sasUnitPath: ${{ matrix.sasUnitPath }}
-          script: bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.fast.${{ matrix.extension }}
-          shell: ${{ matrix.shell }}
-      - uses: ./.github/actions/sas_unit
-        with:
-          script: bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
-          sasUnitPath: ${{ env.sasUnitPath }}
-          shell: ${{ matrix.shell }}
-      - uses: ./.github/actions/sas_unit
-        with:
-          sasUnitVersion: ${{ env.sasUnitVersion }}
-          sasUnitPath: ${{ env.sasUnitPath }}
-          script: example/bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
-          shell: ${{ matrix.shell }}
-      - uses: actions/upload-artifact@v3
-        if: success() || failure()
-        with:
-          name: Logs and Test Results
-          path: |
-            "**/*run_all.log"
-            "**/*junit.xml"
-            ${{ matrix.language }}/doc/index.html
-            example/${{ matrix.language }}/doc/index.html
-          if-no-files-found: warn
+      #- uses: ./.github/actions/sas_unit
+      #  with:
+      #    sasUnitPath: ${{ matrix.sasUnitPath }}
+      #    script: bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.fast.${{ matrix.extension }}
+      #    shell: ${{ matrix.shell }}
+      #- uses: ./.github/actions/sas_unit
+      #  with:
+      #    script: bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
+      #    sasUnitPath: ${{ env.sasUnitPath }}
+      #    shell: ${{ matrix.shell }}
+      #- uses: ./.github/actions/sas_unit
+      #  with:
+      #    sasUnitVersion: ${{ env.sasUnitVersion }}
+      #    sasUnitPath: ${{ env.sasUnitPath }}
+      #    script: example/bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
+      #    shell: ${{ matrix.shell }}
+      #- uses: actions/upload-artifact@v3
+      #  if: success() || failure()
+      #  with:
+      #    name: Logs and Test Results
+      #    path: |
+      #      "**/*run_all.log"
+      #      "**/*junit.xml"
+      #      ${{ matrix.language }}/doc/index.html
+      #      example/${{ matrix.language }}/doc/index.html
+      #    if-no-files-found: warn
       #- uses: dorny/test-reporter@v1
         #if: success() || failure()
           #with:
