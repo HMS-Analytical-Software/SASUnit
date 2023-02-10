@@ -58,6 +58,7 @@ runs:
 
     - if: runner.os == 'Linux'
       name: Run SAS Test
+      shell: ${{ inputs.shell }}
       env:
         SASUNIT_HOST_OS: linux
         SASUNIT_HOST_ENCODING: UTF8
