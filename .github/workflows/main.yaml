@@ -20,7 +20,7 @@ jobs:
             extension: cmd
             runner: Windows
             os_name: windows
-            sasUnitPath: "C:/jenkins1/workspace/00773_KF_SAS_SASUNIT/SASUnit (9.4 64-Bit de unicode, Windows 10 64-Bit de)"
+            sasUnitPath: "C:/jenkins1/workspace/00773_KF_SAS_SASUNIT/SASUnit` (9.4` 64-Bit` de` unicode,` Windows` 10` 64-Bit` de)"
             shell: PowerShell
               # - platform: CentOS
               #   extension: sh
