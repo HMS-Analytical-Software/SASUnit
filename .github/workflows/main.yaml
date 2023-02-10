@@ -14,6 +14,7 @@ jobs:
     strategy:
       matrix:
         language: [en] #, de]
+        platform: []
         include:
           - platform: WIN10
             extension: cmd
