@@ -50,6 +50,5 @@ runs:
       shell: ${{ inputs.shell }}
       run: |
         mkdir doc/spec
-        mkdir saspgm/test/reportsasunit_inexisting_scenario_has_to_fail
         Invoke-Expression 'C:/Program` Files/SASHome2/SASFoundation/9.4/sas.exe -CONFIG "bin/sasunit.${{ env.SASUNIT_SAS_VERSION }}.${{ env.SASUNIT_HOST_OS }}.${{ env.SASUNIT_LANGUAGE }}.cfg" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC "bin/sasunit.logconfig.${{ inputs.language }}.xml"'
         echo $LastExitCode $?
