@@ -48,4 +48,4 @@ runs:
         SASUNIT_LOGLEVEL: INFO
         SASUNIT_SCN_LOGLEVEL: INFO
       shell: ${{ inputs.shell }}
-      run: Invoke-Expression "C:/Program` Files/SASHome2/SASFoundation/9.4/sas.exe" -CONFIG "${{ inputs.sasUnitPath }}/sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC "${{ inputs.sasUnitPath }}/bin/sasunit.logconfig.${{ inputs.language }}.xml"
+      run: Invoke-Expression 'C:/Program` Files/SASHome2/SASFoundation/9.4/sas.exe" -CONFIG "${{ inputs.sasUnitPath }}/sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC "${{ inputs.sasUnitPath }}/bin/sasunit.logconfig.${{ inputs.language }}.xml'
