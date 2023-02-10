@@ -22,12 +22,12 @@ jobs:
             os_name: windows
             sasUnitPath: "C:\\jenkins1\\workspace\\00773_KF_SAS_SASUNIT\\SASUnit"
             shell: PowerShell
-          # - platform: CentOS
-          #   extension: sh
-          #   shell: bash
-          #   runner: Linux
-          #   os_name: linux
-          #   sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en" # "C:\\jenkins1\\workspace\\00773_KF_SAS_SASUNIT\\SASUnit"
+          - platform: CentOS
+            extension: sh
+            shell: bash
+            runner: Linux
+            os_name: linux
+            sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en" # "C:\\jenkins1\\workspace\\00773_KF_SAS_SASUNIT\\SASUnit"
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v3
