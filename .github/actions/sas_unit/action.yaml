@@ -15,12 +15,14 @@ inputs:
     required: true
   language:
     required: true
+  platform:
+    required: true
 
 runs:
   using: "composite"
 
   steps:
-    - if: ${{ inputs.shell == "PowerShell" }}
+    - if: ${{ inputs.platform == "WIN10" }}
       name: Run SAS Test
       env:
         SASUNIT_HOST_OS: windows
@@ -54,7 +56,7 @@ runs:
         Invoke-Expression 'C:/Program` Files/SASHome2/SASFoundation/9.4/sas.exe -CONFIG "bin/sasunit.${{ env.SASUNIT_SAS_VERSION }}.${{ env.SASUNIT_HOST_OS }}.${{ env.SASUNIT_LANGUAGE }}.cfg" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC "bin/sasunit.logconfig.${{ inputs.language }}.xml"'
         echo $LastExitCode $?
 
-    - if: ${{ inputs.shell == "bash" }}
+    - if: ${{ inputs.platform == "CentOS" }}
       name: Run SAS Test
       env:
         SASUNIT_HOST_OS: linux

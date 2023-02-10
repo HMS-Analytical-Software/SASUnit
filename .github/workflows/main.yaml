@@ -13,7 +13,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        language: [en, de]
+        language: [en]
         platform: [WIN10, CentOS]
         include:
           - platform: WIN10
@@ -51,6 +51,7 @@ jobs:
           script: bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.fast.${{ matrix.extension }}
           shell: ${{ matrix.shell }}
           language: ${{ matrix.language }}
+          platform: ${{ marix.platform }}
       #- uses: ./.github/actions/sas_unit
       #  with:
       #    script: bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
