@@ -49,6 +49,6 @@ runs:
         SASUNIT_SCN_LOGLEVEL: INFO
       shell: ${{ inputs.shell }}
       run: |
-        echo bin/sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg
-        Invoke-Expression 'C:/Program` Files/SASHome2/SASFoundation/9.4/sas.exe -CONFIG "bin/sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC "bin/sasunit.logconfig.${{ inputs.language }}.xml"'
+        echo bin/sasunit.${{ env.SASUNIT_SAS_VERSION }}.${{ env.SASUNIT_HOST_OS }}.${{ env.SASUNIT_LANGUAGE }}.cfg
+        Invoke-Expression 'C:/Program` Files/SASHome2/SASFoundation/9.4/sas.exe -CONFIG "bin/sasunit.${{ env.SASUNIT_SAS_VERSION }}.${{ env.SASUNIT_HOST_OS }}.${{ env.SASUNIT_LANGUAGE }}.cfg" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC "bin/sasunit.logconfig.${{ inputs.language }}.xml"'
         echo $LastExitCode $?
