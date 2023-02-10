@@ -14,7 +14,6 @@ jobs:
     strategy:
       matrix:
         language: [en] #, de]
-        platform: [WIN10] #, CentOS]
         include:
           - platform: WIN10
             extension: cmd
@@ -22,12 +21,12 @@ jobs:
             os_name: windows
             sasUnitPath: "C:/jenkins1/workspace/00773_KF_SAS_SASUNIT/SASUnit` (9.4` 64-Bit` de` unicode,` Windows` 10` 64-Bit` de)"
             shell: PowerShell
-              # - platform: CentOS
-              #   extension: sh
-              #   shell: bash
-              #   runner: Linux
-              #   os_name: linux
-              #   sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en" # "C:\\jenkins1\\workspace\\00773_KF_SAS_SASUNIT\\SASUnit"
+          - platform: CentOS
+            extension: sh
+            shell: bash
+            runner: Linux
+            os_name: linux
+            sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en" # "C:\\jenkins1\\workspace\\00773_KF_SAS_SASUNIT\\SASUnit"
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v3
