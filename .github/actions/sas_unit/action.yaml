@@ -22,7 +22,7 @@ runs:
   using: "composite"
 
   steps:
-    - if: ${{ inputs.platform == "WIN10" }}
+    - if: runner.os == 'Windows'
       name: Run SAS Test
       env:
         SASUNIT_HOST_OS: windows
@@ -56,7 +56,7 @@ runs:
         Invoke-Expression 'C:/Program` Files/SASHome2/SASFoundation/9.4/sas.exe -CONFIG "bin/sasunit.${{ env.SASUNIT_SAS_VERSION }}.${{ env.SASUNIT_HOST_OS }}.${{ env.SASUNIT_LANGUAGE }}.cfg" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC "bin/sasunit.logconfig.${{ inputs.language }}.xml"'
         echo $LastExitCode $?
 
-    - if: ${{ inputs.platform == "CentOS" }}
+    - if: runner.os == 'Linux'
       name: Run SAS Test
       env:
         SASUNIT_HOST_OS: linux
@@ -81,6 +81,5 @@ runs:
         SASUNIT_CROSSREFERENCE_SASUNIT: 1
         SASUNIT_LOGLEVEL: INFO
         SASUNIT_SCN_LOGLEVEL: INFO
-
-        $SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin "$SASUNIT_RUNALL" -LOGCONFIGLOC "./bin/sasunit.logconfig.${{ inputs.language }}.xml" /*-log "$SASUNIT_LOG_FOLDER/run_all.log"*/
+      run: $SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin "$SASUNIT_RUNALL" -LOGCONFIGLOC "./bin/sasunit.logconfig.${{ inputs.language }}.xml" /*-log "$SASUNIT_LOG_FOLDER/run_all.log"
 
