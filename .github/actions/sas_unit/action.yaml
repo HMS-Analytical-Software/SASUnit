@@ -20,7 +20,8 @@ runs:
   using: "composite"
 
   steps:
-    - name: Run SAS Test
+    - if: ${{ inputs.shell == "PowerShell" }}
+      name: Run SAS Test
       env:
         SASUNIT_HOST_OS: windows
         SASUNIT_HOST_ENCODING: PCOEM850
@@ -52,3 +53,32 @@ runs:
         mkdir doc/spec
         Invoke-Expression 'C:/Program` Files/SASHome2/SASFoundation/9.4/sas.exe -CONFIG "bin/sasunit.${{ env.SASUNIT_SAS_VERSION }}.${{ env.SASUNIT_HOST_OS }}.${{ env.SASUNIT_LANGUAGE }}.cfg" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC "bin/sasunit.logconfig.${{ inputs.language }}.xml"'
         echo $LastExitCode $?
+
+    - if: ${{ inputs.shell == "bash" }}
+      name: Run SAS Test
+      env:
+        SASUNIT_HOST_OS: linux
+        SASUNIT_HOST_ENCODING: UTF8
+        SASUNIT_SAS_VERSION: 9.4
+        SASUNIT_SAS_EXE: "/opt/sas/sas94M7/SASFoundation/9.4/bin/sas_${{ inputs.language }}"
+        SASUNIT_SAS_CFG: "/opt/sas/sas94M7/SASFoundation/9.4/nls/${{ inputs.language }}/sasv9.cfg"
+        SASUNIT_ROOT: "/home/github/actions-runner/_work/SASUnit/SASUnit"
+        SASUNIT_PROJECT_ROOT: "/home/github/actions-runner/_work/SASUnit/SASUnit"
+        SASUNIT_TEST_DB_FOLDER: "/home/github/actions-runner/_work/SASUnit/SASUnit/${{ inputs.language }}/testdb"
+        SASUNIT_LOG_FOLDER: "/home/github/actions-runner/_work/SASUnit/SASUnit/${{ inputs.language }}/logs"
+        SASUNIT_SCN_LOG_FOLDER: "/home/github/actions-runner/_work/SASUnit/SASUnit/${{ inputs.language }}/scn_logs"
+        SASUNIT_RUNALL: "/home/github/actions-runner/_work/SASUnit/SASUnit/saspgm/test/run_all.sas"
+        SASUNIT_REPORT_FOLDER: "/home/github/actions-runner/_work/SASUnit/SASUnit/${{ inputs.language }}/doc"
+        SASUNIT_RESOURCE_FOLDER: "/home/github/actions-runner/_work/SASUnit/SASUnit/resources"
+        SASUNIT_OVERWRITE: 1
+        SASUNIT_LANGUAGE: ${{ inputs.language }}
+        SASUNIT_COVERAGEASSESSMENT: 1
+        SASUNIT_PGMDOC: 1
+        SASUNIT_PGMDOC_SASUNIT: 1
+        SASUNIT_CROSSREFERENCE: 1
+        SASUNIT_CROSSREFERENCE_SASUNIT: 1
+        SASUNIT_LOGLEVEL: INFO
+        SASUNIT_SCN_LOGLEVEL: INFO
+
+        $SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin "$SASUNIT_RUNALL" -LOGCONFIGLOC "./bin/sasunit.logconfig.${{ inputs.language }}.xml" /*-log "$SASUNIT_LOG_FOLDER/run_all.log"*/
+
