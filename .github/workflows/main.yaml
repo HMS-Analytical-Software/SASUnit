@@ -13,21 +13,24 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
+        version: ["9.4"]
         language: [en]
         platform: [WIN10, CentOS]
+        testType: [fast] # full
         include:
           - platform: WIN10
             extension: cmd
             runner: Windows
-            os_name: windows
+            osName: windows
             sasUnitPath: "C:/jenkins1/workspace/00773_KF_SAS_SASUNIT/SASUnit` (9.4` 64-Bit` de` unicode,` Windows` 10` 64-Bit` de)"
             shell: PowerShell
           - platform: CentOS
             extension: sh
             shell: bash
             runner: Linux
-            os_name: linux
+            osName: linux
             sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en"
+
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v3
@@ -37,32 +40,15 @@ jobs:
       - if: ${{ matrix.platform == 'CentOS' }}
         uses: ./.github/actions/set_execution_rights
 
-      - uses: ./.github/actions/setup
-        with:
-          language: ${{ matrix.language }}
-          shell: ${{ matrix.shell }}
-      # TODO move script contents into setup action
+      - run: bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+        shell: ${{ matrix.shell }}
       #- run: example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
 
+      - run: ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }} ${{ matrix.sasUnitPath }} 
+        shell: ${{ matrix.shell }}
 
-      - uses: ./.github/actions/sas_unit
-        with:
-          sasUnitPath: ${{ matrix.sasUnitPath }}
-          script: bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.fast.${{ matrix.extension }}
-          shell: ${{ matrix.shell }}
-          language: ${{ matrix.language }}
-          platform: ${{ matrix.platform }}
-      #- uses: ./.github/actions/sas_unit
-      #  with:
-      #    script: bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
-      #    sasUnitPath: ${{ env.sasUnitPath }}
-      #    shell: ${{ matrix.shell }}
-      #- uses: ./.github/actions/sas_unit
-      #  with:
-      #    sasUnitVersion: ${{ env.sasUnitVersion }}
-      #    sasUnitPath: ${{ env.sasUnitPath }}
-      #    script: example/bin/sasunit.9.4.${{ matrix.os_name }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
-      #    shell: ${{ matrix.shell }}
+      # example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
+
       #- uses: actions/upload-artifact@v3
       #  if: success() || failure()
       #  with:
