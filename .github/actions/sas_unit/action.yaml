@@ -82,5 +82,7 @@ runs:
         SASUNIT_CROSSREFERENCE_SASUNIT: 1
         SASUNIT_LOGLEVEL: INFO
         SASUNIT_SCN_LOGLEVEL: INFO
-      run: $SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin "$SASUNIT_RUNALL" -LOGCONFIGLOC "./bin/sasunit.logconfig.${{ inputs.language }}.xml" /*-log "$SASUNIT_LOG_FOLDER/run_all.log"
+      run: |
+        mkdir -p doc/spec
+        $SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin "$SASUNIT_RUNALL" -LOGCONFIGLOC "./bin/sasunit.logconfig.${{ inputs.language }}.xml" /*-log "$SASUNIT_LOG_FOLDER/run_all.log"
 
