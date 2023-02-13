@@ -14,9 +14,9 @@ jobs:
     strategy:
       matrix:
         version: ["9.4"]
-        language: [en]
+        language: [en,de]
         platform: [WIN10, CentOS]
-        testType: [fast] # full
+        testType: [fast,full]
         include:
           - platform: WIN10
             extension: cmd
