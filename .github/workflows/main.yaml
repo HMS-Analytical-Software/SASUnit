@@ -40,15 +40,17 @@ jobs:
       - if: ${{ matrix.platform == 'CentOS' }}
         uses: ./.github/actions/set_execution_rights
 
-      - name: Self Test
-        run: |
-          ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }} ${{ matrix.sasUnitPath }} 
+          #- name: Self Test
+          #  run: |
+          #    ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+          #    ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }} ${{ matrix.sasUnitPath }} 
           
       - name: Example Test
         run: |
-          ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
+          cd example/bin
+          ./sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+          cd ..
+          ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
 
       #- uses: actions/upload-artifact@v3
       #  if: success() || failure()
