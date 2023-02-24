@@ -3,6 +3,8 @@ REM This file is part of SASUnit, the Unit testing framework for SAS(R) programs
 REM For copyright information and terms of usage under the GPL license see included file readme.txt
 REM or https://sourceforge.net/p/sasunit/wiki/readme/.
 
+cd ..
+
 if /i "%~1" == "" (SET SASUNIT_LANGUAGE=en) else (SET SASUNIT_LANGUAGE=%1)
 
 REM --------------------------------------------------------------------------------
