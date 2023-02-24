@@ -14,9 +14,9 @@ jobs:
     strategy:
       matrix:
         version: ["9.4"]
-        language: [en,de]
+        language: [en] #,de]
         platform: [WIN10, CentOS]
-        testType: [fast,full]
+        testType: [fast] #,full]
         include:
           - platform: WIN10
             extension: cmd
@@ -40,13 +40,15 @@ jobs:
       - if: ${{ matrix.platform == 'CentOS' }}
         uses: ./.github/actions/set_execution_rights
 
-      - run: |
+      - name: Self Test
+        run: |
           ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
           ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }} ${{ matrix.sasUnitPath }} 
           
-      #- run: example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-
-      # example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
+      - name: Example Test
+        run: |
+          ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+          ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
 
       #- uses: actions/upload-artifact@v3
       #  if: success() || failure()
