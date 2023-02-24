@@ -49,7 +49,6 @@ jobs:
         run: |
           cd example/bin
           ./sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          cd ..
           ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
 
       #- uses: actions/upload-artifact@v3
