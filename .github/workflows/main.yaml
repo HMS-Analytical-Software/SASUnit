@@ -52,20 +52,44 @@ jobs:
           cd ..
           ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
 
-      #- uses: actions/upload-artifact@v3
-      #  if: success() || failure()
-      #  with:
-      #    name: Logs and Test Results
-      #    path: |
-      #      "**/*run_all.log"
-      #      "**/*junit.xml"
-      #      ${{ matrix.language }}/doc/index.html
-      #      example/${{ matrix.language }}/doc/index.html
-      #    if-no-files-found: warn
+  release:
+    name: Build Release Zip
+    continue-on-error: true
+    strategy:
+      matrix:
+        platform: [CentOS]
+        include:
+          - platform: CentOS
+            runner: Linux
+            osName: linux
 
-      #- uses: dorny/test-reporter@v1
-        #if: success() || failure()
-          #with:
-          #name: Test Report
-            #path: "**/*junit.xml"
-            #    reporter: java-junit
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run examples (de)
+        run: cd $WORKSPACE/example/bin && ./sasunit.9.4.linux.de.overwrite.full.sh
+      - name: Run examples (en)
+        run: cd $WORKSPACE/example/bin && ./sasunit.9.4.linux.en.overwrite.full.sh
+      - name: Build ZIP File
+        run: |
+          # TODO if [ ${SVN_TAG:0:4} = tags ]; then SVN_TAG=${SVN_TAG:5} fi
+          export SVN_TAG=9.4
+          zip -r sasunit.$SVN_TAG.${{ matrix.osName }}.zip \
+            example/* \
+            saspgm/sasunit/* \
+            resources/* \
+            saspgm/template/* \
+            *.txt \
+            -exclude \
+              \*.sv* \
+              sasunit.setup.EE_\* \
+              sasunit.9.4.linux.\* \
+              \*.xml \
+              \*.log \
+              \*.cmd \
+              ./example/de/testdb/\*.sas7bdat \
+              ./example/en/testdb/*.sas7bdat \
+              ./resources/style/*.sas7bitm
+
+          zip -T sasunit.$SVN_TAG.${{ matrix.osName }}.zip
+
