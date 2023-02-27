@@ -95,32 +95,13 @@ jobs:
           zip -T sasunit.$SVN_TAG.${{ matrix.osName }}.zip
 
       - name: Create Release
-        uses: actions/create-release@v1
-        id: create_release
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          draft: false
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          release_name: Test Release
-          tag_name: ${{ github.ref }}
-          body_path: CHANGELOG.md
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Upload Release File
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: sasunit.9.4.linux.zip
-          asset_name: sasunit.9.4.linux.zip
-          asset_content_type: application/gzip
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - uses: actions/upload-artifact@v3
-        with:
-          # TODO get SVN_TAG
-          path: sasunit.9.4.linux.zip
-          name: sasunit.9.4.linux.zip
+          files: |
+            LICENSE.md
+            sasunit.*.zip
 
       - uses: actions/upload-artifact@v3
         with:
