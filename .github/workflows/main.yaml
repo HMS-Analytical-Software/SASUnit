@@ -71,8 +71,8 @@ jobs:
 
       - name: Run examples
         run: |
-          ./example/bin/sasunit.setup.EE_CI_CentOS.de.sh
-          ./example/bin/sasunit.setup.EE_CI_CentOS.en.sh
+          ./example/bin/sasunit.setup.EE_CI_CentOS.sh de
+          ./example/bin/sasunit.setup.EE_CI_CentOS.sh en
           ./example/bin/sasunit.9.4.linux.de.overwrite.full.sh
           ./example/bin/sasunit.9.4.linux.en.overwrite.full.sh
       - name: Build ZIP File
