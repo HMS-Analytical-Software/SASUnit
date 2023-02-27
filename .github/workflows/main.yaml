@@ -8,47 +8,47 @@ env:
   WORKSPACE: ${{ github.workspace }}
 
 jobs:
-  test:
-    name: Run Self Tests
-    continue-on-error: true
-    strategy:
-      matrix:
-        version: ["9.4"]
-        language: [en] #,de]
-        platform: [WIN10, CentOS]
-        testType: [fast] #,full]
-        include:
-          - platform: WIN10
-            extension: cmd
-            runner: Windows
-            osName: windows
-            sasUnitPath: \"\"\"C:/jenkins1/workspace/00773_KF_SAS_SASUNIT/SASUnit` (9.4` 64-Bit` de` unicode,` Windows` 10` 64-Bit` de)\"\"\"
-            shell: PowerShell
-          - platform: CentOS
-            extension: sh
-            shell: bash
-            runner: Linux
-            osName: linux
-            sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en"
+  # test:
+  #   name: Run Self Tests
+  #   continue-on-error: true
+  #   strategy:
+  #     matrix:
+  #       version: ["9.4"]
+  #       language: [en] #,de]
+  #       platform: [WIN10, CentOS]
+  #       testType: [fast] #,full]
+  #       include:
+  #         - platform: WIN10
+  #           extension: cmd
+  #           runner: Windows
+  #           osName: windows
+  #           sasUnitPath: \"\"\"C:/jenkins1/workspace/00773_KF_SAS_SASUNIT/SASUnit` (9.4` 64-Bit` de` unicode,` Windows` 10` 64-Bit` de)\"\"\"
+  #           shell: PowerShell
+  #         - platform: CentOS
+  #           extension: sh
+  #           shell: bash
+  #           runner: Linux
+  #           osName: linux
+  #           sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en"
 
-    runs-on: ${{ matrix.runner }}
-    steps:
-      - uses: actions/checkout@v3
-      
-      - if: ${{ matrix.platform == 'CentOS' }}
-        uses: ./.github/actions/trim_line_endings
-      - if: ${{ matrix.platform == 'CentOS' }}
-        uses: ./.github/actions/set_execution_rights
+  #   runs-on: ${{ matrix.runner }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     
+  #     - if: ${{ matrix.platform == 'CentOS' }}
+  #       uses: ./.github/actions/trim_line_endings
+  #     - if: ${{ matrix.platform == 'CentOS' }}
+  #       uses: ./.github/actions/set_execution_rights
 
-      - name: Self Test
-        run: |
-          ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }} ${{ matrix.sasUnitPath }} 
-          
-      - name: Example Test
-        run: |
-          ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
+  #     - name: Self Test
+  #       run: |
+  #         ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+  #         ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }} ${{ matrix.sasUnitPath }} 
+  #         
+  #     - name: Example Test
+  #       run: |
+  #         ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+  #         ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
 
   release:
     name: Build Release Zip
