@@ -141,7 +141,7 @@
       put "echo.";
       put;
       put "echo ""Starting SASUnit ...""";
-      put """&i_sasexe."" -CONFIG ""bin\sasunit.%nrstr(%%SASUNIT_SAS_VERSION%%.%%SASUNIT_HOST_OS%%.%%SASUNIT_LANGUAGE%%).cfg"" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC ""bin\sasunit.logconfig.&i_sasunitLanguage..xml""";
+      put """&i_sasexe."" -CONFIG ""bin\sasunit.%nrstr(%%SASUNIT_SAS_VERSION%%.%%SASUNIT_HOST_OS%%.%%SASUNIT_LANGUAGE%%).cfg"" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC ""%%SASUNIT_PROJECT_ROOT%%\bin\sasunit.logconfig.&i_sasunitLanguage..xml""";
       put;
       put 'if %ERRORLEVEL%==0 goto normalexit';
       put "@echo. ";
