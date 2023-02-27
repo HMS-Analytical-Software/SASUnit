@@ -78,23 +78,23 @@ jobs:
       - name: Build ZIP File
         run: |
           # TODO if [ ${SVN_TAG:0:4} = tags ]; then SVN_TAG=${SVN_TAG:5} fi
-          export SVN_TAG=9.4
-          zip -r sasunit.$SVN_TAG.${{ matrix.osName }}.zip \
-            example/* \
-            saspgm/sasunit/* \
-            resources/* \
-            saspgm/template/* \
-            *.txt \
-            --exclude \
-              \*.sv* \
-              sasunit.setup.EE_\* \
-              sasunit.9.4.linux.\* \
-              \*.xml \
-              \*.log \
-              \*.cmd \
-              ./example/de/testdb/\*.sas7bdat \
-              ./example/en/testdb/*.sas7bdat \
-              ./resources/style/*.sas7bitm
 
+          rm ./example/de/testdb/*.sas7bdat
+          rm ./example/en/testdb/*.sas7bdat
+          rm ./resources/style/*.sas7bitm
+
+          rm ./example/bin/asunit.setup.EE_*
+          rm ./example/bin/asunit.9.4.linux.*
+          rm ./example/bin/.xml
+          rm ./example/bin/.log
+          rm ./example/bin/.cmd
+
+          export SVN_TAG=9.4
+          zip -r sasunit.$SVN_TAG.linux.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
           zip -T sasunit.$SVN_TAG.${{ matrix.osName }}.zip
+
+          # TODO archive: **/*run_all.log,**/*junit.xml
+          # TODO html report: example/en/doc/index.html
+          # TODO html report: example/de/doc/index.html
+
 
