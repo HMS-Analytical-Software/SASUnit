@@ -89,9 +89,15 @@ jobs:
           rm ./example/bin/*.log
           rm ./example/bin/*.cmd
 
+          # TODO read SVN_TAG
           export SVN_TAG=9.4
           zip -r sasunit.$SVN_TAG.linux.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
           zip -T sasunit.$SVN_TAG.${{ matrix.osName }}.zip
+
+      - uses: actions/upload-artifact@v3
+        with:
+          # TODO get SVN_TAG
+          path: sasunit.9.4.linux.zip
 
       - uses: actions/upload-artifact@v3
         with:
