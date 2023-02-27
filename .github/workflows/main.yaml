@@ -50,44 +50,44 @@ jobs:
           ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
           ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
 
-#  release:
-#    name: Build Release Zip
-#    continue-on-error: true
-#    strategy:
-#      matrix:
-#        platform: [CentOS]
-#        include:
-#          - platform: CentOS
-#            runner: Linux
-#            osName: linux
-#
-#    runs-on: ${{ matrix.runner }}
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Run examples (de)
-#        run: cd example/bin && ./sasunit.9.4.linux.de.overwrite.full.sh
-#      - name: Run examples (en)
-#        run: cd example/bin && ./sasunit.9.4.linux.en.overwrite.full.sh
-#      - name: Build ZIP File
-#        run: |
-#          # TODO if [ ${SVN_TAG:0:4} = tags ]; then SVN_TAG=${SVN_TAG:5} fi
-#          export SVN_TAG=9.4
-#          zip -r sasunit.$SVN_TAG.${{ matrix.osName }}.zip \
-#            example/* \
-#            saspgm/sasunit/* \
-#            resources/* \
-#            saspgm/template/* \
-#            *.txt \
-#            -exclude \
-#              \*.sv* \
-#              sasunit.setup.EE_\* \
-#              sasunit.9.4.linux.\* \
-#              \*.xml \
-#              \*.log \
-#              \*.cmd \
-#              ./example/de/testdb/\*.sas7bdat \
-#              ./example/en/testdb/*.sas7bdat \
-#              ./resources/style/*.sas7bitm
-#
-#          zip -T sasunit.$SVN_TAG.${{ matrix.osName }}.zip
+  release:
+    name: Build Release Zip
+    continue-on-error: true
+    strategy:
+      matrix:
+        platform: [CentOS]
+        include:
+          - platform: CentOS
+            runner: Linux
+            osName: linux
+
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run examples (de)
+        run: ./example/bin/sasunit.9.4.${{ matrix.osName }}.de.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
+      - name: Run examples (en)
+        run: ./example/bin/sasunit.9.4.${{ matrix.osName }}.en.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
+      - name: Build ZIP File
+        run: |
+          # TODO if [ ${SVN_TAG:0:4} = tags ]; then SVN_TAG=${SVN_TAG:5} fi
+          export SVN_TAG=9.4
+          zip -r sasunit.$SVN_TAG.${{ matrix.osName }}.zip \
+            example/* \
+            saspgm/sasunit/* \
+            resources/* \
+            saspgm/template/* \
+            *.txt \
+            -exclude \
+              \*.sv* \
+              sasunit.setup.EE_\* \
+              sasunit.9.4.linux.\* \
+              \*.xml \
+              \*.log \
+              \*.cmd \
+              ./example/de/testdb/\*.sas7bdat \
+              ./example/en/testdb/*.sas7bdat \
+              ./resources/style/*.sas7bitm
+
+          zip -T sasunit.$SVN_TAG.${{ matrix.osName }}.zip
 
