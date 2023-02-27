@@ -85,7 +85,7 @@ jobs:
             resources/* \
             saspgm/template/* \
             *.txt \
-            -exclude \
+            --exclude \
               \*.sv* \
               sasunit.setup.EE_\* \
               sasunit.9.4.linux.\* \
