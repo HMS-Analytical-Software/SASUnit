@@ -65,9 +65,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run examples (de)
-        run: ./example/bin/sasunit.9.4.${{ matrix.osName }}.de.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
-      - name: Run examples (en)
-        run: ./example/bin/sasunit.9.4.${{ matrix.osName }}.en.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
+        run: |
+          ./example/bin/sasunit.setup.EE_CI_CentOS.de.sh
+          ./example/bin/sasunit.setup.EE_CI_CentOS.en.sh
+          ./example/bin/sasunit.9.4.linux.de.overwrite.full.sh
+          ./example/bin/sasunit.9.4.linux.en.overwrite.full.sh
       - name: Build ZIP File
         run: |
           # TODO if [ ${SVN_TAG:0:4} = tags ]; then SVN_TAG=${SVN_TAG:5} fi
