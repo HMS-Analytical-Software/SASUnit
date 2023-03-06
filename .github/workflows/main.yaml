@@ -8,117 +8,47 @@ env:
   WORKSPACE: ${{ github.workspace }}
 
 jobs:
- test:
-   name: Run Self Tests
-   continue-on-error: true
-   strategy:
-     matrix:
-       version: ["9.4"]
-       language: [en]
-       platform: [WIN10, CentOS]
-       testType: [full]
-       include:
-         - platform: WIN10
-           extension: cmd
-           runner: Windows
-           osName: windows
-           sasUnitPath: "C:/jenkins1/workspace/00773_KF_SAS_SASUNIT/SASUnit (9.4 64-Bit de unicode, Windows 10 64-Bit de)"
-           shell: PowerShell
-         - platform: CentOS
-           extension: sh
-           shell: bash
-           runner: Linux
-           osName: linux
-           sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en"
-
-   runs-on: ${{ matrix.runner }}
-   steps:
-     - uses: actions/checkout@v3
-     
-     - if: ${{ matrix.platform == 'CentOS' }}
-       uses: ./.github/actions/trim_line_endings
-     - if: ${{ matrix.platform == 'CentOS' }}
-       uses: ./.github/actions/set_execution_rights
-
-     - name: Self Test
-       run: |
-         ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-         ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }} "${{ matrix.sasUnitPath }}"
-         
-     - name: Example Test
-       run: |
-         ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-         ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
-
-  #  release:
-  #    name: Build Release Zip
-  #    continue-on-error: true
-  #    strategy:
-  #      matrix:
-  #        platform: [CentOS]
-  #        include:
-  #          - platform: CentOS
-  #            runner: Linux
-  #            osName: linux
-  #
-  #    runs-on: ${{ matrix.runner }}
-  #    steps:
-  #      - uses: actions/checkout@v3
-  #      - if: ${{ matrix.platform == 'CentOS' }}
-  #        uses: ./.github/actions/trim_line_endings
-  #      - if: ${{ matrix.platform == 'CentOS' }}
-  #        uses: ./.github/actions/set_execution_rights
-  #
-  #      - name: Run examples
-  #        run: |
-  #          ./example/bin/sasunit.setup.EE_CI_CentOS.sh de
-  #          ./example/bin/sasunit.setup.EE_CI_CentOS.sh en
-  #          ./example/bin/sasunit.9.4.linux.de.overwrite.full.sh
-  #          ./example/bin/sasunit.9.4.linux.en.overwrite.full.sh
-  #      - name: Build ZIP File
-  #        run: |
-  #          # TODO if [ ${SVN_TAG:0:4} = tags ]; then SVN_TAG=${SVN_TAG:5} fi
-  #
-  #          rm ./example/de/testdb/*.sas7bdat
-  #          rm ./example/en/testdb/*.sas7bdat
-  #          rm -f ./resources/style/*.sas7bitm
-  #
-  #          rm ./example/bin/sasunit.setup.EE_*
-  #          rm ./example/bin/sasunit.9.4.linux.*
-  #          rm ./example/bin/*.xml
-  #          rm ./example/bin/*.log
-  #          rm ./example/bin/*.cmd
-  #
-  #          # TODO read SVN_TAG
-  #          export SVN_TAG=9.4
-  #          zip -r sasunit.$SVN_TAG.linux.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
-  #          zip -T sasunit.$SVN_TAG.${{ matrix.osName }}.zip
-  #
-  #      - name: Create Release
-  #        uses: "marvinpinto/action-automatic-releases@latest"
-  #        with:
-  #          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-  #          prerelease: false
-  #          automatic_release_tag: latest
-  #          files: |
-  #            LICENSE.md
-  #            sasunit.*.zip
-  #
-  #      - uses: actions/upload-artifact@v3
-  #        with:
-  #          name: logs
-  #          path: |
-  #            **/*run_all.log
-  #
-  #      - uses: actions/upload-artifact@v3
-  #        with:
-  #          name: example_en
-  #          path: example/en/doc/index.html
-  #
-  #      - uses: actions/upload-artifact@v3
-  #        with:
-  #          name: example_de
-  #          path: example/de/doc/index.html
-
-      # TODO archive: **/*junit.xml
-
+  test:
+    name: Run Self Tests
+    continue-on-error: true
+    strategy:
+      matrix:
+        version: ["9.4"]
+        language: [en]
+        platform: [WIN10, CentOS]
+        testType: [full]
+        include:
+          - platform: WIN10
+            extension: cmd
+            runner: Windows
+            osName: windows
+            sasUnitPath: "C:/jenkins1/workspace/00773_KF_SAS_SASUNIT/SASUnit (9.4 64-Bit de unicode, Windows 10 64-Bit de)"
+            shell: PowerShell
+          - platform: CentOS
+            extension: sh
+            shell: bash
+            runner: Linux
+            osName: linux
+            sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en"
+ 
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v3
+      
+      - if: ${{ matrix.platform == 'CentOS' }}
+        uses: ./.github/actions/trim_line_endings
+      - if: ${{ matrix.platform == 'CentOS' }}
+        uses: ./.github/actions/set_execution_rights
+ 
+      - name: Self Test
+        run: |
+          ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+          ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }} "${{ matrix.sasUnitPath }}"
+          
+      - name: Example Test
+        run: |
+          ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+          ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
+ 
+       # TODO archive: **/*junit.xml
+ 
