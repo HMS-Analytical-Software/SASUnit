@@ -46,3 +46,9 @@ jobs:
           ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
           ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
  
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: SelfTest
+          path: **/junit.xml
+          reporter: jest-junit
