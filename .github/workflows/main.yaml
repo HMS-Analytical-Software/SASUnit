@@ -16,20 +16,15 @@ jobs:
         version: ["9.4"]
         language: [en]
         platform: [WIN10, CentOS]
-        testType: [full]
         include:
           - platform: WIN10
             extension: cmd
             runner: Windows
             osName: windows
-            sasUnitPath: "C:/jenkins1/workspace/00773_KF_SAS_SASUNIT/SASUnit (9.4 64-Bit de unicode, Windows 10 64-Bit de)"
-            shell: PowerShell
           - platform: CentOS
             extension: sh
-            shell: bash
             runner: Linux
             osName: linux
-            sasUnitPath: "/usr/exchange/jenkins/workspace/00773_KF_SAS_SASUNIT/SASUnit_9.4_de_CentOS_en"
  
     runs-on: ${{ matrix.runner }}
     steps:
@@ -43,12 +38,11 @@ jobs:
       - name: Self Test
         run: |
           ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }} "${{ matrix.sasUnitPath }}"
+          ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
+          ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
           
       - name: Example Test
         run: |
           ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }}
- 
-       # TODO archive: **/*junit.xml
+          ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
  
