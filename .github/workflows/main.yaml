@@ -15,14 +15,14 @@ jobs:
      matrix:
        version: ["9.4"]
        language: [en]
-       platform: [WIN10]
+       platform: [WIN10, CentOS]
        testType: [full]
        include:
          - platform: WIN10
            extension: cmd
            runner: Windows
            osName: windows
-           sasUnitPath: "C:/jenkins1/workspace/00773_KF_SAS_SASUNIT/SASUnit` (9.4` 64-Bit` de` unicode,` Windows` 10` 64-Bit` de)"
+           sasUnitPath: "C:/jenkins1/workspace/00773_KF_SAS_SASUNIT/SASUnit (9.4 64-Bit de unicode, Windows 10 64-Bit de)"
            shell: PowerShell
          - platform: CentOS
            extension: sh
@@ -43,7 +43,7 @@ jobs:
      - name: Self Test
        run: |
          ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-         ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }} ${{ matrix.sasUnitPath }} 
+         ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.${{ matrix.testType }}.${{ matrix.extension }} "${{ matrix.sasUnitPath }}"
          
      - name: Example Test
        run: |
