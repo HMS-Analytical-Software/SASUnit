@@ -4,6 +4,9 @@ on:
     branches:
       - '**'
 
+env:
+  WORKSPACE: ${{ github.workspace }}
+
 jobs:
   release:
     name: Build Release Zip
