@@ -50,5 +50,5 @@ jobs:
         uses: dorny/test-reporter@v1
         with:
           name: SelfTest
-          path: **/junit.xml
+          path: "**/junit.xml"
           reporter: jest-junit
