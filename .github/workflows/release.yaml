@@ -73,9 +73,9 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: example_en
-          path: example/en/doc/index.html
+          path: example/en/doc/
       - uses: actions/upload-artifact@v3
         with:
           name: example_de
-          path: example/de/doc/index.html
+          path: example/de/doc/
 
