@@ -8,10 +8,11 @@ env:
   WORKSPACE: ${{ github.workspace }}
 
 
-permissions:
+permissions: 
   contents: read
   pages: write
   id-token: write
+  checks: write
 
 
 jobs:
@@ -70,7 +71,6 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v1
       - name: Junit Report
-        permissions: write-all # TODO more restrictive permissions
         uses: dorny/test-reporter@v1
         with:
           name: SelfTest
