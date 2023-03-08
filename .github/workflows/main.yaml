@@ -19,6 +19,7 @@ jobs:
   tests:
     name: Run Self Tests
     strategy:
+      fail-fast: false
       matrix:
         version: ["9.4"]
         language: [en]
