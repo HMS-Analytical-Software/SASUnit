@@ -13,15 +13,22 @@ permissions:
   pull-requests: read
 
 jobs:
+
   release:
     name: Build Release Zip
     strategy:
       matrix:
-        platform: [CentOS]
+        platform: [WIN10, CentOS]
         include:
           - platform: CentOS
             runner: Linux
             osName: linux
+            extension: sh
+          - platform: WIN10
+            runner: Windows
+            osName: windows
+            extension: cmd
+
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v3
@@ -33,12 +40,12 @@ jobs:
       
       - name: Run examples
         run: |
-          ./example/bin/sasunit.setup.EE_CI_CentOS.sh de
-          ./example/bin/sasunit.setup.EE_CI_CentOS.sh en
-          ./example/bin/sasunit.9.4.linux.de.overwrite.full.sh
-          ./example/bin/sasunit.9.4.linux.en.overwrite.full.sh
+          ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} de
+          ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} en
+          ./example/bin/sasunit.9.4.${{ matrix.osName }}.de.overwrite.full.${{ matrix.extension }}
+          ./example/bin/sasunit.9.4.${{ matrix.osName }}.en.overwrite.full.${{ matrix.extension }}
 
-      - name: Build ZIP File
+      - name: Prepare Files
         run: |
           rm ./example/de/testdb/*.sas7bdat
           rm ./example/en/testdb/*.sas7bdat
@@ -48,30 +55,40 @@ jobs:
           rm ./example/bin/*.xml
           rm ./example/bin/*.log
           rm ./example/bin/*.cmd
-
-          zip -r sasunit.${{ github.ref_name }}.linux.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
-          zip -T sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip
+          rm -f *.sv*
           
-      - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+
+      - name: Build ZIP File
+        uses: TheDoctor0/zip-release@latest
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${{ github.ref_name }}
-          files: |
+          filename: sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip 
+          files: example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt 
+
+
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          name: Release ${{ github.ref_name }}
+          tag: ${{ github.ref_name }}
+          draft: true
+          prerelease: true
+          allowUpdates: true
+          artifacts: |
             LICENSE.md
             sasunit.*.zip
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: logs
-          path: |
-            **/*run_all.log
-      - uses: actions/upload-artifact@v3
-        with:
-          name: example_en
-          path: example/en/doc/
-      - uses: actions/upload-artifact@v3
-        with:
-          name: example_de
-          path: example/de/doc/
+            # - uses: actions/upload-artifact@v3
+            #   with:
+            #     name: logs
+            #     path: |
+            #       **/*run_all.log
+            # - uses: actions/upload-artifact@v3
+            #   with:
+            #     name: example_en
+            #     path: example/en/doc/
+            # - uses: actions/upload-artifact@v3
+            #   with:
+            #     name: example_de
+            #     path: example/de/doc/
 
