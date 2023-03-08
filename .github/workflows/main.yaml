@@ -16,57 +16,54 @@ permissions:
 
 
 jobs:
-  # tests:
-    # name: Run Self Tests
-    # continue-on-error: true
-    # strategy:
-    #   matrix:
-    #     version: ["9.4"]
-    #     language: [en]
-    #     platform: [WIN10, CentOS]
-    #     include:
-    #       - platform: WIN10
-    #         extension: cmd
-    #         runner: Windows
-    #         osName: windows
-    #       - platform: CentOS
-    #         extension: sh
-    #         runner: Linux
-    #         osName: linux
- 
-    # runs-on: ${{ matrix.runner }}
-    # steps:
-    #   - uses: actions/checkout@v3
-    #   
-    #   - if: ${{ matrix.platform == 'CentOS' }}
-    #     uses: ./.github/actions/trim_line_endings
-    #   - if: ${{ matrix.platform == 'CentOS' }}
-    #     uses: ./.github/actions/set_execution_rights
- 
-    #   - name: Self Test
-    #     run: |
-    #       ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-    #       ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
-    #       ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
-    #       
-    #   - name: Example Test
-    #     run: |
-    #       ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-    #       ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
+  tests:
+    name: Run Self Tests
+    continue-on-error: true
+    strategy:
+      matrix:
+        version: ["9.4"]
+        language: [en]
+        platform: [WIN10, CentOS]
+        include:
+          - platform: WIN10
+            extension: cmd
+            runner: Windows
+            osName: windows
+          - platform: CentOS
+            extension: sh
+            runner: Linux
+            osName: linux
 
-  publish_test_reports:
-    # needs: tests
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+ 
+    runs-on: ${{ matrix.runner }}
     steps:
+      - uses: actions/checkout@v3
+      
+      - if: ${{ matrix.platform == 'CentOS' }}
+        uses: ./.github/actions/trim_line_endings
+      - if: ${{ matrix.platform == 'CentOS' }}
+        uses: ./.github/actions/set_execution_rights
+ 
+      - name: Self Test
+        run: |
+          ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+          ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
+          ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
+          
+      - name: Example Test
+        run: |
+          ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+          ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
+
       - name: Setup Github Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: '.'
+          path: 'en/doc'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
@@ -74,7 +71,7 @@ jobs:
         uses: dorny/test-reporter@v1
         with:
           name: SelfTest
-          path: "en/doc/junit.xml"
+          path: "**/junit.xml"
           reporter: java-junit
           # work-around: if this is > 0, the action checks for the tracked files
           # but git is not installed on our nodes
