@@ -3,12 +3,10 @@ on:
   push:
     tags:
       - 'v*'
-    branches:
-      - '**'
 
 env:
   WORKSPACE: ${{ github.workspace }}
-  TAG_NAME: vTEST42
+  TAG_NAME: ${{ github.ref_name }}
 
 permissions:
   contents: write
