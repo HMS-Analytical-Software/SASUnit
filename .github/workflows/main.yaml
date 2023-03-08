@@ -18,7 +18,6 @@ permissions:
 jobs:
   tests:
     name: Run Self Tests
-    continue-on-error: true
     strategy:
       matrix:
         version: ["9.4"]
@@ -70,10 +69,11 @@ jobs:
       - name: Junit Report
         uses: dorny/test-reporter@v1
         with:
-          name: SelfTest
+          name: Self Test Report
           path: "**/junit.xml"
           reporter: java-junit
           # work-around: if this is > 0, the action checks for the tracked files
           # but git is not installed on our nodes
           max-annotations: '0'
+          fail-on-error: false
       
