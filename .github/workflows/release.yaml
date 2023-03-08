@@ -94,14 +94,12 @@ jobs:
         id: create_release
         uses: ncipollo/release-action@v1.12.0
         with:
-          name: Release ${{ github.ref_name }}
-          tag: ${{ github.ref_name }}
+          name: Release ${{ env.TAG_NAME }}
+          tag: ${{ env.TAG_NAME }}
           draft: true
           prerelease: true
           allowUpdates: true
-          artifacts: |
-            LICENSE.md
-            sasunit.*.zip
+          artifacts: LICENSE.md sasunit.*.zip
 
             # - uses: actions/upload-artifact@v3
             #   with:
