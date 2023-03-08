@@ -66,7 +66,7 @@ jobs:
           # 7z.exe a -tzip sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip example\* saspgm\sasunit\* resources\* saspgm\template\* *.txt -xr!.sv*
           # 7z.exe t sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip -r
 
-          7z.exe a -tzip sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip example\* saspgm\sasunit\* resources\* saspgm\template\* *.txt -xr!.sv*
+          7z.exe a -tzip sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip example\* saspgm\sasunit\* resources\* saspgm\template\* *.txt "-xr!.sv*"
           7z.exe t sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip -r
 
 
