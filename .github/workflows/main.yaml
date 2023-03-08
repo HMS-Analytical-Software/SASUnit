@@ -7,8 +7,15 @@ on:
 env:
   WORKSPACE: ${{ github.workspace }}
 
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+
 jobs:
-  test:
+  tests:
     name: Run Self Tests
     continue-on-error: true
     strategy:
@@ -45,8 +52,25 @@ jobs:
         run: |
           ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
           ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
- 
-      - name: Test Report
+
+  publish_test_reports:
+    needs: tests
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Github Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+      - name: Junit Report
+        permissions: write-all # TODO more restrictive permissions
         uses: dorny/test-reporter@v1
         with:
           name: SelfTest
@@ -55,4 +79,4 @@ jobs:
           # work-around: if this is > 0, the action checks for the tracked files
           # but git is not installed on our nodes
           max-annotations: '0'
-          token: ${{ secrets.SASUNIT_TOKEN }}
+      
