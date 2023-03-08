@@ -16,7 +16,7 @@ permissions:
 jobs:
 
   release:
-    name: Build Release Zip
+    name: Release
     strategy:
       matrix:
         platform: [WIN10, CentOS]
@@ -60,7 +60,7 @@ jobs:
           
 
       - name: Build ZIP File
-        uses: TheDoctor0/zip-release@latest
+        uses: TheDoctor0/zip-release@0.7.1
         with:
           filename: sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip 
           files: example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt 
