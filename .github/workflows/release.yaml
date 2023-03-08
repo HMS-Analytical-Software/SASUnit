@@ -63,7 +63,7 @@ jobs:
         uses: TheDoctor0/zip-release@0.7.1
         with:
           filename: sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip 
-          files: example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt 
+          path: example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt 
 
 
       - name: Create Release
