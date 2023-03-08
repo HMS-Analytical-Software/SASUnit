@@ -64,7 +64,11 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: 'en/doc'
-      - name: Deploy to GitHub Pages
+
+        # TODO the plugin does not support powershell..
+        # Installing bash on the windows machines would fix this.
+      - if: ${{ matrix.platform == 'CentOS' }}
+        name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
       - name: Junit Report
