@@ -50,13 +50,13 @@ jobs:
         run: |
           rm ./example/de/testdb/*.sas7bdat
           rm ./example/en/testdb/*.sas7bdat
-          rm -f ./resources/style/*.sas7bitm
+          # rm ./resources/style/*.sas7bitm
           rm ./example/bin/sasunit.setup.EE_*
           rm ./example/bin/sasunit.9.4.linux.*
           rm ./example/bin/*.xml
           rm ./example/bin/*.log
           rm ./example/bin/*.cmd
-          rm -f *.sv*
+          # rm -f *.sv*
           
 
       - name: Build ZIP File
