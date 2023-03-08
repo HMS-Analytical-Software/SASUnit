@@ -21,8 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["9.4"]
-        language: [en]
+        language: [en, de]
         platform: [WIN10, CentOS]
         include:
           - platform: WIN10
@@ -50,8 +49,8 @@ jobs:
       - name: Self Test
         run: |
           ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
-          ./bin/sasunit.${{ matrix.version }}.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
+          ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
+          ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
           
       - name: Example Test
         run: |
@@ -92,7 +91,7 @@ jobs:
       - name: Junit Report
         uses: dorny/test-reporter@v1
         with:
-          name: Self Test Report
+          name: Self Test Report (${{ matrix.osName }}, ${{ matrix.language }})
           path: "**/junit.xml"
           reporter: java-junit
           # work-around: if this is > 0, the action checks for tracked files
