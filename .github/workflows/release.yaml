@@ -9,7 +9,7 @@ env:
   WORKSPACE: ${{ github.workspace }}
 
 permissions:
-  content: write
+  contents: write
 
 jobs:
   release:
