@@ -4,8 +4,7 @@ on:
     tags:
       - 'v*'
     branches:
-      - *
-  workflow_dispatch:
+      - '*'
 
 env:
   WORKSPACE: ${{ github.workspace }}
