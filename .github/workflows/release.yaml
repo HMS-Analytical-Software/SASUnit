@@ -47,7 +47,7 @@ jobs:
           ./example/bin/sasunit.9.4.${{ matrix.osName }}.en.overwrite.full.${{ matrix.extension }}
 
       - name: Build ZIP File (Windows)
-        if: runner.os == "Windows"
+      - if: ${{ matrix.platform == 'WIN10' }}
         run: |
           REM Cleanup
 
@@ -67,7 +67,7 @@ jobs:
 
 
       - name: Build ZIP File
-        if: runner.os == "Linux"
+      - if: ${{ matrix.platform == 'CentOS' }}
         run: |
           # clean up
           rm example/bin/asunit.setup.EE_*
