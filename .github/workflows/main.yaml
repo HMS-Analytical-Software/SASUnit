@@ -51,7 +51,7 @@ jobs:
         with:
           name: SelfTest
           path: "**/junit.xml"
-          reporter: jest-junit
+          reporter: java-junit
           # work-around: if this is > 0, the action checks for the tracked files
           # but git is not installed on our nodes
           max-annotations: '0'
