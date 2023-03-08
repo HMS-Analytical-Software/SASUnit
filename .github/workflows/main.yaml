@@ -55,3 +55,4 @@ jobs:
           # work-around: if this is > 0, the action checks for the tracked files
           # but git is not installed on our nodes
           max-annotations: '0'
+          token: ${{ secrets.SASUNIT_TOKEN }}
