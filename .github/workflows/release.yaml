@@ -8,16 +8,17 @@ on:
 
 env:
   WORKSPACE: ${{ github.workspace }}
+  TAG_NAME: vTEST42
 
 permissions:
   contents: write
   pull-requests: read
 
 jobs:
-
   release:
     name: Release
     strategy:
+      fail-fast: false
       matrix:
         platform: [WIN10, CentOS]
         include:
@@ -62,8 +63,11 @@ jobs:
 
           # Create and test zip file
 
-          7z.exe a -tzip sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip example\* saspgm\sasunit\* resources\* saspgm\template\* *.txt -xr!.sv*
-          7z.exe t sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip -r
+          # 7z.exe a -tzip sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip example\* saspgm\sasunit\* resources\* saspgm\template\* *.txt -xr!.sv*
+          # 7z.exe t sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip -r
+
+          7z.exe a -tzip sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip example\* saspgm\sasunit\* resources\* saspgm\template\* *.txt -xr!.sv*
+          7z.exe t sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip -r
 
 
       - if: ${{ matrix.platform == 'CentOS' }}
@@ -80,9 +84,11 @@ jobs:
           rm example/en/testdb/*.sas7bdat
           rm resources/style/*.sas7bitm
 
-          zip -r sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
-          zip -T sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip
+          # zip -r sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
+          # zip -T sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip
 
+          zip -r sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
+          zip -T sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip
 
       - name: Create Release
         id: create_release
@@ -110,4 +116,4 @@ jobs:
             #   with:
             #     name: example_de
             #     path: example/de/doc/
-
+            #
