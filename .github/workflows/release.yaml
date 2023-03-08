@@ -1,7 +1,7 @@
 
 on:
   push:
-    tag:
+    tags:
       - 'v*'
   workflow_dispatch:
 
@@ -50,16 +50,13 @@ jobs:
           rm ./example/bin/*.log
           rm ./example/bin/*.cmd
 
-          # TODO use git tag
-          export SVN_TAG=9.4
-          zip -r sasunit.$SVN_TAG.linux.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
-          zip -T sasunit.$SVN_TAG.${{ matrix.osName }}.zip
+          zip -r sasunit.${{ GITHUB_REF_NAME }}.linux.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
+          zip -T sasunit.${{ GITHUB_REF_NAME }}.${{ matrix.osName }}.zip
           
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
           automatic_release_tag: latest
           files: |
             LICENSE.md
