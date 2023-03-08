@@ -60,24 +60,42 @@ jobs:
 
       - name: Setup Github Pages
         uses: actions/configure-pages@v3
-      - name: Upload artifact
+
+      - name: Archive logs and reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: logs_and_reports.${{ matrix.osName }}.${{ matrix.language }}
+          path: |
+            **/*run_all.log
+            **/*junit.xml
+            ${{ matrix.language }}/doc
+            example/${{ matrix.language }}/doc
+
+      # Publish one HTML report to github pages
+      # TODO the plugin does not support powershell..
+      # Installing bash on the windows machines would fix this.
+      # Alternatively it is also possible to assemble the file manually.
+      - if: ${{ matrix.platform == 'CentOS' }}
+        name: Upload report to Github Pages
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'en/doc'
+          path: 
+            '${{ matrix.language }}/doc'
 
-        # TODO the plugin does not support powershell..
-        # Installing bash on the windows machines would fix this.
+
       - if: ${{ matrix.platform == 'CentOS' }}
-        name: Deploy to GitHub Pages
+        name: Deploy GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
+
+
       - name: Junit Report
         uses: dorny/test-reporter@v1
         with:
           name: Self Test Report
           path: "**/junit.xml"
           reporter: java-junit
-          # work-around: if this is > 0, the action checks for the tracked files
+          # work-around: if this is > 0, the action checks for tracked files
           # but git is not installed on our nodes
           max-annotations: '0'
           fail-on-error: false
