@@ -1,11 +1,15 @@
 
 on:
   push:
-    branches:
-      - '**'
+    tag:
+      - 'v*'
+  workflow_dispatch:
 
 env:
   WORKSPACE: ${{ github.workspace }}
+
+permissions:
+  content: write
 
 jobs:
   release:
@@ -36,7 +40,6 @@ jobs:
 
       - name: Build ZIP File
         run: |
-          # TODO if [ ${SVN_TAG:0:4} = tags ]; then SVN_TAG=${SVN_TAG:5} fi
           rm ./example/de/testdb/*.sas7bdat
           rm ./example/en/testdb/*.sas7bdat
           rm -f ./resources/style/*.sas7bitm
@@ -46,7 +49,7 @@ jobs:
           rm ./example/bin/*.log
           rm ./example/bin/*.cmd
 
-          # TODO read SVN_TAG
+          # TODO use git tag
           export SVN_TAG=9.4
           zip -r sasunit.$SVN_TAG.linux.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
           zip -T sasunit.$SVN_TAG.${{ matrix.osName }}.zip
@@ -60,6 +63,7 @@ jobs:
           files: |
             LICENSE.md
             sasunit.*.zip
+
       - uses: actions/upload-artifact@v3
         with:
           name: logs
