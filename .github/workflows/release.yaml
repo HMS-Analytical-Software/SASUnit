@@ -99,7 +99,7 @@ jobs:
           draft: true
           prerelease: true
           allowUpdates: true
-          artifacts: LICENSE.md sasunit.*.zip
+          artifacts: sasunit.*.zip
 
             # - uses: actions/upload-artifact@v3
             #   with:
