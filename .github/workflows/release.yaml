@@ -46,24 +46,42 @@ jobs:
           ./example/bin/sasunit.9.4.${{ matrix.osName }}.de.overwrite.full.${{ matrix.extension }}
           ./example/bin/sasunit.9.4.${{ matrix.osName }}.en.overwrite.full.${{ matrix.extension }}
 
-      - name: Prepare Files
+      - name: Build ZIP File (Windows)
+        if: runner.os == "Windows"
         run: |
-          rm ./example/de/testdb/*.sas7bdat
-          rm ./example/en/testdb/*.sas7bdat
-          # rm ./resources/style/*.sas7bitm
-          rm ./example/bin/sasunit.setup.EE_*
-          rm ./example/bin/sasunit.9.4.linux.*
-          rm ./example/bin/*.xml
-          rm ./example/bin/*.log
-          rm ./example/bin/*.cmd
-          # rm -f *.sv*
-          
+          REM Cleanup
+
+          del example/bin/sasunit.setup.EE_*
+          del example/bin/sasunit.9.4.windows.*
+          del example/bin/*.xml
+          del example/bin/*.log
+          del example/bin/*.sh
+          del example/de/testdb/*.sas7bdat
+          del example/en/testdb/*.sas7bdat
+          del resources/*.sas7itm
+
+          REM Create and test zip file
+
+          7z.exe a -tzip sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip example\* saspgm\sasunit\* resources\* saspgm\template\* *.txt -xr!.sv*
+          7z.exe t sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip -r
+
 
       - name: Build ZIP File
-        uses: TheDoctor0/zip-release@0.7.1
-        with:
-          filename: sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip 
-          path: example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt 
+        if: runner.os == "Linux"
+        run: |
+          # clean up
+          rm example/bin/asunit.setup.EE_*
+          rm example/bin/asunit.9.4.linux.*
+          rm example/bin/.xml
+          rm example/bin/.log
+          rm example/bin/.cmd
+
+          rm example/de/testdb/*.sas7bdat
+          rm example/en/testdb/*.sas7bdat
+          rm resources/style/*.sas7bitm
+
+          zip -r sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
+          zip -T sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip
 
 
       - name: Create Release
