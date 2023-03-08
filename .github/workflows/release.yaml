@@ -15,7 +15,6 @@ permissions:
 jobs:
   release:
     name: Build Release Zip
-    continue-on-error: true
     strategy:
       matrix:
         platform: [CentOS]
@@ -50,8 +49,8 @@ jobs:
           rm ./example/bin/*.log
           rm ./example/bin/*.cmd
 
-          zip -r sasunit.${{ env.GITHUB_REF_NAME }}.linux.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
-          zip -T sasunit.${{ env.GITHUB_REF_NAME }}.${{ matrix.osName }}.zip
+          zip -r sasunit.${{ github.ref_name }}.linux.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
+          zip -T sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip
           
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
