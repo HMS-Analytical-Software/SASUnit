@@ -49,7 +49,7 @@ jobs:
       - if: ${{ matrix.platform == 'WIN10' }}
         name: Build ZIP File (Windows)
         run: |
-          REM Cleanup
+          # Cleanup
 
           del example/bin/sasunit.setup.EE_*
           del example/bin/sasunit.9.4.windows.*
@@ -60,7 +60,7 @@ jobs:
           del example/en/testdb/*.sas7bdat
           del resources/*.sas7itm
 
-          REM Create and test zip file
+          # Create and test zip file
 
           7z.exe a -tzip sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip example\* saspgm\sasunit\* resources\* saspgm\template\* *.txt -xr!.sv*
           7z.exe t sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip -r
