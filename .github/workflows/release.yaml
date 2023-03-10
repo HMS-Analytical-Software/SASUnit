@@ -80,7 +80,7 @@ jobs:
 
           rm example/de/testdb/*.sas7bdat
           rm example/en/testdb/*.sas7bdat
-          rm resources/style/*.sas7bitm
+          rm -f resources/style/*.sas7bitm
 
           # zip -r sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
           # zip -T sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip
