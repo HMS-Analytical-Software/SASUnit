@@ -26,11 +26,11 @@ jobs:
         include:
           - platform: WIN10
             extension: cmd
-            runner: Windows
+            runner: SASUnit_WIN10
             osName: windows
           - platform: CentOS
             extension: sh
-            runner: Linux
+            runner: SASUnit_CentOS
             osName: linux
 
     environment:
