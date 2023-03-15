@@ -4,8 +4,6 @@ on:
     branches:
       - '**'
 
-env:
-  WORKSPACE: "${{ github.workspace }}/dir with spaces"
 
 permissions: 
   contents: read
@@ -18,7 +16,7 @@ jobs:
     name: Test Path with Spaces
     runs-on: SASUnit_CentOS
     env:
-       dir-name: "dir\ with\ spaces"
+      WORKSPACE: "${{ github.workspace }}/dir with spaces"
     steps:
       - uses: actions/checkout@v3
         with:
@@ -63,3 +61,39 @@ jobs:
           max-annotations: '0'
           fail-on-error: false
       
+  etc-opt-var:
+    name: Test Distribution on Linux System (in /etc /opt /var)
+    runs-on: SASUnit_CentOS
+    env:
+      WORKSPACE: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/trim_line_endings
+      - uses: ./.github/actions/set_execution_rights
+
+      - run: |
+          rm -rf /etc/opt/SASUnit/*
+          rm -rf /opt/SASUnit/*
+          mkdir /opt/SASUnit/example
+          cp -r example/* /opt/SASUnit/example/
+          mkdir /opt/SASUnit/saspgm
+          cp -r saspgm/* /opt/SASUnit/saspgm/
+          mkdir /opt/SASUnit/resources
+          cp -r resources/* /opt/SASUnit/resources/
+
+          ../../example/bin/sasunit.setup.EE_CI_CentOS_etcoptvar.sh de
+          /opt/SASUnit/example/bin/sasunit.9.4.linux.de.overwrite.full.sh
+
+          cp /var/opt/SASUnit/example/de/logs/*run_all.log $WORKSPACE/example/doc/
+          cp /var/opt/SASUnit/example/de/doc/junit.xml $WORKSPACE/example/doc/
+
+      - name: Junit Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: Self Test Report (${{ matrix.osName }}, ${{ matrix.language }})
+          path: "**/junit.xml"
+          reporter: java-junit
+          # work-around: if this is > 0, the action checks for tracked files
+          # but git is not installed on our nodes
+          max-annotations: '0'
+          fail-on-error: false
