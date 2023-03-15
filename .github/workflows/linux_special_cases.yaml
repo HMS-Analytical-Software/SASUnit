@@ -27,10 +27,10 @@ jobs:
         with:
           path: ${{ env.dir-name }}
 
-      - uses: ./.github/actions/trim_line_endings
+      - uses: "./dir with spaces/.github/actions/trim_line_endings"
         with:
           dir: ${{ env.dir-name }}
-      - uses: ./.github/actions/set_execution_rights
+      - uses: "./dir with spaces/.github/actions/set_execution_rights"
         with:
           dir: ${{ env.dir-name }}
  
