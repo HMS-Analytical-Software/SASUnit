@@ -39,13 +39,16 @@ jobs:
       - name: Example Test
         working-directory: ${{ env.WORKSPACE }}
         run: |
-          ./example/bin/sasunit.setup.EE_CI_CentOS.en.sh
+          ls ./example/bin/
+          ls ./example/bin/sasunit.setup.EE_CI_CentOS.sh
+          
+          ./example/bin/sasunit.setup.EE_CI_CentOS.sh en
           ./example/bin/sasunit.9.4.linux.en.overwrite.fast.sh
 
       - name: Archive logs and reports
         uses: actions/upload-artifact@v3
         with:
-          name: logs_and_reports.${{ matrix.osName }}.${{ matrix.language }}
+          name: logs_and_reports.with_spaces
           path: |
             **/*run_all.log
             **/*junit.xml
@@ -53,7 +56,7 @@ jobs:
       - name: Junit Report
         uses: dorny/test-reporter@v1
         with:
-          name: Self Test Report (${{ matrix.osName }}, ${{ matrix.language }})
+          name: Test Report (Path with Spaces)
           path: "**/junit.xml"
           reporter: java-junit
           # work-around: if this is > 0, the action checks for tracked files
@@ -82,6 +85,10 @@ jobs:
           cp -r resources/* /opt/SASUnit/resources/
 
           ./example/bin/sasunit.setup.EE_CI_CentOS_etcoptvar.sh de
+
+          # TODO the first time running failed and it needed the command:
+          # mkdir -p /var/opt/SASUnit/example/de/logs
+          # to run. This folder is not deleted above? Should it?
           /opt/SASUnit/example/bin/sasunit.9.4.linux.de.overwrite.full.sh
 
           cp /var/opt/SASUnit/example/de/logs/*run_all.log $WORKSPACE/example/doc/
@@ -90,7 +97,7 @@ jobs:
       - name: Junit Report
         uses: dorny/test-reporter@v1
         with:
-          name: Self Test Report (${{ matrix.osName }}, ${{ matrix.language }})
+          name: Test Report (etc-opt-var)
           path: "**/junit.xml"
           reporter: java-junit
           # work-around: if this is > 0, the action checks for tracked files
