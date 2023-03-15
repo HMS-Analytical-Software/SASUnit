@@ -19,9 +19,6 @@ jobs:
     runs-on: SASUnit_CentOS
     env:
        dir-name: "dir\ with\ spaces"
-    defaults:
-      run:
-        working-directory: "dir with spaces"
     steps:
       - uses: actions/checkout@v3
         with:
@@ -38,6 +35,11 @@ jobs:
         working-directory: ${{ env.WORKSPACE }}
         run: |
           ./bin/sasunit.setup.EE_CI_CentOS.sh en
+          pwd
+          ls bin
+          ls bin/sasunit.9.4.CentOS.en.fast.sh
+          ls ./bin/sasunit.9.4.CentOS.en.fast.sh
+          file ./bin/sasunit.9.4.CentOS.en.fast.sh
           ./bin/sasunit.9.4.CentOS.en.fast.sh
           ./bin/sasunit.9.4.CentOS.en.overwrite.fast.sh
           
