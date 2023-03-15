@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          directory: ${{ env.dir-name }}
+          path: ${{ env.dir-name }}
 
       - uses: ./.github/actions/trim_line_endings
         with:
