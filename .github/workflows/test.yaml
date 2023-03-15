@@ -91,7 +91,7 @@ jobs:
       - name: Junit Report
         uses: dorny/test-reporter@v1
         with:
-          name: Self Test Report (${{ matrix.osName }}, ${{ matrix.language }})
+          name: Test Report (${{ matrix.osName }}, ${{ matrix.language }})
           path: "**/junit.xml"
           reporter: java-junit
           # work-around: if this is > 0, the action checks for tracked files
@@ -116,12 +116,12 @@ jobs:
         with:
           dir: ${{ env.WORKSPACE }} 
 
-            # - name: Self Test
-            #   working-directory: ${{ env.WORKSPACE }}
-            #   run: |
-            #     ./bin/sasunit.setup.EE_CI_CentOS.sh en
-            #     ./bin/sasunit.9.4.linux.en.fast.sh
-            #     ./bin/sasunit.9.4.linux.en.overwrite.fast.sh
+      - name: Self Test
+        working-directory: ${{ env.WORKSPACE }}
+        run: |
+          ./bin/sasunit.setup.EE_CI_CentOS.sh en
+          ./bin/sasunit.9.4.linux.en.fast.sh
+          ./bin/sasunit.9.4.linux.en.overwrite.fast.sh
           
       - name: Example Test
         working-directory: ${{ env.WORKSPACE }}
