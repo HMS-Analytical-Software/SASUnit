@@ -20,7 +20,8 @@ jobs:
     env:
       dir-name: "dir with spaces"
     defaults:
-      working-directory: "dir with spaces"
+      run:
+        working-directory: "dir with spaces"
     steps:
       - uses: actions/checkout@v3
         with:
