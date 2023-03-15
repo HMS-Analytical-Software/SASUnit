@@ -18,7 +18,7 @@ jobs:
     name: Test Path with Spaces
     runs-on: SASUnit_CentOS
     env:
-      dir-name: "dir\ with\ spaces"
+       ir-name: "dir\ with\ spaces"
     defaults:
       run:
         working-directory: "dir with spaces"
@@ -35,12 +35,14 @@ jobs:
           dir: ${{ env.dir-name }}
  
       - name: Self Test
+        working-directory: "dir with spaces"
         run: |
           ./bin/sasunit.setup.EE_CI_CentOS.sh en
           ./bin/sasunit.9.4.CentOS.en.fast.sh
           ./bin/sasunit.9.4.CentOS.en.overwrite.fast.sh
           
       - name: Example Test
+        working-directory: "dir with spaces"
         run: |
           ./example/bin/sasunit.setup.EE_CI_CentOS.en.sh
           ./example/bin/sasunit.9.4.linux.en.overwrite.fast.sh
