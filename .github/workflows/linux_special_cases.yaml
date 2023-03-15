@@ -1,0 +1,65 @@
+
+on:
+  push:
+    branches:
+      - '**'
+
+env:
+  WORKSPACE: ${{ github.workspace }}
+
+permissions: 
+  contents: read
+  pages: write
+  id-token: write
+  checks: write
+
+jobs:
+  with_spaces:
+    name: Test Path with Spaces
+    runs-on: SASUnit_CentOS
+    env:
+      dir-name: "dir with spaces"
+    defaults:
+      working-directory: "dir with spaces"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          directory: ${{ env.dir-name }}
+
+      - uses: ./.github/actions/trim_line_endings
+        with:
+          dir: ${{ env.dir-name }}
+      - uses: ./.github/actions/set_execution_rights
+        with:
+          dir: ${{ env.dir-name }}
+ 
+      - name: Self Test
+        run: |
+          ./bin/sasunit.setup.EE_CI_CentOS.sh en
+          ./bin/sasunit.9.4.CentOS.en.fast.sh
+          ./bin/sasunit.9.4.CentOS.en.overwrite.fast.sh
+          
+      - name: Example Test
+        run: |
+          ./example/bin/sasunit.setup.EE_CI_CentOS.en.sh
+          ./example/bin/sasunit.9.4.linux.en.overwrite.fast.sh
+
+      - name: Archive logs and reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: logs_and_reports.${{ matrix.osName }}.${{ matrix.language }}
+          path: |
+            **/*run_all.log
+            **/*junit.xml
+
+      - name: Junit Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: Self Test Report (${{ matrix.osName }}, ${{ matrix.language }})
+          path: "**/junit.xml"
+          reporter: java-junit
+          # work-around: if this is > 0, the action checks for tracked files
+          # but git is not installed on our nodes
+          max-annotations: '0'
+          fail-on-error: false
+      
