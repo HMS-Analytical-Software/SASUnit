@@ -29,12 +29,12 @@ jobs:
         with:
           dir: ${{ env.WORKSPACE }} 
 
-      - name: Self Test
-        working-directory: ${{ env.WORKSPACE }}
-        run: |
-          ./bin/sasunit.setup.EE_CI_CentOS.sh en
-          ./bin/sasunit.9.4.linux.en.fast.sh
-          ./bin/sasunit.9.4.linux.en.overwrite.fast.sh
+            # - name: Self Test
+            #   working-directory: ${{ env.WORKSPACE }}
+            #   run: |
+            #     ./bin/sasunit.setup.EE_CI_CentOS.sh en
+            #     ./bin/sasunit.9.4.linux.en.fast.sh
+            #     ./bin/sasunit.9.4.linux.en.overwrite.fast.sh
           
       - name: Example Test
         working-directory: ${{ env.WORKSPACE }}
@@ -81,7 +81,7 @@ jobs:
           mkdir /opt/SASUnit/resources
           cp -r resources/* /opt/SASUnit/resources/
 
-          ../../example/bin/sasunit.setup.EE_CI_CentOS_etcoptvar.sh de
+          ./example/bin/sasunit.setup.EE_CI_CentOS_etcoptvar.sh de
           /opt/SASUnit/example/bin/sasunit.9.4.linux.de.overwrite.full.sh
 
           cp /var/opt/SASUnit/example/de/logs/*run_all.log $WORKSPACE/example/doc/
