@@ -1,8 +1,12 @@
+
+name: Setting Execution Rights of Shell Scripts
+
+inputs:
+  dir:
+    default: "."
+
 runs:
   using: "composite"
-  inputs:
-    dir:
-      default: "."
   steps:
     - name: Set execution rights
       shell: bash

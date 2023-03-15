@@ -1,8 +1,11 @@
+
+name: 'Remove Windows Line Endings'
+inputs:
+  dir:
+    required: true
+    default: "."
 runs:
   using: "composite"
-  inputs:
-    dir:
-      default: "."
   steps:
     - name: Remove Line Endings
       shell: bash
