@@ -39,9 +39,6 @@ jobs:
       - name: Example Test
         working-directory: ${{ env.WORKSPACE }}
         run: |
-          ls ./example/bin/
-          ls ./example/bin/sasunit.setup.EE_CI_CentOS.sh
-          
           ./example/bin/sasunit.setup.EE_CI_CentOS.sh en
           ./example/bin/sasunit.9.4.linux.en.overwrite.fast.sh
 
