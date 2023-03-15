@@ -35,13 +35,8 @@ jobs:
         working-directory: ${{ env.WORKSPACE }}
         run: |
           ./bin/sasunit.setup.EE_CI_CentOS.sh en
-          pwd
-          ls bin
-          ls bin/sasunit.9.4.CentOS.en.fast.sh
-          ls ./bin/sasunit.9.4.CentOS.en.fast.sh
-          file ./bin/sasunit.9.4.CentOS.en.fast.sh
-          ./bin/sasunit.9.4.CentOS.en.fast.sh
-          ./bin/sasunit.9.4.CentOS.en.overwrite.fast.sh
+          ./bin/sasunit.9.4.linux.en.fast.sh
+          ./bin/sasunit.9.4.linux.en.overwrite.fast.sh
           
       - name: Example Test
         working-directory: ${{ env.WORKSPACE }}
