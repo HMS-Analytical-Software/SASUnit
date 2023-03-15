@@ -5,7 +5,7 @@ on:
       - '**'
 
 env:
-  WORKSPACE: ${{ github.workspace }}
+  WORKSPACE: "${{ github.workspace }}/dir with spaces"
 
 permissions: 
   contents: read
@@ -25,24 +25,24 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          path: ${{ env.dir-name }}
+          path: ${{ env.WORKSPACE }}
 
       - uses: "./dir with spaces/.github/actions/trim_line_endings"
         with:
-          dir: ${{ env.dir-name }}
+          dir: ${{ env.WORKSPACE }}
       - uses: "./dir with spaces/.github/actions/set_execution_rights"
         with:
-          dir: ${{ env.dir-name }}
- 
+          dir: ${{ env.WORKSPACE }} 
+
       - name: Self Test
-        working-directory: "dir with spaces"
+        working-directory: ${{ env.WORKSPACE }}
         run: |
           ./bin/sasunit.setup.EE_CI_CentOS.sh en
           ./bin/sasunit.9.4.CentOS.en.fast.sh
           ./bin/sasunit.9.4.CentOS.en.overwrite.fast.sh
           
       - name: Example Test
-        working-directory: "dir with spaces"
+        working-directory: ${{ env.WORKSPACE }}
         run: |
           ./example/bin/sasunit.setup.EE_CI_CentOS.en.sh
           ./example/bin/sasunit.9.4.linux.en.overwrite.fast.sh
