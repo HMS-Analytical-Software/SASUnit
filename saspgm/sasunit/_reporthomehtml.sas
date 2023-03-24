@@ -92,6 +92,7 @@
       SET &i_repdata.;
 
       length Category $20 idColumn parameterColumn valueColumn $4000 sortColumn 8;
+      keep Category idColumn parameterColumn valueColumn sortColumn;
 
       IF _n_=1 THEN DO;
          /*** Section PROJECT                                                             ***/
@@ -164,13 +165,11 @@
             SortColumn+1;
             output;
          end;
-         if getoption("LOG") ne "" then do;
-            idColumn = "014";
-            parameterColumn="^_";
-            valueColumn=catt ('^{style [flyover="', getoption("LOG"), '" url="', "file:///" , getoption("LOG"), '"]', resolve('%_stdPath (i_root=&g_root, i_path=%sysfunc(getoption(log)))'), "}");
-            SortColumn+1;
-            output;
-         end;
+         idColumn = "014";
+         parameterColumn="^_";
+         valueColumn=catt ("^{style [flyover=""&g_logFolder./log4sasunit_run_all.log"" url=""file:///&g_logFolder./log4sasunit_run_all.log""]", resolve("%_stdPath (i_root=&g_root, i_path=&g_logFolder./log4sasunit_run_all.log)"), "}");
+         SortColumn+1;
+         output;
          idColumn = "040";
          parameterColumn="^{style [flyover=""&g_logFolder.""]%str(&)g_logFolder}";
          valueColumn=catt ("^{style [flyover=""&g_logFolder."" url=""file:///&g_logFolder.""]", tsu_logFolder, "}");
