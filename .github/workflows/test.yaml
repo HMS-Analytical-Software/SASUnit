@@ -28,12 +28,12 @@ jobs:
             extension: cmd
             runner: SASUnit_WIN10
             osName: windows
-            pDrive: P:/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit
+            pDrive: P:/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit/Testläufe
           - platform: CentOS
             extension: sh
             runner: SASUnit_CentOS
             osName: linux
-            pDrive: /mnt/hms/laufwerke/p/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit 
+            pDrive: /mnt/hms/laufwerke/p/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit/Testläufe
 
     environment:
       name: github-pages
