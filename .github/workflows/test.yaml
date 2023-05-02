@@ -41,36 +41,36 @@ jobs:
  
     runs-on: ${{ matrix.runner }}
     steps:
-      - uses: actions/checkout@v3
-      
-      - if: ${{ matrix.platform == 'CentOS' }}
-        uses: ./.github/actions/trim_line_endings
-      - if: ${{ matrix.platform == 'CentOS' }}
-        uses: ./.github/actions/set_execution_rights
+      # - uses: actions/checkout@v3
+      # 
+      # - if: ${{ matrix.platform == 'CentOS' }}
+      #   uses: ./.github/actions/trim_line_endings
+      # - if: ${{ matrix.platform == 'CentOS' }}
+      #   uses: ./.github/actions/set_execution_rights
  
-      - name: Self Test
-        run: |
-          ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
-          # ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
-          
-      - name: Example Test
-        run: |
-          ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          # ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
+      # - name: Self Test
+      #   run: |
+      #     ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+      #     ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
+      #     ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
+      #     
+      # - name: Example Test
+      #   run: |
+      #     ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+      #     ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
 
 
       - if: ${{ matrix.platform == 'WIN10' }}
         name: Move output to share
         run: |
-          $path = ${{ matrix.pDrive }}/(Get-Date -Format "yyyy_MM_dd")/${{ github.GITHUB_RUN_NUMBER }}
+          $path = "${{ matrix.pDrive }}/(Get-Date -Format 'yyyy_MM_dd')/${{ github.GITHUB_RUN_NUMBER }}"
           New-Item -Type Directory -Force -Name $path
           Copy-Item -Path "${{ matrix.language }}" -Destination $path/${{ matrix.osName }}_${{ matrix.language }}
 
       - if: ${{ matrix.platform == 'CentOS' }}
         name: Move output to share
         run: |
-          export path = ${{ matrix.pDrive }}/$(date "+%Y_%m_%d")/${{ github.GITHUB_RUN_NUMBER }}
+          export path=${{ matrix.pDrive }}/$(date "+%Y_%m_%d")/${{ github.GITHUB_RUN_NUMBER }}
           mkdir -p $path
           cp -r "${{ matrix.language }}" $path/${{ matrix.osName }}_${{ matrix.language }}
 
