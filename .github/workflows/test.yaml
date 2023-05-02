@@ -73,7 +73,8 @@ jobs:
           kinit samuel.melm@ANALYTICAL-SOFTWARE.EU -k -t /home/github/samuel.melm.keytab
           export path=${{ matrix.pDrive }}/$(date "+%Y_%m_%d")/${{ github.GITHUB_RUN_NUMBER }}
           mkdir -p $path
-          cp -r "${{ matrix.language }}" $path/${{ matrix.osName }}_${{ matrix.language }}
+          # cp -r "${{ matrix.language }}" $path/${{ matrix.osName }}_${{ matrix.language }}
+          cp -r doc $path/${{ matrix.osName }}_${{ matrix.language }}
 
       - name: Setup Github Pages
         uses: actions/configure-pages@v3
