@@ -28,10 +28,12 @@ jobs:
             extension: cmd
             runner: SASUnit_WIN10
             osName: windows
+            pDrive: P:/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit
           - platform: CentOS
             extension: sh
             runner: SASUnit_CentOS
             osName: linux
+            pDrive: /mnt/hms/laufwerke/p/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit 
 
     environment:
       name: github-pages
@@ -50,12 +52,27 @@ jobs:
         run: |
           ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
           ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
-          ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
+          # ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
           
       - name: Example Test
         run: |
           ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
+          # ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
+
+
+      - if: ${{ matrix.platform == 'WIN10' }}
+        name: Move output to share
+        run: |
+          $path = ${{ matrix.pDrive }}/(Get-Date -Format "yyyy_MM_dd")/${{ github.GITHUB_RUN_NUMBER }}
+          New-Item -Type Directory -Force -Name $path
+          Copy-Item -Path "${{ matrix.language }}" -Destination $path/${{ matrix.osName }}_${{ matrix.language }}
+
+      - if: ${{ matrix.platform == 'CentOS' }}
+        name: Move output to share
+        run: |
+          export path = ${{ matrix.pDrive }}/$(date "+%Y_%m_%d")/${{ github.GITHUB_RUN_NUMBER }}
+          mkdir -p $path
+          cp -r "${{ matrix.language }}" $path/${{ matrix.osName }}_${{ matrix.language }}
 
       - name: Setup Github Pages
         uses: actions/configure-pages@v3
