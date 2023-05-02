@@ -76,18 +76,18 @@ jobs:
           # cp -r "${{ matrix.language }}" $path/${{ matrix.osName }}_${{ matrix.language }}
           cp -r doc $path/${{ matrix.osName }}_${{ matrix.language }}
 
-      - name: Setup Github Pages
-        uses: actions/configure-pages@v3
+          #- name: Setup Github Pages
+          #  uses: actions/configure-pages@v3
 
-      - name: Archive logs and reports
-        uses: actions/upload-artifact@v3
-        with:
-          name: logs_and_reports.${{ matrix.osName }}.${{ matrix.language }}
-          path: |
-            **/*run_all.log
-            **/*junit.xml
-            ${{ matrix.language }}/doc
-            example/${{ matrix.language }}/doc
+          #- name: Archive logs and reports
+          #  uses: actions/upload-artifact@v3
+          #  with:
+          #    name: logs_and_reports.${{ matrix.osName }}.${{ matrix.language }}
+          #    path: |
+          #      **/*run_all.log
+          #      **/*junit.xml
+          #      ${{ matrix.language }}/doc
+          #      example/${{ matrix.language }}/doc
 
       # Publish one HTML report to github pages
       # TODO the plugin does not support powershell..
