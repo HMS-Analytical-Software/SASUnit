@@ -63,7 +63,8 @@ jobs:
       - if: ${{ matrix.platform == 'WIN10' }}
         name: Move output to share
         run: |
-          $path = "${{ matrix.pDrive }}/(Get-Date -Format 'yyyy_MM_dd')/${{ github.GITHUB_RUN_NUMBER }}"
+          Get-PSDrive
+          $path = "${{ matrix.pDrive }}/$(Get-Date -Format 'yyyy_MM_dd')/${{ github.GITHUB_RUN_NUMBER }}"
           New-Item -Type Directory -Force $path
           Copy-Item -Path "${{ matrix.language }}" -Destination $path/${{ matrix.osName }}_${{ matrix.language }}
 
