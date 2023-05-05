@@ -35,10 +35,6 @@ jobs:
             runner: SASUnit_CentOS
             osName: linux
 
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
- 
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v3
@@ -63,16 +59,16 @@ jobs:
       - if: ${{ matrix.platform == 'WIN10' }}
         name: Move output to share
         run: |
-          $path = "${{ env.P_DRIVE_WIN }}/$(Get-Date -Format 'yyyy_MM_dd')/${{ github.GITHUB_RUN_NUMBER }}"
+          $path = "${{ env.P_DRIVE_WIN }}/$(Get-Date -Format 'yyyy_MM_dd')/${{ github.run_number }}"
           New-Item -Type Directory -Force $path
-          Copy-Item -Path "${{ matrix.language }}" -Destination $path/${{ matrix.osName }}_${{ matrix.language }}
+          Copy-Item -Recurse -Path "${{ matrix.language }}" -Destination $path/${{ matrix.osName }}_${{ matrix.language }}
 
 
       - if: ${{ matrix.platform == 'CentOS' }}
         name: Move output to share
         run: |
           kinit samuel.melm@ANALYTICAL-SOFTWARE.EU -k -t /home/github/samuel.melm.keytab
-          export path=${{ env.P_DRIVE_LINUX }}/$(date "+%Y_%m_%d")/${{ github.GITHUB_RUN_NUMBER }}
+          export path=${{ env.P_DRIVE_LINUX }}/$(date "+%Y_%m_%d")/${{ github.run_number }}
           mkdir -p $path
           cp -r "${{ matrix.language }}" $path/${{ matrix.osName }}_${{ matrix.language }}
 
@@ -98,115 +94,131 @@ jobs:
           max-annotations: '0'
           fail-on-error: false
 
-            #  with_spaces:
-            #    name: Test Path with Spaces
-            #    runs-on: SASUnit_CentOS
-            #    env:
-            #      WORKSPACE: "${{ github.workspace }}/dir with spaces"
-            #    steps:
-            #      - uses: actions/checkout@v3
-            #        with:
-            #          path: ${{ env.WORKSPACE }}
-            # 
-            #      - uses: "./dir with spaces/.github/actions/trim_line_endings"
-            #        with:
-            #          dir: ${{ env.WORKSPACE }}
-            #      - uses: "./dir with spaces/.github/actions/set_execution_rights"
-            #        with:
-            #          dir: ${{ env.WORKSPACE }} 
-            # 
-            #      - name: Self Test
-            #        working-directory: ${{ env.WORKSPACE }}
-            #        run: |
-            #          ./bin/sasunit.setup.EE_CI_CentOS.sh en
-            #          ./bin/sasunit.9.4.linux.en.fast.sh
-            #          ./bin/sasunit.9.4.linux.en.overwrite.fast.sh
-            #          
-            #      - name: Example Test
-            #        working-directory: ${{ env.WORKSPACE }}
-            #        run: |
-            #          ./example/bin/sasunit.setup.EE_CI_CentOS.sh en
-            #          ./example/bin/sasunit.9.4.linux.en.overwrite.fast.sh
-            # 
-            #      - name: Archive logs and reports
-            #        uses: actions/upload-artifact@v3
-            #        with:
-            #          name: logs_and_reports.with_spaces
-            #          path: |
-            #            **/*run_all.log
-            #            **/*junit.xml
-            # 
-            #      - name: Junit Report
-            #        uses: dorny/test-reporter@v1
-            #        with:
-            #          name: Test Report (Path with Spaces)
-            #          path: "**/junit.xml"
-            #          reporter: java-junit
-            #          # work-around: if this is > 0, the action checks for tracked files
-            #          # but git is not installed on our nodes
-            #          max-annotations: '0'
-            #          fail-on-error: false
-            #      
-            #  etc-opt-var:
-            #    name: Test Distribution on Linux System (in /etc /opt /var)
-            #    runs-on: SASUnit_CentOS
-            #    env:
-            #      WORKSPACE: ${{ github.workspace }}
-            #    steps:
-            #      - uses: actions/checkout@v3
-            #      - uses: ./.github/actions/trim_line_endings
-            #      - uses: ./.github/actions/set_execution_rights
-            # 
-            #      - run: |
-            #          rm -rf /etc/opt/SASUnit/*
-            #          rm -rf /opt/SASUnit/*
-            #          mkdir /opt/SASUnit/example
-            #          cp -r example/* /opt/SASUnit/example/
-            #          mkdir /opt/SASUnit/saspgm
-            #          cp -r saspgm/* /opt/SASUnit/saspgm/
-            #          mkdir /opt/SASUnit/resources
-            #          cp -r resources/* /opt/SASUnit/resources/
-            # 
-            #          ./example/bin/sasunit.setup.EE_CI_CentOS_etcoptvar.sh de
-            # 
-            #          # TODO the first time running failed and it needed the command:
-            #          # mkdir -p /var/opt/SASUnit/example/de/logs
-            #          # to run. This folder is not deleted above? Should it?
-            #          /opt/SASUnit/example/bin/sasunit.9.4.linux.de.overwrite.full.sh
-            # 
-            #          cp /var/opt/SASUnit/example/de/logs/*run_all.log $WORKSPACE/example/doc/
-            #          cp /var/opt/SASUnit/example/de/doc/junit.xml $WORKSPACE/example/doc/
-            # 
-            #      - name: Junit Report
-            #        uses: dorny/test-reporter@v1
-            #        with:
-            #          name: Test Report (etc-opt-var)
-            #          path: "**/junit.xml"
-            #          reporter: java-junit
-            #          # work-around: if this is > 0, the action checks for tracked files
-            #          # but git is not installed on our nodes
-            #          max-annotations: '0'
-            #          fail-on-error: false
-            #
-            #
-            #  github_pages:
-            #    name: Upload Results to Github Pages
-            #    runs-on: SASUnit_CentOS
-            #    needs: tests
-            #    steps:
-            #      - name: Create index.html for pages
-            #        run:
-            #          ls ${{ env.P_DRIVE_LINUX }} 
-            #
-            #      - name: Setup Github Pages
-            #        uses: actions/configure-pages@v3
-            #
-            #      - name: Upload report to Github Pages
-            #        uses: actions/upload-pages-artifact@v1
-            #        with:
-            #          path: 
-            #            '${{ matrix.language }}/doc'
-            #
-            #      - name: Deploy GitHub Pages
-            #        id: deployment
-            #        uses: actions/deploy-pages@v1
+  with_spaces:
+    name: Test Path with Spaces
+    runs-on: SASUnit_CentOS
+    env:
+      WORKSPACE: "${{ github.workspace }}/dir with spaces"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: ${{ env.WORKSPACE }}
+ 
+      - uses: "./dir with spaces/.github/actions/trim_line_endings"
+        with:
+          dir: ${{ env.WORKSPACE }}
+      - uses: "./dir with spaces/.github/actions/set_execution_rights"
+        with:
+          dir: ${{ env.WORKSPACE }} 
+ 
+      - name: Self Test
+        working-directory: ${{ env.WORKSPACE }}
+        run: |
+          ./bin/sasunit.setup.EE_CI_CentOS.sh en
+          ./bin/sasunit.9.4.linux.en.fast.sh
+          ./bin/sasunit.9.4.linux.en.overwrite.fast.sh
+          
+      - name: Example Test
+        working-directory: ${{ env.WORKSPACE }}
+        run: |
+          ./example/bin/sasunit.setup.EE_CI_CentOS.sh en
+          ./example/bin/sasunit.9.4.linux.en.overwrite.fast.sh
+ 
+      - name: Archive logs and reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: logs_and_reports.with_spaces
+          path: |
+            **/*run_all.log
+            **/*junit.xml
+ 
+      - name: Junit Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Report (Path with Spaces)
+          path: "**/junit.xml"
+          reporter: java-junit
+          # work-around: if this is > 0, the action checks for tracked files
+          # but git is not installed on our nodes
+          max-annotations: '0'
+          fail-on-error: false
+      
+  etc-opt-var:
+    name: Test Distribution on Linux System (in /etc /opt /var)
+    runs-on: SASUnit_CentOS
+    env:
+      WORKSPACE: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/trim_line_endings
+      - uses: ./.github/actions/set_execution_rights
+ 
+      - run: |
+          rm -rf /etc/opt/SASUnit/*
+          rm -rf /opt/SASUnit/*
+          mkdir /opt/SASUnit/example
+          cp -r example/* /opt/SASUnit/example/
+          mkdir /opt/SASUnit/saspgm
+          cp -r saspgm/* /opt/SASUnit/saspgm/
+          mkdir /opt/SASUnit/resources
+          cp -r resources/* /opt/SASUnit/resources/
+ 
+          ./example/bin/sasunit.setup.EE_CI_CentOS_etcoptvar.sh de
+ 
+          # TODO the first time running failed and it needed the command:
+          # mkdir -p /var/opt/SASUnit/example/de/logs
+          # to run. This folder is not deleted above? Should it?
+          /opt/SASUnit/example/bin/sasunit.9.4.linux.de.overwrite.full.sh
+ 
+          cp /var/opt/SASUnit/example/de/logs/*run_all.log $WORKSPACE/example/doc/
+          cp /var/opt/SASUnit/example/de/doc/junit.xml $WORKSPACE/example/doc/
+ 
+      - name: Junit Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Report (etc-opt-var)
+          path: "**/junit.xml"
+          reporter: java-junit
+          # work-around: if this is > 0, the action checks for tracked files
+          # but git is not installed on our nodes
+          max-annotations: '0'
+          fail-on-error: false
+
+  github_pages:
+    name: Upload Results to Github Pages
+    runs-on: SASUnit_CentOS
+    needs: tests
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Create index.html for pages
+        run:
+          export timestamp=$(date "+%Y_%m_%d")
+          export path=${{ env.P_DRIVE_LINUX }}/$timestamp/${{ gituhb.run_number }} 
+          export links=$(ls -1 $path | sed 's;^\(.*\)$;<a href="\1/doc/index.html">\1</a>;')
+          echo <!DOCTYPE html> \
+            <html lang="en"> \
+            <head> \
+              <title>Test Run ${{ github.run_number }}</title> \
+            </head> \
+            <body> \
+              <h2>Test Run ${{ github.run_number }} ($timestamp)</h2> \
+              <ul style="list-style: none;"> \
+                $links \
+              </ul> \
+            </body> \
+          </html>  >> index.html
+
+      - name: Setup Github Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload report to Github Pages
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 
+            '${{ matrix.language }}/doc'
+
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
