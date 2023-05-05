@@ -28,7 +28,7 @@ jobs:
             extension: cmd
             runner: SASUnit_WIN10
             osName: windows
-            pDrive: P:/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit/Testläufe
+            pDrive: //analytical-software.eu/projekte/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit/Testläufe
           - platform: CentOS
             extension: sh
             runner: SASUnit_CentOS
