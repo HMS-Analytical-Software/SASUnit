@@ -193,7 +193,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Create index.html for pages
-        run:
+        run: |
           export timestamp=$(date "+%Y_%m_%d")
           export path=${{ env.P_DRIVE_LINUX }}/$timestamp/${{ gituhb.run_number }} 
           export links=$(ls -1 $path | sed 's;^\(.*\)$;<a href="\1/doc/index.html">\1</a>;')
