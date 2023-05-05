@@ -195,7 +195,7 @@ jobs:
       - name: Create index.html for pages
         run: |
           export timestamp=$(date "+%Y_%m_%d")
-          export path=${{ env.P_DRIVE_LINUX }}/$timestamp/${{ gituhb.run_number }} 
+          export path=${{ env.P_DRIVE_LINUX }}/$timestamp/${{ github.run_number }} 
           export links=$(ls -1 $path | sed 's;^\(.*\)$;<a href="\1/doc/index.html">\1</a>;')
           echo <!DOCTYPE html> \
             <html lang="en"> \
