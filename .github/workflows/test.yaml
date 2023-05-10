@@ -203,6 +203,8 @@ jobs:
           export links=$(ls -1 $path | sed 's;^\(.*\)$;<a href="\1/doc/index.html">\1</a>;')
           export index_html=$path/index.html
 
+          echo links $links
+
           echo '<!DOCTYPE html>' >> $index_html
           echo '<html lang="en">' >> $index_html
             echo '<head>' >> $index_html
@@ -211,7 +213,7 @@ jobs:
             echo '<body>' >> $index_html
               echo '<h2>Test Run ${{ github.run_number }} ($timestamp)</h2>' >> $index_html
               echo '<ul style="list-style: none;">' >> $index_html
-                echo '$links' >> $index_html
+                echo $links >> $index_html
               echo '</ul>' >> $index_html
             echo '</body>' >> $index_html
           echo '</html>'  >> $index_html
