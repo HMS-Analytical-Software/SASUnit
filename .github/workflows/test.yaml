@@ -226,7 +226,7 @@ jobs:
           tar \
             --dereference --hard-dereference \
             --directory $path \
-            -cvf "${{ runner.temp }}/page_artifact.tar" \
+            -cf "${{ runner.temp }}/page_artifact.tar" \
             --exclude=.git --exclude=.github \
             .
 
