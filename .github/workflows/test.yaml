@@ -230,6 +230,13 @@ jobs:
             --exclude=.git --exclude=.github \
             .
 
+          export rc=$?
+          if [ $rc -eq 1 ]; then
+            echo "some files were changed during reading"
+          elif [ $rc -ge 2 ]; then
+            echo "building tar failed"
+          fi
+
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
