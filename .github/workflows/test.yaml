@@ -197,18 +197,21 @@ jobs:
           export timestamp=$(date "+%Y_%m_%d")
           export path=${{ env.P_DRIVE_LINUX }}/$timestamp/${{ github.run_number }} 
           export links=$(ls -1 $path | sed 's;^\(.*\)$;<a href="\1/doc/index.html">\1</a>;')
-          echo <!DOCTYPE html> \
-            <html lang="en"> \
-            <head> \
-              <title>Test Run ${{ github.run_number }}</title> \
-            </head> \
-            <body> \
-              <h2>Test Run ${{ github.run_number }} ($timestamp)</h2> \
-              <ul style="list-style: none;"> \
-                $links \
-              </ul> \
-            </body> \
-          </html>  >> index.html
+          export index_html=$path/index.html
+
+          echo '<!DOCTYPE html>' >> $index_html
+          echo '<html lang="en">' >> $index_html
+            echo '<head>' >> $index_html
+              echo '<title>Test Run ${{ github.run_number }}</title>' >> $index_html
+            echo '</head>' >> $index_html
+            echo '<body>' >> $index_html
+              echo '<h2>Test Run ${{ github.run_number }} ($timestamp)</h2>' >> $index_html
+              echo '<ul style="list-style: none;">' >> $index_html
+                echo '$links' >> $index_html
+              echo '</ul>' >> $index_html
+            echo '</body>' >> $index_html
+          echo '</html>'  >> $index_html
+          cat $index_html
 
       - name: Setup Github Pages
         uses: actions/configure-pages@v3
