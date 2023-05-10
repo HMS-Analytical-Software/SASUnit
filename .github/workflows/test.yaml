@@ -195,6 +195,8 @@ jobs:
     steps:
       - name: Create index.html for pages
         run: |
+          kinit samuel.melm@ANALYTICAL-SOFTWARE.EU -k -t /home/github/samuel.melm.keytab
+
           export timestamp=$(date "+%Y_%m_%d")
           # export path=${{ env.P_DRIVE_LINUX }}/$timestamp/${{ github.run_number }} 
           export path=/mnt/hms/laufwerke/p/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit/Testruns/2023_05_05/27
