@@ -226,7 +226,7 @@ jobs:
           tar \
             --dereference --hard-dereference \
             --directory $path \
-            -cf "${{ runner.temp }}/page_artifact.tar" \
+            -cf "${{ runner.temp }}/artifact.tar" \
             --exclude=.git --exclude=.github \
             . || true # prevents the command from returning 1 as a warning which fails the entire workflow
 
@@ -234,7 +234,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ runner.temp }}/page_artifact.tar
+          path: ${{ runner.temp }}/artifact.tar
           if-no-files-found: error
           # name: ${{ inputs.name }}
             # retention-days: ${{ inputs.retention-days }}
