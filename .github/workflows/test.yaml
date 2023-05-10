@@ -193,7 +193,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Create index.html for pages
+      - name: Setup Github Pages
+        uses: actions/configure-pages@v3
+
+      - name: Build Page
         run: |
           kinit samuel.melm@ANALYTICAL-SOFTWARE.EU -k -t /home/github/samuel.melm.keytab
 
@@ -219,14 +222,21 @@ jobs:
           echo '</html>'  >> $index_html
           cat $index_html
 
-      - name: Setup Github Pages
-        uses: actions/configure-pages@v3
+          chmod -c -R +rX $path
+          tar \
+            --dereference --hard-dereference \
+            --directory $path \
+            -cvf "${{ runner.temp }}/page_artifact.tar" \
+            --exclude=.git --exclude=.github \
+            .
 
-      - name: Upload report to Github Pages
-        uses: actions/upload-pages-artifact@v1
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         with:
-          path: 
-            '${{ matrix.language }}/doc'
+          path: ${{ runner.temp }}/page_artifact.tar
+          if-no-files-found: error
+          # name: ${{ inputs.name }}
+            # retention-days: ${{ inputs.retention-days }}
 
       - name: Deploy GitHub Pages
         id: deployment
