@@ -61,9 +61,6 @@ jobs:
 
           # Create and test zip file
 
-          # 7z.exe a -tzip sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip example\* saspgm\sasunit\* resources\* saspgm\template\* *.txt -xr!.sv*
-          # 7z.exe t sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip -r
-
           7z.exe a -tzip sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip example\* saspgm\sasunit\* resources\* saspgm\template\* *.txt "-xr!.sv*"
           7z.exe t sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip -r
 
@@ -82,11 +79,10 @@ jobs:
           rm example/en/testdb/*.sas7bdat
           rm -f resources/style/*.sas7bitm
 
-          # zip -r sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
-          # zip -T sasunit.${{ github.ref_name }}.${{ matrix.osName }}.zip
-
           zip -r sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
           zip -T sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip
+
+
 
       - name: Create Release
         id: create_release
@@ -98,7 +94,7 @@ jobs:
           prerelease: true
           allowUpdates: true
           artifacts: sasunit.*.zip
-
+          repo: HMS-Analytical-Software/SASUnit
             # - uses: actions/upload-artifact@v3
             #   with:
             #     name: logs
