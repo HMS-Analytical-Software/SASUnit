@@ -203,10 +203,12 @@ jobs:
           export timestamp=$(date "+%Y_%m_%d")
           # export path=${{ env.P_DRIVE_LINUX }}/$timestamp/${{ github.run_number }} 
           export path=/mnt/hms/laufwerke/p/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit/Testruns/2023_05_05/27
-          export links=$(ls -1 $path | sed 's;^\(.*\)$;<a href="\1/doc/index.html">\1</a>;')
+          export links=$(ls -1 $path | sed 's;^\(.*\)$;<li><a href="\1/doc/index.html">\1</a></li>;')
           export index_html=$path/index.html
 
           echo links $links
+
+          echo '' > index.html
 
           echo '<!DOCTYPE html>' >> $index_html
           echo '<html lang="en">' >> $index_html
@@ -236,8 +238,8 @@ jobs:
         with:
           path: ${{ runner.temp }}/artifact.tar
           if-no-files-found: error
-          # name: ${{ inputs.name }}
-            # retention-days: ${{ inputs.retention-days }}
+          name: github-pages
+          retention-days: 1 # artifact will no longer be needed after page is build
 
       - name: Deploy GitHub Pages
         id: deployment
