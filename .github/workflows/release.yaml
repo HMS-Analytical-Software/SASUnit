@@ -92,7 +92,7 @@ jobs:
           prerelease: true
           allowUpdates: true
           artifacts: sasunit.*.zip
-          repo: HMS-Analytical-Software/SASUnit
+          repo: SASUnit
 
             # - uses: actions/upload-artifact@v3
             #   with:
