@@ -6,16 +6,12 @@ on:
 
 env:
   WORKSPACE: ${{ github.workspace }}
-  P_DRIVE_WIN: //analytical-software.eu/projekte/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit/Testruns
-  P_DRIVE_LINUX: /mnt/hms/laufwerke/p/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit/Testruns
-
 
 permissions: 
   contents: read
   pages: write
   id-token: write
   checks: write
-
 
 jobs:
   tests:
@@ -28,10 +24,12 @@ jobs:
         include:
           - platform: WIN10
             extension: cmd
+            gh_internal_ext: ps1 # the extension used by pipeline scripts
             runner: SASUnit_WIN10
             osName: windows
           - platform: CentOS
             extension: sh
+            gh_internal_ext: sh # the extension used by pipeline scripts
             runner: SASUnit_CentOS
             osName: linux
 
@@ -55,33 +53,8 @@ jobs:
           ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
           ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
 
-
-      - if: ${{ matrix.platform == 'WIN10' }}
-        name: Move output to share
-        run: |
-          $path = "${{ env.P_DRIVE_WIN }}/$(Get-Date -Format 'yyyy_MM_dd')/${{ github.run_number }}"
-          New-Item -Type Directory -Force $path
-          Copy-Item -Recurse -Path "${{ matrix.language }}" -Destination $path/${{ matrix.osName }}_${{ matrix.language }}
-
-
-      - if: ${{ matrix.platform == 'CentOS' }}
-        name: Move output to share
-        run: |
-          kinit samuel.melm@ANALYTICAL-SOFTWARE.EU -k -t /home/github/samuel.melm.keytab
-          export path=${{ env.P_DRIVE_LINUX }}/$(date "+%Y_%m_%d")/${{ github.run_number }}
-          mkdir -p $path
-          cp -r "${{ matrix.language }}" $path/${{ matrix.osName }}_${{ matrix.language }}
-
-
-      - name: Archive logs and reports
-        uses: actions/upload-artifact@v3
-        with:
-          name: logs_and_reports.${{ matrix.osName }}.${{ matrix.language }}
-          path: |
-            **/*run_all.log
-            **/*junit.xml
-            ${{ matrix.language }}/doc
-            example/${{ matrix.language }}/doc
+      - name: Move output to share
+        run: ./.github/scripts/backup_test_to_p_drive.${{ matrix.gh_internal_ext }} ${{ github.run_number }} ${{ matrix.language }}
 
       - name: Junit Report
         uses: dorny/test-reporter@v1
