@@ -21,11 +21,11 @@ jobs:
         platform: [WIN10, CentOS]
         include:
           - platform: CentOS
-            runner: Linux
+            runner: SASUnit_CentOS
             osName: linux
             extension: sh
           - platform: WIN10
-            runner: Windows
+            runner: SASUnit_WIN10
             osName: windows
             extension: cmd
 
@@ -82,8 +82,6 @@ jobs:
           zip -r sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
           zip -T sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip
 
-
-
       - name: Create Release
         id: create_release
         uses: ncipollo/release-action@v1.12.0
@@ -95,6 +93,7 @@ jobs:
           allowUpdates: true
           artifacts: sasunit.*.zip
           repo: HMS-Analytical-Software/SASUnit
+
             # - uses: actions/upload-artifact@v3
             #   with:
             #     name: logs
