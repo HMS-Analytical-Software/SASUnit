@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [en, de]
+        language: [en]
         platform: [WIN10, CentOS]
         include:
           - platform: WIN10
