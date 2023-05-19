@@ -6,6 +6,7 @@ on:
 
 env:
   WORKSPACE: ${{ github.workspace }}
+  RUN_NUMBER: ${{ github.run_number }}
 
 permissions: 
   contents: read
@@ -169,45 +170,12 @@ jobs:
         uses: actions/configure-pages@v3
 
       - name: Build Page
-        run: |
-          kinit samuel.melm@ANALYTICAL-SOFTWARE.EU -k -t /home/github/samuel.melm.keytab
-
-          export timestamp=$(date "+%Y_%m_%d")
-          export path=${{ env.P_DRIVE_LINUX }}/$timestamp/${{ github.run_number }} 
-          export links=$(ls -1 $path | sed 's;^\(.*\)$;<li><a href="\1/doc/index.html">\1</a></li>;')
-          export index_html=$path/index.html
-
-          echo links $links
-
-          echo '' > index.html
-
-          echo '<!DOCTYPE html>' >> $index_html
-          echo '<html lang="en">' >> $index_html
-            echo '<head>' >> $index_html
-              echo '<title>Test Run ${{ github.run_number }}</title>' >> $index_html
-            echo '</head>' >> $index_html
-            echo '<body>' >> $index_html
-              echo "<h2>Test Run ${{ github.run_number }} ($timestamp)</h2>" >> $index_html
-              echo '<ul style="list-style: none;">' >> $index_html
-                echo $links >> $index_html
-              echo '</ul>' >> $index_html
-            echo '</body>' >> $index_html
-          echo '</html>'  >> $index_html
-          cat $index_html
-
-          chmod -c -R +rX $path
-          tar \
-            --dereference --hard-dereference \
-            --directory $path \
-            -cf "${{ runner.temp }}/artifact.tar" \
-            --exclude=.git --exclude=.github \
-            . || true # prevents the command from returning 1 as a warning which fails the entire workflow
-
+        run: ./.github/scripts/build_page.sh
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          path: ${{ runner.temp }}/artifact.tar
+          path: artifact.tar
           if-no-files-found: error
           name: github-pages
           retention-days: 1 # artifact will no longer be needed after page is build
