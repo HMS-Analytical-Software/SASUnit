@@ -45,6 +45,9 @@ jobs:
           ./example/bin/sasunit.9.4.${{ matrix.osName }}.de.overwrite.full.${{ matrix.extension }}
           ./example/bin/sasunit.9.4.${{ matrix.osName }}.en.overwrite.full.${{ matrix.extension }}
 
+          git remote add public 
+          git push --tags
+
       - if: ${{ matrix.platform == 'WIN10' }}
         name: Build ZIP File (Windows)
         run: |
