@@ -93,6 +93,7 @@ jobs:
           allowUpdates: true
           artifacts: sasunit.*.zip
           repo: SASUnit
+          token: ${{ secrets.public_repo_token }}
 
             # - uses: actions/upload-artifact@v3
             #   with:
