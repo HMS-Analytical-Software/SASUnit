@@ -1,7 +1,7 @@
 
 param(
-    [Parameter(Mandatory=$true)][string]$run_number
-    [Parameter(Mandatory=$true)][string]$language
+    [Parameter(Mandatory=$true)][string]$run_number,
+    [Parameter(Mandatory=$true)][string]$language,
     [string]$target_name = "win_$language"
 )
 
