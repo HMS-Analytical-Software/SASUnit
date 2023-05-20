@@ -55,7 +55,7 @@ jobs:
           ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
 
       - name: Move output to share
-        run: ./.github/scripts/backup_test_to_p_drive.${{ matrix.gh_internal_ext }} ${{ matrix.language }}
+        run: ./.github/scripts/backup_test_to_p_drive.${{ matrix.gh_internal_ext }} ${{ github.run_number }} ${{ matrix.language }}
 
       - name: Junit Report
         uses: dorny/test-reporter@v1
