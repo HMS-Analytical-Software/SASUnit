@@ -13,6 +13,7 @@ New-Item -Type Directory -Force $path
 New-Item -Type Directory -Force $path/example
 
 Copy-Item -Recurse -Path $language/doc -Destination $path
-Copy-Item -Recurse -Path $language/log -Destination $path
-Copy-Item -Recurse -Path example/$language/log -Destination $path/example/doc
+Copy-Item -Recurse -Path $language/logs -Destination $path
+Copy-Item -Recurse -Path example/$language/doc -Destination $path/example/doc
+Copy-Item -Recurse -Path example/$language/logs -Destination $path/example/logs
 

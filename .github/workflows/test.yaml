@@ -36,23 +36,23 @@ jobs:
 
     runs-on: ${{ matrix.runner }}
     steps:
-      # - uses: actions/checkout@v3
-      # 
-      # - if: ${{ matrix.platform == 'CentOS' }}
-      #   uses: ./.github/actions/trim_line_endings
-      # - if: ${{ matrix.platform == 'CentOS' }}
-      #   uses: ./.github/actions/set_execution_rights
+      - uses: actions/checkout@v3
+      
+      - if: ${{ matrix.platform == 'CentOS' }}
+        uses: ./.github/actions/trim_line_endings
+      - if: ${{ matrix.platform == 'CentOS' }}
+        uses: ./.github/actions/set_execution_rights
  
-      # - name: Self Test
-      #   run: |
-      #     ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-      #     ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
-      #     ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
-      #     
-      # - name: Example Test
-      #   run: |
-      #     ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-      #     ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
+      - name: Self Test
+        run: |
+          ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+          ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
+          #./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
+          
+      - name: Example Test
+        run: |
+          ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+          ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
 
       - name: Move output to share
         run: ./.github/scripts/backup_test_to_p_drive.${{ matrix.gh_internal_ext }} ${{ github.run_number }} ${{ matrix.language }}

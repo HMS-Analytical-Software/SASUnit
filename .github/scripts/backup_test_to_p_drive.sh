@@ -16,5 +16,6 @@ mkdir -p $path
 mkdir -p $path/example
 
 cp -r $language/doc $path
-cp -r $language/log $path
+cp -r $language/logs $path
 cp -r example/$language/doc $path/example/doc
+cp -r example/$language/logs $path/example/logs
