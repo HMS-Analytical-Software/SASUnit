@@ -10,7 +10,7 @@ P_DRIVE=/mnt/hms/laufwerke/p/hms_interne_projekte/00773_kompetenzfelder/00773-00
 timestamp=$(date "+%Y_%m_%d")
 path=$P_DRIVE/$timestamp/$RUN_NUMBER/$target_name
 
-./kerberos_auth.sh
+kinit samuel.melm@ANALYTICAL-SOFTWARE.EU -k -t /home/github/samuel.melm.keytab
 
 mkdir -p $path
 mkdir -p $path/example
