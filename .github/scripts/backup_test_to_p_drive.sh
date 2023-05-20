@@ -1,6 +1,7 @@
 
 if [ $# -lt 2 ]; then
     echo "usage: $0 <run number> <language>"
+    exit 1
 fi
 
 language=$2
