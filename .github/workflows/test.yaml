@@ -20,19 +20,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [en]
+        language: [en,de]
         platform: [WIN10, CentOS]
         include:
           - platform: WIN10
             extension: cmd
-            gh_internal_ext: ps1 # the extension used by pipeline scripts
             runner: SASUnit_WIN10
             osName: windows
+            copyToShare: .github/scripts/copy_to_p_drive.ps1
           - platform: CentOS
             extension: sh
-            gh_internal_ext: sh # the extension used by pipeline scripts
             runner: SASUnit_CentOS
             osName: linux
+            copyToShare: .github/scripts/copy_to_p_drive.sh
 
     env:
       LANGUAGE: ${{ matrix.language }}
@@ -49,19 +49,19 @@ jobs:
         run: |
           ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
           ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
-          # ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
+          ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
           
       - name: Example Test
         run: |
           ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
           ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
 
-      - name: Move output to share
+      - name: Copy output to share
         run: |
-          ./.github/scripts/copy_to_p_drive.${{ matrix.gh_internal_ext }} ${{ matrix.language }}/doc ${{ matrix.osName }}_${{ matrix.language }}
-          ./.github/scripts/copy_to_p_drive.${{ matrix.gh_internal_ext }} ${{ matrix.language }}/logs ${{ matrix.osName }}_${{ matrix.language }}
-          ./.github/scripts/copy_to_p_drive.${{ matrix.gh_internal_ext }} example/${{ matrix.language }}/doc ${{ matrix.osName }}_${{ matrix.language }}/example
-          ./.github/scripts/copy_to_p_drive.${{ matrix.gh_internal_ext }} example/${{ matrix.language }}/logs ${{ matrix.osName }}_${{ matrix.language }}/example
+          ./${{ matrix.copyToShare }} ${{ matrix.language }}/doc          ${{ matrix.osName }}_${{ matrix.language }}
+          ./${{ matrix.copyToShare }} ${{ matrix.language }}/logs         ${{ matrix.osName }}_${{ matrix.language }}
+          ./${{ matrix.copyToShare }} example/${{ matrix.language }}/doc  ${{ matrix.osName }}_${{ matrix.language }}/example
+          ./${{ matrix.copyToShare }} example/${{ matrix.language }}/logs ${{ matrix.osName }}_${{ matrix.language }}/example
 
 
       - name: Junit Report
@@ -75,97 +75,103 @@ jobs:
           max-annotations: '0'
           fail-on-error: false
 
-            #with_spaces:
-            #  name: Test Path with Spaces
-            #  runs-on: SASUnit_CentOS
-            #  env:
-            #    WORKSPACE: "${{ github.workspace }}/dir with spaces"
-            #    LANGUAGE: "en"
-            #  steps:
-            #    - uses: actions/checkout@v3
-            #      with:
-            #        path: ${{ env.WORKSPACE }}
+  with_spaces:
+    name: Test Path with Spaces
+    runs-on: SASUnit_CentOS
+    env:
+      WORKSPACE: "${{ github.workspace }}/dir with spaces"
+      LANGUAGE: "en"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: ${{ env.WORKSPACE }}
  
-            #    - uses: "./dir with spaces/.github/actions/trim_line_endings"
-            #      with:
-            #        dir: ${{ env.WORKSPACE }}
-            #    - uses: "./dir with spaces/.github/actions/set_execution_rights"
-            #      with:
-            #        dir: ${{ env.WORKSPACE }} 
+      - uses: "./dir with spaces/.github/actions/trim_line_endings"
+        with:
+          dir: ${{ env.WORKSPACE }}
+      - uses: "./dir with spaces/.github/actions/set_execution_rights"
+        with:
+          dir: ${{ env.WORKSPACE }} 
  
-            #    - name: Self Test
-            #      working-directory: ${{ env.WORKSPACE }}
-            #      run: |
-            #        ./bin/sasunit.setup.EE_CI_CentOS.sh en
-            #        ./bin/sasunit.9.4.linux.en.fast.sh
-            #        ./bin/sasunit.9.4.linux.en.overwrite.fast.sh
-            #        
-            #    - name: Example Test
-            #      working-directory: ${{ env.WORKSPACE }}
-            #      run: |
-            #        ./example/bin/sasunit.setup.EE_CI_CentOS.sh en
-            #        ./example/bin/sasunit.9.4.linux.en.overwrite.fast.sh
+      - name: Self Test
+        working-directory: ${{ env.WORKSPACE }}
+        run: |
+          ./bin/sasunit.setup.EE_CI_CentOS.sh en
+          ./bin/sasunit.9.4.linux.en.fast.sh
+          ./bin/sasunit.9.4.linux.en.overwrite.fast.sh
+          
+      - name: Example Test
+        working-directory: ${{ env.WORKSPACE }}
+        run: |
+          ./example/bin/sasunit.setup.EE_CI_CentOS.sh en
+          ./example/bin/sasunit.9.4.linux.en.overwrite.fast.sh
  
-            #    - name: Archive logs and reports
-            #      uses: actions/upload-artifact@v3
-            #      with:
-            #        name: logs_and_reports.with_spaces
-            #        path: |
-            #          **/*run_all.log
-            #          **/*junit.xml
+      - name: Copy output to share
+        run: |
+          ./${{ matrix.copyToShare }} en/doc  with_spaces
+          ./${{ matrix.copyToShare }} en/logs with_spaces
+          ./${{ matrix.copyToShare }} example/en/doc  with_spaces/example
+          ./${{ matrix.copyToShare }} example/en/logs with_spaces/example
+
+      - name: Junit Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Report (Path with Spaces)
+          path: "**/junit.xml"
+          reporter: java-junit
+          # work-around: if this is > 0, the action checks for tracked files
+          # but git is not installed on our nodes
+          max-annotations: '0'
+          fail-on-error: false
  
-            #    - name: Junit Report
-            #      uses: dorny/test-reporter@v1
-            #      with:
-            #        name: Test Report (Path with Spaces)
-            #        path: "**/junit.xml"
-            #        reporter: java-junit
-            #        # work-around: if this is > 0, the action checks for tracked files
-            #        # but git is not installed on our nodes
-            #        max-annotations: '0'
-            #        fail-on-error: false
+  etc-opt-var:
+    name: Test Distribution on Linux System (in /etc /opt /var)
+    runs-on: SASUnit_CentOS
+    env:
+      WORKSPACE: ${{ github.workspace }}
+      LANGUAGE: "de"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/trim_line_endings
+      - uses: ./.github/actions/set_execution_rights
  
-            #etc-opt-var:
-            #  name: Test Distribution on Linux System (in /etc /opt /var)
-            #  runs-on: SASUnit_CentOS
-            #  env:
-            #    WORKSPACE: ${{ github.workspace }}
-            #    LANGUAGE: "de"
-            #  steps:
-            #    - uses: actions/checkout@v3
-            #    - uses: ./.github/actions/trim_line_endings
-            #    - uses: ./.github/actions/set_execution_rights
+      - run: |
+          rm -rf /etc/opt/SASUnit/*
+          rm -rf /opt/SASUnit/*
+          mkdir /opt/SASUnit/example
+          cp -r example/* /opt/SASUnit/example/
+          mkdir /opt/SASUnit/saspgm
+          cp -r saspgm/* /opt/SASUnit/saspgm/
+          mkdir /opt/SASUnit/resources
+          cp -r resources/* /opt/SASUnit/resources/
  
-            #    - run: |
-            #        rm -rf /etc/opt/SASUnit/*
-            #        rm -rf /opt/SASUnit/*
-            #        mkdir /opt/SASUnit/example
-            #        cp -r example/* /opt/SASUnit/example/
-            #        mkdir /opt/SASUnit/saspgm
-            #        cp -r saspgm/* /opt/SASUnit/saspgm/
-            #        mkdir /opt/SASUnit/resources
-            #        cp -r resources/* /opt/SASUnit/resources/
+          ./example/bin/sasunit.setup.EE_CI_CentOS_etcoptvar.sh de
  
-            #        ./example/bin/sasunit.setup.EE_CI_CentOS_etcoptvar.sh de
+          # TODO the first time running failed and it needed the command:
+          # mkdir -p /var/opt/SASUnit/example/de/logs
+          # to run. This folder is not deleted above? Should it?
+          /opt/SASUnit/example/bin/sasunit.9.4.linux.de.overwrite.full.sh
  
-            #        # TODO the first time running failed and it needed the command:
-            #        # mkdir -p /var/opt/SASUnit/example/de/logs
-            #        # to run. This folder is not deleted above? Should it?
-            #        /opt/SASUnit/example/bin/sasunit.9.4.linux.de.overwrite.full.sh
+          cp /var/opt/SASUnit/example/de/logs/*run_all.log $WORKSPACE/example/doc/
+          cp /var/opt/SASUnit/example/de/doc/junit.xml $WORKSPACE/example/doc/
+
+
+      - name: Copy output to share
+        run: |
+          ./${{ matrix.copyToShare }} example/doc  etc_opt_var/example
+
  
-            #        cp /var/opt/SASUnit/example/de/logs/*run_all.log $WORKSPACE/example/doc/
-            #        cp /var/opt/SASUnit/example/de/doc/junit.xml $WORKSPACE/example/doc/
- 
-            #    - name: Junit Report
-            #      uses: dorny/test-reporter@v1
-            #      with:
-            #        name: Test Report (etc-opt-var)
-            #        path: "**/junit.xml"
-            #        reporter: java-junit
-            #        # work-around: if this is > 0, the action checks for tracked files
-            #        # but git is not installed on our nodes
-            #        max-annotations: '0'
-            #        fail-on-error: false
+      - name: Junit Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Report (etc-opt-var)
+          path: "**/junit.xml"
+          reporter: java-junit
+          # work-around: if this is > 0, the action checks for tracked files
+          # but git is not installed on our nodes
+          max-annotations: '0'
+          fail-on-error: false
+
 
   github_pages:
     name: Upload Results to Github Pages
