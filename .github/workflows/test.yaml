@@ -47,14 +47,14 @@ jobs:
  
       - name: Self Test
         run: |
-          #./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          # ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
+          ./bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+          ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.fast.${{ matrix.extension }}
           # ./bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }} 
           
       - name: Example Test
         run: |
-          #./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
-          #./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
+          ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} ${{ matrix.language }}
+          ./example/bin/sasunit.9.4.${{ matrix.osName }}.${{ matrix.language }}.overwrite.full.${{ matrix.extension }}
 
       - name: Move output to share
         run: |
