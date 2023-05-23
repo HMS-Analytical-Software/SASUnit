@@ -25,10 +25,12 @@ jobs:
             runner: SASUnit_CentOS
             osName: linux
             extension: sh
+            copyToShare: .github/scripts/copy_to_p_drive.sh
           - platform: WIN10
             runner: SASUnit_WIN10
             osName: windows
             extension: cmd
+            copyToShare: .github/scripts/copy_to_p_drive.ps1
 
     runs-on: ${{ matrix.runner }}
     steps:
@@ -99,17 +101,12 @@ jobs:
           repo: SASUnit
           token: ${{ secrets.public_repo_token }}
 
-            # - uses: actions/upload-artifact@v3
-            #   with:
-            #     name: logs
-            #     path: |
-            #       **/*run_all.log
-            # - uses: actions/upload-artifact@v3
-            #   with:
-            #     name: example_en
-            #     path: example/en/doc/
-            # - uses: actions/upload-artifact@v3
-            #   with:
-            #     name: example_de
-            #     path: example/de/doc/
-            #
+      - name: Copy output to share
+        run:
+          ./${{ matrix.copyToShare }} sasunit.*.zip release
+          ./${{ matrix.copyToShare }} en/logs  release/en
+          ./${{ matrix.copyToShare }} en/doc   release/en
+          ./${{ matrix.copyToShare }} de/logs  release/de
+          ./${{ matrix.copyToShare }} de/doc   release/de
+          ./${{ matrix.copyToShare }} example/en/doc example/en
+          ./${{ matrix.copyToShare }} example/de/doc example/de
