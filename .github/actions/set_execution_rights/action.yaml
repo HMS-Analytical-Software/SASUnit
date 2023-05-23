@@ -16,3 +16,5 @@ runs:
         chmod a+x ./example/bin/sasunit.setup.EE_CI_CentOS*sh
         chmod a+x ./saspgm/sasunit/linux/assert*.sh
         chmod a+x ./saspgm/sasunit/unix_aix/assert*.sh
+        chmod a+x ./.github/scripts/*.sh
+        
