@@ -8,6 +8,7 @@ on:
 env:
   WORKSPACE: ${{ github.workspace }}
   TAG_NAME: ${{ github.ref_name }}
+  RUN_NUMMER: ${{ github.ref_name }}
 
 permissions:
   contents: write
@@ -70,7 +71,7 @@ jobs:
 
 
       - if: ${{ matrix.platform == 'CentOS' }}
-        name: Build ZIP File
+        name: Build ZIP File (Linux)
         run: |
           # clean up
           rm example/bin/sasunit.setup.EE_*
