@@ -15,6 +15,6 @@ jobs:
       - uses: pixta-dev/repository-mirroring-action@v1
         with:
           target_repo_url:
-            git@github.com:HMS-Analytical-Software/SASUnitPublic.git
+            git@github.com:HMS-Analytical-Software/SASUnit.git
           ssh_private_key:
             ${{ secrets.SASUNIT_PUBLIC_REPO_PRIVATE_SSH_KEY }}
