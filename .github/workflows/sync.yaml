@@ -1,4 +1,4 @@
-name: sync with public repo
+name: Sync with Public Repo
 
 on:
   push:
