@@ -12,9 +12,9 @@ if (-Not(Test-Path env:RUN_NUMBER)) {
 
 $p_drive = "//analytical-software.eu/projekte/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit/github"
 
-$timestamp = $(Get-Date -Format 'yyyy_MM_dd')
+$timestamp = Get-Date -Format 'yyyy_MM_dd'
 
-$path = $p_drive/$timestamp/$RUN_NUMBER/$tgt_dir
+$path = "$p_drive/$timestamp/$RUN_NUMBER/$tgt_dir"
 
 mkdir $path
 
