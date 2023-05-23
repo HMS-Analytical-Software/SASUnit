@@ -14,5 +14,5 @@ $p_drive = "//analytical-software.eu/projekte/hms_interne_projekte/00773_kompete
 $timestamp = Get-Date -Format 'yyyy_MM_dd'
 $path = "$p_drive/$timestamp/$env:RUN_NUMBER/$tgt_dir"
 
-mkdir $path
-cp -r $src $path
+New-Item -Type Directory -Force $path
+Copy-Item -Recurse -Path $src -Destination $path
