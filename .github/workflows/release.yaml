@@ -101,7 +101,7 @@ jobs:
           token: ${{ secrets.public_repo_token }}
 
       - name: Copy output to share
-        run:
+        run: |
           ./${{ matrix.copyToShare }} sasunit.*.zip release
           ./${{ matrix.copyToShare }} en/logs  release/en
           ./${{ matrix.copyToShare }} en/doc   release/en
