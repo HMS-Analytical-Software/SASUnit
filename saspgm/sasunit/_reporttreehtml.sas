@@ -59,7 +59,6 @@
 
 %LOCAL l_title;
 %LOCAL d_tree d_tree1 d_tree2 d_tree3 d_tree4 d_tree5 d_la i; 
-
 %LET l_title = &g_project | SASUnit;
 
 %_tempFilename(d_tree)
@@ -228,11 +227,11 @@ RUN;
          %if (&o_pgmdoc_sasunit. = 0) %then %do;
             (where=(exa_auton >= 2))
          %end;
+         on _GrpDoc.childPath = exa.exa_filename
          %if (&o_pgmdoc_sasunit. = 1) %then %do;
-            on _GrpDoc.childPath = exa.exa_filename
             group by exa_filename
+            having exa_auton=min(exa_auton)
          %end;
-         having exa_auton=min(exa_auton)
          
       ;
       create table work._GrpDoc_2 as

@@ -133,7 +133,7 @@
          END;
       RUN;
 
-      /* Create .json Files for visualisation with D3 */
+      /* Create .json Files for visualization with D3 */
       %_dependency(i_dependencies = &d_listcalling.
                   ,i_macroList    = macrolistDependency
                   );
