@@ -11,6 +11,8 @@
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+   \test Add test cases pretending to run in Jupyter Notebook and interactively
+         Two other conditions to recognize SEG
 */ /** \cond */ 
 
 %initScenario(i_desc=Test of _readEnvMetadata.sas);

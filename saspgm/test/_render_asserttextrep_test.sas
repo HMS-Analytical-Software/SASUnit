@@ -11,7 +11,7 @@
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-
+   \remark Renderer macros are not called within a scenario. Errors will be visible, so currently there is no need to add specific test cases
 */ /** \cond */ 
 %initScenario (i_desc=Test of _render_assertTextRep.sas)
 

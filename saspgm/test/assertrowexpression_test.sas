@@ -12,6 +12,7 @@
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+   \todo %_getScenarioTestId (i_scnid=&g_scnid, r_casid=l_casid, r_tstid=l_tstid) is marked as not executed. Why?               
 */ /** \cond */ 
 
 %initScenario(i_desc =%str(Test of assertRowExpression.sas - has to fail! 1 error %(one error concernig non-existing variable name1%)));

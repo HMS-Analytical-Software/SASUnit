@@ -11,9 +11,8 @@
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For terms of usage under the GPL license see included file readme.txt
                or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
-
+   \test Add test cases to check all error messages
 */ /** \cond */ 
-
 %initScenario (i_desc=Test of _issueinfomessage.sas);
 
 %macro testcase(i_object=_issueinfomessage.sas, i_desc=%str(Call with logging level Fatal));
