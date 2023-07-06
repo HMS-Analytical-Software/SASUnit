@@ -43,27 +43,41 @@
                      ,i_style            = SASUnit
                      );
 
-   %LOCAL l_macname; 
+   %LOCAL
+      l_macname
+      l_reportsOnly
+      l_force
+   ; 
+   
    %LET l_macname=&sysmacroname;
 
    %_issueInfoMessage (&g_currentLogger., %str (============================ reportSASUnit is starting... ==========================));
    
    /*-- check parameters --------------------------------------------------------*/
-   %IF "&o_html"  NE "1" %THEN %LET o_html =0;
+   %IF ("&o_html")  NE "1" %THEN %LET o_html =0;
 
-   %IF "&o_pdf"   NE "0" %THEN %LET o_pdf  =1;
+   %IF ("&o_pdf")   NE "0" %THEN %LET o_pdf  =1;
 
-   %IF "&o_junit" NE "0" %THEN %LET o_junit=1;
+   %IF ("&o_junit") NE "0" %THEN %LET o_junit=1;
 
-   %IF "&o_pgmdoc" EQ "_DEFAULT_" %THEN %LET o_pgmdoc=&g_overwrite.;
+   %IF ("&o_pgmdoc") EQ "_DEFAULT_" %THEN %LET o_pgmdoc=&g_overwrite.;
 
-   %IF "&o_pgmdoc" NE "1" %THEN %LET o_pgmdoc=0;
+   %IF ("&o_pgmdoc") NE "1" %THEN %LET o_pgmdoc=0;
 
-   %IF "&o_pgmdoc_sasunit" EQ "_DEFAULT_" %THEN %LET o_pgmdoc_sasunit=&o_pgmdoc.;
+   %IF ("&o_pgmdoc_sasunit") EQ "_DEFAULT_" %THEN %LET o_pgmdoc_sasunit=&o_pgmdoc.;
 
-   %IF "&o_pgmdoc_sasunit" NE "1" %THEN %LET o_pgmdoc_sasunit=0;
+   %IF ("&o_pgmdoc_sasunit") NE "1" %THEN %LET o_pgmdoc_sasunit=0;
 
-   %IF "&o_force" NE "1" %THEN %LET o_force=0;
+   %IF ("&o_force" NE "1") %THEN %LET o_force=0;
+   
+   %_issueInfoMessage (&g_currentLogger., %str (============================ Checking for reports only... =======================));
+   
+   %_readParameterFromTestDBtsu (i_parameterName  = tsu_reportsOnly
+                                ,o_parameterValue = l_reportsOnly
+                                ,o_defaultValue   = 0
+                                );
+                                
+   %let l_force = %eval((&o_force=1) OR (&l_reportsOnly.=1));
 
    %IF (&o_html. NE 1 AND &o_junit. NE 1 AND &o_pdf. NE 1) %THEN %DO;
       %GOTO exit;
@@ -179,7 +193,7 @@
 
          IF _n_=1 THEN DO;
             /*-- only if testreport is generated competely anew --------------------*/
-            IF tsu_lastrep=0 OR &o_force THEN DO;
+            IF tsu_lastrep=0 OR &l_force THEN DO;
                /*-- copy static files - images, css etc. ---------------------------*/
                PUT '%_copydir(' /
                    "    &g_resourceFolder." '/html/%str(*)' /
@@ -193,7 +207,7 @@
                    ")";
             END;
             /*-- only if testsuite has been initialized anew after last report -----*/
-            IF tsu_lastinit > tsu_lastrep OR &o_force. THEN DO;
+            IF tsu_lastinit > tsu_lastrep OR &l_force. THEN DO;
                /*-- convert SAS-log from initSASUnit -------------------------------*/
                PUT '%_reportLogHTML('                            /
                    "    i_log     = &g_scnLogFolder./000.log"              /
@@ -202,7 +216,7 @@
                    ")";
             END;
             /*-- only if a test scenario has been run since last report ------------*/
-            IF &l_lastrun > tsu_lastrep OR &l_bOnlyInexistingScnFound. OR &o_force. THEN DO;
+            IF &l_lastrun > tsu_lastrep OR &l_bOnlyInexistingScnFound. OR &l_force. THEN DO;
                /*-- create table of contents ---------------------------------------*/
                PUT '%_reportTreeHTML('                            /
                    "    i_repdata        = &d_rep."               /
@@ -263,7 +277,7 @@
          /*-- per scenario ---------------------------------------------------------*/
          IF first.scn_id AND scn_id NE . THEN DO;
             /*-- only if scenario has been run since report ------------------------*/
-            IF scn_start > tsu_lastrep OR &o_force THEN DO;
+            IF scn_start > tsu_lastrep OR &l_force THEN DO;
                /*-- convert logfile of scenario ------------------------------------*/
                PUT '%_reportLogHTML(' / 
                    "    i_log     = &g_scnLogFolder./" scn_id z3. ".log"  /
@@ -283,7 +297,7 @@
          END;
 
          /*-- only if test case has been run since last report ---------------------*/
-         IF cas_start > tsu_lastrep OR &o_force THEN DO;
+         IF cas_start > tsu_lastrep OR &l_force THEN DO;
 
             /*-- per test case -----------------------------------------------------*/
             IF first.cas_id AND scn_id NE . AND cas_id NE . THEN DO;
@@ -299,7 +313,7 @@
 
          IF (eof) THEN DO;
             /*-- only if a test scenario has been run since last report ------------*/
-            IF &l_lastrun > tsu_lastrep OR &l_bOnlyInexistingScnFound. OR &o_force. THEN DO;
+            IF &l_lastrun > tsu_lastrep OR &l_bOnlyInexistingScnFound. OR &l_force. THEN DO;
                /*-- create overview page -------------------------------------------*/
                PUT '%_reportHomeHTML('             /
                    "    i_repdata = &d_rep"        /

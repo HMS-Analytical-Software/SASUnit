@@ -75,7 +75,8 @@
                                        default: %sysget(SASUNIT_PGMDOC)
    \param   i_pgmDocSASUnit            optional specifying if program documentation for SASUnit macros shall be created
                                        default: %sysget(SASUNIT_PGMDOC_SASUNIT)
-   \todo Script file for report only
+   \param   i_reportsOnly              optional specifying if starting scenarios should be skipped and only the documentation part will be run
+                                       default: %sysget(SASUNIT_REPORTS_ONLY)
 *//** \cond */ 
 %MACRO initSASUnit(i_root                    =
                   ,io_target                 =
@@ -133,6 +134,7 @@
                   ,i_SASUnitRoot             =%sysget(SASUNIT_ROOT)
                   ,i_pgmDoc                  =%sysget(SASUNIT_PGMDOC)
                   ,i_pgmDocSASUnit           =%sysget(SASUNIT_PGMDOC_SASUNIT)
+                  ,i_reportsOnly             =%sysget(SASUNIT_REPORTS_ONLY)
                   );
 
    %GLOBAL g_version g_revision g_db_version g_error g_warning g_note g_runMode g_language g_currentLogger g_currentLogLevel g_log4SASScenarioLogger;
@@ -222,7 +224,7 @@
    /*-- Check value of incoming parameters ---------------------------------------------*/
    /*-- Theses parameters must be set only in batch mode -------------------------------*/
    %if (&g_runMode. = SASUNIT_BATCH) %then %do;
-      %let l_parameterNames = i_logFolder i_scnLogFolder i_reportFolder i_resourceFolder; 
+      %let l_parameterNames = i_logFolder i_scnLogFolder i_reportFolder i_resourceFolder i_reportsOnly; 
 
       %_checkListOfParameters (i_listOfParameters    = &l_parameterNames.
                               ,i_returnCodeVariable  = l_goOn
@@ -657,10 +659,7 @@
    %_writeParameterToTestDBtsu (i_parameterName=tsu_testdata                  ,i_parameterValue =&l_testdata.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_refdata                   ,i_parameterValue =&l_refdata.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_doc                       ,i_parameterValue =&l_doc.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_testcoverage              ,i_parameterValue =&i_testcoverage.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_verbose                   ,i_parameterValue =&i_verbose.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_crossref                  ,i_parameterValue =&i_crossref.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_crossrefsasunit           ,i_parameterValue =&i_crossrefsasunit.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_language                  ,i_parameterValue =&i_language.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_overwrite                 ,i_parameterValue =&i_overwrite.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_log4SASSuiteLogger        ,i_parameterValue =&l_log4SASSuiteLogger.);
@@ -676,6 +675,14 @@
    %_writeParameterToTestDBtsu (i_parameterName=tsu_OSEncoding                ,i_parameterValue =&i_OSEncoding.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_pgmDoc                    ,i_parameterValue =&i_pgmDoc.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_pgmDocSASUnit             ,i_parameterValue =&i_pgmDocSASUnit.);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_reportsOnly               ,i_parameterValue =&i_reportsOnly.);
+   %*** if reports only is set then the value of these parameters should be taken from the test database. ***;
+   %*** The shell script cannot know what was set in the last call. ***;
+   %if (&i_reportsOnly=0) %then %do;
+      %_writeParameterToTestDBtsu (i_parameterName=tsu_testcoverage              ,i_parameterValue =&i_testcoverage.);
+      %_writeParameterToTestDBtsu (i_parameterName=tsu_crossref                  ,i_parameterValue =&i_crossref.);
+      %_writeParameterToTestDBtsu (i_parameterName=tsu_crossrefsasunit           ,i_parameterValue =&i_crossrefsasunit.);
+   %end;
 
    /*-- load relevant information from test database to global macro symbols ----*/
    %_loadEnvironment (i_withLibrefs   =0

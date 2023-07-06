@@ -84,6 +84,7 @@
                     ,i_sasunitReportFolder      =&i_sasunitReportFolder.
                     ,i_sasunitResourceFolder    =&i_sasunitResourceFolder.
                     ,i_OSEncoding               =&i_OSEncoding.
+                    ,i_reportsOnly              =0
                     );
    %_createBatchFile(i_sasunitCommandFile=&i_projectBinFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..overwrite.full
                     ,i_operatingSystem          =&i_operatingSystem.
@@ -108,6 +109,7 @@
                     ,i_sasunitReportFolder      =&i_sasunitReportFolder.
                     ,i_sasunitResourceFolder    =&i_sasunitResourceFolder.
                     ,i_OSEncoding               =&i_OSEncoding.
+                    ,i_reportsOnly              =0
                     );
    %_createBatchFile(i_sasunitCommandFile=&i_projectBinFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..fast
                     ,i_operatingSystem          =&i_operatingSystem.
@@ -132,6 +134,7 @@
                     ,i_sasunitReportFolder      =&i_sasunitReportFolder.
                     ,i_sasunitResourceFolder    =&i_sasunitResourceFolder.
                     ,i_OSEncoding               =&i_OSEncoding.
+                    ,i_reportsOnly              =0
                     );
    %_createBatchFile(i_sasunitCommandFile=&i_projectBinFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..full
                     ,i_operatingSystem          =&i_operatingSystem.
@@ -156,6 +159,7 @@
                     ,i_sasunitReportFolder      =&i_sasunitReportFolder.
                     ,i_sasunitResourceFolder    =&i_sasunitResourceFolder.
                     ,i_OSEncoding               =&i_OSEncoding.
+                    ,i_reportsOnly              =0
                     );
 
    %_createBatchFile(i_sasunitCommandFile=&i_projectBinFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..debug
@@ -181,6 +185,7 @@
                     ,i_sasunitReportFolder      =&i_sasunitReportFolder.
                     ,i_sasunitResourceFolder    =&i_sasunitResourceFolder.
                     ,i_OSEncoding               =&i_OSEncoding.
+                    ,i_reportsOnly              =0
                     );
    %_createBatchFile(i_sasunitCommandFile=&i_projectBinFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..trace
                     ,i_operatingSystem          =&i_operatingSystem.
@@ -205,6 +210,32 @@
                     ,i_sasunitReportFolder      =&i_sasunitReportFolder.
                     ,i_sasunitResourceFolder    =&i_sasunitResourceFolder.
                     ,i_OSEncoding               =&i_OSEncoding.
+                    ,i_reportsOnly              =0
+                    );
+   %_createBatchFile(i_sasunitCommandFile       =&i_projectBinFolder./sasunit.&i_sasVersion..&i_operatingSystem..&i_sasunitLanguage..reports_only
+                    ,i_operatingSystem          =&i_operatingSystem.
+                    ,i_sasVersion               =&i_sasVersion.
+                    ,i_sasexe                   =&i_sasexe.
+                    ,i_sasConfig                =&i_sasConfig.
+                    ,i_sasunitRootFolder        =&i_sasunitRootFolder.
+                    ,i_projectRootFolder        =&i_projectRootFolder.
+                    ,i_sasunitTestDBFolder      =&i_sasunitTestDBFolder.
+                    ,i_sasunitLogFolder         =&i_sasunitLogFolder.
+                    ,i_sasunitScnLogFolder      =&i_sasunitScnLogFolder.
+                    ,i_sasunitPgmDoc            =1
+                    ,i_sasunitRunAllPgm         =&i_sasunitRunAllPgm.
+                    ,i_sasunitOverwrite         =0
+                    ,i_sasunitLanguage          =&i_sasunitLanguage.
+                    ,i_sasunitTestCoverage      =1
+                    ,i_sasunitPgmDocSASUnit     =1
+                    ,i_sasunitCrossRef          =1
+                    ,i_sasunitCrossRefSASUnit   =1                    
+                    ,i_sasunitLogLevel          =&i_sasunitLogLevel.
+                    ,i_sasunitScnLogLevel       =&i_sasunitScnLogLevel.
+                    ,i_sasunitReportFolder      =&i_sasunitReportFolder.
+                    ,i_sasunitResourceFolder    =&i_sasunitResourceFolder.
+                    ,i_OSEncoding               =&i_OSEncoding.
+                    ,i_reportsOnly              =1
                     );
 %mend _createBatchFiles;
 /** \endcond */

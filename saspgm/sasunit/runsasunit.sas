@@ -68,11 +68,23 @@
       l_sysrc
       l_warning_count
       l_max_exaid
+      l_reportsOnly
    ;
 
    %LET l_macname=&sysmacroname;
 
    %_issueInfoMessage (&g_currentLogger., %str (============================ runSASUnit is starting... ==========================));
+   %_issueInfoMessage (&g_currentLogger., %str (============================ Checking for reports only... =======================));
+   
+   %_readParameterFromTestDBtsu (i_parameterName  = tsu_reportsOnly
+                                ,o_parameterValue = l_reportsOnly
+                                ,o_defaultValue   = 0
+                                );
+                                
+   %if (&l_reportsOnly.) %then %do;
+      %_issueInfoMessage (&g_currentLogger., %str (============================ Starting scenarios is skipped ======================));
+      %RETURN;
+   %end;
    
    %_tempFileName(d_scenariosToRun);
    %_tempFileName(d_scn_pre);

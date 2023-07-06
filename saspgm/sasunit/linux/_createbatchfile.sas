@@ -40,6 +40,7 @@
    \param      i_sasunitLogLevel          Log4SSAS Logging level that is used for SASUnit suite
    \param      i_sasunitScnLogLevel       Log4SSAS Logging level that is used for all senarios
    \param      i_OSEncoding               Encoding of OS which can be different from encoding of SAS session
+   \param      i_reportsOnly              specifying if starting scenarios should be skipped and only the documentation part will be run
 */ /** \cond */
 %macro _createBatchFile(i_sasunitCommandFile       =
                        ,i_operatingSystem          =
@@ -64,6 +65,7 @@
                        ,i_sasunitLogLevel          =
                        ,i_sasunitScnLogLevel       =
                        ,i_OSEncoding               =
+                       ,i_reportsOnly              =
                        );
 
    %local
@@ -109,6 +111,7 @@
       put "export SASUNIT_CROSSREFERENCE_SASUNIT=&i_sasunitCrossRefSASUnit.";
       put "export SASUNIT_LOGLEVEL=&i_sasunitLogLevel.";
       put "export SASUNIT_SCN_LOGLEVEL=&i_sasunitScnLogLevel.";
+      put "export SASUNIT_REPORTS_ONLY=&i_reportsOnly.";
       put;
       put "# Check if SASUnit Jenkins Plugin is present and use given SASUnit root path";
       put "if [ -z ""$1"" ] ; then";
@@ -145,6 +148,7 @@
       put 'echo Log Level for RUN_ALL     = $SASUNIT_LOGLEVEL';
       put 'echo Log Level for Scenarios   = $SASUNIT_SCN_LOGLEVEL';
       put 'echo SASUnit config            = bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg';
+      put 'echo Documentation only        = $SASUNIT_REPORTS_ONLY';
       put "echo";
       put;
       put "echo ""Starting SASUnit ...""";
