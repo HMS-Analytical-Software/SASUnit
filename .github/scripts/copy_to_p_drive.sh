@@ -18,7 +18,7 @@ p_drive=/mnt/hms/laufwerke/p/hms_interne_projekte/00773_kompetenzfelder/00773-00
 timestamp=$(date "+%Y_%m_%d")
 path=$p_drive/$timestamp/$RUN_NUMBER/$tgt_dir
 
-kinit samuel.melm@ANALYTICAL-SOFTWARE.EU -k -t /home/github/samuel.melm.keytab
+kinit svc-00773-006-github@ANALYTICAL-SOFTWARE.EU -k -t /home/github/svc-00773-006-github.keytab
 
 mkdir -p $path
 
