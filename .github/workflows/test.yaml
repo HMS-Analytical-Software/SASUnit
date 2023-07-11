@@ -109,10 +109,10 @@ jobs:
  
       - name: Copy output to share
         run: |
-          ./${{ matrix.copyToShare }} en/doc  with_spaces
-          ./${{ matrix.copyToShare }} en/logs with_spaces
-          ./${{ matrix.copyToShare }} example/en/doc  with_spaces/example
-          ./${{ matrix.copyToShare }} example/en/logs with_spaces/example
+          ./.github/scripts/copy_to_p_drive.sh en/doc          with_spaces
+          ./.github/scripts/copy_to_p_drive.sh en/logs         with_spaces
+          ./.github/scripts/copy_to_p_drive.sh example/en/doc  with_spaces/example
+          ./.github/scripts/copy_to_p_drive.sh example/en/logs with_spaces/example
 
       - name: Junit Report
         uses: dorny/test-reporter@v1
@@ -159,7 +159,7 @@ jobs:
 
       - name: Copy output to share
         run: |
-          ./${{ matrix.copyToShare }} example/doc  etc_opt_var/example
+        ./.github/scripts/copy_to_p_drive.sh example/doc  etc_opt_var/example
 
  
       - name: Junit Report
