@@ -18,7 +18,13 @@ p_drive=/mnt/hms/laufwerke/p/hms_interne_projekte/00773_kompetenzfelder/00773-00
 timestamp=$(date "+%Y_%m_%d")
 path=$p_drive/$timestamp/$RUN_NUMBER/$tgt_dir
 
-kinit svc-00773-006-github@ANALYTICAL-SOFTWARE.EU -k -t /home/github/svc-00773-006-github.keytab
+keytab_file=/home/github/svc-00773-006-github.keytab
+
+whoami
+file $keytab_file
+cat $keytab_file
+
+kinit svc-00773-006-github@ANALYTICAL-SOFTWARE.EU -k -t $keytab_file
 
 mkdir -p $path
 
