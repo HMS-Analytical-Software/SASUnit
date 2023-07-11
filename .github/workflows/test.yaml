@@ -159,7 +159,7 @@ jobs:
 
       - name: Copy output to share
         run: |
-        ./.github/scripts/copy_to_p_drive.sh example/doc  etc_opt_var/example
+          ./.github/scripts/copy_to_p_drive.sh example/doc  etc_opt_var/example
 
  
       - name: Junit Report
