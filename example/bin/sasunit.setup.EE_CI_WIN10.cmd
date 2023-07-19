@@ -3,8 +3,6 @@ REM This file is part of SASUnit, the Unit testing framework for SAS(R) programs
 REM For copyright information and terms of usage under the GPL license see included file readme.txt
 REM or https://sourceforge.net/p/sasunit/wiki/readme/.
 
-cd ..
-
 if /i "%~1" == "" (SET SASUNIT_LANGUAGE=en) else (SET SASUNIT_LANGUAGE=%1)
 
 REM --------------------------------------------------------------------------------
@@ -51,7 +49,7 @@ echo -----------------------------------------------------------
 echo.
 
 echo "Creating script files for starting SASUnit ..."
-"%SASUNIT_SAS_EXE%" -CONFIG "%SASUNIT_SAS_CFG%" -no$syntaxcheck -noovp -nosplash -log "bin/sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log" -sysin "%SASUNIT_ROOT%/saspgm/sasunit/runsasunitsetup.sas"
+"%SASUNIT_SAS_EXE%" -CONFIG "%SASUNIT_SAS_CFG%" -no$syntaxcheck -noovp -nosplash -log "example/bin/sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log" -sysin "%SASUNIT_ROOT%/saspgm/sasunit/runsasunitsetup.sas"
 
 if %ERRORLEVEL%==0 goto normalexit
 @echo. 

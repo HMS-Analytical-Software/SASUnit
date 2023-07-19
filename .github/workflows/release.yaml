@@ -1,0 +1,112 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  WORKSPACE: ${{ github.workspace }}
+  TAG_NAME: ${{ github.ref_name }}
+  RUN_NUMBER: ${{ github.ref_name }}
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  release:
+    name: Release
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [WIN10, CentOS]
+        include:
+          - platform: CentOS
+            runner: SASUnit_CentOS
+            osName: linux
+            extension: sh
+            copyToShare: .github/scripts/copy_to_p_drive.sh
+          - platform: WIN10
+            runner: SASUnit_WIN10
+            osName: windows
+            extension: cmd
+            copyToShare: .github/scripts/copy_to_p_drive.ps1
+
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - if: ${{ matrix.platform == 'CentOS' }}
+        uses: ./.github/actions/trim_line_endings
+      - if: ${{ matrix.platform == 'CentOS' }}
+        uses: ./.github/actions/set_execution_rights
+      
+      - name: Run examples
+        run: |
+          ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} de
+          ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} en
+          ./example/bin/sasunit.9.4.${{ matrix.osName }}.de.overwrite.full.${{ matrix.extension }}
+          ./example/bin/sasunit.9.4.${{ matrix.osName }}.en.overwrite.full.${{ matrix.extension }}
+
+
+      - if: ${{ matrix.platform == 'WIN10' }}
+        name: Build ZIP File (Windows)
+        run: |
+          # Cleanup
+
+          del example/bin/sasunit.setup.EE_*
+          del example/bin/sasunit.9.4.windows.*
+          del example/bin/*.xml
+          del example/bin/*.log
+          del example/bin/*.sh
+          del example/de/testdb/*.sas7bdat
+          del example/en/testdb/*.sas7bdat
+          del resources/*.sas7itm
+
+          # Create and test zip file
+
+          7z.exe a -tzip sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip example\* saspgm\sasunit\* resources\* saspgm\template\* *.txt "-xr!.sv*"
+          7z.exe t sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip -r
+
+
+      - if: ${{ matrix.platform == 'CentOS' }}
+        name: Build ZIP File (Linux)
+        run: |
+          # clean up
+          rm example/bin/sasunit.setup.EE_*
+          rm example/bin/sasunit.9.4.linux.*
+          rm example/bin/*.xml
+          rm example/bin/*.log
+          rm example/bin/*.cmd
+
+          rm example/de/testdb/*.sas7bdat
+          rm example/en/testdb/*.sas7bdat
+          rm -f resources/style/*.sas7bitm
+
+          zip -r sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip example/* saspgm/sasunit/* resources/* saspgm/template/* *.txt -x \*.sv*
+          zip -T sasunit.${{ env.TAG_NAME }}.${{ matrix.osName }}.zip
+
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          name: Release ${{ env.TAG_NAME }}
+          tag: ${{ env.TAG_NAME }}
+          draft: true
+          prerelease: true
+          allowUpdates: true
+          artifacts: sasunit.*.zip
+          repo: SASUnit
+          token: ${{ secrets.public_repo_token }}
+
+      - name: Copy output to share
+        run: |
+          ./${{ matrix.copyToShare }} sasunit.*.zip release
+          # TODO these are not needed? Because they are currently not build
+          #./${{ matrix.copyToShare }} en/logs  release/en
+          #./${{ matrix.copyToShare }} en/doc   release/en
+          #./${{ matrix.copyToShare }} de/logs  release/de
+          #./${{ matrix.copyToShare }} de/doc   release/de
+          ./${{ matrix.copyToShare }} example/en/doc example/en
+          ./${{ matrix.copyToShare }} example/de/doc example/de

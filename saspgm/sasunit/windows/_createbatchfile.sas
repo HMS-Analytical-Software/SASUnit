@@ -76,8 +76,6 @@
       put "REM For copyright information and terms of usage under the GPL license see included file readme.txt";
       put "REM or https://sourceforge.net/p/sasunit/wiki/readme/.";
       put;
-      put "cd ..";
-      put;
       put "REM --------------------------------------------------------------------------------";
       put "REM --- EnvVars for SAS Configuration ----------------------------------------------";
       put "SET SASUNIT_HOST_OS=&i_operatingSystem.";
@@ -147,7 +145,7 @@
       put "echo.";
       put;
       put "echo ""Starting SASUnit ...""";
-      put """&i_sasexe."" -CONFIG ""bin\sasunit.%nrstr(%%SASUNIT_SAS_VERSION%%.%%SASUNIT_HOST_OS%%.%%SASUNIT_LANGUAGE%%).cfg"" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC ""bin\sasunit.logconfig.&i_sasunitLanguage..xml""";
+      put """&i_sasexe."" -CONFIG ""%nrstr(%%SASUNIT_PROJECT_ROOT%%\bin\sasunit.%%SASUNIT_SAS_VERSION%%.%%SASUNIT_HOST_OS%%.%%SASUNIT_LANGUAGE%%.cfg)"" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC ""%nrstr(%%SASUNIT_PROJECT_ROOT%%)\bin\sasunit.logconfig.&i_sasunitLanguage..xml""";
       put;
       put 'if %ERRORLEVEL%==0 goto normalexit';
       put "@echo. ";

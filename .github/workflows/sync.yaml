@@ -1,0 +1,21 @@
+name: Sync with Public Repo
+
+on:
+  push:
+    branches: [ "main", "develop", "ci/github_actions" ]
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # fetch all commits
+
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url:
+            git@github.com:HMS-Analytical-Software/SASUnit.git
+          ssh_private_key:
+            ${{ secrets.SASUNIT_PUBLIC_REPO_PRIVATE_SSH_KEY }}
+

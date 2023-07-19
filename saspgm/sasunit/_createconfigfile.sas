@@ -43,7 +43,6 @@
 
    %let l_sasConfig           =%_makeSASUnitpath(&i_sasConfig.);
    %let l_sasunitRunAllPgm    =%_makeSASUnitpath(&i_sasunitRunAllPgm.);
-   %let l_sasunitRunAllPgm    =%_stdPath(&i_projectRootFolder., &l_sasunitRunAllPgm.);
    %let l_sasunitLogFolder    =%_makeSASUnitpath(&i_sasunitLogFolder.);
 
    data _NULL_;
