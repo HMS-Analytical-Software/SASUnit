@@ -4,8 +4,6 @@
 # For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
 # or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.
 
-cd ..
-
 if [ -z "$1" ]; then
    export SASUNIT_LANGUAGE=en
 else
@@ -58,7 +56,7 @@ echo "Logging level for scenarios        = $SASUNIT_SCN_LOG_LEVEL"
 echo "--------------------------------------------------------------------------------"
 
 echo "Creating script files for starting SASUnit ..."
-"$SASUNIT_SAS_EXE" -nosyntaxcheck -noovp -log "./bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log" -sysin "$SASUNIT_ROOT/saspgm/sasunit/runsasunitsetup.sas"
+"$SASUNIT_SAS_EXE" -nosyntaxcheck -noovp -log "$SASUNIT_PROJECTROOT/bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log" -sysin "$SASUNIT_ROOT/saspgm/sasunit/runsasunitsetup.sas"
 
 # Show SAS exit status
 RETVAL=$?
