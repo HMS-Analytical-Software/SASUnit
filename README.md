@@ -1,9 +1,8 @@
-This is the readme file for version 2.1 of SASUnit, the Unit testing 
-framework for SAS(R) programs, copyright 2010-2022 HMS Analytical 
-Software GmbH, http://www.analytical-software.de
+This is the readme file of SASUnit, the Unit testing framework for SAS(R) programs, 
+copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
 
 SASUnit is free software: you can redistribute it and/or modify it 
-under the terms of the GNU General Public License as published by the 
+under the terms of the GNU Lesser General Public License as published by the 
 Free Software Foundation, either version 3 of the License, or (at your 
 option) any later version.
 
@@ -12,15 +11,14 @@ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
 for more details.
 
-You can find a copy of the GNU Lesser General Public License in the file 
-LICENSE.md of the SASUnit distribution. If not, see 
-http://www.gnu.org/licenses/.
+You can find a copy of the GNU Lesser General Public License in the file LICENSE.md 
+of the SASUnit distribution. 
+If not, see http://www.gnu.org/licenses/.
 
-SASUnit requires SAS. SAS is a product and registered trademark of SAS 
-Institute, Cary, NC (http://www.sas.com).
+SASUnit requires SAS. SAS is a product and registered trademark of 
+SAS Institute, Cary, NC (http://www.sas.com).
 
-Release notes (changes since previous version, supported and tested 
-environments) can be found at 
+Release notes (changes since previous version, supported and tested environments) can be found at 
 https://github.com/HMS-Analytical-Software/SASUnit/wiki/Release%20Notes%20Version%202.1.
 
 For installation and initial operation see 
