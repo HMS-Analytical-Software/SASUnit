@@ -18,8 +18,10 @@ SET SASUNIT_SAS_CFG=%SASUNIT_SASPATH%\nls\%SASUNIT_LANGUAGE%\sasv9.cfg
 
 REM --------------------------------------------------------------------------------
 REM --- EnvVars for SAS Unit Configuration -----------------------------------------
-SET SASUNIT_ROOT=c:\projects\sasunit
-SET SASUNIT_PROJECTROOT=c:\projects\sasunit\example
+cd ..
+SET SASUNIT_ROOT=%cd%
+cd ./example
+SET SASUNIT_PROJECTROOT=%cd%
 SET SASUNIT_TESTDB_PATH=%SASUNIT_PROJECTROOT%\doc\sasunit\%SASUNIT_LANGUAGE%
 SET SASUNIT_LOG_PATH=%SASUNIT_PROJECTROOT%\doc\sasunit\%SASUNIT_LANGUAGE%
 SET SASUNIT_SCN_LOG_PATH=%SASUNIT_PROJECTROOT%\doc\sasunit\%SASUNIT_LANGUAGE%\log

@@ -1,0 +1,6 @@
+#Exclude folders for created test documentation
+en
+de
+bin/sasunit.9.4.*
+bin/*.xml
+bin/*.log
