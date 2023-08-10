@@ -2,8 +2,6 @@ name: Create Release
 
 on:
   push:
-    tags:
-      - 'v*'
 
 env:
   WORKSPACE: ${{ github.workspace }}
@@ -53,6 +51,25 @@ jobs:
       - if: ${{ matrix.platform == 'WIN10' }}
         name: Build ZIP File (Windows)
         run: |
+
+          $revision="${{TAG_NAME}} ($(git rev-parse --short HEAD))"
+          $author=$(git log -1 --pretty=format:'%an (%ae)')
+          $date=$(date '+%d.%m.%Y')
+          $headUrl="https://github.com/HMS-Analytical-Software/SASUnit"
+
+
+          $sasFiles = GetChildItem saspgm -Filter **/*.sas
+
+          foreach($sasFile in $sasFiles){
+              $newContent = (Get-Content $sasFile) `
+                                   -replace '\\\$Revision.*\$', "\`$Revision $revision`$" `
+                                   -replace '\\\$Author.*\$', "\`$Author $author`$" `
+                                   -replace '\\\$Date.*\$', "\`$Date $date`$" `
+                                   -replace '\\\$HeadURL.*\$', "\`$HeadURL $headUrl`$"
+              Set-Content $sasFile $newContent
+          }
+
+
           # Cleanup
 
           del example/bin/sasunit.setup.EE_*
@@ -73,6 +90,16 @@ jobs:
       - if: ${{ matrix.platform == 'CentOS' }}
         name: Build ZIP File (Linux)
         run: |
+          revision="${{TAG_NAME}} ($(git rev-parse --short HEAD))"
+          author=$(git log -1 --pretty=format:'%an (%ae)')
+          date=$(Get-Date -Format 'dd.MM.yyyy')
+          head_url="https://github.com/HMS-Analytical-Software/SASUnit"
+
+          sed -i "s/\\\$Revision.*\\$/\$Revision $revision\$/" saspgm/**/.sas
+          sed -i "s/\\\$Author.*\\$/\$Author $author\$/" saspgm/**/.sas
+          sed -i "s/\\\$Date.*\\$/\$Date $date\$/" saspgm/**/.sas
+          sed -i "s/\\\$HeadURL.*\\$/\$HeadURL $date\$/" saspgm/**/.sas
+
           # clean up
           rm example/bin/sasunit.setup.EE_*
           rm example/bin/sasunit.9.4.linux.*
