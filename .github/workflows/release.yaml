@@ -52,7 +52,7 @@ jobs:
         name: Build ZIP File (Windows)
         run: |
 
-          $revision="${{TAG_NAME}} ($(git rev-parse --short HEAD))"
+          $revision="${{ env.TAG_NAME }} ($(git rev-parse --short HEAD))"
           $author=$(git log -1 --pretty=format:'%an (%ae)')
           $date=$(date '+%d.%m.%Y')
           $headUrl="https://github.com/HMS-Analytical-Software/SASUnit"
@@ -90,7 +90,7 @@ jobs:
       - if: ${{ matrix.platform == 'CentOS' }}
         name: Build ZIP File (Linux)
         run: |
-          revision="${{TAG_NAME}} ($(git rev-parse --short HEAD))"
+          revision="${{ env.TAG_NAME }} ($(git rev-parse --short HEAD))"
           author=$(git log -1 --pretty=format:'%an (%ae)')
           date=$(Get-Date -Format 'dd.MM.yyyy')
           head_url="https://github.com/HMS-Analytical-Software/SASUnit"
