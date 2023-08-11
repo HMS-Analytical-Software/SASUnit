@@ -1,11 +1,11 @@
 /*
    This is a css file of SASUnit.
       
-   For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+   For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User's%20Guide
    Here you can find the SASUnit documentation, release notes and license information.
    This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-   For copyright information and terms of usage under the GPL license see included file readme.txt
-   or https://sourceforge.net/p/sasunit/wiki/readme/.
+   For copyright information and terms of usage under the https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme included file README.md
+   or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.
 */
 
 @IMPORT "SASUnit_PROC_TEMPLATE.css";
@@ -36,41 +36,44 @@ text-decoration:none;
 	width: 100%;
 	background: white;
 	color: black;
-    border-bottom: 3px solid white;
+   border-bottom: 3px solid white;
 }
 
 .tabs ul {
-    padding:0px 0px 0px 0px; 
-    margin:0; 
-    border: none;
+   padding:0px 0px 0px 0px; 
+   margin:0; 
+   border: none;
 }
 
 .tabs ol {
-    padding:0; 
-    margin:0; 
-    border: none;
+   padding:0; 
+   margin:0; 
+   border: none;
 }
 
 .tabs li {
-    float:left; 
-    margin-right:0; 	
-    font-size: small;
-    font-weight: bold;
+   float:left; 
+   margin-right:0; 	
+   font-size: small;
+   font-weight: bold;
 	background: white;
 }
 
 .tabs li a {
-    display:block;
-    padding: 5px 9px;
-    text-decoration:none;
-    height: 16px;
-    border-bottom: 3px solid white;
+   display:block;
+   padding: 5px 9px;
+   text-decoration:none;
+   height: 16px;
+   border-bottom: 3px solid white;
+   color: #707070
 }
 
 .tabs li a:hover {
-    border-bottom: 3px solid #CCCCCC;
+   border-bottom: 3px solid #CCCCCC;
+   color: #002280
 }
 
 .tabs li#current a {
-    border-bottom: 3px solid #84B0C7;
+   border-bottom: 3px solid #84B0C7;
+   color: #002280
 }

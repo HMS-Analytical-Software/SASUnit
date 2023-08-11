@@ -4,16 +4,16 @@
 
    \brief      Testmacro for listcalling
 
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+               Please refer to <A href="https://github.com/HMS-Analytical-Software/SASUnit/wiki/User's%20Guide" target="_blank">SASUnit User's Guide</A>
 
-   \version    \$Revision: 456 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2015-09-17 14:15:34 +0200 (Do, 17 Sep 2015) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/test/pgmlib1/testmakro1.sas $
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+   \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+               For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
+               or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme/.
 */ /** \cond */ 
 
 %macro Testmakro5;

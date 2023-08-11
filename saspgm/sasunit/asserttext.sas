@@ -9,18 +9,19 @@
                For Linux the script file is called assertText_diff.sh. Here the diff command is used to do the compare.
                Usage of other diff-tools is possible by changing the implementation of the script file.
 
-               Please refer to <A href="https://sourceforge.net/p/sasunit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
+               Please refer to <A href="https://github.com/HMS-Analytical-Software/SASUnit/wiki/User's%20Guide/" target="_blank">SASUnit User's Guide</A>
 
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
    
-   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+   \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
-   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For copyright information and terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme/.
+   \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
+               or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme/.
             
    \param      i_script               Optional Parameter: Path of shell script (default=&g_sasunit_os.,assertText.&g_osCmdFileSuffix.)
    \param      i_expected             Path of first text file (expected)

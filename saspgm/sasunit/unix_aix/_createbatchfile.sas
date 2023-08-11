@@ -10,12 +10,12 @@
    \author     \$Author$
    \date       \$Date$
    
-   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+   \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
    \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For copyright information and terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme/.
+               For copyright information and terms of usage under the Lesser GPL license see included file readme.txt
+               or https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/readme/.
                
    \param      i_sasunitCommandFile       Name of the scriptfile that should be generated (e.g. sasunit.9.3.unix.en.overwrite.fast.sh)
    \param      i_operatingSystem          Name of the operating system under which SAS is running. It is also part of the name of the config file.
@@ -81,7 +81,7 @@
       put "#!/bin/bash";
       put "# This file is part of SASUnit, the Unit testing framework for SAS(R) programs.";
       put "# For copyright information and terms of usage under the GPL license see included file readme.txt";
-      put "# or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.";
+      put "# or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.";
       put;
       put "cd ..";
       put;

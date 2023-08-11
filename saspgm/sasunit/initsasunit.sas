@@ -16,9 +16,9 @@
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User's%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+   \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For copyright information and terms of usage under the GPL license see included file README.md
+               For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
                or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme/.
             
    \param   i_root                     optional: root path for all other paths except i_sasunit, is used for paths that do not begin 

@@ -11,12 +11,13 @@
    \author     \$Author: klandwich $
    \date       \$Date: 2016-08-22 11:52:57 +0200 (Mo, 22 Aug 2016) $
 
-   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+   \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
-   @sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/example/saspgm/pgmdoc_groups.sas $
-   @copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For copyright information and terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme/.
+   \sa         \$HeadURL$
+   \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
+               or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme/.
 
    \defgroup   SASUNIT        SASUnit automated testing
    \brief      SASUnit testing project program documentation
