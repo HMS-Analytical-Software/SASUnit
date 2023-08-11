@@ -3,8 +3,6 @@ REM This file is part of SASUnit, the Unit testing framework for SAS(R) programs
 REM For copyright information and terms of usage under the GPL license see included file readme.txt
 REM or https://sourceforge.net/p/sasunit/wiki/readme/.
 
-cd ..
-
 if /i "%~1" == "" (SET SASUNIT_LANGUAGE=en) else (SET SASUNIT_LANGUAGE=%1)
 
 REM --------------------------------------------------------------------------------
@@ -16,12 +14,14 @@ SET SASUNIT_SASPATH=C:\Program Files\SASHome\SASFoundation\%SASUNIT_SAS_VERSION%
 SET SASUNIT_SAS_EXE=%SASUNIT_SASPATH%\sas.exe
 SET SASUNIT_SAS_CFG=%SASUNIT_SASPATH%\nls\%SASUNIT_LANGUAGE%\sasv9.cfg
 
+SET cmd_folder=%~dp0
+FOR %%f in ("%cmd_folder:~0,-1%") do set prj_folder=%%~dpf
+FOR %%f in ("%prj_folder:~0,-1%") do set root_folder=%%~dpf
+
 REM --------------------------------------------------------------------------------
 REM --- EnvVars for SAS Unit Configuration -----------------------------------------
-cd ..
-SET SASUNIT_ROOT=%cd%
-cd ./example
-SET SASUNIT_PROJECTROOT=%cd%
+SET SASUNIT_ROOT=%root_folder%
+SET SASUNIT_PROJECTROOT=%prj_folder%
 SET SASUNIT_TESTDB_PATH=%SASUNIT_PROJECTROOT%\doc\sasunit\%SASUNIT_LANGUAGE%
 SET SASUNIT_LOG_PATH=%SASUNIT_PROJECTROOT%\doc\sasunit\%SASUNIT_LANGUAGE%
 SET SASUNIT_SCN_LOG_PATH=%SASUNIT_PROJECTROOT%\doc\sasunit\%SASUNIT_LANGUAGE%\log
@@ -54,7 +54,7 @@ echo ---------------------------------------------------------------------------
 echo.
 
 echo "Creating script files for starting SASUnit ..."
-"%SASUNIT_SAS_EXE%" -CONFIG "%SASUNIT_SAS_CFG%" -no$syntaxcheck -noovp -nosplash -log "bin/sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log" -sysin "%SASUNIT_ROOT%/saspgm/sasunit/runsasunitsetup.sas"
+"%SASUNIT_SAS_EXE%" -CONFIG "%SASUNIT_SAS_CFG%" -no$syntaxcheck -noovp -nosplash -log "%SASUNIT_PROJECTROOT%/bin/sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log" -sysin "%SASUNIT_ROOT%/saspgm/sasunit/runsasunitsetup.sas"
 
 if %ERRORLEVEL%==0 goto normalexit
 @echo. 

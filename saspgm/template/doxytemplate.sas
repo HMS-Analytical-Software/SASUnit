@@ -14,8 +14,8 @@
 \sa         \$HeadURL$
 \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
             This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-            For terms of usage under the GPL license see included file readme.txt
-            or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+            For copyright information and terms of usage under the GPL license see included file README.md
+            or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme/.
 
 \param      name description
 \return     return value

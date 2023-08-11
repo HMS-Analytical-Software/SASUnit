@@ -16,10 +16,13 @@ SET SASUNIT_SASPATH=C:\Program Files\SASHome\SASFoundation\%SASUNIT_SAS_VERSION%
 SET SASUNIT_SAS_EXE=%SASUNIT_SASPATH%\sas.exe
 SET SASUNIT_SAS_CFG=%SASUNIT_SASPATH%\nls\%SASUNIT_LANGUAGE%\sasv9.cfg
 
+SET cmd_folder=%~dp0
+FOR %%f in ("%cmd_folder:~0,-1%") do set root_folder=%%~dpf
+
 REM --------------------------------------------------------------------------------
 REM --- EnvVars for SAS Unit Configuration -----------------------------------------
-SET SASUNIT_ROOT=%cd%
-SET SASUNIT_PROJECTROOT=%cd%
+SET SASUNIT_ROOT=%root_folder%
+SET SASUNIT_PROJECTROOT=%root_folder%
 SET SASUNIT_TESTDB_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\testdb
 SET SASUNIT_LOG_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\logs
 SET SASUNIT_SCN_LOG_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\scn_logs
