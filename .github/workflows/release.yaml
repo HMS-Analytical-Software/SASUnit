@@ -8,13 +8,39 @@ env:
   TAG_NAME: ${{ github.ref_name }}
   RUN_NUMBER: ${{ github.ref_name }}
 
+
+  COMMIT_HASH: ""
+  AUTHOR: ""
+  DATE: ""
+  HEAD_URL: "https://github.com/HMS-Analytical-Software/SASUnit"
+
 permissions:
   contents: write
   pull-requests: read
 
 jobs:
+
+  preparation:
+    name: Prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+    steps: 
+      - uses: actions/checkout@v3
+      - run: |
+          commit=$(git rev-parse --short HEAD)
+          author=$(git log -1 --pretty=format:'%an (%ae)')
+          date=$(date '+%d.%m.%Y')
+          echo $commit $author $date $GITHUB_ENV
+
+          echo "COMMIT_HASH=$commit" >> $GITHUB_ENV
+          echo "AUTHOR=$author" >> $GITHUB_ENV
+          echo "DATE=$date" >> $GITHUB_ENV
+      - run: echo ${{ env.COMMIT_HASH }} ${{ env.AUTHOR }} ${{ env.DATE }}
+
   release:
     name: Release
+    needs: preparation
     strategy:
       fail-fast: false
       matrix:
@@ -52,23 +78,16 @@ jobs:
         name: Build ZIP File (Windows)
         run: |
 
-          $revision="${{ env.TAG_NAME }} ($(git rev-parse --short HEAD))"
-          $author=$(git log -1 --pretty=format:'%an (%ae)')
-          $date=$(date '+%d.%m.%Y')
-          $headUrl="https://github.com/HMS-Analytical-Software/SASUnit"
-
-
           $sasFiles = GetChildItem saspgm -Filter **/*.sas
 
           foreach($sasFile in $sasFiles){
               $newContent = (Get-Content $sasFile) `
-                                   -replace '\\\$Revision.*\$', "\`$Revision $revision`$" `
-                                   -replace '\\\$Author.*\$', "\`$Author $author`$" `
-                                   -replace '\\\$Date.*\$', "\`$Date $date`$" `
-                                   -replace '\\\$HeadURL.*\$', "\`$HeadURL $headUrl`$"
+                                   -replace '\\\$Revision.*\$', "\`$Revision ${{ env.TAG_NAME}} (${{ env.COMMIT_HASH }})`$" `
+                                   -replace '\\\$Author.*\$', "\`$Author ${{ env.AUTHOR }}`$" `
+                                   -replace '\\\$Date.*\$', "\`$Date ${{ env.DATE }}`$" `
+                                   -replace '\\\$HeadURL.*\$', "\`$HeadURL ${{ env.HEAD_URL }}`$"
               Set-Content $sasFile $newContent
           }
-
 
           # Cleanup
 
@@ -90,15 +109,11 @@ jobs:
       - if: ${{ matrix.platform == 'CentOS' }}
         name: Build ZIP File (Linux)
         run: |
-          revision="${{ env.TAG_NAME }} ($(git rev-parse --short HEAD))"
-          author=$(git log -1 --pretty=format:'%an (%ae)')
-          date=$(Get-Date -Format 'dd.MM.yyyy')
-          head_url="https://github.com/HMS-Analytical-Software/SASUnit"
 
-          sed -i "s/\\\$Revision.*\\$/\$Revision $revision\$/" saspgm/**/.sas
-          sed -i "s/\\\$Author.*\\$/\$Author $author\$/" saspgm/**/.sas
-          sed -i "s/\\\$Date.*\\$/\$Date $date\$/" saspgm/**/.sas
-          sed -i "s/\\\$HeadURL.*\\$/\$HeadURL $date\$/" saspgm/**/.sas
+          sed -i "s/\\\$Revision.*\\$/\$Revision ${{ env.TAG_NAME}} (${{ env.COMMIT_HASH }})\$/" saspgm/**/.sas
+          sed -i "s/\\\$Author.*\\$/\$Author ${{ env.AUTHOR }}\$/" saspgm/**/.sas
+          sed -i "s/\\\$Date.*\\$/\$Date ${{ env.DATE }}\$/" saspgm/**/.sas
+          sed -i "s/\\\$HeadURL.*\\$/\$HeadURL ${{ env.HEAD_URL }}\$/" saspgm/**/.sas
 
           # clean up
           rm example/bin/sasunit.setup.EE_*
