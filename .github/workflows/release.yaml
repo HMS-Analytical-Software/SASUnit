@@ -21,13 +21,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
+    outputs:
+      COMMIT_HASH: ${{ steps.prep_step.outputs.COMMIT_HASH }}
+      AUTHOR: ${{ steps.prep_step.outputs.AUTHOR }}
+      DATE: ${{ steps.prep_step.outputs.DATE }}
     steps: 
       - uses: actions/checkout@v3
-      - run: |
+      - id: prep_step
+        run: |
           commit=$(git rev-parse --short HEAD)
-          author=$(git log -1 --pretty=format:'%an (%ae)')
+          author=$(git log -1 --pretty=format:'%an, %ae')
           date=$(date '+%d.%m.%Y')
-          echo $commit $author $date $GITHUB_ENV
 
           echo "COMMIT_HASH=$commit" >> $GITHUB_OUTPUT
           echo "AUTHOR=$author" >> $GITHUB_OUTPUT
@@ -60,6 +64,12 @@ jobs:
         uses: ./.github/actions/trim_line_endings
       - if: ${{ matrix.platform == 'CentOS' }}
         uses: ./.github/actions/set_execution_rights
+
+      - name: Debug output
+        run: |
+          echo commit ${{ needs.jobs.preparation.outputs.COMMIT_HASH }}
+          echo author ${{ needs.jobs.preparation.outputs.AUTHOR }}
+          echo date ${{ needs.jobs.preparation.outputs.DATE }}
       
       - name: Run examples
         run: |
