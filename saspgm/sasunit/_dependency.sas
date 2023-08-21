@@ -44,7 +44,7 @@
       DATA _NULL_;
          * read one observation;
          SET &i_macroList. (firstobs=&l_i. obs=&l_i.); 
-         CALL SYMPUT("l_name", trim(name));
+         CALL SYMPUT("l_name", strip(name));
       RUN;
 
       /* Create Json for calling hierachy (macros called by A) */
