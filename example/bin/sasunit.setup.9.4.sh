@@ -23,7 +23,7 @@ export SASUNIT_SAS_CFG=/opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/nls/$
 
 # --------------------------------------------------------------------------------
 # --- EnvVars for SAS Unit Configuration -----------------------------------------
-PRJ_ROOT=$(dirname $(readlink -f "$0"))
+PRJ_ROOT=$(dirname $(dirname $(readlink -f "$0")))
 export SASUNIT_ROOT=$(dirname $PRJ_ROOT)
 export SASUNIT_PROJECTROOT=$PRJ_ROOT
 export SASUNIT_TESTDB_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/testdb

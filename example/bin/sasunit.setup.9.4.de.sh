@@ -4,4 +4,6 @@
 # For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
 # or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.
 
-./sasunit.setup.9.4.sh de
+SHELL_DIR=$(dirname $(readlink -f "$0"))
+
+$SHELL_DIR/sasunit.setup.9.4.sh de
