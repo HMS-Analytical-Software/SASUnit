@@ -30,6 +30,6 @@
       %let l_footnote=&l_footnote. SASUnit <img src="&i_offset.SASUnit_Logo.png" title="SASUnit" alt="SASUnit" width=18px height=18px align="absmiddle" border="0"></a>;
       %let l_footnote=&l_footnote. Version &g_version (&g_revision) </small>};
       footnote  %sysfunc(quote(^{RAW <hr size="1">}));
-      footnote2 j0L "<img alt="" src=https://img.shields.io/github/v/release/HMS-Analytical-Software/SASUnit>" j=r %sysfunc(quote(&l_footnote.));   
+      footnote2 j=l '<img alt="SASUnit version" src="https://img.shields.io/github/v/release/HMS-Analytical-Software/SASUnit">' j=r %sysfunc(quote(&l_footnote.));   
 %MEND _reportFooterHTML;
 /** \endcond */
