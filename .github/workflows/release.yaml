@@ -115,10 +115,10 @@ jobs:
         name: Build ZIP File (Linux)
         run: |
 
-          sed -i "s/\\\$Revision.*\\$/\$Revision ${{ env.TAG_NAME}} (${{ needs.preparation.outputs.COMMIT_HASH }})\$/" saspgm/**/.sas
-          sed -i "s/\\\$Author.*\\$/\$Author ${{ needs.preparation.outputs.AUTHOR }}\$/" saspgm/**/.sas
-          sed -i "s/\\\$Date.*\\$/\$Date ${{ needs.preparation.outputs.DATE }}\$/" saspgm/**/.sas
-          sed -i "s/\\\$HeadURL.*\\$/\$HeadURL ${{ env.HEAD_URL }}\$/" saspgm/**/.sas
+          sed -i "s?\\\$Revision.*\\$?\$Revision ${{ env.TAG_NAME}} (${{ needs.preparation.outputs.COMMIT_HASH }})\$?" saspgm/**/.sas
+          sed -i "s?\\\$Author.*\\$?\$Author ${{ needs.preparation.outputs.AUTHOR }}\$?" saspgm/**/.sas
+          sed -i "s?\\\$Date.*\\$?\$Date ${{ needs.preparation.outputs.DATE }}\$?" saspgm/**/.sas
+          sed -i "s?\\\$HeadURL.*\\$?\$HeadURL ${{ env.HEAD_URL }}\$?" saspgm/**/.sas
 
           # clean up
           rm example/bin/sasunit.setup.EE_*
