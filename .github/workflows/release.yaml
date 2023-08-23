@@ -84,7 +84,7 @@ jobs:
         name: Build ZIP File (Windows)
         run: |
 
-          $sasFiles = Get-ChildItem saspgm -Filter **/*.sas
+          $sasFiles = Get-ChildItem -Path 'saspgm' -Filter '*.sas' -Recurse
 
           foreach($sasFile in $sasFiles){
               $newContent = (Get-Content $sasFile) `
