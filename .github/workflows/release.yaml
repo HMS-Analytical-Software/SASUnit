@@ -23,7 +23,7 @@ jobs:
       fail-fast: true
     outputs:
       COMMIT_HASH: ${{ steps.prep_step.outputs.COMMIT_HASH }}
-      AUTHOR: ${{ steps.prep_step.outputs.AUTHOR }}
+      AUTHOR:      ${{ steps.prep_step.outputs.AUTHOR }}
       DATE: ${{ steps.prep_step.outputs.DATE }}
     steps: 
       - uses: actions/checkout@v3
@@ -67,9 +67,9 @@ jobs:
 
       - name: Debug output
         run: |
-          echo commit ${{ needs.jobs.preparation.outputs.COMMIT_HASH }}
-          echo author ${{ needs.jobs.preparation.outputs.AUTHOR }}
-          echo date ${{ needs.jobs.preparation.outputs.DATE }}
+          echo commit ${{ needs.preparation.outputs.COMMIT_HASH }}
+          echo author ${{ needs.preparation.outputs.AUTHOR }}
+          echo date ${{ needs.preparation.outputs.DATE }}
       
       - name: Run examples
         run: |
@@ -87,9 +87,9 @@ jobs:
 
           foreach($sasFile in $sasFiles){
               $newContent = (Get-Content $sasFile) `
-                                   -replace '\\\$Revision.*\$', "\`$Revision ${{ env.TAG_NAME}} (${{ needs.jobs.preparation.outputs.COMMIT_HASH }})`$" `
-                                   -replace '\\\$Author.*\$', "\`$Author ${{ needs.jobs.preparation.outputs.AUTHOR }}`$" `
-                                   -replace '\\\$Date.*\$', "\`$Date ${{ needs.jobs.preparation.outputs.DATE }}`$" `
+                                   -replace '\\\$Revision.*\$', "\`$Revision ${{ env.TAG_NAME}} (${{ needs.preparation.outputs.COMMIT_HASH }})`$" `
+                                   -replace '\\\$Author.*\$', "\`$Author ${{ needs.preparation.outputs.AUTHOR }}`$" `
+                                   -replace '\\\$Date.*\$', "\`$Date ${{ needs.preparation.outputs.DATE }}`$" `
                                    -replace '\\\$HeadURL.*\$', "\`$HeadURL ${{ env.HEAD_URL }}`$"
               Set-Content $sasFile $newContent
           }
@@ -115,9 +115,9 @@ jobs:
         name: Build ZIP File (Linux)
         run: |
 
-          sed -i "s/\\\$Revision.*\\$/\$Revision ${{ env.TAG_NAME}} (${{ needs.jobs.preparation.outputs.COMMIT_HASH }})\$/" saspgm/**/.sas
-          sed -i "s/\\\$Author.*\\$/\$Author ${{ needs.jobs.preparation.outputs.AUTHOR }}\$/" saspgm/**/.sas
-          sed -i "s/\\\$Date.*\\$/\$Date ${{ needs.jobs.preparation.outputs.DATE }}\$/" saspgm/**/.sas
+          sed -i "s/\\\$Revision.*\\$/\$Revision ${{ env.TAG_NAME}} (${{ needs.preparation.outputs.COMMIT_HASH }})\$/" saspgm/**/.sas
+          sed -i "s/\\\$Author.*\\$/\$Author ${{ needs.preparation.outputs.AUTHOR }}\$/" saspgm/**/.sas
+          sed -i "s/\\\$Date.*\\$/\$Date ${{ needs.preparation.outputs.DATE }}\$/" saspgm/**/.sas
           sed -i "s/\\\$HeadURL.*\\$/\$HeadURL ${{ env.HEAD_URL }}\$/" saspgm/**/.sas
 
           # clean up
