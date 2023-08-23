@@ -66,12 +66,6 @@ jobs:
       - if: ${{ matrix.platform == 'CentOS' }}
         uses: ./.github/actions/set_execution_rights
 
-      - name: Debug output
-        run: |
-          echo commit ${{ needs.preparation.outputs.COMMIT_HASH }}
-          echo author ${{ needs.preparation.outputs.AUTHOR }}
-          echo date ${{ needs.preparation.outputs.DATE }}
-      
       - name: Run examples
         run: |
           ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} de
@@ -116,10 +110,10 @@ jobs:
         name: Build ZIP File (Linux)
         run: |
 
-          sed -i "s|\\\$Revision.*\\$|Revision: ${{ env.TAG_NAME}} (${{ needs.preparation.outputs.COMMIT_HASH }})|" saspgm/**/*.sas
-          sed -i "s|\\\$Author.*\\$|Author: ${{ needs.preparation.outputs.AUTHOR }}|" saspgm/**/*.sas
-          sed -i "s|\\\$Date.*\\$|Date: ${{ needs.preparation.outputs.DATE }}|" saspgm/**/*.sas
-          sed -i "s|\\\$HeadURL.*\\$|HeadURL: ${{ env.HEAD_URL }}|" saspgm/**/*.sas
+          sed -i "s|\\\\\$Revision.*\\$|Revision: ${{ env.TAG_NAME}} (${{ needs.preparation.outputs.COMMIT_HASH }})|" saspgm/**/*.sas
+          sed -i "s|\\\\\$Author.*\\$|Author: ${{ needs.preparation.outputs.AUTHOR }}|" saspgm/**/*.sas
+          sed -i "s|\\\\\$Date.*\\$|Date: ${{ needs.preparation.outputs.DATE }}|" saspgm/**/*.sas
+          sed -i "s|\\\\\$HeadURL.*\\$|HeadURL: ${{ env.HEAD_URL }}|" saspgm/**/*.sas
 
           # clean up
           rm example/bin/sasunit.setup.EE_*
