@@ -15,4 +15,4 @@ $timestamp = Get-Date -Format 'yyyy_MM_dd'
 $path = "$p_drive/$timestamp/$env:RUN_NUMBER/$tgt_dir"
 
 New-Item -Type Directory -Force $path
-Copy-Item -Recurse -Path $src -Destination $path
+Copy-Item -Recurse -Path $src -Destination -Force $path
