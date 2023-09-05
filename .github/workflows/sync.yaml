@@ -17,19 +17,17 @@ jobs:
           export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
           git clone git@github.com:HMS-Analytical-Software/SASUnitDev.git .
+          git fetch --all --tags
+          git checkout main
 
-      - name: Push Branches
+
+      - name: Push Branches and Tags
         run: |
           git remote add public git@github.com:HMS-Analytical-Software/SASUnit.git
           echo "${{ secrets.SASUNIT_PUBLIC_REPO_PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          git checkout main
           git push public main
-
-      - name: Push Tags
-        run: |
-          git fetch --all --tags
           git push public tag v*
 
           
