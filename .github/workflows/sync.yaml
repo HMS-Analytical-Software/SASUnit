@@ -10,8 +10,7 @@ jobs:
     steps:
       - run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SASUNIT_PUBLIC_REPO_PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
-          wc ~/.ssh/id_rsa
+          echo "${{ secrets.SASUNIT_DEV_REPO_PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
           # use id_ra to push to public repo
@@ -20,6 +19,8 @@ jobs:
           git clone git@github.com:HMS-Analytical-Software/SASUnitDev.git .
 
           git remote add public git@github.com:HMS-Analytical-Software/SASUnit.git
+          echo "${{ secrets.SASUNIT_PUBLIC_REPO_PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
           git checkout main
           git push public main
