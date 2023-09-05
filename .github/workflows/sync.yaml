@@ -2,28 +2,30 @@ name: Sync with Public Repo
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "main", "develop", "ci/prepare_release" ]
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # fetch all commits
-
       - run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SASUNIT_PUBLIC_REPO_PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
+          wc ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
           # use id_ra to push to public repo
           export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
+          git clone git@github.com:HMS-Analytical-Software/SASUnitDev.git .
+
           git remote add public git@github.com:HMS-Analytical-Software/SASUnit.git
 
+          git checkout main
           git push public main
+          git checkout develop
           git push public develop
+          git fetch --tags
           git push public tag v*
 
           
