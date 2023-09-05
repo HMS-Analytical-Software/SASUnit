@@ -8,25 +8,28 @@ jobs:
   mirror:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - name: Checkout
+        run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SASUNIT_DEV_REPO_PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          # use id_ra to push to public repo
           export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
           git clone git@github.com:HMS-Analytical-Software/SASUnitDev.git .
 
+      - name: Push Branches
+        run: |
           git remote add public git@github.com:HMS-Analytical-Software/SASUnit.git
           echo "${{ secrets.SASUNIT_PUBLIC_REPO_PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
           git checkout main
           git push public main
-          git checkout develop
-          git push public develop
-          git fetch --tags
+
+      - name: Push Tags
+        run: |
+          git fetch --all --tags
           git push public tag v*
 
           
