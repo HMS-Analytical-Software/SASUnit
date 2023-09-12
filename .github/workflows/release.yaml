@@ -8,15 +8,36 @@ on:
 env:
   WORKSPACE: ${{ github.workspace }}
   TAG_NAME: ${{ github.ref_name }}
-  RUN_NUMBER: ${{ github.ref_name }}
+  RUN_NUMBER: ${{ github.run_number }}
+  HEAD_URL: "https://raw.githubusercontent.com/HMS-Analytical-Software/SASUnit/main/example/saspgm/assertexternal_example_test.sas"
 
 permissions:
   contents: write
   pull-requests: read
 
 jobs:
+  preparation:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      COMMIT_HASH: ${{ steps.prep_step.outputs.COMMIT_HASH }}
+      AUTHOR:      ${{ steps.prep_step.outputs.AUTHOR }}
+      DATE: ${{ steps.prep_step.outputs.DATE }}
+    steps: 
+      - uses: actions/checkout@v3
+      - id: prep_step
+        run: |
+          commit=$(git rev-parse --short HEAD)
+          author=$(git log -1 --pretty=format:'%an, %ae')
+          date=$(date '+%d.%m.%Y')
+
+          echo "COMMIT_HASH=$commit" >> $GITHUB_OUTPUT
+          echo "AUTHOR=$author" >> $GITHUB_OUTPUT
+          echo "DATE=$date" >> $GITHUB_OUTPUT
+
   release:
     name: Release
+    needs: preparation
     strategy:
       fail-fast: false
       matrix:
@@ -41,7 +62,6 @@ jobs:
         uses: ./.github/actions/trim_line_endings
       - if: ${{ matrix.platform == 'CentOS' }}
         uses: ./.github/actions/set_execution_rights
-      
       - name: Run examples
         run: |
           ./example/bin/sasunit.setup.EE_CI_${{ matrix.platform }}.${{ matrix.extension }} de
@@ -53,6 +73,18 @@ jobs:
       - if: ${{ matrix.platform == 'WIN10' }}
         name: Build ZIP File (Windows)
         run: |
+
+          $sasFiles = Get-ChildItem -Path 'saspgm' -Filter '*.sas' -Recurse
+
+          foreach($sasFile in $sasFiles){
+              $newContent = (Get-Content $sasFile.FullName) `
+                             -replace '\\\$Revision.*\$', "Revision: ${{ env.TAG_NAME}} (${{ needs.preparation.outputs.COMMIT_HASH }})" `
+                             -replace '\\\$Author.*\$', "Author: ${{ needs.preparation.outputs.AUTHOR }}" `
+                             -replace '\\\$Date.*\$', "Date: ${{ needs.preparation.outputs.DATE }}" `
+                             -replace '\\\$HeadURL.*\$', "HeadURL: ${{ env.HEAD_URL }}"
+              Set-Content $sasFile.FullName $newContent
+          }
+
           # Cleanup
 
           del example/bin/sasunit.setup.EE_*
@@ -73,6 +105,12 @@ jobs:
       - if: ${{ matrix.platform == 'CentOS' }}
         name: Build ZIP File (Linux)
         run: |
+
+          sed -i "s|\\\\\$Revision.*\\$|Revision: ${{ env.TAG_NAME}} (${{ needs.preparation.outputs.COMMIT_HASH }})|" saspgm/**/*.sas
+          sed -i "s|\\\\\$Author.*\\$|Author: ${{ needs.preparation.outputs.AUTHOR }}|" saspgm/**/*.sas
+          sed -i "s|\\\\\$Date.*\\$|Date: ${{ needs.preparation.outputs.DATE }}|" saspgm/**/*.sas
+          sed -i "s|\\\\\$HeadURL.*\\$|HeadURL: ${{ env.HEAD_URL }}|" saspgm/**/*.sas
+
           # clean up
           rm example/bin/sasunit.setup.EE_*
           rm example/bin/sasunit.9.4.linux.*
