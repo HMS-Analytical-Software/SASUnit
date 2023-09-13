@@ -1,9 +1,8 @@
 @echo off
+REM Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
 REM This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-REM For copyright information and terms of usage under the GPL license see included file readme.txt
-REM or https://sourceforge.net/p/sasunit/wiki/readme/.
-
-cd ..
+REM For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
+REM or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.
 
 if /i "%~1" == "" (SET SASUNIT_LANGUAGE=en) else (SET SASUNIT_LANGUAGE=%1)
 
@@ -51,7 +50,7 @@ echo -----------------------------------------------------------
 echo.
 
 echo "Creating script files for starting SASUnit ..."
-"%SASUNIT_SAS_EXE%" -CONFIG "%SASUNIT_SAS_CFG%" -no$syntaxcheck -noovp -nosplash -log "bin/sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log" -sysin "%SASUNIT_ROOT%/saspgm/sasunit/runsasunitsetup.sas"
+"%SASUNIT_SAS_EXE%" -CONFIG "%SASUNIT_SAS_CFG%" -no$syntaxcheck -noovp -nosplash -log "example/bin/sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log" -sysin "%SASUNIT_ROOT%/saspgm/sasunit/runsasunitsetup.sas"
 
 if %ERRORLEVEL%==0 goto normalexit
 @echo. 

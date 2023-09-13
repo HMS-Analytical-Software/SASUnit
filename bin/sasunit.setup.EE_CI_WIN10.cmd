@@ -1,9 +1,8 @@
 @echo off
+REM Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
 REM This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-REM For copyright information and terms of usage under the GPL license see included file readme.txt
-REM or https://sourceforge.net/p/sasunit/wiki/readme/.
-
-cd ..
+REM For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
+REM or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.
 
 if /i "%~1" == "" (SET SASUNIT_LANGUAGE=en) else (SET SASUNIT_LANGUAGE=%1)
 
@@ -18,8 +17,8 @@ SET SASUNIT_SAS_CFG=%SASUNIT_SASPATH%\nls\%SASUNIT_LANGUAGE%\sasv9.cfg
 
 REM --------------------------------------------------------------------------------
 REM --- EnvVars for SAS Unit Configuration -----------------------------------------
-SET SASUNIT_ROOT=C:\jenkins1\workspace\00773_KF_SAS_SASUNIT\SASUnit (9.4 64-Bit %SASUNIT_LANGUAGE% unicode, Windows 10 64-Bit de)
-SET SASUNIT_PROJECTROOT=C:\jenkins1\workspace\00773_KF_SAS_SASUNIT\SASUnit (9.4 64-Bit %SASUNIT_LANGUAGE% unicode, Windows 10 64-Bit de)
+SET SASUNIT_ROOT=%WORKSPACE%
+SET SASUNIT_PROJECTROOT=%WORKSPACE%
 SET SASUNIT_TESTDB_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\testdb
 SET SASUNIT_LOG_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\logs
 SET SASUNIT_SCN_LOG_PATH=%SASUNIT_PROJECTROOT%\%SASUNIT_LANGUAGE%\scn_logs

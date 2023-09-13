@@ -3,14 +3,14 @@
 
    \brief      Test of endScenario.sas
 
-   \version    \$Revision: 314 $
-   \author     \$Author: klandwich $
-   \date       \$Date: 2014-02-15 10:57:09 +0100 (Sa, 15 Feb 2014) $
-   \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/test/_copyfile_test.sas $
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+   \version    \$Revision$
+   \author     \$Author$
+   \date       \$Date$
+   \sa         \$HeadURL$
+   \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+               For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
+               or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme/.
 
 */ /** \cond */ 
 %initScenario(i_desc=Test of endScenario.sas);

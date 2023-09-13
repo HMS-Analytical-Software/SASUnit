@@ -7,6 +7,11 @@
    \version    \$Revision$
    \author     \$Author$
    \date       \$Date$
+
+   \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
+               or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme/.
    
    \param     loggername   Name of the logger to capture the message
    \param     message      Message to be captured by the logger

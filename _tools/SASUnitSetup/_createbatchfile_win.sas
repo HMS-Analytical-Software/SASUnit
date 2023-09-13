@@ -21,9 +21,10 @@
       file "&i_sasunitCommandFile..cmd";
       
       put "@echo off";
+      put "REM Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de";
       put "REM This file is part of SASUnit, the Unit testing framework for SAS(R) programs.";
-      put "REM For copyright information and terms of usage under the GPL license see included file readme.txt";
-      put "REM or https://sourceforge.net/p/sasunit/wiki/readme/.";
+      put "REM For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md";
+      put "REM or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.";
       put;
       put "cd ..";
       put "SET SASUNIT_ROOT=&i_sasunitRootFolder.";

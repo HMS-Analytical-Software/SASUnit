@@ -10,12 +10,13 @@
    \author     \$Author$
    \date       \$Date$
    
-   \sa         For further information please refer to https://sourceforge.net/p/sasunit/wiki/User%27s%20Guide/
+   \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
-   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For copyright information and terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme/.
+   \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+               For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
+               or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme/.
                
    \param      i_sasunitCommandFile       Name of the scriptfile that should be generated (e.g. sasunit.9.3.linux.en.overwrite.fast.sh)
    \param      i_operatingSystem          Name of the operating system under which SAS is running. It is also part of the name of the config file.
@@ -80,10 +81,8 @@
       
       put "#!/bin/bash";
       put "# This file is part of SASUnit, the Unit testing framework for SAS(R) programs.";
-      put "# For copyright information and terms of usage under the GPL license see included file readme.txt";
-      put "# or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.";
-      put;
-      put "cd ..";
+      put "# For copyright information and terms of usage under the Lesser GPL license see included file readme.txt";
+      put "# or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.";
       put;
       put "# --------------------------------------------------------------------------------";
       put "# --- EnvVars for SAS Configuration ----------------------------------------------";
@@ -152,7 +151,7 @@
       put "echo";
       put;
       put "echo ""Starting SASUnit ...""";
-      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin ""$SASUNIT_RUNALL"" -LOGCONFIGLOC ""./bin/sasunit.logconfig.&i_sasunitLanguage..xml"" /*-log ""$SASUNIT_LOG_FOLDER/run_all.log""*/";
+      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin ""$SASUNIT_RUNALL"" -LOGCONFIGLOC ""$SASUNIT_PROJECT_ROOT/bin/sasunit.logconfig.&i_sasunitLanguage..xml"" /*-log ""$SASUNIT_LOG_FOLDER/run_all.log""*/";
       put;
       put "# Show SAS exit status";
       put "RETVAL=$?";

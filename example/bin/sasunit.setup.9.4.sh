@@ -1,8 +1,8 @@
 #!/bin/bash
-# 	     Copyright 2010, 2012 HMS Analytical Software GmbH.
-#       This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-#       For terms of usage under the GPL license see included file readme.txt
-#       or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+# Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
+# This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+# For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
+# or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.
 
 cd ..
 
@@ -23,8 +23,9 @@ export SASUNIT_SAS_CFG=/opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/nls/$
 
 # --------------------------------------------------------------------------------
 # --- EnvVars for SAS Unit Configuration -----------------------------------------
-export SASUNIT_ROOT=$WORKSPACE
-export SASUNIT_PROJECTROOT=$WORKSPACE/example
+PRJ_ROOT=$(dirname $(dirname $(readlink -f "$0")))
+export SASUNIT_ROOT=$(dirname $PRJ_ROOT)
+export SASUNIT_PROJECTROOT=$PRJ_ROOT
 export SASUNIT_TESTDB_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/testdb
 export SASUNIT_LOG_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/logs
 export SASUNIT_SCN_LOG_PATH=$SASUNIT_PROJECTROOT/$SASUNIT_LANGUAGE/scn_logs

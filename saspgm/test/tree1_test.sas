@@ -9,10 +9,10 @@
    \author     \$Author$
    \date       \$Date$
    \sa         \$HeadURL: https://svn.code.sf.net/p/sasunit/code/trunk/saspgm/test/tree1_test.sas 
-   \copyright  Copyright 2010, 2012 HMS Analytical Software GmbH.
+   \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
-               For terms of usage under the GPL license see included file readme.txt
-               or https://sourceforge.net/p/sasunit/wiki/readme.v1.2/.
+               For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
+               or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme/.
 
 */ /** \cond */  
 %initScenario (i_desc=Test of the tree building and the functionality for program libraries - 
