@@ -13,14 +13,17 @@ fi
 src=$1
 tgt_dir=$2
 
-p_drive=/mnt/hms/laufwerke/p/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit/github
+project_path=/media/github
 timestamp=$(date "+%Y_%m_%d")
-path=$p_drive/$timestamp/$RUN_NUMBER/$tgt_dir
+path=$project_path/$timestamp/$RUN_NUMBER/$tgt_dir
 
-# kinit svc-00773-006-github@ANALYTICAL-SOFTWARE.EU -k -t /home/github/svc-00773-006-github.keytab
+kinit svc-00773-006-github@ANALYTICAL-SOFTWARE.EU -kt /home/github/svc-00773-006-github.keytab
 
-kinit samuel.melm@ANALYTICAL-SOFTWARE.EU -k -t /home/github/sme.keytab
-
+# this mount command is possible because
+# 1. the user svc-00773-006-github is authorized via kerberos in the kinit step before
+# 2. /etc/fsab contains an entry for a user mount in the /media/github directory that uses the cruid 1006 (i.e the id of the github user)
+# 3. the s bit is set for the /sbin/mount.cifs executable (i.e. chmod +s /sbin/mount.cifs was run)
+mount $project_path
 
 mkdir -p $path
 
