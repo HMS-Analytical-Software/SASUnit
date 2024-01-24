@@ -111,6 +111,7 @@
       put "export SASUNIT_LOGLEVEL=&i_sasunitLogLevel.";
       put "export SASUNIT_SCN_LOGLEVEL=&i_sasunitScnLogLevel.";
       put "export SASUNIT_REPORTS_ONLY=&i_reportsOnly.";
+      put "export SASUNIT_CONFIG=$SASUNIT_PROJECT_ROOTbin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg";
       put;
       put "# Check if SASUnit Jenkins Plugin is present and use given SASUnit root path";
       put "if [ -z ""$1"" ] ; then";
@@ -129,6 +130,7 @@
       put 'echo SAS Executable            = $SASUNIT_SAS_EXE';
       put 'echo SAS Config File           = $SASUNIT_SAS_CFG';
       put "echo --- EnvVars for SAS Unit Configuration -----------------------------------------";
+      put 'echo SASUnit config            = $SASUNIT_CONFIG';
       put 'echo SASUnit Root Path         = $SASUNIT_ROOT';
       put 'echo Project Root Path         = $SASUNIT_PROJECT_ROOT';
       put 'echo Folder for TestDB         = $SASUNIT_TEST_DB_FOLDER';
@@ -146,7 +148,6 @@
       put 'echo Crossref for SASUnit      = $SASUNIT_CROSSREFERENCE_SASUNIT';
       put 'echo Log Level for RUN_ALL     = $SASUNIT_LOGLEVEL';
       put 'echo Log Level for Scenarios   = $SASUNIT_SCN_LOGLEVEL';
-      put 'echo SASUnit config            = bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg';
       put 'echo Documentation only        = $SASUNIT_REPORTS_ONLY';
       put "echo";
       put;

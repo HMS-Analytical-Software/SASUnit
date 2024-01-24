@@ -103,6 +103,7 @@
       put "SET SASUNIT_LOGLEVEL=&i_sasunitLogLevel.";
       put "SET SASUNIT_SCN_LOGLEVEL=&i_sasunitScnLogLevel.";
       put "SET SASUNIT_REPORTS_ONLY=&i_reportsOnly.";
+      put 'SET SASUNIT_CONFIG=%SASUNIT_PROJECT_ROOT%bin\sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg';
       put;
       put "REM Check if SASUnit Jenkins Plugin is present and use given SASUnit root path";
       put "echo Checking for presence of SASUnit Jenkins plugin...";
@@ -123,6 +124,7 @@
       put 'echo SAS Executable            = %SASUNIT_SAS_EXE%';
       put 'echo SAS Config File           = %SASUNIT_SAS_CFG%';
       put "echo --- EnvVars for SAS Unit Configuration -----------------------------------------";
+      put 'echo SASUnit config            = %SASUNIT_CONFIG%';
       put 'echo SASUnit Root Path         = %SASUNIT_ROOT%';
       put 'echo Project Root Path         = %SASUNIT_PROJECT_ROOT%';
       put 'echo Folder for TestDB         = %SASUNIT_TEST_DB_FOLDER%';
@@ -141,7 +143,6 @@
       put 'echo Log Level for RUN_ALL     = %SASUNIT_LOGLEVEL%';
       put 'echo Log Level for Scenarios   = %SASUNIT_SCN_LOGLEVEL%';
       put 'echo Documentation only        = %SASUNIT_REPORTS_ONLY%';
-      put 'echo SASUnit config            = bin\sasunit.%SASUNIT_SAS_VERSION%.%SASUNIT_HOST_OS%.%SASUNIT_LANGUAGE%.cfg';
       put "echo.";
       put;
       put "echo ""Starting SASUnit ...""";
