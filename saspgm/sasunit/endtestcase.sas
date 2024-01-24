@@ -72,6 +72,5 @@
          cas_scnid = &g_scnid AND
          cas_id    = &l_casid;
    QUIT;
-
 %MEND endTestcase;
 /** \endcond */
