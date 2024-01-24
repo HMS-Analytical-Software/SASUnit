@@ -679,7 +679,7 @@
    %_writeParameterToTestDBtsu (i_parameterName=tsu_reportsOnly               ,i_parameterValue =&i_reportsOnly.);
    %*** if reports only is set then the value of these parameters should be taken from the test database. ***;
    %*** The shell script cannot know what was set in the last call. ***;
-   %if (&i_reportsOnly=0) %then %do;
+   %if (&i_reportsOnly.=0) %then %do;
       %_writeParameterToTestDBtsu (i_parameterName=tsu_testcoverage              ,i_parameterValue =&i_testcoverage.);
       %_writeParameterToTestDBtsu (i_parameterName=tsu_crossref                  ,i_parameterValue =&i_crossref.);
       %_writeParameterToTestDBtsu (i_parameterName=tsu_crossrefsasunit           ,i_parameterValue =&i_crossrefsasunit.);
