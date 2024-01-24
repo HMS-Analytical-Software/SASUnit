@@ -83,7 +83,7 @@
                   ,io_target                 =
                   ,i_overwrite               =0
                   ,i_project                 =
-                  ,i_sasunit                 =%sysget(SASUNIT_ROOT)/saspgm/sasunit
+                  ,i_sasunit                 =%sysget(SASUNIT_ROOT)saspgm/sasunit
                   ,i_sasautos                =
                   ,i_sasautos1               =
                   ,i_sasautos2               =
