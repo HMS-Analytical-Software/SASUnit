@@ -1,5 +1,5 @@
 
-P_DRIVE=/mnt/hms/laufwerke/p/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit/github
+P_DRIVE=/media/github
 
 ./kerberos_auth.sh
 
