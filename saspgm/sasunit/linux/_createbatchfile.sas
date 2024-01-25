@@ -111,7 +111,7 @@
       put "export SASUNIT_LOGLEVEL=&i_sasunitLogLevel.";
       put "export SASUNIT_SCN_LOGLEVEL=&i_sasunitScnLogLevel.";
       put "export SASUNIT_REPORTS_ONLY=&i_reportsOnly.";
-      put "export SASUNIT_CONFIG=$SASUNIT_PROJECT_ROOTbin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg";
+      put "export SASUNIT_CONFIG=${SASUNIT_PROJECT_ROOT}bin/sasunit.$SASUNIT_SAS_VERSION.$SASUNIT_HOST_OS.$SASUNIT_LANGUAGE.cfg";
       put;
       put "# Check if SASUnit Jenkins Plugin is present and use given SASUnit root path";
       put "if [ -z ""$1"" ] ; then";
