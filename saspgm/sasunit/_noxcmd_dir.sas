@@ -59,8 +59,10 @@
    %let l_path_exists=%sysfunc (fileref (DIR));
    %if (&l_path_exists. ne 0) %then %do;
       %_issueInfoMessage (&g_currentLogger.,_noxcmd_dir: Given directory does not exist or file pattern has no matches: &l_i_path.);
-      filename DIR clear;
-      %goto exit;
+	  %if (&i_recursive = 0) %then %do;
+         filename DIR clear;
+         %goto exit;
+	  %end;
    %end;
    %let l_dir_id = %sysfunc (dopen(DIR));
    %if (&l_dir_id <= 0) %then %do;
