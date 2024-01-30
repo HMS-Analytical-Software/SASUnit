@@ -19,6 +19,7 @@ jobs:
           
           files=$(ls /media/github)
           filecount=$(echo "$files" | wc -l)
+          echo $file_count - ${{ env.RUNS_TO_KEEP }}
           filescount2del=$(expr $file_count - ${{ env.RUNS_TO_KEEP }})
           files2del=$(echo "$files" | sort | head -n $filescount2del)
 
