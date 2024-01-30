@@ -16,8 +16,10 @@ jobs:
       - name: "Delete Old Runs"
         run: |
           ./.github/scripts/mount_p_drive.sh >> /dev/null
+
+          pdrive=/media/github
           
-          files=$(ls /media/github)
+          files=$(ls $pdrive)
           filecount=$(echo "$files" | wc -l)
           filescount2del=$(expr $filecount - ${{ env.RUNS_TO_KEEP }})
           files2del=$(echo "$files" | sort | head -n $filescount2del)
@@ -26,4 +28,4 @@ jobs:
           echo "deleting the following runs"
           echo "$files2del"
 
-          echo "$files2del" | xargs -I {} bash -c "echo rm {}; rm -r {}"
+          echo "$files2del" | xargs -I {} bash -c "echo rm {}; rm -r $pdrive/{}"
