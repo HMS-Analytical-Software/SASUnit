@@ -5,8 +5,10 @@ P_DRIVE=/media/github
 
 timestamp=$(date "+%Y_%m_%d")
 path=$P_DRIVE/$timestamp/$RUN_NUMBER
-links=$(ls -1 $path | sed 's;^\(.*\)$;<li><a href="\1/doc/index.html">\1</a></li>;')
-index_html=$path/index.html
+
+cd $path
+index_html=index.html
+links=$(find -P . -name index.html -type f -printf "%h\n" | sed 's;^\(.*\)$;<li><a href="\1/doc/index.html">\1</a></li>;')
 
 echo links $links
 
