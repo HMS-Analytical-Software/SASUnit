@@ -144,7 +144,7 @@ jobs:
           mkdir /opt/SASUnit/saspgm
           cp -r saspgm/* /opt/SASUnit/saspgm/
           mkdir /opt/SASUnit/resources
-          cp -r resources/* /opt/SASUnit/resources/
+          cp -r resources/* /etc/opt/SASUnit/resources/
  
           ./example/bin/sasunit.setup.EE_CI_CentOS_etcoptvar.sh de
  
