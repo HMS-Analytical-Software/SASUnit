@@ -115,7 +115,7 @@ jobs:
           ./.github/scripts/copy_to_p_drive.sh example/en/logs with_spaces/example
 
       - name: Junit Report
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v1.7.0
         with:
           name: Test Report (Path with Spaces)
           path: "**/junit.xml"
@@ -163,7 +163,7 @@ jobs:
 
  
       - name: Junit Report
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v1.7.0
         with:
           name: Test Report (etc-opt-var)
           path: "**/junit.xml"
