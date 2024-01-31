@@ -153,7 +153,6 @@ jobs:
           # to run. This folder is not deleted above? Should it?
           /opt/SASUnit/example/bin/sasunit.9.4.linux.de.overwrite.full.sh
  
-          cp /var/opt/SASUnit/example/de/logs/*run_all.log $WORKSPACE/example/doc/
           cp -r /var/opt/SASUnit/example/de/doc/* $WORKSPACE/example/doc/
 
 
