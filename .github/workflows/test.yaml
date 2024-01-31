@@ -154,7 +154,7 @@ jobs:
           /opt/SASUnit/example/bin/sasunit.9.4.linux.de.overwrite.full.sh
  
           cp /var/opt/SASUnit/example/de/logs/*run_all.log $WORKSPACE/example/doc/
-          cp /var/opt/SASUnit/example/de/doc/junit.xml $WORKSPACE/example/doc/
+          cp -r /var/opt/SASUnit/example/de/doc/* $WORKSPACE/example/doc/
 
 
       - name: Copy output to share
