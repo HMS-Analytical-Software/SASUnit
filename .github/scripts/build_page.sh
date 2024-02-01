@@ -1,12 +1,16 @@
+init_dir=$(pwd)
 
-P_DRIVE=/mnt/hms/laufwerke/p/hms_interne_projekte/00773_kompetenzfelder/00773-006_SAS/SASUnit/github
+P_DRIVE=/media/github
 
 ./kerberos_auth.sh
 
 timestamp=$(date "+%Y_%m_%d")
 path=$P_DRIVE/$timestamp/$RUN_NUMBER
-links=$(ls -1 $path | sed 's;^\(.*\)$;<li><a href="\1/doc/index.html">\1</a></li>;')
 index_html=$path/index.html
+
+cd $path
+links=$(find -P . -name index.html -type f -printf "%h\n" | sed 's;^\./;;' | sed 's;^\(.*\)$;<li><a href="./\1/index.html">\1</a></li>;')
+cd $init_dir
 
 echo links $links
 

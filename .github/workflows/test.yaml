@@ -137,29 +137,37 @@ jobs:
       - uses: ./.github/actions/set_execution_rights
  
       - run: |
+      
+          # Remove data from previous run
           rm -rf /etc/opt/SASUnit/*
           rm -rf /opt/SASUnit/*
+          rm -rf /var/opt/SASUnit/*
+          
+          # Create necessary folders
           mkdir /opt/SASUnit/example
           cp -r example/* /opt/SASUnit/example/
           mkdir /opt/SASUnit/saspgm
           cp -r saspgm/* /opt/SASUnit/saspgm/
-          mkdir /opt/SASUnit/resources
-          cp -r resources/* /opt/SASUnit/resources/
- 
+          mkdir /etc/opt/SASUnit/resources/
+          cp -r resources/* /etc/opt/SASUnit/resources/
+
+          # Create start scripts in /opt/...
           ./example/bin/sasunit.setup.EE_CI_CentOS_etcoptvar.sh de
- 
-          # TODO the first time running failed and it needed the command:
-          # mkdir -p /var/opt/SASUnit/example/de/logs
-          # to run. This folder is not deleted above? Should it?
+
+          # Start SASUnit
           /opt/SASUnit/example/bin/sasunit.9.4.linux.de.overwrite.full.sh
  
-          cp /var/opt/SASUnit/example/de/logs/*run_all.log $WORKSPACE/example/doc/
-          cp /var/opt/SASUnit/example/de/doc/junit.xml $WORKSPACE/example/doc/
+          mkdir $WORKSPACE/example/de/
+          mkdir $WORKSPACE/example/de/doc
+          mkdir $WORKSPACE/example/de/logs
+          cp /var/opt/SASUnit/example/de/logs/*run_all.log $WORKSPACE/example/de/logs/
+          cp -r /var/opt/SASUnit/example/de/doc/* $WORKSPACE/example/de/doc
 
 
       - name: Copy output to share
         run: |
-          ./.github/scripts/copy_to_p_drive.sh example/doc  etc_opt_var/example
+          ./.github/scripts/copy_to_p_drive.sh example/de/doc   etc_opt_var/example/
+          ./.github/scripts/copy_to_p_drive.sh example/de/logs  etc_opt_var/example/
 
  
       - name: Junit Report
