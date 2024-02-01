@@ -8,7 +8,7 @@ path=$P_DRIVE/$timestamp/$RUN_NUMBER
 
 cd $path
 index_html=index.html
-links=$(find -P . -name index.html -type f -printf "%h\n" | sed 's;^\(.*\)$;<li><a href="\1/index.html">\1</a></li>;')
+links=$(find -P . -name index.html -type f -printf "%h\n" | sed 's;^\./;;' | sed 's;^\(.*\)$;<li><a href="./\1/index.html">\1</a></li>;')
 
 echo links $links
 
