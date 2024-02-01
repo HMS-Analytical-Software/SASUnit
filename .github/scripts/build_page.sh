@@ -1,3 +1,4 @@
+init_dir=$(pwd)
 
 P_DRIVE=/media/github
 
@@ -5,10 +6,11 @@ P_DRIVE=/media/github
 
 timestamp=$(date "+%Y_%m_%d")
 path=$P_DRIVE/$timestamp/$RUN_NUMBER
+index_html=$path/index.html
 
 cd $path
-index_html=index.html
 links=$(find -P . -name index.html -type f -printf "%h\n" | sed 's;^\./;;' | sed 's;^\(.*\)$;<li><a href="./\1/index.html">\1</a></li>;')
+cd $init_dir
 
 echo links $links
 
