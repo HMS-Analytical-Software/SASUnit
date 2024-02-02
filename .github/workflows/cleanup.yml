@@ -21,6 +21,7 @@ jobs:
           filecount=$(echo "$files" | wc -l)
           echo '---> expr' $filecount ' - ' ${{ env.RUNS_TO_KEEP }}          
           filescount2del=$(expr $filecount - ${{ env.RUNS_TO_KEEP }})
+          echo '---> filescount2del' $filescount2del
           echo $filescount2del
           files2del=$(echo "$files" | sort | head -n $filescount2del)
           echo $files2del
