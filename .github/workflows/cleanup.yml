@@ -30,4 +30,4 @@ jobs:
           echo "deleting the following runs"
           echo "$files2del"
 
-          #echo "$files2del" | xargs -I {} bash -c "echo rm {}; rm -r $pdrive/{}"
+          echo "$files2del" | xargs -I {} bash -c "echo rm {}; rm -r $pdrive/{}"
