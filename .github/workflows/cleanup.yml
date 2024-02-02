@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  RUNS_TO_KEEP: 10
+  RUNS_TO_KEEP: 20
 
 jobs:
   cleanup:
@@ -17,11 +17,13 @@ jobs:
         run: |
           pdrive=/media/github
           
-          files=$(ls $pdrive)
+          files=$(find -P $pdrive/ -maxdepth 2 -mindepth 2 -type d)
           filecount=$(echo "$files" | wc -l)
-          echo '---> expr' $filecount ' - ' ${{ env.RUNS_TO_KEEP }}  
-          echo 'expr: ' $(expr $filecount - ${{ env.RUNS_TO_KEEP }})          
           filescount2del=$(expr $filecount - ${{ env.RUNS_TO_KEEP }})
+          if [[ $filescount2del <= 0 ]]; then
+             echo 'Nothing to do'
+             exit
+          fi
           files2del=$(echo "$files" | sort | head -n $filescount2del)
 
           echo "found $filecount will delete $filescount2del"
