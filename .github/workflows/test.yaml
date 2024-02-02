@@ -108,6 +108,7 @@ jobs:
           ./example/bin/sasunit.9.4.linux.en.overwrite.fast.sh
  
       - name: Copy output to share
+        working-directory: ${{ env.WORKSPACE }}
         run: |
           ./.github/scripts/copy_to_p_drive.sh en/doc          with_spaces
           ./.github/scripts/copy_to_p_drive.sh en/logs         with_spaces
@@ -137,7 +138,6 @@ jobs:
       - uses: ./.github/actions/set_execution_rights
  
       - run: |
-      
           # Remove data from previous run
           rm -rf /etc/opt/SASUnit/*
           rm -rf /opt/SASUnit/*

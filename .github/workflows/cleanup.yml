@@ -1,0 +1,32 @@
+name: Cleanup Old Runs
+  
+on:
+  schedule: 
+    - cron: "0 12 1 * *" # the first of each month at 12:00
+  workflow_dispatch:
+
+env:
+  RUNS_TO_KEEP: 20
+
+jobs:
+  cleanup:
+    runs-on: SASUnit_CentOS
+    steps:
+      - name: "Delete Old Runs"
+        run: |
+          pdrive=/media/github
+          
+          files=$(find -P $pdrive/ -maxdepth 2 -mindepth 2 -type d)
+          filecount=$(echo "$files" | wc -l)
+          filescount2del=$(expr $filecount - ${{ env.RUNS_TO_KEEP }})
+          if [ $filescount2del -le 0 ]; then
+            echo 'Nothing to do'
+            exit
+          fi
+          files2del=$(echo "$files" | sort | head -n $filescount2del)
+
+          echo "found $filecount will delete $filescount2del"
+          echo "deleting the following runs"
+          echo "$files2del"
+
+          echo "$files2del" | xargs -I {} bash -c "echo rm {}; rm -r {}"
