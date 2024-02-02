@@ -1,7 +1,6 @@
 name: Cleanup Old Runs
   
 on:
-  push:
   schedule: 
     - cron: "0 12 1 * *" # the first of each month at 12:00
   workflow_dispatch:

@@ -138,7 +138,6 @@ jobs:
       - uses: ./.github/actions/set_execution_rights
  
       - run: |
-      
           # Remove data from previous run
           rm -rf /etc/opt/SASUnit/*
           rm -rf /opt/SASUnit/*
