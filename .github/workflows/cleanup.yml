@@ -19,12 +19,10 @@ jobs:
           
           files=$(ls $pdrive)
           filecount=$(echo "$files" | wc -l)
-          echo '---> expr' $filecount ' - ' ${{ env.RUNS_TO_KEEP }}          
+          echo '---> expr' $filecount ' - ' ${{ env.RUNS_TO_KEEP }}  
+          echo 'expr: ' $(expr $filecount - ${{ env.RUNS_TO_KEEP }})          
           filescount2del=$(expr $filecount - ${{ env.RUNS_TO_KEEP }})
-          echo '---> filescount2del' $filescount2del
-          echo $filescount2del
           files2del=$(echo "$files" | sort | head -n $filescount2del)
-          echo $files2del
 
           echo "found $filecount will delete $filescount2del"
           echo "deleting the following runs"
