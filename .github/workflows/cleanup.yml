@@ -15,14 +15,11 @@ jobs:
     steps:
       - name: "Delete Old Runs"
         run: |
-          pwd
           pdrive=/media/github
-          echo $pdrive
           
           files=$(ls $pdrive)
-          echo $files
           filecount=$(echo "$files" | wc -l)
-          echo $filecount
+          echo ${{ env.RUNS_TO_KEEP }}
           filescount2del=$(expr $filecount - ${{ env.RUNS_TO_KEEP }})
           echo $filescount2del
           files2del=$(echo "$files" | sort | head -n $filescount2del)
