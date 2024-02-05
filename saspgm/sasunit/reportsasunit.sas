@@ -350,6 +350,6 @@
       DELETE %scan(&d_rep.,2,.)
              ;
    QUIT;
-   %_issueInfoMessage (&g_currentLogger., %str (============================ reposrtSASUnit has finished creating documentation ==========================));
+   %_issueInfoMessage (&g_currentLogger., %str (============================ reportSASUnit has finished creating documentation ==========================));
 %MEND reportSASUnit;
 /** \endcond */
