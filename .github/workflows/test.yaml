@@ -82,7 +82,7 @@ jobs:
     name: Test Path with Spaces
     runs-on: SASUnit_CentOS
     env:
-      WORKSPACE: "${{ github.workspace }}/dir with spaces"
+      WORKSPACE: "${{ github.workspace }}/dir\ with\ spaces"
       LANGUAGE: "en"
     steps:
       - uses: actions/checkout@v3
