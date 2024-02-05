@@ -650,7 +650,7 @@
    %_writeParameterToTestDBtsu (i_parameterName=tsu_project                   ,i_parameterValue =&i_project.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_target                    ,i_parameterValue =&l_target.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_root                      ,i_parameterValue =&l_root.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_project_bin               ,i_parameterValue =&i_root./bin);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_project_bin               ,i_parameterValue =&i_root.bin);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunitroot               ,i_parameterValue =&l_sasunitroot.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunit                   ,i_parameterValue =&l_sasunit.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunit_os                ,i_parameterValue =&l_sasunit_os.);
