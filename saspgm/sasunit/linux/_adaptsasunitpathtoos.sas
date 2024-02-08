@@ -17,12 +17,15 @@
                or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme/.
 			   
 */ /** \cond */
-%macro _adaptSASUnitPathToOS (path);
+%macro _adaptSASUnitPathToOS (path, quoted=N);
    %local l_path;
    
    %*** escape all blanks with backslashes ***;
    %let l_path = %qsysfunc (tranwrd (&path., %str ( ), %str (\ )));
    %let l_path = %qsysfunc (tranwrd (&l_path., %str (\\ ), %str (\ )));
+   %if &quoted=Y and %index (%quote(&l_path.), %str( )) %then %do;
+      %let l_path = %sysfunc(quote (&l_path.));
+   %end;
    &l_path.
 %mend _adaptSASUnitPathToOS; 
 /** \endcond */
