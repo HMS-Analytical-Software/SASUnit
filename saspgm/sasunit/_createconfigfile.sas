@@ -60,9 +60,9 @@
       put %sysfunc (quote (-CONFIG %_adaptSASUnitPathToOS(&l_sasConfig.)));
 	  /* Avoids message no lock available for dataset xxx */
       put "-FILELOCKWAIT 2";
-      put %sysfunc (quote (-sysin  %_adaptSASUnitPathToOS(&l_sasunitRunAllPgm.)));
-      put %sysfunc (quote (-log    %_adaptSASUnitPathToOS(&l_sasunitLogFolder.)));
-      put %sysfunc (quote (-print  %_adaptSASUnitPathToOS(&l_sasunitLogFolder.)));
+      put %sysfunc (quote (-sysin  "%_adaptSASUnitPathToOS(&l_sasunitRunAllPgm.)"));
+      put %sysfunc (quote (-log    "%_adaptSASUnitPathToOS(&l_sasunitLogFolder.)"));
+      put %sysfunc (quote (-print  "%_adaptSASUnitPathToOS(&l_sasunitLogFolder.)"));
    run;
 
 %mend _createConfigFile;
