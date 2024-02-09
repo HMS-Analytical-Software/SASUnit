@@ -15,9 +15,9 @@ SCRIPT_DIR=$(dirname $0) # the directory of this script
 src=$1
 tgt_dir=$2
 
-project_path=/media/github
+p_drive=/media/github
 timestamp=$(date "+%Y_%m_%d")
-path=$project_path/$timestamp/$RUN_NUMBER/$tgt_dir
+path=$p_drive/$timestamp/$RUN_NUMBER/$tgt_dir
 
 #./$SCRIPT_DIR/mount_p_drive.sh
 
