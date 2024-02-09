@@ -1,5 +1,5 @@
-if [ $# -lt 1 ]; then
-    echo "usage: $0 <directory_path>"
+if [ $# -lt 2 ]; then
+    echo "usage: $0 <directory_path> <RUNS_TO_KEEP>"
     exit 1
 fi
 
@@ -8,11 +8,12 @@ echo "----------------------------------------------"
 
 p_drive=$1
 echo "--- p_drive:" $p_drive
+runs2keep=$2
 
 echo "Checking files"
 files=$(find -P $p_drive/ -maxdepth 2 -mindepth 2 -type d)
 filecount=$(echo "$files" | wc -l)
-((filescount2del=$filecount - ${{ env.RUNS_TO_KEEP }}))
+((filescount2del=$filecount - $runs2keep))
 
 if [ $filescount2del -le 0 ]; then
   echo "Nothing to do"

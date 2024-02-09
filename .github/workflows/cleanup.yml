@@ -18,4 +18,4 @@ jobs:
           p_drive=/media/github
           ./.github/scripts/mount_p_drive.sh
           echo "Purging old builds"
-          ./.github/scripts/purge_builds.sh $p_drive
+          ./.github/scripts/purge_builds.sh $p_drive ${{ env.RUNS_TO_KEEP }}
