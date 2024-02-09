@@ -7,8 +7,9 @@ echo ""
 echo "----------------------------------------------"
 
 p_drive=$1
-echo "--- p_drive:" $p_drive
 runs2keep=$2
+echo "--- p_drive:" $p_drive
+echo "--- RUNS_TO_KEEP:" $runs2keep
 
 echo "Checking files"
 files=$(find -P $p_drive/ -maxdepth 2 -mindepth 2 -type d)
