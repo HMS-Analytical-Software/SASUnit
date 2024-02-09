@@ -20,8 +20,11 @@ jobs:
           
           echo "Checking files"
           files=$(find -P $p_drive/ -maxdepth 2 -mindepth 2 -type d)
+          echo "--- files:" $files
           filecount=$(echo "$files" | wc -l)
+          echo "--- filecount:" $filecount
           filescount2del=$(expr $filecount - ${{ env.RUNS_TO_KEEP }})
+          echo "--- filescount2del:" $filescount2del
           
           echo ""
           echo "----------------------------------------------"
