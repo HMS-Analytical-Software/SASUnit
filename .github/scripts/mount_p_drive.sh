@@ -1,6 +1,6 @@
 kinit svc-00773-006-github@ANALYTICAL-SOFTWARE.EU -kt /home/github/svc-00773-006-github.keytab
 
-if grep -qs $p_drive /proc/mounts; then
+if grep -qs $p_drive /proc/mounts > /dev/null; then
     echo "$p_drive is already mounted"
 else
     # this mount command is possible because

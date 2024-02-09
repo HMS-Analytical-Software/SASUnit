@@ -1,5 +1,3 @@
-
-
 if [ $# -lt 2 ]; then
     echo "usage: $0 <src> <tgt_dir>"
     exit 1

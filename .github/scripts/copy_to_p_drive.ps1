@@ -1,5 +1,3 @@
-
-
 param(
     [Parameter(Mandatory=$true)][string]$src,
     [Parameter(Mandatory=$true)][string]$tgt_dir
