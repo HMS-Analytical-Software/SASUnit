@@ -16,7 +16,7 @@ jobs:
         run: |
           echo "Mount P-drive"
           p_drive=/media/github
-          .github/scripts/mount_p_drive.sh
+          ./.github/scripts/mount_p_drive.sh
           
           echo "Checking files"
           files=$(find -P $p_drive/ -maxdepth 2 -mindepth 2 -type d)
