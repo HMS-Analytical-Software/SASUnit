@@ -2,7 +2,6 @@ if [ $# -lt 1 ]; then
     echo "usage: $0 <directory_path>"
     exit 1
 fi
-exit
 
 echo ""
 echo "----------------------------------------------"
