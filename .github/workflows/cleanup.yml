@@ -14,11 +14,11 @@ jobs:
     steps:
       - name: "Delete Old Runs"
         run: |
-          pdrive=/media/github
+          p_drive=/media/github
           
           .github/scripts/mount_p_drive.sh
           
-          files=$(find -P $pdrive/ -maxdepth 2 -mindepth 2 -type d)
+          files=$(find -P $p_drive/ -maxdepth 2 -mindepth 2 -type d)
           filecount=$(echo "$files" | wc -l)
           filescount2del=$(expr $filecount - ${{ env.RUNS_TO_KEEP }})
           if [ $filescount2del -le 0 ]; then
