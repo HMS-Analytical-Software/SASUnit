@@ -17,4 +17,5 @@ jobs:
           echo "Mount P-drive"
           p_drive=/media/github
           ./.github/scripts/mount_p_drive.sh
+          echo "Purging old builds"
           ./.github/scripts/purge_builds.sh $p_drive
