@@ -19,7 +19,7 @@ p_drive=/media/github
 timestamp=$(date "+%Y_%m_%d")
 path=$p_drive/$timestamp/$RUN_NUMBER/$tgt_dir
 
-#./$SCRIPT_DIR/mount_p_drive.sh
+./$SCRIPT_DIR/mount_p_drive.sh
 
 mkdir -p $path
 
