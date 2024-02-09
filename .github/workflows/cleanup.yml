@@ -14,9 +14,9 @@ jobs:
     steps:
       - name: "Delete Old Runs"
         run: |
-          .github/scripts/mount_p_drive.sh
-          
           pdrive=/media/github
+          
+          .github/scripts/mount_p_drive.sh
           
           files=$(find -P $pdrive/ -maxdepth 2 -mindepth 2 -type d)
           filecount=$(echo "$files" | wc -l)
