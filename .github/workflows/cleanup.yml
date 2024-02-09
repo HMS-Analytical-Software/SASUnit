@@ -16,6 +16,8 @@ jobs:
         run: |
           pdrive=/media/github
           
+          ../scripts/mount_p_drive.sh
+          
           files=$(find -P $pdrive/ -maxdepth 2 -mindepth 2 -type d)
           filecount=$(echo "$files" | wc -l)
           filescount2del=$(expr $filecount - ${{ env.RUNS_TO_KEEP }})
