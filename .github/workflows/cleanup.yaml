@@ -1,0 +1,21 @@
+name: Cleanup Old Runs
+  
+on:
+  schedule: 
+    - cron: "0 12 1 * *" # the first of each month at 12:00
+  workflow_dispatch:
+
+env:
+  RUNS_TO_KEEP: 20
+
+jobs:
+  cleanup:
+    runs-on: SASUnit_CentOS
+    steps:
+      - name: "Delete Old Runs"
+        run: |
+          echo "Mount P-drive"
+          p_drive=/media/github
+          ./.github/scripts/mount_p_drive.sh
+          echo "Purging old builds"
+          ./.github/scripts/purge_builds.sh $p_drive ${{ env.RUNS_TO_KEEP }}
