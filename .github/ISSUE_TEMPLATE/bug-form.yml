@@ -102,8 +102,7 @@ body:
         - 3 - moderate
         - 4 - low
         - 5 - very_low
-      value:
-        3 - moderate
+      default: 2
     validations:
       required: true
   - type: textarea
