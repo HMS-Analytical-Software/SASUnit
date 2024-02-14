@@ -23,7 +23,6 @@ body:
       label: Current Behaviour
       description: What is the current behaviour you observe?
       placeholder: Tell us what you see!
-      # value: "Current Behaviour"
     validations:
       required: false
   - type: textarea
@@ -32,7 +31,6 @@ body:
       label: Expected Behaviour
       description: Explain detailed your expected behaviour
       placeholder: Tell us what you expect!
-      # value: "Expected Behaviour"
     validations:
       required: false
   - type: textarea
@@ -48,6 +46,7 @@ body:
     validations:
       required: false
   - type: textarea
+    id: environment
     attributes:
       label: Environment
       description: |
@@ -85,12 +84,11 @@ body:
       label: SASUnit Component
       description: Which component of SASUnit is affected?
       options:
-        - Framework (Enhancements requests or defect reports having an impact on many or all components.)
-        - Assertions (Requests for new assertions or enhancement requests or defect reports for existing assertions.)
-        - Reporting (Enhancement requests and bug reports for the reporting output of SASUnit.)
-        - Tests (Testing SASUnit itself.)
-        - Project (Enhancements to SASUnit project management.)
-        - Unknown (Anything else especially for new features.)
+        - Framework (Defect reports having an impact on many or all components)
+        - Assertions (Defect reports for existing assertions)
+        - Reporting (Defect reports for the reporting output of SASUnit)
+        - Tests (Defect in SASUnit tests)
+        - Unknown (Anything else)
     validations:
       required: true
   - type: textarea
