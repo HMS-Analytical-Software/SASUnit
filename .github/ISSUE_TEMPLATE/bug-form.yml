@@ -93,20 +93,6 @@ body:
         - Unknown (Anything else especially for new features.)
     validations:
       required: true
-  - type: dropdown
-    id: component
-    attributes:
-      label: SASUnit Component
-      description: Which component of SASUnit is affected?
-      options:
-        - Framework (Enhancements requests or defect reports having an impact on many or all components.)
-        - Assertions (Requests for new assertions or enhancement requests or defect reports for existing assertions.)
-        - Reporting (Enhancement requests and bug reports for the reporting output of SASUnit.)
-        - Tests (Testing SASUnit itself.)
-        - Project (Enhancements to SASUnit project management.)
-        - Unknown (Anything else especially for new features.)
-    validations:
-      required: true
   - type: textarea
     id: logs
     attributes:
