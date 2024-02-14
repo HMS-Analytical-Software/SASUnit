@@ -64,6 +64,7 @@ body:
     attributes:
       label: Release
       description: Which release of SASUnit are you running?
+      multiple: false
       options:
         - 2.1 (Default)
         - 2.0.2 (July 2019)
@@ -83,6 +84,7 @@ body:
     attributes:
       label: SASUnit Component
       description: Which component of SASUnit is affected?
+      multiple: false
       options:
         - Framework (Defect reports having an impact on many or all components)
         - Assertions (Defect reports for existing assertions)
@@ -96,6 +98,7 @@ body:
     attributes:
       label: Priority / Severness of issue
       description: How critical should that issue be handled?
+      multiple: false
       options:
         - 1 - very_high
         - 2 - high
