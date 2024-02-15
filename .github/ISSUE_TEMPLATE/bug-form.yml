@@ -18,22 +18,94 @@ body:
     validations:
       required: false
   - type: textarea
-    id: what-happened
+    id: current-behaviour
     attributes:
-      label: What happened?
-      description: Also tell us, what did you expect to happen?
+      label: Current Behaviour
+      description: What is the current behaviour you observe?
       placeholder: Tell us what you see!
-      value: "A bug happened!"
     validations:
       required: true
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: Expected Behaviour
+      description: Explain detailed your expected behaviour
+      placeholder: Tell us what you expect!
+    validations:
+      required: false
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps To Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. In this environment...
+        2. With this config...
+        3. Run '...'
+        4. See error...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: |
+        examples:
+          - **OS**: CentOS 7
+          - **SAS Version**: SAS94M8
+      value: |
+          - OS:
+          - SAS Version:
+      render: markdown
+    validations:
+      required: false  
   - type: dropdown
     id: version
     attributes:
-      label: Version
-      description: What version of our software are you running?
+      label: Release
+      description: Which release of SASUnit are you running?
+      multiple: false
       options:
         - 2.1 (Default)
-        - 2.0.2 (Edge)
+        - 2.0.2 (July 2019)
+        - 2.0 (June 2018)
+        - 1.7 (July 2017)
+        - 1.6.1 (June 2017)
+        - 1.6 (February 2016)
+        - 1.5 (February 2015)
+        - 1.3 (March 2014)
+        - 1.2.1 (February 2013)
+        - 1.2 (February 2014)
+        - 1.1 (April 2010)        
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: SASUnit Component
+      description: Which component of SASUnit is affected?
+      multiple: false
+      options:
+        - Framework (Defect reports having an impact on many or all components)
+        - Assertions (Defect reports for existing assertions)
+        - Reporting (Defect reports for the reporting output of SASUnit)
+        - Tests (Defect in SASUnit tests)
+        - Unknown (Anything else)
+    validations:
+      required: false
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority / Severeness of issue
+      description: How critical should that issue be handled?
+      multiple: false
+      options:
+        - 1 - very_high
+        - 2 - high
+        - 3 - moderate
+        - 4 - low
+        - 5 - very_low
+      default: 2
     validations:
       required: true
   - type: textarea
@@ -42,11 +114,3 @@ body:
       label: Relevant log output
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
       render: shell
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
