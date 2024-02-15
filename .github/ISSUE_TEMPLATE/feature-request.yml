@@ -1,7 +1,7 @@
 name: Feature Request
 description: File a faeture request
 title: "[Enhancement]: "
-labels: ["enhancemant"]
+labels: ["enhancement"]
 assignees:
   - octocat
 body:
