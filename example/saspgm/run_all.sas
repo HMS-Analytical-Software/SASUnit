@@ -34,8 +34,6 @@ OPTIONS
    APPEND=(SASAUTOS "%sysget(SASUNIT_ROOT)/saspgm/sasunit")
 ;
 
-proc options option=logparm;run;
-
 %initSASUnit(
    i_root                     = %sysget(SASUNIT_PROJECT_ROOT)
   ,io_target                  = %sysget(SASUNIT_TEST_DB_FOLDER)
