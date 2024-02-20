@@ -145,13 +145,13 @@ ods printer close;
 
    %let l_file=%_adaptSASUnitPathToOS(&g_work./text1.txt);
    %assertExternal (i_script             =&g_sasunit_os./assertExternal_wordcount.&g_osCmdFileSuffix.
-                   ,i_parameters         =&l_file. "4"
+                   ,i_parameters         =&l_file. "Lorem" "4"
                    ,i_expected_shell_rc  =0
                    ,i_desc               =Word count of "Lorem" equals 4
                    );
                    
    %assertExternal (i_script             =&g_sasunit_os./assertExternal_wordcount.&g_osCmdFileSuffix.
-                   ,i_parameters         =&l_file. "3"
+                   ,i_parameters         =&l_file. "Lorem" "3"
                    ,i_expected_shell_rc  =1
                    ,i_desc               =%str(Word count of "Lorem" equals 4, but expected count is 3, so i_expected_shell_rc must be 1 to make test green)
                    );
