@@ -72,13 +72,13 @@
 %endTestcall();
 
 %assertExternal (i_script             =&g_sasunit_os./assertExternal_wordcount.&g_osCmdFileSuffix.
-                ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) "2"
+                ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) "Lorem" "2"
                 ,i_expected_shell_rc  =0
                 ,i_desc               =Word count of "Lorem" equals 2
                 );
                 
 %assertExternal (i_script             =&g_sasunit_os./assertExternal_wordcount.&g_osCmdFileSuffix.
-                ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) "3"
+                ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) "Lorem" "3"
                 ,i_expected_shell_rc  =1
                 ,i_desc               =%str(Word count of "Lorem" equals 2, but i_actual=3, so i_expected_shell_rc must be 1)
                 );

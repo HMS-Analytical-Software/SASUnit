@@ -5,12 +5,14 @@
 # or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.
 
 sasunit_file=$1
-sasunit_expected=$2
+sasunit_word=$2
+sasunit_expected=$3
 
 echo "sasunit_file: $sasunit_file"
+echo "sasunit_word: $sasunit_word"
 echo "sasunit_expected: $sasunit_expected"
 
-sasunit_count=`grep -o "Lorem" $sasunit_file | wc -w`
+sasunit_count=`grep -o $sasunit_word $sasunit_file | wc -w`
 
 echo "sasunit_count: $sasunit_count"
 

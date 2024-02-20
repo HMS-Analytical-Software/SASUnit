@@ -5,13 +5,15 @@ REM For copyright information and terms of usage under the GNU Lesser General Pu
 REM or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.
 
 SET sasunit_file=%1%
-SET sasunit_expected=%~2
+SET sasunit_word=%~2
+SET sasunit_expected=%~3
 SET sasunit_count=
 
 echo sasunit_file: %sasunit_file%
+echo sasunit_word: %sasunit_word%
 echo sasunit_expected: %sasunit_expected%
 
-FOR /F "tokens=3 delims=:" %%i IN ('find /c "Lorem" %sasunit_file%') do (SET sasunit_count=%%i)
+FOR /F "tokens=3 delims=:" %%i IN ('find /c "%sasunit_word%" %sasunit_file%') do (SET sasunit_count=%%i)
 
 echo sasunit_count: %sasunit_count%
 
