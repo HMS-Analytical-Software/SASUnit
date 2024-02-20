@@ -21,46 +21,8 @@
 
 %initScenario(i_desc=Tests for comparison.sas);
 
-%MACRO _adaptToOS;
-   %GLOBAL 
-      assertText_script
-      assertImage_script
-      assertExternal_script
-      assertText_CompTool
-      assertText_OS
-      assertText_mod1
-      assertText_mod2
-      assertText_work1
-      assertText_work2
-   ;
-   /* Prepare macro variables to adapt to OS specific test */
-   %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
-      %LET assertText_script        =%sysfunc(translate(&g_sasunit_os.\assertText_fc.cmd,\,/));
-      %LET assertImage_script       =%sysfunc(translate(&g_sasunit_os.\assertImage.cmd,\,/));
-      %LET assertExternal_script    =%sysfunc(translate(&g_sasunit_os.\assertExternal_cnt.cmd,\,/));
-      %LET assertText_CompTool      =fc;
-      %LET assertText_OS            =Windows;
-      %LET assertText_mod1          =/C;
-      %LET assertText_mod2          =/W;
-      %LET assertText_work1         =%sysfunc(translate(&g_work.\text1.txt,\,/));
-      %LET assertText_work2         =%sysfunc(translate(&g_work.\text2.txt,\,/));
-   %END;
-   %ELSE %IF %LOWCASE(%SYSGET(SASUNIT_HOST_OS)) EQ linux %THEN %DO;
-      %LET assertText_script        =%_abspath(&g_sasunit_os.,assertText_diff.sh);
-      %LET assertImage_script       =%_abspath(&g_sasunit_os.,assertImage.sh);
-      %LET assertExternal_script    =%_abspath(&g_sasunit_os.,assertExternal_wc.sh);
-      %LET assertText_CompTool      =diff;
-      %LET assertText_OS            =Linux;
-      %LET assertText_mod1          =-i;
-      %LET assertText_mod2          =-b;
-      %LET assertText_work1         =%_abspath(&g_work.,text1.txt);
-      %LET assertText_work2         =%_abspath(&g_work.,text2.txt);
-   %END;
-%MEND _adaptToOS;
-
 /* create test files */
 %comparison;
-%_adaptToOS;
    
 /*-- Comparison with text files -------------------------------------------*/
 %initTestcase(i_object=comparison.sas
@@ -68,27 +30,27 @@
              );
 %endTestcall()
 
-   %assertText(i_script            =&assertText_script.
-              ,i_expected          =&assertText_work1.
+   %assertText(i_script            =&g_sasunit_os./assertText.&g_osCmdFileSuffix.
+              ,i_expected          =&g_work./text1.txt
               ,i_actual            =&g_work./text1_copy.txt
               ,i_expected_shell_rc =0
               ,i_modifier          =
               ,i_desc              =Successful test: Files match
               );
 
-   %assertText(i_script            =&assertText_script.
-              ,i_expected          =&assertText_work1.
-              ,i_actual            =&assertText_work2.
+   %assertText(i_script            =&g_sasunit_os./assertText.&g_osCmdFileSuffix.
+              ,i_expected          =&g_work./text1.txt
+              ,i_actual            =&g_work./text2.txt
               ,i_expected_shell_rc =1
               ,i_modifier          =
               ,i_desc              =%str(Files do not match, but difference expected)
               );
-   %assertText(i_script            =&assertText_script.
-              ,i_expected          =&assertText_work1.
+   %assertText(i_script            =&g_sasunit_os./assertText.&g_osCmdFileSuffix.
+              ,i_expected          =&g_work./text1.txt
               ,i_actual            =&g_work./text2.txt
               ,i_expected_shell_rc =0
-              ,i_modifier          =&assertText_mod1.
-              ,i_desc              =%str(Files do not match, one letter in different case, but &assertText_mod1. modifier used -> Comparision is OK)
+              ,i_modifier          =&g_assertTextIgnoreCase.
+              ,i_desc              =%str(Files do not match, one letter in different case, but &g_assertTextIgnoreCase. modifier used -> Comparision is OK)
               );
               
    %assertLog (i_errors=0, i_warnings=0);
@@ -119,7 +81,7 @@ ods printer file="%sysfunc(pathname(work))/graph2.png";
       plot y * x / cframe=ligr;; 
    run;
 ods printer close;
-   %assertImage(i_script             =&assertImage_script.
+   %assertImage(i_script             =&g_sasunit_os./assertImage.&g_osCmdFileSuffix.
                ,i_expected           =%sysfunc(pathname(work))/graph1.png  
                ,i_actual             =%sysfunc(pathname(work))/graph1_copy.png
                ,i_expected_shell_rc  =0                   
@@ -127,7 +89,7 @@ ods printer close;
                ,i_desc               =Graphs do match
                );
                
-   %assertImage(i_script             =&assertImage_script.
+   %assertImage(i_script             =&g_sasunit_os./assertImage.&g_osCmdFileSuffix.
                ,i_expected           =%sysfunc(pathname(work))/graph1.png  
                ,i_actual             =%sysfunc(pathname(work))/graph2.png
                ,i_expected_shell_rc  =1                   
@@ -155,7 +117,7 @@ ods printer close;
    footnote;
    ods printer close;
    
-   %assertImage(i_script             =&assertImage_script.
+   %assertImage(i_script             =&g_sasunit_os./assertImage.&g_osCmdFileSuffix.
                ,i_expected           =%sysfunc(pathname(work))/class1.png  
                ,i_actual             =%sysfunc(pathname(work))/class2.png
                ,i_expected_shell_rc  =1                   
@@ -163,7 +125,7 @@ ods printer close;
                ,i_desc               =Graphs do not match%str(,) i_expected_shell_rc is set to 1
                );
                
-   %assertImage(i_script             =&assertImage_script.
+   %assertImage(i_script             =&g_sasunit_os./assertImage.&g_osCmdFileSuffix.
                ,i_expected           =%sysfunc(pathname(work))/class1.png  
                ,i_actual             =%sysfunc(pathname(work))/class3.png
                ,i_expected_shell_rc  =0
@@ -181,14 +143,15 @@ ods printer close;
              );
 %endTestcall()
 
-   %assertExternal (i_script             =&assertExternal_script.
-                   ,i_parameters         =%_adaptSASUnitPathToOS(&assertText_work1.) "4"
+   %let l_file=%_adaptSASUnitPathToOS(&g_work./text1.txt);
+   %assertExternal (i_script             =&g_sasunit_os./assertExternal_wordcount.&g_osCmdFileSuffix.
+                   ,i_parameters         =&l_file. "4"
                    ,i_expected_shell_rc  =0
                    ,i_desc               =Word count of "Lorem" equals 4
                    );
                    
-   %assertExternal (i_script             =&assertExternal_script.
-                   ,i_parameters         =%_adaptSASUnitPathToOS(&assertText_work1.) "3"
+   %assertExternal (i_script             =&g_sasunit_os./assertExternal_wordcount.&g_osCmdFileSuffix.
+                   ,i_parameters         =&l_file. "3"
                    ,i_expected_shell_rc  =1
                    ,i_desc               =%str(Word count of "Lorem" equals 4, but expected count is 3, so i_expected_shell_rc must be 1 to make test green)
                    );
