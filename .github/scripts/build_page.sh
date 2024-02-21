@@ -2,8 +2,6 @@ init_dir=$(pwd)
 
 P_DRIVE=/media/github
 
-./kerberos_auth.sh
-
 timestamp=$(date "+%Y_%m_%d")
 path=$P_DRIVE/$timestamp/$RUN_NUMBER
 index_html=$path/index.html
