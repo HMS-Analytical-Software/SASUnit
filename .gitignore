@@ -1,6 +1,13 @@
-#Exclude folders for created test documentation
+# Exclude folders for created test documentation
 en
 de
+# Exclude generated script files
 bin/sasunit.9.4.*
 bin/*.xml
 bin/*.log
+# Exclude other files like documentation
+_sonst
+**.pdf
+**.pptx
+**.ppt
+**/template.sas7bitm
