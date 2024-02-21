@@ -4,9 +4,9 @@
 
    \brief      Updating headers in all touched programs of the current branch compared to default branch
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/update-user-and-version-in-sas-programs $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-02-21 10:57:02 (Mi, 21. Februar 2024) $
    
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
@@ -54,6 +54,8 @@
    %let l_temp          =%sysfunc (compress (%sysfunc (putn (%sysfunc(time()), TIME8.)),:));
    %let l_protocol_file =&l_protocol_file._&l_temp..log;
    %let l_exit          =0;
+   %let l_add_file_list =%sysfunc(pathname(work))/add_file_list.txt;
+   %let l_add_file_list =./add_file_list.txt;
 
    options xsync noxwait;
 
@@ -176,6 +178,15 @@
       program = scan (_INFILE_, 2, "09"x);
    run;
 
+   data _null_;
+      length program $256;
+      file "&l_add_file_list.";
+      infile "&l_diff_file.";
+      input;
+      program = scan (_INFILE_, 2, "09"x);
+      put program;
+   run;
+
    /*** Start loop over alle programs ***/
    proc sql noprint;
       select count (*) into :l_changed_programs from work._changed_programs;
@@ -206,13 +217,13 @@
          data _NULL_;
             length line $32767 dtstring $80;
 
-            infile "&l_repository.\&&l_program&l_i.." RECFM=N LRECL=1048576 SHAREBUFFERS BLKSIZE=32768;
-            file "&l_repository.\&&l_program&l_i.." RECFM=N LRECL=32768 BLKSIZE=1048576;
+            infile "&l_repository./&&l_program&l_i.." RECFM=N LRECL=1048576 SHAREBUFFERS BLKSIZE=32768;
+            file "&l_repository./&&l_program&l_i.." RECFM=N LRECL=32768 BLKSIZE=1048576;
 
             dtstring        = catx (" ", put (date(), YYMMDDd10.), put (time(), time8.), "(" !! put (date(), nldatewn.) !! ",",  put (date(), nldate.) !! ")");
-            RegExId_Version = prxparse("s/\$Revision.*\$/\$Revision: GitBranch: &l_branchName. \$/i");
-            RegExId_Author  = prxparse("s/\$Author.*\$/\$Author: &SYSUSERID. \$/i");
-            RegExId_Date    = prxparse("s/\$Date.*\$/\$Date: " !! trim(dtstring) !! " \$/i");
+            RegExId_Version = prxparse("s/\$Revision: GitBranch: test/featurebranch $/i");
+            RegExId_Author  = prxparse("s/\$Author: landwich $/i");
+            RegExId_Date    = prxparse("s/\$Date: 2024-02-21 10:57:02 (Mi, 21. Februar 2024) $/i");
 
             input line $char32767.;
 
@@ -237,6 +248,19 @@
       put " ";
       put "End of logfile";
    run;
+   
+   data _null_;
+      cmd = "cd ""&l_repository.""" !! ' && ' !! " git add --pathspec-from-file=""&l_add_file_list.""";
+      rc =system (cmd);
+      if rc ne 0 then do;
+         abort 11;
+      end;
+      cmd = "cd ""&l_repository.""" !! ' && ' !! " git commit -m ""Automatically update headers""";
+      rc =system (cmd);
+      if rc ne 0 then do;
+         abort 11;
+      end;
+   run;
 %mend BuildCurrentBranch;
 
-%BuildCurrentBranch;
+%BuildCurrentBranch; 
