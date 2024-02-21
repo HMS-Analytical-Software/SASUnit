@@ -4,7 +4,7 @@
       l_repository
       l_branch_file
       l_difftree_file
-      l_protcol_file
+      l_protocol_file
       l_temp
       l_exit
       l_i
@@ -17,7 +17,6 @@
    ;
 
    %let l_default_branch_name = master;
-   %let l_default_branch_name = main;
    %let l_repository    =%sysget (GIT_FOLDER);
    libname _gr "&l_repository.";
    %let l_repository    =%sysfunc (pathname(_gr));
@@ -28,6 +27,7 @@
    %let l_rootfolder    =%sysfunc (pathname(_rf));
    libname _rf clear;
 
+   %let l_default_file  =%sysfunc(pathname(work))/default_file.txt;
    %let l_branch_file   =%sysfunc(pathname(work))/branch_file.txt;
    %let l_diff_file     =%sysfunc(pathname(work))/diff_file.txt;
    %let l_protocol_file =&l_rootfolder./SASMakroBuild_Run;
@@ -37,13 +37,32 @@
    %let l_protocol_file =&l_protocol_file._&l_temp..log;
    %let l_exit          =0;
 
-   %put _local_;
+   options xsync noxwait;
+
+   /*** Get name of default branch ***/
+   data _null_;
+      length cmd $500;
+      cmd = "cd &l_repository." !! ' && ' !! "git config --get init.defaultBranch > ""&l_default_file.""";
+      rc =system (cmd);
+   run;
+   
+   data _null_;
+      length default_branch_name $256;
+
+      infile "&l_default_file.";
+      input default_branch_name $;
+
+      if (_N_ = 1) then do;
+         call symputx ("l_default_branch_name", default_branch_name, 'L');
+         stop;
+      end;
+   run;
 
    /*** Retrieving name of the current branch ***/
    /*** If it is in default branch then stop working  ***/
    data _null_;
       length cmd $500;
-      cmd = "cd &l_repository." !! ' && ' !! "git status > &l_branch_file.";
+      cmd = "cd &l_repository." !! ' && ' !! "git status > ""&l_branch_file.""";
       rc =system (cmd);
    run;
 
