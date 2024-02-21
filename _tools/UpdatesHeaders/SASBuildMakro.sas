@@ -60,8 +60,11 @@
    /*** Get name of default branch ***/
    data _null_;
       length cmd $500;
-      cmd = "cd &l_repository." !! ' && ' !! "git config --get init.defaultBranch > ""&l_default_file.""";
+      cmd = "cd &l_repository." !! ' && ' !! "git symbolic-ref --short refs/remotes/origin/HEAD > ""&l_default_file.""";
       rc =system (cmd);
+      if rc ne 0 then do;
+         abort 11;
+      end;
    run;
    
    data _null_;
@@ -69,19 +72,22 @@
 
       infile "&l_default_file.";
       input default_branch_name $;
-
+      default_branch_name = scan (default_branch_name,2,'/');
       if (_N_ = 1) then do;
          call symputx ("l_default_branch_name", default_branch_name, 'L');
          stop;
       end;
    run;
-
+   
    /*** Retrieving name of the current branch ***/
    /*** If it is in default branch then stop working  ***/
    data _null_;
       length cmd $500;
       cmd = "cd &l_repository." !! ' && ' !! "git status > ""&l_branch_file.""";
       rc =system (cmd);
+      if rc ne 0 then do;
+         abort 11;
+      end;
    run;
 
    data _null_;
@@ -120,8 +126,11 @@
    /*** Retrieve last common commit of default and feature branch to get all touched programs ***/
    data _null_;
       length cmd $500;
-      cmd = "cd ""&l_repository."" && git merge-base &l_default_branch_name. &l_branchName. > ""&l_diff_file.""";
+      cmd = "cd ""&l_repository."""  !! ' && ' !! "git merge-base &l_default_branch_name. &l_branchName. > ""&l_diff_file.""";
       rc =system (cmd);
+      if rc ne 0 then do;
+         abort 11;
+      end;
    run;
 
    data _null_;
@@ -134,7 +143,7 @@
 
       put " ";
       commit_id = scan (_INFILE_, 1, " ");
-      put "Last common commit of &l_default_branch_name. and branch &&l_branchName. is: " commit_id;
+      put "Last common commit of &l_default_branch_name. and branch &l_branchName. is: " commit_id;
       call symputx ("L_COMMON_COMMIT_ID", commit_id, 'L');
    run;
 
@@ -143,11 +152,14 @@
       length cmd $500;
       /***
          perhaps later use this command
-         cmd = "cd ""&l_repository."" && git log &l_common_commit_id...HEAD --raw"; 
+         cmd = "cd ""&l_repository.""" !! ' && ' !! "git log &l_common_commit_id...HEAD --raw"; 
          it delivers more information e.g. commit id, but is harder to digest
       */
-      cmd = "cd ""&l_repository."" && git diff --name-status --diff-filter=AM &l_common_commit_id. > ""&l_diff_file.""";
+      cmd = "cd ""&l_repository.""" !! ' && ' !! "git diff --name-status --diff-filter=AM &l_common_commit_id. > ""&l_diff_file.""";
       rc =system (cmd);
+      if rc ne 0 then do;
+         abort 11;
+      end;
    run;
 
    data work._changed_programs;
@@ -204,9 +216,6 @@
 
             input line $char32767.;
 
-			putlog line=;
-			putlog RegExId_Version=;
-			
             call prxchange(RegExId_Version, -1, line);
             call prxchange(RegExId_Author, -1, line);
             call prxchange(RegExId_Date, -1, line);
@@ -230,59 +239,4 @@
    run;
 %mend BuildCurrentBranch;
 
-/*
-options 
-   SET=GIT_FOLDER "C:\TEMP\GitTest_SVN"
-   SET=ROOT_FOLDER "C:\Projekte\Git Test"
-   ;
-*/
 %BuildCurrentBranch;
-
-
-/*
-data _null_;
-   length text $ 256;
-   RegularExpressionId = prxparse('s/\$Revision: GitBranch: GitBashTreeTest $/');
-   text = '   \version    \$Revision: GitBranch: GitBashTreeTest $';
-   put text;
-run;
-*/
-                          
-/*
-options xsync noxwait xmin;
-
-   data _null_;
-      length cmd $500;
-      cmd = "cd ""C:/TEMP/GitTest_SVN"" && git log 0cef75304c1298b818ef2d69771664da1b6cb778..HEAD --raw > ""C:\TEMP\TEST.LOG"""; 
-      rc =system (cmd);
-   run;
-
-   data work._changed_programs;
-      length action $5 commit_id $40 program author date message $256;
-      retain action commit_id program author date message "";
-      infile "C:\TEMP\TEST.LOG";
-      input;
-      if (length (_INFILE_) > 1) then do;
-         _action = scan (_INFILE_, 1);
-         _line1  = substr (_INFILE_, 1, 1);
-         if (lowcase (_action) = "commit") then do;
-            commit_id = scan (_INFILE_, 2);
-         end;
-         if (lowcase (_action) = "author:") then do;
-            author = scan (_INFILE_, 2, ":");
-         end;
-         if (lowcase (_action) = "date:") then do;
-            date = strip (substr (_INFILE_, 6));
-         end;
-         if (_line1 = " ") then do;
-            message = strip (_INFILE_);
-         end;
-         if (_line1 = ":") then do;
-            program = scan (_INFILE_, 5, " ");
-            action  = scan (program, 1, '09x');
-            program = scan (program, 2, '09'x);
-            output;
-         end;
-      end;
-   run;
-*/
