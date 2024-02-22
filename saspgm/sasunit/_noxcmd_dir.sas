@@ -10,9 +10,9 @@
                filename (name of file with absolute path, path separator is slash) 
                changed (last modification data as SAS datetime).
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-02-22 11:27:38 (Do, 22. Februar 2024) $
    
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
@@ -152,3 +152,4 @@
    quit;
 %MEND _noxcmd_dir;
 /** \endcond **/
+ 

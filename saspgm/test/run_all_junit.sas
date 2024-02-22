@@ -4,9 +4,9 @@
 
    \brief      Invocation of the basic test scenarios as JUNIT Output
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-02-22 11:27:38 (Do, 22. Februar 2024) $
    \sa         \$HeadURL$
    \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -142,4 +142,4 @@ run;
    ,o_junit=1
 );
 
-/** \endcond */
+/** \endcond */ 

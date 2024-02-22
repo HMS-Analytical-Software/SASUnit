@@ -9,9 +9,9 @@
                - validate configuration of initSASUnit
                - Setting up SASUnit session
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-02-22 11:27:38 (Do, 22. Februar 2024) $
    
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User's%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
@@ -142,7 +142,7 @@
 
    %LET g_version    = 2.1.1;
    %LET g_db_version = 2.1;
-   %LET g_revision   = $Revision$;
+   %LET g_revision   = $Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $;
    %LET g_revision   = %scan(&g_revision,2,%str( $:));
    
    %LET l_log4SASSuiteLogger     = App.Program.SASUnit;
@@ -627,10 +627,7 @@
                        ,folder &l_reportFolder./testDoc does not exist
                        ) 
          %THEN %GOTO errexit;
-      %IF %_handleError(&l_macname.
-                       ,NoRepDir
-                       ,NOT %_existdir(&l_reportFolder./tempDoc)
-                       ,folder &l_reportFolder./tempDoc does not exist
+pDoc does not exist
                        ) 
          %THEN %GOTO errexit;
       %IF %_handleError(&l_macname.
@@ -758,3 +755,4 @@
    %abort 9;
 %MEND initSASUnit;
 /** \endcond */
+ 
