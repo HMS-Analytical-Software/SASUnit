@@ -4,9 +4,9 @@
 
    \brief      Test of assertExternal.sas
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/remove-os-dependend-code-in-test $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-02-22 11:13:53 (Do, 22. Februar 2024) $
    \sa         \$HeadURL$
    \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -142,4 +142,4 @@
 %endTestcase();
 
 %endScenario(); 
-/** \endcond */
+/** \endcond */ 

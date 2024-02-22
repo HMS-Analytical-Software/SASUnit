@@ -4,9 +4,9 @@
 
    \brief      Test examples for assertText.sas 
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/remove-os-dependend-code-in-test $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-02-22 11:13:53 (Do, 22. Februar 2024) $
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
@@ -136,4 +136,4 @@
 %endTestcase();
 
 %endScenario();
-/** \endcond */
+/** \endcond */ 
