@@ -4,8 +4,7 @@
 
    \brief      Tests for comparison.sas
 
-   \version    \$Revision: GitBranch: feature/remove-os-dependend-code-in-test $ - KL: Removed hint "Windows only".\n
-               Revision: 71 - KL: Test case can now be run under LINUX.
+   \version    \$Revision: GitBranch: feature/remove-os-dependend-code-in-test $
    \author     \$Author: landwich $
    \date       \$Date: 2024-02-22 11:13:53 (Do, 22. Februar 2024) $
 
