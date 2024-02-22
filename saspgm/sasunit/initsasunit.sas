@@ -627,7 +627,10 @@
                        ,folder &l_reportFolder./testDoc does not exist
                        ) 
          %THEN %GOTO errexit;
-pDoc does not exist
+      %IF %_handleError(&l_macname.
+                       ,NoRepDir
+                       ,NOT %_existdir(&l_reportFolder./tempDoc)
+                       ,folder &l_reportFolder./tempDoc does not exist
                        ) 
          %THEN %GOTO errexit;
       %IF %_handleError(&l_macname.
