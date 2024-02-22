@@ -3,6 +3,11 @@ REM Start build step for Git Repositories containing SAS macros
 REM This commdn file start a SAS program that gathers all changes of the current branch compred to master
 REM Each changed file will be scan for SVN keywords and they will be updated
 REM Afterwards a commit will be issued
+REM
+REM Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
+REM This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+REM For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
+REM or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.
 
 cd ../..
 
@@ -19,7 +24,7 @@ echo Git Folder  = %GIT_FOLDER%
 echo SAS Folder  = %SAS_INSTALLATION_FOLDER%
 echo.
 
-"%SAS_INSTALLATION_FOLDER%\sas.exe" -CONFIG "%SAS_INSTALLATION_FOLDER%\nls\de\sasv9.cfg" -sysin %SAS_PROGRAM% -log %SAS_LOG%
+"%SAS_INSTALLATION_FOLDER%\sas.exe" -CONFIG "%SAS_INSTALLATION_FOLDER%\nls\en\sasv9.cfg" -sysin %SAS_PROGRAM% -log %SAS_LOG%
 
 if %ERRORLEVEL%==0 goto normalexit
 @echo. 
