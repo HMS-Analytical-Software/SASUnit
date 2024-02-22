@@ -10,8 +10,11 @@
 # For copyright information and terms of usage under the GNU Lesser General Public License see included file README.md
 # or https://github.com/HMS-Analytical-Software/SASUnit/wiki/readme.
 
-export ROOT_FOLDER=~/git_test
-export GIT_FOLDER=~/git_test
+export ROOT_FOLDER=$(pwd)
+
+cd ../..
+
+export GIT_FOLDER=$(pwd)
 export SAS_INSTALLATION_FOLDER=/opt/sas/sas94M7/SASFoundation/9.4
 export SASCFGPATH=$SAS_INSTALLATION_FOLDER/nls/en/sasv9.cfg
 export SAS_PROGRAM=$ROOT_FOLDER/SASBuildMakro.sas

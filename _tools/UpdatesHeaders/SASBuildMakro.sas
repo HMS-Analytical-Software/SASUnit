@@ -29,9 +29,9 @@
       l_suffix
       l_rootfolder
       l_common_commit_id
-	  l_default_branch_name
-	  l_branchname
-	  l_regex_branchname
+      l_default_branch_name
+      l_branchname
+      l_regex_branchname
    ;
 
    %let l_default_branch_name = master;
@@ -55,7 +55,6 @@
    %let l_protocol_file =&l_protocol_file._&l_temp..log;
    %let l_exit          =0;
    %let l_add_file_list =%sysfunc(pathname(work))/add_file_list.txt;
-   %let l_add_file_list =./add_file_list.txt;
 
    options xsync noxwait;
 
@@ -68,7 +67,7 @@
          abort 11;
       end;
    run;
-   
+
    data _null_;
       length default_branch_name $256;
 
@@ -80,7 +79,7 @@
          stop;
       end;
    run;
-   
+
    /*** Retrieving name of the current branch ***/
    /*** If it is in default branch then stop working  ***/
    data _null_;
@@ -106,8 +105,8 @@
          put "Checking repository in folder: &l_repository.";
          if (index (upcase (_INFILE_), "BRANCH")) then do;
             branchname = scan (_INFILE_, 3, " ");
-            put "Current repository is: " branchname;		 
-			regex_branchname = tranwrd (branchname, '/', '/');
+            put "Current repository is: " branchname;
+            regex_branchname = tranwrd (branchname, '/', '\/');
             call symputx ("L_BRANCHNAME", branchname, 'L');
             call symputx ("L_REGEX_BRANCHNAME", regex_branchname, 'L');
             if (index (upcase (_INFILE_), "%upcase(&l_default_branch_name.)")) then do;
@@ -116,7 +115,7 @@
                put "End of logfile";
                call symputx ("LEXIT", "1", 'L');
             end;
-			stop;
+            stop;
          end;
       end;
    run;
@@ -221,9 +220,9 @@
             file "&l_repository./&&l_program&l_i.." RECFM=N LRECL=32768 BLKSIZE=1048576;
 
             dtstring        = catx (" ", put (date(), YYMMDDd10.), put (time(), time8.), "(" !! put (date(), nldatewn.) !! ",",  put (date(), nldate.) !! ")");
-            RegExId_Version = prxparse("s/\$Revision: GitBranch: test/featurebranch $/i");
-            RegExId_Author  = prxparse("s/\$Author: landwich $/i");
-            RegExId_Date    = prxparse("s/\$Date: 2024-02-21 10:57:02 (Mi, 21. Februar 2024) $/i");
+            RegExId_Version = prxparse("s/\$Revision.*\$/\$Revision: GitBranch: &l_regex_branchname. \$/i");
+            RegExId_Author  = prxparse("s/\$Author.*\$/\$Author: &SYSUSERID. \$/i");
+            RegExId_Date    = prxparse("s/\$Date.*\$/\$Date: " !! trim(dtstring) !! " \$/i");
 
             input line $char32767.;
 
