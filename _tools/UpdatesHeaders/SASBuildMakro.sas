@@ -67,7 +67,7 @@
          abort 11;
       end;
    run;
-   
+
    data _null_;
       length default_branch_name $256;
 
@@ -79,7 +79,7 @@
          stop;
       end;
    run;
-   
+
    /*** Retrieving name of the current branch ***/
    /*** If it is in default branch then stop working  ***/
    data _null_;
@@ -105,8 +105,8 @@
          put "Checking repository in folder: &l_repository.";
          if (index (upcase (_INFILE_), "BRANCH")) then do;
             branchname = scan (_INFILE_, 3, " ");
-            put "Current repository is: " branchname;		 
-			regex_branchname = tranwrd (branchname, '/', '/');
+            put "Current repository is: " branchname;
+            regex_branchname = tranwrd (branchname, '/', '\/');
             call symputx ("L_BRANCHNAME", branchname, 'L');
             call symputx ("L_REGEX_BRANCHNAME", regex_branchname, 'L');
             if (index (upcase (_INFILE_), "%upcase(&l_default_branch_name.)")) then do;
@@ -115,7 +115,7 @@
                put "End of logfile";
                call symputx ("LEXIT", "1", 'L');
             end;
-			stop;
+            stop;
          end;
       end;
    run;
