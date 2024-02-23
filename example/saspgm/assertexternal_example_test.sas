@@ -4,9 +4,9 @@
 
    \brief      Test examples for assertExternal.sas
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/remove-os-dependend-code-in-test $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-02-22 11:13:53 (Do, 22. Februar 2024) $
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
@@ -56,38 +56,13 @@
    RUN;
 %MEND _createtestfiles;
 
-%MACRO _adaptToOS;
-   %GLOBAL 
-      assertExternal_script1
-      assertExternal_script2
-      assertExternal_mod1
-      assertExternal_work1
-      assertExternal_work1Copy
-      assertExternal_work2
-   ;
-   /* Prepare macro variables to adapt to OS specific test */
-   %IF %lowcase(%SYSGET(SASUNIT_HOST_OS)) EQ windows %THEN %DO;
-      %LET assertExternal_script1        =%sysfunc(translate(&g_sasunit_os.\assertExternal_cnt.cmd,\,/));
-      %LET assertExternal_script2        =%sysfunc(translate(&g_sasunit_os.\assertExternal_fc.cmd,\,/));
-      %LET assertExternal_mod1           =/C;
-      %LET assertExternal_work1          =%sysfunc(translate(&g_work.\text1.txt,\,/));
-      %LET assertExternal_work1Copy      =%sysfunc(translate(&g_work.\text1_copy.txt,\,/));
-      %LET assertExternal_work2          =%sysfunc(translate(&g_work.\text2.txt,\,/));
-   %END;
-   %ELSE %IF %lowcase(%SYSGET(SASUNIT_HOST_OS)) EQ linux %THEN %DO;
-      %LET assertExternal_script1        = %_abspath(&g_sasunit_os.,assertExternal_wc.sh);
-      %LET assertExternal_script2        = %_abspath(&g_sasunit_os.,assertExternal_diff.sh);
-      %LET assertExternal_mod1           =-i;
-      %LET assertExternal_work1          =%_abspath(&g_work.,text1.txt);
-      %LET assertExternal_work1Copy      =%_abspath(&g_work.,text1_copy.txt);
-      %LET assertExternal_work2          =%_abspath(&g_work.,text2.txt);
-   %END;
-%MEND _adaptToOS;
-
-
 /* create test files */
 %_createtestfiles;
-%_adaptToOS;
+%LET assertExternal_work1        =&g_work./text1.txt;
+%LET assertExternal_work1Copy    =&g_work./text1_copy.txt;
+%LET assertExternal_work2        =&g_work./text2.txt;
+%LET assertExternal_NotExistend  =&g_work./NotExistendFile;
+
 %let scnid = %substr(00&g_scnid,%length(&g_scnid));
 
 /* test case 1 ------------------------------------ */
@@ -96,14 +71,14 @@
              );
 %endTestcall();
 
-%assertExternal (i_script             =&assertExternal_script1.
-                ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) "2"
+%assertExternal (i_script             =&g_sasunit_os./assertExternal_wordcount.&g_osCmdFileSuffix.
+                ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) "Lorem" "2"
                 ,i_expected_shell_rc  =0
                 ,i_desc               =Word count of "Lorem" equals 2
                 );
                 
-%assertExternal (i_script             =&assertExternal_script1.
-                ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) "3"
+%assertExternal (i_script             =&g_sasunit_os./assertExternal_wordcount.&g_osCmdFileSuffix.
+                ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) "Lorem" "3"
                 ,i_expected_shell_rc  =1
                 ,i_desc               =%str(Word count of "Lorem" equals 2, but i_actual=3, so i_expected_shell_rc must be 1)
                 );
@@ -115,24 +90,24 @@
              );
 %endTestcall();
 
-%assertExternal (i_script             =&assertExternal_script2.
+%assertExternal (i_script             =&g_sasunit_os./assertExternal_textdiff.&g_osCmdFileSuffix.
                 ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) %_adaptSASUnitPathToOS(&assertExternal_work1Copy.)
                 ,i_expected_shell_rc  =0
                 ,i_desc               =Compared files match
                 );
                 
-%assertExternal (i_script             =&assertExternal_script2.
+%assertExternal (i_script             =&g_sasunit_os./assertExternal_textdiff.&g_osCmdFileSuffix.
                 ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) %_adaptSASUnitPathToOS(&assertExternal_work2.)
                 ,i_expected_shell_rc  =1
                 ,i_desc               =Compared files do not match
                 );
                 
-%assertExternal (i_script             =&assertExternal_script2.
-                ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) %_adaptSASUnitPathToOS(&assertExternal_work2.) &assertExternal_mod1.
+%assertExternal (i_script             =&g_sasunit_os./assertExternal_textdiff.&g_osCmdFileSuffix.
+                ,i_parameters         =%_adaptSASUnitPathToOS(&assertExternal_work1.) %_adaptSASUnitPathToOS(&assertExternal_work2.) &g_assertTextIgnoreCase.
                 ,i_expected_shell_rc  =0
                 ,i_desc               =%str(Compared files do not match, but modifier ignore case used -> test is OK)
                 );
 %endTestcase();
 
 %endScenario();
-/** \endcond */
+/** \endcond */ 
