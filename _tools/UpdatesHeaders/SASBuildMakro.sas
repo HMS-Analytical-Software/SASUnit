@@ -56,7 +56,7 @@
    %let l_exit          =0;
    %let l_add_file_list =%sysfunc(pathname(work))/add_file_list.txt;
 
-   options xsync noxwait;
+   options xsync noxwait xmin;
 
    /*** Get name of default branch ***/
    data _null_;
@@ -198,10 +198,8 @@
          data _NULL_;
             file "&l_protocol_file." MOD;
             put " ";
-            put "-------------------------------------------------------------------------------";
             put "---- File &l_i.: &&l_program&l_i..";
             put "---- No SAS program file";
-            put "-------------------------------------------------------------------------------";
          run;
       %end;
       %else %do;
@@ -216,21 +214,24 @@
          data _NULL_;
             length line $32767 dtstring $80;
 
-            infile "&l_repository./&&l_program&l_i.." RECFM=N LRECL=1048576 SHAREBUFFERS BLKSIZE=32768;
-            file "&l_repository./&&l_program&l_i.." RECFM=N LRECL=32768 BLKSIZE=1048576;
+            infile "&l_repository./&&l_program&l_i.." RECFM=V;
+            file "&l_repository./&&l_program&l_i.." RECFM=V;
 
             dtstring        = catx (" ", put (date(), YYMMDDd10.), put (time(), time8.), "(" !! put (date(), nldatewn.) !! ",",  put (date(), nldate.) !! ")");
             RegExId_Version = prxparse("s/\$Revision.*\$/\$Revision: GitBranch: &l_regex_branchname. \$/i");
             RegExId_Author  = prxparse("s/\$Author.*\$/\$Author: &SYSUSERID. \$/i");
             RegExId_Date    = prxparse("s/\$Date.*\$/\$Date: " !! trim(dtstring) !! " \$/i");
 
-            input line $char32767.;
+            input;
+            if index (_INFILE_, "\$") then do;
+               line = trim (_INFILE_);
+               call prxchange(RegExId_Version, -1, line);
+               call prxchange(RegExId_Author, -1, line);
+               call prxchange(RegExId_Date, -1, line);
+               _INFILE_ = trim(line);
+            end;
 
-            call prxchange(RegExId_Version, -1, line);
-            call prxchange(RegExId_Author, -1, line);
-            call prxchange(RegExId_Date, -1, line);
-
-            put line $;
+            put _INFILE_;
          run;
 
          data _NULL_;

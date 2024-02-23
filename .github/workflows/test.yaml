@@ -59,10 +59,12 @@ jobs:
 
       - name: Copy output to share
         run: |
-          ./${{ matrix.copyToShare }} ${{ matrix.language }}/doc          ${{ matrix.osName }}_${{ matrix.language }}
-          ./${{ matrix.copyToShare }} ${{ matrix.language }}/logs         ${{ matrix.osName }}_${{ matrix.language }}
-          ./${{ matrix.copyToShare }} example/${{ matrix.language }}/doc  ${{ matrix.osName }}_${{ matrix.language }}/example
-          ./${{ matrix.copyToShare }} example/${{ matrix.language }}/logs ${{ matrix.osName }}_${{ matrix.language }}/example
+          ./${{ matrix.copyToShare }} ${{ matrix.language }}/doc              ${{ matrix.osName }}_${{ matrix.language }}
+          ./${{ matrix.copyToShare }} ${{ matrix.language }}/logs             ${{ matrix.osName }}_${{ matrix.language }}
+          ./${{ matrix.copyToShare }} ${{ matrix.language }}/scn_logs         ${{ matrix.osName }}_${{ matrix.language }}
+          ./${{ matrix.copyToShare }} example/${{ matrix.language }}/doc      ${{ matrix.osName }}_${{ matrix.language }}/example
+          ./${{ matrix.copyToShare }} example/${{ matrix.language }}/logs     ${{ matrix.osName }}_${{ matrix.language }}/example
+          ./${{ matrix.copyToShare }} example/${{ matrix.language }}/scn_logs ${{ matrix.osName }}_${{ matrix.language }}/example
 
 
       - name: Junit Report
@@ -110,10 +112,12 @@ jobs:
       - name: Copy output to share
         working-directory: ${{ env.WORKSPACE }}
         run: |
-          ./.github/scripts/copy_to_p_drive.sh en/doc          with_spaces
-          ./.github/scripts/copy_to_p_drive.sh en/logs         with_spaces
-          ./.github/scripts/copy_to_p_drive.sh example/en/doc  with_spaces/example
-          ./.github/scripts/copy_to_p_drive.sh example/en/logs with_spaces/example
+          ./.github/scripts/copy_to_p_drive.sh en/doc              with_spaces
+          ./.github/scripts/copy_to_p_drive.sh en/logs             with_spaces
+          ./.github/scripts/copy_to_p_drive.sh en/scn_logs         with_spaces
+          ./.github/scripts/copy_to_p_drive.sh example/en/doc      with_spaces/example
+          ./.github/scripts/copy_to_p_drive.sh example/en/logs     with_spaces/example
+          ./.github/scripts/copy_to_p_drive.sh example/en/scn_logs with_spaces/example
 
       - name: Junit Report
         uses: dorny/test-reporter@v1.7.0
@@ -160,7 +164,9 @@ jobs:
           mkdir $WORKSPACE/example/de/
           mkdir $WORKSPACE/example/de/doc
           mkdir $WORKSPACE/example/de/logs
+          mkdir $WORKSPACE/example/de/scn_logs
           cp /var/opt/SASUnit/example/de/logs/*run_all.log $WORKSPACE/example/de/logs/
+          cp /var/opt/SASUnit/example/de/scn_logs/*.log $WORKSPACE/example/de/scn_logs/
           cp -r /var/opt/SASUnit/example/de/doc/* $WORKSPACE/example/de/doc
 
 
@@ -168,6 +174,7 @@ jobs:
         run: |
           ./.github/scripts/copy_to_p_drive.sh example/de/doc   etc_opt_var/example/
           ./.github/scripts/copy_to_p_drive.sh example/de/logs  etc_opt_var/example/
+          ./.github/scripts/copy_to_p_drive.sh example/de/scn_logs  etc_opt_var/example/
 
  
       - name: Junit Report

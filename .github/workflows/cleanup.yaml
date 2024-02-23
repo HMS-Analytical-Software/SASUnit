@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  RUNS_TO_KEEP: 20
+  RUNS_TO_KEEP: 15
 
 jobs:
   cleanup:
