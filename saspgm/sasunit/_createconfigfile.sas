@@ -4,9 +4,9 @@
 
    \brief      Creates a SAS config file for starting SASUnit in batch
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-02-22 11:27:38 (Do, 22. Februar 2024) $
    
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
@@ -28,7 +28,7 @@
 */ /** \cond */
 %macro _createConfigFile(i_projectBinFolder =
                         ,i_projectRootFolder=
-                        ,i_sasunitLogFolder=
+                        ,i_sasunitLogFolder =
                         ,i_sasunitLanguage  =
                         ,i_sasunitRunAllPgm =
                         ,i_operatingSystem  =
@@ -37,9 +37,9 @@
                         );
 
    %local
-     l_sasConfig
-	  l_sasunitRunAllPgm
-     l_sasunitLogFolder
+      l_sasConfig
+      l_sasunitRunAllPgm
+      l_sasunitLogFolder
    ;
 
    %let l_sasConfig           =%_makeSASUnitpath(&i_sasConfig.);
@@ -58,10 +58,13 @@
       put "*/";
       put;
       put %sysfunc (quote (-CONFIG %_adaptSASUnitPathToOS(&l_sasConfig.)));
-      put %sysfunc (quote (-sysin  %_adaptSASUnitPathToOS(&l_sasunitRunAllPgm.)));
-      put %sysfunc (quote (-log    %_adaptSASUnitPathToOS(&l_sasunitLogFolder.)));
-      put %sysfunc (quote (-print  %_adaptSASUnitPathToOS(&l_sasunitLogFolder.)));
+	  /* Avoids message no lock available for dataset xxx */
+      put "-FILELOCKWAIT 2";
+      put %sysfunc (quote (-sysin  %_adaptSASUnitPathToOS(&l_sasunitRunAllPgm., quoted=Y)));
+      put %sysfunc (quote (-log    %_adaptSASUnitPathToOS(&l_sasunitLogFolder., quoted=Y)));
+      put %sysfunc (quote (-print  %_adaptSASUnitPathToOS(&l_sasunitLogFolder., quoted=Y)));
    run;
 
 %mend _createConfigFile;
 /** \endcond */
+ 

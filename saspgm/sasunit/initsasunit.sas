@@ -9,9 +9,9 @@
                - validate configuration of initSASUnit
                - Setting up SASUnit session
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-02-22 11:27:38 (Do, 22. Februar 2024) $
    
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User's%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
@@ -83,7 +83,7 @@
                   ,io_target                 =
                   ,i_overwrite               =0
                   ,i_project                 =
-                  ,i_sasunit                 =%sysget(SASUNIT_ROOT)/saspgm/sasunit
+                  ,i_sasunit                 =%sysget(SASUNIT_ROOT)saspgm/sasunit
                   ,i_sasautos                =
                   ,i_sasautos1               =
                   ,i_sasautos2               =
@@ -142,7 +142,7 @@
 
    %LET g_version    = 2.1.1;
    %LET g_db_version = 2.1;
-   %LET g_revision   = $Revision$;
+   %LET g_revision   = $Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $;
    %LET g_revision   = %scan(&g_revision,2,%str( $:));
    
    %LET l_log4SASSuiteLogger     = App.Program.SASUnit;
@@ -650,7 +650,7 @@
    %_writeParameterToTestDBtsu (i_parameterName=tsu_project                   ,i_parameterValue =&i_project.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_target                    ,i_parameterValue =&l_target.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_root                      ,i_parameterValue =&l_root.);
-   %_writeParameterToTestDBtsu (i_parameterName=tsu_project_bin               ,i_parameterValue =&i_root./bin);
+   %_writeParameterToTestDBtsu (i_parameterName=tsu_project_bin               ,i_parameterValue =&i_root.bin);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunitroot               ,i_parameterValue =&l_sasunitroot.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunit                   ,i_parameterValue =&l_sasunit.);
    %_writeParameterToTestDBtsu (i_parameterName=tsu_sasunit_os                ,i_parameterValue =&l_sasunit_os.);
@@ -679,7 +679,7 @@
    %_writeParameterToTestDBtsu (i_parameterName=tsu_reportsOnly               ,i_parameterValue =&i_reportsOnly.);
    %*** if reports only is set then the value of these parameters should be taken from the test database. ***;
    %*** The shell script cannot know what was set in the last call. ***;
-   %if (&i_reportsOnly=0) %then %do;
+   %if (&i_reportsOnly.=0) %then %do;
       %_writeParameterToTestDBtsu (i_parameterName=tsu_testcoverage              ,i_parameterValue =&i_testcoverage.);
       %_writeParameterToTestDBtsu (i_parameterName=tsu_crossref                  ,i_parameterValue =&i_crossref.);
       %_writeParameterToTestDBtsu (i_parameterName=tsu_crossrefsasunit           ,i_parameterValue =&i_crossrefsasunit.);
@@ -758,3 +758,4 @@
    %abort 9;
 %MEND initSASUnit;
 /** \endcond */
+ 

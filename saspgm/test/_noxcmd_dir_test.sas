@@ -4,9 +4,9 @@
 
    \brief      Test of _noxcmd_dir.sas
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-02-22 11:27:38 (Do, 22. Februar 2024) $
    \sa         \$HeadURL$
    \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -254,9 +254,28 @@ proc sort data=dircheck out=dirchecktxt; by filename; where filename contains "f
 %assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_fuzz=0.5)
 %endTestcase;
 
+/*-- 018 nonrecursive call with specific file containing special characters ----------------------*/
+%let path = %sysfunc(pathname(work))/empty_testdir;
+%_xcmd(mkdir "&path")
+%let path = %sysfunc(pathname(work))/empty_testdir/folder1;
+%_xcmd(mkdir "&path")
+%addentry(&path/file1.dat)
+%let path = %sysfunc(pathname(work))/empty_testdir/folder2;
+%_xcmd(mkdir "&path")
+%addentry(&path/file2.dat)
+%initTestcase(i_object=_noxcmd_dir.sas, i_desc=recursive call with empty directory)
+%_noxcmd_dir(i_path="%sysfunc(pathname(work))/empty_testdir/*.dat", i_recursive=1, o_out=dir);
+%endTestcall;
+
+%assertLog(i_errors=0, i_warnings=0);
+proc sort data=dir; by filename; run;
+proc sort data=dircheck out=dirchecktxt; by filename; where filename contains "empty_testdir";run;  
+%assertColumns(i_expected=dirchecktxt, i_actual=dir, i_desc=check for contents of dir file, i_fuzz=0.5)
+%endTestcase;
+
 proc datasets lib=work kill memtype=(data) nolist;
 run;
 quit;
 
 %endScenario();
-/** \endcond */
+/** \endcond */ 

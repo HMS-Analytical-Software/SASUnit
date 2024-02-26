@@ -15,9 +15,9 @@
 
                Create or recreate necessary HTML pages in the test report with reportSASUnit.sas.
                
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-02-22 11:27:38 (Do, 22. Februar 2024) $
 
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
@@ -34,19 +34,17 @@ OPTIONS
    APPEND=(SASAUTOS "%sysget(SASUNIT_ROOT)/saspgm/sasunit")
 ;
 
-proc options option=logparm;run;
-
 %initSASUnit(
    i_root                     = %sysget(SASUNIT_PROJECT_ROOT)
   ,io_target                  = %sysget(SASUNIT_TEST_DB_FOLDER)
   ,i_overwrite                = %sysget(SASUNIT_OVERWRITE)
   ,i_project                  = SASUnit Examples                                  /* Name of project, for report */
-  ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
+  ,i_sasunit                  = %sysget(SASUNIT_ROOT)saspgm/sasunit
   ,i_sasautos                 = saspgm                                            /* Search for units under test here */
   ,i_testdata                 = dat                                               /* test data, libref testdata */
   ,i_refdata                  = dat                                               /* reference data, libref refdata */
   ,i_doc                      = doc/spec
-  ,i_sascfg                   = %sysget(SASUNIT_SAS_CFG)
+  ,i_sascfg                   = %sysget(SASUNIT_CONFIG)
   ,i_testcoverage             = %sysget(SASUNIT_COVERAGEASSESSMENT)
   ,i_crossref                 = %sysget(SASUNIT_CROSSREFERENCE)
   ,i_crossrefsasunit          = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
@@ -73,3 +71,4 @@ proc options option=logparm;run;
 
 /** \endcond */
 
+ 

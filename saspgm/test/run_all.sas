@@ -4,9 +4,9 @@
 
    \brief      Invocation of the basic test scenarios
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-02-22 11:27:38 (Do, 22. Februar 2024) $
    \sa         \$HeadURL$
    \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -27,7 +27,7 @@ proc options option=logparm;run;
   ,io_target                  = %sysget(SASUNIT_TEST_DB_FOLDER)
   ,i_overwrite                = %sysget(SASUNIT_OVERWRITE)
   ,i_project                  = SASUnit Self Test
-  ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
+  ,i_sasunit                  = %sysget(SASUNIT_ROOT)saspgm/sasunit
   ,i_sasautos                 = saspgm/sasunit
   ,i_sasautos1                = saspgm/test
   ,i_sasautos2                = saspgm/test/pgmlib1
@@ -35,7 +35,7 @@ proc options option=logparm;run;
   ,i_testdata                 = dat
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec
-  ,i_sascfg                   = %sysget(SASUNIT_SAS_CFG)
+  ,i_sascfg                   = %sysget(SASUNIT_CONFIG)
   ,i_testcoverage             = %sysget(SASUNIT_COVERAGEASSESSMENT)
   ,i_crossref                 = %sysget(SASUNIT_CROSSREFERENCE)
   ,i_crossrefsasunit          = %sysget(SASUNIT_CROSSREFERENCE_SASUNIT)
@@ -181,3 +181,4 @@ run;
    ,o_pgmdoc_sasunit =%sysget(SASUNIT_PGMDOC_SASUNIT)
 );
 /** \endcond */
+ 
