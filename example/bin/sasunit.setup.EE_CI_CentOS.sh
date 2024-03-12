@@ -62,7 +62,7 @@ echo "Creating script files for starting SASUnit ..."
 # Show SAS exit status
 RETVAL=$?
 if [ $RETVAL -eq 1 ] 
-	then printf "\nSAS ended with warnings. Review run_all.log for details.\n"
+	then printf "\nSAS ended with warnings. Review sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log for details.\n"
 elif [ $RETVAL -eq 2 ] 
-	then printf "\nSAS ended with errors! Check run_all.log for details!\n"
+	then printf "\nSAS ended with errors! Check sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log for details!\n"
 fi
