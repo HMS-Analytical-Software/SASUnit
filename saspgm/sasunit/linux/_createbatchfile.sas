@@ -25,6 +25,8 @@
    \param      i_sasConfig                Path and name of the of the SAS provided config file that should be used to run SASUnit
    \param      i_sasunitRootFolder        Path to the SASUnit root folder.
    \param      i_projectRootFolder        Path to the project root folder used to resolve the complete path of i_sasunitRunAllPgm.
+   \param      i_autocallRootFolder      Path and name of the root folder holding all autocall folders
+   \param      i_testScenarioRootFolder  Path and name of the root folder holding all folders with test scenarios
    \param      i_sasunitTestDBFolder      Name of the target folder where the test data base of SASUnit resides.
    \param      i_sasunitLogFolder         Name of the folder where the log file of run_all.sas should be stored.
    \param      i_sasunitScnLogFolder      Name of the folder where the log files of all scenarios should be stored.
@@ -158,7 +160,7 @@
       put "echo";
       put;
       put "echo ""Starting SASUnit ...""";
-      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin ""$SASUNIT_RUNALL"" -LOGCONFIGLOC ""{$SASUNIT_PROJECT_ROOT}bin/sasunit.logconfig.&i_sasunitLanguage..xml""";
+      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin ""$SASUNIT_RUNALL"" -LOGCONFIGLOC ""${SASUNIT_PROJECT_ROOT}bin/sasunit.logconfig.&i_sasunitLanguage..xml""";
       put;
       put "# Show SAS exit status";
       put "RETVAL=$?";

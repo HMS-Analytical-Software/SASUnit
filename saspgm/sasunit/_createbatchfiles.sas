@@ -24,6 +24,8 @@
    \param i_sasConfig               Path and name of the of the SAS provided config file that should be used to run SASUnit
    \param i_sasunitRootFolder       Path to the SASUnit root folder.
    \param i_projectRootFolder       Path to the project root folder used to resolve the complete path of i_sasunitRunAllPgm.
+   \param i_autocallRootFolder      Path and name of the root folder holding all autocall folders
+   \param i_testScenarioRootFolder  Path and name of the root folder holding all folders with test scenarios
    \param i_projectBinFolder        Name of the folder contain the binary files an shell scripts to start SASUnit (usually bin).
                                     <BR>Signifies the location of the config file.
    \param i_sasunitTestDBFolder     Name of the target folder where the test data base of SASUnit resides.

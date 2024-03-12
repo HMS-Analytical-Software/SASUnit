@@ -19,6 +19,8 @@
 
    \param i_sasunitRootFolder       Path and name of the root folder of SASUnit
    \param i_projectRootFolder       Path and name of the root folder of the project
+   \param i_autocallRootFolder      Path and name of the root folder holding all autocall folders
+   \param i_testScenarioRootFolder  Path and name of the root folder holding all folders with test scenarios
    \param i_sasunitLogFolder        Path and name of the folder for SASUnit suite log files (run_all.log and new ones)
    \param i_sasunitScnLogFolder     Path and name of the folder for SASUnit scenario log files (001.log, 001_001.log etc.)
    \param i_sasunitTestDBFolder     Path and name of the folder for SASUnit test data base (tsu, exa, scn, cas, tst)
