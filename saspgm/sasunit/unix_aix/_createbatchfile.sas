@@ -25,8 +25,8 @@
    \param      i_sasConfig                Path and name of the of the SAS provided config file that should be used to run SASUnit
    \param      i_sasunitRootFolder        Path to the SASUnit root folder.
    \param      i_projectRootFolder        Path to the project root folder used to resolve the complete path of i_sasunitRunAllPgm.
-   \param      i_autocallRootFolder      Path and name of the root folder holding all autocall folders
-   \param      i_testScenarioRootFolder  Path and name of the root folder holding all folders with test scenarios
+   \param      i_autocallRootFolder       Path and name of the root folder holding all autocall folders
+   \param      i_testScenarioRootFolder   Path and name of the root folder holding all folders with test scenarios
    \param      i_sasunitTestDBFolder      Name of the target folder where the test data base of SASUnit resides.
    \param      i_sasunitLogFolder         Name of the folder where the log file of run_all.sas should be stored.
    \param      i_sasunitScnLogFolder      Name of the folder where the log files of all scenarios should be stored.
@@ -101,8 +101,8 @@
       put "# --- EnvVars for SAS Unit Configuration -----------------------------------------";
       put "export SASUNIT_ROOT=""&i_sasunitRootFolder.""";
       put "export SASUNIT_PROJECT_ROOT=""&i_projectRootFolder.""";
-      put "export SASUNIT_AUTOCALL_ROOT=""&i_projectRootFolder.""";
-      put "export SASUNIT_TEST_SCENARIO_ROOT=""&i_projectRootFolder.""";
+      put "export SASUNIT_AUTOCALL_ROOT=""&i_autocallRootFolder.""";
+      put "export SASUNIT_TEST_SCENARIO_ROOT=""&i_testScenarioRootFolder.""";
       put "export SASUNIT_TEST_DB_FOLDER=""&i_sasunitTestDBFolder.""";
       put "export SASUNIT_LOG_FOLDER=""&i_sasunitLogFolder.""";
       put "export SASUNIT_SCN_LOG_FOLDER=""&i_sasunitScnLogFolder.""";

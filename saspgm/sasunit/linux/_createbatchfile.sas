@@ -99,8 +99,8 @@
       put "# --- EnvVars for SAS Unit Configuration -----------------------------------------";
       put "export SASUNIT_ROOT=""&i_sasunitRootFolder.""";
       put "export SASUNIT_PROJECT_ROOT=""&i_projectRootFolder.""";
-      put "export SASUNIT_AUTOCALL_ROOT=""&i_projectRootFolder.""";
-      put "export SASUNIT_TEST_SCENARIO_ROOT=""&i_projectRootFolder.""";
+      put "export SASUNIT_AUTOCALL_ROOT=""&i_autocallRootFolder.""";
+      put "export SASUNIT_TEST_SCENARIO_ROOT=""&i_testScenarioRootFolder.""";
       put "export SASUNIT_TEST_DB_FOLDER=""&i_sasunitTestDBFolder.""";
       put "export SASUNIT_LOG_FOLDER=""&i_sasunitLogFolder.""";
       put "export SASUNIT_SCN_LOG_FOLDER=""&i_sasunitScnLogFolder.""";
