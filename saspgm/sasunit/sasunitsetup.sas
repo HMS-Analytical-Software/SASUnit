@@ -35,24 +35,26 @@
    \param i_sasunitScnLogLevel      Default logging level for SASUnit scenarios
    \param i_OSEncoding              Encoding of OS which can be different from encoding of SAS session
    \todo Script file for report only
-*/ /** \cond */
-%macro SASUnitSetup (i_sasunitRootFolder    =
-                    ,i_projectRootFolder    =
-                    ,i_sasunitLogFolder     =
-                    ,i_sasunitScnLogFolder  =
-                    ,i_sasunitTestDBFolder  =
-                    ,i_projectBinFolder     =
-                    ,i_sasunitLanguage      =
-                    ,i_sasunitRunAllPgm     =
-                    ,i_operatingSystem      =
-                    ,i_sasVersion           =
-                    ,i_sasExe               =
-                    ,i_sasConfig            =
-                    ,i_sasunitReportFolder  =
-                    ,i_sasunitResourceFolder=
-                    ,i_sasunitLogLevel      =
-                    ,i_sasunitScnLogLevel   =
-                    ,i_OSEncoding           =
+*/
+%macro SASUnitSetup (i_sasunitRootFolder      =
+                    ,i_projectRootFolder      =
+                    ,i_autocallRootFolder     =
+                    ,i_testScenarioRootFolder =
+                    ,i_sasunitLogFolder       =
+                    ,i_sasunitScnLogFolder    =
+                    ,i_sasunitTestDBFolder    =
+                    ,i_projectBinFolder       =
+                    ,i_sasunitLanguage        =
+                    ,i_sasunitRunAllPgm       =
+                    ,i_operatingSystem        =
+                    ,i_sasVersion             =
+                    ,i_sasExe                 =
+                    ,i_sasConfig              =
+                    ,i_sasunitReportFolder    =
+                    ,i_sasunitResourceFolder  =
+                    ,i_sasunitLogLevel        =
+                    ,i_sasunitScnLogLevel     =
+                    ,i_OSEncoding             =
                     );
 
    %local
@@ -113,6 +115,8 @@
                      ,i_sasConfig               =&i_sasConfig.
                      ,i_sasunitRootFolder       =&i_sasunitRootFolder.
                      ,i_projectRootFolder       =&i_projectRootFolder.
+                     ,i_autocallRootFolder      =&i_autocallRootFolder.
+                     ,i_testScenarioRootFolder  =&i_testScenarioRootFolder.
                      ,i_projectBinFolder        =&i_projectBinFolder.
                      ,i_sasunitTestDBFolder     =&i_sasunitTestDBFolder.
                      ,i_sasunitLogFolder        =&i_sasunitLogFolder.
@@ -149,43 +153,3 @@
    %_mkdir (&i_sasunitScnLogFolder.,   makeCompletePath=1);
    %_mkdir (&i_sasunitTestDBFolder.,   makeCompletePath=1);
 %mend;
-/** \endcond */
-/* sample calls */
-/* As is today */
-/*
-%let sasunitRootFolder=C:/projects/sasunit;
-%let projectRootFolder=C:/projects/sasunit/example;
-options nomprint;
-%SASUnitSetup(i_sasunitRootFolder  =&sasunitRootFolder.
-             ,i_projectRootFolder  =&projectRootFolder.
-             ,i_sasunitLogPath     =&projectRootFolder./doc/sasunit/de
-             ,i_sasunitScnLogPath  =&projectRootFolder./doc/sasunit/de/log
-             ,i_sasunitTestDBFolder=&projectRootFolder./doc/sasunit/de
-             ,i_projectBinFolder   =&projectRootFolder./bin
-             ,i_sasunitLanguage    =DE
-             ,i_sasunitRunAllPgm   =&projectRootFolder./saspgm/run_all.sas
-             ,i_operatingSystem    =WINDOWS
-             ,i_sasVersion         =9.4
-             ,i_sasexe             =C:/Program Files/SASHome/SASFoundation/9.4/sas.exe
-             ,i_sasconfig          =C:/Program Files/SASHome/SASFoundation/9.4/nls/de/SASV9.CFG
-             );
-*/
-/* New *
-%let sasunitRootFolder=C:/projects/sasunit;
-%let projectRootFolder=C:/TEMP/sasunit_example;
-%let logFolder        =C:/TEMP/sasunit_example/log4sasunit;
-%let testDBFolder     =C:/TEMP/sasunit_example/testdb;
-%SASUnitSetup(i_sasunitRootFolder  =&sasunitRootFolder.
-             ,i_projectRootFolder  =&projectRootFolder.
-             ,i_sasunitLogPath     =&logFolder./de
-             ,i_sasunitScnLogPath  =&logFolder./de/scn
-             ,i_sasunitTestDBFolder=&testDBFolder.
-             ,i_projectBinFolder   =&projectRootFolder./bin
-             ,i_sasunitLanguage    =DE
-             ,i_sasunitRunAllPgm   =&projectRootFolder./saspgm/run_all.sas
-             ,i_operatingSystem    =WINDOWS
-             ,i_sasVersion         =9.4
-             ,i_sasexe             =C:/Program Files/SASHome/SASFoundation/9.4/sas.exe
-             ,i_sasconfig          =C:/Program Files/SASHome/SASFoundation/9.4/nls/de/SASV9.CFG
-             );
-/**/

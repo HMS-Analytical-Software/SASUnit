@@ -34,45 +34,48 @@
    \param i_sasunitLogLevel         Default logging level for SASUnit suite
    \param i_sasunitScnLogLevel      Default logging level for SASUnit scenarios
    \param i_OSEncoding              Encoding of OS which can be different from encoding of SAS session
-*/ /** \cond */
+*/
 
-%let g_sSASUnitRootFolder     = %sysget (SASUNIT_ROOT);
-%let g_sProjectRootFolder     = %sysget (SASUNIT_PROJECTROOT);
-%let g_sSASUnitLogFolder      = %sysget (SASUNIT_LOG_PATH);
-%let g_sSASUnitScnLogFolder   = %sysget (SASUNIT_SCN_LOG_PATH);
-%let g_sasunitTestDBFolder    = %sysget (SASUNIT_TESTDB_PATH);
-%let g_sSASUnitRunAllPgm      = %sysget (SASUNIT_RUNALL);
-%let g_sSASUnitHostOS         = %sysget (SASUNIT_HOST_OS);
-%let g_sSASUnitSASVersion     = %sysget (SASUNIT_SAS_VERSION);
-%let g_sSASUnitSASExe         = %sysget (SASUNIT_SAS_EXE);
-%let g_sSASUnitConfig         = %sysget (SASUNIT_SAS_CFG);
-%let g_sSASUnitLanguage       = %sysget (SASUNIT_LANGUAGE);
-%let g_sSASUnitReportFolder   = %sysget (SASUNIT_REPORT_PATH);
-%let g_sSASUnitResourceFolder = %sysget (SASUNIT_RESOURCE_PATH);
-%let g_sSASUnitLogLevel       = %sysget (SASUNIT_LOG_LEVEL);
-%let g_sSASUnitScnLogLevel    = %sysget (SASUNIT_SCN_LOG_LEVEL);
-%let g_currentLogger          = App.Program;
-%let g_OSEncoding             = %sysget (SASUNIT_HOST_ENCODING);
+%let g_sSASUnitRootFolder      = %sysget (SASUNIT_ROOT);
+%let g_sProjectRootFolder      = %sysget (SASUNIT_PROJECT_ROOT);
+%let g_sAutocallRootFolder     = %sysget (SASUNIT_AUTOCALL_ROOT);
+%let g_sTestScenarioRootFolder = %sysget (SASUNIT_TEST_SCENARIO_ROOT);
+%let g_sSASUnitLogFolder       = %sysget (SASUNIT_LOG_PATH);
+%let g_sSASUnitScnLogFolder    = %sysget (SASUNIT_SCN_LOG_PATH);
+%let g_sasunitTestDBFolder     = %sysget (SASUNIT_TESTDB_PATH);
+%let g_sSASUnitRunAllPgm       = %sysget (SASUNIT_RUNALL);
+%let g_sSASUnitHostOS          = %sysget (SASUNIT_HOST_OS);
+%let g_sSASUnitSASVersion      = %sysget (SASUNIT_SAS_VERSION);
+%let g_sSASUnitSASExe          = %sysget (SASUNIT_SAS_EXE);
+%let g_sSASUnitConfig          = %sysget (SASUNIT_SAS_CFG);
+%let g_sSASUnitLanguage        = %sysget (SASUNIT_LANGUAGE);
+%let g_sSASUnitReportFolder    = %sysget (SASUNIT_REPORT_PATH);
+%let g_sSASUnitResourceFolder  = %sysget (SASUNIT_RESOURCE_PATH);
+%let g_sSASUnitLogLevel        = %sysget (SASUNIT_LOG_LEVEL);
+%let g_sSASUnitScnLogLevel     = %sysget (SASUNIT_SCN_LOG_LEVEL);
+%let g_currentLogger           = App.Program;
+%let g_OSEncoding              = %sysget (SASUNIT_HOST_ENCODING);
 
 options mrecall mprint;
 options append=(SASAUTOS=("&g_sSASUnitRootFolder./saspgm/sasunit" "&g_sSASUnitRootFolder./saspgm/sasunit/%lowcase(%sysget(SASUNIT_HOST_OS))"));
 
-%SASUnitSetup(i_sasunitRootFolder    =&g_sSASUnitRootFolder.
-             ,i_projectRootFolder    =&g_sProjectRootFolder.
-             ,i_sasunitLogFolder     =&g_sSASUnitLogFolder.
-             ,i_sasunitScnLogFolder  =&g_sSASUnitScnLogFolder.
-             ,i_sasunitTestDBFolder  =&g_sasunitTestDBFolder.
-             ,i_projectBinFolder     =&g_sProjectRootFolder./bin
-             ,i_sasunitLanguage      =&g_sSASUnitLanguage.
-             ,i_sasunitRunAllPgm     =&g_sSASUnitRunAllPgm.
-             ,i_operatingSystem      =&g_sSASUnitHostOS.
-             ,i_sasVersion           =&g_sSASUnitSASVersion.
-             ,i_sasExe               =&g_sSASUnitSASExe.
-             ,i_sasConfig            =&g_sSASUnitConfig.
-             ,i_sasunitReportFolder  =&g_sSASUnitReportFolder.
-             ,i_sasunitResourceFolder=&g_sSASUnitResourceFolder.
-             ,i_sasunitLogLevel      =&g_sSASUnitLogLevel.
-             ,i_sasunitScnLogLevel   =&g_sSASUnitScnLogLevel.
-             ,i_OSEncoding           =&g_OSEncoding.
-             );     
-/** \endcond */             
+%SASUnitSetup(i_sasunitRootFolder      =&g_sSASUnitRootFolder.
+             ,i_projectRootFolder      =&g_sProjectRootFolder.
+             ,i_autocallRootFolder     =&g_sAutocallRootFolder.
+             ,i_testScenarioRootFolder =&g_sTestScenarioRootFolder.
+             ,i_sasunitLogFolder       =&g_sSASUnitLogFolder.
+             ,i_sasunitScnLogFolder    =&g_sSASUnitScnLogFolder.
+             ,i_sasunitTestDBFolder    =&g_sasunitTestDBFolder.
+             ,i_projectBinFolder       =&g_sProjectRootFolder./bin
+             ,i_sasunitLanguage        =&g_sSASUnitLanguage.
+             ,i_sasunitRunAllPgm       =&g_sSASUnitRunAllPgm.
+             ,i_operatingSystem        =&g_sSASUnitHostOS.
+             ,i_sasVersion             =&g_sSASUnitSASVersion.
+             ,i_sasExe                 =&g_sSASUnitSASExe.
+             ,i_sasConfig              =&g_sSASUnitConfig.
+             ,i_sasunitReportFolder    =&g_sSASUnitReportFolder.
+             ,i_sasunitResourceFolder  =&g_sSASUnitResourceFolder.
+             ,i_sasunitLogLevel        =&g_sSASUnitLogLevel.
+             ,i_sasunitScnLogLevel     =&g_sSASUnitScnLogLevel.
+             ,i_OSEncoding             =&g_OSEncoding.
+             );

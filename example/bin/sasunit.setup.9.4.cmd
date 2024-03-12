@@ -22,13 +22,15 @@ FOR %%f in ("%prj_folder:~0,-1%") do set root_folder=%%~dpf
 REM --------------------------------------------------------------------------------
 REM --- EnvVars for SAS Unit Configuration -----------------------------------------
 SET SASUNIT_ROOT=%root_folder%
-SET SASUNIT_PROJECTROOT=%prj_folder%
-SET SASUNIT_TESTDB_PATH=%SASUNIT_PROJECTROOT%%SASUNIT_LANGUAGE%\testdb
-SET SASUNIT_LOG_PATH=%SASUNIT_PROJECTROOT%%SASUNIT_LANGUAGE%\logs
-SET SASUNIT_SCN_LOG_PATH=%SASUNIT_PROJECTROOT%%SASUNIT_LANGUAGE%\scn_logs
-SET SASUNIT_REPORT_PATH=%SASUNIT_PROJECTROOT%%SASUNIT_LANGUAGE%\doc
+SET SASUNIT_PROJECT_ROOT=%prj_folder%
+SET SASUNIT_AUTOCALL_ROOT=%prj_folder%
+SET SASUNIT_TEST_SCENARIO_ROOT=%prj_folder%
+SET SASUNIT_TESTDB_PATH=%SASUNIT_PROJECT_ROOT%%SASUNIT_LANGUAGE%\testdb
+SET SASUNIT_LOG_PATH=%SASUNIT_PROJECT_ROOT%%SASUNIT_LANGUAGE%\logs
+SET SASUNIT_SCN_LOG_PATH=%SASUNIT_PROJECT_ROOT%%SASUNIT_LANGUAGE%\scn_logs
+SET SASUNIT_REPORT_PATH=%SASUNIT_PROJECT_ROOT%%SASUNIT_LANGUAGE%\doc
 SET SASUNIT_RESOURCE_PATH=%SASUNIT_ROOT%resources
-SET SASUNIT_RUNALL=%SASUNIT_PROJECTROOT%saspgm\run_all.sas
+SET SASUNIT_RUNALL=%SASUNIT_PROJECT_ROOT%saspgm\run_all.sas
 SET SASUNIT_LOG_LEVEL=INFO
 SET SASUNIT_SCN_LOG_LEVEL=INFO
 
@@ -42,7 +44,9 @@ echo SAS Executable                     = %SASUNIT_SAS_EXE%
 echo SAS Config File                    = %SASUNIT_SAS_CFG%
 echo --- EnvVars for SAS Unit Configuration -----------------------------------------
 echo SASUnit root path                  = %SASUNIT_ROOT%
-echo Project root Path                  = %SASUNIT_PROJECTROOT%
+echo Project Root Path                  = %SASUNIT_PROJECT_ROOT%
+echo Autocall Root Path                 = %SASUNIT_AUTOCALL_ROOT%
+echo Test Scenario Root Path            = %SASUNIT_TEST_SCENARIO_ROOT%
 echo Path to SASUnit test database      = %SASUNIT_TESTDB_PATH%
 echo Path to SASUnit log files          = %SASUNIT_LOG_PATH%
 echo Path to SASUnit scenario log files = %SASUNIT_SCN_LOG_PATH%
@@ -55,7 +59,7 @@ echo ---------------------------------------------------------------------------
 echo.
 
 echo "Creating script files for starting SASUnit ..."
-"%SASUNIT_SAS_EXE%" -CONFIG "%SASUNIT_SAS_CFG%" -no$syntaxcheck -noovp -nosplash -log "%SASUNIT_PROJECTROOT%/bin/sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log" -sysin "%SASUNIT_ROOT%/saspgm/sasunit/runsasunitsetup.sas"
+"%SASUNIT_SAS_EXE%" -CONFIG "%SASUNIT_SAS_CFG%" -no$syntaxcheck -noovp -nosplash -log "%SASUNIT_PROJECT_ROOT%/bin/sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log" -sysin "%SASUNIT_ROOT%/saspgm/sasunit/runsasunitsetup.sas"
 
 if %ERRORLEVEL%==0 goto normalexit
 @echo. 

@@ -40,7 +40,7 @@ OPTIONS
   ,i_overwrite                = %sysget(SASUNIT_OVERWRITE)
   ,i_project                  = SASUnit Examples                                  /* Name of project, for report */
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)saspgm/sasunit
-  ,i_sasautos                 = saspgm                                            /* Search for units under test here */
+  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm              /* Search for units under test here */
   ,i_testdata                 = dat                                               /* test data, libref testdata */
   ,i_refdata                  = dat                                               /* reference data, libref refdata */
   ,i_doc                      = doc/spec
@@ -58,7 +58,7 @@ OPTIONS
   )
 
 /* Run specified test scenarios. There can be more than one call to runSASUnit */
-%runSASUnit(i_source = saspgm/%str(*)_test.sas);
+%runSASUnit(i_source = %sysget(SASUNIT_TEST_SCENARIO_ROOT)saspgm/%str(*)_test.sas);
 
 /* Create or recreate HTML pages for report where needed */
 %reportSASUnit(

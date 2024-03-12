@@ -49,6 +49,8 @@
                        ,i_sasConfig                =
                        ,i_sasunitRootFolder        =
                        ,i_projectRootFolder        =
+                       ,i_autocallRootFolder       =
+                       ,i_testScenarioRootFolder   =
                        ,i_sasunitTestDBFolder      =
                        ,i_sasunitLogFolder         =
                        ,i_sasunitScnLogFolder      =
@@ -87,6 +89,8 @@
       put "REM --- EnvVars for SAS Unit Configuration -----------------------------------------";
       put "SET SASUNIT_ROOT=&i_sasunitRootFolder.";
       put "SET SASUNIT_PROJECT_ROOT=&i_projectRootFolder.";
+      put "SET SASUNIT_AUTOCALL_ROOT=&i_projectRootFolder.";
+      put "SET SASUNIT_TEST_SCENARIO_ROOT=&i_projectRootFolder.";
       put "SET SASUNIT_TEST_DB_FOLDER=&i_sasunitTestDBFolder.";
       put "SET SASUNIT_LOG_FOLDER=&i_sasunitLogFolder.";
       put "SET SASUNIT_SCN_LOG_FOLDER=&i_sasunitScnLogFolder.";
@@ -127,6 +131,8 @@
       put 'echo SASUnit config            = %SASUNIT_CONFIG%';
       put 'echo SASUnit Root Path         = %SASUNIT_ROOT%';
       put 'echo Project Root Path         = %SASUNIT_PROJECT_ROOT%';
+      put 'echo Autocall Root Path        = %SASUNIT_AUTOCALL_ROOT%';
+      put 'echo Test Scenario Root Path   = %SASUNIT_TEST_SCENARIO_ROOT%';
       put 'echo Folder for TestDB         = %SASUNIT_TEST_DB_FOLDER%';
       put 'echo Folder for Log Files      = %SASUNIT_LOG_FOLDER%';
       put 'echo Folder for Scn Log Files  = %SASUNIT_SCN_LOG_FOLDER%';
@@ -146,7 +152,7 @@
       put "echo.";
       put;
       put "echo ""Starting SASUnit ...""";
-      put """&i_sasexe."" -CONFIG ""%nrstr(%%SASUNIT_PROJECT_ROOT%%\bin\sasunit.%%SASUNIT_SAS_VERSION%%.%%SASUNIT_HOST_OS%%.%%SASUNIT_LANGUAGE%%.cfg)"" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC ""%nrstr(%%SASUNIT_PROJECT_ROOT%%)\bin\sasunit.logconfig.&i_sasunitLanguage..xml""";
+      put """&i_sasexe."" -CONFIG ""%nrstr(%%SASUNIT_PROJECT_ROOT%%bin\sasunit.%%SASUNIT_SAS_VERSION%%.%%SASUNIT_HOST_OS%%.%%SASUNIT_LANGUAGE%%.cfg)"" -no$syntaxcheck -noovp -nosplash -LOGCONFIGLOC ""%nrstr(%%SASUNIT_PROJECT_ROOT%%)\bin\sasunit.logconfig.&i_sasunitLanguage..xml""";
       put;
       put 'if %ERRORLEVEL%==0 goto normalexit';
       put "@echo. ";

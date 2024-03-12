@@ -49,6 +49,8 @@
                        ,i_sasConfig                =
                        ,i_sasunitRootFolder        =
                        ,i_projectRootFolder        =
+                       ,i_autocallRootFolder       =
+                       ,i_testScenarioRootFolder   =
                        ,i_sasunitTestDBFolder      =
                        ,i_sasunitLogFolder         =
                        ,i_sasunitScnLogFolder      =
@@ -96,6 +98,8 @@
       put "# --- EnvVars for SAS Unit Configuration -----------------------------------------";
       put "export SASUNIT_ROOT=""&i_sasunitRootFolder.""";
       put "export SASUNIT_PROJECT_ROOT=""&i_projectRootFolder.""";
+      put "export SASUNIT_AUTOCALL_ROOT=""&i_projectRootFolder.""";
+      put "export SASUNIT_TEST_SCENARIO_ROOT=""&i_projectRootFolder.""";
       put "export SASUNIT_TEST_DB_FOLDER=""&i_sasunitTestDBFolder.""";
       put "export SASUNIT_LOG_FOLDER=""&i_sasunitLogFolder.""";
       put "export SASUNIT_SCN_LOG_FOLDER=""&i_sasunitScnLogFolder.""";
@@ -134,6 +138,8 @@
       put 'echo SASUnit config            = $SASUNIT_CONFIG';
       put 'echo SASUnit Root Path         = $SASUNIT_ROOT';
       put 'echo Project Root Path         = $SASUNIT_PROJECT_ROOT';
+      put 'echo Autocall Root Path        = $SASUNIT_AUTOCALL_ROOT';
+      put 'echo Test Scenario Root Path   = $SASUNIT_TEST_SCENARIO_ROOT';
       put 'echo Folder for TestDB         = $SASUNIT_TEST_DB_FOLDER';
       put 'echo Folder for Log Files      = $SASUNIT_LOG_FOLDER';
       put 'echo Folder for Scn Log Files  = $SASUNIT_SCN_LOG_FOLDER';
@@ -153,7 +159,7 @@
       put "echo";
       put;
       put "echo ""Starting SASUnit ...""";
-      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin ""$SASUNIT_RUNALL"" -LOGCONFIGLOC ""./bin/sasunit.logconfig.&i_sasunitLanguage..xml"" /*-log ""$SASUNIT_LOG_FOLDER/run_all.log""*/";
+      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin ""$SASUNIT_RUNALL"" -LOGCONFIGLOC ""{$SASUNIT_PROJECT_ROOT}bin/sasunit.logconfig.&i_sasunitLanguage..xml""";
       put;
       put "# Show SAS exit status";
       put "RETVAL=$?";

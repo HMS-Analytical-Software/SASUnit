@@ -2,7 +2,7 @@
    \file
    \ingroup    SASUNIT_EXAMPLES_TEST
 
-   \brief      Tests for buildlng a database
+   \brief      Tests for building a database
 
             Example for a test scenario with the following features:
             - Creating three tables for bulding up a sample database.
