@@ -22,9 +22,9 @@ export SASUNIT_SAS_CFG=/opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/nls/$
 # --------------------------------------------------------------------------------
 # --- EnvVars for SAS Unit Configuration -----------------------------------------
 export SASUNIT_ROOT=$WORKSPACE/
-export SASUNIT_PROJECT_ROOT=$WORKSPACE/example/
-export SASUNIT_AUTOCALL_ROOT=$WORKSPACE/example/
-export SASUNIT_TEST_SCENARIO_ROOT=$WORKSPACE/example/
+export SASUNIT_PROJECT_ROOT=$WORKSPACE/
+export SASUNIT_AUTOCALL_ROOT=$WORKSPACE/saspgm/
+export SASUNIT_TEST_SCENARIO_ROOT=$WORKSPACE/saspgm/test/
 export SASUNIT_TESTDB_PATH=$SASUNIT_PROJECT_ROOT$SASUNIT_LANGUAGE/testdb
 export SASUNIT_LOG_PATH=$SASUNIT_PROJECT_ROOT$SASUNIT_LANGUAGE/logs
 export SASUNIT_SCN_LOG_PATH=$SASUNIT_PROJECT_ROOT$SASUNIT_LANGUAGE/scn_logs

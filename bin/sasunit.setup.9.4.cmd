@@ -23,8 +23,8 @@ REM ----------------------------------------------------------------------------
 REM --- EnvVars for SAS Unit Configuration -----------------------------------------
 SET SASUNIT_ROOT=%root_folder%
 SET SASUNIT_PROJECT_ROOT=%prj_folder%
-SET SASUNIT_AUTOCALL_ROOT=%prj_folder%
-SET SASUNIT_TEST_SCENARIO_ROOT=%prj_folder%
+SET SASUNIT_AUTOCALL_ROOT=%prj_folder%saspgm\
+SET SASUNIT_TEST_SCENARIO_ROOT=%prj_folder%saspgm\test\
 SET SASUNIT_TESTDB_PATH=%SASUNIT_PROJECT_ROOT%%SASUNIT_LANGUAGE%\testdb
 SET SASUNIT_LOG_PATH=%SASUNIT_PROJECT_ROOT%%SASUNIT_LANGUAGE%\logs
 SET SASUNIT_SCN_LOG_PATH=%SASUNIT_PROJECT_ROOT%%SASUNIT_LANGUAGE%\scn_logs

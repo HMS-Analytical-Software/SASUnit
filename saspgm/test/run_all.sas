@@ -28,10 +28,10 @@ proc options option=logparm;run;
   ,i_overwrite                = %sysget(SASUNIT_OVERWRITE)
   ,i_project                  = SASUnit Self Test
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)saspgm/sasunit
-  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/sasunit
-  ,i_sasautos1                = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/test
-  ,i_sasautos2                = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/test/pgmlib1
-  ,i_sasautos3                = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/test/pgmlib2
+  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)sasunit
+  ,i_sasautos1                = %sysget(SASUNIT_AUTOCALL_ROOT)test
+  ,i_sasautos2                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib1
+  ,i_sasautos3                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib2
   ,i_testdata                 = dat
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec
@@ -49,9 +49,9 @@ proc options option=logparm;run;
   ,i_OSEncoding               = %sysget(SASUNIT_HOST_ENCODING)
 );
 
-%runSASUnit(i_source = %str(%sysget(SASUNIT_TEST_SCENARIO_ROOT)saspgm/test/reportsasunit_inexisting_scenario_has_to_fail));
-%runSASUnit(i_source = %str(%sysget(SASUNIT_TEST_SCENARIO_ROOT)saspgm/test/%str(*)_test.sas));
-%runSASUnit(i_source = %str(%sysget(SASUNIT_TEST_SCENARIO_ROOT)saspgm/test/%lowcase(%sysget(SASUNIT_HOST_OS))/%str(*)_test.sas));
+%runSASUnit(i_source = %str(%sysget(SASUNIT_TEST_SCENARIO_ROOT)reportsasunit_inexisting_scenario_has_to_fail));
+%runSASUnit(i_source = %str(%sysget(SASUNIT_TEST_SCENARIO_ROOT)%str(*)_test.sas));
+%runSASUnit(i_source = %str(%sysget(SASUNIT_TEST_SCENARIO_ROOT)%lowcase(%sysget(SASUNIT_HOST_OS))/%str(*)_test.sas));
 
 /* To check different config and autoexec files there will be additional calls   */
 /* of initSASUnit and runSASUnit.                                                */
@@ -90,10 +90,10 @@ run;
   ,i_overwrite                = 0
   ,i_project                  = SASUnit Self Test
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/sasunit
-  ,i_sasautos1                = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/test
-  ,i_sasautos2                = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/test/pgmlib1
-  ,i_sasautos3                = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/test/pgmlib2
+  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)sasunit
+  ,i_sasautos1                = %sysget(SASUNIT_AUTOCALL_ROOT)test
+  ,i_sasautos2                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib1
+  ,i_sasautos3                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib2
   ,i_testdata                 = dat
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec
@@ -119,10 +119,10 @@ run;
   ,i_overwrite                = 0
   ,i_project                  = SASUnit Self Test
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/sasunit
-  ,i_sasautos1                = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/test
-  ,i_sasautos2                = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/test/pgmlib1
-  ,i_sasautos3                = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/test/pgmlib2
+  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)sasunit
+  ,i_sasautos1                = %sysget(SASUNIT_AUTOCALL_ROOT)test
+  ,i_sasautos2                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib1
+  ,i_sasautos3                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib2
   ,i_testdata                 = dat
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec
@@ -151,10 +151,10 @@ run;
   ,i_overwrite                = 0
   ,i_project                  = SASUnit Self Test
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/sasunit
-  ,i_sasautos1                = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/test
-  ,i_sasautos2                = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/test/pgmlib1
-  ,i_sasautos3                = %sysget(SASUNIT_AUTOCALL_ROOT)saspgm/test/pgmlib2
+  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)sasunit
+  ,i_sasautos1                = %sysget(SASUNIT_AUTOCALL_ROOT)test
+  ,i_sasautos2                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib1
+  ,i_sasautos3                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib2
   ,i_testdata                 = dat
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec

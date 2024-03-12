@@ -26,6 +26,8 @@ export SASUNIT_OPT_PATH=/opt/SASUnit
 export SASUNIT_VAR_PATH=/var/opt/SASUnit
 export SASUNIT_ROOT=$SASUNIT_OPT_PATH/
 export SASUNIT_PROJECTROOT=$SASUNIT_OPT_PATH/example/
+export SASUNIT_AUTOCALL_ROOT=$SASUNIT_OPT_PATH/example/saspgm/
+export SASUNIT_TEST_SCENARIO_ROOT=$SASUNIT_OPT_PATH/example/saspgm/
 export SASUNIT_TESTDB_PATH=$SASUNIT_VAR_PATH/example/$SASUNIT_LANGUAGE/testdb
 export SASUNIT_LOG_PATH=$SASUNIT_VAR_PATH/example/$SASUNIT_LANGUAGE/logs
 export SASUNIT_SCN_LOG_PATH=$SASUNIT_VAR_PATH/example/$SASUNIT_LANGUAGE/scn_logs
@@ -45,6 +47,8 @@ echo "SAS config file                    = $SASUNIT_SAS_CFG"
 echo "--- EnvVars for SAS Unit Configuration -----------------------------------------"
 echo "SASUnit root path                  = $SASUNIT_ROOT"
 echo "Project root path                  = $SASUNIT_PROJECTROOT"
+echo "Autocall Root Path                 = $SASUNIT_AUTOCALL_ROOT"
+echo "Test Scenario Root Path            = $SASUNIT_TEST_SCENARIO_ROOT"
 echo "Path to SASUnit test database      = $SASUNIT_TESTDB_PATH"
 echo "Path to SASUnit log files          = $SASUNIT_LOG_PATH"
 echo "Path to SASUnit scenario log files = $SASUNIT_SCN_LOG_PATH"
