@@ -18,9 +18,9 @@
                - Combined datasets should containg 8 rows.\n Primary key is ContractNumber and CustomerNumber.
                - Checking if there are customers without contracts and vice versa.
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/jira-29-separate-SASUnit-files-from-project-source $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-03-13 11:25:41 (Mi, 13. März 2024) $
 
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.

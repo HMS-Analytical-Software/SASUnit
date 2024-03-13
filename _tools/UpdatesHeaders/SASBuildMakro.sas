@@ -19,19 +19,24 @@
 %macro BuildCurrentBranch;
 
    %local 
+      l_default_branch_name
       l_repository
+      l_rootfolder
+      l_default_file
       l_branch_file
-      l_difftree_file
+      l_diff_file
       l_protocol_file
       l_temp
       l_exit
-      l_i
-      l_suffix
-      l_rootfolder
-      l_common_commit_id
-      l_default_branch_name
+      l_add_file_list
+      l_temp_file
       l_branchname
       l_regex_branchname
+      l_common_commit_id
+      l_changed_programs
+      l_program1
+      l_i
+      l_suffix
    ;
 
    %let l_default_branch_name = master;
@@ -55,6 +60,7 @@
    %let l_protocol_file =&l_protocol_file._&l_temp..log;
    %let l_exit          =0;
    %let l_add_file_list =%sysfunc(pathname(work))/add_file_list.txt;
+   %let l_temp_file     =%sysfunc(pathname(work))/temp_sas_program.sas;
 
    options xsync noxwait xmin;
 
@@ -215,7 +221,7 @@
             length line $32767 dtstring $80;
 
             infile "&l_repository./&&l_program&l_i.." RECFM=V;
-            file "&l_repository./&&l_program&l_i.." RECFM=V;
+            file "&l_temp_file." RECFM=V;
 
             dtstring        = catx (" ", put (date(), YYMMDDd10.), put (time(), time8.), "(" !! put (date(), nldatewn.) !! ",",  put (date(), nldate.) !! ")");
             RegExId_Version = prxparse("s/\$Revision.*\$/\$Revision: GitBranch: &l_regex_branchname. \$/i");
@@ -231,6 +237,13 @@
                _INFILE_ = trim(line);
             end;
 
+            put _INFILE_;
+         run;
+
+         data _NULL_;
+            infile "&l_temp_file." RECFM=V;
+            file "&l_repository./&&l_program&l_i.." RECFM=V;
+            input;
             put _INFILE_;
          run;
 
