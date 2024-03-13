@@ -4,9 +4,9 @@
 
    \brief      Updating headers in all touched programs of the current branch compared to default branch
 
-   \version    \$Revision: GitBranch: feature/update-user-and-version-in-sas-programs $
+   \version    \$Revision: GitBranch: feature/jira-29-separate-SASUnit-files-from-project-source $
    \author     \$Author: landwich $
-   \date       \$Date: 2024-02-21 10:57:02 (Mi, 21. Februar 2024) $
+   \date       \$Date: 2024-03-13 11:25:41 (Mi, 13. März 2024) $
    
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
