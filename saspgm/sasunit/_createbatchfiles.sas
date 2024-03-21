@@ -6,9 +6,9 @@
    
                A series of shell scripts is created as blue prints, how to start SASUnit in different ways
 
-   \version    \$Revision$
-   \author     \$Author$
-   \date       \$Date$
+   \version    \$Revision: GitBranch: feature/jira-29-separate-SASUnit-files-from-project-source $
+   \author     \$Author: landwich $
+   \date       \$Date: 2024-03-13 11:25:41 (Mi, 13. März 2024) $
    
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
@@ -24,6 +24,8 @@
    \param i_sasConfig               Path and name of the of the SAS provided config file that should be used to run SASUnit
    \param i_sasunitRootFolder       Path to the SASUnit root folder.
    \param i_projectRootFolder       Path to the project root folder used to resolve the complete path of i_sasunitRunAllPgm.
+   \param i_autocallRootFolder      Path and name of the root folder holding all autocall folders
+   \param i_testScenarioRootFolder  Path and name of the root folder holding all folders with test scenarios
    \param i_projectBinFolder        Name of the folder contain the binary files an shell scripts to start SASUnit (usually bin).
                                     <BR>Signifies the location of the config file.
    \param i_sasunitTestDBFolder     Name of the target folder where the test data base of SASUnit resides.
@@ -43,6 +45,8 @@
                         ,i_sasConfig               =
                         ,i_sasunitRootFolder       =
                         ,i_projectRootFolder       =
+                        ,i_autocallRootFolder      =
+                        ,i_testScenarioRootFolder  =
                         ,i_projectBinFolder        =
                         ,i_sasunitTestDBFolder     =
                         ,i_sasunitLogFolder        =
@@ -69,6 +73,8 @@
                     ,i_sasConfig                =&i_sasConfig.
                     ,i_sasunitRootFolder        =&i_sasunitRootFolder.
                     ,i_projectRootFolder        =&i_projectRootFolder.
+                    ,i_autocallRootFolder       =&i_autocallRootFolder.
+                    ,i_testScenarioRootFolder   =&i_testScenarioRootFolder.
                     ,i_sasunitTestDBFolder      =&i_sasunitTestDBFolder.
                     ,i_sasunitLogFolder         =&i_sasunitLogFolder.
                     ,i_sasunitScnLogFolder      =&i_sasunitScnLogFolder.
@@ -94,6 +100,8 @@
                     ,i_sasConfig                =&i_sasConfig.
                     ,i_sasunitRootFolder        =&i_sasunitRootFolder.
                     ,i_projectRootFolder        =&i_projectRootFolder.
+                    ,i_autocallRootFolder       =&i_autocallRootFolder.
+                    ,i_testScenarioRootFolder   =&i_testScenarioRootFolder.
                     ,i_sasunitTestDBFolder      =&i_sasunitTestDBFolder.
                     ,i_sasunitLogFolder         =&i_sasunitLogFolder.
                     ,i_sasunitScnLogFolder      =&i_sasunitScnLogFolder.
@@ -119,6 +127,8 @@
                     ,i_sasConfig                =&i_sasConfig.
                     ,i_sasunitRootFolder        =&i_sasunitRootFolder.
                     ,i_projectRootFolder        =&i_projectRootFolder.
+                    ,i_autocallRootFolder       =&i_autocallRootFolder.
+                    ,i_testScenarioRootFolder   =&i_testScenarioRootFolder.
                     ,i_sasunitTestDBFolder      =&i_sasunitTestDBFolder.
                     ,i_sasunitLogFolder         =&i_sasunitLogFolder.
                     ,i_sasunitScnLogFolder      =&i_sasunitScnLogFolder.
@@ -144,6 +154,8 @@
                     ,i_sasConfig                =&i_sasConfig.
                     ,i_sasunitRootFolder        =&i_sasunitRootFolder.
                     ,i_projectRootFolder        =&i_projectRootFolder.
+                    ,i_autocallRootFolder       =&i_autocallRootFolder.
+                    ,i_testScenarioRootFolder   =&i_testScenarioRootFolder.
                     ,i_sasunitTestDBFolder      =&i_sasunitTestDBFolder.
                     ,i_sasunitLogFolder         =&i_sasunitLogFolder.
                     ,i_sasunitScnLogFolder      =&i_sasunitScnLogFolder.
@@ -170,6 +182,8 @@
                     ,i_sasConfig                =&i_sasConfig.
                     ,i_sasunitRootFolder        =&i_sasunitRootFolder.
                     ,i_projectRootFolder        =&i_projectRootFolder.
+                    ,i_autocallRootFolder       =&i_autocallRootFolder.
+                    ,i_testScenarioRootFolder   =&i_testScenarioRootFolder.
                     ,i_sasunitTestDBFolder      =&i_sasunitTestDBFolder.
                     ,i_sasunitLogFolder         =&i_sasunitLogFolder.
                     ,i_sasunitScnLogFolder      =&i_sasunitScnLogFolder.
@@ -195,6 +209,8 @@
                     ,i_sasConfig                =&i_sasConfig.
                     ,i_sasunitRootFolder        =&i_sasunitRootFolder.
                     ,i_projectRootFolder        =&i_projectRootFolder.
+                    ,i_autocallRootFolder       =&i_autocallRootFolder.
+                    ,i_testScenarioRootFolder   =&i_testScenarioRootFolder.
                     ,i_sasunitTestDBFolder      =&i_sasunitTestDBFolder.
                     ,i_sasunitLogFolder         =&i_sasunitLogFolder.
                     ,i_sasunitScnLogFolder      =&i_sasunitScnLogFolder.
@@ -220,6 +236,8 @@
                     ,i_sasConfig                =&i_sasConfig.
                     ,i_sasunitRootFolder        =&i_sasunitRootFolder.
                     ,i_projectRootFolder        =&i_projectRootFolder.
+                    ,i_autocallRootFolder       =&i_autocallRootFolder.
+                    ,i_testScenarioRootFolder   =&i_testScenarioRootFolder.
                     ,i_sasunitTestDBFolder      =&i_sasunitTestDBFolder.
                     ,i_sasunitLogFolder         =&i_sasunitLogFolder.
                     ,i_sasunitScnLogFolder      =&i_sasunitScnLogFolder.

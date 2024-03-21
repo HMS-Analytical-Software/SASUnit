@@ -22,13 +22,15 @@ export SASUNIT_SAS_CFG=/opt/sas/sas94M7/SASFoundation/$SASUNIT_SAS_VERSION/nls/$
 # --------------------------------------------------------------------------------
 # --- EnvVars for SAS Unit Configuration -----------------------------------------
 export SASUNIT_ROOT=$WORKSPACE/
-export SASUNIT_PROJECTROOT=$WORKSPACE/example/
-export SASUNIT_TESTDB_PATH=$SASUNIT_PROJECTROOT$SASUNIT_LANGUAGE/testdb
-export SASUNIT_LOG_PATH=$SASUNIT_PROJECTROOT$SASUNIT_LANGUAGE/logs
-export SASUNIT_SCN_LOG_PATH=$SASUNIT_PROJECTROOT$SASUNIT_LANGUAGE/scn_logs
-export SASUNIT_REPORT_PATH=$SASUNIT_PROJECTROOT$SASUNIT_LANGUAGE/doc
+export SASUNIT_PROJECT_ROOT=$WORKSPACE/example/
+export SASUNIT_AUTOCALL_ROOT=$WORKSPACE/example/saspgm/
+export SASUNIT_TEST_SCENARIO_ROOT=$WORKSPACE/example/saspgm/
+export SASUNIT_TESTDB_PATH=$SASUNIT_PROJECT_ROOT$SASUNIT_LANGUAGE/testdb
+export SASUNIT_LOG_PATH=$SASUNIT_PROJECT_ROOT$SASUNIT_LANGUAGE/logs
+export SASUNIT_SCN_LOG_PATH=$SASUNIT_PROJECT_ROOT$SASUNIT_LANGUAGE/scn_logs
+export SASUNIT_REPORT_PATH=$SASUNIT_PROJECT_ROOT$SASUNIT_LANGUAGE/doc
 export SASUNIT_RESOURCE_PATH=$WORKSPACE/resources
-export SASUNIT_RUNALL=$WORKSPACE/example/saspgm/run_all.sas
+export SASUNIT_RUNALL=${SASUNIT_TEST_SCENARIO_ROOT}run_all.sas
 export SASUNIT_LOG_LEVEL=INFO
 export SASUNIT_SCN_LOG_LEVEL=INFO
 
@@ -41,7 +43,9 @@ echo "SAS executable                     = $SASUNIT_SAS_EXE"
 echo "SAS config file                    = $SASUNIT_SAS_CFG"
 echo "--- EnvVars for SAS Unit Configuration -----------------------------------------"
 echo "SASUnit root path                  = $SASUNIT_ROOT"
-echo "Project root path                  = $SASUNIT_PROJECTROOT"
+echo "Project root path                  = $SASUNIT_PROJECT_ROOT"
+echo "Autocall Root Path                 = $SASUNIT_AUTOCALL_ROOT"
+echo "Test Scenario Root Path            = $SASUNIT_TEST_SCENARIO_ROOT"
 echo "Path to SASUnit test database      = $SASUNIT_TESTDB_PATH"
 echo "Path to SASUnit log files          = $SASUNIT_LOG_PATH"
 echo "Path to SASUnit scenario log files = $SASUNIT_SCN_LOG_PATH"
@@ -53,12 +57,12 @@ echo "Logging level for scenarios        = $SASUNIT_SCN_LOG_LEVEL"
 echo "--------------------------------------------------------------------------------"
 
 echo "Creating script files for starting SASUnit ..."
-"$SASUNIT_SAS_EXE" -nosyntaxcheck -noovp -log "${SASUNIT_PROJECTROOT}bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log" -sysin "$SASUNIT_ROOT/saspgm/sasunit/runsasunitsetup.sas"
+"$SASUNIT_SAS_EXE" -nosyntaxcheck -noovp -log "${SASUNIT_PROJECT_ROOT}bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log" -sysin "${SASUNIT_ROOT}saspgm/sasunit/runsasunitsetup.sas"
 
 # Show SAS exit status
 RETVAL=$?
 if [ $RETVAL -eq 1 ] 
-	then printf "\nSAS ended with warnings. Review run_all.log for details.\n"
+	then printf "\nSAS ended with warnings. Review sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log for details.\n"
 elif [ $RETVAL -eq 2 ] 
-	then printf "\nSAS ended with errors! Check run_all.log for details!\n"
+	then printf "\nSAS ended with errors! Check sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log for details!\n"
 fi

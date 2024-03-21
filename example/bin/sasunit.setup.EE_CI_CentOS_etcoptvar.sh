@@ -25,7 +25,9 @@ export SASUNIT_ETC_PATH=/etc/opt/SASUnit
 export SASUNIT_OPT_PATH=/opt/SASUnit
 export SASUNIT_VAR_PATH=/var/opt/SASUnit
 export SASUNIT_ROOT=$SASUNIT_OPT_PATH/
-export SASUNIT_PROJECTROOT=$SASUNIT_OPT_PATH/example/
+export SASUNIT_PROJECT_ROOT=$SASUNIT_OPT_PATH/example/
+export SASUNIT_AUTOCALL_ROOT=$SASUNIT_OPT_PATH/example/saspgm/
+export SASUNIT_TEST_SCENARIO_ROOT=$SASUNIT_OPT_PATH/example/saspgm/
 export SASUNIT_TESTDB_PATH=$SASUNIT_VAR_PATH/example/$SASUNIT_LANGUAGE/testdb
 export SASUNIT_LOG_PATH=$SASUNIT_VAR_PATH/example/$SASUNIT_LANGUAGE/logs
 export SASUNIT_SCN_LOG_PATH=$SASUNIT_VAR_PATH/example/$SASUNIT_LANGUAGE/scn_logs
@@ -44,7 +46,9 @@ echo "SAS executable                     = $SASUNIT_SAS_EXE"
 echo "SAS config file                    = $SASUNIT_SAS_CFG"
 echo "--- EnvVars for SAS Unit Configuration -----------------------------------------"
 echo "SASUnit root path                  = $SASUNIT_ROOT"
-echo "Project root path                  = $SASUNIT_PROJECTROOT"
+echo "Project root path                  = $SASUNIT_PROJECT_ROOT"
+echo "Autocall Root Path                 = $SASUNIT_AUTOCALL_ROOT"
+echo "Test Scenario Root Path            = $SASUNIT_TEST_SCENARIO_ROOT"
 echo "Path to SASUnit test database      = $SASUNIT_TESTDB_PATH"
 echo "Path to SASUnit log files          = $SASUNIT_LOG_PATH"
 echo "Path to SASUnit scenario log files = $SASUNIT_SCN_LOG_PATH"
@@ -56,12 +60,12 @@ echo "Logging level for scenarios        = $SASUNIT_SCN_LOG_LEVEL"
 echo "--------------------------------------------------------------------------------"
 
 echo "Creating script files for starting SASUnit ..."
-"$SASUNIT_SAS_EXE" -nosyntaxcheck -noovp -log "$SASUNIT_PROJECTROOT/bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log" -sysin "$SASUNIT_ROOT/saspgm/sasunit/runsasunitsetup.sas"
+"$SASUNIT_SAS_EXE" -nosyntaxcheck -noovp -log "${SASUNIT_PROJECT_ROOT}bin/sasunit.setup.$SASUNIT_SAS_VERSION.$SASUNIT_LANGUAGE.log" -sysin "${SASUNIT_ROOT}saspgm/sasunit/runsasunitsetup.sas"
 
 # Show SAS exit status
 RETVAL=$?
 if [ $RETVAL -eq 1 ] 
-	then printf "\nSAS ended with warnings. Review run_all.log for details.\n"
+	then printf "\nSAS ended with warnings. Review sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log for details.\n"
 elif [ $RETVAL -eq 2 ] 
-	then printf "\nSAS ended with errors! Check run_all.log for details!\n"
+	then printf "\nSAS ended with errors! Check sasunit.setup.%SASUNIT_SAS_VERSION%.%SASUNIT_LANGUAGE%.log for details!\n"
 fi

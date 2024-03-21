@@ -15,9 +15,9 @@
 
                Create or recreate necessary HTML pages in the test report with reportSASUnit.sas.
                
-   \version    \$Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $
+   \version    \$Revision: GitBranch: feature/jira-29-separate-SASUnit-files-from-project-source $
    \author     \$Author: landwich $
-   \date       \$Date: 2024-02-22 11:27:38 (Do, 22. Februar 2024) $
+   \date       \$Date: 2024-03-13 11:25:41 (Mi, 13. März 2024) $
 
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
@@ -40,7 +40,7 @@ OPTIONS
   ,i_overwrite                = %sysget(SASUNIT_OVERWRITE)
   ,i_project                  = SASUnit Examples                                  /* Name of project, for report */
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)saspgm/sasunit
-  ,i_sasautos                 = saspgm                                            /* Search for units under test here */
+  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)                    /* Search for units under test here */
   ,i_testdata                 = dat                                               /* test data, libref testdata */
   ,i_refdata                  = dat                                               /* reference data, libref refdata */
   ,i_doc                      = doc/spec
@@ -58,7 +58,7 @@ OPTIONS
   )
 
 /* Run specified test scenarios. There can be more than one call to runSASUnit */
-%runSASUnit(i_source = saspgm/%str(*)_test.sas);
+%runSASUnit(i_source = %sysget(SASUNIT_TEST_SCENARIO_ROOT)%str(*)_test.sas);
 
 /* Create or recreate HTML pages for report where needed */
 %reportSASUnit(

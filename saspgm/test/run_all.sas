@@ -4,9 +4,9 @@
 
    \brief      Invocation of the basic test scenarios
 
-   \version    \$Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $
+   \version    \$Revision: GitBranch: feature/jira-29-separate-SASUnit-files-from-project-source $
    \author     \$Author: landwich $
-   \date       \$Date: 2024-02-22 11:27:38 (Do, 22. Februar 2024) $
+   \date       \$Date: 2024-03-13 11:25:42 (Mi, 13. März 2024) $
    \sa         \$HeadURL$
    \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
                This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
@@ -28,10 +28,10 @@ proc options option=logparm;run;
   ,i_overwrite                = %sysget(SASUNIT_OVERWRITE)
   ,i_project                  = SASUnit Self Test
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)saspgm/sasunit
-  ,i_sasautos                 = saspgm/sasunit
-  ,i_sasautos1                = saspgm/test
-  ,i_sasautos2                = saspgm/test/pgmlib1
-  ,i_sasautos3                = saspgm/test/pgmlib2
+  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)sasunit
+  ,i_sasautos1                = %sysget(SASUNIT_AUTOCALL_ROOT)test
+  ,i_sasautos2                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib1
+  ,i_sasautos3                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib2
   ,i_testdata                 = dat
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec
@@ -49,9 +49,9 @@ proc options option=logparm;run;
   ,i_OSEncoding               = %sysget(SASUNIT_HOST_ENCODING)
 );
 
-%runSASUnit(i_source = %str(saspgm/test/reportsasunit_inexisting_scenario_has_to_fail));
-%runSASUnit(i_source = %str(saspgm/test/%str(*)_test.sas));
-%runSASUnit(i_source = %str(saspgm/test/%lowcase(%sysget(SASUNIT_HOST_OS))/%str(*)_test.sas));
+%runSASUnit(i_source = %str(%sysget(SASUNIT_TEST_SCENARIO_ROOT)reportsasunit_inexisting_scenario_has_to_fail));
+%runSASUnit(i_source = %str(%sysget(SASUNIT_TEST_SCENARIO_ROOT)%str(*)_test.sas));
+%runSASUnit(i_source = %str(%sysget(SASUNIT_TEST_SCENARIO_ROOT)%lowcase(%sysget(SASUNIT_HOST_OS))/%str(*)_test.sas));
 
 /* To check different config and autoexec files there will be additional calls   */
 /* of initSASUnit and runSASUnit.                                                */
@@ -90,10 +90,10 @@ run;
   ,i_overwrite                = 0
   ,i_project                  = SASUnit Self Test
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos                 = saspgm/sasunit
-  ,i_sasautos1                = saspgm/test
-  ,i_sasautos2                = saspgm/test/pgmlib1
-  ,i_sasautos3                = saspgm/test/pgmlib2
+  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)sasunit
+  ,i_sasautos1                = %sysget(SASUNIT_AUTOCALL_ROOT)test
+  ,i_sasautos2                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib1
+  ,i_sasautos3                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib2
   ,i_testdata                 = dat
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec
@@ -119,10 +119,10 @@ run;
   ,i_overwrite                = 0
   ,i_project                  = SASUnit Self Test
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos                 = saspgm/sasunit
-  ,i_sasautos1                = saspgm/test
-  ,i_sasautos2                = saspgm/test/pgmlib1
-  ,i_sasautos3                = saspgm/test/pgmlib2
+  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)sasunit
+  ,i_sasautos1                = %sysget(SASUNIT_AUTOCALL_ROOT)test
+  ,i_sasautos2                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib1
+  ,i_sasautos3                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib2
   ,i_testdata                 = dat
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec
@@ -141,7 +141,7 @@ run;
   ,i_OSEncoding               = %sysget(SASUNIT_HOST_ENCODING)
 )
 
-%runSASUnit(i_source = saspgm/test/assert_i_autoexec_usage_configtest.sas);
+%runSASUnit(i_source = %sysget(SASUNIT_TEST_SCENARIO_ROOT)saspgm/test/assert_i_autoexec_usage_configtest.sas);
 
 *** Recreate the old config and autoexec to ensure the right settings ***;
 *** if you use SASUnit without overwrite afterwards                   ***;
@@ -151,10 +151,10 @@ run;
   ,i_overwrite                = 0
   ,i_project                  = SASUnit Self Test
   ,i_sasunit                  = %sysget(SASUNIT_ROOT)/saspgm/sasunit
-  ,i_sasautos                 = saspgm/sasunit
-  ,i_sasautos1                = saspgm/test
-  ,i_sasautos2                = saspgm/test/pgmlib1
-  ,i_sasautos3                = saspgm/test/pgmlib2
+  ,i_sasautos                 = %sysget(SASUNIT_AUTOCALL_ROOT)sasunit
+  ,i_sasautos1                = %sysget(SASUNIT_AUTOCALL_ROOT)test
+  ,i_sasautos2                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib1
+  ,i_sasautos3                = %sysget(SASUNIT_TEST_SCENARIO_ROOT)pgmlib2
   ,i_testdata                 = dat
   ,i_refdata                  = dat
   ,i_doc                      = doc/spec

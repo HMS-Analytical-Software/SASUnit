@@ -6,14 +6,15 @@
    
                This macro is called from os-independend macro _createbatchfiles.sas
 
-   \version    \$Revision: GitBranch: feature/18-bug-sasunitcfg-not-used-in-sas-subprocess $
+   \version    \$Revision: GitBranch: feature/jira-29-separate-SASUnit-files-from-project-source $
    \author     \$Author: landwich $
-   \date       \$Date: 2024-02-22 11:27:38 (Do, 22. Februar 2024) $
+   \date       \$Date: 2024-03-13 11:25:41 (Mi, 13. März 2024) $
    
    \sa         For further information please refer to https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/
                Here you can find the SASUnit documentation, release notes and license information.
    \sa         \$HeadURL$
-   \copyright  This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
+   \copyright  Copyright 2010-2023 HMS Analytical Software GmbH, http://www.analytical-software.de
+               This file is part of SASUnit, the Unit testing framework for SAS(R) programs.
                For copyright information and terms of usage under the Lesser GPL license see included file readme.txt
                or https://github.com/HMS-Analytical-Software/SASUnit/wiki/User%27s%20Guide/readme/.
                
@@ -24,6 +25,8 @@
    \param      i_sasConfig                Path and name of the of the SAS provided config file that should be used to run SASUnit
    \param      i_sasunitRootFolder        Path to the SASUnit root folder.
    \param      i_projectRootFolder        Path to the project root folder used to resolve the complete path of i_sasunitRunAllPgm.
+   \param      i_autocallRootFolder       Path and name of the root folder holding all autocall folders
+   \param      i_testScenarioRootFolder   Path and name of the root folder holding all folders with test scenarios
    \param      i_sasunitTestDBFolder      Name of the target folder where the test data base of SASUnit resides.
    \param      i_sasunitLogFolder         Name of the folder where the log file of run_all.sas should be stored.
    \param      i_sasunitScnLogFolder      Name of the folder where the log files of all scenarios should be stored.
@@ -49,6 +52,8 @@
                        ,i_sasConfig                =
                        ,i_sasunitRootFolder        =
                        ,i_projectRootFolder        =
+                       ,i_autocallRootFolder       =
+                       ,i_testScenarioRootFolder   =
                        ,i_sasunitTestDBFolder      =
                        ,i_sasunitLogFolder         =
                        ,i_sasunitScnLogFolder      =
@@ -96,6 +101,8 @@
       put "# --- EnvVars for SAS Unit Configuration -----------------------------------------";
       put "export SASUNIT_ROOT=""&i_sasunitRootFolder.""";
       put "export SASUNIT_PROJECT_ROOT=""&i_projectRootFolder.""";
+      put "export SASUNIT_AUTOCALL_ROOT=""&i_autocallRootFolder.""";
+      put "export SASUNIT_TEST_SCENARIO_ROOT=""&i_testScenarioRootFolder.""";
       put "export SASUNIT_TEST_DB_FOLDER=""&i_sasunitTestDBFolder.""";
       put "export SASUNIT_LOG_FOLDER=""&i_sasunitLogFolder.""";
       put "export SASUNIT_SCN_LOG_FOLDER=""&i_sasunitScnLogFolder.""";
@@ -134,6 +141,8 @@
       put 'echo SASUnit config            = $SASUNIT_CONFIG';
       put 'echo SASUnit Root Path         = $SASUNIT_ROOT';
       put 'echo Project Root Path         = $SASUNIT_PROJECT_ROOT';
+      put 'echo Autocall Root Path        = $SASUNIT_AUTOCALL_ROOT';
+      put 'echo Test Scenario Root Path   = $SASUNIT_TEST_SCENARIO_ROOT';
       put 'echo Folder for TestDB         = $SASUNIT_TEST_DB_FOLDER';
       put 'echo Folder for Log Files      = $SASUNIT_LOG_FOLDER';
       put 'echo Folder for Scn Log Files  = $SASUNIT_SCN_LOG_FOLDER';
@@ -153,7 +162,7 @@
       put "echo";
       put;
       put "echo ""Starting SASUnit ...""";
-      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin ""$SASUNIT_RUNALL"" -LOGCONFIGLOC ""./bin/sasunit.logconfig.&i_sasunitLanguage..xml"" /*-log ""$SASUNIT_LOG_FOLDER/run_all.log""*/";
+      put "$SASUNIT_SAS_EXE -nosyntaxcheck -noovp -sysin ""$SASUNIT_RUNALL"" -LOGCONFIGLOC ""${SASUNIT_PROJECT_ROOT}bin/sasunit.logconfig.&i_sasunitLanguage..xml""";
       put;
       put "# Show SAS exit status";
       put "RETVAL=$?";
