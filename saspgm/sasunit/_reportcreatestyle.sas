@@ -55,7 +55,7 @@
             'fgA2'       = cx0033AA
             'bgA2'       = cxe8eef2
             /* Data Cells */
-            'fgA3'       = dark red
+            'fgA3'       = darkred
             'bgA3'       = cxe8eef2
             /* not used */
             'fgA4'       = cx000080
